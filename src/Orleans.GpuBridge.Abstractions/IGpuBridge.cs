@@ -77,5 +77,11 @@ public enum DeviceType
     Cpu,
     Gpu,
     Accelerator,
-    Custom
+    Custom,
+    Cuda,
+    OpenCl,
+    DirectCompute,
+    Metal,
+    Fpga,
+    Asic
 }

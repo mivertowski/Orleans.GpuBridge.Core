@@ -1,0 +1,100 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: orleans-gpu-config
+  namespace: orleans-gpu
+  labels:
+    app.kubernetes.io/name: orleans-gpubridge
+    app.kubernetes.io/component: configuration
+data:
+  appsettings.json: |
+    {
+      "Logging": {
+        "LogLevel": {
+          "Default": "Information",
+          "Orleans": "Warning",
+          "Orleans.GpuBridge": "Debug"
+        }
+      },
+      "Orleans": {
+        "ServiceId": "production",
+        "ClusterId": "gpu-cluster",
+        "Networking": {
+          "OpenConnectionTimeout": "00:00:30",
+          "MaxSocketConnections": 8
+        }
+      },
+      "GpuBridge": {
+        "PreferGpu": true,
+        "MaxDevices": 4,
+        "MemoryPoolSizeMB": 4096,
+        "MaxConcurrentKernels": 100,
+        "EnableGpuDirectStorage": false,
+        "EnableCpuFallback": true,
+        "Telemetry": {
+          "EnableMetrics": true,
+          "EnableTracing": true,
+          "SamplingRate": 0.1,
+          "MetricsCollectionInterval": "00:00:10"
+        }
+      }
+    }
+  
+  log4net.config: |
+    <?xml version="1.0" encoding="utf-8"?>
+    <log4net>
+      <appender name="Console" type="log4net.Appender.ConsoleAppender">
+        <layout type="log4net.Layout.PatternLayout">
+          <conversionPattern value="%date [%thread] %-5level %logger - %message%newline" />
+        </layout>
+      </appender>
+      <root>
+        <level value="INFO" />
+        <appender-ref ref="Console" />
+      </root>
+    </log4net>
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: orleans-gpu-scripts
+  namespace: orleans-gpu
+  labels:
+    app.kubernetes.io/name: orleans-gpubridge
+    app.kubernetes.io/component: scripts
+data:
+  health-check.sh: |
+    #!/bin/bash
+    set -e
+    
+    # Check if nvidia-smi is available
+    if command -v nvidia-smi &> /dev/null; then
+      nvidia-smi --query-gpu=index,name,memory.used,memory.total --format=csv,noheader
+      if [ $? -ne 0 ]; then
+        echo "GPU health check failed"
+        exit 1
+      fi
+    fi
+    
+    # Check Orleans cluster status
+    curl -f http://localhost:8080/health || exit 1
+    
+    echo "Health check passed"
+    exit 0
+  
+  init-gpu.sh: |
+    #!/bin/bash
+    set -e
+    
+    echo "Initializing GPU environment..."
+    
+    # Set GPU persistence mode if available
+    if command -v nvidia-smi &> /dev/null; then
+      nvidia-smi -pm 1 || true
+      nvidia-smi --query-gpu=index,name,driver_version --format=csv
+    fi
+    
+    # Create necessary directories
+    mkdir -p /app/data /app/logs /app/kernels
+    
+    echo "GPU initialization complete"

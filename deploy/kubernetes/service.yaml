@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: orleans-gpu-silo
+  namespace: orleans-gpu
+  labels:
+    app.kubernetes.io/name: orleans-gpubridge
+    app.kubernetes.io/component: silo
+spec:
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: orleans-gpubridge
+    app.kubernetes.io/component: silo
+  ports:
+  - port: 11111
+    targetPort: 11111
+    name: silo
+  - port: 8080
+    targetPort: 8080
+    name: dashboard
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orleans-gpu-gateway
+  namespace: orleans-gpu
+  labels:
+    app.kubernetes.io/name: orleans-gpubridge
+    app.kubernetes.io/component: gateway
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+spec:
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/name: orleans-gpubridge
+    app.kubernetes.io/component: silo
+  ports:
+  - port: 30000
+    targetPort: 30000
+    name: gateway
+    protocol: TCP
+  - port: 8080
+    targetPort: 8080
+    name: dashboard
+    protocol: TCP
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orleans-gpu-metrics
+  namespace: orleans-gpu
+  labels:
+    app.kubernetes.io/name: orleans-gpubridge
+    app.kubernetes.io/component: metrics
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9090"
+spec:
+  selector:
+    app.kubernetes.io/name: orleans-gpubridge
+    app.kubernetes.io/component: silo
+  ports:
+  - port: 9090
+    targetPort: 9090
+    name: metrics
+    protocol: TCP

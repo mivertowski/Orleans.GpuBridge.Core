@@ -1,15 +1,22 @@
 # Orleans.GpuBridge Operations Guide
 
+## 📊 Project Status
+
+**Current Version**: 0.5.0 (Pre-release)  
+**Production Ready**: ✅ CPU fallback | ⏳ GPU execution pending  
+**New Features**: OpenTelemetry monitoring, Health checks, Circuit breakers, Kubernetes support
+
 ## Table of Contents
 
 1. [Deployment](#deployment)
 2. [Configuration](#configuration)
 3. [Monitoring](#monitoring)
-4. [Performance Tuning](#performance-tuning)
-5. [Troubleshooting](#troubleshooting)
-6. [Maintenance](#maintenance)
-7. [Security](#security)
-8. [Disaster Recovery](#disaster-recovery)
+4. [Health Checks](#health-checks)
+5. [Performance Tuning](#performance-tuning)
+6. [Troubleshooting](#troubleshooting)
+7. [Maintenance](#maintenance)
+8. [Security](#security)
+9. [Disaster Recovery](#disaster-recovery)
 
 ## Deployment
 
@@ -171,7 +178,25 @@ volumes:
   grafana-data:
 ```
 
-### Kubernetes Deployment
+### Kubernetes Deployment (NEW in v0.5.0)
+
+Deploy using our production-ready manifests:
+
+```bash
+# Deploy complete stack
+kubectl apply -f deploy/kubernetes/
+
+# Or deploy individually
+kubectl apply -f deploy/kubernetes/namespace.yaml
+kubectl apply -f deploy/kubernetes/configmap.yaml
+kubectl apply -f deploy/kubernetes/statefulset.yaml
+kubectl apply -f deploy/kubernetes/service.yaml
+kubectl apply -f deploy/kubernetes/ingress.yaml
+
+# Check deployment status
+kubectl get all -n orleans-gpu
+kubectl get pods -n orleans-gpu -o wide
+```
 
 #### Namespace and ConfigMap
 
@@ -369,6 +394,32 @@ spec:
 
 ## Monitoring
 
+### OpenTelemetry Configuration (NEW in v0.5.0)
+
+Configure comprehensive monitoring with OpenTelemetry:
+
+```csharp
+services.AddGpuTelemetry(options =>
+{
+    // Enable metrics collection
+    options.EnableMetrics = true;
+    options.MetricsCollectionInterval = TimeSpan.FromSeconds(10);
+    
+    // Enable distributed tracing
+    options.EnableTracing = true;
+    options.TracingSamplingRatio = 0.1; // Sample 10% of traces
+    
+    // Configure exporters
+    options.EnablePrometheusExporter = true;
+    options.PrometheusPort = 9090;
+    
+    options.EnableJaegerTracing = true;
+    options.JaegerEndpoint = "http://localhost:14268/api/traces";
+    
+    options.OtlpEndpoint = "http://localhost:4317";
+});
+```
+
 ### Prometheus Configuration
 
 ```yaml
@@ -446,6 +497,111 @@ Configure structured logging with Serilog:
     ]
   }
 }
+```
+
+## Health Checks
+
+### Configuration (NEW in v0.5.0)
+
+Configure comprehensive health checks:
+
+```csharp
+services.AddHealthChecks()
+    // GPU health check
+    .AddGpuHealthCheck(options =>
+    {
+        options.RequireGpu = false; // Allow CPU fallback
+        options.MaxTemperatureCelsius = 85.0;
+        options.MaxMemoryUsagePercent = 90.0;
+        options.WarnMemoryUsagePercent = 80.0;
+        options.TestKernelExecution = true;
+    })
+    // Memory health check
+    .AddMemoryHealthCheck(thresholdInBytes: 1_000_000_000)
+    // Circuit breaker health
+    .AddTypeActivatedCheck<CircuitBreakerHealthCheck>("circuit-breaker");
+```
+
+### Health Endpoints
+
+```csharp
+// Configure endpoints
+app.MapHealthChecks("/health/live", new HealthCheckOptions
+{
+    Predicate = _ => false // Basic liveness
+});
+
+app.MapHealthChecks("/health/ready", new HealthCheckOptions
+{
+    Predicate = check => check.Tags.Contains("ready"),
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
+
+app.MapHealthChecks("/health/startup", new HealthCheckOptions
+{
+    Predicate = check => check.Tags.Contains("startup")
+});
+```
+
+### Kubernetes Health Probes
+
+```yaml
+spec:
+  containers:
+  - name: orleans-silo
+    livenessProbe:
+      httpGet:
+        path: /health/live
+        port: 8080
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      failureThreshold: 3
+    readinessProbe:
+      httpGet:
+        path: /health/ready
+        port: 8080
+      initialDelaySeconds: 20
+      periodSeconds: 5
+      failureThreshold: 3
+    startupProbe:
+      httpGet:
+        path: /health/startup
+        port: 8080
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      failureThreshold: 30
+```
+
+### Circuit Breaker Protection (NEW in v0.5.0)
+
+Configure circuit breaker policies:
+
+```csharp
+services.AddSingleton<ICircuitBreakerPolicy>(sp =>
+    new CircuitBreakerPolicy(
+        sp.GetRequiredService<ILogger<CircuitBreakerPolicy>>(),
+        new CircuitBreakerOptions
+        {
+            FailureThreshold = 3,
+            BreakDuration = TimeSpan.FromSeconds(30),
+            RetryCount = 3,
+            RetryDelayMs = 100,
+            OperationTimeout = TimeSpan.FromSeconds(10)
+        }));
+```
+
+Monitor circuit breaker state:
+
+```csharp
+// Check circuit state
+var state = _circuitBreaker.GetCircuitState("gpu-operation");
+if (state == CircuitState.Open)
+{
+    _logger.LogWarning("Circuit breaker is open for GPU operations");
+}
+
+// Reset circuit manually if needed
+_circuitBreaker.Reset("gpu-operation");
 ```
 
 ## Performance Tuning

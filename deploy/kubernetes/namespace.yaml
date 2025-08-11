@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: orleans-gpu
+  labels:
+    name: orleans-gpu
+    app.kubernetes.io/name: orleans-gpubridge
+    app.kubernetes.io/part-of: orleans-gpubridge
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: orleans-gpu-quota
+  namespace: orleans-gpu
+spec:
+  hard:
+    requests.nvidia.com/gpu: "8"
+    requests.cpu: "32"
+    requests.memory: "128Gi"
+    persistentvolumeclaims: "10"
+    services.loadbalancers: "2"

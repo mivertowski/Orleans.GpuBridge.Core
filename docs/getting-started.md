@@ -2,6 +2,27 @@
 
 This guide will help you get started with Orleans.GpuBridge, from installation to running your first GPU-accelerated Orleans application.
 
+## 📊 Project Status
+
+**Current Version**: 0.5.0 (Pre-release)  
+**Completion**: 45% - Infrastructure complete, awaiting DotCompute GPU runtime  
+**Production Ready**: ✅ CPU fallback | ⏳ GPU execution pending
+
+### What's Available Now
+- ✅ Complete Orleans integration with GPU abstractions
+- ✅ SIMD-optimized CPU fallback (AVX512/AVX2/NEON)
+- ✅ OpenTelemetry monitoring and distributed tracing
+- ✅ Health checks with circuit breakers
+- ✅ 5 comprehensive sample applications
+- ✅ Kubernetes deployment with GPU support
+- ✅ Grafana dashboards for monitoring
+
+### Coming Soon
+- ⏳ Actual GPU kernel execution (awaiting DotCompute)
+- ⏳ CUDA Graph optimization
+- ⏳ Multi-GPU coordination
+- ⏳ GPUDirect Storage
+
 ## Table of Contents
 
 1. [Prerequisites](#prerequisites)
@@ -53,6 +74,10 @@ dotnet add package Orleans.GpuBridge.Abstractions
 dotnet add package Orleans.GpuBridge.Runtime
 dotnet add package Orleans.GpuBridge.Grains
 dotnet add package Orleans.GpuBridge.BridgeFX
+
+# Add monitoring and health packages (NEW in v0.5.0)
+dotnet add package Orleans.GpuBridge.Diagnostics
+dotnet add package Orleans.GpuBridge.HealthChecks
 ```
 
 ## Basic Setup
@@ -90,6 +115,22 @@ var host = new HostBuilder()
     .ConfigureServices(services =>
     {
         services.AddLogging();
+        
+        // Add monitoring (NEW in v0.5.0)
+        services.AddGpuTelemetry(options =>
+        {
+            options.EnableMetrics = true;
+            options.EnableTracing = true;
+            options.OtlpEndpoint = "http://localhost:4317";
+        });
+        
+        // Add health checks (NEW in v0.5.0)
+        services.AddHealthChecks()
+            .AddGpuHealthCheck()
+            .AddMemoryHealthCheck();
+            
+        // Add circuit breaker protection (NEW in v0.5.0)
+        services.AddSingleton<ICircuitBreakerPolicy, CircuitBreakerPolicy>();
     })
     .Build();
 
@@ -150,11 +191,19 @@ public class VectorProcessorGrain : Grain, IVectorProcessorGrain
 {
     private readonly IGpuBridge _gpu;
     private readonly ILogger<VectorProcessorGrain> _logger;
+    private readonly IGpuTelemetry _telemetry; // NEW in v0.5.0
+    private readonly ICircuitBreakerPolicy _circuitBreaker; // NEW in v0.5.0
 
-    public VectorProcessorGrain(IGpuBridge gpu, ILogger<VectorProcessorGrain> logger)
+    public VectorProcessorGrain(
+        IGpuBridge gpu, 
+        ILogger<VectorProcessorGrain> logger,
+        IGpuTelemetry telemetry,
+        ICircuitBreakerPolicy circuitBreaker)
     {
         _gpu = gpu;
         _logger = logger;
+        _telemetry = telemetry;
+        _circuitBreaker = circuitBreaker;
     }
 
     public async Task<float[]> AddVectorsAsync(float[] a, float[] b)
@@ -304,6 +353,87 @@ public class ImageProcessorGrain : Grain, IImageProcessorGrain
 }
 ```
 
+## Monitoring and Health (NEW in v0.5.0)
+
+### 1. Configure OpenTelemetry Monitoring
+
+```csharp
+// Configure comprehensive monitoring
+services.AddGpuTelemetry(options =>
+{
+    options.EnableMetrics = true;
+    options.EnableTracing = true;
+    options.EnablePrometheusExporter = true;
+    options.EnableJaegerTracing = true;
+    options.OtlpEndpoint = "http://localhost:4317";
+    options.MetricsCollectionInterval = TimeSpan.FromSeconds(10);
+});
+
+// Use in your grain
+using var activity = _telemetry.StartKernelExecution("vector_add", deviceIndex);
+try 
+{
+    // Execute kernel
+    var result = await kernel.ExecuteAsync(data);
+    _telemetry.RecordKernelExecution("vector_add", deviceIndex, activity.Duration, true);
+    return result;
+}
+catch (Exception ex)
+{
+    _telemetry.RecordKernelExecution("vector_add", deviceIndex, activity.Duration, false);
+    throw;
+}
+```
+
+### 2. Health Check Endpoints
+
+```csharp
+// Configure health checks in your host
+app.MapHealthChecks("/health/live", new HealthCheckOptions
+{
+    Predicate = _ => false // Liveness probe
+});
+
+app.MapHealthChecks("/health/ready", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse // Readiness with details
+});
+
+// Access health endpoints
+// http://localhost:8080/health/live - Basic liveness
+// http://localhost:8080/health/ready - Detailed health status
+```
+
+### 3. Circuit Breaker Protection
+
+```csharp
+// Use circuit breaker to protect against cascading failures
+public async Task<float[]> ProcessWithProtectionAsync(float[] data)
+{
+    return await _circuitBreaker.ExecuteAsync(
+        async () =>
+        {
+            // This operation is protected by circuit breaker
+            return await _gpu.ExecuteAsync<float[], float[]>("kernel", data);
+        },
+        operationName: "gpu-process",
+        cancellationToken: CancellationToken.None);
+}
+```
+
+### 4. View Metrics in Grafana
+
+```bash
+# Import pre-built dashboards
+curl -X POST http://admin:admin@localhost:3000/api/dashboards/import \
+  -H "Content-Type: application/json" \
+  -d @monitoring/grafana/dashboards/orleans-gpu-overview.json
+
+# Access Grafana
+# http://localhost:3000
+# Default credentials: admin/admin
+```
+
 ## Testing Your Application
 
 ### 1. Unit Testing GPU Grains
@@ -379,14 +509,36 @@ public async Task Benchmark_Vector_Addition_Performance()
 3. **[Operations Guide](operations.md)** - Deployment and monitoring
 4. **[Advanced Features](advanced.md)** - Multi-GPU, custom kernels, optimization
 
-### Example Projects
+### Example Projects (NEW in v0.5.0)
 
-Check out our example projects in the `samples/` directory:
+Run our comprehensive sample applications:
 
-- **VectorMath** - Basic vector operations
-- **ImageProcessing** - Image processing pipeline
-- **MachineLearning** - Neural network inference
-- **Scientific** - Scientific computing examples
+```bash
+# Interactive mode - choose samples from menu
+dotnet run --project samples/Orleans.GpuBridge.Samples -- interactive
+
+# Vector operations benchmark
+dotnet run --project samples/Orleans.GpuBridge.Samples -- vector --size 10000000 --batch 100
+
+# Matrix multiplication performance
+dotnet run --project samples/Orleans.GpuBridge.Samples -- matrix --size 2048 --count 10
+
+# Image processing pipeline
+dotnet run --project samples/Orleans.GpuBridge.Samples -- image --operation all
+
+# Graph algorithms (PageRank, BFS)
+dotnet run --project samples/Orleans.GpuBridge.Samples -- graph --nodes 100000 --algorithm pagerank
+
+# Complete performance benchmark suite
+dotnet run --project samples/Orleans.GpuBridge.Samples -- benchmark --type all --duration 60
+```
+
+Each sample demonstrates:
+- GPU acceleration with automatic CPU fallback
+- Performance comparisons (CPU vs SIMD vs GPU)
+- OpenTelemetry monitoring integration
+- Circuit breaker protection
+- Memory pooling optimization
 
 ### Common Patterns
 

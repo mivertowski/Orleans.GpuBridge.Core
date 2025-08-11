@@ -1,0 +1,182 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: orleans-gpu-silo
+  namespace: orleans-gpu
+  labels:
+    app.kubernetes.io/name: orleans-gpubridge
+    app.kubernetes.io/component: silo
+spec:
+  serviceName: orleans-gpu-silo
+  replicas: 3
+  podManagementPolicy: Parallel
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: orleans-gpubridge
+      app.kubernetes.io/component: silo
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: orleans-gpubridge
+        app.kubernetes.io/component: silo
+        version: v1.0.0
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: orleans-gpu-sa
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - orleans-gpubridge
+              topologyKey: kubernetes.io/hostname
+      initContainers:
+      - name: init-gpu
+        image: nvidia/cuda:12.0-base
+        command: ["/scripts/init-gpu.sh"]
+        volumeMounts:
+        - name: scripts
+          mountPath: /scripts
+        resources:
+          limits:
+            nvidia.com/gpu: 1
+      containers:
+      - name: orleans-silo
+        image: ghcr.io/orleans-gpubridge/orleans-gpubridge:latest
+        imagePullPolicy: Always
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: ORLEANS_SERVICE_ID
+          value: "production"
+        - name: ORLEANS_CLUSTER_ID
+          value: "gpu-cluster"
+        - name: ORLEANS_SILO_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: ORLEANS_SILO_PORT
+          value: "11111"
+        - name: ORLEANS_GATEWAY_PORT
+          value: "30000"
+        - name: GPU_MEMORY_POOL_SIZE_MB
+          value: "4096"
+        - name: PREFER_GPU
+          value: "true"
+        - name: ENABLE_GPU_DIRECT_STORAGE
+          value: "false"
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: "http://otel-collector:4317"
+        - name: OTEL_SERVICE_NAME
+          value: "orleans-gpu-silo"
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: "service.name=orleans-gpu,service.version=1.0.0,deployment.environment=production"
+        ports:
+        - containerPort: 11111
+          name: silo
+          protocol: TCP
+        - containerPort: 30000
+          name: gateway
+          protocol: TCP
+        - containerPort: 8080
+          name: dashboard
+          protocol: TCP
+        - containerPort: 9090
+          name: metrics
+          protocol: TCP
+        volumeMounts:
+        - name: config
+          mountPath: /app/config
+        - name: data
+          mountPath: /app/data
+        - name: logs
+          mountPath: /app/logs
+        - name: nvidia-install-dir
+          mountPath: /usr/local/nvidia
+        livenessProbe:
+          httpGet:
+            path: /health/live
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        startupProbe:
+          httpGet:
+            path: /health/startup
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 30
+        resources:
+          requests:
+            cpu: "2"
+            memory: "4Gi"
+            nvidia.com/gpu: 1
+          limits:
+            cpu: "4"
+            memory: "8Gi"
+            nvidia.com/gpu: 1
+      volumes:
+      - name: config
+        configMap:
+          name: orleans-gpu-config
+      - name: scripts
+        configMap:
+          name: orleans-gpu-scripts
+          defaultMode: 0755
+      - name: nvidia-install-dir
+        hostPath:
+          path: /usr/local/nvidia
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+      labels:
+        app.kubernetes.io/name: orleans-gpubridge
+        app.kubernetes.io/component: storage
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: fast-ssd
+      resources:
+        requests:
+          storage: 100Gi
+  - metadata:
+      name: logs
+      labels:
+        app.kubernetes.io/name: orleans-gpubridge
+        app.kubernetes.io/component: logs
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: standard
+      resources:
+        requests:
+          storage: 10Gi

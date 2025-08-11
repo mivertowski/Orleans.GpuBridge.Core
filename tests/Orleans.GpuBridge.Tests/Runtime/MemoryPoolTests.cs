@@ -233,7 +233,7 @@ public class MemoryPoolTests : IDisposable
     }
 
     [Fact]
-    public void Concurrent_Rent_And_Return_Should_Be_Thread_Safe()
+    public async Task Concurrent_Rent_And_Return_Should_Be_Thread_Safe()
     {
         // Arrange
         var tasks = new List<Task>();
@@ -253,7 +253,7 @@ public class MemoryPoolTests : IDisposable
             }));
         }
 
-        Task.WaitAll(tasks.ToArray());
+        await Task.WhenAll(tasks.ToArray());
 
         // Assert
         Assert.Equal(100, memories.Count);
@@ -269,7 +269,7 @@ public class MemoryPoolTests : IDisposable
             }));
         }
 
-        Task.WaitAll(tasks.ToArray());
+        await Task.WhenAll(tasks.ToArray());
 
         // Final stats should show everything returned
         var finalStats = _pool.GetStats();

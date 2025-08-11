@@ -82,7 +82,7 @@ public class KernelCatalogTests
         
         public async IAsyncEnumerable<float> ReadResultsAsync(
             KernelHandle handle,
-            CancellationToken ct = default)
+            [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken ct = default)
         {
             yield return 42f;
         }

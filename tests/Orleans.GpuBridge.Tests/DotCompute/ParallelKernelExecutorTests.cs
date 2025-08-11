@@ -259,11 +259,9 @@ public class ParallelKernelExecutorTests
         // Arrange
         var input = Enumerable.Range(1, 100000).ToArray();
         var cts = new CancellationTokenSource();
-        var executionStarted = false;
         
         Func<int, int> kernel = x =>
         {
-            executionStarted = true;
             Thread.Sleep(10); // Slow kernel
             return x * 2;
         };

@@ -48,7 +48,7 @@ public class DeviceBrokerTests : IDisposable
 
         // Assert
         Assert.NotNull(devices);
-        Assert.True(devices.Any(d => d.Type == DeviceType.Cpu));
+        Assert.Contains(devices, d => d.Type == DeviceType.Cpu);
     }
 
     [Fact]
@@ -122,7 +122,7 @@ public class DeviceBrokerTests : IDisposable
         await _broker.ShutdownAsync(CancellationToken.None);
 
         // Assert
-        Assert.Equal(0, _broker.GetDevices().Count);
+        Assert.Empty(_broker.GetDevices());
     }
 
     [Fact]
@@ -228,7 +228,7 @@ public class DeviceBrokerTests : IDisposable
 
 internal class TestLogger<T> : ILogger<T>
 {
-    public IDisposable BeginScope<TState>(TState state) => new NoopDisposable();
+    public IDisposable? BeginScope<TState>(TState state) where TState : notnull => new NoopDisposable();
     public bool IsEnabled(LogLevel logLevel) => true;
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, 
         Exception? exception, Func<TState, Exception?, string> formatter)

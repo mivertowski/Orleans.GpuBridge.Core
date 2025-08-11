@@ -524,7 +524,7 @@ internal sealed class DeviceWorkQueue
         _processingTask = ProcessQueueAsync(_cts.Token);
     }
     
-    public async Task<WorkHandle> EnqueueAsync(
+    public Task<WorkHandle> EnqueueAsync(
         Func<CancellationToken, Task> work,
         CancellationToken ct = default)
     {
@@ -544,7 +544,7 @@ internal sealed class DeviceWorkQueue
         _queue.Enqueue(item);
         _semaphore.Release();
         
-        return new WorkHandle(item.Id, item.CompletionSource.Task);
+        return Task.FromResult(new WorkHandle(item.Id, item.CompletionSource.Task));
     }
     
     private async Task ProcessQueueAsync(CancellationToken ct)

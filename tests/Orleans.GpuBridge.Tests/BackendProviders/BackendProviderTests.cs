@@ -33,7 +33,7 @@ public class BackendProviderFactoryTests
 
         // Assert
         Assert.NotNull(providers);
-        Assert.True(providers.Any(p => p.Type == BackendType.Cpu));
+        Assert.Contains(providers, p => p.Type == BackendType.Cpu);
     }
 
     [Fact]

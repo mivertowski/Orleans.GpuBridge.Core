@@ -333,9 +333,9 @@ internal sealed class CpuUnifiedBuffer<T> : IUnifiedBuffer<T> where T : unmanage
     private readonly BufferFlags _flags;
     private bool _disposed;
     
-    public int Length => _data.Length;
-    public Memory<T> Memory => _data.AsMemory();
-    public bool IsResident => true;
+    public int Length => _disposed ? throw new ObjectDisposedException(nameof(CpuUnifiedBuffer<T>)) : _data.Length;
+    public Memory<T> Memory => _disposed ? throw new ObjectDisposedException(nameof(CpuUnifiedBuffer<T>)) : _data.AsMemory();
+    public bool IsResident => !_disposed;
     
     public CpuUnifiedBuffer(int size, BufferFlags flags)
     {

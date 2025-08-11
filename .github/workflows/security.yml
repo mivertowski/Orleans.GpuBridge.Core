@@ -1,0 +1,81 @@
+name: Security Scan
+
+on:
+  schedule:
+    - cron: '0 2 * * 1'  # Weekly on Monday at 2 AM
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  security:
+    name: Security Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Run DevSkim
+      uses: microsoft/DevSkim-Action@v1
+      with:
+        output-filename: devskim-results.sarif
+
+    - name: Upload DevSkim results to GitHub
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: devskim-results.sarif
+
+    - name: Dependency vulnerability scan
+      run: |
+        dotnet list package --vulnerable --include-transitive
+        dotnet list package --deprecated --include-transitive
+        dotnet list package --outdated
+
+    - name: OWASP Dependency Check
+      uses: dependency-check/Dependency-Check_Action@main
+      with:
+        project: 'Orleans.GpuBridge'
+        path: '.'
+        format: 'HTML'
+        args: >
+          --enableRetired
+          --enableExperimental
+
+    - name: Upload OWASP results
+      uses: actions/upload-artifact@v4
+      with:
+        name: owasp-dependency-check
+        path: reports
+
+    - name: Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+
+    - name: Upload Trivy results to GitHub Security
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+    - name: Run Snyk to check for vulnerabilities
+      uses: snyk/actions/dotnet@master
+      continue-on-error: true
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        args: --severity-threshold=high

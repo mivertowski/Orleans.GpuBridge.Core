@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
@@ -57,7 +58,7 @@ public interface IGpuBridgeBuilder
     /// <summary>
     /// Adds a kernel type to the catalog
     /// </summary>
-    IGpuBridgeBuilder AddKernel<TKernel>() where TKernel : class;
+    IGpuBridgeBuilder AddKernel<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TKernel>() where TKernel : class;
     
     /// <summary>
     /// Configures GPU Bridge options
@@ -94,7 +95,7 @@ internal class GpuBridgeBuilder : IGpuBridgeBuilder
         return this;
     }
     
-    public IGpuBridgeBuilder AddKernel<TKernel>() where TKernel : class
+    public IGpuBridgeBuilder AddKernel<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TKernel>() where TKernel : class
     {
         Services.AddTransient<TKernel>();
         // TODO: Auto-registration logic based on attributes

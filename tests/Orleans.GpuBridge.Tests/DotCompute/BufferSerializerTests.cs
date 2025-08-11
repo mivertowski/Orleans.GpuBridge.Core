@@ -140,7 +140,7 @@ public class BufferSerializerTests
     public async Task SerializeAsync_Should_Stream_Data()
     {
         // Arrange
-        async IAsyncEnumerable<float> GenerateData()
+        async IAsyncEnumerable<float> GenerateData([System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken ct = default)
         {
             for (int i = 1; i <= 100; i++)
                 yield return (float)i;
@@ -247,7 +247,7 @@ public class BufferSerializerTests
     {
         // Arrange
         var cts = new CancellationTokenSource();
-        async IAsyncEnumerable<float> GenerateLargeData()
+        async IAsyncEnumerable<float> GenerateLargeData([System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken ct = default)
         {
             for (int i = 1; i <= 1000000; i++)
                 yield return (float)i;
@@ -363,7 +363,7 @@ public class SerializationBufferPoolTests
     }
 
     [Fact]
-    public void Concurrent_Rent_And_Return_Should_Be_Thread_Safe()
+    public async Task Concurrent_Rent_And_Return_Should_Be_Thread_Safe()
     {
         // Arrange
         var pool = new SerializationBufferPool();
@@ -382,6 +382,6 @@ public class SerializationBufferPoolTests
         }
 
         // Assert - should complete without exceptions
-        Task.WaitAll(tasks);
+        await Task.WhenAll(tasks);
     }
 }

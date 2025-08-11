@@ -368,7 +368,7 @@ internal sealed class CompiledDotComputeKernel<TIn, TOut> : DotComputeKernel<TIn
         return json;
     }
     
-    private async Task<List<T>> ReadResultsFromBufferAsync<T>(
+    private Task<List<T>> ReadResultsFromBufferAsync<T>(
         IUnifiedBuffer<byte> buffer,
         int count,
         CancellationToken ct)
@@ -394,7 +394,7 @@ internal sealed class CompiledDotComputeKernel<TIn, TOut> : DotComputeKernel<TIn
             }
         }
         
-        return results;
+        return Task.FromResult(results);
     }
     
     private int EstimateItemSize<T>()

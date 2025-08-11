@@ -317,7 +317,7 @@ public sealed class GpuResidentGrain : Grain, IGpuResidentGrain
         await _state.WriteStateAsync();
     }
     
-    public async Task<T[]> ReadAsync<T>(
+    public Task<T[]> ReadAsync<T>(
         GpuMemoryHandle handle,
         int count,
         int offset = 0) where T : unmanaged
@@ -358,7 +358,7 @@ public sealed class GpuResidentGrain : Grain, IGpuResidentGrain
                 result, 0,
                 totalBytes);
             
-            return result;
+            return Task.FromResult(result);
         }
     }
     

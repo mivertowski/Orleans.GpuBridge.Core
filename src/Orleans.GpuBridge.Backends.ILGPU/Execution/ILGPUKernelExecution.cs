@@ -7,6 +7,7 @@ using Orleans.GpuBridge.Abstractions.Providers.Memory.Interfaces;
 using Orleans.GpuBridge.Abstractions.Providers.Execution.Interfaces;
 using Orleans.GpuBridge.Abstractions.Providers.Execution.Results;
 using Orleans.GpuBridge.Abstractions.Providers.Execution.Enums;
+using Orleans.GpuBridge.Abstractions.Providers.Execution.Parameters;
 
 namespace Orleans.GpuBridge.Backends.ILGPU.Execution;
 
@@ -21,7 +22,7 @@ internal sealed class ILGPUKernelExecution : IKernelExecution
     private readonly CancellationTokenSource _cancellationTokenSource;
     private KernelTiming? _timing;
     private volatile KernelExecutionStatus _status;
-    private volatile double _progress;
+    private volatile int _progressInt; // Progress as int (0-100)
 
     public string ExecutionId { get; }
     public CompiledKernel Kernel { get; }
@@ -30,7 +31,7 @@ internal sealed class ILGPUKernelExecution : IKernelExecution
                              _status == KernelExecutionStatus.Failed || 
                              _status == KernelExecutionStatus.Cancelled ||
                              _status == KernelExecutionStatus.Timeout;
-    public double Progress => _progress;
+    public double Progress => _progressInt / 100.0;
 
     public ILGPUKernelExecution(
         string executionId,
@@ -46,7 +47,7 @@ internal sealed class ILGPUKernelExecution : IKernelExecution
         _completionSource = new TaskCompletionSource<KernelExecutionResult>();
         _cancellationTokenSource = new CancellationTokenSource();
         _status = KernelExecutionStatus.Queued;
-        _progress = 0.0;
+        _progressInt = 0;
 
         _logger.LogDebug("Created kernel execution: {ExecutionId} for kernel: {KernelName}", 
             ExecutionId, Kernel.Name);

@@ -7,6 +7,7 @@ using ILGPU.Runtime.OpenCL;
 using ILGPU.Runtime.CPU;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions.Providers;
+using Orleans.GpuBridge.Abstractions.Enums;
 
 namespace Orleans.GpuBridge.Backends.ILGPU.DeviceManagement;
 

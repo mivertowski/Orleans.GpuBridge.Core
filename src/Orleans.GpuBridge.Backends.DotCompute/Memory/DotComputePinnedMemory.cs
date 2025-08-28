@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Interfaces;
+using Orleans.GpuBridge.Abstractions.Memory.Options;
+using Orleans.GpuBridge.Abstractions.Enums;
 
 namespace Orleans.GpuBridge.Backends.DotCompute.Memory;
 
@@ -143,22 +145,31 @@ internal sealed class DotComputePinnedMemory : IPinnedMemory
 /// <summary>
 /// DotCompute unified memory implementation
 /// </summary>
-internal sealed class DotComputeUnifiedMemory : DotComputeDeviceMemoryWrapper, IUnifiedMemory
+internal sealed class DotComputeUnifiedMemory : IUnifiedMemory
 {
     private readonly UnifiedMemoryOptions _options;
+    private readonly ILogger _logger;
+    private readonly IntPtr _devicePointer;
+    private readonly IComputeDevice _device;
+    private bool _disposed;
 
+    public long SizeBytes { get; }
+    public IntPtr DevicePointer => _devicePointer;
     public IntPtr HostPointer => DevicePointer; // Unified memory has same pointer
+    public IComputeDevice Device => _device;
 
     public DotComputeUnifiedMemory(
         IntPtr devicePointer,
         IComputeDevice device,
         long sizeBytes,
         UnifiedMemoryOptions options,
-        DotComputeMemoryAllocator allocator,
         ILogger logger)
-        : base(devicePointer, device, sizeBytes, allocator, logger)
     {
+        _devicePointer = devicePointer;
+        _device = device ?? throw new ArgumentNullException(nameof(device));
+        SizeBytes = sizeBytes;
         _options = options ?? throw new ArgumentNullException(nameof(options));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     public async Task PrefetchAsync(
@@ -215,6 +226,76 @@ internal sealed class DotComputeUnifiedMemory : DotComputeDeviceMemoryWrapper, I
         // For DotCompute, we need to be careful about memory consistency
         return new Span<byte>((void*)HostPointer, (int)SizeBytes);
     }
+
+    // IDeviceMemory interface implementations
+    public async Task CopyFromHostAsync(IntPtr hostPointer, long offsetBytes, long sizeBytes, CancellationToken cancellationToken = default)
+    {
+        if (hostPointer == IntPtr.Zero)
+            throw new ArgumentException("Host pointer cannot be zero", nameof(hostPointer));
+        
+        // In a real DotCompute implementation, this would use DotCompute APIs
+        unsafe
+        {
+            var sourcePtr = (byte*)hostPointer;
+            var destPtr = (byte*)(DevicePointer + (int)offsetBytes);
+            Buffer.MemoryCopy(sourcePtr, destPtr, sizeBytes, sizeBytes);
+        }
+        await Task.CompletedTask;
+    }
+
+    public async Task CopyToHostAsync(IntPtr hostPointer, long offsetBytes, long sizeBytes, CancellationToken cancellationToken = default)
+    {
+        if (hostPointer == IntPtr.Zero)
+            throw new ArgumentException("Host pointer cannot be zero", nameof(hostPointer));
+            
+        unsafe
+        {
+            var sourcePtr = (byte*)(DevicePointer + (int)offsetBytes);
+            var destPtr = (byte*)hostPointer;
+            Buffer.MemoryCopy(sourcePtr, destPtr, sizeBytes, sizeBytes);
+        }
+        await Task.CompletedTask;
+    }
+
+    public async Task CopyFromAsync(IDeviceMemory source, long sourceOffset, long destinationOffset, long sizeBytes, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException("Device-to-device copy for unified memory");
+    }
+
+    public async Task FillAsync(byte value, long offsetBytes, long sizeBytes, CancellationToken cancellationToken = default)
+    {
+        unsafe
+        {
+            var ptr = (byte*)(DevicePointer + (int)offsetBytes);
+            for (long i = 0; i < sizeBytes; i++)
+            {
+                ptr[i] = value;
+            }
+        }
+        await Task.CompletedTask;
+    }
+
+    public IDeviceMemory CreateView(long offsetBytes, long sizeBytes)
+    {
+        var newPointer = DevicePointer + (int)offsetBytes;
+        return new DotComputeUnifiedMemory(newPointer, Device, sizeBytes, _options, _logger);
+    }
+
+    public void Dispose()
+    {
+        if (_disposed) return;
+        
+        try
+        {
+            _logger.LogTrace("Disposing DotCompute unified memory");
+            // In a real implementation, free the unified memory allocation
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error disposing unified memory");
+        }
+        _disposed = true;
+    }
 }
 
 /// <summary>
@@ -251,7 +332,7 @@ internal sealed class DotComputeUnifiedMemoryFallback : IUnifiedMemory
     public async Task PrefetchAsync(IComputeDevice device, CancellationToken cancellationToken = default)
     {
         // For fallback, prefetch means copying data to the target location
-        if (device.Type == DeviceType.Cpu)
+        if (device.Type == Orleans.GpuBridge.Abstractions.Enums.DeviceType.Cpu)
         {
             // Copy to host buffer
             await CopyToHostAsync(HostPointer, 0, SizeBytes, cancellationToken);

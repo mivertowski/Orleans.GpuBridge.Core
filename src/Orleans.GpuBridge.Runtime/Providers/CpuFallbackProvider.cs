@@ -1,11 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions;
 using Orleans.GpuBridge.Abstractions.Enums;
+using Orleans.GpuBridge.Abstractions.Enums.Compilation;
+using Orleans.GpuBridge.Abstractions.Models;
+using Orleans.GpuBridge.Abstractions.Models.Compilation;
 using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Allocators;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Interfaces;
@@ -159,11 +163,11 @@ internal sealed class CpuDeviceManager : IDeviceManager
         return Task.FromResult<IComputeContext>(new CpuContext(device));
     }
 
-    public Task<Orleans.GpuBridge.Abstractions.Providers.DeviceMetrics> GetDeviceMetricsAsync(
+    public Task<Orleans.GpuBridge.Abstractions.Models.DeviceMetrics> GetDeviceMetricsAsync(
         IComputeDevice device, 
         CancellationToken cancellationToken = default)
     {
-        return Task.FromResult(new Orleans.GpuBridge.Abstractions.Providers.DeviceMetrics(
+        return Task.FromResult(new Orleans.GpuBridge.Abstractions.Models.DeviceMetrics(
             GpuUtilizationPercent: 0,
             MemoryUtilizationPercent: 50,
             UsedMemoryBytes: GC.GetTotalMemory(false),

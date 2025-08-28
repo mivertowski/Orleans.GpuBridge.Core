@@ -277,8 +277,8 @@ public sealed class PersistentKernelInstance : IDisposable
             var info = await _kernel.GetInfoAsync(ct);
             
             _logger.LogDebug(
-                "Starting persistent kernel {KernelName} with batch size {BatchSize}",
-                info.Name, _options.BatchSize);
+                "Starting persistent kernel {KernelId} with batch size {BatchSize}",
+                info.Id, _options.BatchSize);
             
             // Start execution loop
             _executionTask = ExecutionLoopAsync(_cts.Token);

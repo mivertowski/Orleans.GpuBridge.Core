@@ -1,0 +1,95 @@
+using System;
+using Orleans.GpuBridge.Abstractions.Models.Compilation;
+
+namespace Orleans.GpuBridge.Abstractions.Models;
+
+/// <summary>
+/// Represents a compiled GPU kernel that can be executed on compute devices.
+/// </summary>
+/// <remarks>
+/// This class encapsulates the compiled binary code, metadata, and native handles
+/// required for kernel execution. It implements IDisposable to ensure proper cleanup
+/// of native GPU resources.
+/// </remarks>
+public sealed class CompiledKernel : IDisposable
+{
+    /// <summary>
+    /// Gets the unique identifier for this compiled kernel.
+    /// </summary>
+    /// <value>
+    /// A unique string identifier used to reference the kernel in the system.
+    /// This ID is typically generated during compilation and remains constant
+    /// throughout the kernel's lifetime.
+    /// </value>
+    public string KernelId { get; init; } = string.Empty;
+    
+    /// <summary>
+    /// Gets the human-readable name of the kernel.
+    /// </summary>
+    /// <value>
+    /// A descriptive name for the kernel, often derived from the original
+    /// method or function name. Used for debugging and logging purposes.
+    /// </value>
+    public string Name { get; init; } = string.Empty;
+    
+    /// <summary>
+    /// Gets the compiled binary code for the kernel.
+    /// </summary>
+    /// <value>
+    /// The platform-specific compiled binary code (e.g., PTX for CUDA,
+    /// SPIR-V for OpenCL/Vulkan) that can be loaded and executed by the GPU driver.
+    /// </value>
+    public byte[] CompiledCode { get; init; } = Array.Empty<byte>();
+    
+    /// <summary>
+    /// Gets the metadata associated with the compiled kernel.
+    /// </summary>
+    /// <value>
+    /// Detailed metadata including resource requirements, execution constraints,
+    /// and optimization information used for efficient kernel scheduling and execution.
+    /// </value>
+    public KernelMetadata Metadata { get; init; } = new();
+    
+    /// <summary>
+    /// Gets the native handle to the kernel object in the GPU driver.
+    /// </summary>
+    /// <value>
+    /// A platform-specific native pointer or handle that references the kernel
+    /// object in the GPU runtime. This handle is used for direct API calls to
+    /// execute the kernel. A value of IntPtr.Zero indicates no native handle.
+    /// </value>
+    public IntPtr NativeHandle { get; init; }
+    
+    /// <summary>
+    /// Gets a value indicating whether this kernel instance has been disposed.
+    /// </summary>
+    /// <value>
+    /// <c>true</c> if the kernel has been disposed and its resources released;
+    /// otherwise, <c>false</c>. Once disposed, the kernel cannot be used for execution.
+    /// </value>
+    public bool IsDisposed { get; private set; }
+    
+    /// <summary>
+    /// Releases all resources used by the <see cref="CompiledKernel"/>.
+    /// </summary>
+    /// <remarks>
+    /// This method releases native GPU resources associated with the kernel,
+    /// including any driver-level handles or memory allocations. After disposal,
+    /// the kernel cannot be used for execution and any attempts to do so should
+    /// result in an <see cref="ObjectDisposedException"/>.
+    /// 
+    /// This method is safe to call multiple times; subsequent calls have no effect.
+    /// </remarks>
+    public void Dispose()
+    {
+        if (!IsDisposed)
+        {
+            // TODO: Implement proper cleanup of native GPU resources
+            // This should include releasing driver handles, freeing GPU memory,
+            // and any other platform-specific cleanup operations
+            
+            IsDisposed = true;
+            GC.SuppressFinalize(this);
+        }
+    }
+}

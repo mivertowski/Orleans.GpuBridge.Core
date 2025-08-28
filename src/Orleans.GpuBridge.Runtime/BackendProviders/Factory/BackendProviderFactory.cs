@@ -5,13 +5,21 @@ using System.Runtime.InteropServices;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Runtime.BackendProviders.Enums;
+using Orleans.GpuBridge.Runtime.BackendProviders.Implementations;
 using Orleans.GpuBridge.Runtime.BackendProviders.Interfaces;
 
 namespace Orleans.GpuBridge.Runtime.BackendProviders.Factory;
 
 /// <summary>
-/// Factory for creating GPU backend providers based on runtime detection
+/// Factory for creating and managing GPU backend providers based on runtime detection
 /// </summary>
+/// <remarks>
+/// This factory automatically detects available GPU compute backends at runtime and creates
+/// appropriate provider instances. It supports multiple backend types including CUDA, OpenCL,
+/// DirectCompute, Metal, and Vulkan, with automatic fallback to CPU execution when no GPU
+/// backends are available. The factory maintains provider priority ordering and provides
+/// access to both primary and specific backend providers.
+/// </remarks>
 public sealed class BackendProviderFactory
 {
     private readonly IServiceProvider _serviceProvider;
@@ -19,6 +27,11 @@ public sealed class BackendProviderFactory
     private readonly List<IBackendProvider> _availableProviders;
     private IBackendProvider? _primaryProvider;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BackendProviderFactory"/> class
+    /// </summary>
+    /// <param name="serviceProvider">The service provider for dependency resolution</param>
+    /// <param name="logger">The logger for diagnostic output</param>
     public BackendProviderFactory(
         IServiceProvider serviceProvider,
         ILogger<BackendProviderFactory> logger)
@@ -31,6 +44,12 @@ public sealed class BackendProviderFactory
     /// <summary>
     /// Initializes and detects available backend providers
     /// </summary>
+    /// <remarks>
+    /// This method performs runtime detection of available GPU backends by attempting to load
+    /// their respective runtime libraries. It creates provider instances for each detected backend
+    /// and establishes a priority order for backend selection. CPU fallback is always added as
+    /// the last option to ensure functionality when no GPU backends are available.
+    /// </remarks>
     public void Initialize()
     {
         _logger.LogInformation("Detecting available GPU backend providers");
@@ -128,6 +147,15 @@ public sealed class BackendProviderFactory
         return _availableProviders.FirstOrDefault();
     }
 
+    /// <summary>
+    /// Gets the primary backend provider based on priority ordering
+    /// </summary>
+    /// <returns>The primary backend provider</returns>
+    /// <exception cref="InvalidOperationException">Thrown when no backend provider is available</exception>
+    /// <remarks>
+    /// The primary provider is selected based on a priority order: CUDA > Vulkan > OpenCL > DirectCompute > Metal > CPU.
+    /// This method must be called after <see cref="Initialize"/> has been executed.
+    /// </remarks>
     public IBackendProvider GetPrimaryProvider()
     {
         if (_primaryProvider == null)
@@ -136,11 +164,28 @@ public sealed class BackendProviderFactory
         return _primaryProvider;
     }
 
+    /// <summary>
+    /// Gets a specific backend provider by type
+    /// </summary>
+    /// <param name="type">The backend type to retrieve</param>
+    /// <returns>The backend provider for the specified type, or null if not available</returns>
+    /// <remarks>
+    /// This method allows direct access to a specific backend provider regardless of priority ordering.
+    /// Returns null if the requested backend type is not available on the current system.
+    /// </remarks>
     public IBackendProvider? GetProvider(BackendType type)
     {
         return _availableProviders.FirstOrDefault(p => p.Type == type);
     }
 
+    /// <summary>
+    /// Gets all available backend providers
+    /// </summary>
+    /// <returns>A read-only list of all available backend providers</returns>
+    /// <remarks>
+    /// Returns all backend providers that were successfully initialized during the <see cref="Initialize"/> call.
+    /// The list includes the CPU fallback provider and any GPU backends that are available on the system.
+    /// </remarks>
     public IReadOnlyList<IBackendProvider> GetAvailableProviders()
     {
         return _availableProviders.AsReadOnly();
@@ -256,89 +301,4 @@ public sealed class BackendProviderFactory
         }
         return false;
     }
-}
-
-// TODO: These placeholder classes need to be implemented when their respective backends are added
-internal class CudaBackendProvider : IBackendProvider
-{
-    public string Name => "CUDA";
-    public BackendType Type => BackendType.Cuda;
-    public bool IsAvailable => false;
-    public int DeviceCount => 0;
-    
-    public CudaBackendProvider(IServiceProvider serviceProvider, ILogger logger) { }
-    public bool Initialize() => false;
-    public void Shutdown() { }
-    public IComputeContext CreateContext(int deviceIndex = 0) => throw new NotImplementedException();
-    public IReadOnlyList<Orleans.GpuBridge.Runtime.BackendProviders.Models.DeviceInfo> GetDevices() => Array.Empty<Orleans.GpuBridge.Runtime.BackendProviders.Models.DeviceInfo>();
-}
-
-internal class OpenCLBackendProvider : IBackendProvider
-{
-    public string Name => "OpenCL";
-    public BackendType Type => BackendType.OpenCL;
-    public bool IsAvailable => false;
-    public int DeviceCount => 0;
-    
-    public OpenCLBackendProvider(IServiceProvider serviceProvider, ILogger logger) { }
-    public bool Initialize() => false;
-    public void Shutdown() { }
-    public IComputeContext CreateContext(int deviceIndex = 0) => throw new NotImplementedException();
-    public IReadOnlyList<Orleans.GpuBridge.Runtime.BackendProviders.Models.DeviceInfo> GetDevices() => Array.Empty<Orleans.GpuBridge.Runtime.BackendProviders.Models.DeviceInfo>();
-}
-
-internal class DirectComputeBackendProvider : IBackendProvider
-{
-    public string Name => "DirectCompute";
-    public BackendType Type => BackendType.DirectCompute;
-    public bool IsAvailable => false;
-    public int DeviceCount => 0;
-    
-    public DirectComputeBackendProvider(IServiceProvider serviceProvider, ILogger logger) { }
-    public bool Initialize() => false;
-    public void Shutdown() { }
-    public IComputeContext CreateContext(int deviceIndex = 0) => throw new NotImplementedException();
-    public IReadOnlyList<Orleans.GpuBridge.Runtime.BackendProviders.Models.DeviceInfo> GetDevices() => Array.Empty<Orleans.GpuBridge.Runtime.BackendProviders.Models.DeviceInfo>();
-}
-
-internal class MetalBackendProvider : IBackendProvider
-{
-    public string Name => "Metal";
-    public BackendType Type => BackendType.Metal;
-    public bool IsAvailable => false;
-    public int DeviceCount => 0;
-    
-    public MetalBackendProvider(IServiceProvider serviceProvider, ILogger logger) { }
-    public bool Initialize() => false;
-    public void Shutdown() { }
-    public IComputeContext CreateContext(int deviceIndex = 0) => throw new NotImplementedException();
-    public IReadOnlyList<Orleans.GpuBridge.Runtime.BackendProviders.Models.DeviceInfo> GetDevices() => Array.Empty<Orleans.GpuBridge.Runtime.BackendProviders.Models.DeviceInfo>();
-}
-
-internal class VulkanBackendProvider : IBackendProvider
-{
-    public string Name => "Vulkan";
-    public BackendType Type => BackendType.Vulkan;
-    public bool IsAvailable => false;
-    public int DeviceCount => 0;
-    
-    public VulkanBackendProvider(IServiceProvider serviceProvider, ILogger logger) { }
-    public bool Initialize() => false;
-    public void Shutdown() { }
-    public IComputeContext CreateContext(int deviceIndex = 0) => throw new NotImplementedException();
-    public IReadOnlyList<Orleans.GpuBridge.Runtime.BackendProviders.Models.DeviceInfo> GetDevices() => Array.Empty<Orleans.GpuBridge.Runtime.BackendProviders.Models.DeviceInfo>();
-}
-
-internal class CpuBackendProvider : IBackendProvider
-{
-    public string Name => "CPU";
-    public BackendType Type => BackendType.Cpu;
-    public bool IsAvailable => true;
-    public int DeviceCount => 1;
-    
-    public CpuBackendProvider(IServiceProvider serviceProvider, ILogger logger) { }
-    public bool Initialize() => true;
-    public void Shutdown() { }
-    public IComputeContext CreateContext(int deviceIndex = 0) => throw new NotImplementedException();
-    public IReadOnlyList<Orleans.GpuBridge.Runtime.BackendProviders.Models.DeviceInfo> GetDevices() => Array.Empty<Orleans.GpuBridge.Runtime.BackendProviders.Models.DeviceInfo>();
 }

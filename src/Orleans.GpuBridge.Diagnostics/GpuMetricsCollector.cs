@@ -3,25 +3,40 @@ using System.Runtime.InteropServices;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Orleans.GpuBridge.Diagnostics.Abstractions;
+using Orleans.GpuBridge.Diagnostics.Configuration;
+using Orleans.GpuBridge.Diagnostics.Implementation;
+using Orleans.GpuBridge.Diagnostics.Interfaces;
+using Orleans.GpuBridge.Diagnostics.Models;
 
 namespace Orleans.GpuBridge.Diagnostics;
 
-public class GpuMetricsOptions
-{
-    public TimeSpan CollectionInterval { get; set; } = TimeSpan.FromSeconds(10);
-    public bool EnableSystemMetrics { get; set; } = true;
-    public bool EnableGpuMetrics { get; set; } = true;
-    public bool EnableDetailedLogging { get; set; } = false;
-    public int MaxDevices { get; set; } = 8;
-}
-
-public interface IGpuMetricsCollector
-{
-    Task<GpuDeviceMetrics> GetDeviceMetricsAsync(int deviceIndex);
-    Task<SystemMetrics> GetSystemMetricsAsync();
-    Task<IReadOnlyList<GpuDeviceMetrics>> GetAllDeviceMetricsAsync();
-}
-
+/// <summary>
+/// Background service that continuously collects GPU and system performance metrics.
+/// </summary>
+/// <remarks>
+/// <para>
+/// The GpuMetricsCollector operates as a hosted background service that periodically
+/// queries GPU devices and system resources to gather performance metrics. It supports
+/// multiple GPU vendors (NVIDIA, AMD, Intel) and provides CPU fallbacks when hardware
+/// monitoring tools are unavailable.
+/// </para>
+/// <para>
+/// Key features:
+/// - Automatic periodic metric collection based on configured intervals
+/// - Multi-vendor GPU support with vendor-specific monitoring tools
+/// - Thread-safe metric caching and retrieval
+/// - Graceful handling of unavailable devices or monitoring tools
+/// - Integration with Orleans telemetry system
+/// - Configurable logging levels for debugging
+/// </para>
+/// <para>
+/// The collector uses external tools for GPU monitoring:
+/// - NVIDIA: nvidia-smi command-line utility
+/// - AMD: rocm-smi command-line utility  
+/// - Intel: Windows performance counters (future implementation)
+/// </para>
+/// </remarks>
 public sealed class GpuMetricsCollector : BackgroundService, IGpuMetricsCollector
 {
     private readonly ILogger<GpuMetricsCollector> _logger;
@@ -31,6 +46,15 @@ public sealed class GpuMetricsCollector : BackgroundService, IGpuMetricsCollecto
     private readonly Dictionary<int, GpuDeviceMetrics> _currentMetrics = new();
     private readonly object _metricsLock = new();
     
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GpuMetricsCollector"/> class.
+    /// </summary>
+    /// <param name="logger">The logger instance for diagnostic output.</param>
+    /// <param name="telemetry">The telemetry system for metric reporting.</param>
+    /// <param name="options">Configuration options for metrics collection behavior.</param>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown when any of the required parameters are null.
+    /// </exception>
     public GpuMetricsCollector(
         ILogger<GpuMetricsCollector> logger,
         IGpuTelemetry telemetry,
@@ -46,6 +70,16 @@ public sealed class GpuMetricsCollector : BackgroundService, IGpuMetricsCollecto
             _options.CollectionInterval);
     }
     
+    /// <summary>
+    /// Executes the background metrics collection service.
+    /// </summary>
+    /// <param name="stoppingToken">Token that signals when the service should stop.</param>
+    /// <returns>A task that represents the lifetime of the background service.</returns>
+    /// <remarks>
+    /// This method runs continuously until the application shuts down, collecting
+    /// metrics at the configured interval. It handles exceptions gracefully and
+    /// implements exponential backoff on persistent failures.
+    /// </remarks>
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation("GPU metrics collector started");
@@ -317,6 +351,22 @@ public sealed class GpuMetricsCollector : BackgroundService, IGpuMetricsCollecto
         });
     }
     
+    /// <summary>
+    /// Retrieves performance metrics for a specific GPU device.
+    /// </summary>
+    /// <param name="deviceIndex">The zero-based index of the GPU device to query.</param>
+    /// <returns>
+    /// A task containing the GPU device metrics including utilization, memory usage,
+    /// temperature, and power consumption.
+    /// </returns>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when no metrics are available for the specified device index.
+    /// </exception>
+    /// <remarks>
+    /// This method first attempts to return cached metrics, then falls back to
+    /// collecting fresh metrics if cached data is unavailable. The method will
+    /// automatically detect the GPU vendor and use the appropriate monitoring tool.
+    /// </remarks>
     public async Task<GpuDeviceMetrics> GetDeviceMetricsAsync(int deviceIndex)
     {
         lock (_metricsLock)
@@ -338,6 +388,17 @@ public sealed class GpuMetricsCollector : BackgroundService, IGpuMetricsCollecto
         throw new InvalidOperationException($"No metrics available for device {deviceIndex}");
     }
     
+    /// <summary>
+    /// Retrieves current system performance metrics for the host process.
+    /// </summary>
+    /// <returns>
+    /// A task containing system metrics including CPU usage, memory consumption,
+    /// thread count, and handle count.
+    /// </returns>
+    /// <remarks>
+    /// System metrics are collected fresh on each call and include process-level
+    /// resource consumption data useful for capacity planning and troubleshooting.
+    /// </remarks>
     public async Task<SystemMetrics> GetSystemMetricsAsync()
     {
         await CollectSystemMetricsAsync();
@@ -351,6 +412,17 @@ public sealed class GpuMetricsCollector : BackgroundService, IGpuMetricsCollecto
         };
     }
     
+    /// <summary>
+    /// Retrieves performance metrics for all available GPU devices.
+    /// </summary>
+    /// <returns>
+    /// A task containing a read-only list of GPU device metrics for all detected devices.
+    /// </returns>
+    /// <remarks>
+    /// This method triggers a fresh collection cycle for all configured devices up to
+    /// the MaxDevices limit. Devices that cannot be queried are omitted from the results.
+    /// The operation is performed in parallel for better performance.
+    /// </remarks>
     public async Task<IReadOnlyList<GpuDeviceMetrics>> GetAllDeviceMetricsAsync()
     {
         await CollectAllMetricsAsync();
@@ -361,35 +433,16 @@ public sealed class GpuMetricsCollector : BackgroundService, IGpuMetricsCollecto
         }
     }
     
+    /// <summary>
+    /// Releases all resources used by the GpuMetricsCollector.
+    /// </summary>
+    /// <remarks>
+    /// This method stops the metrics collection timer and releases associated resources.
+    /// It should be called when the service is no longer needed to prevent resource leaks.
+    /// </remarks>
     public override void Dispose()
     {
         _collectionTimer?.Dispose();
         base.Dispose();
     }
-}
-
-public class GpuDeviceMetrics
-{
-    public int DeviceIndex { get; set; }
-    public string DeviceName { get; set; } = string.Empty;
-    public string DeviceType { get; set; } = string.Empty;
-    public double GpuUtilization { get; set; }
-    public double MemoryUtilization { get; set; }
-    public long MemoryUsedMB { get; set; }
-    public long MemoryTotalMB { get; set; }
-    public double TemperatureCelsius { get; set; }
-    public double PowerUsageWatts { get; set; }
-    public DateTimeOffset Timestamp { get; set; }
-    
-    public long MemoryAvailableMB => MemoryTotalMB - MemoryUsedMB;
-    public double MemoryUsagePercent => MemoryTotalMB > 0 ? (MemoryUsedMB * 100.0 / MemoryTotalMB) : 0;
-}
-
-public class SystemMetrics
-{
-    public double ProcessCpuUsage { get; set; }
-    public long ProcessMemoryMB { get; set; }
-    public int ThreadCount { get; set; }
-    public int HandleCount { get; set; }
-    public DateTimeOffset Timestamp { get; set; }
 }

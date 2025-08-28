@@ -2,297 +2,96 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Orleans.GpuBridge.Abstractions.Enums;
+using Orleans.GpuBridge.Abstractions.Models;
 
 namespace Orleans.GpuBridge.Abstractions.Providers;
 
 /// <summary>
-/// Interface for managing compute devices in GPU backends
+/// Interface for managing compute devices in GPU backends.
+/// The device manager is responsible for discovering, enumerating, and managing
+/// compute devices available to the application, as well as creating execution contexts
+/// and providing device metrics for monitoring and optimization purposes.
 /// </summary>
 public interface IDeviceManager : IDisposable
 {
     /// <summary>
-    /// Initializes the device manager and discovers available devices
+    /// Initializes the device manager and discovers available devices.
+    /// This method performs the initial device enumeration and setup required
+    /// before other operations can be performed. It should be called once
+    /// during application startup.
     /// </summary>
+    /// <param name="cancellationToken">Token to cancel the initialization operation.</param>
+    /// <returns>A task that completes when initialization is finished.</returns>
     Task InitializeAsync(CancellationToken cancellationToken = default);
     
     /// <summary>
-    /// Gets all available compute devices
+    /// Gets all available compute devices discovered by the device manager.
+    /// This list represents all devices that are currently available for use,
+    /// regardless of their current status or utilization.
     /// </summary>
+    /// <returns>A read-only list of all discovered compute devices.</returns>
     IReadOnlyList<IComputeDevice> GetDevices();
     
     /// <summary>
-    /// Gets a specific device by index
+    /// Gets a specific device by its index in the device enumeration.
     /// </summary>
+    /// <param name="deviceIndex">The zero-based index of the device to retrieve.</param>
+    /// <returns>The device at the specified index, or null if the index is invalid.</returns>
     IComputeDevice? GetDevice(int deviceIndex);
     
     /// <summary>
-    /// Gets the default device for computation
+    /// Gets the default device for computation.
+    /// This is typically the most capable device available, or the device
+    /// designated as the primary compute device by the system or backend provider.
     /// </summary>
+    /// <returns>The default compute device for the system.</returns>
     IComputeDevice GetDefaultDevice();
     
     /// <summary>
-    /// Selects the best device based on requirements
+    /// Selects the best device based on the specified requirements and preferences.
+    /// This method evaluates all available devices against the provided criteria
+    /// and returns the device that best matches the requirements.
     /// </summary>
+    /// <param name="criteria">The selection criteria and preferences for device selection.</param>
+    /// <returns>The device that best matches the specified criteria.</returns>
     IComputeDevice SelectDevice(DeviceSelectionCriteria criteria);
     
     /// <summary>
-    /// Creates a compute context on a specific device
+    /// Creates a compute context on the specified device.
+    /// A compute context represents an execution environment where kernels can be
+    /// compiled, loaded, and executed. Multiple contexts can exist on the same device.
     /// </summary>
+    /// <param name="device">The device on which to create the context.</param>
+    /// <param name="options">Configuration options for the context creation.</param>
+    /// <param name="cancellationToken">Token to cancel the context creation operation.</param>
+    /// <returns>A task that completes with the created compute context.</returns>
     Task<IComputeContext> CreateContextAsync(
         IComputeDevice device,
         ContextOptions options,
         CancellationToken cancellationToken = default);
     
     /// <summary>
-    /// Gets device utilization metrics
+    /// Gets current utilization and performance metrics for the specified device.
+    /// This information can be used for monitoring, load balancing, and performance
+    /// optimization decisions.
     /// </summary>
+    /// <param name="device">The device for which to retrieve metrics.</param>
+    /// <param name="cancellationToken">Token to cancel the metrics retrieval operation.</param>
+    /// <returns>A task that completes with the current device metrics.</returns>
     Task<DeviceMetrics> GetDeviceMetricsAsync(
         IComputeDevice device,
         CancellationToken cancellationToken = default);
     
     /// <summary>
-    /// Resets a device (clears memory, resets state)
+    /// Resets the specified device, clearing its memory and resetting its state.
+    /// This operation will invalidate all existing contexts and resources associated
+    /// with the device. Use this method to recover from error conditions or to
+    /// ensure a clean state for new operations.
     /// </summary>
+    /// <param name="device">The device to reset.</param>
+    /// <param name="cancellationToken">Token to cancel the reset operation.</param>
+    /// <returns>A task that completes when the device has been reset.</returns>
     Task ResetDeviceAsync(
         IComputeDevice device,
         CancellationToken cancellationToken = default);
 }
-
-/// <summary>
-/// Represents a compute device (GPU, CPU, etc.)
-/// </summary>
-public interface IComputeDevice
-{
-    /// <summary>
-    /// Unique identifier for the device
-    /// </summary>
-    string DeviceId { get; }
-    
-    /// <summary>
-    /// Device index in the system
-    /// </summary>
-    int Index { get; }
-    
-    /// <summary>
-    /// Display name of the device
-    /// </summary>
-    string Name { get; }
-    
-    /// <summary>
-    /// Type of compute device
-    /// </summary>
-    DeviceType Type { get; }
-    
-    /// <summary>
-    /// Vendor of the device
-    /// </summary>
-    string Vendor { get; }
-    
-    /// <summary>
-    /// Device architecture (e.g., "Ampere", "RDNA2", "x86-64")
-    /// </summary>
-    string Architecture { get; }
-    
-    /// <summary>
-    /// Compute capability version
-    /// </summary>
-    Version ComputeCapability { get; }
-    
-    /// <summary>
-    /// Total memory in bytes
-    /// </summary>
-    long TotalMemoryBytes { get; }
-    
-    /// <summary>
-    /// Available memory in bytes
-    /// </summary>
-    long AvailableMemoryBytes { get; }
-    
-    /// <summary>
-    /// Number of compute units (SMs for NVIDIA, CUs for AMD, cores for CPU)
-    /// </summary>
-    int ComputeUnits { get; }
-    
-    /// <summary>
-    /// Maximum clock frequency in MHz
-    /// </summary>
-    int MaxClockFrequencyMHz { get; }
-    
-    /// <summary>
-    /// Maximum number of threads per block/workgroup
-    /// </summary>
-    int MaxThreadsPerBlock { get; }
-    
-    /// <summary>
-    /// Maximum workgroup dimensions
-    /// </summary>
-    int[] MaxWorkGroupDimensions { get; }
-    
-    /// <summary>
-    /// Warp/wave size
-    /// </summary>
-    int WarpSize { get; }
-    
-    /// <summary>
-    /// Device-specific properties
-    /// </summary>
-    IReadOnlyDictionary<string, object> Properties { get; }
-    
-    /// <summary>
-    /// Checks if the device supports a specific feature
-    /// </summary>
-    bool SupportsFeature(string feature);
-    
-    /// <summary>
-    /// Gets the current device status
-    /// </summary>
-    DeviceStatus GetStatus();
-}
-
-/// <summary>
-/// Compute context for kernel execution
-/// </summary>
-public interface IComputeContext : IDisposable
-{
-    /// <summary>
-    /// Associated device
-    /// </summary>
-    IComputeDevice Device { get; }
-    
-    /// <summary>
-    /// Context ID
-    /// </summary>
-    string ContextId { get; }
-    
-    /// <summary>
-    /// Makes this context current for the calling thread
-    /// </summary>
-    void MakeCurrent();
-    
-    /// <summary>
-    /// Synchronizes all operations in this context
-    /// </summary>
-    Task SynchronizeAsync(CancellationToken cancellationToken = default);
-    
-    /// <summary>
-    /// Creates a command queue/stream for this context
-    /// </summary>
-    ICommandQueue CreateCommandQueue(CommandQueueOptions options);
-}
-
-/// <summary>
-/// Command queue for submitting work to a device
-/// </summary>
-public interface ICommandQueue : IDisposable
-{
-    /// <summary>
-    /// Queue ID
-    /// </summary>
-    string QueueId { get; }
-    
-    /// <summary>
-    /// Associated context
-    /// </summary>
-    IComputeContext Context { get; }
-    
-    /// <summary>
-    /// Enqueues a kernel for execution
-    /// </summary>
-    Task EnqueueKernelAsync(
-        CompiledKernel kernel,
-        KernelLaunchParameters parameters,
-        CancellationToken cancellationToken = default);
-    
-    /// <summary>
-    /// Enqueues a memory copy operation
-    /// </summary>
-    Task EnqueueCopyAsync(
-        IntPtr source,
-        IntPtr destination,
-        long sizeBytes,
-        CancellationToken cancellationToken = default);
-    
-    /// <summary>
-    /// Waits for all enqueued operations to complete
-    /// </summary>
-    Task FlushAsync(CancellationToken cancellationToken = default);
-    
-    /// <summary>
-    /// Inserts a barrier that ensures all previous operations complete before continuing
-    /// </summary>
-    void EnqueueBarrier();
-}
-
-/// <summary>
-/// Criteria for selecting a compute device
-/// </summary>
-public sealed record DeviceSelectionCriteria(
-    DeviceType? PreferredType = null,
-    long MinMemoryBytes = 0,
-    int MinComputeUnits = 0,
-    bool RequireUnifiedMemory = false,
-    bool PreferHighestPerformance = true,
-    string? RequiredFeature = null,
-    IReadOnlyList<string>? ExcludeDevices = null);
-
-/// <summary>
-/// Options for creating a compute context
-/// </summary>
-public sealed record ContextOptions(
-    bool EnableProfiling = false,
-    bool EnableDebugMode = false,
-    int CommandQueueCount = 1,
-    bool EnableOutOfOrderExecution = false,
-    IReadOnlyDictionary<string, object>? CustomOptions = null);
-
-/// <summary>
-/// Options for creating a command queue
-/// </summary>
-public sealed record CommandQueueOptions(
-    bool EnableProfiling = false,
-    bool EnableOutOfOrderExecution = false,
-    int Priority = 0);
-
-/// <summary>
-/// Device metrics and utilization
-/// </summary>
-public sealed record DeviceMetrics(
-    double GpuUtilizationPercent,
-    double MemoryUtilizationPercent,
-    long UsedMemoryBytes,
-    double TemperatureCelsius,
-    double PowerWatts,
-    int FanSpeedPercent,
-    long KernelsExecuted,
-    long BytesTransferred,
-    TimeSpan Uptime,
-    IReadOnlyDictionary<string, object>? ExtendedMetrics = null);
-
-/// <summary>
-/// Status of a compute device
-/// </summary>
-public enum DeviceStatus
-{
-    /// <summary>Device is available and ready</summary>
-    Available,
-    /// <summary>Device is currently busy</summary>
-    Busy,
-    /// <summary>Device is offline or not responding</summary>
-    Offline,
-    /// <summary>Device has encountered an error</summary>
-    Error,
-    /// <summary>Device is being reset</summary>
-    Resetting,
-    /// <summary>Device status is unknown</summary>
-    Unknown
-}
-
-/// <summary>
-/// Parameters for launching a kernel
-/// </summary>
-public sealed record KernelLaunchParameters(
-    int[] GlobalWorkSize,
-    int[]? LocalWorkSize = null,
-    int DynamicSharedMemoryBytes = 0,
-    IReadOnlyDictionary<string, object>? Arguments = null);

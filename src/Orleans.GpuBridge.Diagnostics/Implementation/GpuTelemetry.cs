@@ -1,69 +1,127 @@
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using Microsoft.Extensions.Logging;
-using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Diagnostics.Interfaces;
+using Orleans.GpuBridge.Diagnostics.Enums;
 
-namespace Orleans.GpuBridge.Diagnostics;
+namespace Orleans.GpuBridge.Diagnostics.Implementation;
 
-public interface IGpuTelemetry
-{
-    Activity? StartKernelExecution(string kernelName, int deviceIndex);
-    void RecordKernelExecution(string kernelName, int deviceIndex, TimeSpan duration, bool success);
-    void RecordMemoryTransfer(TransferDirection direction, long bytes, TimeSpan duration);
-    void RecordMemoryAllocation(int deviceIndex, long bytes, bool success);
-    void RecordAllocationFailure(int deviceIndex, long requestedBytes, string reason);
-    void RecordQueueDepth(int deviceIndex, int depth);
-    void RecordGrainActivation(string grainType, TimeSpan duration);
-    void RecordPipelineStage(string stageName, TimeSpan duration, bool success);
-}
-
+/// <summary>
+/// Implementation of GPU telemetry collection using OpenTelemetry metrics and distributed tracing.
+/// This service provides comprehensive monitoring of GPU operations, performance metrics, and resource utilization
+/// through industry-standard observability patterns and tools.
+/// </summary>
+/// <remarks>
+/// This implementation uses:
+/// - OpenTelemetry Metrics API for counters, histograms, and observable gauges
+/// - OpenTelemetry Tracing API for distributed tracing spans and activities  
+/// - Structured logging for diagnostic information
+/// - Thread-safe observable gauge callbacks for real-time metrics
+/// </remarks>
 public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
 {
     private readonly ILogger<GpuTelemetry> _logger;
     private readonly Meter _meter;
     private readonly ActivitySource _activitySource;
     
-    // Metrics - Counters
+    #region Metric Instruments - Counters
+    
+    /// <summary>Counter tracking the total number of GPU kernels successfully executed.</summary>
     private readonly Counter<long> _kernelsExecuted;
+    
+    /// <summary>Counter tracking the total number of GPU kernel execution failures.</summary>
     private readonly Counter<long> _kernelFailures;
+    
+    /// <summary>Counter tracking the total bytes transferred to/from GPU memory.</summary>
     private readonly Counter<long> _bytesTransferred;
+    
+    /// <summary>Counter tracking successful GPU memory allocations.</summary>
     private readonly Counter<long> _allocationSuccesses;
+    
+    /// <summary>Counter tracking failed GPU memory allocations.</summary>
     private readonly Counter<long> _allocationFailures;
+    
+    /// <summary>Counter tracking GPU-related grain activations.</summary>
     private readonly Counter<long> _grainActivations;
+    
+    /// <summary>Counter tracking pipeline stage executions.</summary>
     private readonly Counter<long> _pipelineExecutions;
     
-    // Metrics - Histograms
+    #endregion
+    
+    #region Metric Instruments - Histograms
+    
+    /// <summary>Histogram tracking GPU kernel execution latency distribution.</summary>
     private readonly Histogram<double> _kernelLatency;
+    
+    /// <summary>Histogram tracking GPU memory transfer throughput distribution.</summary>
     private readonly Histogram<double> _transferThroughput;
+    
+    /// <summary>Histogram tracking GPU memory allocation size distribution.</summary>
     private readonly Histogram<double> _allocationSize;
+    
+    /// <summary>Histogram tracking GPU grain activation latency distribution.</summary>
     private readonly Histogram<double> _grainActivationLatency;
+    
+    /// <summary>Histogram tracking pipeline stage execution latency distribution.</summary>
     private readonly Histogram<double> _pipelineStageLatency;
     
-    // Metrics - Observable Gauges
+    #endregion
+    
+    #region Metric Instruments - Observable Gauges
+    
+    /// <summary>Observable gauge reporting current GPU memory usage per device.</summary>
     private readonly ObservableGauge<long> _gpuMemoryUsed;
+    
+    /// <summary>Observable gauge reporting current GPU utilization percentage per device.</summary>
     private readonly ObservableGauge<double> _gpuUtilization;
+    
+    /// <summary>Observable gauge reporting current work queue depth per device.</summary>
     private readonly ObservableGauge<int> _queueDepth;
+    
+    /// <summary>Observable gauge reporting current GPU temperature per device.</summary>
     private readonly ObservableGauge<double> _gpuTemperature;
+    
+    /// <summary>Observable gauge reporting current GPU power consumption per device.</summary>
     private readonly ObservableGauge<double> _gpuPowerUsage;
     
-    // State for observable gauges
+    #endregion
+    
+    #region State for Observable Gauges (Thread-Safe)
+    
+    /// <summary>Thread-safe dictionary tracking memory usage by device index.</summary>
     private readonly Dictionary<int, long> _memoryUsage = new();
+    
+    /// <summary>Thread-safe dictionary tracking GPU utilization by device index.</summary>
     private readonly Dictionary<int, double> _utilization = new();
+    
+    /// <summary>Thread-safe dictionary tracking work queue depths by device index.</summary>
     private readonly Dictionary<int, int> _queueDepths = new();
+    
+    /// <summary>Thread-safe dictionary tracking GPU temperatures by device index.</summary>
     private readonly Dictionary<int, double> _temperatures = new();
+    
+    /// <summary>Thread-safe dictionary tracking GPU power usage by device index.</summary>
     private readonly Dictionary<int, double> _powerUsage = new();
     
+    #endregion
+    
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GpuTelemetry"/> class with OpenTelemetry integration.
+    /// </summary>
+    /// <param name="logger">Logger for recording telemetry operations and diagnostics.</param>
+    /// <param name="meterFactory">Factory for creating OpenTelemetry meters and metric instruments.</param>
     public GpuTelemetry(ILogger<GpuTelemetry> logger, IMeterFactory meterFactory)
     {
         _logger = logger;
         _meter = meterFactory.Create("Orleans.GpuBridge", "1.0.0");
         _activitySource = new ActivitySource("Orleans.GpuBridge", "1.0.0");
         
-        // Initialize counters
+        // Initialize counter instruments
         _kernelsExecuted = _meter.CreateCounter<long>(
             "gpu.kernels.executed",
             unit: "kernels",
-            description: "Number of GPU kernels executed");
+            description: "Number of GPU kernels executed successfully");
         
         _kernelFailures = _meter.CreateCounter<long>(
             "gpu.kernels.failed",
@@ -73,7 +131,7 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
         _bytesTransferred = _meter.CreateCounter<long>(
             "gpu.bytes.transferred",
             unit: "bytes",
-            description: "Total bytes transferred to/from GPU");
+            description: "Total bytes transferred between host and GPU memory");
         
         _allocationSuccesses = _meter.CreateCounter<long>(
             "gpu.allocations.succeeded",
@@ -88,73 +146,74 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
         _grainActivations = _meter.CreateCounter<long>(
             "gpu.grains.activated",
             unit: "grains",
-            description: "Number of GPU grain activations");
+            description: "Number of GPU-related grain activations");
         
         _pipelineExecutions = _meter.CreateCounter<long>(
             "gpu.pipeline.executions",
             unit: "executions",
-            description: "Number of pipeline executions");
+            description: "Number of GPU pipeline stage executions");
         
-        // Initialize histograms
+        // Initialize histogram instruments
         _kernelLatency = _meter.CreateHistogram<double>(
             "gpu.kernel.latency",
             unit: "milliseconds",
-            description: "GPU kernel execution latency");
+            description: "GPU kernel execution latency distribution");
         
         _transferThroughput = _meter.CreateHistogram<double>(
             "gpu.transfer.throughput",
             unit: "GB/s",
-            description: "GPU memory transfer throughput");
+            description: "GPU memory transfer throughput distribution");
         
         _allocationSize = _meter.CreateHistogram<double>(
             "gpu.allocation.size",
             unit: "bytes",
-            description: "GPU memory allocation sizes");
+            description: "GPU memory allocation size distribution");
         
         _grainActivationLatency = _meter.CreateHistogram<double>(
             "gpu.grain.activation.latency",
             unit: "milliseconds",
-            description: "GPU grain activation latency");
+            description: "GPU grain activation latency distribution");
         
         _pipelineStageLatency = _meter.CreateHistogram<double>(
             "gpu.pipeline.stage.latency",
             unit: "milliseconds",
-            description: "Pipeline stage execution latency");
+            description: "GPU pipeline stage execution latency distribution");
         
-        // Initialize observable gauges
+        // Initialize observable gauge instruments
         _gpuMemoryUsed = _meter.CreateObservableGauge<long>(
             "gpu.memory.used",
             GetGpuMemoryUsed,
             unit: "bytes",
-            description: "GPU memory currently in use");
+            description: "GPU memory currently in use per device");
         
         _gpuUtilization = _meter.CreateObservableGauge<double>(
             "gpu.utilization",
             GetGpuUtilization,
             unit: "percent",
-            description: "GPU compute utilization percentage");
+            description: "GPU compute utilization percentage per device");
         
         _queueDepth = _meter.CreateObservableGauge<int>(
             "gpu.queue.depth",
             GetQueueDepth,
             unit: "items",
-            description: "Number of items in GPU work queue");
+            description: "Number of items in GPU work queue per device");
         
         _gpuTemperature = _meter.CreateObservableGauge<double>(
             "gpu.temperature",
             GetGpuTemperature,
             unit: "celsius",
-            description: "GPU temperature in Celsius");
+            description: "GPU temperature in Celsius per device");
         
         _gpuPowerUsage = _meter.CreateObservableGauge<double>(
             "gpu.power.usage",
             GetGpuPowerUsage,
             unit: "watts",
-            description: "GPU power consumption in watts");
+            description: "GPU power consumption in watts per device");
         
-        _logger.LogInformation("GPU telemetry initialized with OpenTelemetry metrics and tracing");
+        _logger.LogInformation("GPU telemetry service initialized with OpenTelemetry metrics and distributed tracing support");
     }
     
+    /// <inheritdoc />
     public Activity? StartKernelExecution(string kernelName, int deviceIndex)
     {
         var activity = _activitySource.StartActivity(
@@ -163,18 +222,20 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
         
         if (activity != null)
         {
+            // Set standard OpenTelemetry semantic attributes
             activity.SetTag("kernel.name", kernelName);
             activity.SetTag("device.index", deviceIndex);
             activity.SetTag("device.type", "gpu");
             activity.SetTag("execution.type", "kernel");
             
-            // Add baggage for correlation
+            // Add correlation baggage for distributed tracing
             activity.SetBaggage("kernel.id", $"{kernelName}_{deviceIndex}");
         }
         
         return activity;
     }
     
+    /// <inheritdoc />
     public void RecordKernelExecution(string kernelName, int deviceIndex, TimeSpan duration, bool success)
     {
         var tags = new TagList
@@ -184,6 +245,7 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
             { "success", success }
         };
         
+        // Update appropriate counters
         if (success)
         {
             _kernelsExecuted.Add(1, tags);
@@ -193,9 +255,10 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
             _kernelFailures.Add(1, tags);
         }
         
+        // Record execution latency
         _kernelLatency.Record(duration.TotalMilliseconds, tags);
         
-        // Update activity if present
+        // Update current activity if present
         var activity = Activity.Current;
         if (activity != null)
         {
@@ -213,6 +276,7 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
             kernelName, deviceIndex, duration.TotalMilliseconds, success);
     }
     
+    /// <inheritdoc />
     public void RecordMemoryTransfer(TransferDirection direction, long bytes, TimeSpan duration)
     {
         var tags = new TagList
@@ -222,11 +286,11 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
         
         _bytesTransferred.Add(bytes, tags);
         
-        // Calculate throughput in GB/s
+        // Calculate and record throughput in GB/s
         var throughputGbps = (bytes / 1e9) / duration.TotalSeconds;
         _transferThroughput.Record(throughputGbps, tags);
         
-        // Create span for transfer
+        // Create distributed tracing span for transfer operation
         using var activity = _activitySource.StartActivity(
             "gpu.memory.transfer",
             ActivityKind.Internal);
@@ -240,6 +304,7 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
         }
     }
     
+    /// <inheritdoc />
     public void RecordMemoryAllocation(int deviceIndex, long bytes, bool success)
     {
         var tags = new TagList
@@ -253,7 +318,7 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
             _allocationSuccesses.Add(1, tags);
             _allocationSize.Record(bytes, tags);
             
-            // Update memory usage
+            // Update memory usage tracking for observable gauge
             lock (_memoryUsage)
             {
                 if (!_memoryUsage.ContainsKey(deviceIndex))
@@ -267,6 +332,7 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
         }
     }
     
+    /// <inheritdoc />
     public void RecordAllocationFailure(int deviceIndex, long requestedBytes, string reason)
     {
         var tags = new TagList
@@ -277,6 +343,7 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
         
         _allocationFailures.Add(1, tags);
         
+        // Update current activity if present
         var activity = Activity.Current;
         if (activity != null)
         {
@@ -292,6 +359,7 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
             deviceIndex, requestedBytes, reason);
     }
     
+    /// <inheritdoc />
     public void RecordQueueDepth(int deviceIndex, int depth)
     {
         lock (_queueDepths)
@@ -300,6 +368,7 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
         }
     }
     
+    /// <inheritdoc />
     public void RecordGrainActivation(string grainType, TimeSpan duration)
     {
         var tags = new TagList
@@ -311,6 +380,7 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
         _grainActivationLatency.Record(duration.TotalMilliseconds, tags);
     }
     
+    /// <inheritdoc />
     public void RecordPipelineStage(string stageName, TimeSpan duration, bool success)
     {
         var tags = new TagList
@@ -323,7 +393,12 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
         _pipelineStageLatency.Record(duration.TotalMilliseconds, tags);
     }
     
-    // Observable gauge callbacks
+    #region Observable Gauge Callback Methods
+    
+    /// <summary>
+    /// Callback method for the GPU memory usage observable gauge.
+    /// Returns current memory usage for all tracked devices.
+    /// </summary>
     private IEnumerable<Measurement<long>> GetGpuMemoryUsed()
     {
         lock (_memoryUsage)
@@ -337,6 +412,10 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
         }
     }
     
+    /// <summary>
+    /// Callback method for the GPU utilization observable gauge.
+    /// Returns current utilization percentage for all tracked devices.
+    /// </summary>
     private IEnumerable<Measurement<double>> GetGpuUtilization()
     {
         lock (_utilization)
@@ -350,6 +429,10 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
         }
     }
     
+    /// <summary>
+    /// Callback method for the queue depth observable gauge.
+    /// Returns current work queue depth for all tracked devices.
+    /// </summary>
     private IEnumerable<Measurement<int>> GetQueueDepth()
     {
         lock (_queueDepths)
@@ -363,6 +446,10 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
         }
     }
     
+    /// <summary>
+    /// Callback method for the GPU temperature observable gauge.
+    /// Returns current temperature for all tracked devices.
+    /// </summary>
     private IEnumerable<Measurement<double>> GetGpuTemperature()
     {
         lock (_temperatures)
@@ -376,6 +463,10 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
         }
     }
     
+    /// <summary>
+    /// Callback method for the GPU power usage observable gauge.
+    /// Returns current power consumption for all tracked devices.
+    /// </summary>
     private IEnumerable<Measurement<double>> GetGpuPowerUsage()
     {
         lock (_powerUsage)
@@ -389,7 +480,17 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
         }
     }
     
-    // Update methods for external systems to report metrics
+    #endregion
+    
+    /// <summary>
+    /// Updates GPU hardware metrics from external monitoring systems.
+    /// This method should be called periodically by GPU monitoring services
+    /// to provide real-time hardware statistics for the observable gauges.
+    /// </summary>
+    /// <param name="deviceIndex">The index of the GPU device.</param>
+    /// <param name="utilization">Current GPU utilization percentage (0.0 - 100.0).</param>
+    /// <param name="temperature">Current GPU temperature in Celsius.</param>
+    /// <param name="power">Current GPU power consumption in watts.</param>
     public void UpdateGpuMetrics(int deviceIndex, double utilization, double temperature, double power)
     {
         lock (_utilization)
@@ -408,17 +509,13 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
         }
     }
     
+    /// <summary>
+    /// Releases all resources used by the GPU telemetry service.
+    /// This properly disposes of OpenTelemetry meters and activity sources.
+    /// </summary>
     public void Dispose()
     {
         _meter?.Dispose();
         _activitySource?.Dispose();
     }
-}
-
-public enum TransferDirection
-{
-    HostToDevice,
-    DeviceToHost,
-    DeviceToDevice,
-    PeerToPeer
 }

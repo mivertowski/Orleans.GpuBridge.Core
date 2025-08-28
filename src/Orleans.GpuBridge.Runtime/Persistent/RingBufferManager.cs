@@ -5,6 +5,7 @@ using System;
 using System.Buffers;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Channels;
@@ -288,7 +289,7 @@ public sealed class RingBuffer : IDisposable
     /// Retrieves processed results
     /// </summary>
     public async IAsyncEnumerable<DataBatch> GetResultsAsync(
-        CancellationToken ct = default)
+        [EnumeratorCancellation] CancellationToken ct = default)
     {
         await foreach (var batch in _outputChannel.Reader.ReadAllAsync(ct))
         {

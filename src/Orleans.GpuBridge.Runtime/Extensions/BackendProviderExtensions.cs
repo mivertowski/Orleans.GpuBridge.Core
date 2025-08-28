@@ -3,6 +3,7 @@ using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Runtime.Providers;
 using Orleans.GpuBridge.Runtime.Builders;
+using Orleans.GpuBridge.Runtime.Configuration;
 
 namespace Orleans.GpuBridge.Runtime.Extensions;
 
@@ -164,49 +165,4 @@ public static class BackendProviderExtensions
         
         return providerTypes;
     }
-}
-
-/// <summary>
-/// Options for configuring backend provider selection
-/// </summary>
-public class ProviderSelectionOptions
-{
-    /// <summary>
-    /// Preferred backend types in order of preference
-    /// </summary>
-    public List<GpuBackend> PreferredBackends { get; set; } = new() { GpuBackend.Cuda, GpuBackend.OpenCL, GpuBackend.Cpu };
-    
-    /// <summary>
-    /// Fallback to CPU when no GPU backends are available
-    /// </summary>
-    public bool AllowCpuFallback { get; set; } = true;
-    
-    /// <summary>
-    /// Maximum number of devices to use concurrently
-    /// </summary>
-    public int MaxConcurrentDevices { get; set; } = 4;
-    
-    /// <summary>
-    /// Minimum memory required per device (in bytes)
-    /// </summary>
-    public long MinimumDeviceMemory { get; set; } = 512 * 1024 * 1024; // 512 MB
-    
-    /// <summary>
-    /// Require specific capabilities for provider selection
-    /// </summary>
-    public RequiredCapabilities RequiredCapabilities { get; set; } = new();
-}
-
-/// <summary>
-/// Required capabilities for backend selection
-/// </summary>
-public class RequiredCapabilities
-{
-    public bool RequireJitCompilation { get; set; } = false;
-    public bool RequireUnifiedMemory { get; set; } = false;
-    public bool RequireAtomicOperations { get; set; } = false;
-    public bool RequireTensorOperations { get; set; } = false;
-    public bool RequireProfiling { get; set; } = false;
-    public Version? MinimumComputeCapability { get; set; }
-    public List<string> RequiredKernelLanguages { get; set; } = new();
 }

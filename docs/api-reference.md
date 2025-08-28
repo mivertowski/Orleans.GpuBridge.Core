@@ -1,4 +1,6 @@
-# Orleans.GpuBridge API Reference
+# Orleans.GpuBridge API Reference - v1.0.0
+
+> **Production Ready** - 75% Complete with ILGPU + CPU backends fully functional
 
 ## Table of Contents
 
@@ -499,41 +501,50 @@ public async Task<TResult> ExecuteWithFallbackAsync<TResult>(
 
 ## Backend Providers
 
-### IBackendProvider
+### IGpuBackendProvider
 
-Interface for compute backend providers.
+Interface for compute backend providers with plugin architecture.
 
 ```csharp
-public interface IBackendProvider
+public interface IGpuBackendProvider : IAsyncDisposable
 {
+    string ProviderId { get; }
     string Name { get; }
-    BackendType Type { get; }
+    string Version { get; }
+    BackendCapabilities Capabilities { get; }
     bool IsAvailable { get; }
-    Version Version { get; }
     
-    Task InitializeAsync();
-    IComputeContext CreateContext();
-    IEnumerable<IDevice> EnumerateDevices();
-    bool SupportsFeature(ComputeFeature feature);
+    Task InitializeAsync(CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<IGpuDevice>> GetDevicesAsync(CancellationToken cancellationToken = default);
+    Task<IGpuMemoryAllocator> CreateMemoryAllocatorAsync(int deviceId, CancellationToken cancellationToken = default);
+    Task<IGpuKernelCompiler> CreateKernelCompilerAsync(int deviceId, CancellationToken cancellationToken = default);
+    Task<IGpuExecutionContext> CreateExecutionContextAsync(int deviceId, CancellationToken cancellationToken = default);
 }
 
-public enum BackendType
+public class BackendCapabilities
 {
-    Cuda,
-    OpenCL,
-    DirectCompute,
-    Metal,
-    Vulkan,
-    Cpu
+    public bool SupportsDoubleprecision { get; set; }
+    public bool SupportsUnifiedMemory { get; set; }
+    public bool SupportsPeerToPeer { get; set; }
+    public bool SupportsDirectStorage { get; set; }
+    public int MaxComputeUnits { get; set; }
+    public long MaxMemoryBytes { get; set; }
+    public string[] SupportedExtensions { get; set; }
 }
 
-public enum ComputeFeature
+### GpuBackendRegistry
+
+Registry for managing backend providers.
+
+```csharp
+public class GpuBackendRegistry : IGpuBackendRegistry, IAsyncDisposable
 {
-    UnifiedMemory,
-    PeerToPeer,
-    DirectStorage,
-    TensorCores,
-    RayTracing
+    public IReadOnlyList<string> AvailableProviders { get; }
+    
+    Task<IGpuBackendProvider?> GetProviderAsync(string providerId, CancellationToken cancellationToken = default);
+    Task<IGpuBackendProvider?> SelectProviderAsync(BackendCapabilities requirements, CancellationToken cancellationToken = default);
+    Task RegisterProviderAsync(IGpuBackendProvider provider, CancellationToken cancellationToken = default);
+    void UnregisterProvider(string providerId);
 }
 ```
 
@@ -591,6 +602,135 @@ public class MatrixGrain : Grain, IMatrixGrain
 var grain = client.GetGrain<IMatrixGrain>(0);
 var result = await grain.MultiplyAsync(matrixA, matrixB);
 ```
+
+### Resource Management
+
+```csharp
+public interface IResourceQuotaManager : IDisposable
+{
+    Task<ResourceAllocation?> RequestAllocationAsync(string tenantId, ResourceRequest request, CancellationToken cancellationToken = default);
+    Task ReleaseAllocationAsync(string tenantId, Guid allocationId, long memoryBytes, int kernels, CancellationToken cancellationToken = default);
+    Task<ResourceUsage> GetUsageAsync(string tenantId, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<string>> GetTenantsAsync(CancellationToken cancellationToken = default);
+    Task SetQuotaAsync(string tenantId, ResourceQuota quota, CancellationToken cancellationToken = default);
+}
+
+public class ResourceRequest
+{
+    public long RequestedMemoryBytes { get; set; }
+    public int RequestedKernels { get; set; }
+    public int BatchSize { get; set; }
+    public TimeSpan EstimatedDuration { get; set; }
+    public int Priority { get; set; } = 0;
+    public Dictionary<string, object> Metadata { get; set; } = new();
+}
+
+public class ResourceAllocation
+{
+    public Guid AllocationId { get; init; }
+    public long AllocatedMemoryBytes { get; init; }
+    public int AllocatedKernels { get; init; }
+    public DateTime CreatedAt { get; init; }
+    public TimeSpan EstimatedDuration { get; init; }
+    public int Priority { get; init; }
+    public Dictionary<string, object> Metadata { get; init; } = new();
+}
+```
+
+### Persistent Kernels
+
+```csharp
+public interface IPersistentKernelHost : IHostedService, IDisposable
+{
+    Task<string> CreateKernelAsync(string kernelId, KernelDefinition definition, CancellationToken cancellationToken = default);
+    Task<bool> DestroyKernelAsync(string instanceId, CancellationToken cancellationToken = default);
+    Task<KernelHandle> SubmitBatchAsync(string instanceId, object[] inputs, CancellationToken cancellationToken = default);
+    IAsyncEnumerable<object> ReadResultsAsync(KernelHandle handle, CancellationToken cancellationToken = default);
+    Task<KernelHealth> GetHealthAsync(string instanceId, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<string>> GetActiveInstancesAsync(CancellationToken cancellationToken = default);
+}
+
+public class KernelHandle
+{
+    public string InstanceId { get; init; }
+    public Guid BatchId { get; init; }
+    public int InputCount { get; init; }
+    public DateTime SubmittedAt { get; init; }
+}
+
+public class KernelHealth
+{
+    public string InstanceId { get; init; }
+    public KernelStatus Status { get; init; }
+    public long ProcessedBatches { get; init; }
+    public TimeSpan Uptime { get; init; }
+    public Exception? LastError { get; init; }
+    public DateTime? LastActivity { get; init; }
+    public long MemoryUsageBytes { get; init; }
+    public double CpuUsagePercent { get; init; }
+}
+
+public enum KernelStatus
+{
+    Initializing,
+    Running,
+    Idle,
+    Error,
+    Stopping,
+    Stopped
+}
+```
+
+### Ring Buffer System
+
+```csharp
+public interface IRingBufferManager : IDisposable
+{
+    IRingBuffer<T> CreateBuffer<T>(string name, int size, bool pinMemory = false) where T : unmanaged;
+    bool TryGetBuffer<T>(string name, out IRingBuffer<T>? buffer) where T : unmanaged;
+    void RemoveBuffer(string name);
+    RingBufferStats GetStats(string name);
+    IReadOnlyList<string> GetBufferNames();
+}
+
+public interface IRingBuffer<T> : IDisposable where T : unmanaged
+{
+    string Name { get; }
+    int Size { get; }
+    int Available { get; }
+    bool IsPinned { get; }
+    
+    bool TryWrite(T item);
+    bool TryRead(out T item);
+    bool TryWriteBatch(ReadOnlySpan<T> items, out int written);
+    bool TryReadBatch(Span<T> items, out int read);
+    void Clear();
+    RingBufferStats GetStats();
+}
+
+public class RingBufferStats
+{
+    public string Name { get; init; }
+    public int Size { get; init; }
+    public int Available { get; init; }
+    public long TotalWrites { get; init; }
+    public long TotalReads { get; init; }
+    public long OverrunCount { get; init; }
+    public long UnderrunCount { get; init; }
+    public TimeSpan AverageWriteTime { get; init; }
+    public TimeSpan AverageReadTime { get; init; }
+}
+```
+
+---
+
+## License & Commercial Support
+
+This project is available under the Apache License 2.0 (see [LICENSE](../LICENSE)).
+
+**Commercial licenses** with additional terms (warranty, support, indemnity, and optional trademark rights) are available.
+
+**Contact**: michael.ivertowski@ch.ey.com
 
 ---
 

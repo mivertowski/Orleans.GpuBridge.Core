@@ -4,21 +4,26 @@ This guide will help you get started with Orleans.GpuBridge, from installation t
 
 ## 📊 Project Status
 
-**Current Version**: 0.5.0 (Pre-release)  
-**Completion**: 45% - Infrastructure complete, awaiting DotCompute GPU runtime  
-**Production Ready**: ✅ CPU fallback | ⏳ GPU execution pending
+**Current Version**: 1.0.0 (Production Ready)  
+**Completion**: 75% - Infrastructure complete, ILGPU backend functional  
+**Production Ready**: ✅ CPU fallback | ✅ ILGPU backend | ⏳ DotCompute pending
 
 ### What's Available Now
 - ✅ Complete Orleans integration with GPU abstractions
+- ✅ ILGPU backend with real JIT compilation and kernel execution
 - ✅ SIMD-optimized CPU fallback (AVX512/AVX2/NEON)
+- ✅ Persistent kernels with ring buffer I/O and lifecycle management
+- ✅ Multi-tenant resource management with quotas and priority scheduling
+- ✅ Advanced memory pooling with size limits, health monitoring, GC
 - ✅ OpenTelemetry monitoring and distributed tracing
 - ✅ Health checks with circuit breakers
 - ✅ 5 comprehensive sample applications
 - ✅ Kubernetes deployment with GPU support
 - ✅ Grafana dashboards for monitoring
+- ✅ Comprehensive benchmarking suite (BenchmarkDotNet + NBomber)
 
-### Coming Soon
-- ⏳ Actual GPU kernel execution (awaiting DotCompute)
+### Coming Soon (25% remaining)
+- ⏳ DotCompute backend (awaiting SDK release)
 - ⏳ CUDA Graph optimization
 - ⏳ Multi-GPU coordination
 - ⏳ GPUDirect Storage
@@ -75,9 +80,13 @@ dotnet add package Orleans.GpuBridge.Runtime
 dotnet add package Orleans.GpuBridge.Grains
 dotnet add package Orleans.GpuBridge.BridgeFX
 
-# Add monitoring and health packages (NEW in v0.5.0)
+# Add monitoring and health packages
 dotnet add package Orleans.GpuBridge.Diagnostics
 dotnet add package Orleans.GpuBridge.HealthChecks
+
+# Add backend providers (choose one or both)
+dotnet add package Orleans.GpuBridge.Backends.ILGPU
+# dotnet add package Orleans.GpuBridge.Backends.DotCompute  # When available
 ```
 
 ## Basic Setup
@@ -116,21 +125,35 @@ var host = new HostBuilder()
     {
         services.AddLogging();
         
-        // Add monitoring (NEW in v0.5.0)
+        // Add monitoring
         services.AddGpuTelemetry(options =>
         {
             options.EnableMetrics = true;
             options.EnableTracing = true;
             options.OtlpEndpoint = "http://localhost:4317";
+            options.SamplingRate = 0.1;
         });
         
-        // Add health checks (NEW in v0.5.0)
+        // Add health checks
         services.AddHealthChecks()
-            .AddGpuHealthCheck()
-            .AddMemoryHealthCheck();
+            .AddGpuHealthCheck(options =>
+            {
+                options.MaxTemperatureCelsius = 85;
+                options.MaxMemoryUsagePercent = 90;
+                options.TestKernelExecution = true;
+            })
+            .AddMemoryHealthCheck(thresholdInBytes: 1_000_000_000);
             
-        // Add circuit breaker protection (NEW in v0.5.0)
-        services.AddSingleton<ICircuitBreakerPolicy, CircuitBreakerPolicy>();
+        // Add circuit breaker protection
+        services.AddSingleton<ICircuitBreakerPolicy>(sp =>
+            new CircuitBreakerPolicy(
+                sp.GetRequiredService<ILogger<CircuitBreakerPolicy>>(),
+                new CircuitBreakerOptions
+                {
+                    FailureThreshold = 3,
+                    BreakDuration = TimeSpan.FromSeconds(30),
+                    RetryCount = 3
+                }));
     })
     .Build();
 
@@ -191,8 +214,8 @@ public class VectorProcessorGrain : Grain, IVectorProcessorGrain
 {
     private readonly IGpuBridge _gpu;
     private readonly ILogger<VectorProcessorGrain> _logger;
-    private readonly IGpuTelemetry _telemetry; // NEW in v0.5.0
-    private readonly ICircuitBreakerPolicy _circuitBreaker; // NEW in v0.5.0
+    private readonly IGpuTelemetry _telemetry;
+    private readonly ICircuitBreakerPolicy _circuitBreaker;
 
     public VectorProcessorGrain(
         IGpuBridge gpu, 
@@ -353,7 +376,7 @@ public class ImageProcessorGrain : Grain, IImageProcessorGrain
 }
 ```
 
-## Monitoring and Health (NEW in v0.5.0)
+## Monitoring and Health
 
 ### 1. Configure OpenTelemetry Monitoring
 
@@ -509,7 +532,7 @@ public async Task Benchmark_Vector_Addition_Performance()
 3. **[Operations Guide](operations.md)** - Deployment and monitoring
 4. **[Advanced Features](advanced.md)** - Multi-GPU, custom kernels, optimization
 
-### Example Projects (NEW in v0.5.0)
+### Example Projects
 
 Run our comprehensive sample applications:
 
@@ -633,6 +656,14 @@ dotnet run --project tools/GpuDetector
 - **Discussions**: Ask questions and share experiences
 - **Discord**: Join our community chat
 - **Stack Overflow**: Tag questions with `orleans-gpubridge`
+
+## License & Commercial Support
+
+This project is available under the Apache License 2.0 (see [LICENSE](../LICENSE)).
+
+**Commercial licenses** with additional terms (warranty, support, indemnity, and optional trademark rights) are available.
+
+**Contact**: michael.ivertowski@ch.ey.com
 
 ---
 

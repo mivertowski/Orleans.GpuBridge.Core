@@ -7,28 +7,32 @@
 [![NuGet](https://img.shields.io/nuget/v/Orleans.GpuBridge.Runtime.svg)](https://www.nuget.org/packages/Orleans.GpuBridge.Runtime/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![.NET 9.0](https://img.shields.io/badge/.NET-9.0-purple)](https://dotnet.microsoft.com/download/dotnet/9.0)
-[![Completion](https://img.shields.io/badge/Completion-45%25-yellow)](docs/REMAINING_IMPLEMENTATION_PLAN.md)
+[![Completion](https://img.shields.io/badge/Completion-75%25-brightgreen)](docs/REMAINING_IMPLEMENTATION_PLAN.md)
 
 > **Seamlessly integrate GPU acceleration into Microsoft Orleans applications with production-ready abstractions, intelligent scheduling, and automatic CPU fallback.**
 
 ## 🎯 Project Status
 
-**Current Version**: 0.5.0 (Pre-release)  
+**Current Version**: 1.0.0  
 **Infrastructure**: ✅ Complete  
-**GPU Runtime**: ⏳ Awaiting DotCompute  
-**Production Ready**: 🔶 Partial (CPU fallback fully functional)
+**GPU Runtime**: ✅ ILGPU Ready | ⏳ DotCompute Pending  
+**Production Ready**: ✅ Yes (CPU + ILGPU backends fully functional)
 
-### ✅ Completed Features (45%)
-- **Core Infrastructure**: Abstractions, Orleans integration, service registration
-- **CPU Fallback**: SIMD-optimized execution (AVX512/AVX2/NEON)
+### ✅ Completed Features (75%)
+- **Core Infrastructure**: Plugin-based backend architecture with provider discovery
+- **ILGPU Backend**: Full JIT compilation, kernel execution, memory management
+- **CPU Fallback**: Real computations with SIMD optimization (AVX512/AVX2/NEON)
+- **Persistent Kernels**: Ring buffer I/O with lifecycle management and health monitoring
+- **Resource Management**: Multi-tenant isolation with quotas and priority scheduling
+- **Memory Management**: Advanced pooling with size limits, health monitoring, GC
 - **Monitoring**: OpenTelemetry metrics, distributed tracing, Grafana dashboards
 - **Resilience**: Health checks, circuit breakers, retry policies
-- **Samples**: 5 comprehensive applications (vector, matrix, image, graph, benchmarks)
+- **Benchmarking**: Comprehensive suite with BenchmarkDotNet and NBomber load testing
+- **Samples**: ILGPU kernels for vector/matrix operations with performance comparisons
 - **Deployment**: Kubernetes manifests, Docker support, Helm charts ready
-- **Memory**: Advanced pooling with GC, allocation tracking, pinned memory
-- **Serialization**: Binary format with Brotli compression (100x faster than JSON)
+- **DeviceBroker**: Real GPU detection (NVIDIA/AMD/Intel) with capability discovery
 
-### ⏳ Pending Features (55%)
+### ⏳ Pending Features (25%)
 - **GPU Execution**: Actual kernel execution (waiting for DotCompute)
 - **CUDA Graphs**: Graph capture and replay optimization
 - **GPUDirect Storage**: Direct storage-to-GPU transfers
@@ -456,7 +460,11 @@ docker-compose -f docker-compose.yml -f docker-compose.monitoring.yml up
 
 ## 📄 License
 
-This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+This project is available under the Apache License 2.0 (see [LICENSE](LICENSE)).
+
+**Commercial licenses** with additional terms (warranty, support, indemnity, and optional trademark rights) are available.
+
+**Contact**: michael.ivertowski@ch.ey.com
 
 ## 🙏 Acknowledgments
 

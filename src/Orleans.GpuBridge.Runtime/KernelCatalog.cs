@@ -84,19 +84,58 @@ internal sealed class CpuPassthroughKernel<TIn, TOut> : IGpuKernel<TIn, TOut>
     where TIn : notnull
     where TOut : notnull
 {
+    private readonly Dictionary<string, IReadOnlyList<TIn>> _batches = new();
+    
     public ValueTask<KernelHandle> SubmitBatchAsync(
         IReadOnlyList<TIn> items,
         GpuExecutionHints? hints = null,
         CancellationToken ct = default)
     {
-        return new(KernelHandle.Create());
+        var handle = KernelHandle.Create();
+        _batches[handle.Id] = items;
+        return new(handle);
     }
     
     public async IAsyncEnumerable<TOut> ReadResultsAsync(
         KernelHandle handle,
         [EnumeratorCancellation] CancellationToken ct = default)
     {
-        yield break;
+        if (!_batches.TryGetValue(handle.Id, out var items))
+        {
+            yield break;
+        }
+        
+        // For passthrough, attempt to cast directly if types match
+        if (typeof(TIn) == typeof(TOut))
+        {
+            foreach (var item in items)
+            {
+                ct.ThrowIfCancellationRequested();
+                yield return (TOut)(object)item;
+            }
+        }
+        else
+        {
+            // For different types, use default conversion or throw
+            foreach (var item in items)
+            {
+                ct.ThrowIfCancellationRequested();
+                
+                // Try to convert using common patterns
+                if (item is IConvertible convertible && typeof(TOut).IsAssignableFrom(typeof(IConvertible)))
+                {
+                    yield return (TOut)Convert.ChangeType(item, typeof(TOut));
+                }
+                else
+                {
+                    // Return default for type mismatch in passthrough mode
+                    yield return default(TOut)!;
+                }
+            }
+        }
+        
+        // Clean up the batch after processing
+        _batches.Remove(handle.Id);
     }
     
     public ValueTask<KernelInfo> GetInfoAsync(CancellationToken ct = default)
@@ -113,6 +152,8 @@ internal sealed class CpuPassthroughKernel<TIn, TOut> : IGpuKernel<TIn, TOut>
 
 public sealed class CpuVectorAddKernel : IGpuKernel<float[], float>
 {
+    private readonly Dictionary<string, IReadOnlyList<float[]>> _batches = new();
+    
     public static float Execute(float[] a, float[] b)
     {
         var n = Math.Min(a.Length, b.Length);
@@ -127,14 +168,41 @@ public sealed class CpuVectorAddKernel : IGpuKernel<float[], float>
         GpuExecutionHints? hints = null,
         CancellationToken ct = default)
     {
-        return new(KernelHandle.Create());
+        var handle = KernelHandle.Create();
+        _batches[handle.Id] = items;
+        return new(handle);
     }
     
     public async IAsyncEnumerable<float> ReadResultsAsync(
         KernelHandle handle,
         [EnumeratorCancellation] CancellationToken ct = default)
     {
-        yield break;
+        if (!_batches.TryGetValue(handle.Id, out var items))
+        {
+            yield break;
+        }
+        
+        // Process pairs of vectors
+        for (int i = 0; i < items.Count - 1; i += 2)
+        {
+            ct.ThrowIfCancellationRequested();
+            
+            var a = items[i];
+            var b = items[i + 1];
+            var result = Execute(a, b);
+            yield return result;
+        }
+        
+        // If odd number of items, return sum of last vector
+        if (items.Count % 2 == 1)
+        {
+            var lastVector = items[items.Count - 1];
+            var sum = lastVector.Sum();
+            yield return sum;
+        }
+        
+        // Clean up the batch after processing
+        _batches.Remove(handle.Id);
     }
     
     public ValueTask<KernelInfo> GetInfoAsync(CancellationToken ct = default)

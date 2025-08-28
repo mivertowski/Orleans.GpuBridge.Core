@@ -238,7 +238,7 @@ internal sealed class ILGPUUnifiedMemory : IUnifiedMemory
 
         var accelerator = _device.Accelerator;
         var stream = accelerator.DefaultStream;
-        var targetView = _memoryBuffer.SubView((int)offsetBytes, (int)sizeBytes);
+        var targetView = _memoryBuffer.GetSubView((int)offsetBytes, (int)sizeBytes);
 
         unsafe
         {
@@ -255,7 +255,7 @@ internal sealed class ILGPUUnifiedMemory : IUnifiedMemory
 
         var accelerator = _device.Accelerator;
         var stream = accelerator.DefaultStream;
-        var sourceView = _memoryBuffer.SubView((int)offsetBytes, (int)sizeBytes);
+        var sourceView = _memoryBuffer.GetSubView((int)offsetBytes, (int)sizeBytes);
 
         unsafe
         {
@@ -267,15 +267,53 @@ internal sealed class ILGPUUnifiedMemory : IUnifiedMemory
 
     public async Task CopyFromAsync(IDeviceMemory source, long sourceOffset, long destinationOffset, long sizeBytes, CancellationToken cancellationToken = default)
     {
-        // Implementation similar to ILGPUDeviceMemoryWrapper
-        throw new NotImplementedException("Device-to-device copy for unified memory");
+        if (source == null)
+            throw new ArgumentNullException(nameof(source));
+            
+        if (sizeBytes <= 0)
+            return;
+            
+        var accelerator = _device.Accelerator;
+        var stream = accelerator.DefaultStream;
+        
+        // Handle different source types
+        if (source is ILGPUUnifiedMemory unifiedSource)
+        {
+            // Unified to Unified copy
+            var sourceView = unifiedSource._memoryBuffer.GetSubView((int)sourceOffset, (int)sizeBytes);
+            var destView = _memoryBuffer.GetSubView((int)destinationOffset, (int)sizeBytes);
+            sourceView.CopyTo(stream, destView);
+        }
+        else if (source is ILGPUDeviceMemoryWrapper deviceSource)
+        {
+            // Device to Unified copy
+            var sourceView = deviceSource.GetBuffer().GetSubView((int)sourceOffset, (int)sizeBytes);
+            var destView = _memoryBuffer.GetSubView((int)destinationOffset, (int)sizeBytes);
+            sourceView.CopyTo(stream, destView);
+        }
+        else
+        {
+            // Fallback: Copy through host memory
+            var tempBuffer = new byte[sizeBytes];
+            unsafe
+            {
+                fixed (byte* ptr = tempBuffer)
+                {
+                    await source.CopyToHostAsync(new IntPtr(ptr), sourceOffset, sizeBytes, cancellationToken);
+                    await CopyFromHostAsync(new IntPtr(ptr), destinationOffset, sizeBytes, cancellationToken);
+                }
+            }
+            return;
+        }
+        
+        stream.Synchronize();
     }
 
     public async Task FillAsync(byte value, long offsetBytes, long sizeBytes, CancellationToken cancellationToken = default)
     {
         var accelerator = _device.Accelerator;
         var stream = accelerator.DefaultStream;
-        var targetView = _memoryBuffer.SubView((int)offsetBytes, (int)sizeBytes);
+        var targetView = _memoryBuffer.GetSubView((int)offsetBytes, (int)sizeBytes);
 
         if (value == 0)
         {
@@ -292,7 +330,7 @@ internal sealed class ILGPUUnifiedMemory : IUnifiedMemory
 
     public IDeviceMemory CreateView(long offsetBytes, long sizeBytes)
     {
-        var subBuffer = _memoryBuffer.SubView((int)offsetBytes, (int)sizeBytes);
+        var subBuffer = _memoryBuffer.GetSubView((int)offsetBytes, (int)sizeBytes);
         return new ILGPUUnifiedMemory(subBuffer, _device, sizeBytes, _options, _logger);
     }
 

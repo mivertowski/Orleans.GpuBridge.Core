@@ -21,6 +21,7 @@ namespace Orleans.GpuBridge.Backends.ILGPU;
 public sealed class ILGPUBackendProvider : IGpuBackendProvider
 {
     private readonly ILogger<ILGPUBackendProvider> _logger;
+    private readonly ILoggerFactory _loggerFactory;
     private Context? _context;
     private ILGPUDeviceManager? _deviceManager;
     private ILGPUKernelCompiler? _kernelCompiler;
@@ -35,9 +36,10 @@ public sealed class ILGPUBackendProvider : IGpuBackendProvider
     public Version Version => new(1, 0, 0);
     public BackendCapabilities Capabilities => BackendCapabilities.CreateILGPU();
 
-    public ILGPUBackendProvider(ILogger<ILGPUBackendProvider> logger)
+    public ILGPUBackendProvider(ILogger<ILGPUBackendProvider> logger, ILoggerFactory loggerFactory)
     {
         _logger = logger;
+        _loggerFactory = loggerFactory;
     }
 
     public async Task InitializeAsync(BackendConfiguration configuration, CancellationToken cancellationToken = default)
@@ -55,36 +57,26 @@ public sealed class ILGPUBackendProvider : IGpuBackendProvider
             _configuration = configuration;
 
             // Initialize ILGPU context
-            var contextFlags = ContextFlags.CudaMath | ContextFlags.FastRelaxedMath;
-            
-            if (_configuration.EnableDebugMode)
-            {
-                contextFlags |= ContextFlags.EnableAssertions;
-            }
-
-            if (_configuration.EnableProfiling)
-            {
-                contextFlags |= ContextFlags.Profiling;
-            }
-
-            _context = Context.Create(builder => builder.AllAccelerators().EnableAlgorithms());
+            // Note: ContextFlags were removed in ILGPU 1.5+
+            // Options are now set via builder pattern
+            _context = Context.CreateDefault();
 
             // Initialize components
-            _deviceManager = new ILGPUDeviceManager(_logger.CreateLogger<ILGPUDeviceManager>(), _context);
+            _deviceManager = new ILGPUDeviceManager(_loggerFactory.CreateLogger<ILGPUDeviceManager>(), _context);
             await _deviceManager.InitializeAsync(cancellationToken);
 
             _kernelCompiler = new ILGPUKernelCompiler(
-                _logger.CreateLogger<ILGPUKernelCompiler>(), 
+                _loggerFactory.CreateLogger<ILGPUKernelCompiler>(), 
                 _context,
                 _deviceManager);
 
             _memoryAllocator = new ILGPUMemoryAllocator(
-                _logger.CreateLogger<ILGPUMemoryAllocator>(),
+                _loggerFactory.CreateLogger<ILGPUMemoryAllocator>(),
                 _deviceManager,
                 configuration);
 
             _kernelExecutor = new ILGPUKernelExecutor(
-                _logger.CreateLogger<ILGPUKernelExecutor>(),
+                _loggerFactory.CreateLogger<ILGPUKernelExecutor>(),
                 _deviceManager,
                 _memoryAllocator);
 

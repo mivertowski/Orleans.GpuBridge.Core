@@ -394,7 +394,7 @@ internal sealed class ILGPUKernelExecutor : IKernelExecutor
 
         // Select based on device requirements (simplified)
         var devices = _deviceManager.GetDevices();
-        var gpuDevices = devices.Where(d => d.Type != DeviceType.Cpu).ToList();
+        var gpuDevices = devices.Where(d => d.Type != Abstractions.Providers.DeviceType.Cpu).ToList();
 
         return gpuDevices.FirstOrDefault() ?? devices.FirstOrDefault() ?? 
                throw new InvalidOperationException("No suitable device available for kernel execution");

@@ -1,6 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Runtime.Builders;
+using ILGPU;
+using ILGPU.Runtime;
 
 namespace Orleans.GpuBridge.Backends.ILGPU.Extensions;
 
@@ -82,7 +84,7 @@ public class ILGPUBackendConfiguration
     /// <summary>
     /// Device selection filter
     /// </summary>
-    public Func<ILGPU.Runtime.Accelerator, bool>? DeviceFilter { get; set; }
+    public Func<Accelerator, bool>? DeviceFilter { get; set; }
 
     /// <summary>
     /// Custom memory allocator settings

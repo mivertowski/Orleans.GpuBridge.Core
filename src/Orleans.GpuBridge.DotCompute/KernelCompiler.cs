@@ -9,6 +9,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Abstractions.Enums;
+using Orleans.GpuBridge.DotCompute.Devices;
+using Orleans.GpuBridge.DotCompute.Compilation;
 
 namespace Orleans.GpuBridge.DotCompute;
 

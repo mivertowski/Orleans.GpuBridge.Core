@@ -6,6 +6,10 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Abstractions.Memory;
+using Orleans.GpuBridge.Runtime.BackendProviders.Enums;
+using Orleans.GpuBridge.Runtime.BackendProviders.Interfaces;
+using Orleans.GpuBridge.Runtime.BackendProviders.Models;
 
 namespace Orleans.GpuBridge.Runtime.BackendProviders;
 

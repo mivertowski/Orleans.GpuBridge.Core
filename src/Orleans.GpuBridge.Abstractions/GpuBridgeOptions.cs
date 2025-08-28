@@ -44,6 +44,26 @@ public sealed class GpuBridgeOptions
     /// Telemetry options
     /// </summary>
     public TelemetryOptions Telemetry { get; set; } = new();
+    
+    /// <summary>
+    /// Default backend provider to use
+    /// </summary>
+    public string? DefaultBackend { get; set; }
+    
+    /// <summary>
+    /// Fallback chain of backend providers to try
+    /// </summary>
+    public string[]? FallbackChain { get; set; }
+    
+    /// <summary>
+    /// Enable automatic discovery of backend providers
+    /// </summary>
+    public bool EnableProviderDiscovery { get; set; } = true;
+    
+    /// <summary>
+    /// Provider-specific configuration options
+    /// </summary>
+    public Dictionary<string, object> ProviderOptions { get; set; } = new();
 }
 
 /// <summary>

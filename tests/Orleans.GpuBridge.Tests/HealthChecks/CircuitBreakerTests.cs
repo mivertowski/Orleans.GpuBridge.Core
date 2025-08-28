@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
-using Orleans.GpuBridge.HealthChecks;
+using Orleans.GpuBridge.HealthChecks.CircuitBreaker;
+using Orleans.GpuBridge.HealthChecks.Exceptions;
 using Polly.CircuitBreaker;
 using Xunit;
 

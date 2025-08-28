@@ -7,7 +7,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Runtime;
+using Orleans.GpuBridge.Runtime.Builders;
+using Orleans.GpuBridge.DotCompute.Devices;
+using Orleans.GpuBridge.DotCompute.Enums;
+using Orleans.GpuBridge.DotCompute.Execution;
+using Orleans.GpuBridge.DotCompute.Kernels;
+using Orleans.GpuBridge.DotCompute.Memory;
 
 namespace Orleans.GpuBridge.DotCompute;
 

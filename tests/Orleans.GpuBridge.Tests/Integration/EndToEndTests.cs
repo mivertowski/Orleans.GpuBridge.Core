@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Abstractions.Memory;
 using Orleans.GpuBridge.DotCompute;
 using Orleans.GpuBridge.Runtime;
 using Orleans.GpuBridge.Runtime.BackendProviders;

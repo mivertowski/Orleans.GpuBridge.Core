@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Abstractions.Enums;
+using Orleans.GpuBridge.DotCompute.Devices;
+using Orleans.GpuBridge.DotCompute.Execution;
+using Orleans.GpuBridge.DotCompute.Memory;
+using Orleans.GpuBridge.DotCompute.Compilation;
+using Orleans.GpuBridge.DotCompute.Enums;
 
 namespace Orleans.GpuBridge.DotCompute;
 

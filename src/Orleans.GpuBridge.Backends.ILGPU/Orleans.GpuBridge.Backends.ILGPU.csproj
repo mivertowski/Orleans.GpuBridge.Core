@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>Orleans.GpuBridge.Backends.ILGPU</PackageId>
+    <Title>Orleans GPU Bridge ILGPU Backend</Title>
+    <Description>ILGPU backend provider for Orleans GPU Bridge - enables GPU acceleration via ILGPU</Description>
+    <PackageTags>orleans;gpu;compute;ilgpu;cuda;opencl</PackageTags>
+    <Authors>Orleans GPU Bridge</Authors>
+    <Company>Orleans GPU Bridge</Company>
+    <Product>Orleans GPU Bridge</Product>
+    <Copyright>Copyright (c) 2024</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/your-repo/orleans-gpubridge</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- ILGPU Core Libraries -->
+    <PackageReference Include="ILGPU" Version="1.5.1" />
+    <PackageReference Include="ILGPU.Algorithms" Version="1.5.1" />
+    
+    <!-- Microsoft Libraries -->
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+    
+    <!-- Memory and Performance -->
+    <PackageReference Include="System.Memory" Version="4.5.5" />
+    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Project References -->
+    <ProjectReference Include="../Orleans.GpuBridge.Abstractions/Orleans.GpuBridge.Abstractions.csproj" />
+    <ProjectReference Include="../Orleans.GpuBridge.Runtime/Orleans.GpuBridge.Runtime.csproj" />
+  </ItemGroup>
+
+</Project>

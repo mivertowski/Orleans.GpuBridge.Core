@@ -467,7 +467,7 @@ public class PipelineStageTests
     {
         // Use reflection to create KernelStage since it's internal
         var kernelStageType = typeof(GpuPipeline).Assembly
-            .GetType("Orleans.GpuBridge.BridgeFX.KernelStage`2")!
+            .GetType("Orleans.GpuBridge.BridgeFX.Pipeline.Stages.KernelStage`2")!
             .MakeGenericType(typeof(int), typeof(string));
 
         return (IPipelineStage)Activator.CreateInstance(
@@ -480,7 +480,7 @@ public class PipelineStageTests
     private IPipelineStage CreateTransformStage(Func<int, string> transform)
     {
         var transformStageType = typeof(GpuPipeline).Assembly
-            .GetType("Orleans.GpuBridge.BridgeFX.TransformStage`2")!
+            .GetType("Orleans.GpuBridge.BridgeFX.Pipeline.Stages.TransformStage`2")!
             .MakeGenericType(typeof(int), typeof(string));
 
         return (IPipelineStage)Activator.CreateInstance(transformStageType, transform)!;
@@ -489,7 +489,7 @@ public class PipelineStageTests
     private IPipelineStage CreateBatchStage<T>(int batchSize, TimeSpan timeout)
     {
         var batchStageType = typeof(GpuPipeline).Assembly
-            .GetType("Orleans.GpuBridge.BridgeFX.BatchStage`1")!
+            .GetType("Orleans.GpuBridge.BridgeFX.Pipeline.Stages.BatchStage`1")!
             .MakeGenericType(typeof(T));
 
         return (IPipelineStage)Activator.CreateInstance(batchStageType, batchSize, timeout)!;
@@ -498,7 +498,7 @@ public class PipelineStageTests
     private IPipelineStage CreateParallelStage(Func<int, Task<string>> processor, int maxConcurrency)
     {
         var parallelStageType = typeof(GpuPipeline).Assembly
-            .GetType("Orleans.GpuBridge.BridgeFX.ParallelStage`2")!
+            .GetType("Orleans.GpuBridge.BridgeFX.Pipeline.Stages.ParallelStage`2")!
             .MakeGenericType(typeof(int), typeof(string));
 
         return (IPipelineStage)Activator.CreateInstance(parallelStageType, processor, maxConcurrency)!;
@@ -507,7 +507,7 @@ public class PipelineStageTests
     private IPipelineStage CreateFilterStage(Func<int, bool> predicate)
     {
         var filterStageType = typeof(GpuPipeline).Assembly
-            .GetType("Orleans.GpuBridge.BridgeFX.FilterStage`1")!
+            .GetType("Orleans.GpuBridge.BridgeFX.Pipeline.Stages.FilterStage`1")!
             .MakeGenericType(typeof(int));
 
         return (IPipelineStage)Activator.CreateInstance(filterStageType, predicate)!;
@@ -516,7 +516,7 @@ public class PipelineStageTests
     private IPipelineStage CreateTapStage(Action<int> action)
     {
         var tapStageType = typeof(GpuPipeline).Assembly
-            .GetType("Orleans.GpuBridge.BridgeFX.TapStage`1")!
+            .GetType("Orleans.GpuBridge.BridgeFX.Pipeline.Stages.TapStage`1")!
             .MakeGenericType(typeof(int));
 
         return (IPipelineStage)Activator.CreateInstance(tapStageType, action)!;
@@ -525,7 +525,7 @@ public class PipelineStageTests
     private IPipelineStage CreateGenericTransformStage(Type inputType, Type outputType)
     {
         var transformStageType = typeof(GpuPipeline).Assembly
-            .GetType("Orleans.GpuBridge.BridgeFX.TransformStage`2")!
+            .GetType("Orleans.GpuBridge.BridgeFX.Pipeline.Stages.TransformStage`2")!
             .MakeGenericType(inputType, outputType);
 
         // Create a simple transform function

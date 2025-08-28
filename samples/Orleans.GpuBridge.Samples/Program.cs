@@ -7,6 +7,9 @@ using Orleans.GpuBridge.Samples.VectorOperations;
 using Orleans.GpuBridge.Samples.MatrixOperations;
 using Orleans.GpuBridge.Samples.ImageProcessing;
 using Orleans.GpuBridge.Samples.GraphProcessing;
+using Orleans.GpuBridge.Samples.BackendProvider;
+using Orleans.GpuBridge.Runtime.Extensions;
+using Orleans.GpuBridge.Abstractions.Providers;
 using Spectre.Console;
 
 var rootCommand = new RootCommand("Orleans.GpuBridge Sample Applications");
@@ -88,6 +91,17 @@ benchmarkCommand.SetHandler(async (type, duration) =>
     });
 }, benchmarkTypeOption, benchmarkDurationOption);
 
+// Backend provider command
+var backendCommand = new Command("backend", "Demonstrate backend provider selection and switching");
+backendCommand.SetHandler(async () =>
+{
+    await RunSampleAsync("Backend Provider", async (host) =>
+    {
+        var sample = new BackendProviderSample(host.Services);
+        await sample.RunAsync();
+    });
+});
+
 // Interactive command
 var interactiveCommand = new Command("interactive", "Run interactive sample selector");
 interactiveCommand.SetHandler(async () =>
@@ -100,6 +114,7 @@ rootCommand.AddCommand(matrixCommand);
 rootCommand.AddCommand(imageCommand);
 rootCommand.AddCommand(graphCommand);
 rootCommand.AddCommand(benchmarkCommand);
+rootCommand.AddCommand(backendCommand);
 rootCommand.AddCommand(interactiveCommand);
 
 // Add global options
@@ -158,10 +173,11 @@ async Task RunInteractiveSampleAsync()
                 .AddChoices(new[]
                 {
                     "Vector Operations",
-                    "Matrix Operations",
+                    "Matrix Operations", 
                     "Image Processing",
                     "Graph Processing",
                     "Performance Benchmark",
+                    "Backend Provider Demo",
                     "Exit"
                 }));
         
@@ -195,6 +211,10 @@ async Task RunInteractiveSampleAsync()
                     var benchmarkSample = new BenchmarkSample(host.Services);
                     await benchmarkSample.RunInteractiveAsync();
                     break;
+                case "Backend Provider Demo":
+                    var backendSample = new BackendProviderSample(host.Services);
+                    await backendSample.RunInteractiveAsync();
+                    break;
             }
         }
         catch (Exception ex)
@@ -227,7 +247,19 @@ IHost CreateHost()
             services.AddGpuBridge(options =>
             {
                 options.PreferGpu = true;
-                options.EnableCpuFallback = true;
+                options.BatchSize = 1024;
+                options.MaxRetries = 3;
+            })
+            // Add backend providers in order of preference
+            .AddAllAvailableBackends() // Automatically discovers ILGPU and DotCompute if available
+            .AddCpuFallbackBackend()   // Always add CPU fallback last
+            .ConfigureBackendSelection(selection =>
+            {
+                // Prefer GPU backends, fallback to CPU
+                selection.PreferredBackends = new() { GpuBackend.Cuda, GpuBackend.OpenCL, GpuBackend.Cpu };
+                selection.AllowCpuFallback = true;
+                selection.MaxConcurrentDevices = 2;
+                selection.MinimumDeviceMemory = 256 * 1024 * 1024; // 256 MB minimum
             });
             
             services.AddGpuTelemetry(telemetry =>

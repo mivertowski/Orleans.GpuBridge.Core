@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions;
@@ -35,7 +39,7 @@ public class GpuHealthCheck : IHealthCheck
             var degradedReasons = new List<string>();
             
             // Check GPU availability
-            var devices = await _gpuBridge.GetAvailableDevicesAsync();
+            var devices = await _gpuBridge.GetDevicesAsync();
             data["device_count"] = devices.Count;
             
             if (devices.Count == 0)
@@ -168,9 +172,16 @@ public class GpuHealthCheck : IHealthCheck
         {
             // Simple test kernel execution
             var testData = new float[] { 1.0f, 2.0f, 3.0f, 4.0f };
-            var result = await _gpuBridge.ExecuteAsync<float[], float>(
-                "test/sum",
-                testData);
+            var kernel = await _gpuBridge.GetKernelAsync<float[], float>(
+                new KernelId("test/sum"));
+            var handle = await kernel.SubmitBatchAsync(new[] { testData });
+            var results = kernel.ReadResultsAsync(handle);
+            var result = 0f;
+            await foreach (var r in results)
+            {
+                result = r;
+                break; // Get first result
+            }
             
             // Verify result
             var expected = testData.Sum();

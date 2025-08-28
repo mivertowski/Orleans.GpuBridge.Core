@@ -1,0 +1,191 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Orleans.GpuBridge.Abstractions.Providers;
+using Orleans.GpuBridge.Abstractions.Providers.Memory.Allocators;
+using Orleans.GpuBridge.Abstractions.Providers.Execution.Interfaces;
+using Orleans.GpuBridge.Backends.DotCompute.DeviceManagement;
+using Orleans.GpuBridge.Backends.DotCompute.Execution;
+using Orleans.GpuBridge.Backends.DotCompute.Kernels;
+using Orleans.GpuBridge.Backends.DotCompute.Memory;
+
+namespace Orleans.GpuBridge.Backends.DotCompute;
+
+/// <summary>
+/// DotCompute backend provider implementation
+/// </summary>
+public sealed class DotComputeBackendProvider : IGpuBackendProvider
+{
+    private readonly ILogger<DotComputeBackendProvider> _logger;
+    private readonly ILoggerFactory _loggerFactory;
+    private bool _initialized;
+    private bool _disposed;
+
+    // DotCompute backend components
+    private DotComputeDeviceManager? _deviceManager;
+    private DotComputeKernelCompiler? _kernelCompiler;
+    private DotComputeMemoryAllocator? _memoryAllocator;
+    private DotComputeKernelExecutor? _kernelExecutor;
+    private DotComputeCommandQueue? _defaultQueue;
+
+    public string ProviderId => "DotCompute";
+
+    public BackendCapabilities Capabilities => BackendCapabilities.CreateDotCompute();
+
+    public DotComputeBackendProvider(ILoggerFactory loggerFactory)
+    {
+        _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
+        _logger = _loggerFactory.CreateLogger<DotComputeBackendProvider>();
+    }
+
+    public bool IsAvailable()
+    {
+        try
+        {
+            // Check if DotCompute is available (simplified check)
+            // In a real implementation, this would check for DotCompute installation
+            return true; // For now, assume always available
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    public async Task InitializeAsync(BackendConfiguration configuration, CancellationToken cancellationToken = default)
+    {
+        if (_initialized)
+            return;
+
+        try
+        {
+            _logger.LogInformation("Initializing DotCompute backend provider");
+
+            // Initialize device manager
+            _deviceManager = new DotComputeDeviceManager(_loggerFactory.CreateLogger<DotComputeDeviceManager>());
+            await _deviceManager.InitializeAsync(cancellationToken);
+
+            // Initialize kernel compiler
+            _kernelCompiler = new DotComputeKernelCompiler(
+                _deviceManager,
+                _loggerFactory.CreateLogger<DotComputeKernelCompiler>());
+
+            // Initialize memory allocator
+            _memoryAllocator = new DotComputeMemoryAllocator(
+                _loggerFactory.CreateLogger<DotComputeMemoryAllocator>(),
+                _deviceManager,
+                configuration);
+
+            // Initialize kernel executor
+            _kernelExecutor = new DotComputeKernelExecutor(
+                _loggerFactory.CreateLogger<DotComputeKernelExecutor>(),
+                _deviceManager,
+                _memoryAllocator,
+                _kernelCompiler);
+
+            // Create default command queue
+            var defaultDevice = _deviceManager.GetDefaultDevice();
+            _defaultQueue = new DotComputeCommandQueue(defaultDevice, _loggerFactory.CreateLogger<DotComputeCommandQueue>());
+
+            _initialized = true;
+            _logger.LogInformation("DotCompute backend provider initialized successfully");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to initialize DotCompute backend provider");
+            throw;
+        }
+    }
+
+    public IDeviceManager GetDeviceManager()
+    {
+        EnsureInitialized();
+        return _deviceManager!;
+    }
+
+    public IKernelCompiler GetKernelCompiler()
+    {
+        EnsureInitialized();
+        return _kernelCompiler!;
+    }
+
+    public IMemoryAllocator GetMemoryAllocator()
+    {
+        EnsureInitialized();
+        return _memoryAllocator!;
+    }
+
+    public IKernelExecutor GetKernelExecutor()
+    {
+        EnsureInitialized();
+        return _kernelExecutor!;
+    }
+
+    public ICommandQueue GetDefaultCommandQueue()
+    {
+        EnsureInitialized();
+        return _defaultQueue!;
+    }
+
+    public async Task<HealthCheckResult> CheckHealthAsync(CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            if (!_initialized)
+            {
+                return new HealthCheckResult(false, "DotCompute backend not initialized");
+            }
+
+            // Check device availability
+            var devices = _deviceManager!.GetDevices();
+            if (!devices.Any())
+            {
+                return new HealthCheckResult(false, "No DotCompute devices available");
+            }
+
+            // Check if default device is responsive
+            var defaultDevice = _deviceManager.GetDefaultDevice();
+            if (!defaultDevice.IsHealthy)
+            {
+                return new HealthCheckResult(false, $"Default device {defaultDevice.Name} is not healthy");
+            }
+
+            return new HealthCheckResult(true, $"DotCompute backend healthy with {devices.Count()} devices");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Health check failed for DotCompute backend");
+            return new HealthCheckResult(false, $"Health check failed: {ex.Message}");
+        }
+    }
+
+    private void EnsureInitialized()
+    {
+        if (!_initialized)
+            throw new InvalidOperationException("DotCompute backend provider not initialized");
+    }
+
+    public void Dispose()
+    {
+        if (_disposed)
+            return;
+
+        _logger.LogDebug("Disposing DotCompute backend provider");
+
+        try
+        {
+            _defaultQueue?.Dispose();
+            _kernelExecutor?.Dispose();
+            _memoryAllocator?.Dispose();
+            _kernelCompiler?.Dispose();
+            _deviceManager?.Dispose();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error disposing DotCompute backend provider");
+        }
+
+        _disposed = true;
+    }
+}

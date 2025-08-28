@@ -2,7 +2,7 @@ using System;
 using System.Buffers;
 using System.Collections.Concurrent;
 using System.Threading;
-using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Abstractions.Memory;
 
 namespace Orleans.GpuBridge.Runtime;
 

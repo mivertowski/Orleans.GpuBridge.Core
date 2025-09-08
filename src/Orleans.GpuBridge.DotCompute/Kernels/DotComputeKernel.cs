@@ -108,7 +108,7 @@ public abstract class DotComputeKernel<TIn, TOut> : IGpuKernel<TIn, TOut>
             $"DotCompute kernel: {_kernelId}",
             typeof(TIn),
             typeof(TOut),
-            _device.Type != DeviceType.Cpu,
+            _device.Type != DeviceType.CPU,
             GetPreferredBatchSize());
         
         return new ValueTask<KernelInfo>(info);
@@ -122,8 +122,8 @@ public abstract class DotComputeKernel<TIn, TOut> : IGpuKernel<TIn, TOut>
     {
         return _device.Type switch
         {
-            DeviceType.Cuda => 1024,
-            DeviceType.OpenCl => 512,
+            DeviceType.CUDA => 1024,
+            DeviceType.OpenCL => 512,
             DeviceType.DirectCompute => 256,
             DeviceType.Metal => 512,
             _ => 64

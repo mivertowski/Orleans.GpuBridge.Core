@@ -1,4 +1,4 @@
-using Orleans.GpuBridge.Runtime.BackendProviders.Enums;
+using Orleans.GpuBridge.Abstractions.Enums;
 
 namespace Orleans.GpuBridge.Runtime.BackendProviders.Models;
 
@@ -8,7 +8,7 @@ namespace Orleans.GpuBridge.Runtime.BackendProviders.Models;
 public sealed record DeviceInfo(
     int Index,
     string Name,
-    BackendType Backend,
+    GpuBackend Backend,
     long TotalMemory,
     int ComputeUnits,
     string[] Extensions);

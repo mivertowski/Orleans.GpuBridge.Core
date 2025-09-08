@@ -209,7 +209,7 @@ internal sealed class ILGPUMemoryAllocator : IMemoryAllocator
 
             // Select a device that supports unified memory (preferably CUDA)
             var devices = _deviceManager.GetDevices().Cast<ILGPUComputeDevice>();
-            var cudaDevice = devices.FirstOrDefault(d => d.Accelerator.AcceleratorType == AcceleratorType.Cuda);
+            var cudaDevice = devices.FirstOrDefault(d => d.Accelerator.AcceleratorType == AcceleratorType.CUDA);
 
             if (cudaDevice == null)
             {

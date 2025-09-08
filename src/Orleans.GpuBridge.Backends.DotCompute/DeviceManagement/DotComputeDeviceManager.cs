@@ -58,7 +58,7 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
         EnsureInitialized();
         
         // Prefer GPU devices over CPU
-        var gpuDevice = _devices.Values.FirstOrDefault(d => d.Type != DeviceType.Cpu);
+        var gpuDevice = _devices.Values.FirstOrDefault(d => d.Type != DeviceType.CPU);
         if (gpuDevice != null)
         {
             return gpuDevice;
@@ -143,7 +143,7 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
         var cpuDevice = new DotComputeComputeDevice(
             id: "dotcompute-cpu-0",
             name: "DotCompute CPU Device",
-            type: DeviceType.Cpu,
+            type: DeviceType.CPU,
             computeUnits: Environment.ProcessorCount,
             maxWorkGroupSize: 256,
             maxMemoryBytes: GC.GetTotalMemory(false),

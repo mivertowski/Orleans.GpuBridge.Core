@@ -27,18 +27,18 @@ namespace Orleans.GpuBridge.Backends.DotCompute.Configuration;
 /// <code>
 /// // Basic configuration for production use
 /// services.AddGpuBridge(options => options.PreferGpu = true)
-///         .AddDotComputeBackend(config =>
+///         .AddDotGpuBackend(config =>
 ///         {
 ///             config.EnableOptimizations = true;
 ///             config.OptimizationLevel = OptimizationLevel.O2;
 ///             config.PreferredPlatforms.Clear();
-///             config.PreferredPlatforms.Add(GpuBackend.Cuda);
+///             config.PreferredPlatforms.Add(GpuBackend.CUDA);
 ///             config.PreferredPlatforms.Add(GpuBackend.OpenCL);
 ///         });
 /// 
 /// // Debug configuration for development
 /// services.AddGpuBridge(options => options.PreferGpu = true)
-///         .AddDotComputeBackend(config =>
+///         .AddDotGpuBackend(config =>
 ///         {
 ///             config.EnableDebugMode = true;
 ///             config.EnableOptimizations = false;
@@ -48,7 +48,7 @@ namespace Orleans.GpuBridge.Backends.DotCompute.Configuration;
 /// 
 /// // High-performance configuration for compute-intensive workloads
 /// services.AddGpuBridge(options => options.PreferGpu = true)
-///         .AddDotComputeBackend(config =>
+///         .AddDotGpuBackend(config =>
 ///         {
 ///             config.OptimizationLevel = OptimizationLevel.O3;
 ///             config.MaxConcurrentCompilations = Environment.ProcessorCount * 2;
@@ -57,7 +57,7 @@ namespace Orleans.GpuBridge.Backends.DotCompute.Configuration;
 ///         });
 /// </code>
 /// </example>
-public class DotComputeBackendConfiguration
+public class DotGpuBackendConfiguration
 {
     /// <summary>
     /// Gets or sets whether to enable debug mode for DotCompute kernel compilation and execution.
@@ -259,7 +259,7 @@ public class DotComputeBackendConfiguration
     /// 
     /// <para>
     /// Platform characteristics:
-    /// - <see cref="GpuBackend.Cuda"/>: NVIDIA GPUs only, excellent performance
+    /// - <see cref="GpuBackend.CUDA"/>: NVIDIA GPUs only, excellent performance
     /// - <see cref="GpuBackend.OpenCL"/>: Cross-vendor compatibility, good portability
     /// - <see cref="GpuBackend.DirectCompute"/>: Windows DirectX, good Windows integration
     /// - <see cref="GpuBackend.Metal"/>: Apple platforms only, optimized for Apple hardware
@@ -279,7 +279,7 @@ public class DotComputeBackendConfiguration
     /// // NVIDIA-first configuration
     /// config.PreferredPlatforms = new List&lt;GpuBackend&gt;
     /// {
-    ///     GpuBackend.Cuda,
+    ///     GpuBackend.CUDA,
     ///     GpuBackend.Vulkan,
     ///     GpuBackend.OpenCL
     /// };
@@ -294,7 +294,7 @@ public class DotComputeBackendConfiguration
     /// </example>
     public List<GpuBackend> PreferredPlatforms { get; set; } = new()
     {
-        GpuBackend.Cuda,
+        GpuBackend.CUDA,
         GpuBackend.OpenCL,
         GpuBackend.DirectCompute,
         GpuBackend.Metal,
@@ -440,7 +440,7 @@ public class DotComputeBackendConfiguration
     /// <example>
     /// <code>
     /// // CUDA-specific settings
-    /// config.PlatformSpecificSettings[GpuBackend.Cuda] = new CudaSettings
+    /// config.PlatformSpecificSettings[GpuBackend.CUDA] = new CudaSettings
     /// {
     ///     EnableP2P = true,
     ///     StreamPriority = CudaStreamPriority.High

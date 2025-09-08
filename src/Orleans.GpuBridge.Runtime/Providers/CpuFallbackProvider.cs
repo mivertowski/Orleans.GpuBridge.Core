@@ -191,7 +191,7 @@ internal sealed class CpuDevice : IComputeDevice
     public string DeviceId => "cpu-0";
     public int Index => 0;
     public string Name => "CPU";
-    public DeviceType Type => DeviceType.Cpu;
+    public DeviceType Type => DeviceType.CPU;
     public string Vendor => "Generic";
     public string Architecture => "x86-64";
     public Version ComputeCapability => new(1, 0);

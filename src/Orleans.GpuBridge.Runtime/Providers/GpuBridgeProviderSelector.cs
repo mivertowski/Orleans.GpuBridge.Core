@@ -191,7 +191,7 @@ public sealed class GpuBridgeProviderSelector
         }
 
         // Auto-select best available
-        var autoBackend = _options.PreferGpu ? GpuBackend.Cuda : GpuBackend.Cpu;
+        var autoBackend = _options.PreferGpu ? GpuBackend.CUDA : GpuBackend.CPU;
         var criteria = new ProviderSelectionCriteria(PreferredBackend: autoBackend);
 
         _defaultProvider = await _registry.SelectProviderAsync(criteria, cancellationToken);
@@ -221,7 +221,7 @@ public sealed class GpuBridgeProviderSelector
         if (requirements.RequiresTensorOps)
             requiredCapabilities.Add("tensor");
 
-        var preferredBackend = requirements.PreferGpu ? GpuBackend.Cuda : (GpuBackend?)null;
+        var preferredBackend = requirements.PreferGpu ? GpuBackend.CUDA : (GpuBackend?)null;
         
         return new ProviderSelectionCriteria(
             PreferredBackend: preferredBackend,

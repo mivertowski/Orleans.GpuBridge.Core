@@ -38,7 +38,7 @@ namespace Orleans.GpuBridge.Backends.DotCompute.Configuration;
 /// // CUDA-optimized configuration
 /// var cudaSettings = new KernelLanguageSettings();
 /// cudaSettings.PreferredLanguages.Clear();
-/// cudaSettings.PreferredLanguages[GpuBackend.Cuda] = KernelLanguage.CUDA;
+/// cudaSettings.PreferredLanguages[GpuBackend.CUDA] = KernelLanguage.CUDA;
 /// cudaSettings.PreferredLanguages[GpuBackend.OpenCL] = KernelLanguage.OpenCL;
 /// cudaSettings.EnableLanguageTranslation = true;
 /// 
@@ -74,7 +74,7 @@ public class KernelLanguageSettings
     /// 
     /// <para>
     /// Default language mappings are optimized for performance and platform capabilities:
-    /// - <see cref="GpuBackend.Cuda"/>: <see cref="KernelLanguage.CUDA"/> for native performance
+    /// - <see cref="GpuBackend.CUDA"/>: <see cref="KernelLanguage.CUDA"/> for native performance
     /// - <see cref="GpuBackend.OpenCL"/>: <see cref="KernelLanguage.OpenCL"/> for compatibility
     /// - <see cref="GpuBackend.DirectCompute"/>: <see cref="KernelLanguage.HLSL"/> for DirectX integration
     /// - <see cref="GpuBackend.Metal"/>: <see cref="KernelLanguage.MSL"/> for Apple optimization
@@ -100,7 +100,7 @@ public class KernelLanguageSettings
     /// <example>
     /// <code>
     /// // Performance-oriented configuration
-    /// languageSettings.PreferredLanguages[GpuBackend.Cuda] = KernelLanguage.CUDA;
+    /// languageSettings.PreferredLanguages[GpuBackend.CUDA] = KernelLanguage.CUDA;
     /// languageSettings.PreferredLanguages[GpuBackend.OpenCL] = KernelLanguage.OpenCL;
     /// languageSettings.PreferredLanguages[GpuBackend.Metal] = KernelLanguage.MSL;
     /// 
@@ -111,14 +111,14 @@ public class KernelLanguageSettings
     /// }
     /// 
     /// // Portability-focused configuration
-    /// languageSettings.PreferredLanguages[GpuBackend.Cuda] = KernelLanguage.OpenCL;
+    /// languageSettings.PreferredLanguages[GpuBackend.CUDA] = KernelLanguage.OpenCL;
     /// languageSettings.PreferredLanguages[GpuBackend.OpenCL] = KernelLanguage.OpenCL;
     /// languageSettings.PreferredLanguages[GpuBackend.Vulkan] = KernelLanguage.SPIRV;
     /// </code>
     /// </example>
     public Dictionary<GpuBackend, KernelLanguage> PreferredLanguages { get; set; } = new()
     {
-        { GpuBackend.Cuda, KernelLanguage.CUDA },
+        { GpuBackend.CUDA, KernelLanguage.CUDA },
         { GpuBackend.OpenCL, KernelLanguage.OpenCL },
         { GpuBackend.DirectCompute, KernelLanguage.HLSL },
         { GpuBackend.Metal, KernelLanguage.MSL },

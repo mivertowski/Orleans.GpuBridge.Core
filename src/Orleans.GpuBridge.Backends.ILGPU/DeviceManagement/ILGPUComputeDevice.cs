@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using ILGPU;
 using ILGPU.Runtime;
-using ILGPU.Runtime.Cuda;
+using ILGPU.Runtime.CUDA;
 using ILGPU.Runtime.OpenCL;
 using ILGPU.Runtime.CPU;
 using Microsoft.Extensions.Logging;
@@ -68,7 +68,7 @@ internal sealed class ILGPUComputeDevice : IComputeDevice, IDisposable
         {
             "shared-memory" => Accelerator.AcceleratorType != AcceleratorType.CPU,
             "atomics" => true, // ILGPU supports atomics on all accelerators
-            "warp-shuffle" => Accelerator.AcceleratorType == AcceleratorType.Cuda,
+            "warp-shuffle" => Accelerator.AcceleratorType == AcceleratorType.CUDA,
             "local-memory" => Accelerator.AcceleratorType != AcceleratorType.CPU,
             "64bit-global-memory" => true,
             "unified-memory" => Accelerator is CudaAccelerator,
@@ -101,9 +101,9 @@ internal sealed class ILGPUComputeDevice : IComputeDevice, IDisposable
     {
         return acceleratorType switch
         {
-            AcceleratorType.CPU => DeviceType.Cpu,
-            AcceleratorType.Cuda => DeviceType.Cuda,
-            AcceleratorType.OpenCL => DeviceType.OpenCl,
+            AcceleratorType.CPU => DeviceType.CPU,
+            AcceleratorType.CUDA => DeviceType.CUDA,
+            AcceleratorType.OpenCL => DeviceType.OpenCL,
             _ => DeviceType.Custom
         };
     }
@@ -123,7 +123,7 @@ internal sealed class ILGPUComputeDevice : IComputeDevice, IDisposable
     {
         return accelerator switch
         {
-            CudaAccelerator cuda => $"CUDA SM {cuda.CudaArchitecture.Major}.{cuda.CudaArchitecture.Minor}",
+            CudaAccelerator cuda => $"CUDA SM {cuda.CUDAArchitecture.Major}.{cuda.CUDAArchitecture.Minor}",
             CLAccelerator cl => cl.Name?.Contains("NVIDIA") == true ? "CUDA via OpenCL" : 
                               cl.Name?.Contains("AMD") == true ? "GCN/RDNA" : 
                               cl.Name?.Contains("Intel") == true ? "Intel GPU" : "Unknown OpenCL",
@@ -136,7 +136,7 @@ internal sealed class ILGPUComputeDevice : IComputeDevice, IDisposable
     {
         return accelerator switch
         {
-            CudaAccelerator cuda => new Version(cuda.CudaArchitecture.Major, cuda.CudaArchitecture.Minor),
+            CudaAccelerator cuda => new Version(cuda.CUDAArchitecture.Major, cuda.CUDAArchitecture.Minor),
             CLAccelerator => new Version(2, 0), // Assume OpenCL 2.0
             CPUAccelerator => new Version(1, 0),
             _ => new Version(1, 0)
@@ -224,8 +224,8 @@ internal sealed class ILGPUComputeDevice : IComputeDevice, IDisposable
         switch (accelerator)
         {
             case CudaAccelerator cuda:
-                props["cuda_major"] = cuda.CudaArchitecture.Major;
-                props["cuda_minor"] = cuda.CudaArchitecture.Minor;
+                props["cuda_major"] = cuda.CUDAArchitecture.Major;
+                props["cuda_minor"] = cuda.CUDAArchitecture.Minor;
                 props["cuda_driver_version"] = cuda.DriverVersion;
                 props["cuda_runtime_version"] = cuda.RuntimeVersion;
                 props["multiprocessor_count"] = cuda.NumMultiprocessors;

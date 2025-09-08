@@ -76,7 +76,7 @@ public class ILGPUBackendConfiguration
     /// </summary>
     public List<AcceleratorType> PreferredAcceleratorTypes { get; set; } = new()
     {
-        AcceleratorType.Cuda,
+        AcceleratorType.CUDA,
         AcceleratorType.OpenCL,
         AcceleratorType.CPU
     };

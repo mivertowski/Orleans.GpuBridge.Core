@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ILGPU;
 using ILGPU.Runtime;
-using ILGPU.Runtime.Cuda;
+using ILGPU.Runtime.CUDA;
 using ILGPU.Runtime.OpenCL;
 using ILGPU.Runtime.CPU;
 using Microsoft.Extensions.Logging;
@@ -51,7 +51,7 @@ internal sealed class ILGPUDeviceManager : IDeviceManager
             // Try to create CUDA accelerators
             try
             {
-                for (int i = 0; i < CudaAccelerator.CudaAccelerators.Length; i++)
+                for (int i = 0; i < CudaAccelerator.CUDAAccelerators.Length; i++)
                 {
                     var cudaAccelerator = CudaAccelerator.Create(_context, i);
                     accelerators.Add(cudaAccelerator);
@@ -135,7 +135,7 @@ internal sealed class ILGPUDeviceManager : IDeviceManager
         }
 
         // Prefer GPU devices over CPU
-        var gpuDevice = _devices.FirstOrDefault(d => d.Type != DeviceType.Cpu);
+        var gpuDevice = _devices.FirstOrDefault(d => d.Type != DeviceType.CPU);
         return gpuDevice ?? _devices[0];
     }
 
@@ -332,7 +332,7 @@ internal sealed class ILGPUDeviceManager : IDeviceManager
             score += (int)(device.TotalMemoryBytes / (1024 * 1024)); // MB
             
             // Prefer GPU over CPU
-            if (device.Type != DeviceType.Cpu)
+            if (device.Type != DeviceType.CPU)
             {
                 score += 500;
             }

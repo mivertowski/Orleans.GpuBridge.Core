@@ -431,7 +431,7 @@ internal sealed class ILGPUKernelCompiler : IKernelCompiler
         // Calculate optimal block size based on device characteristics
         return accelerator.AcceleratorType switch
         {
-            AcceleratorType.Cuda => Math.Min(512, accelerator.MaxNumThreadsPerGroup),
+            AcceleratorType.CUDA => Math.Min(512, accelerator.MaxNumThreadsPerGroup),
             AcceleratorType.OpenCL => Math.Min(256, accelerator.MaxNumThreadsPerGroup),
             AcceleratorType.CPU => Environment.ProcessorCount,
             _ => 256

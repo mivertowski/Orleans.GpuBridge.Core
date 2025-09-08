@@ -1,4 +1,4 @@
-using Orleans.GpuBridge.DotCompute.Enums;
+using Orleans.GpuBridge.Abstractions.Enums;
 
 namespace Orleans.GpuBridge.DotCompute.Configuration;
 
@@ -35,7 +35,7 @@ public sealed class DotComputeOptions
     /// OpenCL provides cross-platform compute support for various GPU and CPU devices
     /// from different vendors.
     /// </remarks>
-    public bool EnableOpenCl { get; set; } = true;
+    public bool EnableOpenCL { get; set; } = true;
 
     /// <summary>
     /// Gets or sets whether DirectCompute backend support is enabled.
@@ -65,14 +65,14 @@ public sealed class DotComputeOptions
     /// Gets or sets the preferred compute backend for device selection.
     /// </summary>
     /// <value>
-    /// The preferred <see cref="ComputeBackend"/> to use when multiple backends are available.
-    /// Defaults to <see cref="ComputeBackend.Auto"/>.
+    /// The preferred <see cref="GpuBackend"/> to use when multiple backends are available.
+    /// Defaults to <see cref="GpuBackend.Auto"/>.
     /// </value>
     /// <remarks>
-    /// When set to <see cref="ComputeBackend.Auto"/>, the device manager will automatically
+    /// When set to <see cref="GpuBackend.Auto"/>, the device manager will automatically
     /// select the best available backend based on platform and device capabilities.
     /// </remarks>
-    public ComputeBackend PreferredBackend { get; set; } = ComputeBackend.Auto;
+    public GpuBackend PreferredBackend { get; set; } = GpuBackend.Auto;
 
     /// <summary>
     /// Gets or sets whether compiled kernel caching is enabled.

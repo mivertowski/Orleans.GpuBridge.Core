@@ -115,7 +115,7 @@ public sealed class ILGPUBackendProvider : IGpuBackendProvider
         {
             // Check if we have any usable accelerators
             var devices = _deviceManager?.GetDevices() ?? Array.Empty<IComputeDevice>();
-            var hasUsableDevice = devices.Any(d => d.Type != DeviceType.Cpu || d.GetStatus() == DeviceStatus.Available);
+            var hasUsableDevice = devices.Any(d => d.Type != DeviceType.CPU || d.GetStatus() == DeviceStatus.Available);
             
             return Task.FromResult(hasUsableDevice);
         }
@@ -163,8 +163,8 @@ public sealed class ILGPUBackendProvider : IGpuBackendProvider
         {
             var devices = _deviceManager.GetDevices();
             metrics["device_count"] = devices.Count;
-            metrics["gpu_devices"] = devices.Count(d => d.Type != DeviceType.Cpu);
-            metrics["cpu_devices"] = devices.Count(d => d.Type == DeviceType.Cpu);
+            metrics["gpu_devices"] = devices.Count(d => d.Type != DeviceType.CPU);
+            metrics["cpu_devices"] = devices.Count(d => d.Type == DeviceType.CPU);
 
             // Get memory metrics
             if (_memoryAllocator != null)

@@ -11,7 +11,7 @@ using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Runtime;
 using Orleans.GpuBridge.Runtime.Builders;
 using Orleans.GpuBridge.DotCompute.Devices;
-using Orleans.GpuBridge.DotCompute.Enums;
+using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.DotCompute.Execution;
 using Orleans.GpuBridge.DotCompute.Kernels;
 using Orleans.GpuBridge.DotCompute.Memory;
@@ -95,7 +95,7 @@ public sealed class DotComputeBridge : IGpuBridge, IDisposable
         
         var devices = _deviceManager.GetDevices();
         var totalMemory = devices.Sum(d => d.TotalMemory);
-        var hasGpu = devices.Any(d => d.Type != DeviceType.Cpu);
+        var hasGpu = devices.Any(d => d.Type != DeviceType.CPU);
         
         var metadata = new Dictionary<string, object>
         {
@@ -193,13 +193,13 @@ public sealed class DotComputeBridge : IGpuBridge, IDisposable
         
         capabilities.Add(device.Type.ToString());
         
-        if (device.Type == DeviceType.Cuda)
+        if (device.Type == DeviceType.CUDA)
         {
             capabilities.Add("CUDA");
             capabilities.Add("PTX");
             capabilities.Add("Tensor Cores");
         }
-        else if (device.Type == DeviceType.OpenCl)
+        else if (device.Type == DeviceType.OpenCL)
         {
             capabilities.Add("OpenCL 2.0");
             capabilities.Add("SPIR-V");
@@ -214,7 +214,7 @@ public sealed class DotComputeBridge : IGpuBridge, IDisposable
             capabilities.Add("Metal 2");
             capabilities.Add("MSL");
         }
-        else if (device.Type == DeviceType.Cpu)
+        else if (device.Type == DeviceType.CPU)
         {
             capabilities.Add("AVX512");
             capabilities.Add("AVX2");

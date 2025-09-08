@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Orleans.GpuBridge.Runtime.BackendProviders.Enums;
+using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Runtime.BackendProviders.Implementations;
 using Orleans.GpuBridge.Runtime.BackendProviders.Interfaces;
 
@@ -129,12 +129,12 @@ public sealed class BackendProviderFactory
         // Priority order: CUDA > Vulkan > OpenCL > DirectCompute > Metal > CPU
         var priorityOrder = new[]
         {
-            BackendType.Cuda,
-            BackendType.Vulkan,
-            BackendType.OpenCL,
-            BackendType.DirectCompute,
-            BackendType.Metal,
-            BackendType.Cpu
+            GpuBackend.CUDA,
+            GpuBackend.Vulkan,
+            GpuBackend.OpenCL,
+            GpuBackend.DirectCompute,
+            GpuBackend.Metal,
+            GpuBackend.CPU
         };
 
         foreach (var type in priorityOrder)
@@ -156,7 +156,7 @@ public sealed class BackendProviderFactory
     /// The primary provider is selected based on a priority order: CUDA > Vulkan > OpenCL > DirectCompute > Metal > CPU.
     /// This method must be called after <see cref="Initialize"/> has been executed.
     /// </remarks>
-    public IBackendProvider GetPrimaryProvider()
+    public IBackendProvider? GetPrimaryProvider()
     {
         if (_primaryProvider == null)
             throw new InvalidOperationException("No backend provider available");
@@ -173,7 +173,7 @@ public sealed class BackendProviderFactory
     /// This method allows direct access to a specific backend provider regardless of priority ordering.
     /// Returns null if the requested backend type is not available on the current system.
     /// </remarks>
-    public IBackendProvider? GetProvider(BackendType type)
+    public IBackendProvider? GetProvider(GpuBackend type)
     {
         return _availableProviders.FirstOrDefault(p => p.Type == type);
     }

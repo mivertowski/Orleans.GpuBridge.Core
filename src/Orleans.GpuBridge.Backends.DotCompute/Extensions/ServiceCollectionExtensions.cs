@@ -44,19 +44,19 @@ public static class ServiceCollectionExtensions
     /// - Platform preference: CUDA > OpenCL > DirectCompute > Metal > Vulkan
     /// 
     /// <para>
-    /// For custom configuration, use <see cref="AddDotComputeBackend(IGpuBridgeBuilder, Action{DotComputeBackendConfiguration})"/>
-    /// or <see cref="AddDotComputeBackend(IGpuBridgeBuilder, Func{IServiceProvider, DotComputeBackendProvider})"/>.
+    /// For custom configuration, use <see cref="AddDotGpuBackend(IGpuBridgeBuilder, Action{DotGpuBackendConfiguration})"/>
+    /// or <see cref="AddDotGpuBackend(IGpuBridgeBuilder, Func{IServiceProvider, DotGpuBackendProvider})"/>.
     /// </para>
     /// </remarks>
     /// <example>
     /// <code>
     /// services.AddGpuBridge(options => options.PreferGpu = true)
-    ///         .AddDotComputeBackend();
+    ///         .AddDotGpuBackend();
     /// </code>
     /// </example>
-    public static IGpuBridgeBuilder AddDotComputeBackend(this IGpuBridgeBuilder builder)
+    public static IGpuBridgeBuilder AddDotGpuBackend(this IGpuBridgeBuilder builder)
     {
-        return builder.AddBackendProvider<DotComputeBackendProvider>();
+        return builder.AddBackendProvider<DotGpuBackendProvider>();
     }
 
     /// <summary>
@@ -68,7 +68,7 @@ public static class ServiceCollectionExtensions
     /// <remarks>
     /// This method registers the DotCompute backend provider and allows customization
     /// of backend behavior through the provided configuration delegate. The configuration
-    /// is applied to <see cref="DotComputeBackendConfiguration"/> which controls:
+    /// is applied to <see cref="DotGpuBackendConfiguration"/> which controls:
     /// 
     /// <para>
     /// Key configuration areas:
@@ -89,18 +89,18 @@ public static class ServiceCollectionExtensions
     /// <code>
     /// // High-performance CUDA-optimized configuration
     /// services.AddGpuBridge(options => options.PreferGpu = true)
-    ///         .AddDotComputeBackend(config =>
+    ///         .AddDotGpuBackend(config =>
     ///         {
     ///             config.OptimizationLevel = OptimizationLevel.O3;
     ///             config.PreferredPlatforms.Clear();
-    ///             config.PreferredPlatforms.Add(GpuBackend.Cuda);
+    ///             config.PreferredPlatforms.Add(GpuBackend.CUDA);
     ///             config.MemorySettings.InitialPoolSize = 1024 * 1024 * 1024; // 1 GB
-    ///             config.LanguageSettings.PreferredLanguages[GpuBackend.Cuda] = KernelLanguage.CUDA;
+    ///             config.LanguageSettings.PreferredLanguages[GpuBackend.CUDA] = KernelLanguage.CUDA;
     ///         });
     /// 
     /// // Cross-platform development configuration
     /// services.AddGpuBridge(options => options.PreferGpu = true)
-    ///         .AddDotComputeBackend(config =>
+    ///         .AddDotGpuBackend(config =>
     ///         {
     ///             config.EnableDebugMode = true;
     ///             config.OptimizationLevel = OptimizationLevel.O1;
@@ -115,7 +115,7 @@ public static class ServiceCollectionExtensions
     /// 
     /// // Memory-constrained configuration
     /// services.AddGpuBridge(options => options.PreferGpu = true)
-    ///         .AddDotComputeBackend(config =>
+    ///         .AddDotGpuBackend(config =>
     ///         {
     ///             config.MemorySettings.InitialPoolSize = 128 * 1024 * 1024; // 128 MB
     ///             config.MemorySettings.MaxPoolSize = 1024 * 1024 * 1024;    // 1 GB
@@ -127,24 +127,24 @@ public static class ServiceCollectionExtensions
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="builder"/> or <paramref name="configure"/> is <c>null</c>.
     /// </exception>
-    public static IGpuBridgeBuilder AddDotComputeBackend(
+    public static IGpuBridgeBuilder AddDotGpuBackend(
         this IGpuBridgeBuilder builder,
-        Action<DotComputeBackendConfiguration> configure)
+        Action<DotGpuBackendConfiguration> configure)
     {
         builder.Services.Configure(configure);
-        return builder.AddBackendProvider<DotComputeBackendProvider>();
+        return builder.AddBackendProvider<DotGpuBackendProvider>();
     }
 
     /// <summary>
     /// Adds the DotCompute backend provider using a custom factory function.
     /// </summary>
     /// <param name="builder">The GPU Bridge builder instance to configure.</param>
-    /// <param name="factory">A factory function to create the DotComputeBackendProvider instance.</param>
+    /// <param name="factory">A factory function to create the DotGpuBackendProvider instance.</param>
     /// <returns>The <see cref="IGpuBridgeBuilder"/> for method chaining.</returns>
     /// <remarks>
     /// This method provides complete control over the instantiation of the DotCompute
     /// backend provider. The factory function receives the <see cref="IServiceProvider"/>
-    /// and should return a fully configured <see cref="DotComputeBackendProvider"/> instance.
+    /// and should return a fully configured <see cref="DotGpuBackendProvider"/> instance.
     /// 
     /// <para>
     /// Use this method when you need:
@@ -163,7 +163,7 @@ public static class ServiceCollectionExtensions
     /// 
     /// <para>
     /// Note: When using a custom factory, standard configuration through
-    /// <see cref="DotComputeBackendConfiguration"/> may not be applied unless
+    /// <see cref="DotGpuBackendConfiguration"/> may not be applied unless
     /// explicitly handled within the factory function.
     /// </para>
     /// </remarks>
@@ -171,12 +171,12 @@ public static class ServiceCollectionExtensions
     /// <code>
     /// // Custom factory with conditional configuration
     /// services.AddGpuBridge(options => options.PreferGpu = true)
-    ///         .AddDotComputeBackend(serviceProvider =>
+    ///         .AddDotGpuBackend(serviceProvider =>
     ///         {
     ///             var environment = serviceProvider.GetRequiredService&lt;IHostEnvironment&gt;();
-    ///             var logger = serviceProvider.GetRequiredService&lt;ILogger&lt;DotComputeBackendProvider&gt;&gt;();
+    ///             var logger = serviceProvider.GetRequiredService&lt;ILogger&lt;DotGpuBackendProvider&gt;&gt;();
     ///             
-    ///             var config = new DotComputeBackendConfiguration();
+    ///             var config = new DotGpuBackendConfiguration();
     ///             
     ///             if (environment.IsDevelopment())
     ///             {
@@ -190,21 +190,21 @@ public static class ServiceCollectionExtensions
     ///                 config.MemorySettings.InitialPoolSize = 2L * 1024 * 1024 * 1024; // 2 GB
     ///             }
     ///             
-    ///             return new DotComputeBackendProvider(config, logger);
+    ///             return new DotGpuBackendProvider(config, logger);
     ///         });
     /// 
     /// // Factory with runtime hardware detection
     /// services.AddGpuBridge(options => options.PreferGpu = true)
-    ///         .AddDotComputeBackend(serviceProvider =>
+    ///         .AddDotGpuBackend(serviceProvider =>
     ///         {
-    ///             var config = new DotComputeBackendConfiguration();
+    ///             var config = new DotGpuBackendConfiguration();
     ///             
     ///             // Detect available GPU hardware
     ///             if (IsNvidiaGpuAvailable())
     ///             {
     ///                 config.PreferredPlatforms.Clear();
-    ///                 config.PreferredPlatforms.Add(GpuBackend.Cuda);
-    ///                 config.LanguageSettings.PreferredLanguages[GpuBackend.Cuda] = KernelLanguage.CUDA;
+    ///                 config.PreferredPlatforms.Add(GpuBackend.CUDA);
+    ///                 config.LanguageSettings.PreferredLanguages[GpuBackend.CUDA] = KernelLanguage.CUDA;
     ///             }
     ///             else if (IsOpenCLAvailable())
     ///             {
@@ -212,17 +212,17 @@ public static class ServiceCollectionExtensions
     ///                 config.PreferredPlatforms.Add(GpuBackend.OpenCL);
     ///             }
     ///             
-    ///             var logger = serviceProvider.GetRequiredService&lt;ILogger&lt;DotComputeBackendProvider&gt;&gt;();
-    ///             return new DotComputeBackendProvider(config, logger);
+    ///             var logger = serviceProvider.GetRequiredService&lt;ILogger&lt;DotGpuBackendProvider&gt;&gt;();
+    ///             return new DotGpuBackendProvider(config, logger);
     ///         });
     /// </code>
     /// </example>
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="builder"/> or <paramref name="factory"/> is <c>null</c>.
     /// </exception>
-    public static IGpuBridgeBuilder AddDotComputeBackend(
+    public static IGpuBridgeBuilder AddDotGpuBackend(
         this IGpuBridgeBuilder builder,
-        Func<IServiceProvider, DotComputeBackendProvider> factory)
+        Func<IServiceProvider, DotGpuBackendProvider> factory)
     {
         return builder.AddBackendProvider(factory);
     }

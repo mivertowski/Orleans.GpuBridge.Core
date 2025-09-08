@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Orleans.GpuBridge.Runtime.BackendProviders.Enums;
+using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Runtime.BackendProviders.Interfaces;
 using Orleans.GpuBridge.Runtime.BackendProviders.Models;
 
@@ -29,7 +29,7 @@ internal class OpenCLBackendProvider : IBackendProvider
     /// <summary>
     /// Gets the backend type identifier
     /// </summary>
-    public BackendType Type => BackendType.OpenCL;
+    public GpuBackend Type => GpuBackend.OpenCL;
 
     /// <summary>
     /// Gets a value indicating whether this backend is currently available
@@ -108,5 +108,13 @@ internal class OpenCLBackendProvider : IBackendProvider
     public IReadOnlyList<DeviceInfo> GetDevices()
     {
         return Array.Empty<DeviceInfo>();
+    }
+    
+    /// <summary>
+    /// Disposes resources used by this backend provider
+    /// </summary>
+    public void Dispose()
+    {
+        Shutdown();
     }
 }

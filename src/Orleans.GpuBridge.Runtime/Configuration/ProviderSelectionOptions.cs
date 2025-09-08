@@ -14,7 +14,7 @@ public class ProviderSelectionOptions
     /// Default preference: CUDA, OpenCL, CPU fallback.
     /// </summary>
     /// <value>A list of <see cref="GpuBackend"/> values representing the preferred order of backend selection.</value>
-    public List<GpuBackend> PreferredBackends { get; set; } = new() { GpuBackend.Cuda, GpuBackend.OpenCL, GpuBackend.Cpu };
+    public List<GpuBackend> PreferredBackends { get; set; } = new() { GpuBackend.CUDA, GpuBackend.OpenCL, GpuBackend.CPU };
     
     /// <summary>
     /// Gets or sets a value indicating whether the system should fall back to CPU execution when no GPU backends are available.

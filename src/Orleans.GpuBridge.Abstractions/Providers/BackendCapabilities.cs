@@ -94,7 +94,7 @@ public sealed class BackendCapabilities
     /// </summary>
     public static BackendCapabilities CreateCpuFallback() => new()
     {
-        SupportedBackends = new[] { GpuBackend.Cpu },
+        SupportedBackends = new[] { GpuBackend.CPU },
         SupportedDataTypes = new[] { typeof(float), typeof(double), typeof(int), typeof(long), typeof(byte) },
         MaxConcurrentDevices = 1,
         SupportsJitCompilation = true,
@@ -115,7 +115,7 @@ public sealed class BackendCapabilities
     /// </summary>
     public static BackendCapabilities CreateILGPU() => new()
     {
-        SupportedBackends = new[] { GpuBackend.Cuda, GpuBackend.OpenCL, GpuBackend.Cpu },
+        SupportedBackends = new[] { GpuBackend.CUDA, GpuBackend.OpenCL, GpuBackend.CPU },
         SupportedDataTypes = new[] { typeof(float), typeof(double), typeof(int), typeof(long), typeof(byte), typeof(short), typeof(uint), typeof(ulong) },
         MaxConcurrentDevices = 16,
         SupportsJitCompilation = true,
@@ -143,7 +143,7 @@ public sealed class BackendCapabilities
     /// </summary>
     public static BackendCapabilities CreateDotCompute() => new()
     {
-        SupportedBackends = new[] { GpuBackend.Cuda, GpuBackend.OpenCL, GpuBackend.DirectCompute, GpuBackend.Metal, GpuBackend.Vulkan },
+        SupportedBackends = new[] { GpuBackend.CUDA, GpuBackend.OpenCL, GpuBackend.DirectCompute, GpuBackend.Metal, GpuBackend.Vulkan },
         SupportedDataTypes = new[] { typeof(float), typeof(double), typeof(int), typeof(long), typeof(byte), typeof(short) },
         MaxConcurrentDevices = 8,
         SupportsJitCompilation = true,

@@ -172,8 +172,8 @@ public sealed class KernelCompiler
     {
         return deviceType switch
         {
-            DeviceType.Cuda => GenerateCudaCode(method),
-            DeviceType.OpenCl => GenerateOpenClCode(method),
+            DeviceType.CUDA => GenerateCudaCode(method),
+            DeviceType.OpenCL => GenerateOpenCLCode(method),
             DeviceType.DirectCompute => GenerateHlslCode(method),
             DeviceType.Metal => GenerateMetalCode(method),
             _ => GenerateCpuCode(method)
@@ -198,7 +198,7 @@ public sealed class KernelCompiler
         return sb.ToString();
     }
     
-    private string GenerateOpenClCode(MethodInfo method)
+    private string GenerateOpenCLCode(MethodInfo method)
     {
         var sb = new StringBuilder();
         sb.AppendLine($"__kernel void {method.Name}(");
@@ -251,8 +251,8 @@ public sealed class KernelCompiler
     {
         return device.Type switch
         {
-            DeviceType.Cuda => "sm_75", // CUDA compute capability 7.5
-            DeviceType.OpenCl => "cl_std_2_0",
+            DeviceType.CUDA => "sm_75", // CUDA compute capability 7.5
+            DeviceType.OpenCL => "cl_std_2_0",
             DeviceType.DirectCompute => "cs_5_0",
             DeviceType.Metal => "metal_2_4",
             _ => "native"

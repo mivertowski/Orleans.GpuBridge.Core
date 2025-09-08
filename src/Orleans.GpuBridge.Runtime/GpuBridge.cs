@@ -42,7 +42,7 @@ public sealed class GpuBridge : IGpuBridge
             Version: version,
             DeviceCount: _deviceBroker.DeviceCount,
             TotalMemoryBytes: _deviceBroker.TotalMemoryBytes,
-            Backend: _options.PreferGpu ? GpuBackend.Cuda : GpuBackend.Cpu,
+            Backend: _options.PreferGpu ? GpuBackend.CUDA : GpuBackend.CPU,
             IsGpuAvailable: _deviceBroker.DeviceCount > 0,
             Metadata: new Dictionary<string, object>
             {

@@ -156,7 +156,7 @@ public sealed class DeviceBroker : IDisposable
                             var device = new GpuDevice(
                                 Index: int.Parse(parts[0]),
                                 Name: parts[1],
-                                Type: DeviceType.Cuda,
+                                Type: DeviceType.CUDA,
                                 TotalMemoryBytes: long.Parse(parts[2]) * 1024 * 1024,
                                 AvailableMemoryBytes: long.Parse(parts[3]) * 1024 * 1024,
                                 ComputeUnits: GetCudaCoreCount(parts[1]),
@@ -281,7 +281,7 @@ public sealed class DeviceBroker : IDisposable
         var cpuDevice = new GpuDevice(
             Index: _devices.Count,
             Name: cpuInfo.Name,
-            Type: DeviceType.Cpu,
+            Type: DeviceType.CPU,
             TotalMemoryBytes: cpuInfo.TotalMemory,
             AvailableMemoryBytes: cpuInfo.AvailableMemory,
             ComputeUnits: Environment.ProcessorCount,
@@ -458,11 +458,11 @@ public sealed class DeviceBroker : IDisposable
         // Device type preference (10% weight)
         score += device.Type switch
         {
-            DeviceType.Cuda => 10,
-            DeviceType.OpenCl => 8,
+            DeviceType.CUDA => 10,
+            DeviceType.OpenCL => 8,
             DeviceType.Metal => 7,
             DeviceType.DirectCompute => 6,
-            DeviceType.Cpu => 5,
+            DeviceType.CPU => 5,
             _ => 0
         };
         

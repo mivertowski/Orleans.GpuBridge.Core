@@ -5,14 +5,53 @@ namespace Orleans.GpuBridge.Abstractions.Enums;
 /// </summary>
 public enum DeviceType
 {
-    Cpu,
-    Gpu,
+    /// <summary>
+    /// CPU-based compute device
+    /// </summary>
+    CPU,
+    
+    /// <summary>
+    /// Generic GPU device
+    /// </summary>
+    GPU,
+    
+    /// <summary>
+    /// Generic hardware accelerator
+    /// </summary>
     Accelerator,
+    
+    /// <summary>
+    /// Custom or proprietary device type
+    /// </summary>
     Custom,
-    Cuda,
-    OpenCl,
+    
+    /// <summary>
+    /// NVIDIA CUDA device
+    /// </summary>
+    CUDA,
+    
+    /// <summary>
+    /// OpenCL compatible device
+    /// </summary>
+    OpenCL,
+    
+    /// <summary>
+    /// Microsoft DirectCompute device
+    /// </summary>
     DirectCompute,
+    
+    /// <summary>
+    /// Apple Metal device
+    /// </summary>
     Metal,
-    Fpga,
-    Asic
+    
+    /// <summary>
+    /// Field-Programmable Gate Array
+    /// </summary>
+    FPGA,
+    
+    /// <summary>
+    /// Application-Specific Integrated Circuit
+    /// </summary>
+    ASIC
 }

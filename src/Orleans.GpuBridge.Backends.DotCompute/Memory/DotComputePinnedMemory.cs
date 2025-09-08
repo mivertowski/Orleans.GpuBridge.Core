@@ -332,7 +332,7 @@ internal sealed class DotComputeUnifiedMemoryFallback : IUnifiedMemory
     public async Task PrefetchAsync(IComputeDevice device, CancellationToken cancellationToken = default)
     {
         // For fallback, prefetch means copying data to the target location
-        if (device.Type == Orleans.GpuBridge.Abstractions.Enums.DeviceType.Cpu)
+        if (device.Type == Orleans.GpuBridge.Abstractions.Enums.DeviceType.CPU)
         {
             // Copy to host buffer
             await CopyToHostAsync(HostPointer, 0, SizeBytes, cancellationToken);

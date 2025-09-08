@@ -1,5 +1,5 @@
+using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Abstractions.Memory;
-using Orleans.GpuBridge.Runtime.BackendProviders.Enums;
 
 namespace Orleans.GpuBridge.Runtime.BackendProviders.Interfaces;
 
@@ -8,7 +8,7 @@ namespace Orleans.GpuBridge.Runtime.BackendProviders.Interfaces;
 /// </summary>
 public interface IComputeContext : IDisposable
 {
-    BackendType Backend { get; }
+    GpuBackend Backend { get; }
     int DeviceIndex { get; }
     
     IComputeBuffer<T> CreateBuffer<T>(int size, BufferUsage usage) where T : unmanaged;

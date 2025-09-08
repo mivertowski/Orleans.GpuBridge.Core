@@ -15,9 +15,9 @@ namespace Orleans.GpuBridge.Backends.DotCompute;
 /// <summary>
 /// DotCompute backend provider implementation
 /// </summary>
-public sealed class DotComputeBackendProvider : IGpuBackendProvider
+public sealed class DotGpuBackendProvider : IGpuBackendProvider
 {
-    private readonly ILogger<DotComputeBackendProvider> _logger;
+    private readonly ILogger<DotGpuBackendProvider> _logger;
     private readonly ILoggerFactory _loggerFactory;
     private bool _initialized;
     private bool _disposed;
@@ -33,10 +33,10 @@ public sealed class DotComputeBackendProvider : IGpuBackendProvider
 
     public BackendCapabilities Capabilities => BackendCapabilities.CreateDotCompute();
 
-    public DotComputeBackendProvider(ILoggerFactory loggerFactory)
+    public DotGpuBackendProvider(ILoggerFactory loggerFactory)
     {
         _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
-        _logger = _loggerFactory.CreateLogger<DotComputeBackendProvider>();
+        _logger = _loggerFactory.CreateLogger<DotGpuBackendProvider>();
     }
 
     public bool IsAvailable()

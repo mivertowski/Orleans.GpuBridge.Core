@@ -8,11 +8,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Orleans.GpuBridge.Abstractions;
 using Orleans.GpuBridge.Abstractions.Enums;
-using Orleans.GpuBridge.DotCompute.Abstractions;
+using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.DotCompute.Configuration;
-using Orleans.GpuBridge.DotCompute.Enums;
+using Orleans.GpuBridge.DotCompute.Devices;
 using Orleans.GpuBridge.DotCompute.Models;
-using Orleans.GpuBridge.DotCompute.Providers;
 
 namespace Orleans.GpuBridge.DotCompute;
 
@@ -66,7 +65,7 @@ public sealed class DotComputeDeviceManager : IDisposable
             _devices.AddRange(devices);
             
             // Always add CPU fallback device
-            if (!_devices.Any(d => d.Type == DeviceType.Cpu))
+            if (!_devices.Any(d => d.Type == DeviceType.CPU))
             {
                 _devices.Add(new CpuComputeDevice(_logger));
             }
@@ -114,7 +113,7 @@ public sealed class DotComputeDeviceManager : IDisposable
             .ToList();
         
         var selected = scoredDevices.FirstOrDefault()?.Device 
-            ?? _devices.First(d => d.Type == DeviceType.Cpu);
+            ?? _devices.First(d => d.Type == DeviceType.CPU);
         
         _logger.LogDebug(
             "Selected device {Device} for requirements {Requirements}",
@@ -139,9 +138,9 @@ public sealed class DotComputeDeviceManager : IDisposable
         }
         
         // Check OpenCL availability
-        if (_options.EnableOpenCl)
+        if (_options.EnableOpenCL)
         {
-            var opencl = new OpenClBackendProvider(_logger);
+            var opencl = new OpenCLBackendProvider(_logger);
             if (opencl.IsAvailable())
             {
                 backends.Add(opencl);
@@ -151,7 +150,7 @@ public sealed class DotComputeDeviceManager : IDisposable
         // Check DirectCompute availability (Windows only)
         if (_options.EnableDirectCompute && RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            var directCompute = new DirectComputeBackendProvider(_logger);
+            var directCompute = new DirectGpuBackendProvider(_logger);
             if (directCompute.IsAvailable())
             {
                 backends.Add(directCompute);
@@ -171,10 +170,10 @@ public sealed class DotComputeDeviceManager : IDisposable
         // Select backend based on priority
         return _options.PreferredBackend switch
         {
-            ComputeBackend.Cuda => backends.FirstOrDefault(b => b is CudaBackendProvider),
-            ComputeBackend.OpenCl => backends.FirstOrDefault(b => b is OpenClBackendProvider),
-            ComputeBackend.DirectCompute => backends.FirstOrDefault(b => b is DirectComputeBackendProvider),
-            ComputeBackend.Metal => backends.FirstOrDefault(b => b is MetalBackendProvider),
+            GpuBackend.CUDA => backends.FirstOrDefault(b => b is CudaBackendProvider),
+            GpuBackend.OpenCL => backends.FirstOrDefault(b => b is OpenCLBackendProvider),
+            GpuBackend.DirectCompute => backends.FirstOrDefault(b => b is DirectGpuBackendProvider),
+            GpuBackend.Metal => backends.FirstOrDefault(b => b is MetalBackendProvider),
             _ => backends.FirstOrDefault()
         } ?? backends.FirstOrDefault();
     }
@@ -186,11 +185,11 @@ public sealed class DotComputeDeviceManager : IDisposable
         // Device type preference
         score += device.Type switch
         {
-            DeviceType.Cuda => requirements.PreferGpu ? 1000 : 100,
-            DeviceType.OpenCl => requirements.PreferGpu ? 800 : 80,
+            DeviceType.CUDA => requirements.PreferGpu ? 1000 : 100,
+            DeviceType.OpenCL => requirements.PreferGpu ? 800 : 80,
             DeviceType.DirectCompute => requirements.PreferGpu ? 600 : 60,
             DeviceType.Metal => requirements.PreferGpu ? 700 : 70,
-            DeviceType.Cpu => requirements.PreferGpu ? 0 : 500,
+            DeviceType.CPU => requirements.PreferGpu ? 0 : 500,
             _ => 0
         };
         

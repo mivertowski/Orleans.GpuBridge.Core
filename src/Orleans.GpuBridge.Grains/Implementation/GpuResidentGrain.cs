@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Abstractions.Models;
 using Orleans.GpuBridge.Runtime;
 using Orleans.Runtime;
 using Orleans.GpuBridge.Grains.Interfaces;
@@ -335,12 +336,11 @@ public sealed class GpuResidentGrain : Grain, IGpuResidentGrain
     /// <inheritdoc />
     public Task<GpuMemoryInfo> GetMemoryInfoAsync()
     {
-        var info = new GpuMemoryInfo(
-            _state.State.TotalAllocatedBytes,
-            _state.State.Allocations.Count,
-            _state.State.Allocations.ToDictionary(
-                kvp => kvp.Key,
-                kvp => kvp.Value.Handle));
+        var info = GpuMemoryInfo.Create(
+            totalBytes: _state.State.TotalAllocatedBytes,
+            allocatedBytes: _state.State.TotalAllocatedBytes,
+            deviceIndex: 0,
+            deviceName: "GPU Resident Memory");
         
         return Task.FromResult(info);
     }

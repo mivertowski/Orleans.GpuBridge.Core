@@ -1,5 +1,6 @@
 using Orleans;
 using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Abstractions.Models;
 using Orleans.GpuBridge.Grains.Models;
 using Orleans.GpuBridge.Grains.Enums;
 

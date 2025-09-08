@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Abstractions.Metrics;
 using Orleans.GpuBridge.Diagnostics;
 using Orleans.GpuBridge.HealthChecks.Configuration;
 
@@ -102,42 +103,46 @@ public class GpuHealthCheck : IHealthCheck
             {
                 try
                 {
-                    var metrics = await _metricsCollector.GetDeviceMetricsAsync(device.Index);
+                    var memoryInfo = await _metricsCollector.GetMemoryInfoAsync(device.Index, cancellationToken);
+                    var utilization = await _metricsCollector.GetUtilizationAsync(device.Index, cancellationToken);
+                    var temperature = await _metricsCollector.GetTemperatureAsync(device.Index, cancellationToken);
+                    var power = await _metricsCollector.GetPowerConsumptionAsync(device.Index, cancellationToken);
                     
                     // Record device information in health check data
-                    data[$"device_{device.Index}_name"] = metrics.DeviceName;
-                    data[$"device_{device.Index}_utilization"] = $"{metrics.GpuUtilization:F1}%";
-                    data[$"device_{device.Index}_memory"] = $"{metrics.MemoryUsedMB}/{metrics.MemoryTotalMB} MB";
-                    data[$"device_{device.Index}_temperature"] = $"{metrics.TemperatureCelsius:F1}°C";
-                    data[$"device_{device.Index}_power"] = $"{metrics.PowerUsageWatts:F1}W";
+                    data[$"device_{device.Index}_name"] = memoryInfo.DeviceName;
+                    data[$"device_{device.Index}_utilization"] = $"{utilization.GpuUtilizationPercentage:F1}%";
+                    data[$"device_{device.Index}_memory"] = $"{memoryInfo.AllocatedMemoryBytes / (1024 * 1024)}/{memoryInfo.TotalMemoryBytes / (1024 * 1024)} MB";
+                    data[$"device_{device.Index}_temperature"] = $"{temperature:F1}°C";
+                    data[$"device_{device.Index}_power"] = $"{power:F1}W";
                     
-                    totalMemoryMB += metrics.MemoryTotalMB;
-                    usedMemoryMB += metrics.MemoryUsedMB;
+                    totalMemoryMB += memoryInfo.TotalMemoryBytes / (1024 * 1024);
+                    usedMemoryMB += memoryInfo.AllocatedMemoryBytes / (1024 * 1024);
                     
                     // Evaluate temperature thresholds
-                    if (metrics.TemperatureCelsius > _options.MaxTemperatureCelsius)
+                    if (temperature > _options.MaxTemperatureCelsius)
                     {
-                        unhealthyReasons.Add($"Device {device.Index} temperature too high: {metrics.TemperatureCelsius:F1}°C (max: {_options.MaxTemperatureCelsius:F1}°C)");
+                        unhealthyReasons.Add($"Device {device.Index} temperature too high: {temperature:F1}°C (max: {_options.MaxTemperatureCelsius:F1}°C)");
                     }
-                    else if (metrics.TemperatureCelsius > _options.WarnTemperatureCelsius)
+                    else if (temperature > _options.WarnTemperatureCelsius)
                     {
-                        degradedReasons.Add($"Device {device.Index} temperature elevated: {metrics.TemperatureCelsius:F1}°C (warn: {_options.WarnTemperatureCelsius:F1}°C)");
+                        degradedReasons.Add($"Device {device.Index} temperature elevated: {temperature:F1}°C (warn: {_options.WarnTemperatureCelsius:F1}°C)");
                     }
                     
                     // Evaluate memory utilization thresholds
-                    if (metrics.MemoryUsagePercent > _options.MaxMemoryUsagePercent)
+                    var memoryUsagePercent = memoryInfo.UtilizationPercentage;
+                    if (memoryUsagePercent > _options.MaxMemoryUsagePercent)
                     {
-                        unhealthyReasons.Add($"Device {device.Index} memory exhausted: {metrics.MemoryUsagePercent:F1}% (max: {_options.MaxMemoryUsagePercent:F1}%)");
+                        unhealthyReasons.Add($"Device {device.Index} memory exhausted: {memoryUsagePercent:F1}% (max: {_options.MaxMemoryUsagePercent:F1}%)");
                     }
-                    else if (metrics.MemoryUsagePercent > _options.WarnMemoryUsagePercent)
+                    else if (memoryUsagePercent > _options.WarnMemoryUsagePercent)
                     {
-                        degradedReasons.Add($"Device {device.Index} memory pressure: {metrics.MemoryUsagePercent:F1}% (warn: {_options.WarnMemoryUsagePercent:F1}%)");
+                        degradedReasons.Add($"Device {device.Index} memory pressure: {memoryUsagePercent:F1}% (warn: {_options.WarnMemoryUsagePercent:F1}%)");
                     }
                     
                     // Evaluate utilization efficiency
-                    if (metrics.GpuUtilization < _options.MinUtilizationPercent)
+                    if (utilization.GpuUtilizationPercentage < _options.MinUtilizationPercent)
                     {
-                        degradedReasons.Add($"Device {device.Index} underutilized: {metrics.GpuUtilization:F1}% (min: {_options.MinUtilizationPercent:F1}%)");
+                        degradedReasons.Add($"Device {device.Index} underutilized: {utilization.GpuUtilizationPercentage:F1}% (min: {_options.MinUtilizationPercent:F1}%)");
                     }
                     
                     healthyDevices++;

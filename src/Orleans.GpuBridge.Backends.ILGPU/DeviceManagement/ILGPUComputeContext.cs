@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using ILGPU.Runtime;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions.Providers;
+using Orleans.GpuBridge.Abstractions.Models;
+using Orleans.GpuBridge.Abstractions.Models.Compilation;
 
 namespace Orleans.GpuBridge.Backends.ILGPU.DeviceManagement;
 

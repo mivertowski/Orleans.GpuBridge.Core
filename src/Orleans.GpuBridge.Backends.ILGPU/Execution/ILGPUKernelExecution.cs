@@ -8,6 +8,7 @@ using Orleans.GpuBridge.Abstractions.Providers.Execution.Interfaces;
 using Orleans.GpuBridge.Abstractions.Providers.Execution.Results;
 using Orleans.GpuBridge.Abstractions.Providers.Execution.Enums;
 using Orleans.GpuBridge.Abstractions.Providers.Execution.Parameters;
+using Orleans.GpuBridge.Abstractions.Models;
 
 namespace Orleans.GpuBridge.Backends.ILGPU.Execution;
 

@@ -167,16 +167,18 @@ internal sealed class CpuDeviceManager : IDeviceManager
         IComputeDevice device, 
         CancellationToken cancellationToken = default)
     {
-        return Task.FromResult(new Orleans.GpuBridge.Abstractions.Models.DeviceMetrics(
-            GpuUtilizationPercent: 0,
-            MemoryUtilizationPercent: 50,
-            UsedMemoryBytes: GC.GetTotalMemory(false),
-            TemperatureCelsius: 45,
-            PowerWatts: 0,
-            FanSpeedPercent: 0,
-            KernelsExecuted: 0,
-            BytesTransferred: 0,
-            Uptime: TimeSpan.FromMilliseconds(Environment.TickCount64)));
+        return Task.FromResult(new Orleans.GpuBridge.Abstractions.Models.DeviceMetrics
+        {
+            GpuUtilizationPercent = 0,
+            MemoryUtilizationPercent = 50,
+            UsedMemoryBytes = GC.GetTotalMemory(false),
+            TemperatureCelsius = 45,
+            PowerWatts = 0,
+            FanSpeedPercent = 0,
+            KernelsExecuted = 0,
+            BytesTransferred = 0,
+            Uptime = TimeSpan.FromMilliseconds(Environment.TickCount64)
+        });
     }
 
     public Task ResetDeviceAsync(

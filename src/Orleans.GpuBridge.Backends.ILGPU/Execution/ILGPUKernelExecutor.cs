@@ -14,6 +14,7 @@ using Orleans.GpuBridge.Abstractions.Providers.Execution.Parameters;
 using Orleans.GpuBridge.Abstractions.Providers.Execution.Results;
 using Orleans.GpuBridge.Abstractions.Providers.Execution.Results.Statistics;
 using Orleans.GpuBridge.Abstractions.Providers.Execution.Enums;
+using Orleans.GpuBridge.Abstractions.Models;
 using Orleans.GpuBridge.Backends.ILGPU.DeviceManagement;
 using Orleans.GpuBridge.Backends.ILGPU.Kernels;
 using Orleans.GpuBridge.Backends.ILGPU.Memory;

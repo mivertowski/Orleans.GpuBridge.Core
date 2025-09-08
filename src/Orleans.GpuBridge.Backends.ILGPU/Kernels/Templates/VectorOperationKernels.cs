@@ -1,6 +1,7 @@
 using System;
 using ILGPU;
 using ILGPU.Runtime;
+using ILGPU.Algorithms;
 
 namespace Orleans.GpuBridge.Backends.ILGPU.Kernels.Templates;
 

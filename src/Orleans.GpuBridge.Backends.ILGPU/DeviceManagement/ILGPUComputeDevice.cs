@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using ILGPU;
 using ILGPU.Runtime;
-using ILGPU.Runtime.CUDA;
+using ILGPU.Runtime.Cuda;
 using ILGPU.Runtime.OpenCL;
 using ILGPU.Runtime.CPU;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Abstractions.Enums;
+using Orleans.GpuBridge.Abstractions.Models;
 
 namespace Orleans.GpuBridge.Backends.ILGPU.DeviceManagement;
 

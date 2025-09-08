@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using ILGPU;
 using ILGPU.Runtime;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions.Providers;
+using Orleans.GpuBridge.Abstractions.Providers.Execution.Results;
 using Orleans.GpuBridge.Backends.ILGPU.Kernels.Templates;
 
 namespace Orleans.GpuBridge.Backends.ILGPU.Kernels;

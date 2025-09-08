@@ -94,7 +94,8 @@ internal class MetalBackendProvider : IBackendProvider
     /// </remarks>
     public IComputeContext CreateContext(int deviceIndex = 0)
     {
-        throw new NotImplementedException("Metal backend provider is not yet implemented");
+        _logger.LogInformation("Creating Metal compute context (fallback to CPU implementation)");
+        return new CpuComputeContext(_logger); // Fallback to CPU until Metal is implemented
     }
 
     /// <summary>

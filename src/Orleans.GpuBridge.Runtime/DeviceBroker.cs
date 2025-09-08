@@ -11,20 +11,24 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Orleans.GpuBridge.Abstractions;
 using Orleans.GpuBridge.Abstractions.Enums;
+using Orleans.GpuBridge.Abstractions.Models;
 
 namespace Orleans.GpuBridge.Runtime;
 
 /// <summary>
 /// Manages GPU devices and work distribution
 /// </summary>
-public sealed class DeviceBroker : IDisposable
+public sealed partial class DeviceBroker : IDisposable
 {
     private readonly ILogger<DeviceBroker> _logger;
     private readonly GpuBridgeOptions _options;
     private readonly List<GpuDevice> _devices;
+    private readonly List<GpuDevice> _availableDevices;
     private readonly ConcurrentDictionary<int, DeviceWorkQueue> _workQueues;
     private readonly SemaphoreSlim _initLock;
     private readonly Timer _monitoringTimer;
+    private readonly Timer _healthMonitorTimer;
+    private readonly Timer _loadBalancingTimer;
     private bool _initialized;
     private bool _disposed;
     
@@ -39,6 +43,7 @@ public sealed class DeviceBroker : IDisposable
         _logger = logger;
         _options = options.Value;
         _devices = new List<GpuDevice>();
+        _availableDevices = new List<GpuDevice>();
         _workQueues = new ConcurrentDictionary<int, DeviceWorkQueue>();
         _initLock = new SemaphoreSlim(1, 1);
         
@@ -48,6 +53,19 @@ public sealed class DeviceBroker : IDisposable
             null,
             TimeSpan.FromSeconds(30),
             TimeSpan.FromSeconds(30));
+        
+        // Initialize production timers
+        _healthMonitorTimer = new Timer(
+            async _ => await MonitorDeviceHealthAsync(),
+            null,
+            TimeSpan.FromSeconds(10),
+            TimeSpan.FromSeconds(10));
+
+        _loadBalancingTimer = new Timer(
+            async _ => await UpdateLoadBalancingAsync(),
+            null,
+            TimeSpan.FromSeconds(5),
+            TimeSpan.FromSeconds(5));
     }
     
     public async Task InitializeAsync(CancellationToken ct)
@@ -236,44 +254,6 @@ public sealed class DeviceBroker : IDisposable
         return devices;
     }
     
-    private async Task<List<GpuDevice>> DetectMetalDevicesAsync(CancellationToken ct)
-    {
-        var devices = new List<GpuDevice>();
-        
-        try
-        {
-            // Use system_profiler on macOS
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "system_profiler",
-                    Arguments = "SPDisplaysDataType -json",
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    CreateNoWindow = true
-                }
-            };
-            
-            if (process.Start())
-            {
-                var output = await process.StandardOutput.ReadToEndAsync();
-                await process.WaitForExitAsync(ct);
-                
-                if (process.ExitCode == 0)
-                {
-                    // Parse JSON output for GPU information
-                    _logger.LogDebug("Metal device detection output received");
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            _logger.LogDebug(ex, "system_profiler not available");
-        }
-        
-        return devices;
-    }
     
     private void AddCpuDevice()
     {
@@ -477,12 +457,46 @@ public sealed class DeviceBroker : IDisposable
         }
     }
     
+    /// <summary>
+    /// Gets a CPU fallback device for when no GPU devices are available
+    /// </summary>
+    private GpuDevice GetCpuFallbackDevice()
+    {
+        var totalMemory = GC.GetTotalMemory(false);
+        return new GpuDevice(
+            Index: -1,
+            Name: "CPU Fallback",
+            Type: DeviceType.CPU,
+            TotalMemoryBytes: totalMemory,
+            AvailableMemoryBytes: totalMemory / 2, // Assume half available
+            ComputeUnits: Environment.ProcessorCount,
+            Capabilities: new[] { "cpu", "fallback" }
+        );
+    }
+    
+    /// <summary>
+    /// Checks if device meets basic selection criteria
+    /// </summary>
+    private bool MeetsBasicCriteria(GpuDevice device, DeviceSelectionCriteria criteria)
+    {
+        if (criteria.PreferredType.HasValue && device.Type != criteria.PreferredType.Value)
+            return false;
+            
+        if (device.MemoryBytes < criteria.MinimumMemoryBytes)
+            return false;
+            
+        return true;
+    }
+    
+    
     public void Dispose()
     {
         if (_disposed) return;
         
         _disposed = true;
         _monitoringTimer?.Dispose();
+        _healthMonitorTimer?.Dispose();
+        _loadBalancingTimer?.Dispose();
         _initLock?.Dispose();
         
         // Shutdown all queues

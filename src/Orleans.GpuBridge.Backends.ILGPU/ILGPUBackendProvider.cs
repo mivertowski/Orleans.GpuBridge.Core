@@ -7,6 +7,7 @@ using ILGPU.Runtime;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Abstractions.Providers.Execution.Interfaces;
+using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Allocators;
 using Orleans.GpuBridge.Abstractions.Models;
 using Orleans.GpuBridge.Abstractions.Models.Compilation;

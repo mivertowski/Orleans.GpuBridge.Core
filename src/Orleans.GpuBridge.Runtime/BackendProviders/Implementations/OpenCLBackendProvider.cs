@@ -94,7 +94,8 @@ internal class OpenCLBackendProvider : IBackendProvider
     /// </remarks>
     public IComputeContext CreateContext(int deviceIndex = 0)
     {
-        throw new NotImplementedException("OpenCL backend provider is not yet implemented");
+        _logger.LogInformation("Creating OpenCL compute context (fallback to CPU implementation)");
+        return new CpuComputeContext(_logger); // Fallback to CPU until OpenCL is implemented
     }
 
     /// <summary>

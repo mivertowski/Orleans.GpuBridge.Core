@@ -15,6 +15,7 @@ using Orleans.GpuBridge.Abstractions.Providers.Execution.Results;
 using Orleans.GpuBridge.Abstractions.Providers.Execution.Results.Statistics;
 using Orleans.GpuBridge.Abstractions.Providers.Execution.Enums;
 using Orleans.GpuBridge.Abstractions.Models;
+using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Backends.ILGPU.DeviceManagement;
 using Orleans.GpuBridge.Backends.ILGPU.Kernels;
 using Orleans.GpuBridge.Backends.ILGPU.Memory;
@@ -395,7 +396,7 @@ internal sealed class ILGPUKernelExecutor : IKernelExecutor
 
         // Select based on device requirements (simplified)
         var devices = _deviceManager.GetDevices();
-        var gpuDevices = devices.Where(d => d.Type != Abstractions.Providers.DeviceType.CPU).ToList();
+        var gpuDevices = devices.Where(d => d.Type != DeviceType.CPU).ToList();
 
         return gpuDevices.FirstOrDefault() ?? devices.FirstOrDefault() ?? 
                throw new InvalidOperationException("No suitable device available for kernel execution");

@@ -95,7 +95,8 @@ internal class CpuBackendProvider : IBackendProvider
     /// </remarks>
     public IComputeContext CreateContext(int deviceIndex = 0)
     {
-        throw new NotImplementedException("CPU compute context is not yet implemented");
+        _logger.LogInformation("Creating CPU compute context");
+        return new CpuComputeContext(_logger);
     }
 
     /// <summary>

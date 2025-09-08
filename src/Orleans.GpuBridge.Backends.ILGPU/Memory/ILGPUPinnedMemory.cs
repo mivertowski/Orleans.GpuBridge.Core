@@ -238,7 +238,7 @@ internal sealed class ILGPUUnifiedMemory : IUnifiedMemory
 
         var accelerator = _device.Accelerator;
         var stream = accelerator.DefaultStream;
-        var targetView = _memoryBuffer.GetSubView((int)offsetBytes, (int)sizeBytes);
+        var targetView = _memoryBuffer.View.SubView((int)offsetBytes, (int)sizeBytes);
 
         unsafe
         {
@@ -255,7 +255,7 @@ internal sealed class ILGPUUnifiedMemory : IUnifiedMemory
 
         var accelerator = _device.Accelerator;
         var stream = accelerator.DefaultStream;
-        var sourceView = _memoryBuffer.GetSubView((int)offsetBytes, (int)sizeBytes);
+        var sourceView = _memoryBuffer.View.SubView((int)offsetBytes, (int)sizeBytes);
 
         unsafe
         {
@@ -280,15 +280,15 @@ internal sealed class ILGPUUnifiedMemory : IUnifiedMemory
         if (source is ILGPUUnifiedMemory unifiedSource)
         {
             // Unified to Unified copy
-            var sourceView = unifiedSource._memoryBuffer.GetSubView((int)sourceOffset, (int)sizeBytes);
-            var destView = _memoryBuffer.GetSubView((int)destinationOffset, (int)sizeBytes);
+            var sourceView = unifiedSource._memoryBuffer.View.SubView((int)sourceOffset, (int)sizeBytes);
+            var destView = _memoryBuffer.View.SubView((int)destinationOffset, (int)sizeBytes);
             sourceView.CopyTo(stream, destView);
         }
         else if (source is ILGPUDeviceMemoryWrapper deviceSource)
         {
             // Device to Unified copy
-            var sourceView = deviceSource.GetBuffer().GetSubView((int)sourceOffset, (int)sizeBytes);
-            var destView = _memoryBuffer.GetSubView((int)destinationOffset, (int)sizeBytes);
+            var sourceView = deviceSource.GetBuffer().View.SubView((int)sourceOffset, (int)sizeBytes);
+            var destView = _memoryBuffer.View.SubView((int)destinationOffset, (int)sizeBytes);
             sourceView.CopyTo(stream, destView);
         }
         else
@@ -313,7 +313,7 @@ internal sealed class ILGPUUnifiedMemory : IUnifiedMemory
     {
         var accelerator = _device.Accelerator;
         var stream = accelerator.DefaultStream;
-        var targetView = _memoryBuffer.GetSubView((int)offsetBytes, (int)sizeBytes);
+        var targetView = _memoryBuffer.View.SubView((int)offsetBytes, (int)sizeBytes);
 
         if (value == 0)
         {
@@ -330,7 +330,7 @@ internal sealed class ILGPUUnifiedMemory : IUnifiedMemory
 
     public IDeviceMemory CreateView(long offsetBytes, long sizeBytes)
     {
-        var subBuffer = _memoryBuffer.GetSubView((int)offsetBytes, (int)sizeBytes);
+        var subBuffer = _memoryBuffer.View.SubView((int)offsetBytes, (int)sizeBytes);
         return new ILGPUUnifiedMemory(subBuffer, _device, sizeBytes, _options, _logger);
     }
 

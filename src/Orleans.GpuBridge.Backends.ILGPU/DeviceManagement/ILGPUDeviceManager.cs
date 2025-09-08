@@ -49,46 +49,46 @@ internal sealed class ILGPUDeviceManager : IDeviceManager
             // Discover all available accelerators
             var accelerators = new List<Accelerator>();
 
-            // Try to create CUDA accelerators
-            try
+            // Enumerate all available devices and create accelerators
+            foreach (var device in _context)
             {
-                for (int i = 0; i < CudaAccelerator.CUDAAccelerators.Length; i++)
+                try
                 {
-                    var cudaAccelerator = CudaAccelerator.Create(_context, i);
-                    accelerators.Add(cudaAccelerator);
-                    _logger.LogDebug("Found CUDA device {Index}: {Name}", i, cudaAccelerator.Name);
+                    var accelerator = device.CreateAccelerator(_context);
+                    accelerators.Add(accelerator);
+                    
+                    var deviceType = accelerator.AcceleratorType switch
+                    {
+                        AcceleratorType.Cuda => "CUDA",
+                        AcceleratorType.OpenCL => "OpenCL", 
+                        AcceleratorType.CPU => "CPU",
+                        _ => "Unknown"
+                    };
+                    
+                    _logger.LogDebug("Created {DeviceType} accelerator: {Name}", deviceType, accelerator.Name);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogDebug(ex, "Failed to create accelerator for device: {DeviceName}", 
+                        device.Name);
                 }
             }
-            catch (Exception ex)
-            {
-                _logger.LogDebug(ex, "No CUDA accelerators available");
-            }
 
-            // Try to create OpenCL accelerators
-            try
+            // Ensure we have at least one accelerator (CPU fallback)
+            if (accelerators.Count == 0)
             {
-                for (int i = 0; i < CLAccelerator.CLAccelerators.Length; i++)
+                try
                 {
-                    var clAccelerator = CLAccelerator.Create(_context, i);
-                    accelerators.Add(clAccelerator);
-                    _logger.LogDebug("Found OpenCL device {Index}: {Name}", i, clAccelerator.Name);
+                    var cpuDevice = _context.GetCPUDevice();
+                    var cpuAccelerator = cpuDevice.CreateAccelerator(_context);
+                    accelerators.Add(cpuAccelerator);
+                    _logger.LogDebug("Created CPU fallback accelerator: {Name}", cpuAccelerator.Name);
                 }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogDebug(ex, "No OpenCL accelerators available");
-            }
-
-            // Always create CPU accelerator as fallback
-            try
-            {
-                var cpuAccelerator = CPUAccelerator.Create(_context);
-                accelerators.Add(cpuAccelerator);
-                _logger.LogDebug("Created CPU accelerator: {Name}", cpuAccelerator.Name);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to create CPU accelerator");
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to create CPU fallback accelerator");
+                    throw new InvalidOperationException("No accelerators available for GPU bridge", ex);
+                }
             }
 
             // Create device wrappers

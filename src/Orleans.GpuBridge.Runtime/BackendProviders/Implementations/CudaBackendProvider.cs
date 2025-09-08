@@ -93,7 +93,13 @@ internal class CudaBackendProvider : IBackendProvider
     /// </remarks>
     public IComputeContext CreateContext(int deviceIndex = 0)
     {
-        throw new NotImplementedException("CUDA backend provider is not yet implemented");
+        if (!IsAvailable)
+        {
+            throw new InvalidOperationException("CUDA backend is not available on this system");
+        }
+        
+        _logger.LogInformation("Creating CUDA compute context");
+        return new CudaComputeContext(_logger);
     }
 
     /// <summary>

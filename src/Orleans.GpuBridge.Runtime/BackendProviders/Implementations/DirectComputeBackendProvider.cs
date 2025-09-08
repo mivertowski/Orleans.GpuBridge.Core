@@ -94,7 +94,8 @@ internal class DirectComputeBackendProvider : IBackendProvider
     /// </remarks>
     public IComputeContext CreateContext(int deviceIndex = 0)
     {
-        throw new NotImplementedException("DirectCompute backend provider is not yet implemented");
+        _logger.LogInformation("Creating DirectCompute compute context (fallback to CPU implementation)");
+        return new CpuComputeContext(_logger); // Fallback to CPU until DirectCompute is implemented
     }
 
     /// <summary>

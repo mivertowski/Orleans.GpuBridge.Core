@@ -61,6 +61,42 @@ public sealed record DeviceSelectionCriteria
     /// </summary>
     [Id(8)]
     public bool AllowCpuFallback { get; init; } = true;
+    
+    /// <summary>
+    /// Minimum memory size in bytes (legacy property)
+    /// </summary>
+    [Id(9)]
+    public long MinMemoryBytes { get; init; }
+    
+    /// <summary>
+    /// Minimum compute units required
+    /// </summary>
+    [Id(10)]
+    public int MinComputeUnits { get; init; }
+    
+    /// <summary>
+    /// Device IDs to exclude
+    /// </summary>
+    [Id(11)]
+    public List<int> ExcludeDevices { get; init; } = new();
+    
+    /// <summary>
+    /// Prefer highest performance devices
+    /// </summary>
+    [Id(12)]
+    public bool PreferHighestPerformance { get; init; }
+    
+    /// <summary>
+    /// Require unified memory support
+    /// </summary>
+    [Id(13)]
+    public bool RequireUnifiedMemory { get; init; }
+    
+    /// <summary>
+    /// Required feature for device selection
+    /// </summary>
+    [Id(14)]
+    public DeviceFeatures RequiredFeature { get; init; } = DeviceFeatures.None;
 }
 
 /// <summary>

@@ -100,6 +100,7 @@ internal sealed class CpuPassthroughKernel<TIn, TOut> : IGpuKernel<TIn, TOut>
         KernelHandle handle,
         [EnumeratorCancellation] CancellationToken ct = default)
     {
+        await Task.Yield(); // Ensure async
         if (!_batches.TryGetValue(handle.Id, out var items))
         {
             yield break;
@@ -177,6 +178,7 @@ public sealed class CpuVectorAddKernel : IGpuKernel<float[], float>
         KernelHandle handle,
         [EnumeratorCancellation] CancellationToken ct = default)
     {
+        await Task.Yield(); // Ensure async
         if (!_batches.TryGetValue(handle.Id, out var items))
         {
             yield break;

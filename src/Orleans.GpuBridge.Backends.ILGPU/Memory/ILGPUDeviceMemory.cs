@@ -68,7 +68,7 @@ internal sealed class ILGPUDeviceMemoryWrapper : IDeviceMemory
             var stream = accelerator.DefaultStream;
 
             // Create a view of the target region
-            var targetView = _memoryBuffer.GetSubView((int)offsetBytes, (int)sizeBytes);
+            var targetView = _memoryBuffer.View.SubView((int)offsetBytes, (int)sizeBytes);
 
             unsafe
             {
@@ -113,7 +113,7 @@ internal sealed class ILGPUDeviceMemoryWrapper : IDeviceMemory
             var stream = accelerator.DefaultStream;
 
             // Create a view of the source region
-            var sourceView = _memoryBuffer.GetSubView((int)offsetBytes, (int)sizeBytes);
+            var sourceView = _memoryBuffer.View.SubView((int)offsetBytes, (int)sizeBytes);
 
             unsafe
             {
@@ -164,8 +164,8 @@ internal sealed class ILGPUDeviceMemoryWrapper : IDeviceMemory
             var stream = accelerator.DefaultStream;
 
             // Create views of source and destination regions
-            var sourceView = ilgpuSource._memoryBuffer.GetSubView((int)sourceOffset, (int)sizeBytes);
-            var destView = _memoryBuffer.GetSubView((int)destinationOffset, (int)sizeBytes);
+            var sourceView = ilgpuSource._memoryBuffer.View.SubView((int)sourceOffset, (int)sizeBytes);
+            var destView = _memoryBuffer.View.SubView((int)destinationOffset, (int)sizeBytes);
 
             // Copy between device buffers
             destView.CopyFrom(stream, sourceView);
@@ -203,7 +203,7 @@ internal sealed class ILGPUDeviceMemoryWrapper : IDeviceMemory
             var stream = accelerator.DefaultStream;
 
             // Create a view of the target region
-            var targetView = _memoryBuffer.GetSubView((int)offsetBytes, (int)sizeBytes);
+            var targetView = _memoryBuffer.View.SubView((int)offsetBytes, (int)sizeBytes);
 
             // Fill with the specified byte value
             targetView.MemSetToZero(stream); // ILGPU only supports zero fill directly
@@ -244,7 +244,7 @@ internal sealed class ILGPUDeviceMemoryWrapper : IDeviceMemory
             throw new ArgumentOutOfRangeException(nameof(offsetBytes), "View range exceeds buffer bounds");
 
         // Create a sub-view of the memory buffer
-        var subBuffer = _memoryBuffer.GetSubView((int)offsetBytes, (int)sizeBytes);
+        var subBuffer = _memoryBuffer.View.SubView((int)offsetBytes, (int)sizeBytes);
         
         return new ILGPUDeviceMemoryWrapper(
             subBuffer,
@@ -355,7 +355,7 @@ internal sealed class ILGPUDeviceMemoryWrapper<T> : IDeviceMemory<T> where T : u
             var stream = accelerator.DefaultStream;
 
             // Create a view of the target region
-            var targetView = _memoryBuffer.GetSubView(destinationOffset, count);
+            var targetView = _memoryBuffer.View.SubView(destinationOffset, count);
 
             // Copy from host array
             var sourceSpan = source.AsSpan(sourceOffset, count);
@@ -401,7 +401,7 @@ internal sealed class ILGPUDeviceMemoryWrapper<T> : IDeviceMemory<T> where T : u
             var stream = accelerator.DefaultStream;
 
             // Create a view of the source region
-            var sourceView = _memoryBuffer.GetSubView(sourceOffset, count);
+            var sourceView = _memoryBuffer.View.SubView(sourceOffset, count);
 
             // Copy to host array
             var destSpan = destination.AsSpan(destinationOffset, count);
@@ -440,7 +440,7 @@ internal sealed class ILGPUDeviceMemoryWrapper<T> : IDeviceMemory<T> where T : u
             var stream = accelerator.DefaultStream;
 
             // Create a view of the target region
-            var targetView = _memoryBuffer.GetSubView(offset, count);
+            var targetView = _memoryBuffer.View.SubView(offset, count);
 
             // Check if we can use the optimized zero fill
             if (EqualityComparer<T>.Default.Equals(value, default(T)))
@@ -516,8 +516,8 @@ internal sealed class ILGPUDeviceMemoryWrapper<T> : IDeviceMemory<T> where T : u
         var accelerator = _device.Accelerator;
         var stream = accelerator.DefaultStream;
 
-        var sourceView = typedSource._memoryBuffer.GetSubView(elementSourceOffset, elementCount);
-        var destView = _memoryBuffer.GetSubView(elementDestOffset, elementCount);
+        var sourceView = typedSource._memoryBuffer.View.SubView(elementSourceOffset, elementCount);
+        var destView = _memoryBuffer.View.SubView(elementDestOffset, elementCount);
 
         destView.CopyFrom(stream, sourceView);
         stream.Synchronize();
@@ -535,7 +535,7 @@ internal sealed class ILGPUDeviceMemoryWrapper<T> : IDeviceMemory<T> where T : u
         var elementOffset = (int)(offsetBytes / elementSize);
         var elementCount = (int)(sizeBytes / elementSize);
 
-        var subBuffer = _memoryBuffer.GetSubView(elementOffset, elementCount);
+        var subBuffer = _memoryBuffer.View.SubView(elementOffset, elementCount);
         
         return new ILGPUDeviceMemoryWrapper<T>(
             subBuffer,

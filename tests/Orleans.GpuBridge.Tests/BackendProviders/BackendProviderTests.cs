@@ -499,7 +499,8 @@ public class OtherBackendProvidersTests
         provider.Initialize();
 
         // Act & Assert
-        Assert.Throws<NotImplementedException>(() => provider.CreateContext());
+        var context = provider.CreateContext();
+        Assert.NotNull(context); // Now returns CPU fallback context instead of throwing
     }
 }
 

@@ -126,7 +126,7 @@ internal sealed class ILGPUKernelExecution : IKernelExecution
     internal void SetRunning()
     {
         _status = KernelExecutionStatus.Running;
-        _progress = 0.1; // Small progress to indicate start
+        _progressInt = 10; // Small progress to indicate start (10%)
         
         _logger.LogDebug("Kernel execution started: {ExecutionId}", ExecutionId);
     }
@@ -138,7 +138,7 @@ internal sealed class ILGPUKernelExecution : IKernelExecution
             throw new ArgumentOutOfRangeException(nameof(progress), "Progress must be between 0.0 and 1.0");
         }
 
-        _progress = progress;
+        _progressInt = (int)(progress * 100);
         
         _logger.LogTrace("Kernel execution progress: {ExecutionId} - {Progress:P1}", ExecutionId, progress);
     }
@@ -345,7 +345,7 @@ internal sealed class ILGPUKernelGraph : IKernelGraph
                 Name,
                 executionOrder,
                 _executor,
-                _logger.CreateLogger<ILGPUCompiledGraph>());
+                _logger); // Use the existing logger
 
             _logger.LogInformation("ILGPU kernel graph compilation completed: {GraphName}", Name);
 

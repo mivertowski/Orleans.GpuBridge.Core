@@ -69,7 +69,7 @@ internal sealed class ILGPUComputeDevice : IComputeDevice, IDisposable
         {
             "shared-memory" => Accelerator.AcceleratorType != AcceleratorType.CPU,
             "atomics" => true, // ILGPU supports atomics on all accelerators
-            "warp-shuffle" => Accelerator.AcceleratorType == AcceleratorType.CUDA,
+            "warp-shuffle" => Accelerator.AcceleratorType == AcceleratorType.Cuda,
             "local-memory" => Accelerator.AcceleratorType != AcceleratorType.CPU,
             "64bit-global-memory" => true,
             "unified-memory" => Accelerator is CudaAccelerator,
@@ -103,7 +103,7 @@ internal sealed class ILGPUComputeDevice : IComputeDevice, IDisposable
         return acceleratorType switch
         {
             AcceleratorType.CPU => DeviceType.CPU,
-            AcceleratorType.CUDA => DeviceType.CUDA,
+            AcceleratorType.Cuda => DeviceType.CUDA,
             AcceleratorType.OpenCL => DeviceType.OpenCL,
             _ => DeviceType.Custom
         };

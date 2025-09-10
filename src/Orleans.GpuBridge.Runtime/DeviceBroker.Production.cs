@@ -18,8 +18,6 @@ namespace Orleans.GpuBridge.Runtime;
 /// </summary>
 public sealed partial class DeviceBroker
 {
-    private readonly ConcurrentDictionary<string, DeviceHealthInfo> _deviceHealth = new();
-    private readonly ConcurrentDictionary<string, DeviceLoadInfo> _deviceLoad = new();
     private readonly ConcurrentDictionary<string, DeviceCapabilityCache> _deviceCapabilities = new();
     private readonly SemaphoreSlim _deviceDiscoveryLock = new(1, 1);
     private readonly Random _random = new();
@@ -212,87 +210,7 @@ public sealed partial class DeviceBroker
         return devices;
     }
 
-    /// <summary>
-    /// Production-grade device health monitoring with predictive failure detection
-    /// </summary>
-    private async Task MonitorDeviceHealthAsync(CancellationToken ct)
-    {
-        if (!_isHealthMonitoringEnabled) return;
-        
-        var healthCheckTasks = _availableDevices.Select(async device =>
-        {
-            try
-            {
-                var healthInfo = await CheckDeviceHealth(device, ct);
-                _deviceHealth[device.Id] = healthInfo;
-                
-                // Predictive failure detection
-                if (healthInfo.TemperatureCelsius > 85 || healthInfo.MemoryUtilizationPercent > 95.0)
-                {
-                    _logger.LogWarning("Device {DeviceId} showing stress indicators: Temp={Temp}°C, Memory={MemUtil:F1}%",
-                        device.Id, healthInfo.TemperatureCelsius, healthInfo.MemoryUtilizationPercent);
-                    
-                    // Implement throttling or temporary device removal
-                    await HandleDeviceStress(device, healthInfo, ct);
-                }
-                
-                // Update device status based on health
-                if (healthInfo.IsHealthy)
-                {
-                    device.Status = DeviceStatus.Available;
-                }
-                else
-                {
-                    device.Status = DeviceStatus.Error;
-                    _logger.LogError("Device {DeviceId} failed health check", device.Id);
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Health check failed for device {DeviceId}", device.Id);
-                device.Status = DeviceStatus.Error;
-            }
-        }).ToArray();
-        
-        await Task.WhenAll(healthCheckTasks);
-    }
-
-    /// <summary>
-    /// Advanced load balancing with performance prediction and adaptive scheduling
-    /// </summary>
-    private async Task UpdateLoadBalancingAsync(CancellationToken ct)
-    {
-        if (!_isLoadBalancingEnabled) return;
-        
-        try
-        {
-            foreach (var device in _availableDevices.Where(d => d.Status == DeviceStatus.Available))
-            {
-                var loadInfo = await CalculateDeviceLoad(device, ct);
-                _deviceLoad[device.Id] = loadInfo;
-                
-                // Dynamic performance scaling based on load
-                if (loadInfo.CurrentUtilization > 90.0f)
-                {
-                    // Reduce priority for overloaded devices
-                    loadInfo.SelectionWeight *= 0.5f;
-                    _logger.LogDebug("Reduced selection weight for overloaded device {DeviceId}", device.Id);
-                }
-                else if (loadInfo.CurrentUtilization < 30.0f)
-                {
-                    // Increase priority for underutilized devices
-                    loadInfo.SelectionWeight *= 1.2f;
-                }
-                
-                // Predictive load balancing based on historical performance
-                await UpdatePerformancePrediction(device, loadInfo, ct);
-            }
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Load balancing update failed");
-        }
-    }
+    // Removed duplicate methods - these are now implemented in the main DeviceBroker.cs file
 
     /// <summary>
     /// Sophisticated device selection algorithm with multi-criteria optimization

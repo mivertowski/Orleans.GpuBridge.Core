@@ -2,7 +2,9 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions;
 using Orleans.GpuBridge.Diagnostics;
+using Orleans.GpuBridge.Diagnostics.Abstractions;
 using Orleans.GpuBridge.HealthChecks;
+using Orleans.GpuBridge.HealthChecks.Implementation;
 using Xunit;
 
 namespace Orleans.GpuBridge.Tests.HealthChecks;

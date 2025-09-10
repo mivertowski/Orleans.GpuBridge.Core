@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.GpuBridge.Abstractions;
 using Orleans.GpuBridge.Grains;
+using Orleans.GpuBridge.Grains.Batch;
 using Xunit;
 using Xunit.Abstractions;
 

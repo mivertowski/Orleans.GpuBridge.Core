@@ -2,7 +2,9 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Abstractions.Kernels;
 using Orleans.GpuBridge.Runtime;
+using Orleans.GpuBridge.Runtime.Extensions;
 using Xunit;
 
 namespace Orleans.GpuBridge.Tests;

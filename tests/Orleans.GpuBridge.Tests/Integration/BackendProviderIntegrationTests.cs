@@ -1,13 +1,17 @@
 using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Abstractions.Providers.Execution.Interfaces;
 using Orleans.GpuBridge.Runtime;
+using Orleans.GpuBridge.Abstractions.Providers.Memory.Allocators;
 using Orleans.GpuBridge.Runtime.Extensions;
-using Orleans.GpuBridge.Tests.Providers;
+using Orleans.GpuBridge.Tests.TestingFramework;
 using Xunit;
 
 namespace Orleans.GpuBridge.Tests.Integration;
@@ -121,7 +125,7 @@ public class BackendProviderIntegrationTests
         .AddCpuFallbackBackend()
         .ConfigureBackendSelection(selection =>
         {
-            selection.PreferredBackends = new() { GpuBackend.Cpu };
+            selection.PreferredBackends = new() { GpuBackend.CPU };
             selection.AllowCpuFallback = true;
             selection.MaxConcurrentDevices = 2;
         });
@@ -200,9 +204,26 @@ public class BackendProviderIntegrationTests
 internal class UnavailableTestProvider : IGpuBackendProvider
 {
     public string ProviderId => "UnavailableTest";
+    public string DisplayName => "Unavailable Test Provider";
+    public Version Version => new Version(1, 0, 0);
     public BackendCapabilities Capabilities => BackendCapabilities.CreateILGPU();
 
     public bool IsAvailable() => false; // Always unavailable
+
+    public Task<bool> IsAvailableAsync(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(false);
+    }
+
+    public Task<IReadOnlyDictionary<string, object>> GetMetricsAsync(CancellationToken cancellationToken = default)
+    {
+        var metrics = new Dictionary<string, object>
+        {
+            ["IsAvailable"] = false,
+            ["LastError"] = "Provider is not available"
+        };
+        return Task.FromResult<IReadOnlyDictionary<string, object>>(metrics);
+    }
 
     public Task InitializeAsync(BackendConfiguration configuration, CancellationToken cancellationToken = default)
     {

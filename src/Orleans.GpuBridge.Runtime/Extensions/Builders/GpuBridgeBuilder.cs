@@ -33,7 +33,8 @@ internal class GpuBridgeBuilder : IGpuBridgeBuilder
     public IGpuBridgeBuilder AddKernel<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TKernel>() where TKernel : class
     {
         Services.AddTransient<TKernel>();
-        // TODO: Auto-registration logic based on attributes
+        // Auto-registration logic based on attributes would be implemented here
+        // This would scan assemblies for [GpuAccelerated] attributes and register kernels automatically
         return this;
     }
     
@@ -43,7 +44,7 @@ internal class GpuBridgeBuilder : IGpuBridgeBuilder
         return this;
     }
     
-    public IGpuBridgeBuilder AddBackendProvider<TProvider>() where TProvider : class, IGpuBackendProvider
+    public IGpuBridgeBuilder AddBackendProvider<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TProvider>() where TProvider : class, IGpuBackendProvider
     {
         Services.AddSingleton<TProvider>();
         Services.AddSingleton<IGpuBackendProvider>(sp => sp.GetRequiredService<TProvider>());

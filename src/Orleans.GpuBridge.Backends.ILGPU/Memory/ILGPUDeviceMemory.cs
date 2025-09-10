@@ -11,9 +11,17 @@ using Orleans.GpuBridge.Backends.ILGPU.DeviceManagement;
 namespace Orleans.GpuBridge.Backends.ILGPU.Memory;
 
 /// <summary>
+/// Base interface for ILGPU memory wrappers
+/// </summary>
+internal interface IILGPUMemoryWrapper : IDisposable
+{
+    IntPtr DevicePointer { get; }
+}
+
+/// <summary>
 /// ILGPU device memory wrapper (untyped)
 /// </summary>
-internal sealed class ILGPUDeviceMemoryWrapper : IDeviceMemory
+internal sealed class ILGPUDeviceMemoryWrapper : IDeviceMemory, IILGPUMemoryWrapper
 {
     private readonly MemoryBuffer1D<byte, Stride1D.Dense> _memoryBuffer;
     private readonly ILGPUComputeDevice _device;
@@ -210,7 +218,8 @@ internal sealed class ILGPUDeviceMemoryWrapper : IDeviceMemory
 
             if (value != 0)
             {
-                // For non-zero values, we need to copy from a host buffer TODO
+                // For non-zero values, we need to copy from a host buffer
+                // This implements the fill operation using ILGPU memory operations
                 var fillBuffer = new byte[sizeBytes];
                 Array.Fill(fillBuffer, value);
                 
@@ -244,10 +253,15 @@ internal sealed class ILGPUDeviceMemoryWrapper : IDeviceMemory
             throw new ArgumentOutOfRangeException(nameof(offsetBytes), "View range exceeds buffer bounds");
 
         // Create a sub-view of the memory buffer
-        var subBuffer = _memoryBuffer.View.SubView((int)offsetBytes, (int)sizeBytes);
+        // Note: ILGPU doesn't support creating subbuffers from views directly
+        // As a workaround, we'll create a new buffer and copy the data
+        var device = _device.Accelerator;
+        var newBuffer = device.Allocate1D<byte>((int)sizeBytes);
+        var sourceView = _memoryBuffer.View.SubView((int)offsetBytes, (int)sizeBytes);
+        newBuffer.View.CopyFrom(device.DefaultStream, sourceView);
         
         return new ILGPUDeviceMemoryWrapper(
-            subBuffer,
+            newBuffer,
             _device,
             sizeBytes,
             _allocator,
@@ -289,7 +303,7 @@ internal sealed class ILGPUDeviceMemoryWrapper : IDeviceMemory
 /// <summary>
 /// ILGPU device memory wrapper (typed)
 /// </summary>
-internal sealed class ILGPUDeviceMemoryWrapper<T> : IDeviceMemory<T> where T : unmanaged
+internal sealed class ILGPUDeviceMemoryWrapper<T> : IDeviceMemory<T>, IILGPUMemoryWrapper where T : unmanaged
 {
     private readonly MemoryBuffer1D<T, Stride1D.Dense> _memoryBuffer;
     private readonly ILGPUComputeDevice _device;
@@ -535,10 +549,19 @@ internal sealed class ILGPUDeviceMemoryWrapper<T> : IDeviceMemory<T> where T : u
         var elementOffset = (int)(offsetBytes / elementSize);
         var elementCount = (int)(sizeBytes / elementSize);
 
-        var subBuffer = _memoryBuffer.View.SubView(elementOffset, elementCount);
+        // Create a new memory buffer for the typed view
+        var accelerator = _device.Accelerator;
+        var newBuffer = accelerator.Allocate1D<T>(elementCount);
+        
+        // Copy data from the original buffer
+        var sourceView = _memoryBuffer.View.SubView(elementOffset, elementCount);
+        var stream = accelerator.DefaultStream;
+        
+        // Copy the data
+        newBuffer.View.CopyFrom(stream, sourceView);
         
         return new ILGPUDeviceMemoryWrapper<T>(
-            subBuffer,
+            newBuffer,
             _device,
             elementCount,
             _allocator,

@@ -163,7 +163,7 @@ public static class ImageProcessingKernels
             return;
         
         var pixelValue = input[index];
-        var equalizedValue = (byte)(cdf[pixelValue] * 255.0f);
+        var equalizedValue = (byte)(cdf[(int)pixelValue] * 255.0f);
         output[index] = equalizedValue;
     }
 
@@ -357,7 +357,7 @@ public static class ImageProcessingKernels
         if (index >= input.Length)
             return;
         
-        output[index] = XMath.Clamp(input[index] + brightness, 0.0f, 1.0f);
+        output[(int)index] = XMath.Clamp(input[(int)index] + brightness, 0.0f, 1.0f);
     }
 
     /// <summary>
@@ -372,9 +372,9 @@ public static class ImageProcessingKernels
         if (index >= input.Length)
             return;
         
-        var value = input[index];
+        var value = input[(int)index];
         var adjusted = 0.5f + contrast * (value - 0.5f);
-        output[index] = XMath.Clamp(adjusted, 0.0f, 1.0f);
+        output[(int)index] = XMath.Clamp(adjusted, 0.0f, 1.0f);
     }
 
     /// <summary>
@@ -389,7 +389,7 @@ public static class ImageProcessingKernels
         if (index >= input.Length)
             return;
         
-        output[index] = XMath.Pow(input[index], 1.0f / gamma);
+        output[(int)index] = XMath.Pow(input[(int)index], 1.0f / gamma);
     }
 
     /// <summary>

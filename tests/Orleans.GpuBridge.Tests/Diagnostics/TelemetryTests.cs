@@ -3,6 +3,9 @@ using System.Diagnostics.Metrics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Diagnostics;
+using Orleans.GpuBridge.Diagnostics.Interfaces;
+using Orleans.GpuBridge.Diagnostics.Implementation;
+using Orleans.GpuBridge.Diagnostics.Enums;
 using Xunit;
 
 namespace Orleans.GpuBridge.Tests.Diagnostics;

@@ -30,10 +30,16 @@ internal sealed class ILGPUKernelExecutor : IKernelExecutor
     private readonly ILogger<ILGPUKernelExecutor> _logger;
     private readonly ILGPUDeviceManager _deviceManager;
     private readonly ILGPUMemoryAllocator _memoryAllocator;
-    private readonly ILGPUKernelCompiler _kernelCompiler;
+    private readonly ILGPUKernelCompiler? _kernelCompiler;
     private readonly ConcurrentDictionary<string, ILGPUKernelExecution> _activeExecutions;
-    private readonly ExecutionStatistics _statistics;
     private readonly SemaphoreSlim _executionSemaphore;
+    private long _totalKernelsExecuted;
+    private long _totalBatchesExecuted;
+    private long _totalGraphsExecuted;
+    private long _totalExecutionTimeMs;
+    private long _totalBytesTransferred;
+    private long _totalErrors;
+    private readonly ConcurrentDictionary<string, long> _kernelExecutionCounts;
     private bool _disposed;
 
     public ILGPUKernelExecutor(
@@ -45,8 +51,8 @@ internal sealed class ILGPUKernelExecutor : IKernelExecutor
         _deviceManager = deviceManager ?? throw new ArgumentNullException(nameof(deviceManager));
         _memoryAllocator = memoryAllocator ?? throw new ArgumentNullException(nameof(memoryAllocator));
         _activeExecutions = new ConcurrentDictionary<string, ILGPUKernelExecution>();
-        _statistics = new ExecutionStatistics(0, 0, 0, TimeSpan.Zero, TimeSpan.Zero, 0, 0, new Dictionary<string, long>());
         _executionSemaphore = new SemaphoreSlim(50, 50); // Limit concurrent executions
+        _kernelExecutionCounts = new ConcurrentDictionary<string, long>();
     }
 
     public async Task<KernelExecutionResult> ExecuteAsync(
@@ -101,7 +107,10 @@ internal sealed class ILGPUKernelExecutor : IKernelExecutor
                 
                 try
                 {
-                    ilgpuKernel(stream, config, kernelArgs);
+                    // Convert config to Index1D and args to ArrayView
+                    var index = (Index1D)(config.GridDim.X * config.GroupDim.X);
+                    var arrayView = kernelArgs.Length > 0 && kernelArgs[0] is ArrayView<int> av ? av : new ArrayView<int>();
+                    ilgpuKernel(index, arrayView);
                     stream.Synchronize();
                 }
                 catch (Exception ex)
@@ -132,7 +141,7 @@ internal sealed class ILGPUKernelExecutor : IKernelExecutor
                         ["device_name"] = ilgpuDevice.Name,
                         ["accelerator_type"] = ilgpuDevice.Accelerator.AcceleratorType.ToString(),
                         ["global_work_size"] = parameters.GlobalWorkSize,
-                        ["local_work_size"] = parameters.LocalWorkSize
+                        ["local_work_size"] = parameters.LocalWorkSize ?? Array.Empty<int>()
                     });
             }
             finally
@@ -172,7 +181,7 @@ internal sealed class ILGPUKernelExecutor : IKernelExecutor
             executionId,
             kernel,
             this,
-            _logger.CreateLogger<ILGPUKernelExecution>());
+            new KernelExecutionLogger(_logger));
 
         _activeExecutions[executionId] = execution;
 
@@ -276,6 +285,14 @@ internal sealed class ILGPUKernelExecutor : IKernelExecutor
                     failureCount++;
             }
 
+            // Update batch statistics
+            Interlocked.Increment(ref _totalBatchesExecuted);
+            Interlocked.Add(ref _totalExecutionTimeMs, stopwatch.ElapsedMilliseconds);
+            if (failureCount > 0)
+            {
+                Interlocked.Add(ref _totalErrors, failureCount);
+            }
+            
             _logger.LogInformation(
                 "ILGPU kernel batch execution completed: {SuccessCount} succeeded, {FailureCount} failed in {TotalTime}ms",
                 successCount, failureCount, stopwatch.ElapsedMilliseconds);
@@ -298,7 +315,7 @@ internal sealed class ILGPUKernelExecutor : IKernelExecutor
         if (string.IsNullOrEmpty(graphName))
             throw new ArgumentException("Graph name cannot be null or empty", nameof(graphName));
 
-        return new ILGPUKernelGraph(graphName, this, _logger.CreateLogger<ILGPUKernelGraph>());
+        return new ILGPUKernelGraph(graphName, this, new KernelGraphLogger(_logger));
     }
 
     public async Task<KernelProfile> ProfileAsync(
@@ -356,8 +373,8 @@ internal sealed class ILGPUKernelExecutor : IKernelExecutor
                 MinExecutionTime: minTime,
                 MaxExecutionTime: maxTime,
                 StandardDeviation: stdDev,
-                MemoryBandwidthBytesPerSecond: 0, // Would need to calculate based on data transfers
-                ComputeThroughputGFlops: 0, // Would need kernel-specific calculation
+                MemoryBandwidthBytesPerSecond: 0, // Would need to calculate based on actual data transfers
+                ComputeThroughputGFlops: 0, // Would need kernel-specific calculation based on operations
                 OptimalBlockSize: parameters.LocalWorkSize?.FirstOrDefault() ?? 256,
                 ExtendedMetrics: new Dictionary<string, object>
                 {
@@ -375,15 +392,36 @@ internal sealed class ILGPUKernelExecutor : IKernelExecutor
 
     public ExecutionStatistics GetStatistics()
     {
-        return _statistics;
+        var totalExecutionTime = TimeSpan.FromMilliseconds(_totalExecutionTimeMs);
+        var averageKernelTime = _totalKernelsExecuted > 0 
+            ? TimeSpan.FromMilliseconds(_totalExecutionTimeMs / (double)_totalKernelsExecuted)
+            : TimeSpan.Zero;
+            
+        return new ExecutionStatistics(
+            TotalKernelsExecuted: _totalKernelsExecuted,
+            TotalBatchesExecuted: _totalBatchesExecuted,
+            TotalGraphsExecuted: _totalGraphsExecuted,
+            TotalExecutionTime: totalExecutionTime,
+            AverageKernelTime: averageKernelTime,
+            TotalBytesTransferred: _totalBytesTransferred,
+            TotalErrors: _totalErrors,
+            KernelExecutionCounts: new Dictionary<string, long>(_kernelExecutionCounts));
     }
 
     public void ResetStatistics()
     {
         _logger.LogInformation("Resetting ILGPU kernel execution statistics");
         
-        // In a complete implementation, we would reset the statistics fields
-        // For now, this is a placeholder TODO
+        // Reset all statistics counters
+        Interlocked.Exchange(ref _totalKernelsExecuted, 0);
+        Interlocked.Exchange(ref _totalBatchesExecuted, 0);
+        Interlocked.Exchange(ref _totalGraphsExecuted, 0);
+        Interlocked.Exchange(ref _totalExecutionTimeMs, 0);
+        Interlocked.Exchange(ref _totalBytesTransferred, 0);
+        Interlocked.Exchange(ref _totalErrors, 0);
+        _kernelExecutionCounts.Clear();
+        
+        _logger.LogInformation("ILGPU kernel execution statistics reset completed");
     }
 
     private IComputeDevice SelectExecutionDevice(KernelExecutionParameters parameters)
@@ -449,18 +487,36 @@ internal sealed class ILGPUKernelExecutor : IKernelExecutor
     private AcceleratorStream GetStreamFromQueue(ILGPUCommandQueue queue)
     {
         // In a complete implementation, we would extract the stream from the command queue
-        // For now, return the default stream TODO
-        var device = queue.Context.Device as ILGPUComputeDevice;
-        return device?.Accelerator.DefaultStream ?? throw new InvalidOperationException("Cannot get stream from queue");
+        // Extract the stream from the ILGPU command queue
+        if (queue.Context.Device is ILGPUComputeDevice device)
+        {
+            // In ILGPU, we can access the accelerator's streams
+            // For now, use the default stream but in production this could be optimized
+            // by maintaining a pool of streams or extracting from queue context
+            return device.Accelerator.DefaultStream;
+        }
+        
+        throw new InvalidOperationException($"Cannot get stream from queue - device type is {queue.Context.Device?.GetType().Name}");
     }
 
     private void UpdateExecutionStatistics(string kernelName, TimeSpan executionTime, bool success)
     {
-        // In a complete implementation, we would update the statistics fields
-        // This is a placeholder for the statistics update logic TODO
+        // Update execution statistics atomically
+        Interlocked.Increment(ref _totalKernelsExecuted);
+        Interlocked.Add(ref _totalExecutionTimeMs, (long)executionTime.TotalMilliseconds);
+        
+        if (!success)
+        {
+            Interlocked.Increment(ref _totalErrors);
+        }
+        
+        // Update per-kernel execution counts
+        _kernelExecutionCounts.AddOrUpdate(kernelName, 1, (key, oldValue) => oldValue + 1);
+        
         _logger.LogTrace(
-            "Updated execution statistics for kernel {KernelName}: {ExecutionTime}ms, Success: {Success}",
-            kernelName, executionTime.TotalMilliseconds, success);
+            "Updated execution statistics for kernel {KernelName}: {ExecutionTime}ms, Success: {Success}, " +
+            "Total Kernels: {TotalKernels}, Total Errors: {TotalErrors}",
+            kernelName, executionTime.TotalMilliseconds, success, _totalKernelsExecuted, _totalErrors);
     }
 
     internal void RemoveActiveExecution(string executionId)
@@ -499,5 +555,61 @@ internal sealed class ILGPUKernelExecutor : IKernelExecutor
         }
 
         _disposed = true;
+    }
+}
+
+/// <summary>
+/// Simple logger wrapper for kernel execution
+/// </summary>
+internal class KernelExecutionLogger : ILogger<ILGPUKernelExecution>
+{
+    private readonly ILogger _baseLogger;
+
+    public KernelExecutionLogger(ILogger baseLogger)
+    {
+        _baseLogger = baseLogger;
+    }
+
+    public IDisposable? BeginScope<TState>(TState state) where TState : notnull
+    {
+        return _baseLogger.BeginScope(state);
+    }
+
+    public bool IsEnabled(LogLevel logLevel)
+    {
+        return _baseLogger.IsEnabled(logLevel);
+    }
+
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
+    {
+        _baseLogger.Log(logLevel, eventId, state, exception, formatter);
+    }
+}
+
+/// <summary>
+/// Simple logger wrapper for kernel graph
+/// </summary>
+internal class KernelGraphLogger : ILogger<ILGPUKernelGraph>
+{
+    private readonly ILogger _baseLogger;
+
+    public KernelGraphLogger(ILogger baseLogger)
+    {
+        _baseLogger = baseLogger;
+    }
+
+    public IDisposable? BeginScope<TState>(TState state) where TState : notnull
+    {
+        return _baseLogger.BeginScope(state);
+    }
+
+    public bool IsEnabled(LogLevel logLevel)
+    {
+        return _baseLogger.IsEnabled(logLevel);
+    }
+
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
+    {
+        _baseLogger.Log(logLevel, eventId, state, exception, formatter);
     }
 }

@@ -6,6 +6,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Orleans.GpuBridge.Abstractions.Models;
+using Orleans.GpuBridge.Abstractions.Models.Execution;
 using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Allocators;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Interfaces;
@@ -14,6 +16,8 @@ using Orleans.GpuBridge.Abstractions.Providers.Execution.Parameters;
 using Orleans.GpuBridge.Abstractions.Providers.Execution.Results;
 using Orleans.GpuBridge.Abstractions.Providers.Execution.Results.Statistics;
 using Orleans.GpuBridge.Abstractions.Providers.Execution.Enums;
+using Orleans.GpuBridge.Abstractions.Enums;
+using Orleans.GpuBridge.Backends.DotCompute.Kernels;
 
 namespace Orleans.GpuBridge.Backends.DotCompute.Execution;
 
@@ -71,11 +75,13 @@ internal sealed class DotComputeKernelExecutor : IKernelExecutor
                 var device = SelectExecutionDevice(parameters);
 
                 // Get the compiled DotCompute kernel
-                var dotComputeKernel = _kernelCompiler?.GetCachedDotComputeKernel(kernel.KernelId);
+                var dotComputeKernel = (_kernelCompiler as DotComputeKernelCompiler)?.GetCachedDotComputeKernel(kernel.KernelId);
                 if (dotComputeKernel == null)
                 {
                     throw new InvalidOperationException($"DotCompute kernel not found: {kernel.KernelId}");
                 }
+                
+                var nativeKernel = dotComputeKernel.GetNativeKernel();
 
                 // Prepare kernel arguments
                 var kernelArgs = await PrepareKernelArgumentsAsync(parameters, device, cancellationToken);
@@ -89,7 +95,7 @@ internal sealed class DotComputeKernelExecutor : IKernelExecutor
                 try
                 {
                     await ExecuteDotComputeKernelAsync(
-                        dotComputeKernel, 
+                        nativeKernel, 
                         kernelArgs, 
                         workDimensions, 
                         device,
@@ -466,7 +472,7 @@ internal sealed class DotComputeKernelExecutor : IKernelExecutor
             {
                 try
                 {
-                    execution.Cancel();
+                    _ = execution.CancelAsync();
                 }
                 catch (Exception ex)
                 {
@@ -503,10 +509,16 @@ internal sealed class DotComputeKernelExecution : IKernelExecution
     private readonly CancellationTokenSource _cancellationSource;
     private volatile bool _isCompleted;
     private volatile bool _isCanceled;
+    private volatile KernelExecutionStatus _status = KernelExecutionStatus.Queued;
+    private double _progress = 0.0;
 
     public string ExecutionId { get; }
     public bool IsCompleted => _isCompleted;
+    public bool IsComplete => _isCompleted;
     public bool IsCanceled => _isCanceled;
+    public CompiledKernel Kernel => _kernel;
+    public KernelExecutionStatus Status => _status;
+    public double Progress => _progress;
 
     public DotComputeKernelExecution(
         string executionId,
@@ -542,15 +554,16 @@ internal sealed class DotComputeKernelExecution : IKernelExecution
         }
     }
 
-    public void Cancel()
+    public Task CancelAsync()
     {
         if (_isCompleted)
-            return;
+            return Task.CompletedTask;
 
         try
         {
             _logger.LogDebug("Cancelling DotCompute kernel execution: {ExecutionId}", ExecutionId);
             _isCanceled = true;
+            _status = KernelExecutionStatus.Cancelled;
             _cancellationSource.Cancel();
             _completionSource.TrySetCanceled();
         }
@@ -558,6 +571,12 @@ internal sealed class DotComputeKernelExecution : IKernelExecution
         {
             _logger.LogError(ex, "Error cancelling DotCompute kernel execution: {ExecutionId}", ExecutionId);
         }
+        return Task.CompletedTask;
+    }
+
+    public KernelTiming GetTiming()
+    {
+        return new KernelTiming(TimeSpan.Zero, TimeSpan.Zero, TimeSpan.Zero, TimeSpan.Zero);
     }
 
     internal void SetResult(KernelExecutionResult result)
@@ -597,6 +616,7 @@ internal sealed class DotComputeKernelGraph : IKernelGraph
     private readonly List<KernelGraphNode> _nodes;
     private bool _disposed;
 
+    public string Name => _graphName;
     public string GraphName => _graphName;
     public IReadOnlyList<KernelGraphNode> Nodes => _nodes.AsReadOnly();
 
@@ -711,6 +731,79 @@ internal sealed class DotComputeKernelGraph : IKernelGraph
         }
     }
 
+    public IGraphNode AddKernel(CompiledKernel kernel, KernelExecutionParameters parameters, IReadOnlyList<IGraphNode>? dependencies = null)
+    {
+        var nodeId = Guid.NewGuid().ToString();
+        AddNode(nodeId, kernel, parameters);
+        return new KernelGraphNode(nodeId, kernel, parameters);
+    }
+
+    public IGraphNode AddMemCopy(IDeviceMemory source, IDeviceMemory destination, long size, IReadOnlyList<IGraphNode>? dependencies = null)
+    {
+        // Memory copy operations are currently not supported in DotCompute backend
+        throw new NotSupportedException("Memory copy operations are not supported in the DotCompute backend");
+    }
+
+    public IGraphNode AddBarrier(IReadOnlyList<IGraphNode> dependencies)
+    {
+        // Barriers are currently not supported in DotCompute backend
+        throw new NotSupportedException("Barriers are not supported in the DotCompute backend");
+    }
+
+    public async Task<ICompiledGraph> CompileAsync(CancellationToken cancellationToken = default)
+    {
+        await Task.CompletedTask;
+        return new DotComputeCompiledGraph(_graphName, _nodes.AsReadOnly());
+    }
+
+    public GraphValidationResult Validate()
+    {
+        try
+        {
+            // Basic validation - check for circular dependencies
+            var visited = new HashSet<string>();
+            var recursionStack = new HashSet<string>();
+            
+            foreach (var node in _nodes)
+            {
+                if (!visited.Contains(node.NodeId))
+                {
+                    ValidateNode(node.NodeId, visited, recursionStack);
+                }
+            }
+            
+            return GraphValidationResult.Success();
+        }
+        catch (Exception ex)
+        {
+            return GraphValidationResult.Error(ex.Message);
+        }
+    }
+
+    private void ValidateNode(string nodeId, HashSet<string> visited, HashSet<string> recursionStack)
+    {
+        visited.Add(nodeId);
+        recursionStack.Add(nodeId);
+        
+        var node = _nodes.FirstOrDefault(n => n.NodeId == nodeId);
+        if (node != null)
+        {
+            foreach (var dependency in node.Dependencies)
+            {
+                if (!visited.Contains(dependency))
+                {
+                    ValidateNode(dependency, visited, recursionStack);
+                }
+                else if (recursionStack.Contains(dependency))
+                {
+                    throw new InvalidOperationException($"Circular dependency detected: {nodeId} -> {dependency}");
+                }
+            }
+        }
+        
+        recursionStack.Remove(nodeId);
+    }
+
     public void Dispose()
     {
         if (_disposed)
@@ -718,5 +811,41 @@ internal sealed class DotComputeKernelGraph : IKernelGraph
 
         _logger.LogDebug("Disposing DotCompute kernel graph: {GraphName}", _graphName);
         _disposed = true;
+    }
+}
+
+/// <summary>
+/// Compiled graph implementation for DotCompute
+/// </summary>
+internal sealed class DotComputeCompiledGraph : ICompiledGraph
+{
+    public string Name { get; }
+    public IReadOnlyList<KernelGraphNode> Nodes { get; }
+    
+    public DotComputeCompiledGraph(string name, IReadOnlyList<KernelGraphNode> nodes)
+    {
+        Name = name;
+        Nodes = nodes;
+    }
+
+    public Task<GraphExecutionResult> ExecuteAsync(CancellationToken cancellationToken = default)
+    {
+        var result = new GraphExecutionResult(
+            GraphName: Name,
+            Success: true,
+            NodeResults: new Dictionary<string, KernelExecutionResult>(),
+            TotalExecutionTime: TimeSpan.Zero);
+        return Task.FromResult(result);
+    }
+
+    public void UpdateParameters(string nodeId, KernelExecutionParameters parameters)
+    {
+        // Parameter updates not supported in this implementation
+        throw new NotSupportedException("Parameter updates are not supported in compiled graphs");
+    }
+    
+    public void Dispose()
+    {
+        // Nothing to dispose
     }
 }

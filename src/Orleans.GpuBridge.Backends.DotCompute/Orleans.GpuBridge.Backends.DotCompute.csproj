@@ -4,6 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>Orleans.GpuBridge.Backends.DotCompute</PackageId>
     <Title>Orleans GPU Bridge DotCompute Backend</Title>
@@ -18,20 +19,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- DotCompute Libraries -->
-    <PackageReference Include="DotCompute.Abstractions" Version="0.1.0-alpha" />
-    <PackageReference Include="DotCompute.Core" Version="0.1.0-alpha" />
-    <PackageReference Include="DotCompute.Backends.CPU" Version="0.1.0-alpha" />
-    <PackageReference Include="DotCompute.Backends.CUDA" Version="0.1.0-alpha" />
+    <!-- Microsoft Libraries (aligned with other projects to avoid downgrades) -->
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
     
-    <!-- Microsoft Libraries -->
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+    <!-- Compiler and Linker packages to avoid downgrades -->
+    <PackageReference Include="Microsoft.DotNet.ILCompiler" Version="9.0.8" />
+    <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="9.0.8" />
     
     <!-- Memory and Performance -->
-    <PackageReference Include="System.Memory" Version="4.5.5" />
+    <PackageReference Include="System.Memory" Version="4.6.3" />
     <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
   </ItemGroup>
 

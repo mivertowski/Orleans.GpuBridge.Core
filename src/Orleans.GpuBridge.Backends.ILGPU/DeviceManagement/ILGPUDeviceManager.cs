@@ -11,6 +11,7 @@ using ILGPU.Runtime.CPU;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Abstractions.Models;
+using Orleans.GpuBridge.Abstractions.Enums;
 
 namespace Orleans.GpuBridge.Backends.ILGPU.DeviceManagement;
 
@@ -23,6 +24,9 @@ internal sealed class ILGPUDeviceManager : IDeviceManager
     private readonly Context _context;
     private readonly List<ILGPUComputeDevice> _devices;
     private readonly Dictionary<IComputeDevice, ILGPUComputeContext> _contexts;
+    private readonly Dictionary<string, long> _kernelsExecuted;
+    private readonly Dictionary<string, long> _bytesTransferred;
+    private readonly object _metricsLock = new object();
     private bool _initialized;
     private bool _disposed;
 
@@ -32,68 +36,29 @@ internal sealed class ILGPUDeviceManager : IDeviceManager
         _context = context ?? throw new ArgumentNullException(nameof(context));
         _devices = new List<ILGPUComputeDevice>();
         _contexts = new Dictionary<IComputeDevice, ILGPUComputeContext>();
+        _kernelsExecuted = new Dictionary<string, long>();
+        _bytesTransferred = new Dictionary<string, long>();
     }
 
-    public Task InitializeAsync(CancellationToken cancellationToken = default)
+    public async Task InitializeAsync(CancellationToken cancellationToken = default)
     {
         if (_initialized)
         {
             _logger.LogWarning("ILGPU device manager already initialized");
-            return Task.CompletedTask;
+            return;
         }
 
         _logger.LogInformation("Discovering ILGPU compute devices");
 
         try
         {
-            // Discover all available accelerators
-            var accelerators = new List<Accelerator>();
-
-            // Enumerate all available devices and create accelerators
-            foreach (var device in _context)
-            {
-                try
-                {
-                    var accelerator = device.CreateAccelerator(_context);
-                    accelerators.Add(accelerator);
-                    
-                    var deviceType = accelerator.AcceleratorType switch
-                    {
-                        AcceleratorType.Cuda => "CUDA",
-                        AcceleratorType.OpenCL => "OpenCL", 
-                        AcceleratorType.CPU => "CPU",
-                        _ => "Unknown"
-                    };
-                    
-                    _logger.LogDebug("Created {DeviceType} accelerator: {Name}", deviceType, accelerator.Name);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogDebug(ex, "Failed to create accelerator for device: {DeviceName}", 
-                        device.Name);
-                }
-            }
-
-            // Ensure we have at least one accelerator (CPU fallback)
-            if (accelerators.Count == 0)
-            {
-                try
-                {
-                    var cpuDevice = _context.GetCPUDevice();
-                    var cpuAccelerator = cpuDevice.CreateAccelerator(_context);
-                    accelerators.Add(cpuAccelerator);
-                    _logger.LogDebug("Created CPU fallback accelerator: {Name}", cpuAccelerator.Name);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Failed to create CPU fallback accelerator");
-                    throw new InvalidOperationException("No accelerators available for GPU bridge", ex);
-                }
-            }
+            // Discover all available accelerators asynchronously
+            var accelerators = await DiscoverAcceleratorsAsync(cancellationToken).ConfigureAwait(false);
 
             // Create device wrappers
             for (int i = 0; i < accelerators.Count; i++)
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 var accelerator = accelerators[i];
                 var device = new ILGPUComputeDevice(i, accelerator, _logger);
                 _devices.Add(device);
@@ -110,8 +75,6 @@ internal sealed class ILGPUDeviceManager : IDeviceManager
             _logger.LogError(ex, "Failed to initialize ILGPU device manager");
             throw;
         }
-
-        return Task.CompletedTask;
     }
 
     public IReadOnlyList<IComputeDevice> GetDevices()
@@ -224,21 +187,23 @@ internal sealed class ILGPUDeviceManager : IDeviceManager
             var accelerator = ilgpuDevice.Accelerator;
             
             // Basic metrics that ILGPU can provide
-            var memoryInfo = accelerator.MemoryInfo;
-            var totalMemory = memoryInfo.TotalMemory;
-            var availableMemory = memoryInfo.AvailableMemory;
+            // Note: ILGPU doesn't expose detailed memory info directly
+            var totalMemory = ilgpuDevice.TotalMemoryBytes;
+            var availableMemory = ilgpuDevice.AvailableMemoryBytes;
             var usedMemory = totalMemory - availableMemory;
 
-            var metrics = new DeviceMetrics(
-                GpuUtilizationPercent: 0, // ILGPU doesn't provide utilization directly
-                MemoryUtilizationPercent: totalMemory > 0 ? (usedMemory * 100.0 / totalMemory) : 0,
-                UsedMemoryBytes: usedMemory,
-                TemperatureCelsius: 0, // Not available via ILGPU
-                PowerWatts: 0, // Not available via ILGPU
-                FanSpeedPercent: 0, // Not available via ILGPU
-                KernelsExecuted: 0, // Would need to track this separately TODO
-                BytesTransferred: 0, // Would need to track this separately TODO
-                Uptime: TimeSpan.FromMilliseconds(Environment.TickCount64));
+            var metrics = new DeviceMetrics
+            {
+                GpuUtilizationPercent = 0, // ILGPU doesn't provide utilization directly
+                MemoryUtilizationPercent = totalMemory > 0 ? (float)(usedMemory * 100.0 / totalMemory) : 0,
+                UsedMemoryBytes = usedMemory,
+                TemperatureCelsius = 0, // Not available via ILGPU
+                PowerWatts = 0, // Not available via ILGPU
+                FanSpeedPercent = 0, // Not available via ILGPU
+                KernelsExecuted = GetKernelsExecutedForDevice(device.DeviceId),
+                BytesTransferred = GetBytesTransferredForDevice(device.DeviceId),
+                Uptime = TimeSpan.FromMilliseconds(Environment.TickCount64)
+            };
 
             return metrics;
         }
@@ -247,16 +212,18 @@ internal sealed class ILGPUDeviceManager : IDeviceManager
             _logger.LogError(ex, "Failed to get metrics for device: {DeviceName}", device.Name);
             
             // Return default metrics on error
-            return new DeviceMetrics(
-                GpuUtilizationPercent: 0,
-                MemoryUtilizationPercent: 0,
-                UsedMemoryBytes: 0,
-                TemperatureCelsius: 0,
-                PowerWatts: 0,
-                FanSpeedPercent: 0,
-                KernelsExecuted: 0,
-                BytesTransferred: 0,
-                Uptime: TimeSpan.Zero);
+            return new DeviceMetrics
+            {
+                GpuUtilizationPercent = 0,
+                MemoryUtilizationPercent = 0,
+                UsedMemoryBytes = 0,
+                TemperatureCelsius = 0,
+                PowerWatts = 0,
+                FanSpeedPercent = 0,
+                KernelsExecuted = 0,
+                BytesTransferred = 0,
+                Uptime = TimeSpan.Zero
+            };
         }
     }
 
@@ -282,12 +249,15 @@ internal sealed class ILGPUDeviceManager : IDeviceManager
                 _contexts.Remove(device);
             }
 
-            // Synchronize the accelerator
-            ilgpuDevice.Accelerator.Synchronize();
+            // Synchronize the accelerator asynchronously
+            await Task.Run(() => ilgpuDevice.Accelerator.Synchronize(), cancellationToken).ConfigureAwait(false);
 
-            // Clear memory (ILGPU automatically manages memory)
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
+            // Clear memory with async GC operations
+            await Task.Run(() =>
+            {
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }, cancellationToken).ConfigureAwait(false);
 
             _logger.LogInformation("Device reset completed: {DeviceName}", device.Name);
         }
@@ -314,7 +284,7 @@ internal sealed class ILGPUDeviceManager : IDeviceManager
         }
 
         // Check excluded devices
-        if (criteria.ExcludeDevices?.Contains(device.DeviceId) == true)
+        if (criteria.ExcludeDevices?.Contains(device.Index) == true)
         {
             return -1; // Explicitly excluded
         }
@@ -351,9 +321,9 @@ internal sealed class ILGPUDeviceManager : IDeviceManager
         }
 
         // Check required feature
-        if (!string.IsNullOrEmpty(criteria.RequiredFeature))
+        if (criteria.RequiredFeature != DeviceFeatures.None)
         {
-            if (!device.SupportsFeature(criteria.RequiredFeature))
+            if (!device.SupportsFeature(criteria.RequiredFeature.ToString()))
             {
                 return -1; // Required feature not supported
             }
@@ -371,6 +341,147 @@ internal sealed class ILGPUDeviceManager : IDeviceManager
         }
     }
 
+    /// <summary>
+    /// Gets the number of kernels executed for a specific device
+    /// </summary>
+    private long GetKernelsExecutedForDevice(string deviceId)
+    {
+        lock (_metricsLock)
+        {
+            return _kernelsExecuted.TryGetValue(deviceId, out var count) ? count : 0;
+        }
+    }
+
+    /// <summary>
+    /// Gets the number of bytes transferred for a specific device
+    /// </summary>
+    private long GetBytesTransferredForDevice(string deviceId)
+    {
+        lock (_metricsLock)
+        {
+            return _bytesTransferred.TryGetValue(deviceId, out var bytes) ? bytes : 0;
+        }
+    }
+
+    /// <summary>
+    /// Increments the kernel execution count for a device
+    /// </summary>
+    internal void IncrementKernelCount(string deviceId)
+    {
+        lock (_metricsLock)
+        {
+            _kernelsExecuted[deviceId] = _kernelsExecuted.TryGetValue(deviceId, out var count) ? count + 1 : 1;
+        }
+    }
+
+    /// <summary>
+    /// Adds to the bytes transferred count for a device
+    /// </summary>
+    internal void AddBytesTransferred(string deviceId, long bytes)
+    {
+        lock (_metricsLock)
+        {
+            _bytesTransferred[deviceId] = _bytesTransferred.TryGetValue(deviceId, out var existing) ? existing + bytes : bytes;
+        }
+    }
+
+    /// <summary>
+    /// Asynchronously discovers ILGPU accelerators with proper device enumeration
+    /// </summary>
+    private async Task<List<Accelerator>> DiscoverAcceleratorsAsync(CancellationToken cancellationToken)
+    {
+        var accelerators = new List<Accelerator>();
+
+        await Task.Run(async () =>
+        {
+            // Enumerate all available devices and create accelerators
+            foreach (var device in _context)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                try
+                {
+                    // Create accelerator with device-specific initialization
+                    var accelerator = await CreateAcceleratorAsync(device, cancellationToken).ConfigureAwait(false);
+                    if (accelerator != null)
+                    {
+                        accelerators.Add(accelerator);
+                        
+                        var deviceType = accelerator.AcceleratorType switch
+                        {
+                            AcceleratorType.Cuda => "CUDA",
+                            AcceleratorType.OpenCL => "OpenCL", 
+                            AcceleratorType.CPU => "CPU",
+                            _ => "Unknown"
+                        };
+                        
+                        _logger.LogDebug("Created {DeviceType} accelerator: {Name}", deviceType, accelerator.Name);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogDebug(ex, "Failed to create accelerator for device: {DeviceName}", 
+                        device.Name);
+                }
+            }
+
+            // Ensure we have at least one accelerator (CPU fallback)
+            if (accelerators.Count == 0)
+            {
+                var cpuAccelerator = await CreateCpuFallbackAcceleratorAsync(cancellationToken).ConfigureAwait(false);
+                if (cpuAccelerator != null)
+                {
+                    accelerators.Add(cpuAccelerator);
+                }
+            }
+        }, cancellationToken).ConfigureAwait(false);
+
+        return accelerators;
+    }
+
+    /// <summary>
+    /// Creates an accelerator for a specific device with async initialization
+    /// </summary>
+    private async Task<Accelerator?> CreateAcceleratorAsync(Device device, CancellationToken cancellationToken)
+    {
+        return await Task.Run(() =>
+        {
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                return device.CreateAccelerator(_context);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug(ex, "Failed to create accelerator for device {DeviceName}", device.Name);
+                return null;
+            }
+        }, cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Creates a CPU fallback accelerator asynchronously
+    /// </summary>
+    private async Task<Accelerator?> CreateCpuFallbackAcceleratorAsync(CancellationToken cancellationToken)
+    {
+        return await Task.Run(() =>
+        {
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                var cpuDevice = _context.GetCPUDevice(0);
+                var cpuAccelerator = cpuDevice.CreateAccelerator(_context);
+                _logger.LogDebug("Created CPU fallback accelerator: {Name}", cpuAccelerator.Name);
+                return cpuAccelerator;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to create CPU fallback accelerator");
+                throw new InvalidOperationException("No accelerators available for GPU bridge", ex);
+            }
+        }, cancellationToken).ConfigureAwait(false);
+    }
+
     public void Dispose()
     {
         if (_disposed)
@@ -380,19 +491,22 @@ internal sealed class ILGPUDeviceManager : IDeviceManager
 
         try
         {
-            // Dispose all contexts
-            foreach (var context in _contexts.Values)
+            // Try async disposal first, fall back to sync
+            var disposeTask = DisposeAsyncCore();
+            if (!disposeTask.IsCompletedSuccessfully)
             {
-                context.Dispose();
+                // Use timeout for disposal to prevent hanging
+                using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+                try
+                {
+                    disposeTask.AsTask().Wait(cts.Token);
+                }
+                catch (OperationCanceledException)
+                {
+                    _logger.LogWarning("Async disposal timed out, performing sync disposal");
+                    DisposeSync();
+                }
             }
-            _contexts.Clear();
-
-            // Dispose all devices (which will dispose their accelerators)
-            foreach (var device in _devices)
-            {
-                device.Dispose();
-            }
-            _devices.Clear();
         }
         catch (Exception ex)
         {
@@ -400,5 +514,61 @@ internal sealed class ILGPUDeviceManager : IDeviceManager
         }
 
         _disposed = true;
+    }
+
+    private void DisposeSync()
+    {
+        // Dispose all contexts
+        foreach (var context in _contexts.Values)
+        {
+            try
+            {
+                context.Dispose();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error disposing context during sync disposal");
+            }
+        }
+        _contexts.Clear();
+
+        // Dispose all devices (which will dispose their accelerators)
+        foreach (var device in _devices)
+        {
+            try
+            {
+                device.Dispose();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error disposing device during sync disposal");
+            }
+        }
+        _devices.Clear();
+    }
+
+    private async ValueTask DisposeAsyncCore()
+    {
+        var disposeTasks = new List<Task>();
+
+        // Dispose all contexts asynchronously
+        foreach (var context in _contexts.Values)
+        {
+            disposeTasks.Add(Task.Run(() => context.Dispose()));
+        }
+
+        // Dispose all devices asynchronously
+        foreach (var device in _devices)
+        {
+            disposeTasks.Add(Task.Run(() => device.Dispose()));
+        }
+
+        if (disposeTasks.Count > 0)
+        {
+            await Task.WhenAll(disposeTasks).ConfigureAwait(false);
+        }
+
+        _contexts.Clear();
+        _devices.Clear();
     }
 }

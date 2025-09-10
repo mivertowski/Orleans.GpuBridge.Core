@@ -88,12 +88,12 @@ internal sealed class ILGPUKernelExecution : IKernelExecution
         }
     }
 
-    public async Task CancelAsync()
+    public Task CancelAsync()
     {
         if (IsComplete)
         {
             _logger.LogDebug("Cannot cancel already completed execution: {ExecutionId}", ExecutionId);
-            return;
+            return Task.CompletedTask;
         }
 
         try
@@ -110,6 +110,7 @@ internal sealed class ILGPUKernelExecution : IKernelExecution
             _executor.RemoveActiveExecution(ExecutionId);
 
             _logger.LogInformation("Kernel execution cancelled: {ExecutionId}", ExecutionId);
+            return Task.CompletedTask;
         }
         catch (Exception ex)
         {
@@ -151,7 +152,7 @@ internal sealed class ILGPUKernelExecution : IKernelExecution
         try
         {
             _status = result.Success ? KernelExecutionStatus.Completed : KernelExecutionStatus.Failed;
-            _progress = 1.0;
+            _progressInt = 100; // 100% complete
             _timing = result.Timing;
 
             _completionSource.TrySetResult(result);
@@ -175,7 +176,7 @@ internal sealed class ILGPUKernelExecution : IKernelExecution
         try
         {
             _status = KernelExecutionStatus.Failed;
-            _progress = 1.0;
+            _progressInt = 100; // Mark as complete even though failed
 
             var result = new KernelExecutionResult(false, exception.Message);
             _completionSource.TrySetResult(result);
@@ -196,7 +197,7 @@ internal sealed class ILGPUKernelExecution : IKernelExecution
         try
         {
             _status = KernelExecutionStatus.Timeout;
-            _progress = 1.0;
+            _progressInt = 100; // Mark as complete due to timeout
 
             var result = new KernelExecutionResult(false, "Kernel execution timed out");
             _completionSource.TrySetResult(result);
@@ -345,7 +346,7 @@ internal sealed class ILGPUKernelGraph : IKernelGraph
                 Name,
                 executionOrder,
                 _executor,
-                _logger); // Use the existing logger
+                new CompiledGraphLogger(_logger)); // Use a logger wrapper
 
             _logger.LogInformation("ILGPU kernel graph compilation completed: {GraphName}", Name);
 
@@ -762,5 +763,33 @@ internal sealed class ILGPUCompiledGraph : ICompiledGraph
         }
 
         _disposed = true;
+    }
+}
+
+/// <summary>
+/// Simple logger wrapper for compiled graph
+/// </summary>
+internal class CompiledGraphLogger : ILogger<ILGPUCompiledGraph>
+{
+    private readonly ILogger _baseLogger;
+
+    public CompiledGraphLogger(ILogger baseLogger)
+    {
+        _baseLogger = baseLogger;
+    }
+
+    public IDisposable? BeginScope<TState>(TState state) where TState : notnull
+    {
+        return _baseLogger.BeginScope(state);
+    }
+
+    public bool IsEnabled(LogLevel logLevel)
+    {
+        return _baseLogger.IsEnabled(logLevel);
+    }
+
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
+    {
+        _baseLogger.Log(logLevel, eventId, state, exception, formatter);
     }
 }

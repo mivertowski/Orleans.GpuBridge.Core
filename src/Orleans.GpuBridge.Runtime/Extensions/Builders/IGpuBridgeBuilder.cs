@@ -28,7 +28,7 @@ public interface IGpuBridgeBuilder
     /// <summary>
     /// Adds a backend provider to the registry
     /// </summary>
-    IGpuBridgeBuilder AddBackendProvider<TProvider>() where TProvider : class, IGpuBackendProvider;
+    IGpuBridgeBuilder AddBackendProvider<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TProvider>() where TProvider : class, IGpuBackendProvider;
     
     /// <summary>
     /// Adds a backend provider instance to the registry

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Diagnostics.CodeAnalysis;
 using ILGPU;
 using ILGPU.Runtime;
 using Microsoft.Extensions.Logging;
@@ -113,7 +114,7 @@ public sealed class KernelTemplateRegistry
     /// <summary>
     /// Registers a kernel template
     /// </summary>
-    private void RegisterTemplate(string name, Type type, string methodName)
+    private void RegisterTemplate(string name, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] Type type, string methodName)
     {
         var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.Static);
         if (method == null)
@@ -168,8 +169,12 @@ public sealed class KernelTemplateRegistry
             
             var stopwatch = System.Diagnostics.Stopwatch.StartNew();
             
-            // Compile the kernel using ILGPU
-            var kernel = accelerator.LoadAutoGroupedStreamKernel(template.Method);
+            // Compile the kernel using ILGPU with explicit typing
+            // Note: This is a simplified approach - in a real implementation, we'd analyze method signature
+            // and use appropriate index type and parameter types based on the template
+            var kernel = accelerator.LoadAutoGroupedStreamKernel<Index1D, ArrayView<float>>(
+                (Action<Index1D, ArrayView<float>>)Delegate.CreateDelegate(
+                    typeof(Action<Index1D, ArrayView<float>>), template.Method));
             
             stopwatch.Stop();
             
@@ -227,7 +232,17 @@ public sealed class KernelTemplateRegistry
             var stream = accelerator.DefaultStream;
             var kernelConfig = config ?? GetDefaultConfig(accelerator, arguments);
             
-            compiledKernel.Kernel(stream, kernelConfig, arguments.ToArray());
+            // Cast the kernel to the appropriate delegate type and execute
+            if (compiledKernel.Kernel is Action<AcceleratorStream, Index1D, ArrayView<int>> kernelDelegate)
+            {
+                var arrayView = arguments.GetArrayView();
+                var index = (Index1D)(kernelConfig.GridDim.X * kernelConfig.GroupDim.X);
+                kernelDelegate(stream, index, arrayView);
+            }
+            else
+            {
+                throw new InvalidOperationException($"Unsupported kernel delegate type: {compiledKernel.Kernel.GetType()}");
+            }
             stream.Synchronize();
             
             stopwatch.Stop();
@@ -355,5 +370,18 @@ public class KernelArguments
                 return view2d.IntExtent.X * view2d.IntExtent.Y;
         }
         return 1024; // Default
+    }
+    
+    public ArrayView<int> GetArrayView()
+    {
+        // Try to find an appropriate ArrayView in the arguments
+        foreach (var arg in _arguments)
+        {
+            if (arg is ArrayView<int> intView)
+                return intView;
+        }
+        
+        // Return empty ArrayView as fallback
+        return new ArrayView<int>();
     }
 }

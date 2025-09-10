@@ -10,6 +10,7 @@ using Moq;
 using Orleans;
 using Orleans.GpuBridge.Abstractions;
 using Orleans.GpuBridge.Grains;
+using Orleans.GpuBridge.Grains.Stream;
 using Orleans.Runtime;
 using Orleans.Streams;
 using Orleans.TestingHost;

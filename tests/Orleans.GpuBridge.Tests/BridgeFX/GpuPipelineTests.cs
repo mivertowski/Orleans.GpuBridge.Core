@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Orleans.GpuBridge.Abstractions;
 using Orleans.GpuBridge.BridgeFX;
+using Orleans.GpuBridge.BridgeFX.Pipeline.Core;
 using Xunit;
 
 namespace Orleans.GpuBridge.Tests.BridgeFX;

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Orleans.GpuBridge.Abstractions.Providers;
 
@@ -13,18 +14,20 @@ public interface IGpuBackendRegistry : IDisposable
     /// <summary>
     /// Registers a backend provider
     /// </summary>
-    void RegisterProvider(BackendRegistration registration);
+    void RegisterProvider([NotNull] BackendRegistration registration);
     
     /// <summary>
     /// Discovers available GPU backend providers
     /// </summary>
+    [RequiresUnreferencedCode("Discovers provider types from assemblies which may be trimmed.")]
     Task DiscoverProvidersAsync(CancellationToken cancellationToken = default);
     
     /// <summary>
     /// Gets a specific backend provider by ID
     /// </summary>
+    [RequiresUnreferencedCode("Creates provider instances using reflection which may not work with trimming.")]
     Task<IGpuBackendProvider?> GetProviderAsync(
-        string providerId, 
+        [NotNull] string providerId, 
         CancellationToken cancellationToken = default);
     
     /// <summary>
@@ -42,6 +45,6 @@ public interface IGpuBackendRegistry : IDisposable
     /// Selects the best provider based on criteria
     /// </summary>
     Task<IGpuBackendProvider?> SelectProviderAsync(
-        ProviderSelectionCriteria criteria,
+        [NotNull] ProviderSelectionCriteria criteria,
         CancellationToken cancellationToken = default);
 }

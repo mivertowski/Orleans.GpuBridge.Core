@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Runtime.Providers;
 using Orleans.GpuBridge.Tests.Providers;

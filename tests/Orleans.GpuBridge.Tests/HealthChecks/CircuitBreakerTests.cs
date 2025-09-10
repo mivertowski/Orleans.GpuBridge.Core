@@ -1,20 +1,19 @@
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.HealthChecks.CircuitBreaker;
 using Orleans.GpuBridge.HealthChecks.Exceptions;
-using Polly.CircuitBreaker;
 using Xunit;
 
 namespace Orleans.GpuBridge.Tests.HealthChecks;
 
 public class CircuitBreakerTests
 {
-    private readonly ICircuitBreakerPolicy _circuitBreaker;
-    private readonly TestLogger<CircuitBreakerPolicy> _logger;
+    private readonly Orleans.GpuBridge.HealthChecks.CircuitBreaker.ICircuitBreakerPolicy _circuitBreaker;
+    private readonly TestLogger<Orleans.GpuBridge.HealthChecks.CircuitBreaker.CircuitBreakerPolicy> _logger;
     
     public CircuitBreakerTests()
     {
-        _logger = new TestLogger<CircuitBreakerPolicy>();
-        _circuitBreaker = new CircuitBreakerPolicy(
+        _logger = new TestLogger<Orleans.GpuBridge.HealthChecks.CircuitBreaker.CircuitBreakerPolicy>();
+        _circuitBreaker = new Orleans.GpuBridge.HealthChecks.CircuitBreaker.CircuitBreakerPolicy(
             _logger,
             new CircuitBreakerOptions
             {

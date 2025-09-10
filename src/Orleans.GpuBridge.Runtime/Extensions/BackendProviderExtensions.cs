@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Abstractions.Providers;
@@ -23,6 +24,7 @@ public static class BackendProviderExtensions
     /// <summary>
     /// Adds the ILGPU backend provider (requires Orleans.GpuBridge.Backends.ILGPU package)
     /// </summary>
+    [RequiresUnreferencedCode("Scans for ILGPU backend provider types which may be trimmed.")]
     public static IGpuBridgeBuilder AddILGPUBackend(this IGpuBridgeBuilder builder)
     {
         // This would be in the ILGPU package assembly
@@ -40,6 +42,7 @@ public static class BackendProviderExtensions
     /// <summary>
     /// Adds the DotCompute backend provider (requires Orleans.GpuBridge.Backends.DotCompute package)
     /// </summary>
+    [RequiresUnreferencedCode("Scans for DotCompute backend provider types which may be trimmed.")]
     public static IGpuBridgeBuilder AddDotComputeBackend(this IGpuBridgeBuilder builder)
     {
         // This would be in the DotCompute package assembly
@@ -57,6 +60,7 @@ public static class BackendProviderExtensions
     /// <summary>
     /// Adds all available backend providers by scanning loaded assemblies
     /// </summary>
+    [RequiresUnreferencedCode("Scans all assemblies for backend provider types which may be trimmed.")]
     public static IGpuBridgeBuilder AddAllAvailableBackends(this IGpuBridgeBuilder builder)
     {
         var providerTypes = ScanForBackendProviders();
@@ -80,6 +84,7 @@ public static class BackendProviderExtensions
         return builder;
     }
 
+    [RequiresUnreferencedCode("Uses Assembly.GetTypes() which is not compatible with trimming.")]
     private static Type? TryGetILGPUProviderType()
     {
         try
@@ -105,6 +110,7 @@ public static class BackendProviderExtensions
         }
     }
 
+    [RequiresUnreferencedCode("Uses Assembly.GetTypes() which is not compatible with trimming.")]
     private static Type? TryGetDotComputeProviderType()
     {
         try
@@ -130,6 +136,7 @@ public static class BackendProviderExtensions
         }
     }
 
+    [RequiresUnreferencedCode("Uses Assembly.GetTypes() which is not compatible with trimming.")]
     private static IEnumerable<Type> ScanForBackendProviders()
     {
         var providerTypes = new List<Type>();

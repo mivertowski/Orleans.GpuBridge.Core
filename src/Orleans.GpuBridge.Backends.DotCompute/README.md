@@ -1,15 +1,34 @@
-# Orleans.GpuBridge.Backends.DotCompute
+# Orleans GPU Bridge - DotCompute Backend
 
-DotCompute backend implementation for Orleans GPU Bridge.
+This package provides a DotCompute backend implementation for Orleans GPU Bridge, enabling GPU acceleration through the DotCompute framework.
 
 ## Features
-- DotCompute GPU kernel execution
-- Memory management and buffers
-- Device discovery and selection
-- Performance profiling
+
+- GPU kernel compilation and execution
+- Memory management with unified memory support
+- Device discovery and management
+- Production-ready error handling and logging
+- CPU fallback for non-GPU environments
+
+## Installation
+
+```bash
+dotnet add package Orleans.GpuBridge.Backends.DotCompute
+```
 
 ## Usage
-This package provides DotCompute backend support for Orleans.GpuBridge framework.
 
-## License
-Apache 2.0 - Copyright (c) 2025 Michael Ivertowski
+```csharp
+services.AddGpuBridge()
+        .AddDotComputeBackend(options =>
+        {
+            options.PreferGpu = true;
+            options.EnableUnifiedMemory = true;
+        });
+```
+
+## Requirements
+
+- .NET 9.0 or higher
+- CUDA-compatible GPU (for GPU execution)
+- DotCompute runtime

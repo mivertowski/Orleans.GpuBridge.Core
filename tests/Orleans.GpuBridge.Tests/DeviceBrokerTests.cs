@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Runtime;
 using Xunit;
 
@@ -48,7 +49,7 @@ public class DeviceBrokerTests : IDisposable
 
         // Assert
         Assert.NotNull(devices);
-        Assert.Contains(devices, d => d.Type == DeviceType.Cpu);
+        Assert.Contains(devices, d => d.Type == DeviceType.CPU);
     }
 
     [Fact]
@@ -180,7 +181,7 @@ public class DeviceBrokerTests : IDisposable
             Assert.NotNull(device.Capabilities);
             Assert.NotEmpty(device.Capabilities);
             
-            if (device.Type == DeviceType.Cpu)
+            if (device.Type == DeviceType.CPU)
             {
                 Assert.Contains("CPU", device.Capabilities);
             }

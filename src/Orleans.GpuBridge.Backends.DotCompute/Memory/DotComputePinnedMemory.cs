@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Interfaces;
-using Orleans.GpuBridge.Abstractions.Memory.Options;
+using Orleans.GpuBridge.Abstractions.Providers.Memory.Options;
+using Orleans.GpuBridge.Abstractions.Providers.Memory.Enums;
 using Orleans.GpuBridge.Abstractions.Enums;
 
 namespace Orleans.GpuBridge.Backends.DotCompute.Memory;
@@ -259,7 +260,49 @@ internal sealed class DotComputeUnifiedMemory : IUnifiedMemory
 
     public async Task CopyFromAsync(IDeviceMemory source, long sourceOffset, long destinationOffset, long sizeBytes, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException("Device-to-device copy for unified memory");
+        // For unified memory, device-to-device copy can be implemented as memory copy
+        // since both source and destination are accessible from both CPU and GPU
+        
+        if (source is not IDeviceMemory sourceDeviceMemory)
+        {
+            throw new ArgumentException("Source must be device memory", nameof(source));
+        }
+        
+        if (sourceOffset < 0 || destinationOffset < 0 || sizeBytes <= 0)
+        {
+            throw new ArgumentException("Invalid copy parameters");
+        }
+        
+        if (sourceOffset + sizeBytes > sourceDeviceMemory.SizeBytes || 
+            destinationOffset + sizeBytes > SizeBytes)
+        {
+            throw new ArgumentException("Copy would exceed buffer bounds");
+        }
+        
+        try
+        {
+            // For unified memory, we can perform the copy directly
+            unsafe
+            {
+                var srcPtr = sourceDeviceMemory.DevicePointer + (int)sourceOffset;
+                var dstPtr = DevicePointer + (int)destinationOffset;
+                
+                // Use async memory copy to avoid blocking
+                await Task.Run(() => 
+                {
+                    Buffer.MemoryCopy(
+                        srcPtr.ToPointer(), 
+                        dstPtr.ToPointer(), 
+                        sizeBytes, 
+                        sizeBytes);
+                }, cancellationToken);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException(
+                $"Device-to-device copy failed for unified memory: {ex.Message}", ex);
+        }
     }
 
     public async Task FillAsync(byte value, long offsetBytes, long sizeBytes, CancellationToken cancellationToken = default)

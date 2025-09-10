@@ -94,6 +94,7 @@ public class CircuitBreakerPolicy : ICircuitBreakerPolicy
             if (_stateProviders.TryGetValue(operationName, out var provider))
             {
                 provider.Reset();
+                OnCircuitReset?.Invoke(operationName);
                 _logger.LogInformation(
                     "Circuit breaker for operation {OperationName} has been reset",
                     operationName);
@@ -108,6 +109,7 @@ public class CircuitBreakerPolicy : ICircuitBreakerPolicy
             if (_stateProviders.TryGetValue(operationName, out var provider))
             {
                 provider.Isolate();
+                OnCircuitBreak?.Invoke(operationName, TimeSpan.FromSeconds(30));
                 _logger.LogWarning(
                     "Circuit breaker for operation {OperationName} has been manually isolated",
                     operationName);

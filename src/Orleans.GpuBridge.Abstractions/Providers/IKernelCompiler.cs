@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Diagnostics.CodeAnalysis;
 using Orleans.GpuBridge.Abstractions.Enums.Compilation;
 using Orleans.GpuBridge.Abstractions.Models;
 using Orleans.GpuBridge.Abstractions.Models.Compilation;
@@ -83,9 +84,10 @@ public interface IKernelCompiler
     /// Not all C# constructs are supported in GPU kernels - use <see cref="ValidateMethodAsync"/>
     /// to check compatibility before compilation.
     /// </remarks>
+    [RequiresUnreferencedCode("Uses method validation which may not work with trimming.")]
     Task<CompiledKernel> CompileFromMethodAsync(
-        MethodInfo method,
-        KernelCompilationOptions options,
+        [NotNull] MethodInfo method,
+        [NotNull] KernelCompilationOptions options,
         CancellationToken cancellationToken = default);
     
     /// <summary>
@@ -135,10 +137,10 @@ public interface IKernelCompiler
     /// of specific languages depends on the backend implementation.
     /// </remarks>
     Task<CompiledKernel> CompileFromSourceAsync(
-        string sourceCode,
-        string entryPoint,
+        [NotNull] string sourceCode,
+        [NotNull] string entryPoint,
         KernelLanguage language,
-        KernelCompilationOptions options,
+        [NotNull] KernelCompilationOptions options,
         CancellationToken cancellationToken = default);
     
     /// <summary>
@@ -184,11 +186,12 @@ public interface IKernelCompiler
     /// assemblies loaded at runtime. The method will be located using reflection
     /// and compiled to GPU code.
     /// </remarks>
+    [RequiresUnreferencedCode("Uses reflection to find types and methods which may be trimmed.")]
     Task<CompiledKernel> CompileFromAssemblyAsync(
-        Assembly assembly,
-        string typeName,
-        string methodName,
-        KernelCompilationOptions options,
+        [NotNull] Assembly assembly,
+        [NotNull] string typeName,
+        [NotNull] string methodName,
+        [NotNull] KernelCompilationOptions options,
         CancellationToken cancellationToken = default);
     
     /// <summary>
@@ -220,8 +223,9 @@ public interface IKernelCompiler
     /// and avoid unnecessary compilation attempts for incompatible methods.
     /// </para>
     /// </remarks>
+    [RequiresUnreferencedCode("Uses method body analysis which may not work with trimming.")]
     Task<KernelValidationResult> ValidateMethodAsync(
-        MethodInfo method,
+        [NotNull] MethodInfo method,
         CancellationToken cancellationToken = default);
     
     /// <summary>
@@ -257,7 +261,7 @@ public interface IKernelCompiler
     /// </para>
     /// </remarks>
     Task<CompilationDiagnostics> GetDiagnosticsAsync(
-        CompiledKernel kernel,
+        [NotNull] CompiledKernel kernel,
         CancellationToken cancellationToken = default);
     
     /// <summary>

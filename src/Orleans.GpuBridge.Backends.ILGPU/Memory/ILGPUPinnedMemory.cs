@@ -8,9 +8,11 @@ using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Interfaces;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Options;
+using Orleans.GpuBridge.Abstractions.Providers.Memory.Allocators;
 using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Enums;
 using Orleans.GpuBridge.Backends.ILGPU.DeviceManagement;
+using Orleans.GpuBridge.Backends.ILGPU.Memory;
 
 namespace Orleans.GpuBridge.Backends.ILGPU.Memory;
 
@@ -152,6 +154,7 @@ internal sealed class ILGPUPinnedMemory : IPinnedMemory
 internal sealed class ILGPUUnifiedMemory : IUnifiedMemory
 {
     private readonly UnifiedMemoryOptions _options;
+    private readonly IMemoryAllocator _allocator;
 
     public IntPtr HostPointer => DevicePointer; // Unified memory has same pointer
 
@@ -169,12 +172,14 @@ internal sealed class ILGPUUnifiedMemory : IUnifiedMemory
         ILGPUComputeDevice device,
         long sizeBytes,
         UnifiedMemoryOptions options,
+        IMemoryAllocator allocator,
         ILogger logger)
     {
         _memoryBuffer = memoryBuffer ?? throw new ArgumentNullException(nameof(memoryBuffer));
         _device = device ?? throw new ArgumentNullException(nameof(device));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _options = options ?? throw new ArgumentNullException(nameof(options));
+        _allocator = allocator ?? throw new ArgumentNullException(nameof(allocator));
         SizeBytes = sizeBytes;
     }
 
@@ -295,12 +300,16 @@ internal sealed class ILGPUUnifiedMemory : IUnifiedMemory
         {
             // Fallback: Copy through host memory
             var tempBuffer = new byte[sizeBytes];
+            // Extract operations outside of unsafe context
+            IntPtr tempPtr;
             unsafe
             {
                 fixed (byte* ptr = tempBuffer)
                 {
-                    await source.CopyToHostAsync(new IntPtr(ptr), sourceOffset, sizeBytes, cancellationToken);
-                    await CopyFromHostAsync(new IntPtr(ptr), destinationOffset, sizeBytes, cancellationToken);
+                    tempPtr = new IntPtr(ptr);
+                    // Perform sync operations to avoid await in unsafe context
+                    source.CopyToHostAsync(tempPtr, sourceOffset, sizeBytes, cancellationToken).Wait();
+                    CopyFromHostAsync(tempPtr, destinationOffset, sizeBytes, cancellationToken).Wait();
                 }
             }
             return;
@@ -330,8 +339,13 @@ internal sealed class ILGPUUnifiedMemory : IUnifiedMemory
 
     public IDeviceMemory CreateView(long offsetBytes, long sizeBytes)
     {
-        var subBuffer = _memoryBuffer.View.SubView((int)offsetBytes, (int)sizeBytes);
-        return new ILGPUUnifiedMemory(subBuffer, _device, sizeBytes, _options, _logger);
+        // Create a new buffer for the view (similar to device memory fix)
+        var device = _device.Accelerator;
+        var newBuffer = device.Allocate1D<byte>((int)sizeBytes);
+        var sourceView = _memoryBuffer.View.SubView((int)offsetBytes, (int)sizeBytes);
+        newBuffer.View.CopyFrom(device.DefaultStream, sourceView);
+        
+        return new ILGPUDeviceMemoryWrapper(newBuffer, _device, sizeBytes, (ILGPUMemoryAllocator)_allocator, _logger);
     }
 
     public void Dispose()

@@ -35,8 +35,11 @@ public sealed partial class DeviceBroker
                     var healthInfo = await CollectDeviceHealthAsync(device);
                     _deviceHealth[device.Id] = healthInfo;
 
-                    // TODO: Add health evaluation once DeviceHealthInfo properties are resolved
-                    _logger.LogDebug("Health info collected for device {DeviceId}", device.Id);
+                    // Evaluate device health and take appropriate actions
+                    await EvaluateDeviceHealth(device, healthInfo);
+                    
+                    _logger.LogDebug("Health info collected for device {DeviceId}. Health Score: {HealthScore:F2}, Status: {Status}", 
+                        device.Id, healthInfo.HealthScore, healthInfo.IsHealthy ? "Healthy" : "Unhealthy");
                 }
                 catch (Exception ex)
                 {
@@ -44,7 +47,7 @@ public sealed partial class DeviceBroker
                 }
             });
 
-            await Task.WhenAll(healthTasks);
+            await Task.WhenAll(healthTasks).ConfigureAwait(false);
         }
         catch (Exception ex)
         {
@@ -77,7 +80,7 @@ public sealed partial class DeviceBroker
                 }
             });
 
-            await Task.WhenAll(loadTasks);
+            await Task.WhenAll(loadTasks).ConfigureAwait(false);
         }
         catch (Exception ex)
         {
@@ -88,7 +91,7 @@ public sealed partial class DeviceBroker
     /// <summary>
     /// Collects comprehensive health information for a device
     /// </summary>
-    private async Task<Orleans.GpuBridge.Abstractions.Models.DeviceHealthInfo> CollectDeviceHealthAsync(GpuDevice device)
+    private Task<Orleans.GpuBridge.Abstractions.Models.DeviceHealthInfo> CollectDeviceHealthAsync(GpuDevice device)
     {
         var temperatureCelsius = 0;
         var maxTemperatureCelsius = 85;
@@ -137,14 +140,13 @@ public sealed partial class DeviceBroker
             Status = status
         };
 
-        await Task.CompletedTask; // Placeholder for async health collection
-        return healthInfo;
+        return Task.FromResult(healthInfo);
     }
 
     /// <summary>
     /// Collects load balancing information for a device
     /// </summary>
-    private async Task<Orleans.GpuBridge.Abstractions.Models.DeviceLoadInfo> CollectDeviceLoadAsync(GpuDevice device)
+    private Task<Orleans.GpuBridge.Abstractions.Models.DeviceLoadInfo> CollectDeviceLoadAsync(GpuDevice device)
     {
         var currentQueueDepth = 0;
         var successRatePercent = 100.0;
@@ -169,8 +171,7 @@ public sealed partial class DeviceBroker
             AverageLatencyMs = EstimateAverageLatency(device)
         };
 
-        await Task.CompletedTask; // Placeholder for async load collection
-        return loadInfo;
+        return Task.FromResult(loadInfo);
     }
 
     /// <summary>
@@ -198,8 +199,18 @@ public sealed partial class DeviceBroker
             // Apply health score if available (simplified for now)
             if (_deviceHealth.TryGetValue(device.Id, out var healthInfo))
             {
-                // TODO: Use healthInfo.HealthScore once property access is resolved
-                weight *= 0.9; // Simplified health penalty for now
+                // Apply health score to weight calculation
+                var healthMultiplier = Math.Max(0.1, healthInfo.HealthScore);
+                weight *= healthMultiplier;
+                
+                // Additional penalty for unhealthy devices
+                if (!healthInfo.IsHealthy)
+                {
+                    weight *= 0.5; // Significant penalty for unhealthy devices
+                }
+                
+                _logger.LogTrace("Applied health multiplier {HealthMultiplier:F2} to device {DeviceId}", 
+                    healthMultiplier, device.Id);
             }
 
             // Update the load info with new weight
@@ -280,5 +291,156 @@ public sealed partial class DeviceBroker
             deviceCapabilities.Any(cap => cap.Contains(required, StringComparison.OrdinalIgnoreCase)));
     }
 
+    /// <summary>
+    /// Evaluates device health and takes appropriate actions
+    /// </summary>
+    private async Task EvaluateDeviceHealth(GpuDevice device, DeviceHealthInfo healthInfo)
+    {
+        try
+        {
+            // Log critical health issues
+            if (!healthInfo.IsHealthy)
+            {
+                _logger.LogWarning("Device {DeviceId} is unhealthy. Health Score: {HealthScore:F2}, " +
+                    "Temperature: {Temperature}°C, Thermal Throttling: {IsThermalThrottling}, " +
+                    "Error Count: {ErrorCount}, Consecutive Failures: {ConsecutiveFailures}",
+                    device.Id, healthInfo.HealthScore, healthInfo.TemperatureCelsius,
+                    healthInfo.IsThermalThrottling, healthInfo.ErrorCount, healthInfo.ConsecutiveFailures);
+            }
 
+            // Handle thermal throttling
+            if (healthInfo.IsThermalThrottling)
+            {
+                _logger.LogError("Device {DeviceId} is thermal throttling at {Temperature}°C. " +
+                    "Max safe temperature: {MaxTemperature}°C",
+                    device.Id, healthInfo.TemperatureCelsius, healthInfo.MaxTemperatureCelsius);
+                
+                // Could implement cooling strategies or reduce workload here
+                await ImplementThermalThrottleResponse(device, healthInfo).ConfigureAwait(false);
+            }
+
+            // Handle excessive errors
+            if (healthInfo.ErrorCount > 5)
+            {
+                _logger.LogError("Device {DeviceId} has {ErrorCount} errors. " +
+                    "Consider device reset or removal from service",
+                    device.Id, healthInfo.ErrorCount);
+                    
+                await HandleExcessiveErrors(device, healthInfo).ConfigureAwait(false);
+            }
+
+            // Handle consecutive failures
+            if (healthInfo.ConsecutiveFailures >= 3)
+            {
+                _logger.LogError("Device {DeviceId} has {ConsecutiveFailures} consecutive failures. " +
+                    "Temporarily removing from load balancing",
+                    device.Id, healthInfo.ConsecutiveFailures);
+                    
+                await HandleConsecutiveFailures(device, healthInfo).ConfigureAwait(false);
+            }
+
+            // Handle high predicted failure probability
+            if (healthInfo.PredictedFailureProbability > 0.8)
+            {
+                _logger.LogWarning("Device {DeviceId} has high failure probability: {FailureProbability:F2}. " +
+                    "Consider proactive maintenance",
+                    device.Id, healthInfo.PredictedFailureProbability);
+            }
+
+            // Update device status based on health
+            await UpdateDeviceStatusBasedOnHealth(device, healthInfo).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to evaluate health for device {DeviceId}", device.Id);
+        }
+    }
+
+    /// <summary>
+    /// Implements response to thermal throttling
+    /// </summary>
+    private Task ImplementThermalThrottleResponse(GpuDevice device, DeviceHealthInfo healthInfo)
+    {
+        // Reduce device priority in load balancing
+        if (_deviceLoad.TryGetValue(device.Id, out var loadInfo))
+        {
+            var throttledWeight = Math.Min(0.1, loadInfo.SelectionWeight * 0.5);
+            var updatedLoadInfo = loadInfo with { SelectionWeight = throttledWeight };
+            _deviceLoad[device.Id] = updatedLoadInfo;
+            
+            _logger.LogInformation("Reduced selection weight for thermally throttling device {DeviceId} to {Weight:F3}",
+                device.Id, throttledWeight);
+        }
+        
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Handles devices with excessive error rates
+    /// </summary>
+    private Task HandleExcessiveErrors(GpuDevice device, DeviceHealthInfo healthInfo)
+    {
+        // Temporarily disable device if errors are too high
+        if (healthInfo.ErrorCount > 10)
+        {
+            _logger.LogError("Disabling device {DeviceId} due to excessive errors: {ErrorCount}",
+                device.Id, healthInfo.ErrorCount);
+            
+            // Set weight to minimum to avoid selection
+            if (_deviceLoad.TryGetValue(device.Id, out var loadInfo))
+            {
+                var disabledLoadInfo = loadInfo with { SelectionWeight = 0.001 };
+                _deviceLoad[device.Id] = disabledLoadInfo;
+            }
+        }
+        
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Handles devices with consecutive failures
+    /// </summary>
+    private Task HandleConsecutiveFailures(GpuDevice device, DeviceHealthInfo healthInfo)
+    {
+        // Temporarily quarantine device
+        if (_deviceLoad.TryGetValue(device.Id, out var loadInfo))
+        {
+            var quarantinedWeight = 0.01; // Very low weight
+            var quarantineTime = DateTime.UtcNow.AddMinutes(5 * healthInfo.ConsecutiveFailures); // Escalating quarantine
+            
+            var quarantinedLoadInfo = loadInfo with 
+            { 
+                SelectionWeight = quarantinedWeight,
+                ThrottleUntil = quarantineTime
+            };
+            _deviceLoad[device.Id] = quarantinedLoadInfo;
+            
+            _logger.LogWarning("Quarantined device {DeviceId} until {QuarantineTime} due to {ConsecutiveFailures} consecutive failures",
+                device.Id, quarantineTime, healthInfo.ConsecutiveFailures);
+        }
+        
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Updates device status based on health evaluation
+    /// </summary>
+    private Task UpdateDeviceStatusBasedOnHealth(GpuDevice device, DeviceHealthInfo healthInfo)
+    {
+        // This would typically update device status in persistent storage
+        // For now, we'll just log status changes
+        
+        if (healthInfo.HealthScore < 0.3)
+        {
+            _logger.LogError("Device {DeviceId} health score critically low: {HealthScore:F2}",
+                device.Id, healthInfo.HealthScore);
+        }
+        else if (healthInfo.HealthScore < 0.7)
+        {
+            _logger.LogWarning("Device {DeviceId} health score degraded: {HealthScore:F2}",
+                device.Id, healthInfo.HealthScore);
+        }
+        
+        return Task.CompletedTask;
+    }
 }

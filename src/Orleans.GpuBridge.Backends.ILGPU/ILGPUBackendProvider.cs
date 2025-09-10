@@ -66,7 +66,7 @@ public sealed class ILGPUBackendProvider : IGpuBackendProvider
 
             // Initialize components
             _deviceManager = new ILGPUDeviceManager(_loggerFactory.CreateLogger<ILGPUDeviceManager>(), _context);
-            await _deviceManager.InitializeAsync(cancellationToken);
+            await _deviceManager.InitializeAsync(cancellationToken).ConfigureAwait(false);
 
             _kernelCompiler = new ILGPUKernelCompiler(
                 _loggerFactory.CreateLogger<ILGPUKernelCompiler>(), 
@@ -102,7 +102,7 @@ public sealed class ILGPUBackendProvider : IGpuBackendProvider
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to initialize ILGPU backend provider");
-            await DisposeAsync();
+            await DisposeAsync().ConfigureAwait(false);
             throw;
         }
     }
@@ -184,7 +184,7 @@ public sealed class ILGPUBackendProvider : IGpuBackendProvider
                 try
                 {
                     var device = devices[i];
-                    var deviceMetrics = await _deviceManager.GetDeviceMetricsAsync(device, cancellationToken);
+                    var deviceMetrics = await _deviceManager.GetDeviceMetricsAsync(device, cancellationToken).ConfigureAwait(false);
                     metrics[$"device_{i}_utilization"] = deviceMetrics.GpuUtilizationPercent;
                     metrics[$"device_{i}_memory_used"] = deviceMetrics.UsedMemoryBytes;
                     metrics[$"device_{i}_temperature"] = deviceMetrics.TemperatureCelsius;
@@ -236,7 +236,7 @@ public sealed class ILGPUBackendProvider : IGpuBackendProvider
             // Try a simple kernel compilation test (optional)
             if (_configuration.CustomSettings?.ContainsKey("health_check_kernel_test") == true)
             {
-                await PerformKernelHealthCheckAsync(cancellationToken);
+                await PerformKernelHealthCheckAsync(cancellationToken).ConfigureAwait(false);
             }
 
             var diagnostics = new Dictionary<string, object>
@@ -266,9 +266,9 @@ public sealed class ILGPUBackendProvider : IGpuBackendProvider
                 var testKernel = await _kernelCompiler.CompileFromSourceAsync(
                     "void TestKernel(Index1D index, ArrayView<int> data) { data[index] = index.X; }",
                     "TestKernel",
-                    KernelLanguage.CSharp,
-                    new KernelCompilationOptions(OptimizationLevel.O1),
-                    cancellationToken);
+                    Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.CSharp,
+                    new KernelCompilationOptions(Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel.O1),
+                    cancellationToken).ConfigureAwait(false);
 
                 testKernel.Dispose();
             }

@@ -1,6 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
     <PackageId>Orleans.GpuBridge.BridgeFX</PackageId>
     <Title>Orleans GPU Bridge BridgeFX</Title>
     <Description>High-level pipeline API for Orleans GPU Bridge - fluent API for GPU-accelerated data processing</Description>
@@ -22,6 +26,12 @@
     <PackageReference Include="Microsoft.DotNet.ILCompiler" Version="9.0.8" />
     <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="9.0.8" />
     <PackageReference Include="Microsoft.Orleans.Core" Version="9.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>Orleans.GpuBridge.Tests</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
 
 </Project>

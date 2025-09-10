@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Orleans.GpuBridge.Abstractions;
 
 /// <summary>
@@ -7,7 +9,7 @@ public readonly record struct KernelId(string Value)
 {
     public override string ToString() => Value;
     
-    public static KernelId Parse(string s) 
+    public static KernelId Parse([NotNull] string s) 
     {
         if (string.IsNullOrWhiteSpace(s))
             throw new ArgumentException("Kernel ID cannot be null or whitespace", nameof(s));

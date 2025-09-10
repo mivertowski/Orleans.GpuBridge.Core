@@ -114,7 +114,7 @@ internal sealed class ILGPUComputeDevice : IComputeDevice, IDisposable
         return accelerator switch
         {
             CudaAccelerator => "NVIDIA",
-            CLAccelerator clAcc => clAcc.Vendor ?? "Unknown",
+            CLAccelerator clAcc => clAcc.Vendor.ToString(),
             CPUAccelerator => Environment.Is64BitProcess ? "x64" : "x86",
             _ => "Unknown"
         };
@@ -124,7 +124,7 @@ internal sealed class ILGPUComputeDevice : IComputeDevice, IDisposable
     {
         return accelerator switch
         {
-            CudaAccelerator cuda => $"CUDA SM {cuda.CUDAArchitecture.Major}.{cuda.CUDAArchitecture.Minor}",
+            CudaAccelerator cuda => $"CUDA SM {cuda.Architecture.Major}.{cuda.Architecture.Minor}",
             CLAccelerator cl => cl.Name?.Contains("NVIDIA") == true ? "CUDA via OpenCL" : 
                               cl.Name?.Contains("AMD") == true ? "GCN/RDNA" : 
                               cl.Name?.Contains("Intel") == true ? "Intel GPU" : "Unknown OpenCL",
@@ -137,7 +137,7 @@ internal sealed class ILGPUComputeDevice : IComputeDevice, IDisposable
     {
         return accelerator switch
         {
-            CudaAccelerator cuda => new Version(cuda.CUDAArchitecture.Major, cuda.CUDAArchitecture.Minor),
+            CudaAccelerator cuda => new Version(cuda.Architecture.Major, cuda.Architecture.Minor),
             CLAccelerator => new Version(2, 0), // Assume OpenCL 2.0
             CPUAccelerator => new Version(1, 0),
             _ => new Version(1, 0)
@@ -149,7 +149,7 @@ internal sealed class ILGPUComputeDevice : IComputeDevice, IDisposable
         return accelerator switch
         {
             CudaAccelerator cuda => cuda.NumMultiprocessors,
-            CLAccelerator cl when cl.MaxNumComputeUnits.HasValue => cl.MaxNumComputeUnits.Value,
+            CLAccelerator cl => 1, // MaxNumComputeUnits not available in current ILGPU
             CPUAccelerator => Environment.ProcessorCount,
             _ => 1
         };
@@ -160,7 +160,7 @@ internal sealed class ILGPUComputeDevice : IComputeDevice, IDisposable
         return accelerator switch
         {
             CudaAccelerator cuda => cuda.ClockRate / 1000, // Convert from kHz to MHz
-            CLAccelerator cl when cl.MaxClockFrequency.HasValue => cl.MaxClockFrequency.Value,
+            CLAccelerator cl => 1000, // MaxClockFrequency not available in current ILGPU
             CPUAccelerator => 3000, // Assume 3 GHz for CPU
             _ => 1000
         };
@@ -225,10 +225,10 @@ internal sealed class ILGPUComputeDevice : IComputeDevice, IDisposable
         switch (accelerator)
         {
             case CudaAccelerator cuda:
-                props["cuda_major"] = cuda.CUDAArchitecture.Major;
-                props["cuda_minor"] = cuda.CUDAArchitecture.Minor;
+                props["cuda_major"] = cuda.Architecture.Major;
+                props["cuda_minor"] = cuda.Architecture.Minor;
                 props["cuda_driver_version"] = cuda.DriverVersion;
-                props["cuda_runtime_version"] = cuda.RuntimeVersion;
+                props["cuda_runtime_version"] = "Unknown"; // RuntimeVersion not available in current ILGPU
                 props["multiprocessor_count"] = cuda.NumMultiprocessors;
                 props["clock_rate_khz"] = cuda.ClockRate;
                 props["memory_clock_rate_khz"] = cuda.MemoryClockRate;

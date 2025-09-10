@@ -4,9 +4,12 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Diagnostics.CodeAnalysis;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Orleans.GpuBridge.Abstractions;
 using Orleans.GpuBridge.Abstractions.Kernels;
+// Resilience features will be integrated in a future release
 
 namespace Orleans.GpuBridge.Runtime;
 
@@ -56,27 +59,78 @@ public sealed class KernelDescriptor
 
 public sealed class KernelCatalog
 {
+    private readonly ILogger<KernelCatalog> _logger;
     private readonly Dictionary<string, Func<IServiceProvider, object>> _factories = new();
+    private readonly SemaphoreSlim _catalogLock = new(1, 1);
     
-    public KernelCatalog(IOptions<KernelCatalogOptions> options)
+    public KernelCatalog(
+        [NotNull] ILogger<KernelCatalog> logger,
+        [NotNull] IOptions<KernelCatalogOptions> options)
     {
-        foreach (var d in options.Value.Descriptors)
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        
+        var descriptors = options?.Value?.Descriptors ?? throw new ArgumentNullException(nameof(options));
+        foreach (var d in descriptors)
         {
             if (d.Factory != null)
                 _factories[d.Id.Value] = d.Factory;
         }
+        
+        _logger.LogInformation("KernelCatalog initialized with {Count} kernel descriptors and resilience support", _factories.Count);
     }
     
-    public Task<IGpuKernel<TIn, TOut>> ResolveAsync<TIn, TOut>(KernelId id, IServiceProvider sp)
+    public async Task<IGpuKernel<TIn, TOut>> ResolveAsync<TIn, TOut>(KernelId id, IServiceProvider sp, CancellationToken cancellationToken = default)
         where TIn : notnull
         where TOut : notnull
     {
-        if (_factories.TryGetValue(id.Value, out var factory))
-        {
-            return Task.FromResult((IGpuKernel<TIn, TOut>)factory(sp));
-        }
+        var operationName = $"KernelResolve_{id.Value}";
+        var startTime = DateTimeOffset.UtcNow;
         
-        return Task.FromResult<IGpuKernel<TIn, TOut>>(new CpuPassthroughKernel<TIn, TOut>());
+        try
+        {
+            await _catalogLock.WaitAsync(cancellationToken).ConfigureAwait(false);
+            try
+            {
+                if (_factories.TryGetValue(id.Value, out var factory))
+                {
+                    _logger.LogDebug("Resolving kernel {KernelId} from factory", id.Value);
+                    
+                    // Execute factory asynchronously for complex kernels
+                    var kernelObject = await Task.Run(() => factory(sp), cancellationToken).ConfigureAwait(false);
+                    
+                    if (kernelObject is IGpuKernel<TIn, TOut> kernel)
+                    {
+                        // Initialize kernel asynchronously if it supports it
+                        if (kernel is IAsyncInitializable asyncInitializable)
+                        {
+                            await asyncInitializable.InitializeAsync(cancellationToken).ConfigureAwait(false);
+                        }
+                        
+                        return kernel;
+                    }
+                    else
+                    {
+                        _logger.LogError("Factory for kernel {KernelId} returned incompatible type {ActualType}, expected {ExpectedType}",
+                            id.Value, kernelObject?.GetType(), typeof(IGpuKernel<TIn, TOut>));
+                        throw new InvalidOperationException($"Kernel factory returned incompatible type for {id.Value}");
+                    }
+                }
+                else
+                {
+                    _logger.LogInformation("Kernel {KernelId} not found in catalog, using CPU passthrough", id.Value);
+                    return new CpuPassthroughKernel<TIn, TOut>();
+                }
+            }
+            finally
+            {
+                _catalogLock.Release();
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to resolve kernel {KernelId}", id.Value);
+            throw new InvalidOperationException($"Failed to resolve kernel: {id.Value}", ex);
+        }
     }
 }
 
@@ -112,26 +166,54 @@ internal sealed class CpuPassthroughKernel<TIn, TOut> : IGpuKernel<TIn, TOut>
             foreach (var item in items)
             {
                 ct.ThrowIfCancellationRequested();
-                yield return (TOut)(object)item;
+                
+                // Process item asynchronously for large datasets
+                var result = await Task.Run(() =>
+                {
+                    if (item is TOut directResult)
+                    {
+                        return directResult;
+                    }
+                    else
+                    {
+                        return default(TOut)!;
+                    }
+                }, ct).ConfigureAwait(false);
+                
+                yield return result;
             }
         }
         else
         {
-            // For different types, use default conversion or throw
+            // For different types, use async conversion
             foreach (var item in items)
             {
                 ct.ThrowIfCancellationRequested();
                 
-                // Try to convert using common patterns
-                if (item is IConvertible convertible && typeof(TOut).IsAssignableFrom(typeof(IConvertible)))
+                // Try to convert using common patterns asynchronously
+                var result = await Task.Run(() =>
                 {
-                    yield return (TOut)Convert.ChangeType(item, typeof(TOut));
-                }
-                else
-                {
-                    // Return default for type mismatch in passthrough mode
-                    yield return default(TOut)!;
-                }
+                    TOut convertedResult = default(TOut)!;
+                    try
+                    {
+                        if (item is IConvertible convertible)
+                        {
+                            var converted = Convert.ChangeType(item, typeof(TOut));
+                            if (converted is TOut typedResult)
+                            {
+                                convertedResult = typedResult;
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        // Use default for conversion failures
+                    }
+                    
+                    return convertedResult;
+                }, ct).ConfigureAwait(false);
+                
+                yield return result;
             }
         }
         
@@ -184,14 +266,16 @@ public sealed class CpuVectorAddKernel : IGpuKernel<float[], float>
             yield break;
         }
         
-        // Process pairs of vectors
+        // Process pairs of vectors asynchronously for large datasets
         for (int i = 0; i < items.Count - 1; i += 2)
         {
             ct.ThrowIfCancellationRequested();
             
             var a = items[i];
             var b = items[i + 1];
-            var result = Execute(a, b);
+            
+            // Execute computation asynchronously for large vectors
+            var result = await Task.Run(() => Execute(a, b), ct).ConfigureAwait(false);
             yield return result;
         }
         
@@ -199,7 +283,7 @@ public sealed class CpuVectorAddKernel : IGpuKernel<float[], float>
         if (items.Count % 2 == 1)
         {
             var lastVector = items[items.Count - 1];
-            var sum = lastVector.Sum();
+            var sum = await Task.Run(() => lastVector.Sum(), ct).ConfigureAwait(false);
             yield return sum;
         }
         

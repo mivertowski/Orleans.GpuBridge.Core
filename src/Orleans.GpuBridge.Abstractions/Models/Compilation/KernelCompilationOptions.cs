@@ -43,11 +43,24 @@ namespace Orleans.GpuBridge.Abstractions.Models.Compilation;
 /// Specifying an architecture enables architecture-specific optimizations.
 /// Default is <c>null</c>.
 /// </param>
+/// <param name="Defines">
+/// Preprocessor definitions to pass to the compiler as key-value pairs.
+/// These definitions are equivalent to #define directives and can be used
+/// to conditionally compile code sections. Keys are definition names,
+/// values are definition values (empty string for flag-only definitions).
+/// Default is <c>null</c>.
+/// </param>
 /// <param name="CustomOptions">
 /// Additional custom compilation options specific to the backend compiler.
 /// This dictionary allows passing backend-specific flags and options that
 /// are not covered by the standard options. Keys should be option names,
 /// values should be option values. Default is <c>null</c>.
+/// </param>
+/// <param name="TargetDevice">
+/// The specific target device for compilation optimization.
+/// When specified, the compiler can optimize for device-specific features
+/// and characteristics. A null value uses default device selection.
+/// Default is <c>null</c>.
 /// </param>
 /// <remarks>
 /// This record provides comprehensive control over kernel compilation behavior.
@@ -91,4 +104,6 @@ public sealed record KernelCompilationOptions(
     int MaxRegisterCount = 0,
     int MinBlockSize = 0,
     string? TargetArchitecture = null,
-    IReadOnlyDictionary<string, object>? CustomOptions = null);
+    IReadOnlyDictionary<string, string>? Defines = null,
+    IReadOnlyDictionary<string, object>? CustomOptions = null,
+    object? TargetDevice = null);

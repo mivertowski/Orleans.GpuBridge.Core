@@ -1,8 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,8 +16,8 @@
     <ProjectReference Include="..\..\src\Orleans.GpuBridge.Runtime\Orleans.GpuBridge.Runtime.csproj" />
     <ProjectReference Include="..\..\src\Orleans.GpuBridge.BridgeFX\Orleans.GpuBridge.BridgeFX.csproj" />
     <ProjectReference Include="..\..\src\Orleans.GpuBridge.Grains\Orleans.GpuBridge.Grains.csproj" />
-    <!-- DotCompute disabled until packages are available -->
-    <!-- <ProjectReference Include="..\..\src\Orleans.GpuBridge.DotCompute\Orleans.GpuBridge.DotCompute.csproj" /> -->
+    <!-- DotCompute backend has compilation errors - disabled for now -->
+    <!-- <ProjectReference Include="..\..\src\Orleans.GpuBridge.Backends.DotCompute\Orleans.GpuBridge.Backends.DotCompute.csproj" /> -->
     <ProjectReference Include="..\..\src\Orleans.GpuBridge.Diagnostics\Orleans.GpuBridge.Diagnostics.csproj" />
     <ProjectReference Include="..\..\src\Orleans.GpuBridge.HealthChecks\Orleans.GpuBridge.HealthChecks.csproj" />
     <ProjectReference Include="..\..\src\Orleans.GpuBridge.Backends.ILGPU\Orleans.GpuBridge.Backends.ILGPU.csproj" />
@@ -35,12 +41,30 @@
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
     <PackageReference Include="Polly" Version="8.5.0" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="9.0.8" />
+    <PackageReference Include="FsCheck.Xunit" Version="3.0.0" />
+    <PackageReference Include="NBomber" Version="6.1.1" />
+    <PackageReference Include="AutoFixture" Version="4.18.1" />
+    <PackageReference Include="AutoFixture.Xunit2" Version="4.18.1" />
+    <PackageReference Include="Bogus" Version="35.6.1" />
+    <!-- Stryker.Core package not found with specified version, removing -->
+    <!-- <PackageReference Include="Stryker.Core" Version="4.6.0" /> -->
+    <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.5.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.5.0" />
+    <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" Version="9.8.0" />
+    <PackageReference Include="ILGPU" Version="1.5.1" />
+    <PackageReference Include="ILGPU.Algorithms" Version="1.5.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.8" />
+    <PackageReference Include="Microsoft.DotNet.ILCompiler" Version="9.0.8" />
+    <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="9.0.8" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.DotNet.ILCompiler" Version="9.0.8" />
-    <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="9.0.8" />
     <Using Include="Xunit" />
+    <Using Include="FluentAssertions" />
+    <Using Include="Moq" />
   </ItemGroup>
 
 </Project>

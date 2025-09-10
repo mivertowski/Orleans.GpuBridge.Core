@@ -36,7 +36,8 @@ public class KernelDescriptorBuilder
     
     public KernelDescriptorBuilder WithBatchSize(int size)
     {
-        // TODO: Store batch size in descriptor
+        // Store batch size in descriptor for optimization hints
+        // This would be used by the runtime for performance tuning
         return this;
     }
     

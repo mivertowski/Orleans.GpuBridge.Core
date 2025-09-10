@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions;
 using Orleans.GpuBridge.Runtime;
+using Orleans.GpuBridge.Runtime.Extensions;
 using Xunit;
 using Xunit.Abstractions;
 

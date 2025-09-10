@@ -28,21 +28,21 @@ namespace Orleans.GpuBridge.Grains.Implementation;
 /// for memory operations when GPU integration is not available. The grain automatically
 /// handles memory restoration on activation and caching on deactivation.
 /// </remarks>
-public sealed class GpuResidentGrain : Grain, IGpuResidentGrain
+public sealed class GpuResidentGrain<T> : Grain, IGpuResidentGrain<T> where T : unmanaged
 {
-    private readonly ILogger<GpuResidentGrain> _logger;
+    private readonly ILogger<GpuResidentGrain<T>> _logger;
     private readonly IPersistentState<GpuResidentState> _state;
     private readonly Dictionary<string, object> _liveAllocations = new();
     private IGpuBridge _bridge = default!;
     private DeviceBroker _deviceBroker = default!;
     
     /// <summary>
-    /// Initializes a new instance of the <see cref="GpuResidentGrain"/> class.
+    /// Initializes a new instance of the <see cref="GpuResidentGrain{T}"/> class.
     /// </summary>
     /// <param name="logger">Logger for recording grain operations and diagnostics.</param>
     /// <param name="state">Persistent state provider for storing allocation information.</param>
     public GpuResidentGrain(
-        [NotNull] ILogger<GpuResidentGrain> logger,
+        [NotNull] ILogger<GpuResidentGrain<T>> logger,
         [NotNull, PersistentState("gpuMemory", "gpuStore")] IPersistentState<GpuResidentState> state)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -157,10 +157,10 @@ public sealed class GpuResidentGrain : Grain, IGpuResidentGrain
     }
     
     /// <inheritdoc />
-    public async Task WriteAsync<T>(
+    public async Task WriteAsync<TData>(
         GpuMemoryHandle handle,
-        T[] data,
-        int offset = 0) where T : unmanaged
+        TData[] data,
+        int offset = 0) where TData : unmanaged
     {
         if (!_state.State.Allocations.TryGetValue(handle.Id, out var allocation))
         {
@@ -183,7 +183,7 @@ public sealed class GpuResidentGrain : Grain, IGpuResidentGrain
         // Perform data write with bounds checking
         unsafe
         {
-            var elementSize = sizeof(T);
+            var elementSize = sizeof(TData);
             var totalBytes = data.Length * elementSize;
             
             if (offset + totalBytes > handle.SizeBytes)
@@ -207,10 +207,10 @@ public sealed class GpuResidentGrain : Grain, IGpuResidentGrain
     }
     
     /// <inheritdoc />
-    public Task<T[]> ReadAsync<T>(
+    public Task<TData[]> ReadAsync<TData>(
         GpuMemoryHandle handle,
         int count,
-        int offset = 0) where T : unmanaged
+        int offset = 0) where TData : unmanaged
     {
         if (!_state.State.Allocations.TryGetValue(handle.Id, out var allocation))
         {
@@ -230,7 +230,7 @@ public sealed class GpuResidentGrain : Grain, IGpuResidentGrain
         // Perform data read with bounds checking
         unsafe
         {
-            var elementSize = sizeof(T);
+            var elementSize = sizeof(TData);
             var totalBytes = count * elementSize;
             
             if (offset + totalBytes > handle.SizeBytes)
@@ -240,7 +240,7 @@ public sealed class GpuResidentGrain : Grain, IGpuResidentGrain
                     $"Read operation would exceed allocated memory bounds. Requested: {offset + totalBytes} bytes, Available: {handle.SizeBytes} bytes");
             }
             
-            var result = new T[count];
+            var result = new TData[count];
             
             // Copy data from GPU memory through the abstraction layer
             // Provides CPU fallback when GPU memory is not available

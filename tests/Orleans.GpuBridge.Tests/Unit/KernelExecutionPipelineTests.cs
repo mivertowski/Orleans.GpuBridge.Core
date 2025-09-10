@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Abstractions.Kernels;
 using Orleans.GpuBridge.Runtime;
 using Orleans.GpuBridge.Runtime.Extensions;
 using Orleans.GpuBridge.Tests.TestingFramework;
@@ -130,7 +131,7 @@ public class KernelExecutionPipelineTests : TestFixtureBase
         stopwatch.Stop();
 
         // Assert
-        stopwatch.ElapsedMilliseconds.Should().BeGreaterOrEqualTo(delay.TotalMilliseconds);
+        stopwatch.ElapsedMilliseconds.Should().BeGreaterThanOrEqualTo((long)delay.TotalMilliseconds);
     }
 
     [Fact]
@@ -142,9 +143,8 @@ public class KernelExecutionPipelineTests : TestFixtureBase
         var input = new[] { 1f, 2f, 3f };
 
         // Act & Assert
-        await kernel.Invoking(k => k.SubmitBatchAsync(new[] { input }))
-            .Should()
-            .ThrowAsync<InvalidOperationException>()
+        var act = async () => await kernel.SubmitBatchAsync(new[] { input });
+        await act.Should().ThrowAsync<InvalidOperationException>()
             .WithMessage("Test kernel failure");
     }
 
@@ -156,9 +156,8 @@ public class KernelExecutionPipelineTests : TestFixtureBase
         var invalidHandle = KernelHandle.Create(); // Not submitted
 
         // Act & Assert
-        await kernel.Invoking(k => k.ReadResultsAsync(invalidHandle).ToListAsync())
-            .Should()
-            .ThrowAsync<ArgumentException>()
+        var act = async () => await kernel.ReadResultsAsync(invalidHandle).ToListAsync();
+        await act.Should().ThrowAsync<ArgumentException>()
             .WithMessage("*Invalid or unknown handle*");
     }
 
@@ -171,9 +170,8 @@ public class KernelExecutionPipelineTests : TestFixtureBase
         using var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(50));
 
         // Act & Assert
-        await kernel.Invoking(k => k.SubmitBatchAsync(new[] { input }, ct: cts.Token))
-            .Should()
-            .ThrowAsync<OperationCanceledException>();
+        var act = async () => await kernel.SubmitBatchAsync(new[] { input }, ct: cts.Token);
+        await act.Should().ThrowAsync<OperationCanceledException>();
     }
 
     [Fact]
@@ -182,12 +180,14 @@ public class KernelExecutionPipelineTests : TestFixtureBase
         // Arrange
         var kernel = TestKernelFactory.CreateVectorAddKernel();
         var input = new[] { 1f, 2f, 3f };
-        var hints = new GpuExecutionHints
-        {
-            PreferredBatchSize = 1024,
-            PreferGpu = true,
-            TimeoutMs = 30000
-        };
+        var hints = new GpuExecutionHints(
+            PreferredDevice: null,
+            HighPriority: false,
+            MaxMicroBatch: 1024,
+            Persistent: true,
+            PreferGpu: true,
+            Timeout: TimeSpan.FromMilliseconds(30000),
+            MaxRetries: null);
 
         // Act
         var handle = await kernel.SubmitBatchAsync(new[] { input }, hints);
@@ -297,7 +297,7 @@ public class KernelExecutionPipelineTests : TestFixtureBase
 
         // Assert
         results.Should().HaveCount(3, "should return configured number of results");
-        stopwatch.ElapsedMilliseconds.Should().BeGreaterOrEqualTo(75, "should respect timing delays");
+        stopwatch.ElapsedMilliseconds.Should().BeGreaterThanOrEqualTo(75, "should respect timing delays");
     }
 
     [Fact]

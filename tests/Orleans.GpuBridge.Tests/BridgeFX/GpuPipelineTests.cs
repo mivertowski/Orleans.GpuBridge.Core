@@ -8,6 +8,7 @@ using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Abstractions.Kernels;
 using Orleans.GpuBridge.BridgeFX;
 using Orleans.GpuBridge.BridgeFX.Pipeline.Core;
 using Xunit;

@@ -14,7 +14,8 @@ public sealed record ProviderSelectionCriteria(
     bool RequireUnifiedMemory = false,
     bool RequireProfiling = false,
     bool RequireCpuDebugging = false,
-    IReadOnlyList<string>? ExcludeProviders = null)
+    IReadOnlyList<string>? ExcludeProviders = null,
+    bool PreferGpu = true)
 {
     public static ProviderSelectionCriteria Default => new();
     

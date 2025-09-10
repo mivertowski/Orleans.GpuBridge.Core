@@ -26,4 +26,14 @@ public sealed record GpuExecutionHints(
     /// High-priority GPU execution hints
     /// </summary>
     public static GpuExecutionHints HighPriorityGpu { get; } = new(HighPriority: true);
+    
+    /// <summary>
+    /// Preferred batch size for execution (computed property)
+    /// </summary>
+    public int PreferredBatchSize => MaxMicroBatch ?? 1024;
+    
+    /// <summary>
+    /// Timeout in milliseconds (computed property)
+    /// </summary>
+    public int TimeoutMs => Timeout?.Milliseconds ?? 30000;
 }

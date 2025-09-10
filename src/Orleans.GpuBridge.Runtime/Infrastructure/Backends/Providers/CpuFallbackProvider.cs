@@ -69,6 +69,11 @@ internal sealed class CpuFallbackProvider : IGpuBackendProvider
     {
         return Task.FromResult(true); // CPU is always available
     }
+    
+    public bool IsAvailable()
+    {
+        return true; // CPU is always available
+    }
 
     public IDeviceManager GetDeviceManager()
     {
@@ -111,6 +116,21 @@ internal sealed class CpuFallbackProvider : IGpuBackendProvider
         return Task.FromResult(new HealthCheckResult(
             IsHealthy: true,
             Message: "CPU fallback provider is healthy"));
+    }
+
+    public async Task<object> CreateContext(int deviceIndex = 0)
+    {
+        EnsureInitialized();
+        
+        if (_deviceManager == null)
+            throw new InvalidOperationException("Device manager not initialized");
+            
+        var device = _deviceManager.GetDevice(deviceIndex);
+        if (device == null)
+            throw new ArgumentException($"Device at index {deviceIndex} not found", nameof(deviceIndex));
+            
+        var context = await _deviceManager.CreateContextAsync(device, new ContextOptions(), CancellationToken.None);
+        return context;
     }
 
     private void EnsureInitialized()

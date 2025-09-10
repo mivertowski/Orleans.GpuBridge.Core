@@ -35,6 +35,30 @@ public sealed class GpuBackendRegistry : IGpuBackendRegistry
     }
 
     /// <inheritdoc/>
+    public async Task InitializeAsync(CancellationToken cancellationToken = default)
+    {
+        ThrowIfDisposed();
+        
+        if (_discoveryCompleted)
+            return;
+            
+        await _discoveryLock.WaitAsync(cancellationToken);
+        try
+        {
+            if (!_discoveryCompleted)
+            {
+                await DiscoverProvidersAsync(cancellationToken);
+                _discoveryCompleted = true;
+                _logger.LogInformation("GPU backend registry initialized with {Count} providers", _registrations.Count);
+            }
+        }
+        finally
+        {
+            _discoveryLock.Release();
+        }
+    }
+
+    /// <inheritdoc/>
     public void RegisterProvider([NotNull] BackendRegistration registration)
     {
         ThrowIfDisposed();

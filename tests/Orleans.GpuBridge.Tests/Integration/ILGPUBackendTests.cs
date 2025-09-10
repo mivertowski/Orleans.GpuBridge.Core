@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions;
 using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Runtime;
+using Orleans.GpuBridge.Runtime.Extensions;
 using Orleans.GpuBridge.Backends.ILGPU;
 using Xunit;
 using Xunit.Abstractions;
@@ -32,7 +33,7 @@ namespace Orleans.GpuBridge.Tests.Integration
             
             // Setup DI container
             var services = new ServiceCollection();
-            services.AddLogging(builder => builder.AddXUnit(output));
+            services.AddLogging(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Information));
             services.AddGpuBridge(options => 
             {
                 options.PreferGpu = true;
@@ -45,7 +46,7 @@ namespace Orleans.GpuBridge.Tests.Integration
             
             // Initialize ILGPU context
             _context = Context.CreateDefault();
-            _output.WriteLine($"ILGPU Context initialized with {_context.NumDevices} devices");
+            _output.WriteLine($"ILGPU Context initialized with {_context.Devices.Count()} devices");
         }
 
         [Fact]
@@ -56,13 +57,12 @@ namespace Orleans.GpuBridge.Tests.Integration
             
             // Assert
             Assert.NotNull(context);
-            Assert.True(context.NumDevices >= 1, "At least CPU device should be available");
-            _output.WriteLine($"Available devices: {context.NumDevices}");
+            Assert.True(context.Devices.Count() >= 1, "At least CPU device should be available");
+            _output.WriteLine($"Available devices: {context.Devices.Count()}");
             
-            for (int i = 0; i < context.NumDevices; i++)
+            foreach (var device in context.Devices)
             {
-                var device = context.GetDevice(i);
-                _output.WriteLine($"Device {i}: {device.Name} ({device.AcceleratorType})");
+                _output.WriteLine($"Device: {device.Name} ({device.AcceleratorType})");
             }
         }
 
@@ -162,9 +162,9 @@ namespace Orleans.GpuBridge.Tests.Integration
             
             // Assert
             Assert.Equal(size, buffer.Length);
-            Assert.True(accelerator.MemoryInfo.TotalMemory > 0);
+            Assert.True(accelerator.MemoryInfo.TotalBytes > 0);
             
-            var memoryBefore = accelerator.MemoryInfo.AvailableMemory;
+            var memoryBefore = accelerator.MemoryInfo.AvailableBytes;
             _output.WriteLine($"Available memory before: {memoryBefore:N0} bytes");
             
             // Test memory operations
@@ -177,7 +177,7 @@ namespace Orleans.GpuBridge.Tests.Integration
             // Verify data integrity
             Assert.Equal(hostData.Take(100), resultData.Take(100));
             
-            var memoryAfter = accelerator.MemoryInfo.AvailableMemory;
+            var memoryAfter = accelerator.MemoryInfo.AvailableBytes;
             _output.WriteLine($"Available memory after: {memoryAfter:N0} bytes");
         }
 
@@ -271,7 +271,7 @@ namespace Orleans.GpuBridge.Tests.Integration
         {
             // Arrange - Force use of non-existent device
             var services = new ServiceCollection();
-            services.AddLogging(builder => builder.AddXUnit(_output));
+            services.AddLogging(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Information));
             services.AddGpuBridge(options => 
             {
                 options.PreferGpu = true;

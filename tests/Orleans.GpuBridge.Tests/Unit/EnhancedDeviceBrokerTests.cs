@@ -41,7 +41,7 @@ public class EnhancedDeviceBrokerTests : TestFixtureBase
 
         // Assert
         devices.Should().NotBeEmpty();
-        devices.Should().Contain(d => d.Type == DeviceType.Cpu, "CPU device should always be available");
+        devices.Should().Contain(d => d.Type == DeviceType.CPU, "CPU device should always be available");
         broker.DeviceCount.Should().BeGreaterThan(0);
         broker.TotalMemoryBytes.Should().BeGreaterThan(0);
     }
@@ -63,13 +63,13 @@ public class EnhancedDeviceBrokerTests : TestFixtureBase
 
         // Assert
         bestDevice.Should().NotBeNull();
-        if (preferGpu && broker.GetDevices().Any(d => d.Type == DeviceType.Gpu))
+        if (preferGpu && broker.GetDevices().Any(d => d.Type == DeviceType.GPU))
         {
-            bestDevice.Type.Should().Be(DeviceType.Gpu, "GPU should be preferred when available");
+            bestDevice.Type.Should().Be(DeviceType.GPU, "GPU should be preferred when available");
         }
         else
         {
-            bestDevice.Type.Should().Be(DeviceType.Cpu, "CPU should be fallback when GPU not preferred or available");
+            bestDevice.Type.Should().Be(DeviceType.CPU, "CPU should be fallback when GPU not preferred or available");
         }
     }
 
@@ -139,7 +139,7 @@ public class EnhancedDeviceBrokerTests : TestFixtureBase
         // Act & Assert
         await broker.Invoking(b => b.InitializeAsync(cts.Token))
             .Should()
-            .ThrowAsync<OperationCanceledException>();
+            .ThrowExactlyAsync<OperationCanceledException>();
     }
 
     [Fact]
@@ -245,7 +245,7 @@ public class EnhancedDeviceBrokerTests : TestFixtureBase
         using var broker = new DeviceBroker(logger, options);
         await broker.InitializeAsync(CancellationToken);
 
-        var tasks = new List<Task<GpuDeviceInfo>>();
+        var tasks = new List<Task<GpuDevice>>();
         var exceptions = new List<Exception>();
         var lockObject = new object();
 
@@ -326,7 +326,7 @@ public class EnhancedDeviceBrokerTests : TestFixtureBase
             device.TotalMemoryBytes.Should().BeGreaterThan(0, "device should have memory");
             device.ComputeUnits.Should().BeGreaterThan(0, "device should have compute units");
             
-            if (device.Type == DeviceType.Cpu)
+            if (device.Type == DeviceType.CPU)
             {
                 device.Capabilities.Should().Contain("CPU", "CPU device should have CPU capability");
             }
@@ -416,9 +416,8 @@ public class EnhancedDeviceBrokerTests : TestFixtureBase
         using var broker = new DeviceBroker(logger, options);
 
         // Act & Assert
-        await broker.Invoking(b => b.InitializeAsync(CancellationToken))
-            .Should()
-            .NotThrowAsync("broker should handle low memory constraints");
+        var act = async () => await broker.InitializeAsync(CancellationToken);
+        await act.Should().NotThrowAsync("broker should handle low memory constraints");
         
         broker.DeviceCount.Should().BeGreaterThan(0, "at least CPU device should be available");
     }

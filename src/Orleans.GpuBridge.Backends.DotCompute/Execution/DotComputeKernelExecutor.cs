@@ -27,6 +27,7 @@ namespace Orleans.GpuBridge.Backends.DotCompute.Execution;
 internal sealed class DotComputeKernelExecutor : IKernelExecutor
 {
     private readonly ILogger<DotComputeKernelExecutor> _logger;
+    private readonly ILoggerFactory _loggerFactory;
     private readonly IDeviceManager _deviceManager;
     private readonly IMemoryAllocator _memoryAllocator;
     private readonly IKernelCompiler _kernelCompiler;
@@ -37,11 +38,13 @@ internal sealed class DotComputeKernelExecutor : IKernelExecutor
 
     public DotComputeKernelExecutor(
         ILogger<DotComputeKernelExecutor> logger,
+        ILoggerFactory loggerFactory,
         IDeviceManager deviceManager,
         IMemoryAllocator memoryAllocator,
         IKernelCompiler kernelCompiler)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
         _deviceManager = deviceManager ?? throw new ArgumentNullException(nameof(deviceManager));
         _memoryAllocator = memoryAllocator ?? throw new ArgumentNullException(nameof(memoryAllocator));
         _kernelCompiler = kernelCompiler ?? throw new ArgumentNullException(nameof(kernelCompiler));
@@ -169,7 +172,7 @@ internal sealed class DotComputeKernelExecutor : IKernelExecutor
             executionId,
             kernel,
             this,
-            _logger.CreateLogger<DotComputeKernelExecution>());
+            _loggerFactory.CreateLogger<DotComputeKernelExecution>());
 
         _activeExecutions[executionId] = execution;
 
@@ -295,7 +298,7 @@ internal sealed class DotComputeKernelExecutor : IKernelExecutor
         if (string.IsNullOrEmpty(graphName))
             throw new ArgumentException("Graph name cannot be null or empty", nameof(graphName));
 
-        return new DotComputeKernelGraph(graphName, this, _logger.CreateLogger<DotComputeKernelGraph>());
+        return new DotComputeKernelGraph(graphName, this, _loggerFactory.CreateLogger<DotComputeKernelGraph>());
     }
 
     public async Task<KernelProfile> ProfileAsync(
@@ -576,7 +579,7 @@ internal sealed class DotComputeKernelExecution : IKernelExecution
 
     public KernelTiming GetTiming()
     {
-        return new KernelTiming(TimeSpan.Zero, TimeSpan.Zero, TimeSpan.Zero, TimeSpan.Zero);
+        return new KernelTiming(TimeSpan.Zero, TimeSpan.Zero, TimeSpan.Zero, 0L, 0.0);
     }
 
     internal void SetResult(KernelExecutionResult result)
@@ -599,7 +602,10 @@ internal sealed class DotComputeKernelExecution : IKernelExecution
 
     public void Dispose()
     {
-        Cancel();
+        if (!_isCompleted && !_isCanceled)
+        {
+            _cancellationSource?.Cancel();
+        }
         _cancellationSource?.Dispose();
         _executor.RemoveActiveExecution(ExecutionId);
     }
@@ -719,10 +725,15 @@ internal sealed class DotComputeKernelGraph : IKernelGraph
                 _graphName, successCount, failureCount, stopwatch.ElapsedMilliseconds);
 
             return new GraphExecutionResult(
-                GraphName: _graphName,
                 Success: failureCount == 0,
-                NodeResults: results,
-                TotalExecutionTime: stopwatch.Elapsed);
+                NodesExecuted: results.Count,
+                ExecutionTime: stopwatch.Elapsed,
+                NodeTimings: results.ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => new KernelTiming(
+                        QueueTime: kvp.Value.Timing?.QueueTime ?? TimeSpan.Zero,
+                        KernelTime: kvp.Value.Timing?.KernelTime ?? TimeSpan.Zero,
+                        TotalTime: kvp.Value.Timing?.TotalTime ?? TimeSpan.Zero)));
         }
         catch (Exception ex)
         {
@@ -735,7 +746,8 @@ internal sealed class DotComputeKernelGraph : IKernelGraph
     {
         var nodeId = Guid.NewGuid().ToString();
         AddNode(nodeId, kernel, parameters);
-        return new KernelGraphNode(nodeId, kernel, parameters);
+        var kernelNode = new KernelGraphNode(nodeId, kernel, parameters);
+        return new GraphNodeAdapter(kernelNode, dependencies ?? Array.Empty<IGraphNode>());
     }
 
     public IGraphNode AddMemCopy(IDeviceMemory source, IDeviceMemory destination, long size, IReadOnlyList<IGraphNode>? dependencies = null)
@@ -831,10 +843,10 @@ internal sealed class DotComputeCompiledGraph : ICompiledGraph
     public Task<GraphExecutionResult> ExecuteAsync(CancellationToken cancellationToken = default)
     {
         var result = new GraphExecutionResult(
-            GraphName: Name,
             Success: true,
-            NodeResults: new Dictionary<string, KernelExecutionResult>(),
-            TotalExecutionTime: TimeSpan.Zero);
+            NodesExecuted: 0,
+            ExecutionTime: TimeSpan.Zero,
+            NodeTimings: new Dictionary<string, KernelTiming>());
         return Task.FromResult(result);
     }
 
@@ -847,5 +859,23 @@ internal sealed class DotComputeCompiledGraph : ICompiledGraph
     public void Dispose()
     {
         // Nothing to dispose
+    }
+}
+
+/// <summary>
+/// Adapter to make KernelGraphNode compatible with IGraphNode interface
+/// </summary>
+internal sealed class GraphNodeAdapter : IGraphNode
+{
+    private readonly KernelGraphNode _kernelNode;
+    
+    public string NodeId => _kernelNode.NodeId;
+    public GraphNodeType Type => GraphNodeType.Kernel;
+    public IReadOnlyList<IGraphNode> Dependencies { get; }
+    
+    public GraphNodeAdapter(KernelGraphNode kernelNode, IReadOnlyList<IGraphNode> dependencies)
+    {
+        _kernelNode = kernelNode ?? throw new ArgumentNullException(nameof(kernelNode));
+        Dependencies = dependencies ?? Array.Empty<IGraphNode>();
     }
 }

@@ -8,6 +8,7 @@ using Orleans.GpuBridge.Abstractions.Memory;
 using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Runtime.Extensions;
 using Orleans.GpuBridge.Tests.TestingFramework;
+using DeviceType = Orleans.GpuBridge.Abstractions.Enums.DeviceType;
 using Xunit;
 
 namespace Orleans.GpuBridge.Tests.BackendProviders;

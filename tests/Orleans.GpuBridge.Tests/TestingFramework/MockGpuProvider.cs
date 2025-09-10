@@ -82,7 +82,7 @@ public class MockGpuProvider : IDisposable
         _devices[0] = new MockGpuDevice(
             0, 
             "Mock CPU Device", 
-            DeviceType.Cpu,
+            DeviceType.CPU,
             _config.CpuMemoryBytes,
             Environment.ProcessorCount,
             new[] { "CPU", "AVX", "SSE" });
@@ -93,7 +93,7 @@ public class MockGpuProvider : IDisposable
             _devices[i] = new MockGpuDevice(
                 i,
                 $"Mock GPU Device {i}",
-                DeviceType.Gpu,
+                DeviceType.GPU,
                 _config.GpuMemoryBytes,
                 _config.ComputeUnits,
                 new[] { "CUDA", "OpenCL", "Vulkan" });

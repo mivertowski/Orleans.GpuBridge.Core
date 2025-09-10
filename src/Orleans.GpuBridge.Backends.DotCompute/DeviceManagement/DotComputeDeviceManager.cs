@@ -106,17 +106,15 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
             var memoryUsage = await GetDeviceMemoryUsageAsync(device, cancellationToken).ConfigureAwait(false);
             var temperature = await GetDeviceTemperatureAsync(device, cancellationToken).ConfigureAwait(false);
 
-            return new DeviceHealthInfo(
-                IsHealthy: isHealthy,
-                MemoryUsagePercent: memoryUsage,
-                TemperatureCelsius: temperature,
-                LastError: device.LastError,
-                ExtendedInfo: new Dictionary<string, object>
-                {
-                    ["device_type"] = device.Type.ToString(),
-                    ["compute_units"] = device.ComputeUnits,
-                    ["max_work_group_size"] = device.MaxWorkGroupSize
-                });
+            return new DeviceHealthInfo
+            {
+                DeviceId = device.DeviceId,
+                MemoryUtilizationPercent = memoryUsage,
+                TemperatureCelsius = (int)temperature.GetValueOrDefault(),
+                Status = isHealthy ? DeviceStatus.Available : DeviceStatus.Error,
+                ErrorCount = string.IsNullOrEmpty(device.LastError) ? 0 : 1,
+                ConsecutiveFailures = isHealthy ? 0 : 1
+            };
         }
         catch (Exception ex)
         {

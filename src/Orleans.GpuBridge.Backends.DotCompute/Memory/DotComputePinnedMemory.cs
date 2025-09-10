@@ -282,21 +282,21 @@ internal sealed class DotComputeUnifiedMemory : IUnifiedMemory
         try
         {
             // For unified memory, we can perform the copy directly
-            unsafe
+            var srcPtr = sourceDeviceMemory.DevicePointer + (int)sourceOffset;
+            var dstPtr = DevicePointer + (int)destinationOffset;
+            
+            // Use async memory copy to avoid blocking
+            await Task.Run(() => 
             {
-                var srcPtr = sourceDeviceMemory.DevicePointer + (int)sourceOffset;
-                var dstPtr = DevicePointer + (int)destinationOffset;
-                
-                // Use async memory copy to avoid blocking
-                await Task.Run(() => 
+                unsafe
                 {
                     Buffer.MemoryCopy(
                         srcPtr.ToPointer(), 
                         dstPtr.ToPointer(), 
                         sizeBytes, 
                         sizeBytes);
-                }, cancellationToken);
-            }
+                }
+            }, cancellationToken);
         }
         catch (Exception ex)
         {

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions;
 using Orleans.GpuBridge.Abstractions.Kernels;
 using Orleans.GpuBridge.Runtime;
+using Orleans.GpuBridge.Runtime.Extensions;
 using Orleans.GpuBridge.Tests.TestingFramework;
 using Xunit;
 
@@ -66,7 +67,7 @@ public class PerformanceBenchmarkSuite
     [GlobalCleanup]
     public void Cleanup()
     {
-        _serviceProvider?.Dispose();
+        (_serviceProvider as IDisposable)?.Dispose();
     }
 
     #region Kernel Resolution Benchmarks

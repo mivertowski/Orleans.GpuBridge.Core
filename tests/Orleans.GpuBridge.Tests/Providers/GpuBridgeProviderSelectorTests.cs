@@ -10,6 +10,7 @@ using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Runtime.Providers;
 using Orleans.GpuBridge.Tests.Providers;
+using Orleans.GpuBridge.Tests.TestingFramework;
 using Xunit;
 
 namespace Orleans.GpuBridge.Tests.Providers;
@@ -32,7 +33,11 @@ public class GpuBridgeProviderSelectorTests
         
         _serviceProvider = services.BuildServiceProvider();
         _registry = new GpuBackendRegistry(_serviceProvider, _serviceProvider.GetRequiredService<ILogger<GpuBackendRegistry>>());
-        _selector = new GpuBridgeProviderSelector(_registry, _serviceProvider);
+        _selector = new GpuBridgeProviderSelector(
+            _serviceProvider.GetRequiredService<ILogger<GpuBridgeProviderSelector>>(),
+            _registry,
+            _serviceProvider.GetRequiredService<IOptions<GpuBridgeOptions>>(),
+            _serviceProvider);
     }
 
     [Fact]
@@ -40,7 +45,7 @@ public class GpuBridgeProviderSelectorTests
     {
         // Arrange
         await _registry.InitializeAsync();
-        var requirements = new GpuExecutionRequirements { PreferGpu = true };
+        var requirements = new ProviderSelectionCriteria(PreferGpu: true);
 
         // Act
         var provider = await _selector.SelectProviderAsync(requirements);
@@ -48,7 +53,7 @@ public class GpuBridgeProviderSelectorTests
         // Assert
         Assert.NotNull(provider);
         Assert.Equal("TestGpu", provider.ProviderId);
-        Assert.Contains(GpuBackend.Cuda, provider.Capabilities.SupportedBackends);
+        Assert.Contains(GpuBackend.CUDA, provider.Capabilities.SupportedBackends);
     }
 
     [Fact]
@@ -56,7 +61,7 @@ public class GpuBridgeProviderSelectorTests
     {
         // Arrange
         await _registry.InitializeAsync();
-        var requirements = new GpuExecutionRequirements { PreferGpu = false };
+        var requirements = new ProviderSelectionCriteria(PreferGpu: false);
 
         // Act
         var provider = await _selector.SelectProviderAsync(requirements);
@@ -64,7 +69,7 @@ public class GpuBridgeProviderSelectorTests
         // Assert
         Assert.NotNull(provider);
         Assert.Equal("TestCpu", provider.ProviderId);
-        Assert.Contains(GpuBackend.Cpu, provider.Capabilities.SupportedBackends);
+        Assert.Contains(GpuBackend.CPU, provider.Capabilities.SupportedBackends);
     }
 
     [Fact]
@@ -77,7 +82,7 @@ public class GpuBridgeProviderSelectorTests
             PreferGpu = true,
             RequiredCapabilities = new BackendCapabilities
             {
-                SupportedBackends = new[] { GpuBackend.Cuda }
+                SupportedBackends = new[] { GpuBackend.CUDA }
             }
         };
 
@@ -167,7 +172,7 @@ public class GpuBridgeProviderSelectorTests
             PreferGpu = true,
             RequiredCapabilities = new BackendCapabilities
             {
-                SupportedBackends = new[] { GpuBackend.Cuda }, // CPU provider doesn't support CUDA
+                SupportedBackends = new[] { GpuBackend.CUDA }, // CPU provider doesn't support CUDA
                 SupportsJitCompilation = false // CPU provider supports JIT
             }
         };
@@ -216,14 +221,3 @@ public class GpuBridgeProviderSelectorTests
     }
 }
 
-/// <summary>
-/// Test implementation of GPU execution requirements
-/// </summary>
-internal class GpuExecutionRequirements
-{
-    public bool PreferGpu { get; set; }
-    public long MinimumMemoryBytes { get; set; }
-    public BackendCapabilities? RequiredCapabilities { get; set; }
-    public List<GpuBackend> PreferredBackends { get; set; } = new();
-    public int MaxDevices { get; set; } = 1;
-}

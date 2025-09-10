@@ -18,6 +18,8 @@ using Orleans.GpuBridge.Abstractions.Providers.Memory.Enums;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Interfaces;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Options;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Statistics;
+using DeviceType = Orleans.GpuBridge.Abstractions.Enums.DeviceType;
+using HealthCheckResult = Orleans.GpuBridge.Abstractions.Providers.HealthCheckResult;
 
 namespace Orleans.GpuBridge.Tests.TestingFramework;
 
@@ -31,6 +33,7 @@ internal class TestGpuProvider : IGpuBackendProvider
 
     public Task InitializeAsync(BackendConfiguration configuration, CancellationToken cancellationToken = default) => Task.CompletedTask;
     public Task<bool> IsAvailableAsync(CancellationToken cancellationToken = default) => Task.FromResult(true);
+    public bool IsAvailable() => true;
     
     public Task<IReadOnlyDictionary<string, object>> GetMetricsAsync(CancellationToken cancellationToken = default)
     {
@@ -55,6 +58,9 @@ internal class TestGpuProvider : IGpuBackendProvider
 
     public Task<HealthCheckResult> CheckHealthAsync(CancellationToken cancellationToken = default) =>
         Task.FromResult(new HealthCheckResult(true, "Healthy"));
+    
+    public Task<object> CreateContext(int deviceIndex = 0) =>
+        Task.FromResult<object>(new TestComputeContext());
 
     public void Dispose() { }
 }
@@ -68,6 +74,7 @@ internal class TestCpuProvider : IGpuBackendProvider
 
     public Task InitializeAsync(BackendConfiguration configuration, CancellationToken cancellationToken = default) => Task.CompletedTask;
     public Task<bool> IsAvailableAsync(CancellationToken cancellationToken = default) => Task.FromResult(true);
+    public bool IsAvailable() => true;
     
     public Task<IReadOnlyDictionary<string, object>> GetMetricsAsync(CancellationToken cancellationToken = default)
     {
@@ -92,6 +99,9 @@ internal class TestCpuProvider : IGpuBackendProvider
 
     public Task<HealthCheckResult> CheckHealthAsync(CancellationToken cancellationToken = default) =>
         Task.FromResult(new HealthCheckResult(true, "Healthy"));
+    
+    public Task<object> CreateContext(int deviceIndex = 0) =>
+        Task.FromResult<object>(new TestComputeContext());
 
     public void Dispose() { }
 }
@@ -170,13 +180,23 @@ internal class TestComputeDevice : IComputeDevice
 internal class TestKernelCompiler : IKernelCompiler
 {
     public Task<CompiledKernel> CompileFromMethodAsync(MethodInfo method, KernelCompilationOptions options, CancellationToken cancellationToken = default) =>
-        Task.FromResult(new TestCompiledKernel(method.Name));
+        Task.FromResult(CreateCompiledKernel(method.Name));
         
     public Task<CompiledKernel> CompileFromSourceAsync(string sourceCode, string entryPoint, KernelLanguage language, KernelCompilationOptions options, CancellationToken cancellationToken = default) =>
-        Task.FromResult(new TestCompiledKernel(entryPoint));
+        Task.FromResult(CreateCompiledKernel(entryPoint));
         
     public Task<CompiledKernel> CompileFromAssemblyAsync(Assembly assembly, string typeName, string methodName, KernelCompilationOptions options, CancellationToken cancellationToken = default) =>
-        Task.FromResult(new TestCompiledKernel(methodName));
+        Task.FromResult(CreateCompiledKernel(methodName));
+    
+    private CompiledKernel CreateCompiledKernel(string name) =>
+        new CompiledKernel
+        {
+            KernelId = $"test-{name}",
+            Name = name,
+            CompiledCode = System.Text.Encoding.UTF8.GetBytes("test-compiled-code"),
+            Metadata = new KernelMetadata(),
+            NativeHandle = IntPtr.Zero
+        };
         
     public Task<KernelValidationResult> ValidateMethodAsync(MethodInfo method, CancellationToken cancellationToken = default) =>
         Task.FromResult(new KernelValidationResult(true, new List<string>(), new List<string>()));
@@ -188,21 +208,6 @@ internal class TestKernelCompiler : IKernelCompiler
     public void Dispose() { }
 }
 
-internal class TestCompiledKernel
-{
-    public string Id { get; }
-    public string Name { get; }
-    public IComputeDevice Device { get; }
-    public IReadOnlyDictionary<string, object> Metadata { get; }
-    
-    public TestCompiledKernel(string name)
-    {
-        Id = $"test-{name}";
-        Name = name;
-        Device = new TestComputeDevice();
-        Metadata = new Dictionary<string, object>();
-    }
-}
 
 internal class TestMemoryAllocator : IMemoryAllocator
 {
@@ -218,7 +223,7 @@ internal class TestMemoryAllocator : IMemoryAllocator
     public Task<IUnifiedMemory> AllocateUnifiedAsync(long sizeBytes, UnifiedMemoryOptions options, CancellationToken cancellationToken = default) =>
         Task.FromResult<IUnifiedMemory>(new TestUnifiedMemory(sizeBytes));
         
-    public MemoryPoolStatistics GetPoolStatistics() => new(0, 0, 0, 0, 0, 0, 0.0);
+    public MemoryPoolStatistics GetPoolStatistics() => new(0, 0, 0, 0, 0, 0, 0.0, 0, null);
     public Task CompactAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
     public Task ResetAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
     public void Dispose() { }
@@ -302,7 +307,14 @@ internal class TestKernelExecutor : IKernelExecutor
 internal class TestKernelExecution : IKernelExecution
 {
     public string ExecutionId => "test-execution";
-    public CompiledKernel Kernel => new TestCompiledKernel("test");
+    public CompiledKernel Kernel => new CompiledKernel
+    {
+        KernelId = "test-kernel",
+        Name = "test",
+        CompiledCode = System.Text.Encoding.UTF8.GetBytes("test-code"),
+        Metadata = new KernelMetadata(),
+        NativeHandle = IntPtr.Zero
+    };
     public KernelExecutionStatus Status => KernelExecutionStatus.Completed;
     public bool IsComplete => true;
     public double Progress => 1.0;

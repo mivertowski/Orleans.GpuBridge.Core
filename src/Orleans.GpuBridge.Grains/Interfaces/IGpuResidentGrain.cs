@@ -11,7 +11,7 @@ namespace Orleans.GpuBridge.Grains.Interfaces;
 /// This grain provides persistent storage for GPU memory buffers and enables
 /// efficient kernel execution on pre-allocated memory without repeated transfers.
 /// </summary>
-public interface IGpuResidentGrain : IGrainWithStringKey
+public interface IGpuResidentGrain<T> : IGrainWithStringKey where T : unmanaged
 {
     /// <summary>
     /// Allocates memory on the GPU device and keeps it resident for subsequent operations.
@@ -33,33 +33,33 @@ public interface IGpuResidentGrain : IGrainWithStringKey
     /// Writes data to a previously allocated resident memory buffer.
     /// The data is transferred to GPU memory and becomes available for kernel operations.
     /// </summary>
-    /// <typeparam name="T">The unmanaged type of data elements to write.</typeparam>
+    /// <typeparam name="TData">The unmanaged type of data elements to write.</typeparam>
     /// <param name="handle">The memory handle identifying the target allocation.</param>
     /// <param name="data">The array of data to write to GPU memory.</param>
     /// <param name="offset">The byte offset within the allocation to start writing at.</param>
     /// <returns>A task representing the asynchronous write operation.</returns>
     /// <exception cref="ArgumentException">Thrown when the memory handle is not found.</exception>
     /// <exception cref="ArgumentOutOfRangeException">Thrown when the write would exceed allocated memory bounds.</exception>
-    Task WriteAsync<T>(
+    Task WriteAsync<TData>(
         GpuMemoryHandle handle,
-        T[] data,
-        int offset = 0) where T : unmanaged;
+        TData[] data,
+        int offset = 0) where TData : unmanaged;
     
     /// <summary>
     /// Reads data from a resident memory buffer back to host memory.
     /// This operation transfers data from GPU memory to a host-accessible array.
     /// </summary>
-    /// <typeparam name="T">The unmanaged type of data elements to read.</typeparam>
+    /// <typeparam name="TData">The unmanaged type of data elements to read.</typeparam>
     /// <param name="handle">The memory handle identifying the source allocation.</param>
     /// <param name="count">The number of elements to read.</param>
     /// <param name="offset">The byte offset within the allocation to start reading from.</param>
     /// <returns>A task that resolves to an array containing the read data.</returns>
     /// <exception cref="ArgumentException">Thrown when the memory handle is not found.</exception>
     /// <exception cref="ArgumentOutOfRangeException">Thrown when the read would exceed allocated memory bounds.</exception>
-    Task<T[]> ReadAsync<T>(
+    Task<TData[]> ReadAsync<TData>(
         GpuMemoryHandle handle,
         int count,
-        int offset = 0) where T : unmanaged;
+        int offset = 0) where TData : unmanaged;
     
     /// <summary>
     /// Executes a GPU kernel using resident memory buffers as input and output.

@@ -3,12 +3,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions.Providers;
+using Orleans.GpuBridge.Abstractions.Models;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Allocators;
 using Orleans.GpuBridge.Abstractions.Providers.Execution.Interfaces;
 using Orleans.GpuBridge.Backends.DotCompute.DeviceManagement;
 using Orleans.GpuBridge.Backends.DotCompute.Execution;
 using Orleans.GpuBridge.Backends.DotCompute.Kernels;
 using Orleans.GpuBridge.Backends.DotCompute.Memory;
+using Orleans.GpuBridge.Abstractions.Enums;
 
 namespace Orleans.GpuBridge.Backends.DotCompute;
 
@@ -95,6 +97,7 @@ public sealed class DotGpuBackendProvider : IGpuBackendProvider
             // Initialize kernel executor
             _kernelExecutor = new DotComputeKernelExecutor(
                 _loggerFactory.CreateLogger<DotComputeKernelExecutor>(),
+                _loggerFactory,
                 _deviceManager,
                 _memoryAllocator,
                 _kernelCompiler);
@@ -161,7 +164,7 @@ public sealed class DotGpuBackendProvider : IGpuBackendProvider
 
             // Check if default device is responsive
             var defaultDevice = _deviceManager.GetDefaultDevice();
-            if (!defaultDevice.IsHealthy)
+            if (defaultDevice.GetStatus() == DeviceStatus.Error)
             {
                 return Task.FromResult(new HealthCheckResult(false, $"Default device {defaultDevice.Name} is not healthy"));
             }
@@ -218,6 +221,21 @@ public sealed class DotGpuBackendProvider : IGpuBackendProvider
             _logger.LogError(ex, "Failed to get DotCompute backend metrics");
             throw;
         }
+    }
+
+    public async Task<object> CreateContext(int deviceIndex = 0)
+    {
+        EnsureInitialized();
+        
+        if (_deviceManager == null)
+            throw new InvalidOperationException("Device manager not initialized");
+            
+        var device = _deviceManager.GetDevice(deviceIndex);
+        if (device == null)
+            throw new ArgumentException($"Device at index {deviceIndex} not found", nameof(deviceIndex));
+            
+        var context = await _deviceManager.CreateContextAsync(device, new ContextOptions(), CancellationToken.None);
+        return context;
     }
 
     private void EnsureInitialized()

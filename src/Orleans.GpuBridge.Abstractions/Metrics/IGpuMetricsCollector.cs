@@ -91,6 +91,14 @@ public interface IGpuMetricsCollector
         TimeSpan duration,
         int deviceIndex = 0,
         CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Gets comprehensive device metrics for a specific GPU device
+    /// </summary>
+    /// <param name="deviceIndex">The index of the GPU device</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Comprehensive device metrics</returns>
+    Task<DeviceMetrics> GetDeviceMetricsAsync(int deviceIndex = 0, CancellationToken cancellationToken = default);
 }
 
 /// <summary>
@@ -247,4 +255,60 @@ public sealed record AggregatedGpuMetrics
     /// </summary>
     [Id(11)]
     public DateTime EndTime { get; init; }
+}
+
+/// <summary>
+/// Comprehensive device metrics combining all GPU metrics
+/// </summary>
+[GenerateSerializer]
+[Immutable]
+public sealed record DeviceMetrics
+{
+    /// <summary>
+    /// Gets the GPU memory information
+    /// </summary>
+    [Id(0)]
+    public GpuMemoryInfo MemoryInfo { get; init; } = default!;
+    
+    /// <summary>
+    /// Gets the GPU utilization metrics
+    /// </summary>
+    [Id(1)]
+    public GpuUtilizationMetrics Utilization { get; init; } = default!;
+    
+    /// <summary>
+    /// Gets the GPU clock speeds
+    /// </summary>
+    [Id(2)]
+    public GpuClockSpeeds ClockSpeeds { get; init; } = default!;
+    
+    /// <summary>
+    /// Gets the temperature in Celsius
+    /// </summary>
+    [Id(3)]
+    public double Temperature { get; init; }
+    
+    /// <summary>
+    /// Gets the power consumption in watts
+    /// </summary>
+    [Id(4)]
+    public double PowerConsumption { get; init; }
+    
+    /// <summary>
+    /// Gets the performance counters
+    /// </summary>
+    [Id(5)]
+    public IReadOnlyDictionary<string, double> PerformanceCounters { get; init; } = new Dictionary<string, double>();
+    
+    /// <summary>
+    /// Gets the device index
+    /// </summary>
+    [Id(6)]
+    public int DeviceIndex { get; init; }
+    
+    /// <summary>
+    /// Gets the timestamp when these metrics were captured
+    /// </summary>
+    [Id(7)]
+    public DateTime Timestamp { get; init; }
 }

@@ -12,6 +12,7 @@ using Orleans.GpuBridge.Runtime;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Allocators;
 using Orleans.GpuBridge.Runtime.Extensions;
 using Orleans.GpuBridge.Tests.TestingFramework;
+using HealthCheckResult = Orleans.GpuBridge.Abstractions.Providers.HealthCheckResult;
 using Xunit;
 
 namespace Orleans.GpuBridge.Tests.Integration;
@@ -43,8 +44,8 @@ public class BackendProviderIntegrationTests
         await registry.InitializeAsync();
         
         var selector = serviceProvider.GetRequiredService<IGpuBridgeProviderSelector>();
-        var requirements = new TestGpuExecutionRequirements { PreferGpu = true };
-        var provider = await selector.SelectProviderAsync(requirements);
+        var criteria = new ProviderSelectionCriteria { PreferGpu = true };
+        var provider = await selector.SelectProviderAsync(criteria);
         
         // Assert
         Assert.NotNull(provider);
@@ -92,12 +93,12 @@ public class BackendProviderIntegrationTests
         var selector = serviceProvider.GetRequiredService<IGpuBridgeProviderSelector>();
         
         // Test GPU preference
-        var gpuRequirements = new TestGpuExecutionRequirements { PreferGpu = true };
-        var gpuProvider = await selector.SelectProviderAsync(gpuRequirements);
+        var gpuCriteria = new ProviderSelectionCriteria { PreferGpu = true };
+        var gpuProvider = await selector.SelectProviderAsync(gpuCriteria);
         
         // Test CPU preference  
-        var cpuRequirements = new TestGpuExecutionRequirements { PreferGpu = false };
-        var cpuProvider = await selector.SelectProviderAsync(cpuRequirements);
+        var cpuCriteria = new ProviderSelectionCriteria { PreferGpu = false };
+        var cpuProvider = await selector.SelectProviderAsync(cpuCriteria);
         
         // Assert
         Assert.NotNull(gpuProvider);
@@ -161,8 +162,8 @@ public class BackendProviderIntegrationTests
         await registry.InitializeAsync();
         
         var selector = serviceProvider.GetRequiredService<IGpuBridgeProviderSelector>();
-        var requirements = new TestGpuExecutionRequirements { PreferGpu = true };
-        var provider = await selector.SelectProviderAsync(requirements);
+        var criteria = new ProviderSelectionCriteria { PreferGpu = true };
+        var provider = await selector.SelectProviderAsync(criteria);
         
         // Assert - Should fall back to CPU when GPU provider is unavailable
         Assert.NotNull(provider);
@@ -194,7 +195,8 @@ public class BackendProviderIntegrationTests
         Assert.NotNull(deviceManager);
         
         // Act & Assert - Dispose
-        Assert.DoesNotThrow(() => serviceProvider.Dispose());
+        var act = () => serviceProvider.Dispose();
+        act.Should().NotThrow();
     }
 }
 
@@ -239,6 +241,11 @@ internal class UnavailableTestProvider : IGpuBackendProvider
     public Task<HealthCheckResult> CheckHealthAsync(CancellationToken cancellationToken = default)
     {
         return Task.FromResult(new HealthCheckResult(false, "Provider is not available"));
+    }
+    
+    public Task<object> CreateContext(int deviceIndex = 0)
+    {
+        throw new InvalidOperationException("Provider is not available");
     }
 
     public void Dispose() { }

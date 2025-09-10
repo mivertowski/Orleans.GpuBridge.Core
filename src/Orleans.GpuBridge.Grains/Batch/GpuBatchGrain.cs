@@ -134,4 +134,12 @@ public sealed class GpuBatchGrain<TIn, TOut> : Grain, IGpuBatchGrain<TIn, TOut>
             throw;
         }
     }
+    
+    public Task<GpuBatchResult<TOut>> ProcessBatchAsync(
+        IReadOnlyList<TIn> batch,
+        GpuExecutionHints? hints = null)
+    {
+        // Alias for ExecuteAsync method for backward compatibility
+        return ExecuteAsync(batch, hints);
+    }
 }

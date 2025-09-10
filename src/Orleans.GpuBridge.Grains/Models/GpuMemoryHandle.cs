@@ -36,4 +36,27 @@ public sealed record GpuMemoryHandle(
             deviceIndex,
             DateTime.UtcNow);
     }
+    
+    /// <summary>
+    /// Creates a new GPU memory handle with a specific ID
+    /// </summary>
+    public static GpuMemoryHandle Create(string id, long sizeBytes)
+    {
+        return new GpuMemoryHandle(
+            id,
+            sizeBytes,
+            GpuMemoryType.Default,
+            0,
+            DateTime.UtcNow);
+    }
+    
+    /// <summary>
+    /// Empty GPU memory handle
+    /// </summary>
+    public static GpuMemoryHandle Empty { get; } = new GpuMemoryHandle(
+        string.Empty,
+        0,
+        GpuMemoryType.Default,
+        -1,
+        DateTime.MinValue);
 }

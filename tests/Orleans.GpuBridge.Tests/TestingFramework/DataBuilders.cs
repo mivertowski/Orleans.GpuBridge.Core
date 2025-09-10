@@ -188,12 +188,14 @@ public class GpuExecutionHintsBuilder
         return this;
     }
 
-    public GpuExecutionHints Build() => new()
-    {
-        PreferredBatchSize = _preferredBatchSize,
-        PreferGpu = _preferGpu,
-        TimeoutMs = _timeoutMs
-    };
+    public GpuExecutionHints Build() => new(
+        PreferredDevice: null,
+        HighPriority: false,
+        MaxMicroBatch: _preferredBatchSize,
+        Persistent: true,
+        PreferGpu: _preferGpu,
+        Timeout: _timeoutMs > 0 ? TimeSpan.FromMilliseconds(_timeoutMs) : null,
+        MaxRetries: null);
 }
 
 /// <summary>
@@ -337,11 +339,14 @@ public static class FakerExtensions
     public static Faker<GpuExecutionHints> ExecutionHints(this Faker faker)
     {
         return new Faker<GpuExecutionHints>()
-            .CustomInstantiator(f => new GpuExecutionHints
-            {
-                PreferredBatchSize = f.Random.Int(1, 4096),
-                PreferGpu = f.Random.Bool(),
-                TimeoutMs = f.Random.Int(1000, 60000)
-            });
+            .CustomInstantiator(f => new GpuExecutionHints(
+                PreferredDevice: f.Random.Int(0, 4),
+                HighPriority: f.Random.Bool(),
+                MaxMicroBatch: f.Random.Int(1, 4096),
+                Persistent: f.Random.Bool(),
+                PreferGpu: f.Random.Bool(),
+                Timeout: TimeSpan.FromMilliseconds(f.Random.Int(1000, 60000)),
+                MaxRetries: f.Random.Int(1, 5)
+            ));
     }
 }

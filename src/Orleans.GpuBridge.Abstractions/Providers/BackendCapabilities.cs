@@ -159,4 +159,26 @@ public sealed class BackendCapabilities
         SupportedPlatforms = new[] { "Windows", "Linux", "macOS" },
         MinimumComputeCapability = new Version(5, 0)
     };
+    
+    /// <summary>
+    /// Creates capabilities for CUDA backend
+    /// </summary>
+    public static BackendCapabilities CreateCuda() => new()
+    {
+        SupportedBackends = new[] { GpuBackend.CUDA },
+        SupportedDataTypes = new[] { typeof(float), typeof(double), typeof(int), typeof(long), typeof(byte), typeof(short), typeof(uint), typeof(ulong) },
+        MaxConcurrentDevices = 8,
+        SupportsJitCompilation = true,
+        SupportsAotCompilation = true,
+        SupportsUnifiedMemory = true,
+        SupportsDynamicSharedMemory = true,
+        SupportsAtomicOperations = true,
+        SupportsWarpIntrinsics = true,
+        SupportsTensorOperations = true,
+        SupportsCpuDebugging = false,
+        SupportsProfiling = true,
+        SupportedKernelLanguages = new[] { "CUDA", "C#" },
+        SupportedPlatforms = new[] { "Windows", "Linux" },
+        MinimumComputeCapability = new Version(3, 0)
+    };
 }

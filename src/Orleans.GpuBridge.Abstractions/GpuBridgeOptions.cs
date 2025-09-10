@@ -61,9 +61,42 @@ public sealed class GpuBridgeOptions
     public bool EnableProviderDiscovery { get; set; } = true;
     
     /// <summary>
+    /// Enable ILGPU backend support
+    /// </summary>
+    public bool EnableILGPU { get; set; } = false;
+    
+    /// <summary>
     /// Provider-specific configuration options
     /// </summary>
     public Dictionary<string, object> ProviderOptions { get; set; } = new();
+    
+    /// <summary>
+    /// Default batch size for processing
+    /// </summary>
+    public int BatchSize { get; set; } = 1024;
+    
+    /// <summary>
+    /// Maximum number of retry attempts
+    /// </summary>
+    public int MaxRetries { get; set; } = 3;
+    
+    /// <summary>
+    /// Whether to fallback to CPU execution when GPU execution fails
+    /// </summary>
+    public bool FallbackToCpu { get; set; } = true;
+    
+    /// <summary>
+    /// Enable metrics collection (legacy property, use Telemetry.EnableMetrics instead)
+    /// </summary>
+    public bool EnableMetrics 
+    { 
+        get => Telemetry?.EnableMetrics ?? true; 
+        set 
+        { 
+            if (Telemetry != null) 
+                Telemetry.EnableMetrics = value; 
+        } 
+    }
 }
 
 /// <summary>

@@ -13,6 +13,7 @@ using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Abstractions.Kernels;
 using Orleans.GpuBridge.Grains;
 using Orleans.GpuBridge.Grains.Enums;
+using Orleans.GpuBridge.Grains.Models;
 using Orleans.GpuBridge.Grains.Implementation;
 using Orleans.GpuBridge.Grains.State;
 using Orleans.GpuBridge.Runtime;
@@ -27,7 +28,7 @@ namespace Orleans.GpuBridge.Tests.Grains;
 /// </summary>
 public class GpuResidentGrainTests
 {
-    private readonly Mock<ILogger<GpuResidentGrain>> _mockLogger;
+    private readonly Mock<ILogger<GpuResidentGrain<float>>> _mockLogger;
     private readonly Mock<IPersistentState<GpuResidentState>> _mockState;
     private readonly Mock<IGpuBridge> _mockBridge;
     private readonly Mock<DeviceBroker> _mockDeviceBroker;
@@ -35,7 +36,7 @@ public class GpuResidentGrainTests
 
     public GpuResidentGrainTests()
     {
-        _mockLogger = new Mock<ILogger<GpuResidentGrain>>();
+        _mockLogger = new Mock<ILogger<GpuResidentGrain<float>>>();
         _mockState = new Mock<IPersistentState<GpuResidentState>>();
         _mockBridge = new Mock<IGpuBridge>();
         _mockDeviceBroker = new Mock<DeviceBroker>(
@@ -462,9 +463,9 @@ public class GpuResidentGrainTests
         result.Error.Should().Be("Compute failed");
     }
 
-    private GpuResidentGrain CreateGrain()
+    private GpuResidentGrain<float> CreateGrain()
     {
-        var grain = new GpuResidentGrain(_mockLogger.Object, _mockState.Object);
+        var grain = new GpuResidentGrain<float>(_mockLogger.Object, _mockState.Object);
         
         // Mock the service provider
         var serviceProviderMock = new Mock<IServiceProvider>();
@@ -485,7 +486,7 @@ public class GpuResidentGrainTests
         return new GpuDevice(
             Index: index,
             Name: $"Test GPU {index}",
-            Type: DeviceType.Gpu,
+            Type: DeviceType.GPU,
             TotalMemoryBytes: 8L * 1024 * 1024 * 1024, // 8GB
             AvailableMemoryBytes: 6L * 1024 * 1024 * 1024, // 6GB
             ComputeUnits: 32,

@@ -8,9 +8,11 @@ using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.GpuBridge.Abstractions;
 using Orleans.GpuBridge.Abstractions.Memory;
-// using Orleans.GpuBridge.DotCompute; // Backend not yet implemented
 using Orleans.GpuBridge.Runtime;
-using Orleans.GpuBridge.Runtime.BackendProviders;
+using Orleans.GpuBridge.Runtime.Extensions;
+using Orleans.GpuBridge.Tests.TestingFramework;
+using Orleans.GpuBridge.Backends.DotCompute.Execution;
+using Orleans.GpuBridge.Backends.DotCompute.Enums;
 using Orleans.Hosting;
 using Orleans.TestingHost;
 using Xunit;
@@ -82,7 +84,7 @@ public class EndToEndTests : IClassFixture<EndToEndTests.ClusterFixture>
         var serviceProvider = services.BuildServiceProvider();
         
         var logger = serviceProvider.GetRequiredService<ILogger<BackendProviderFactory>>();
-        var factory = new BackendProviderFactory(serviceProvider, logger);
+        var factory = new Orleans.GpuBridge.Tests.TestingFramework.BackendProviderFactory(serviceProvider, logger);
         factory.Initialize();
         
         // Act
@@ -136,7 +138,7 @@ public class EndToEndTests : IClassFixture<EndToEndTests.ClusterFixture>
         var serviceProvider = services.BuildServiceProvider();
         
         var logger = serviceProvider.GetRequiredService<ILogger<ParallelKernelExecutor>>();
-        var executor = new ParallelKernelExecutor(logger);
+        var executor = new Orleans.GpuBridge.Tests.TestingFramework.ParallelKernelExecutor(logger);
         
         var input = Enumerable.Range(1, 10000).Select(i => (float)i).ToArray();
         
@@ -182,7 +184,7 @@ public class EndToEndTests : IClassFixture<EndToEndTests.ClusterFixture>
         var serviceProvider = services.BuildServiceProvider();
         
         var logger = serviceProvider.GetRequiredService<ILogger<BackendProviderFactory>>();
-        var factory = new BackendProviderFactory(serviceProvider, logger);
+        var factory = new Orleans.GpuBridge.Tests.TestingFramework.BackendProviderFactory(serviceProvider, logger);
         factory.Initialize();
         
         // Act - CPU provider should always be available
@@ -271,7 +273,7 @@ public class EndToEndTests : IClassFixture<EndToEndTests.ClusterFixture>
         var serviceProvider = services.BuildServiceProvider();
         
         var logger = serviceProvider.GetRequiredService<ILogger<ParallelKernelExecutor>>();
-        var executor = new ParallelKernelExecutor(logger);
+        var executor = new Orleans.GpuBridge.Tests.TestingFramework.ParallelKernelExecutor(logger);
         
         // Process 1 million floats
         var input = Enumerable.Range(1, 1_000_000).Select(i => (float)i).ToArray();
@@ -394,7 +396,7 @@ public class StressTests
         {
             tasks[i] = Task.Run(async () =>
             {
-                var executor = new ParallelKernelExecutor(logger);
+                var executor = new Orleans.GpuBridge.Tests.TestingFramework.ParallelKernelExecutor(logger);
                 
                 for (int j = 0; j < 100; j++)
                 {

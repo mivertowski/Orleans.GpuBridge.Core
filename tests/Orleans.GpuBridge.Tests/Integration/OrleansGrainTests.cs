@@ -200,7 +200,7 @@ public class OrleansGrainTests : IClassFixture<OrleansGrainTests.GrainTestFixtur
 
         // Act & Assert
         await grain.Invoking(g => g.ProcessBatchAsync(invalidBatch))
-            .Should().ThrowAsync<ArgumentException>()
+            .Should().ThrowExactlyAsync<ArgumentException>()
             .WithMessage("*invalid*");
     }
 

@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
-using FsCheck;
+using FsCheck;using FsCheck.Fluent;
 using FsCheck.Xunit;
 using Orleans.GpuBridge.Abstractions;
 using Orleans.GpuBridge.Tests.TestingFramework;

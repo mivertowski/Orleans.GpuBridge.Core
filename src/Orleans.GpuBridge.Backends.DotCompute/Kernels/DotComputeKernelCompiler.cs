@@ -54,11 +54,11 @@ internal sealed class DotComputeKernelCompiler : IKernelCompiler
             if (_compiledKernels.TryGetValue(cacheKey, out var cached))
             {
                 _logger.LogDebug("Using cached compiled kernel: {KernelName}", source.Name);
-                return cached;
+                return cached.BaseKernel;
             }
 
             // Select target device
-            var device = SelectTargetDevice(options.TargetDevice);
+            var device = SelectTargetDevice(options.TargetDevice as IComputeDevice);
             
             // Compile kernel for DotCompute
             var compiledKernel = await CompileKernelForDeviceAsync(source, device, options, cancellationToken);
@@ -95,10 +95,10 @@ internal sealed class DotComputeKernelCompiler : IKernelCompiler
             // Read kernel source from file
             var sourceCode = await System.IO.File.ReadAllTextAsync(filePath, cancellationToken);
             var source = new KernelSource(
-                name: kernelName,
-                sourceCode: sourceCode,
-                language: DetectLanguageFromFile(filePath),
-                entryPoint: kernelName);
+                Name: kernelName,
+                SourceCode: sourceCode,
+                Language: DetectLanguageFromFile(filePath),
+                EntryPoint: kernelName);
 
             return await CompileAsync(source, options, cancellationToken);
         }
@@ -127,10 +127,10 @@ internal sealed class DotComputeKernelCompiler : IKernelCompiler
             // Convert C# method to kernel source
             var sourceCode = GenerateKernelSourceFromMethod(method);
             var source = new KernelSource(
-                name: method.Name,
-                sourceCode: sourceCode,
-                language: KernelLanguage.CSharp,
-                entryPoint: method.Name);
+                Name: method.Name,
+                SourceCode: sourceCode,
+                Language: KernelLanguage.CSharp,
+                EntryPoint: method.Name);
 
             return await CompileAsync(source, options, cancellationToken);
         }
@@ -162,10 +162,10 @@ internal sealed class DotComputeKernelCompiler : IKernelCompiler
             _logger.LogDebug("Compiling DotCompute kernel from source: {EntryPoint}", entryPoint);
 
             var source = new KernelSource(
-                name: entryPoint,
-                sourceCode: sourceCode,
-                language: language,
-                entryPoint: entryPoint);
+                Name: entryPoint,
+                SourceCode: sourceCode,
+                Language: language,
+                EntryPoint: entryPoint);
 
             return await CompileAsync(source, options, cancellationToken);
         }
@@ -237,7 +237,7 @@ internal sealed class DotComputeKernelCompiler : IKernelCompiler
                 errors.Add("Kernel methods must be static");
             }
 
-            if (method.IsGeneric || method.DeclaringType?.IsGenericType == true)
+            if (method.IsGenericMethodDefinition || method.DeclaringType?.IsGenericType == true)
             {
                 errors.Add("Generic methods and types are not supported in kernels");
             }
@@ -284,15 +284,15 @@ internal sealed class DotComputeKernelCompiler : IKernelCompiler
 
             // Simulate diagnostics generation
             var diagnostics = new CompilationDiagnostics(
-                CompilationTime: TimeSpan.FromMilliseconds(150),
+                IntermediateCode: $"DotCompute IR for {kernel.Name}",
                 OptimizationReport: "DotCompute optimizations applied",
-                IntermediateRepresentation: $"DotCompute IR for {kernel.Name}",
-                Warnings: new[] { "No specific warnings" },
-                PerformanceMetrics: new Dictionary<string, object>
+                CompilationTime: TimeSpan.FromMilliseconds(150),
+                AdditionalInfo: new Dictionary<string, object>
                 {
                     ["registers_used"] = 32,
                     ["shared_memory_used"] = 1024,
-                    ["estimated_occupancy"] = 0.75
+                    ["estimated_occupancy"] = 0.75,
+                    ["warnings"] = new[] { "No specific warnings" }
                 });
 
             return await Task.FromResult(diagnostics);

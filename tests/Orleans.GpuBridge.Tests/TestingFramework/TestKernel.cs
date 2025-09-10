@@ -194,8 +194,8 @@ public static class TestKernelFactory
         
         foreach (var vector in inputs)
         {
-            var result = new float[vector.Count];
-            for (int i = 0; i < vector.Count; i++)
+            var result = new float[vector.Length];
+            for (int i = 0; i < vector.Length; i++)
             {
                 result[i] = vector[i] * 2.0f;
             }

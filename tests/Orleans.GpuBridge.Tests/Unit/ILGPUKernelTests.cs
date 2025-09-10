@@ -13,6 +13,7 @@ using Moq;
 using Orleans.GpuBridge.Abstractions;
 using Orleans.GpuBridge.Abstractions.Kernels;
 using Orleans.GpuBridge.Runtime;
+using Orleans.GpuBridge.Runtime.Extensions;
 using Orleans.GpuBridge.Backends.ILGPU;
 using Xunit;
 using Xunit.Abstractions;
@@ -303,7 +304,7 @@ namespace Orleans.GpuBridge.Tests.Unit
 
                 if (accelerator is CudaAccelerator cudaAccelerator)
                 {
-                    memoryUsages.Add(cudaAccelerator.MemoryInfo.UsedMemory);
+                    memoryUsages.Add(cudaAccelerator.MemoryInfo.UsedBytes);
                 }
             }
 
@@ -375,7 +376,7 @@ namespace Orleans.GpuBridge.Tests.Unit
             using var bufferB = accelerator.Allocate1D(b);
             using var bufferC = accelerator.Allocate1D<float>(a.Length);
 
-            kernel(accelerator.DefaultStream, bufferA.IntLength, bufferA.View, bufferB.View, bufferC.View);
+            kernel(bufferA.Length, bufferA.View, bufferB.View, bufferC.View);
             accelerator.Synchronize();
 
             return bufferC.GetAsArray1D();
@@ -401,10 +402,10 @@ namespace Orleans.GpuBridge.Tests.Unit
             using var bufferB = accelerator.Allocate2DDenseX(b);
             using var bufferC = accelerator.Allocate2DDenseX<float>(new Index2D(rowsA, colsB));
 
-            kernel(accelerator.DefaultStream, bufferC.IntExtent, bufferA.View, bufferB.View, bufferC.View);
+            kernel(bufferC.Extent, bufferA.View, bufferB.View, bufferC.View);
             accelerator.Synchronize();
 
-            return bufferC.GetAs2DArray();
+            return bufferC.GetAsArray2D();
         }
 
         private async Task<float[]> ExecuteScalarMultiplyKernel(Accelerator accelerator, float[] input, float scalar)
@@ -415,7 +416,7 @@ namespace Orleans.GpuBridge.Tests.Unit
             using var bufferIn = accelerator.Allocate1D(input);
             using var bufferOut = accelerator.Allocate1D<float>(input.Length);
 
-            kernel(accelerator.DefaultStream, bufferIn.IntLength, bufferIn.View, scalar, bufferOut.View);
+            kernel(bufferIn.Length, bufferIn.View, scalar, bufferOut.View);
             accelerator.Synchronize();
 
             return bufferOut.GetAsArray1D();
@@ -456,7 +457,7 @@ namespace Orleans.GpuBridge.Tests.Unit
             var y = index.Y;
             var sum = 0.0f;
 
-            for (var k = 0; k < a.IntExtent.Y; k++)
+            for (var k = 0; k < a.Extent.Y; k++)
                 sum += a[x, k] * b[k, y];
 
             c[x, y] = sum;

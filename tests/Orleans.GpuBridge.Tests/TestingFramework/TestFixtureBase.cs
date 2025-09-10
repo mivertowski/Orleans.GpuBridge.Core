@@ -11,8 +11,14 @@ using Orleans.GpuBridge.Abstractions;
 using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Runtime;
+using Orleans.GpuBridge.Runtime.Extensions;
 
 namespace Orleans.GpuBridge.Tests.TestingFramework;
+
+/// <summary>
+/// Log entry for test logging
+/// </summary>
+public record LogEntry(LogLevel LogLevel, EventId EventId, string Message, Exception? Exception);
 
 /// <summary>
 /// Base class for test fixtures providing common services and utilities
@@ -154,6 +160,15 @@ public class TestLogger<T> : ILogger<T>
     {
         _testLogger = testLogger;
     }
+    
+    public TestLogger() : this(new TestLogger()) 
+    {
+    }
+    
+    public IReadOnlyList<LogEntry> LogEntries => _testLogger.LogEntries;
+    
+    public IEnumerable<(LogLevel LogLevel, string Message)> LoggedMessages => 
+        _testLogger.LogEntries.Select(entry => (entry.LogLevel, entry.Message));
 
     public IDisposable BeginScope<TState>(TState state) where TState : notnull
         => _testLogger.BeginScope(state);
@@ -177,7 +192,7 @@ public class MockGpuDeviceFactory
         _fixture = fixture;
     }
 
-    public IComputeDevice CreateMockDevice(DeviceType deviceType = DeviceType.GPU, int index = 0)
+    public IComputeDevice CreateMockDevice(Orleans.GpuBridge.Abstractions.Enums.DeviceType deviceType = Orleans.GpuBridge.Abstractions.Enums.DeviceType.GPU, int index = 0)
     {
         var device = new TestComputeDevice
         {

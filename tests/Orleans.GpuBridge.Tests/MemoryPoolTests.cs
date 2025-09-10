@@ -78,7 +78,7 @@ public class MemoryPoolTests
         var pool = new CpuMemoryPool<double>();
         
         // Act
-        var memories = new List<Orleans.GpuBridge.Abstractions.IGpuMemory<double>>();
+        var memories = new List<Orleans.GpuBridge.Abstractions.Memory.IGpuMemory<double>>();
         for (int i = 0; i < 5; i++)
         {
             memories.Add(pool.Rent(100));

@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ILGPU;
 using ILGPU.Runtime;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions.Providers;
+using Orleans.GpuBridge.Abstractions.Models;
 using Orleans.GpuBridge.Abstractions.Providers.Execution.Interfaces;
 using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Allocators;
-using Orleans.GpuBridge.Abstractions.Models;
 using Orleans.GpuBridge.Abstractions.Models.Compilation;
 using Orleans.GpuBridge.Backends.ILGPU.DeviceManagement;
 using Orleans.GpuBridge.Backends.ILGPU.Kernels;
@@ -126,6 +127,26 @@ public sealed class ILGPUBackendProvider : IGpuBackendProvider
         {
             _logger.LogWarning(ex, "Error checking ILGPU backend availability");
             return Task.FromResult(false);
+        }
+    }
+    
+    public bool IsAvailable()
+    {
+        if (!_initialized)
+        {
+            return false;
+        }
+
+        try
+        {
+            // Check if we have any usable accelerators
+            var devices = _deviceManager?.GetDevices() ?? Array.Empty<IComputeDevice>();
+            return devices.Any(d => d.Type != DeviceType.CPU || d.GetStatus() == DeviceStatus.Available);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Error checking ILGPU backend availability");
+            return false;
         }
     }
 
@@ -278,6 +299,21 @@ public sealed class ILGPUBackendProvider : IGpuBackendProvider
                 throw new InvalidOperationException("Kernel compilation test failed", ex);
             }
         }
+    }
+
+    public async Task<object> CreateContext(int deviceIndex = 0)
+    {
+        EnsureInitialized();
+        
+        if (_deviceManager == null)
+            throw new InvalidOperationException("Device manager not initialized");
+            
+        var device = _deviceManager.GetDevice(deviceIndex);
+        if (device == null)
+            throw new ArgumentException($"Device at index {deviceIndex} not found", nameof(deviceIndex));
+            
+        var context = await _deviceManager.CreateContextAsync(device, new ContextOptions(), CancellationToken.None);
+        return context;
     }
 
     private void EnsureInitialized()

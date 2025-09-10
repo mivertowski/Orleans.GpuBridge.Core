@@ -12,6 +12,11 @@ namespace Orleans.GpuBridge.Abstractions.Providers;
 public interface IGpuBackendRegistry : IDisposable
 {
     /// <summary>
+    /// Initializes the backend registry
+    /// </summary>
+    Task InitializeAsync(CancellationToken cancellationToken = default);
+    
+    /// <summary>
     /// Registers a backend provider
     /// </summary>
     void RegisterProvider([NotNull] BackendRegistration registration);

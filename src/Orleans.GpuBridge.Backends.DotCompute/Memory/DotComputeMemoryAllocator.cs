@@ -10,6 +10,8 @@ using Orleans.GpuBridge.Abstractions.Providers.Memory.Allocators;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Interfaces;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Options;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Statistics;
+using Orleans.GpuBridge.Abstractions.Providers.Memory.Enums;
+using Orleans.GpuBridge.Abstractions.Enums;
 
 namespace Orleans.GpuBridge.Backends.DotCompute.Memory;
 
@@ -169,7 +171,7 @@ internal sealed class DotComputeMemoryAllocator : IMemoryAllocator
             // Check if any device supports unified memory
             var devices = _deviceManager.GetDevices();
             var unifiedMemoryDevice = devices.FirstOrDefault(d => 
-                d.Type == DeviceType.Gpu); // Simplified check
+                d.Type == DeviceType.GPU); // Simplified check
 
             if (unifiedMemoryDevice == null)
             {
@@ -183,8 +185,8 @@ internal sealed class DotComputeMemoryAllocator : IMemoryAllocator
             var unifiedMemory = await AllocateDotComputeUnifiedMemoryAsync(
                 unifiedMemoryDevice, sizeBytes, options, cancellationToken);
 
-            // Track allocation
-            _allocations[unifiedMemory.DevicePointer] = unifiedMemory;
+            // Track allocation statistics (unified memory uses different tracking)
+            // Note: unified memory doesn't use the same tracking as device memory
             Interlocked.Add(ref _totalBytesAllocated, sizeBytes);
             Interlocked.Add(ref _totalBytesInUse, sizeBytes);
             Interlocked.Increment(ref _allocationCount);
@@ -441,7 +443,8 @@ internal sealed class DotComputeMemoryPool : IDisposable
             AllocationCount: 0,
             FreeBlockCount: 0,
             LargestFreeBlock: 0,
-            FragmentationPercent: 0);
+            FragmentationPercent: 0,
+            PeakUsageBytes: 0);
     }
 
     public Task CompactAsync(CancellationToken cancellationToken = default)

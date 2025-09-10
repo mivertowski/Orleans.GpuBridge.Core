@@ -3,6 +3,8 @@ using System.Runtime.InteropServices;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Orleans.GpuBridge.Abstractions.Metrics;
+using Orleans.GpuBridge.Abstractions.Models;
 using Orleans.GpuBridge.Diagnostics.Abstractions;
 using Orleans.GpuBridge.Diagnostics.Configuration;
 using Orleans.GpuBridge.Diagnostics.Implementation;
@@ -37,7 +39,9 @@ namespace Orleans.GpuBridge.Diagnostics;
 /// - Intel: Windows performance counters (future implementation)
 /// </para>
 /// </remarks>
-public sealed class GpuMetricsCollector : BackgroundService, IGpuMetricsCollector
+public sealed class GpuMetricsCollector : BackgroundService, 
+    Orleans.GpuBridge.Diagnostics.Abstractions.IGpuMetricsCollector,
+    Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector
 {
     private readonly ILogger<GpuMetricsCollector> _logger;
     private readonly IGpuTelemetry _telemetry;
@@ -444,5 +448,122 @@ public sealed class GpuMetricsCollector : BackgroundService, IGpuMetricsCollecto
     {
         _collectionTimer?.Dispose();
         base.Dispose();
+    }
+
+    // Implementation of Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector
+    async Task<GpuMemoryInfo> Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector.GetMemoryInfoAsync(int deviceIndex, CancellationToken cancellationToken)
+    {
+        var deviceMetrics = await GetDeviceMetricsAsync(deviceIndex);
+        return GpuMemoryInfo.Create(
+            totalBytes: deviceMetrics.MemoryTotalMB * 1024 * 1024,
+            allocatedBytes: deviceMetrics.MemoryUsedMB * 1024 * 1024,
+            deviceIndex: deviceIndex,
+            deviceName: deviceMetrics.DeviceName ?? $"Device {deviceIndex}");
+    }
+
+    async Task<IReadOnlyList<GpuMemoryInfo>> Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector.GetAllMemoryInfoAsync(CancellationToken cancellationToken)
+    {
+        var allMetrics = await GetAllDeviceMetricsAsync();
+        return allMetrics.Select((m, index) => GpuMemoryInfo.Create(
+            totalBytes: m.MemoryTotalMB * 1024 * 1024,
+            allocatedBytes: m.MemoryUsedMB * 1024 * 1024,
+            deviceIndex: index,
+            deviceName: m.DeviceName ?? $"Device {index}")).ToList();
+    }
+
+    async Task<GpuUtilizationMetrics> Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector.GetUtilizationAsync(int deviceIndex, CancellationToken cancellationToken)
+    {
+        var deviceMetrics = await GetDeviceMetricsAsync(deviceIndex);
+        return new GpuUtilizationMetrics
+        {
+            GpuUtilizationPercentage = deviceMetrics.GpuUtilization,
+            MemoryUtilizationPercentage = deviceMetrics.MemoryUtilization,
+            Timestamp = deviceMetrics.Timestamp.DateTime
+        };
+    }
+
+    Task<IReadOnlyDictionary<string, double>> Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector.GetPerformanceCountersAsync(int deviceIndex, CancellationToken cancellationToken)
+    {
+        // Return empty dictionary as this collector doesn't implement performance counters yet
+        return Task.FromResult<IReadOnlyDictionary<string, double>>(new Dictionary<string, double>());
+    }
+
+    async Task<double> Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector.GetTemperatureAsync(int deviceIndex, CancellationToken cancellationToken)
+    {
+        var deviceMetrics = await GetDeviceMetricsAsync(deviceIndex);
+        return deviceMetrics.TemperatureCelsius;
+    }
+
+    async Task<double> Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector.GetPowerConsumptionAsync(int deviceIndex, CancellationToken cancellationToken)
+    {
+        var deviceMetrics = await GetDeviceMetricsAsync(deviceIndex);
+        return deviceMetrics.PowerUsageWatts;
+    }
+
+    async Task<GpuClockSpeeds> Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector.GetClockSpeedsAsync(int deviceIndex, CancellationToken cancellationToken)
+    {
+        var deviceMetrics = await GetDeviceMetricsAsync(deviceIndex);
+        return new GpuClockSpeeds
+        {
+            GraphicsClockMHz = 0, // Not available in GpuDeviceMetrics
+            MemoryClockMHz = 0, // Not available in GpuDeviceMetrics
+            Timestamp = deviceMetrics.Timestamp.DateTime
+        };
+    }
+
+    Task Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector.StartCollectionAsync(TimeSpan interval, CancellationToken cancellationToken)
+    {
+        // Collection is already started in the background service
+        return Task.CompletedTask;
+    }
+
+    Task Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector.StopCollectionAsync()
+    {
+        // Collection will be stopped when the service is stopped
+        return Task.CompletedTask;
+    }
+
+    Task<AggregatedGpuMetrics> Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector.GetAggregatedMetricsAsync(TimeSpan duration, int deviceIndex, CancellationToken cancellationToken)
+    {
+        // Return basic aggregated metrics - in a real implementation, this would aggregate historical data
+        return GetDeviceMetricsAsync(deviceIndex).ContinueWith(t =>
+        {
+            var metrics = t.Result;
+            return new AggregatedGpuMetrics
+            {
+                AverageGpuUtilization = metrics.GpuUtilization,
+                PeakGpuUtilization = metrics.GpuUtilization,
+                AverageMemoryUtilization = metrics.MemoryUtilization,
+                PeakMemoryUtilization = metrics.MemoryUtilization,
+                AverageTemperature = metrics.TemperatureCelsius,
+                PeakTemperature = metrics.TemperatureCelsius,
+                AveragePowerConsumption = metrics.PowerUsageWatts,
+                TotalEnergyConsumed = metrics.PowerUsageWatts * duration.TotalHours,
+                SampleCount = 1,
+                Duration = duration,
+                StartTime = DateTime.UtcNow.Subtract(duration),
+                EndTime = DateTime.UtcNow
+            };
+        }, cancellationToken);
+    }
+
+    async Task<Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics> Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector.GetDeviceMetricsAsync(int deviceIndex, CancellationToken cancellationToken)
+    {
+        var deviceMetrics = await GetDeviceMetricsAsync(deviceIndex);
+        var memoryInfo = await ((Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector)this).GetMemoryInfoAsync(deviceIndex, cancellationToken);
+        var utilization = await ((Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector)this).GetUtilizationAsync(deviceIndex, cancellationToken);
+        var clockSpeeds = await ((Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector)this).GetClockSpeedsAsync(deviceIndex, cancellationToken);
+        
+        return new Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics
+        {
+            MemoryInfo = memoryInfo,
+            Utilization = utilization,
+            ClockSpeeds = clockSpeeds,
+            Temperature = deviceMetrics.TemperatureCelsius,
+            PowerConsumption = deviceMetrics.PowerUsageWatts,
+            PerformanceCounters = new Dictionary<string, double>(),
+            DeviceIndex = deviceIndex,
+            Timestamp = deviceMetrics.Timestamp.DateTime
+        };
     }
 }

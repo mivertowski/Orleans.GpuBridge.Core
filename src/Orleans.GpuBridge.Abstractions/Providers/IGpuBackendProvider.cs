@@ -43,6 +43,11 @@ public interface IGpuBackendProvider : IDisposable
     Task<bool> IsAvailableAsync(CancellationToken cancellationToken = default);
     
     /// <summary>
+    /// Checks if the backend is available on this system (synchronous version)
+    /// </summary>
+    bool IsAvailable();
+    
+    /// <summary>
     /// Gets the device manager for this backend
     /// </summary>
     IDeviceManager GetDeviceManager();
@@ -71,6 +76,11 @@ public interface IGpuBackendProvider : IDisposable
     /// Performs a health check on the backend
     /// </summary>
     Task<HealthCheckResult> CheckHealthAsync(CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Creates a compute context for the specified device
+    /// </summary>
+    Task<object> CreateContext(int deviceIndex = 0);
 }
 
 /// <summary>

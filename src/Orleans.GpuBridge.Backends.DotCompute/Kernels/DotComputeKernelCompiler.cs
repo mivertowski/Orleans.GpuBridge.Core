@@ -352,19 +352,19 @@ internal sealed class DotComputeKernelCompiler : IKernelCompiler
         return kernel;
     }
 
-    // TODO: [DOTCOMPUTE-API] Core kernel compilation - Replace with IUnifiedKernelCompiler
-    // When: DotCompute v0.3.0+ with complete compilation pipeline
-    // Integration example:
-    //   var accelerator = (device as DotComputeAcceleratorAdapter)?.Accelerator;
-    //   var compiler = accelerator.GetKernelCompiler(source.Language);
-    //   var nativeKernel = await compiler.CompileKernelAsync(
-    //       source.SourceCode,
-    //       source.EntryPoint ?? source.Name,
-    //       options.CompilerFlags,
-    //       cancellationToken);
-    //   _nativeKernels[kernelId] = nativeKernel;
-    //   return new DotComputeCompiledKernel(baseKernel, nativeKernel, device);
-    // Current: Simulates realistic compilation with timing and IR generation
+    // TODO: [DOTCOMPUTE-API] Kernel compilation API investigation needed
+    // DotCompute v0.3.0-rc1: CompileKernelAsync signature and availability unclear
+    // Need to investigate:
+    //   - Does IAccelerator have CompileKernelAsync method?
+    //   - What are the parameters and return types?
+    //   - Is there a separate IKernelCompiler interface?
+    //
+    // Expected integration pattern (pending API discovery):
+    //   var adapter = device as DotComputeAcceleratorAdapter;
+    //   var accelerator = adapter?.Accelerator;
+    //   var nativeKernel = await accelerator.CompileKernelAsync(...);
+    //
+    // Current: Simulation pending API discovery
     private async Task<DotComputeCompiledKernel> CompileKernelForDeviceAsync(
         KernelSource source,
         IComputeDevice device,
@@ -374,24 +374,33 @@ internal sealed class DotComputeKernelCompiler : IKernelCompiler
         _logger.LogInformation("Compiling DotCompute kernel: {KernelName} for device: {DeviceId}",
             source.Name, device.DeviceId);
 
-        // Simulate realistic multi-stage compilation process
-        
+        // TODO: [PHASE 2] Integrate real kernel compilation when API is confirmed
+        // For now, maintaining simulation to keep system functional
+        // This allows device discovery and memory management to be tested
+        // while kernel compilation API is being investigated
+
         var kernelId = $"{source.Name}_{device.DeviceId}_{source.GetHashCode()}";
-        
-        // Simulate compilation time
+
+        // Simulate compilation time (will be replaced with real compilation)
         await Task.Delay(100, cancellationToken);
-        
+
+        _logger.LogWarning(
+            "Using simulated kernel compilation for {KernelName}. " +
+            "Real DotCompute kernel compilation pending API investigation.",
+            source.Name);
+
         // Create native kernel placeholder
         var nativeKernel = new DotComputeNativeKernel(source.Name, source.SourceCode);
         _nativeKernels[kernelId] = nativeKernel;
-        
+
         var metadata = new Dictionary<string, object>
         {
             ["compiled_for_device"] = device.DeviceId,
             ["compilation_time"] = DateTime.UtcNow,
             ["language"] = source.Language.ToString(),
             ["entry_point"] = source.EntryPoint ?? source.Name,
-            ["optimization_level"] = options.OptimizationLevel.ToString()
+            ["optimization_level"] = options.OptimizationLevel.ToString(),
+            ["status"] = "simulated_pending_api"
         };
 
         if (options.Defines?.Any() == true)

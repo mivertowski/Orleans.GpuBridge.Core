@@ -15,6 +15,10 @@ public class ParallelKernelExecutor
 {
     private readonly ILogger<ParallelKernelExecutor> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ParallelKernelExecutor"/> class
+    /// </summary>
+    /// <param name="logger">Logger for execution diagnostics</param>
     public ParallelKernelExecutor(ILogger<ParallelKernelExecutor> logger)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));

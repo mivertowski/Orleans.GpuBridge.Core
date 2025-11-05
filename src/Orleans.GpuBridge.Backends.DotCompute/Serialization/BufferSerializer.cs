@@ -376,13 +376,28 @@ public static class BufferSerializer
 }
 
 /// <summary>
-/// Compression levels
+/// Compression levels for buffer serialization
 /// </summary>
 public enum CompressionLevel
 {
+    /// <summary>
+    /// No compression (fastest, largest size)
+    /// </summary>
     None,
+
+    /// <summary>
+    /// Fastest compression with moderate size reduction
+    /// </summary>
     Fastest,
+
+    /// <summary>
+    /// Balanced compression optimizing both speed and size
+    /// </summary>
     Optimal,
+
+    /// <summary>
+    /// Maximum compression (slowest, smallest size)
+    /// </summary>
     Maximum
 }
 
@@ -413,7 +428,12 @@ public sealed class SerializationBufferPool
     private const int SmallSize = 4 * 1024;      // 4KB
     private const int MediumSize = 64 * 1024;    // 64KB
     private const int LargeSize = 1024 * 1024;   // 1MB
-    
+
+    /// <summary>
+    /// Rents a buffer of at least the specified size from the pool
+    /// </summary>
+    /// <param name="minSize">Minimum required buffer size in bytes</param>
+    /// <returns>A byte array that is at least minSize bytes</returns>
     public byte[] Rent(int minSize)
     {
         if (minSize <= SmallSize)
@@ -440,7 +460,11 @@ public sealed class SerializationBufferPool
         // For very large buffers, don't pool
         return new byte[minSize];
     }
-    
+
+    /// <summary>
+    /// Returns a rented buffer back to the pool after clearing sensitive data
+    /// </summary>
+    /// <param name="buffer">The buffer to return to the pool</param>
     public void Return(byte[] buffer)
     {
         if (buffer == null) return;
@@ -462,7 +486,10 @@ public sealed class SerializationBufferPool
             // Don't pool non-standard sizes
         }
     }
-    
+
+    /// <summary>
+    /// Clears all buffers from the pool, releasing memory
+    /// </summary>
     public void Clear()
     {
         _smallBuffers.Clear();

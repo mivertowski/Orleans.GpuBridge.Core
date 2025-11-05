@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Orleans;
 using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Abstractions.Kernels;
 using Orleans.GpuBridge.Grains;
 using Orleans.GpuBridge.Grains.Stream;
 using Orleans.Runtime;

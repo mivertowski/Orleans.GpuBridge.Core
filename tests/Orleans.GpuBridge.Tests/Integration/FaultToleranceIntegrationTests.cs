@@ -69,7 +69,7 @@ public class FaultToleranceIntegrationTests : IClassFixture<GpuClusterFixture>
         // Act - Generate mix of valid and invalid operations
         for (int i = 0; i < totalOperations; i++)
         {
-            var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(),Guid.NewGuid(),$"error-test-{i}");
+            var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(), Guid.NewGuid().ToString(), $"error-test-{i}");
             
             float[] input;
             if (i < errorOperations && random.NextDouble() < 0.5) // Randomly distribute errors
@@ -118,7 +118,7 @@ public class FaultToleranceIntegrationTests : IClassFixture<GpuClusterFixture>
             var grainId = $"cascade-test-{i}";
             tasks.Add(Task.Run(async () =>
             {
-                var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(),Guid.NewGuid(),Guid.NewGuid(),grainId);
+                var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), grainId);
                 
                 // Normal operation
                 var normalInput = new[] { new float[] { i, i + 1, i + 2 } };
@@ -144,7 +144,7 @@ public class FaultToleranceIntegrationTests : IClassFixture<GpuClusterFixture>
         _output.WriteLine($"Problematic operations handled: {problematicOperationHandled}/{concurrentGrains}");
 
         // Most normal operations should succeed
-        normalOperationSuccesses.Should().BeGreaterThan(concurrentGrains * 0.8);
+        normalOperationSuccesses.Should().BeGreaterThan((int)(concurrentGrains * 0.8));
         // All problematic operations should be handled (not crash)
         problematicOperationHandled.Should().Be(concurrentGrains);
     }
@@ -206,7 +206,7 @@ public class FaultToleranceIntegrationTests : IClassFixture<GpuClusterFixture>
         _output.WriteLine($"Errors encountered: {errors.Count}");
         
         // Should handle memory pressure gracefully - at least 70% success rate
-        successCount.Should().BeGreaterThan(iterations * 0.7);
+        successCount.Should().BeGreaterThan((int)(iterations * 0.7));
         
         // If there are errors, they should be handled gracefully (not crash the system)
         errors.ForEach(error => _output.WriteLine($"Error: {error}"));
@@ -270,7 +270,7 @@ public class FaultToleranceIntegrationTests : IClassFixture<GpuClusterFixture>
         // Act - Create excessive number of concurrent operations
         for (int i = 0; i < excessiveGrainCount; i++)
         {
-            var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(),Guid.NewGuid(),$"exhaustion-test-{i}");
+            var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(), Guid.NewGuid().ToString(), $"exhaustion-test-{i}");
             grains.Add(grain);
             
             var input = new[] { Enumerable.Range(0, 1000).Select(x => (float)x).ToArray() };
@@ -389,7 +389,7 @@ public class FaultToleranceIntegrationTests : IClassFixture<GpuClusterFixture>
             
             for (int op = 0; op < operationsPerPhase; op++)
             {
-                var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(),Guid.NewGuid(),Guid.NewGuid(),$"recovery-{phase}-{op}");
+                var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), $"recovery-{phase}-{op}");
                 
                 // Mix of normal and challenging operations
                 float[] input = op % 3 == 0 

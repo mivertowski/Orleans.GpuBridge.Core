@@ -130,7 +130,7 @@ internal sealed class DotComputeMemoryAllocator : IMemoryAllocator
         }
     }
 
-    public async Task<IPinnedMemory> AllocatePinnedAsync(
+    public Task<IPinnedMemory> AllocatePinnedAsync(
         long sizeBytes,
         CancellationToken cancellationToken = default)
     {
@@ -144,7 +144,7 @@ internal sealed class DotComputeMemoryAllocator : IMemoryAllocator
             var pinnedMemory = new DotComputePinnedMemory(sizeBytes, _logger);
 
             _logger.LogDebug("Allocated {SizeBytes} bytes of pinned host memory", sizeBytes);
-            return pinnedMemory;
+            return Task.FromResult<IPinnedMemory>(pinnedMemory);
         }
         catch (Exception ex)
         {

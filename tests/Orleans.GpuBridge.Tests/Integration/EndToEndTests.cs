@@ -11,11 +11,14 @@ using Orleans.GpuBridge.Abstractions.Memory;
 using Orleans.GpuBridge.Runtime;
 using Orleans.GpuBridge.Runtime.Extensions;
 using Orleans.GpuBridge.Tests.TestingFramework;
-using Orleans.GpuBridge.Backends.DotCompute.Execution;
-using Orleans.GpuBridge.Backends.DotCompute.Enums;
 using Orleans.Hosting;
 using Orleans.TestingHost;
 using Xunit;
+
+// Resolve type ambiguities with explicit aliases
+using ProductionExecutor = Orleans.GpuBridge.Backends.DotCompute.Execution.ParallelKernelExecutor;
+using ProductionVectorOp = Orleans.GpuBridge.Backends.DotCompute.Enums.VectorOperation;
+using TestVectorOp = Orleans.GpuBridge.Tests.TestingFramework.VectorOperation;
 
 namespace Orleans.GpuBridge.Tests.Integration;
 

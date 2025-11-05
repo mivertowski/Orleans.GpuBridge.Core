@@ -5,6 +5,7 @@ using FluentAssertions;
 using FsCheck;using FsCheck.Fluent;
 using FsCheck.Xunit;
 using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Abstractions.Kernels;
 using Orleans.GpuBridge.Tests.TestingFramework;
 using Xunit;
 
@@ -246,7 +247,7 @@ public class GpuBridgePropertyTests : TestFixtureBase
                 .WithBatchSize(Math.Max(1, Math.Abs(batchSize) % 8192))
                 .Build();
                 
-            var isValid = !string.IsNullOrEmpty(kernelInfo.DisplayName)
+            var isValid = !string.IsNullOrEmpty(kernelInfo.Description)
                 && kernelInfo.PreferredBatchSize > 0
                 && kernelInfo.InputType != null
                 && kernelInfo.OutputType != null;
@@ -286,8 +287,9 @@ public class GpuBridgePropertyTests : TestFixtureBase
         {
             return Arb.From(
                 from size in Gen.Choose(1, 1000)
-                from values in Gen.ArrayOf(size, 
-                    Gen.Choose(-1000.0f, 1000.0f)
+                from values in Gen.ArrayOf(size,
+                    Gen.Choose(-1000, 1000)
+                        .Select(i => (float)i)
                         .Where(f => !float.IsNaN(f) && !float.IsInfinity(f)))
                 select values);
         }

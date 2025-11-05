@@ -350,11 +350,6 @@ NEVER create files unless they're absolutely necessary for achieving your goal.
 ALWAYS prefer editing an existing file to creating a new one.
 NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.
 Never save working files, text/mds and tests to the root folder.
-
-# CLAUDE.md
-
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
 ## Project Overview
 
 Orleans.GpuBridge.Core is a .NET library that provides GPU acceleration capabilities for the Orleans distributed computing framework. The project integrates GPU compute resources with Orleans grains through a bridge abstraction layer.
@@ -539,3 +534,5 @@ Key NuGet packages to add when creating .csproj files:
 3. **Error Handling**: GPU operations can fail - proper fallback to CPU required
 4. **Performance**: Batch size optimization is critical for GPU efficiency
 5. **Orleans Constraints**: Respect grain single-threaded execution model
+
+QUALITY CODE USING LATEST .NET9 PATTERNS ONLY. NO SHORT CUTS. NO COMPROMISES. ALWAYS PRODUCTION GRADE CODE!

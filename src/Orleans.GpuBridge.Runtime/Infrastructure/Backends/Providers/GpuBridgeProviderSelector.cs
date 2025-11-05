@@ -14,7 +14,7 @@ namespace Orleans.GpuBridge.Runtime.Providers;
 /// <summary>
 /// Selects the appropriate GPU backend provider for kernel execution
 /// </summary>
-public sealed class GpuBridgeProviderSelector 
+public sealed class GpuBridgeProviderSelector : IGpuBridgeProviderSelector 
 {
     private readonly ILogger<GpuBridgeProviderSelector> _logger;
     private readonly IGpuBackendRegistry _registry;
@@ -63,16 +63,16 @@ public sealed class GpuBridgeProviderSelector
     }
 
     /// <summary>
-    /// Selects a provider for kernel execution based on requirements
+    /// Selects a provider for kernel execution based on criteria
     /// </summary>
     public async Task<IGpuBackendProvider> SelectProviderAsync(
-        KernelRequirements requirements,
+        ProviderSelectionCriteria criteria,
         CancellationToken cancellationToken = default)
     {
         // Check if specific provider is requested
-        if (!string.IsNullOrEmpty(requirements.PreferredBackend))
+        if (!string.IsNullOrEmpty(criteria.PreferredProviderId))
         {
-            var provider = await GetProviderByNameAsync(requirements.PreferredBackend, cancellationToken);
+            var provider = await GetProviderByNameAsync(criteria.PreferredProviderId, cancellationToken);
             if (provider != null)
             {
                 return provider;
@@ -80,11 +80,10 @@ public sealed class GpuBridgeProviderSelector
 
             _logger.LogWarning(
                 "Requested GPU backend provider {ProviderId} not available, falling back",
-                requirements.PreferredBackend);
+                criteria.PreferredProviderId);
         }
 
-        // Try to select based on criteria
-        var criteria = BuildSelectionCriteria(requirements);
+        // Try to select based on criteria from registry
         var selectedProvider = await _registry.SelectProviderAsync(criteria, cancellationToken);
 
         if (selectedProvider != null)
@@ -208,28 +207,6 @@ public sealed class GpuBridgeProviderSelector
         }
     }
 
-    private ProviderSelectionCriteria BuildSelectionCriteria(KernelRequirements requirements)
-    {
-        var requiredCapabilities = new List<string>();
-
-        if (requirements.RequiresAtomics)
-            requiredCapabilities.Add("atomics");
-
-        if (requirements.RequiresSharedMemory)
-            requiredCapabilities.Add("shared-memory");
-
-        if (requirements.RequiresTensorOps)
-            requiredCapabilities.Add("tensor");
-
-        var preferredBackend = requirements.PreferGpu ? GpuBackend.CUDA : (GpuBackend?)null;
-        
-        return new ProviderSelectionCriteria(
-            PreferredBackend: preferredBackend,
-            RequiredCapabilities: requiredCapabilities,
-            RequireJitCompilation: true,
-            RequireUnifiedMemory: requirements.RequiresUnifiedMemory,
-            RequireProfiling: _options.EnableProfiling);
-    }
 
     private async Task<IGpuBackendProvider> GetOrCreateCpuProviderAsync(CancellationToken cancellationToken)
     {
@@ -251,19 +228,6 @@ public sealed class GpuBridgeProviderSelector
         return cpuProvider;
     }
 }
-
-/// <summary>
-/// Kernel execution requirements
-/// </summary>
-public sealed record KernelRequirements(
-    string? PreferredBackend = null,
-    bool PreferGpu = true,
-    bool RequiresAtomics = false,
-    bool RequiresSharedMemory = false,
-    bool RequiresTensorOps = false,
-    bool RequiresUnifiedMemory = false,
-    long MinMemoryBytes = 0,
-    int MinComputeUnits = 0);
 
 /// <summary>
 /// Extensions for GpuBridgeOptions

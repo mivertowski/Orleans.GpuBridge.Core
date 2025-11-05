@@ -12,10 +12,8 @@ public static class BenchmarkExtensions
     /// </summary>
     public static Job WithGcServer(this Job job, bool useServerGc)
     {
-        return job.WithGcMode(new BenchmarkDotNet.Environments.GcMode 
-        { 
-            Server = useServerGc 
-        });
+        // BenchmarkDotNet doesn't have WithGcWorkstation, just use WithGcServer
+        return job.WithGcServer(useServerGc);
     }
 
     /// <summary>
@@ -23,10 +21,7 @@ public static class BenchmarkExtensions
     /// </summary>
     public static Job WithCleanup(this Job job, bool cleanup = true)
     {
-        return job.WithGcMode(new BenchmarkDotNet.Environments.GcMode 
-        { 
-            Force = cleanup 
-        });
+        return cleanup ? job.WithGcForce(true) : job;
     }
 
     /// <summary>

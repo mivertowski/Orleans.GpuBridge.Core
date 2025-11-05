@@ -169,12 +169,7 @@ internal class TestComputeDevice : IComputeDevice
 
     public bool SupportsFeature(string feature) => true;
 
-    public DeviceStatus GetStatus() => new DeviceStatus(
-        Id: DeviceId,
-        IsHealthy: true,
-        Temperature: 50.0,
-        MemoryUsagePercentage: 65.0,
-        LastError: null);
+    public DeviceStatus GetStatus() => DeviceStatus.Available;
 }
 
 internal class TestKernelCompiler : IKernelCompiler
@@ -350,7 +345,7 @@ internal class TestKernelGraph : IKernelGraph
         Task.FromResult<ICompiledGraph>(new TestCompiledGraph());
     
     public Task<GraphExecutionResult> ExecuteAsync(CancellationToken cancellationToken = default) =>
-        Task.FromResult(new GraphExecutionResult("test-graph", true, new Dictionary<string, KernelExecutionResult>(), TimeSpan.Zero));
+        Task.FromResult(new GraphExecutionResult(true, 0, TimeSpan.Zero, null));
         
     public GraphValidationResult Validate() => GraphValidationResult.Success();
     
@@ -375,7 +370,7 @@ internal class TestCompiledGraph : ICompiledGraph
     }
     
     public Task<GraphExecutionResult> ExecuteAsync(CancellationToken cancellationToken = default) =>
-        Task.FromResult(new GraphExecutionResult(Name, true, new Dictionary<string, KernelExecutionResult>(), TimeSpan.Zero));
+        Task.FromResult(new GraphExecutionResult(true, 0, TimeSpan.Zero, null));
     
     public void Dispose() { }
 }

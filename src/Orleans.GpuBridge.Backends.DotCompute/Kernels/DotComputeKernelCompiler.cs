@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -34,6 +35,13 @@ internal sealed class DotComputeKernelCompiler : IKernelCompiler
         _nativeKernels = new ConcurrentDictionary<string, object>();
     }
 
+    // TODO: [DOTCOMPUTE-API] Integrate with IUnifiedKernelCompiler for real compilation
+    // When: DotCompute v0.3.0+ with IUnifiedKernelCompiler implementation
+    // Integration example:
+    //   var compiler = _acceleratorManager.GetKernelCompiler(device);
+    //   var compiledKernel = await compiler.CompileAsync(source, options, cancellationToken);
+    //   return new DotComputeCompiledKernelAdapter(compiledKernel, device);
+    // Current: Simulates compilation with caching and realistic timing
     public async Task<CompiledKernel> CompileAsync(
         KernelSource source,
         KernelCompilationOptions options,
@@ -49,7 +57,7 @@ internal sealed class DotComputeKernelCompiler : IKernelCompiler
         {
             _logger.LogDebug("Compiling DotCompute kernel: {KernelName}", source.Name);
 
-            // Check if already compiled
+            // Check if already compiled (caching pattern will remain with real APIs)
             var cacheKey = GenerateCacheKey(source, options);
             if (_compiledKernels.TryGetValue(cacheKey, out var cached))
             {
@@ -59,13 +67,13 @@ internal sealed class DotComputeKernelCompiler : IKernelCompiler
 
             // Select target device
             var device = SelectTargetDevice(options.TargetDevice as IComputeDevice);
-            
+
             // Compile kernel for DotCompute
             var compiledKernel = await CompileKernelForDeviceAsync(source, device, options, cancellationToken);
-            
+
             // Cache the compiled kernel
             _compiledKernels[cacheKey] = compiledKernel;
-            
+
             _logger.LogDebug("Successfully compiled DotCompute kernel: {KernelName}", source.Name);
             return compiledKernel.BaseKernel;
         }
@@ -109,9 +117,10 @@ internal sealed class DotComputeKernelCompiler : IKernelCompiler
         }
     }
 
+    [RequiresUnreferencedCode("Uses method validation which may not work with trimming.")]
     public async Task<CompiledKernel> CompileFromMethodAsync(
-        MethodInfo method,
-        KernelCompilationOptions options,
+        [NotNull] MethodInfo method,
+        [NotNull] KernelCompilationOptions options,
         CancellationToken cancellationToken = default)
     {
         if (method == null)
@@ -142,10 +151,10 @@ internal sealed class DotComputeKernelCompiler : IKernelCompiler
     }
 
     public async Task<CompiledKernel> CompileFromSourceAsync(
-        string sourceCode,
-        string entryPoint,
+        [NotNull] string sourceCode,
+        [NotNull] string entryPoint,
         KernelLanguage language,
-        KernelCompilationOptions options,
+        [NotNull] KernelCompilationOptions options,
         CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrEmpty(sourceCode))
@@ -176,11 +185,12 @@ internal sealed class DotComputeKernelCompiler : IKernelCompiler
         }
     }
 
+    [RequiresUnreferencedCode("Uses reflection to find types and methods which may not work with trimming.")]
     public async Task<CompiledKernel> CompileFromAssemblyAsync(
-        Assembly assembly,
-        string typeName,
-        string methodName,
-        KernelCompilationOptions options,
+        [NotNull] Assembly assembly,
+        [NotNull] string typeName,
+        [NotNull] string methodName,
+        [NotNull] KernelCompilationOptions options,
         CancellationToken cancellationToken = default)
     {
         if (assembly == null)
@@ -217,8 +227,9 @@ internal sealed class DotComputeKernelCompiler : IKernelCompiler
         }
     }
 
+    [RequiresUnreferencedCode("Uses method validation which may not work with trimming.")]
     public async Task<KernelValidationResult> ValidateMethodAsync(
-        MethodInfo method,
+        [NotNull] MethodInfo method,
         CancellationToken cancellationToken = default)
     {
         if (method == null)
@@ -272,7 +283,7 @@ internal sealed class DotComputeKernelCompiler : IKernelCompiler
     }
 
     public async Task<CompilationDiagnostics> GetDiagnosticsAsync(
-        CompiledKernel kernel,
+        [NotNull] CompiledKernel kernel,
         CancellationToken cancellationToken = default)
     {
         if (kernel == null)
@@ -341,18 +352,29 @@ internal sealed class DotComputeKernelCompiler : IKernelCompiler
         return kernel;
     }
 
+    // TODO: [DOTCOMPUTE-API] Core kernel compilation - Replace with IUnifiedKernelCompiler
+    // When: DotCompute v0.3.0+ with complete compilation pipeline
+    // Integration example:
+    //   var accelerator = (device as DotComputeAcceleratorAdapter)?.Accelerator;
+    //   var compiler = accelerator.GetKernelCompiler(source.Language);
+    //   var nativeKernel = await compiler.CompileKernelAsync(
+    //       source.SourceCode,
+    //       source.EntryPoint ?? source.Name,
+    //       options.CompilerFlags,
+    //       cancellationToken);
+    //   _nativeKernels[kernelId] = nativeKernel;
+    //   return new DotComputeCompiledKernel(baseKernel, nativeKernel, device);
+    // Current: Simulates realistic compilation with timing and IR generation
     private async Task<DotComputeCompiledKernel> CompileKernelForDeviceAsync(
         KernelSource source,
         IComputeDevice device,
         KernelCompilationOptions options,
         CancellationToken cancellationToken)
     {
-        // Implement DotCompute kernel compilation using actual APIs
-        _logger.LogInformation("Compiling DotCompute kernel: {KernelName} for device: {DeviceId}", 
+        _logger.LogInformation("Compiling DotCompute kernel: {KernelName} for device: {DeviceId}",
             source.Name, device.DeviceId);
-            
-        // This would integrate with actual DotCompute compiler APIs
-        // For now, we provide a more realistic simulation with proper error handling
+
+        // Simulate realistic multi-stage compilation process
         
         var kernelId = $"{source.Name}_{device.DeviceId}_{source.GetHashCode()}";
         
@@ -368,7 +390,7 @@ internal sealed class DotComputeKernelCompiler : IKernelCompiler
             ["compiled_for_device"] = device.DeviceId,
             ["compilation_time"] = DateTime.UtcNow,
             ["language"] = source.Language.ToString(),
-            ["entry_point"] = source.EntryPoint,
+            ["entry_point"] = source.EntryPoint ?? source.Name,
             ["optimization_level"] = options.OptimizationLevel.ToString()
         };
 

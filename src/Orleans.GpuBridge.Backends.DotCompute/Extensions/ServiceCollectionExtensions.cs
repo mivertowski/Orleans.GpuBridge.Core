@@ -45,7 +45,7 @@ public static class ServiceCollectionExtensions
     /// 
     /// <para>
     /// For custom configuration, use <see cref="AddDotGpuBackend(IGpuBridgeBuilder, Action{DotGpuBackendConfiguration})"/>
-    /// or <see cref="AddDotGpuBackend(IGpuBridgeBuilder, Func{IServiceProvider, DotGpuBackendProvider})"/>.
+    /// or <see cref="AddDotGpuBackend(IGpuBridgeBuilder, Func{IServiceProvider, DotComputeBackendProvider})"/>.
     /// </para>
     /// </remarks>
     /// <example>
@@ -56,7 +56,7 @@ public static class ServiceCollectionExtensions
     /// </example>
     public static IGpuBridgeBuilder AddDotGpuBackend(this IGpuBridgeBuilder builder)
     {
-        return builder.AddBackendProvider<DotGpuBackendProvider>();
+        return builder.AddBackendProvider<DotComputeBackendProvider>();
     }
 
     /// <summary>
@@ -132,19 +132,19 @@ public static class ServiceCollectionExtensions
         Action<DotGpuBackendConfiguration> configure)
     {
         builder.Services.Configure(configure);
-        return builder.AddBackendProvider<DotGpuBackendProvider>();
+        return builder.AddBackendProvider<DotComputeBackendProvider>();
     }
 
     /// <summary>
     /// Adds the DotCompute backend provider using a custom factory function.
     /// </summary>
     /// <param name="builder">The GPU Bridge builder instance to configure.</param>
-    /// <param name="factory">A factory function to create the DotGpuBackendProvider instance.</param>
+    /// <param name="factory">A factory function to create the DotComputeBackendProvider instance.</param>
     /// <returns>The <see cref="IGpuBridgeBuilder"/> for method chaining.</returns>
     /// <remarks>
     /// This method provides complete control over the instantiation of the DotCompute
     /// backend provider. The factory function receives the <see cref="IServiceProvider"/>
-    /// and should return a fully configured <see cref="DotGpuBackendProvider"/> instance.
+    /// and should return a fully configured <see cref="DotComputeBackendProvider"/> instance.
     /// 
     /// <para>
     /// Use this method when you need:
@@ -174,7 +174,7 @@ public static class ServiceCollectionExtensions
     ///         .AddDotGpuBackend(serviceProvider =>
     ///         {
     ///             var environment = serviceProvider.GetRequiredService&lt;IHostEnvironment&gt;();
-    ///             var logger = serviceProvider.GetRequiredService&lt;ILogger&lt;DotGpuBackendProvider&gt;&gt;();
+    ///             var logger = serviceProvider.GetRequiredService&lt;ILogger&lt;DotComputeBackendProvider&gt;&gt;();
     ///             
     ///             var config = new DotGpuBackendConfiguration();
     ///             
@@ -190,7 +190,7 @@ public static class ServiceCollectionExtensions
     ///                 config.MemorySettings.InitialPoolSize = 2L * 1024 * 1024 * 1024; // 2 GB
     ///             }
     ///             
-    ///             return new DotGpuBackendProvider(config, logger);
+    ///             return new DotComputeBackendProvider(config, logger);
     ///         });
     /// 
     /// // Factory with runtime hardware detection
@@ -212,8 +212,8 @@ public static class ServiceCollectionExtensions
     ///                 config.PreferredPlatforms.Add(GpuBackend.OpenCL);
     ///             }
     ///             
-    ///             var logger = serviceProvider.GetRequiredService&lt;ILogger&lt;DotGpuBackendProvider&gt;&gt;();
-    ///             return new DotGpuBackendProvider(config, logger);
+    ///             var logger = serviceProvider.GetRequiredService&lt;ILogger&lt;DotComputeBackendProvider&gt;&gt;();
+    ///             return new DotComputeBackendProvider(config, logger);
     ///         });
     /// </code>
     /// </example>
@@ -222,7 +222,7 @@ public static class ServiceCollectionExtensions
     /// </exception>
     public static IGpuBridgeBuilder AddDotGpuBackend(
         this IGpuBridgeBuilder builder,
-        Func<IServiceProvider, DotGpuBackendProvider> factory)
+        Func<IServiceProvider, DotComputeBackendProvider> factory)
     {
         return builder.AddBackendProvider(factory);
     }

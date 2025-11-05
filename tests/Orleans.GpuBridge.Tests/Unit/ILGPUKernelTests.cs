@@ -376,7 +376,7 @@ namespace Orleans.GpuBridge.Tests.Unit
             using var bufferB = accelerator.Allocate1D(b);
             using var bufferC = accelerator.Allocate1D<float>(a.Length);
 
-            kernel(bufferA.Length, bufferA.View, bufferB.View, bufferC.View);
+            kernel(new Index1D((int)bufferA.Length), bufferA.View, bufferB.View, bufferC.View);
             accelerator.Synchronize();
 
             return bufferC.GetAsArray1D();
@@ -402,7 +402,7 @@ namespace Orleans.GpuBridge.Tests.Unit
             using var bufferB = accelerator.Allocate2DDenseX(b);
             using var bufferC = accelerator.Allocate2DDenseX<float>(new Index2D(rowsA, colsB));
 
-            kernel(bufferC.Extent, bufferA.View, bufferB.View, bufferC.View);
+            kernel(new Index2D((int)bufferC.Extent.X, (int)bufferC.Extent.Y), bufferA.View, bufferB.View, bufferC.View);
             accelerator.Synchronize();
 
             return bufferC.GetAsArray2D();
@@ -416,7 +416,7 @@ namespace Orleans.GpuBridge.Tests.Unit
             using var bufferIn = accelerator.Allocate1D(input);
             using var bufferOut = accelerator.Allocate1D<float>(input.Length);
 
-            kernel(bufferIn.Length, bufferIn.View, scalar, bufferOut.View);
+            kernel(new Index1D((int)bufferIn.Length), bufferIn.View, scalar, bufferOut.View);
             accelerator.Synchronize();
 
             return bufferOut.GetAsArray1D();

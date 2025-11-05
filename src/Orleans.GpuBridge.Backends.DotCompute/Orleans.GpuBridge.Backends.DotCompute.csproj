@@ -2,42 +2,54 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+    <!-- Package Metadata -->
     <PackageId>Orleans.GpuBridge.Backends.DotCompute</PackageId>
-    <Title>Orleans GPU Bridge DotCompute Backend</Title>
-    <Description>DotCompute backend provider for Orleans GPU Bridge - enables GPU acceleration via DotCompute framework</Description>
-    <PackageTags>orleans;gpu;compute;dotcompute;hpc;distributed</PackageTags>
-    <Version>0.1.0</Version>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Version>0.1.0-alpha</Version>
+    <Authors>Michael Ivertowski</Authors>
+    <Description>DotCompute backend provider for Orleans.GpuBridge.Core - Enables GPU acceleration via CUDA, OpenCL, Metal, and CPU with attribute-based kernel definition.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/mivertowski/Orleans.GpuBridge.Core</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/mivertowski/Orleans.GpuBridge.Core</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>orleans;gpu;dotcompute;cuda;opencl;metal;compute;acceleration</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="README.md" Pack="true" PackagePath="\"/>
+    <!-- Orleans.GpuBridge Dependencies -->
+    <ProjectReference Include="..\Orleans.GpuBridge.Abstractions\Orleans.GpuBridge.Abstractions.csproj" />
+    <ProjectReference Include="..\Orleans.GpuBridge.Runtime\Orleans.GpuBridge.Runtime.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Microsoft Libraries (aligned with other projects to avoid downgrades) -->
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.8" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.8" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.8" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
-    
-    <!-- Compiler and Linker packages to avoid downgrades -->
-    <PackageReference Include="Microsoft.DotNet.ILCompiler" Version="9.0.8" />
-    <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="9.0.8" />
-    
-    <!-- Memory and Performance -->
-    <PackageReference Include="System.Memory" Version="4.6.3" />
-    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
-  </ItemGroup>
+    <!-- DotCompute Framework - Production Release -->
 
-  <ItemGroup>
-    <!-- Project References -->
-    <ProjectReference Include="../Orleans.GpuBridge.Abstractions/Orleans.GpuBridge.Abstractions.csproj" />
-    <ProjectReference Include="../Orleans.GpuBridge.Runtime/Orleans.GpuBridge.Runtime.csproj" />
+    <!-- Backend Targets -->
+    <PackageReference Include="DotCompute.Abstractions" Version="0.3.0-rc1" />
+    <PackageReference Include="DotCompute.Backends.CUDA" Version="0.3.0-rc1" />
+    <PackageReference Include="DotCompute.Backends.OpenCL" Version="0.3.0-rc1" />
+    <PackageReference Include="DotCompute.Backends.CPU" Version="0.3.0-rc1" />
+    <PackageReference Include="DotCompute.Backends.Metal" Version="0.2.0-alpha" Condition="$([MSBuild]::IsOSPlatform('OSX'))" />
+    <PackageReference Include="DotCompute.Core" Version="0.3.0-rc1" />
+    <PackageReference Include="DotCompute.Runtime" Version="0.3.0-rc1" />
+
+    <!-- Orleans Dependencies -->
+    <PackageReference Include="Microsoft.Orleans.Core" Version="9.2.1" />
+    <PackageReference Include="Microsoft.Orleans.Runtime" Version="9.2.1" />
+
+    <!-- Microsoft Extensions - Match DotCompute requirements -->
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.10" />
+    <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="9.0.10" />
+    <PackageReference Include="Microsoft.DotNet.ILCompiler" Version="9.0.10" />
   </ItemGroup>
 
 </Project>

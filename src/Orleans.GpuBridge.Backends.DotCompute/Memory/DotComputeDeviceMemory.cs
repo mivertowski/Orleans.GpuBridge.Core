@@ -366,7 +366,7 @@ internal sealed class DotComputeDeviceMemoryWrapper<T> : DotComputeDeviceMemoryW
         return CopyFromHostAsync(span, startIndex, cancellationToken);
     }
 
-    public new IDeviceMemory<T> CreateView(int offsetElements, int elementCount)
+    public IDeviceMemory<T> CreateView(int offsetElements, int elementCount)
     {
         EnsureNotDisposed();
 

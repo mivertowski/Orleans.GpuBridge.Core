@@ -5,27 +5,33 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using DotCompute.Abstractions;
+using DotCompute.Core.Compute;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Abstractions.Models;
 
+// Alias to resolve namespace conflict
+using GpuBridgeDeviceMetrics = Orleans.GpuBridge.Abstractions.Models.DeviceMetrics;
+
 namespace Orleans.GpuBridge.Backends.DotCompute.DeviceManagement;
 
 /// <summary>
-/// DotCompute device manager implementation
+/// DotCompute device manager implementation with real DotCompute v0.3.0-rc1 API integration
 /// </summary>
 internal sealed class DotComputeDeviceManager : IDeviceManager
 {
     private readonly ILogger<DotComputeDeviceManager> _logger;
-    private readonly ConcurrentDictionary<string, DotComputeComputeDevice> _devices;
+    private readonly ConcurrentDictionary<string, DotComputeAcceleratorAdapter> _devices;
+    private IAcceleratorManager? _acceleratorManager;
     private bool _initialized;
     private bool _disposed;
 
     public DotComputeDeviceManager(ILogger<DotComputeDeviceManager> logger)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _devices = new ConcurrentDictionary<string, DotComputeComputeDevice>();
+        _devices = new ConcurrentDictionary<string, DotComputeAcceleratorAdapter>();
     }
 
     public async Task InitializeAsync(CancellationToken cancellationToken = default)
@@ -35,12 +41,21 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
 
         try
         {
-            _logger.LogInformation("Initializing DotCompute device manager");
+            _logger.LogInformation("Initializing DotCompute device manager with real API integration (v0.3.0-rc1)");
 
+            // ✅ REAL API: Initialize IAcceleratorManager using factory
+            _acceleratorManager = await DefaultAcceleratorManagerFactory.CreateAsync()
+                .ConfigureAwait(false);
+
+            _logger.LogDebug("DotCompute AcceleratorManager created successfully");
+
+            // ✅ REAL API: Discover devices using GetAcceleratorsAsync
             await DiscoverDevicesAsync(cancellationToken).ConfigureAwait(false);
 
             _initialized = true;
-            _logger.LogInformation("DotCompute device manager initialized with {DeviceCount} devices", _devices.Count);
+            _logger.LogInformation(
+                "DotCompute device manager initialized with {DeviceCount} real devices",
+                _devices.Count);
         }
         catch (Exception ex)
         {
@@ -89,10 +104,10 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
         return _devices.Values.Where(d => d.Type == deviceType);
     }
 
-    public async Task<DeviceHealthInfo> GetDeviceHealthAsync(string deviceId, CancellationToken cancellationToken = default)
+    public Task<DeviceHealthInfo> GetDeviceHealthAsync(string deviceId, CancellationToken cancellationToken = default)
     {
         EnsureInitialized();
-        
+
         if (!_devices.TryGetValue(deviceId, out var device))
         {
             throw new ArgumentException($"Device not found: {deviceId}", nameof(deviceId));
@@ -100,21 +115,25 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
 
         try
         {
-            // For DotCompute, we would query actual device health
-            // This is a simplified implementation
-            var isHealthy = device.IsHealthy;
-            var memoryUsage = await GetDeviceMemoryUsageAsync(device, cancellationToken).ConfigureAwait(false);
-            var temperature = await GetDeviceTemperatureAsync(device, cancellationToken).ConfigureAwait(false);
+            // ✅ REAL API: Use adapter's GetMemoryInfo() method
+            var memoryInfo = device.GetMemoryInfo();
+            var memoryUsage = memoryInfo.UtilizationPercentage;
 
-            return new DeviceHealthInfo
+            // DotCompute v0.3.0-rc1: Temperature sensors not yet available
+            // Using simulated temperature until sensor APIs are implemented
+            var temperature = device.Type == DeviceType.GPU ? 45 : 0;
+
+            var healthInfo = new DeviceHealthInfo
             {
                 DeviceId = device.DeviceId,
                 MemoryUtilizationPercent = memoryUsage,
-                TemperatureCelsius = (int)temperature.GetValueOrDefault(),
-                Status = isHealthy ? DeviceStatus.Available : DeviceStatus.Error,
+                TemperatureCelsius = temperature,
+                Status = device.IsHealthy ? DeviceStatus.Available : DeviceStatus.Error,
                 ErrorCount = string.IsNullOrEmpty(device.LastError) ? 0 : 1,
-                ConsecutiveFailures = isHealthy ? 0 : 1
+                ConsecutiveFailures = device.IsHealthy ? 0 : 1
             };
+
+            return Task.FromResult(healthInfo);
         }
         catch (Exception ex)
         {
@@ -123,121 +142,60 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
         }
     }
 
+    /// <summary>
+    /// Discovers available compute devices using DotCompute v0.3.0-rc1 GetAcceleratorsAsync API
+    /// </summary>
     private async Task DiscoverDevicesAsync(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Starting DotCompute device discovery");
-        
-        // Simulate realistic device discovery with async enumeration
-        await foreach (var device in EnumerateDevicesAsync(cancellationToken).ConfigureAwait(false))
+        if (_acceleratorManager == null)
+            throw new InvalidOperationException("AcceleratorManager not initialized");
+
+        _logger.LogInformation("Starting DotCompute device discovery using real API");
+
+        try
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            
-            _devices[device.Id] = device;
-            _logger.LogDebug("Discovered DotCompute device: {DeviceId} ({DeviceType})", 
-                device.Id, device.Type);
-        }
+            // ✅ REAL API: GetAcceleratorsAsync returns Task<IEnumerable<IAccelerator>>
+            var accelerators = await _acceleratorManager.GetAcceleratorsAsync()
+                .ConfigureAwait(false);
 
-        _logger.LogInformation("Discovered {DeviceCount} DotCompute devices", _devices.Count);
-    }
-
-    /// <summary>
-    /// Asynchronously enumerates available DotCompute devices
-    /// </summary>
-    private async IAsyncEnumerable<DotComputeComputeDevice> EnumerateDevicesAsync(
-        [EnumeratorCancellation] CancellationToken cancellationToken = default)
-    {
-        // Simulate device detection latency
-        await Task.Delay(100, cancellationToken).ConfigureAwait(false);
-        
-        // Discover GPU devices
-        await foreach (var gpuDevice in DiscoverGpuDevicesAsync(cancellationToken).ConfigureAwait(false))
-        {
-            yield return gpuDevice;
-        }
-        
-        // Discover CPU devices
-        await foreach (var cpuDevice in DiscoverCpuDevicesAsync(cancellationToken).ConfigureAwait(false))
-        {
-            yield return cpuDevice;
-        }
-    }
-
-    /// <summary>
-    /// Discovers GPU devices asynchronously
-    /// </summary>
-    private async IAsyncEnumerable<DotComputeComputeDevice> DiscoverGpuDevicesAsync(
-        [EnumeratorCancellation] CancellationToken cancellationToken = default)
-    {
-        await Task.Delay(50, cancellationToken).ConfigureAwait(false);
-        
-        // In a real implementation, this would query DotCompute APIs for actual GPU devices
-        // For now, simulate discovering a GPU device
-        var gpuDevice = new DotComputeComputeDevice(
-            id: "dotcompute-gpu-0",
-            name: "DotCompute GPU Device 0",
-            type: DeviceType.GPU,
-            computeUnits: 32,
-            maxWorkGroupSize: 1024,
-            maxMemoryBytes: 8L * 1024 * 1024 * 1024, // 8GB
-            logger: _logger,
-            index: 0);
-
-        yield return gpuDevice;
-    }
-
-    /// <summary>
-    /// Discovers CPU devices asynchronously
-    /// </summary>
-    private async IAsyncEnumerable<DotComputeComputeDevice> DiscoverCpuDevicesAsync(
-        [EnumeratorCancellation] CancellationToken cancellationToken = default)
-    {
-        await Task.Delay(25, cancellationToken).ConfigureAwait(false);
-        
-        // Discover CPU fallback device
-        var cpuDevice = new DotComputeComputeDevice(
-            id: "dotcompute-cpu-0",
-            name: "DotCompute CPU Device",
-            type: DeviceType.CPU,
-            computeUnits: Environment.ProcessorCount,
-            maxWorkGroupSize: 256,
-            maxMemoryBytes: GC.GetTotalMemory(false),
-            logger: _logger,
-            index: 1);
-
-        yield return cpuDevice;
-    }
-
-    private async Task<double> GetDeviceMemoryUsageAsync(DotComputeComputeDevice device, CancellationToken cancellationToken)
-    {
-        // Simulate realistic device query with async operation
-        return await Task.Run(async () =>
-        {
-            // Simulate device API call latency
-            await Task.Delay(10, cancellationToken).ConfigureAwait(false);
-            
-            // In real implementation, this would query DotCompute device APIs
-            return device.Type == DeviceType.GPU ? 
-                Random.Shared.NextDouble() * 80 + 20 : // GPU: 20-100% usage
-                Random.Shared.NextDouble() * 50 + 10;  // CPU: 10-60% usage
-        }, cancellationToken).ConfigureAwait(false);
-    }
-
-    private async Task<double?> GetDeviceTemperatureAsync(DotComputeComputeDevice device, CancellationToken cancellationToken)
-    {
-        // GPU devices might have temperature sensors
-        if (device.Type == DeviceType.GPU)
-        {
-            return await Task.Run(async () =>
+            var index = 0;
+            foreach (var accelerator in accelerators)
             {
-                // Simulate device sensor query latency
-                await Task.Delay(15, cancellationToken).ConfigureAwait(false);
-                
-                // In real implementation, query actual temperature sensors
-                return Random.Shared.NextDouble() * 40 + 45; // 45-85°C range
-            }, cancellationToken).ConfigureAwait(false);
-        }
+                cancellationToken.ThrowIfCancellationRequested();
 
-        return null; // CPU devices typically don't report temperature through DotCompute
+                // Create adapter to wrap IAccelerator as IComputeDevice
+                var adapter = new DotComputeAcceleratorAdapter(accelerator, index++, _logger);
+                _devices[adapter.Id] = adapter;
+
+                _logger.LogInformation(
+                    "Discovered DotCompute device: {DeviceId} - {DeviceName} ({DeviceType}, {Architecture})",
+                    adapter.Id,
+                    adapter.Name,
+                    adapter.Type,
+                    adapter.Architecture);
+
+                _logger.LogDebug(
+                    "Device details: ComputeUnits={ComputeUnits}, Memory={MemoryGB:F2}GB, WarpSize={WarpSize}",
+                    adapter.ComputeUnits,
+                    adapter.TotalMemoryBytes / (1024.0 * 1024.0 * 1024.0),
+                    adapter.WarpSize);
+            }
+
+            _logger.LogInformation(
+                "Device discovery complete. Found {DeviceCount} real device(s)",
+                _devices.Count);
+
+            if (_devices.Count == 0)
+            {
+                _logger.LogWarning(
+                    "No devices discovered. Ensure CUDA/OpenCL drivers are installed and devices are available.");
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error during device discovery");
+            throw;
+        }
     }
 
     private void EnsureInitialized()
@@ -287,44 +245,57 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
         return selectedDevice;
     }
 
-    public async Task<IComputeContext> CreateContextAsync(IComputeDevice device, ContextOptions options, CancellationToken cancellationToken = default)
+    // TODO: [DOTCOMPUTE-API] Implement real context creation
+    // When: DotCompute v0.3.0+ context creation pattern is clarified
+    // Integration example:
+    //   var adapter = device as DotComputeAcceleratorAdapter;
+    //   var accelerator = adapter?.Accelerator;
+    //   // Context creation pattern needs investigation in v0.3.0-rc1
+    //   return new DotComputeContextAdapter(accelerator, device, _logger);
+    public Task<IComputeContext> CreateContextAsync(IComputeDevice device, ContextOptions options, CancellationToken cancellationToken = default)
     {
         EnsureInitialized();
-        
+
         if (device == null)
             throw new ArgumentNullException(nameof(device));
-            
-        _logger.LogDebug("Creating compute context for device {DeviceId}", device.DeviceId);
-        
-        return await Task.Run(() =>
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            
-            // In real implementation, this would involve async context creation with DotCompute APIs
-            var context = new DotComputeComputeContext(device, _logger);
-            
-            // Simulate context initialization
-            context.MakeCurrent();
-            
-            return context;
-        }, cancellationToken).ConfigureAwait(false);
+
+        _logger.LogWarning(
+            "CreateContextAsync not yet implemented for DotCompute v0.3.0-rc1. " +
+            "Context creation pattern needs investigation.");
+
+        throw new NotImplementedException(
+            "Context creation not yet implemented in DotCompute backend. " +
+            "DotCompute v0.3.0-rc1 may have implicit context management.");
     }
 
-    public async Task<DeviceMetrics> GetDeviceMetricsAsync(IComputeDevice device, CancellationToken cancellationToken = default)
+    // TODO: [DOTCOMPUTE-API] Gather real metrics via IAccelerator.GetMetricsAsync()
+    // When: DotCompute v0.3.0+ with IDeviceMetrics implementation
+    // Integration example:
+    //   var accelerator = (device as DotComputeAcceleratorAdapter)?.Accelerator;
+    //   var metrics = await accelerator.GetMetricsAsync(cancellationToken);
+    //   return new DeviceMetrics {
+    //       GpuUtilizationPercent = metrics.ComputeUtilization,
+    //       MemoryUtilizationPercent = metrics.MemoryUtilization,
+    //       TemperatureCelsius = metrics.Temperature,
+    //       PowerWatts = metrics.PowerConsumption,
+    //       ...
+    //   };
+    // Current: Simulates concurrent metrics gathering with realistic patterns
+    public async Task<GpuBridgeDeviceMetrics> GetDeviceMetricsAsync(IComputeDevice device, CancellationToken cancellationToken = default)
     {
         EnsureInitialized();
-        
+
         if (device == null)
             throw new ArgumentNullException(nameof(device));
-            
+
         _logger.LogDebug("Getting metrics for device {DeviceId}", device.DeviceId);
-        
-        // Simulate realistic metrics gathering with async operations
+
+        // Simulate realistic concurrent metrics gathering
         return await Task.Run(async () =>
         {
             cancellationToken.ThrowIfCancellationRequested();
-            
-            // Simulate multiple async metric queries
+
+            // Gather multiple metrics concurrently (realistic pattern)
             var metricsGatheringTasks = new[]
             {
                 GetGpuUtilizationAsync(device, cancellationToken),
@@ -332,13 +303,13 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
                 GetTemperatureAsync(device, cancellationToken),
                 GetPowerConsumptionAsync(device, cancellationToken)
             };
-            
+
             var results = await Task.WhenAll(metricsGatheringTasks).ConfigureAwait(false);
-            
-            return new DeviceMetrics
+
+            return new GpuBridgeDeviceMetrics
             {
                 GpuUtilizationPercent = results[0],
-                MemoryUtilizationPercent = results[1], 
+                MemoryUtilizationPercent = results[1],
                 UsedMemoryBytes = (long)(device.TotalMemoryBytes * (results[1] / 100.0)),
                 TemperatureCelsius = results[2],
                 PowerWatts = results[3],
@@ -374,28 +345,37 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
         return device.Type == DeviceType.GPU ? Random.Shared.Next(120, 250) : Random.Shared.Next(45, 95);
     }
 
+    // TODO: [DOTCOMPUTE-API] Perform real device reset via IAccelerator.ResetAsync()
+    // When: DotCompute v0.3.0+ with IAccelerator.ResetAsync() implementation
+    // Integration example:
+    //   var accelerator = (device as DotComputeAcceleratorAdapter)?.Accelerator;
+    //   await accelerator.ResetAsync(cancellationToken);
+    //   // Re-initialize contexts and resources after reset
+    // Current: Simulates multi-step device reset with realistic timing
     public async Task ResetDeviceAsync(IComputeDevice device, CancellationToken cancellationToken = default)
     {
         EnsureInitialized();
-        
+
         if (device == null)
             throw new ArgumentNullException(nameof(device));
-            
+
         _logger.LogWarning("Resetting device {DeviceId}", device.DeviceId);
-        
-        // In a real implementation, this would reset the device state
+
+        // Simulate realistic device reset procedure
         await Task.Run(async () =>
         {
-            // Simulate device reset operations
+            // Step 1: Stop device operations (~100ms)
             _logger.LogDebug("Stopping device operations for {DeviceId}", device.DeviceId);
             await Task.Delay(100, cancellationToken).ConfigureAwait(false);
-            
+
+            // Step 2: Clear device memory (~50ms)
             _logger.LogDebug("Clearing device memory for {DeviceId}", device.DeviceId);
             await Task.Delay(50, cancellationToken).ConfigureAwait(false);
-            
+
+            // Step 3: Reinitialize device (~75ms)
             _logger.LogDebug("Reinitializing device {DeviceId}", device.DeviceId);
             await Task.Delay(75, cancellationToken).ConfigureAwait(false);
-            
+
             _logger.LogInformation("Device {DeviceId} reset completed", device.DeviceId);
         }, cancellationToken).ConfigureAwait(false);
     }
@@ -471,237 +451,5 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
         }
         
         _devices.Clear();
-    }
-}
-
-/// <summary>
-/// DotCompute compute device implementation
-/// </summary>
-internal sealed class DotComputeComputeDevice : IComputeDevice
-{
-    private readonly ILogger _logger;
-    private readonly Dictionary<string, object> _properties;
-    private bool _disposed;
-
-    public string Id { get; }
-    public string Name { get; }
-    public DeviceType Type { get; }
-    public int ComputeUnits { get; }
-    public int MaxWorkGroupSize { get; }
-    public long MaxMemoryBytes { get; }
-    public bool IsHealthy { get; private set; } = true;
-    public string? LastError { get; private set; }
-    
-    // Additional IComputeDevice interface properties
-    public string DeviceId => Id;
-    public int Index { get; }
-    public string Vendor { get; }
-    public string Architecture { get; }
-    public Version ComputeCapability { get; }
-    public long TotalMemoryBytes { get; }
-    public long AvailableMemoryBytes => (long)(TotalMemoryBytes * 0.8);
-    public int MaxClockFrequencyMHz { get; }
-    public int MaxThreadsPerBlock { get; }
-    public int[] MaxWorkGroupDimensions { get; }
-    public int WarpSize { get; }
-    public IReadOnlyDictionary<string, object> Properties => _properties;
-
-    public DotComputeComputeDevice(
-        string id,
-        string name,
-        DeviceType type,
-        int computeUnits,
-        int maxWorkGroupSize,
-        long maxMemoryBytes,
-        ILogger logger,
-        int index = 0)
-    {
-        Id = id ?? throw new ArgumentNullException(nameof(id));
-        Index = index;
-        Name = name ?? throw new ArgumentNullException(nameof(name));
-        Type = type;
-        Vendor = type == DeviceType.GPU ? "DotCompute GPU" : "DotCompute CPU";
-        Architecture = type == DeviceType.GPU ? "Generic GPU" : "x86-64";
-        ComputeCapability = new Version(1, 0);
-        TotalMemoryBytes = maxMemoryBytes;
-        ComputeUnits = computeUnits;
-        MaxClockFrequencyMHz = type == DeviceType.GPU ? 1500 : 3000;
-        MaxThreadsPerBlock = maxWorkGroupSize;
-        MaxWorkGroupDimensions = type == DeviceType.GPU ? new[] { 1024, 1024, 64 } : new[] { 256, 1, 1 };
-        WarpSize = type == DeviceType.GPU ? 32 : 1;
-        MaxWorkGroupSize = maxWorkGroupSize;
-        MaxMemoryBytes = maxMemoryBytes;
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        
-        _properties = new Dictionary<string, object>
-        {
-            ["device_type"] = type.ToString(),
-            ["compute_units"] = computeUnits,
-            ["max_work_group_size"] = maxWorkGroupSize,
-            ["is_integrated"] = type == DeviceType.CPU
-        };
-    }
-
-    public bool SupportsFeature(string feature)
-    {
-        return feature switch
-        {
-            "double_precision" => Type == DeviceType.GPU,
-            "shared_memory" => Type == DeviceType.GPU,
-            "async_execution" => true,
-            "memory_coalescing" => Type == DeviceType.GPU,
-            _ => false
-        };
-    }
-    
-    public DeviceStatus GetStatus()
-    {
-        if (!IsHealthy)
-            return DeviceStatus.Error;
-            
-        var random = new Random();
-        var utilization = random.Next(0, 100);
-        
-        return utilization switch
-        {
-            < 10 => DeviceStatus.Available,
-            < 70 => DeviceStatus.Available,
-            < 90 => DeviceStatus.Busy,
-            _ => DeviceStatus.Busy
-        };
-    }
-    
-    public void SetHealthStatus(bool isHealthy, string? error = null)
-    {
-        IsHealthy = isHealthy;
-        LastError = error;
-
-        if (!isHealthy && !string.IsNullOrEmpty(error))
-        {
-            _logger.LogWarning("Device {DeviceId} marked as unhealthy: {Error}", Id, error);
-        }
-    }
-
-    public void Dispose()
-    {
-        if (_disposed)
-            return;
-
-        _logger.LogDebug("Disposing DotCompute device {DeviceId}", Id);
-        
-        // In a real implementation, we would release DotCompute device resources
-        
-        _disposed = true;
-    }
-}
-
-/// <summary>
-/// DotCompute command queue implementation
-/// </summary>
-internal sealed class DotComputeCommandQueue : ICommandQueue
-{
-    private readonly IComputeDevice _device;
-    private readonly ILogger _logger;
-    private bool _disposed;
-
-    public string QueueId { get; }
-    public IComputeContext Context { get; }
-
-    public DotComputeCommandQueue(IComputeDevice device, ILogger logger)
-    {
-        _device = device ?? throw new ArgumentNullException(nameof(device));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        QueueId = $"queue-{_device.DeviceId}-{Guid.NewGuid():N}";
-        Context = new DotComputeComputeContext(device, logger);
-    }
-
-    public Task EnqueueKernelAsync(CompiledKernel kernel, KernelLaunchParameters parameters, CancellationToken cancellationToken = default)
-    {
-        // In DotCompute, this would enqueue a kernel for execution
-        _logger.LogDebug("Enqueueing kernel {KernelId} on queue {QueueId}", kernel.KernelId, QueueId);
-        return Task.CompletedTask;
-    }
-
-    public Task EnqueueCopyAsync(nint source, nint destination, long sizeBytes, CancellationToken cancellationToken = default)
-    {
-        // In DotCompute, this would enqueue a memory copy operation
-        _logger.LogDebug("Enqueueing memory copy on queue {QueueId}: {SizeBytes} bytes", QueueId, sizeBytes);
-        return Task.CompletedTask;
-    }
-
-    public void EnqueueBarrier()
-    {
-        // In DotCompute, this would insert a barrier in the command queue
-        _logger.LogDebug("Enqueueing barrier on queue {QueueId}", QueueId);
-    }
-
-    public Task FlushAsync(CancellationToken cancellationToken = default)
-    {
-        // In DotCompute, this would flush pending commands
-        return Task.CompletedTask;
-    }
-
-    public Task SynchronizeAsync(CancellationToken cancellationToken = default)
-    {
-        // In DotCompute, this would wait for all commands to complete
-        return Task.CompletedTask;
-    }
-
-    public void Dispose()
-    {
-        if (_disposed)
-            return;
-
-        _logger.LogDebug("Disposing DotCompute command queue");
-        Context?.Dispose();
-        _disposed = true;
-    }
-}
-
-/// <summary>
-/// DotCompute compute context implementation
-/// </summary>
-internal sealed class DotComputeComputeContext : IComputeContext
-{
-    private readonly ILogger _logger;
-    private bool _disposed;
-
-    public IComputeDevice Device { get; }
-    public string ContextId { get; }
-
-    public DotComputeComputeContext(IComputeDevice device, ILogger logger)
-    {
-        Device = device ?? throw new ArgumentNullException(nameof(device));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        ContextId = $"context-{device.DeviceId}-{Guid.NewGuid():N}";
-    }
-
-    public void MakeCurrent()
-    {
-        // In DotCompute, this would make the context current for the calling thread
-        _logger.LogDebug("Making context {ContextId} current for device {DeviceId}", ContextId, Device.DeviceId);
-    }
-
-    public Task SynchronizeAsync(CancellationToken cancellationToken = default)
-    {
-        // In DotCompute, this would synchronize all operations in this context
-        _logger.LogDebug("Synchronizing context {ContextId}", ContextId);
-        return Task.CompletedTask;
-    }
-
-    public ICommandQueue CreateCommandQueue(CommandQueueOptions options)
-    {
-        // In DotCompute, this would create a new command queue with the specified options
-        _logger.LogDebug("Creating command queue for context {ContextId}", ContextId);
-        return new DotComputeCommandQueue(Device, _logger);
-    }
-
-    public void Dispose()
-    {
-        if (_disposed)
-            return;
-
-        _logger.LogDebug("Disposing DotCompute context for device {DeviceId}", Device.DeviceId);
-        _disposed = true;
     }
 }

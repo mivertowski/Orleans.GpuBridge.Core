@@ -42,11 +42,14 @@ public class KernelInfoBuilder
         return this;
     }
 
-    public KernelInfoBuilder WithDisplayName(string displayName)
+    public KernelInfoBuilder WithDescription(string description)
     {
-        _displayName = displayName;
+        _displayName = description; // Field name kept for backward compat temporarily
         return this;
     }
+
+    // Legacy alias for backward compatibility
+    public KernelInfoBuilder WithDisplayName(string displayName) => WithDescription(displayName);
 
     public KernelInfoBuilder WithInputType<T>()
     {
@@ -322,13 +325,13 @@ public static class FakerExtensions
     public static Faker<float[]> FloatArray(this Faker faker, int minSize = 1, int maxSize = 1000)
     {
         return new Faker<float[]>()
-            .CustomInstantiator(f => f.Make(f.Random.Int(minSize, maxSize), () => f.Random.Float()));
+            .CustomInstantiator(f => f.Make(f.Random.Int(minSize, maxSize), () => f.Random.Float()).ToArray());
     }
 
     public static Faker<int[]> IntArray(this Faker faker, int minSize = 1, int maxSize = 1000)
     {
         return new Faker<int[]>()
-            .CustomInstantiator(f => f.Make(f.Random.Int(minSize, maxSize), () => f.Random.Int()));
+            .CustomInstantiator(f => f.Make(f.Random.Int(minSize, maxSize), () => f.Random.Int()).ToArray());
     }
 
     public static KernelId GenerateKernelId(this Faker faker)

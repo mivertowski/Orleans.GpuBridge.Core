@@ -255,7 +255,7 @@ public class KernelExecutionPipelineTests : TestFixtureBase
         // Assert
         info.Should().NotBeNull();
         info.Id.Value.Should().Be("test/vector-add");
-        info.DisplayName.Should().Be("Test Vector Add");
+        info.Description.Should().Be("Test Vector Add");
         info.InputType.Should().Be(typeof(float[]));
         info.OutputType.Should().Be(typeof(float));
         info.SupportsGpu.Should().BeTrue();

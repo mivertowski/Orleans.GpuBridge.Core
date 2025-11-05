@@ -228,7 +228,7 @@ public class PerformanceIntegrationTests : IClassFixture<GpuClusterFixture>
             var workerId = worker;
             tasks.Add(Task.Run(async () =>
             {
-                var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(),Guid.NewGuid(),$"load-test-{workerId}");
+                var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(), Guid.NewGuid().ToString(), $"load-test-{workerId}");
                 var operationCount = 0;
 
                 while (!cancellation.Token.IsCancellationRequested)
@@ -279,9 +279,9 @@ public class PerformanceIntegrationTests : IClassFixture<GpuClusterFixture>
         _output.WriteLine($"Actual rate: {actualRate:F2} operations/second");
         _output.WriteLine($"Success rate: {(double)successfulOperations / totalOperations * 100:F2}%");
 
-        totalOperations.Should().BeGreaterThan(durationSeconds * 10); // At least 10 ops/sec
-        successfulOperations.Should().BeGreaterThan(totalOperations * 0.95); // 95% success rate
-        errors.Should().HaveCountLessThan(totalOperations * 0.05); // Less than 5% errors
+        totalOperations.Should().BeGreaterThan((int)(durationSeconds * 10)); // At least 10 ops/sec
+        successfulOperations.Should().BeGreaterThan((int)(totalOperations * 0.95)); // 95% success rate
+        errors.Should().HaveCountLessThan((int)(totalOperations * 0.05)); // Less than 5% errors
     }
 
     [Fact]

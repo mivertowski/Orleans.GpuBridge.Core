@@ -12,6 +12,8 @@ using Orleans.GpuBridge.Abstractions.Providers.Memory.Options;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Statistics;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Enums;
 using Orleans.GpuBridge.Abstractions.Enums;
+using Orleans.GpuBridge.Backends.DotCompute.DeviceManagement;
+using DotCompute.Abstractions;
 
 namespace Orleans.GpuBridge.Backends.DotCompute.Memory;
 
@@ -308,43 +310,95 @@ internal sealed class DotComputeMemoryAllocator : IMemoryAllocator
         }
     }
 
+    /// <summary>
+    /// Allocates GPU device memory using real DotCompute API
+    /// </summary>
+    /// <remarks>
+    /// Phase 1.3: Real GPU memory allocation implementation
+    /// Uses IUnifiedMemoryManager.AllocateAsync to allocate actual GPU memory
+    /// </remarks>
     private async Task<DotComputeDeviceMemoryWrapper> AllocateDotComputeMemoryAsync(
         IComputeDevice device,
         long sizeBytes,
         MemoryAllocationOptions options,
         CancellationToken cancellationToken)
     {
-        // Simulate DotCompute memory allocation
-        await Task.Delay(1, cancellationToken); // Simulate allocation time
+        // Extract DotCompute accelerator from device adapter
+        var adapter = device as DotComputeAcceleratorAdapter
+            ?? throw new InvalidOperationException($"Device {device.DeviceId} is not a DotCompute device");
 
-        // Production implementation would call DotCompute memory allocation APIs
-        // This simulates the allocation with proper error handling and resource tracking
-        var devicePointer = new IntPtr(Random.Shared.NextInt64(0x1000000, 0x7FFFFFFF));
+        var accelerator = adapter.Accelerator;
 
-        return new DotComputeDeviceMemoryWrapper(
-            devicePointer,
-            device,
-            sizeBytes,
-            this,
-            _logger);
+        try
+        {
+            // ✅ REAL API: Allocate GPU memory using DotCompute
+            var nativeBuffer = await accelerator.Memory.AllocateAsync<byte>(
+                count: (int)sizeBytes,
+                options: default,  // Use default MemoryOptions
+                cancellationToken: cancellationToken);
+
+            _logger.LogDebug(
+                "Allocated {SizeBytes} bytes on GPU using real DotCompute API",
+                sizeBytes);
+
+            return new DotComputeDeviceMemoryWrapper(
+                nativeBuffer,
+                device,
+                sizeBytes,
+                this,
+                _logger);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to allocate GPU memory using DotCompute");
+            throw new InvalidOperationException($"GPU memory allocation failed: {ex.Message}", ex);
+        }
     }
 
+    /// <summary>
+    /// Allocates typed GPU device memory using real DotCompute API
+    /// </summary>
+    /// <remarks>
+    /// Phase 1.3: Real GPU memory allocation implementation
+    /// Uses IUnifiedMemoryManager.AllocateAsync&lt;T&gt; for type-safe GPU allocation
+    /// </remarks>
     private async Task<DotComputeDeviceMemoryWrapper<T>> AllocateDotComputeTypedMemoryAsync<T>(
         IComputeDevice device,
         int elementCount,
         MemoryAllocationOptions options,
         CancellationToken cancellationToken) where T : unmanaged
     {
-        await Task.Delay(1, cancellationToken);
+        // Extract DotCompute accelerator from device adapter
+        var adapter = device as DotComputeAcceleratorAdapter
+            ?? throw new InvalidOperationException($"Device {device.DeviceId} is not a DotCompute device");
 
-        var devicePointer = new IntPtr(Random.Shared.NextInt64(0x1000000, 0x7FFFFFFF));
+        var accelerator = adapter.Accelerator;
 
-        return new DotComputeDeviceMemoryWrapper<T>(
-            devicePointer,
-            device,
-            elementCount,
-            this,
-            _logger);
+        try
+        {
+            // ✅ REAL API: Allocate typed GPU memory using DotCompute
+            var nativeBuffer = await accelerator.Memory.AllocateAsync<T>(
+                count: elementCount,
+                options: default,  // Use default MemoryOptions
+                cancellationToken: cancellationToken);
+
+            _logger.LogDebug(
+                "Allocated {ElementCount} elements of type {TypeName} on GPU using real DotCompute API",
+                elementCount,
+                typeof(T).Name);
+
+            return new DotComputeDeviceMemoryWrapper<T>(
+                nativeBuffer,
+                device,
+                elementCount,
+                this,
+                _logger);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to allocate typed GPU memory using DotCompute");
+            throw new InvalidOperationException($"GPU memory allocation failed: {ex.Message}", ex);
+        }
     }
 
     private async Task<DotComputeUnifiedMemory> AllocateDotComputeUnifiedMemoryAsync(

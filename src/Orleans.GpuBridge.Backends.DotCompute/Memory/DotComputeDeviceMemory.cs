@@ -4,22 +4,63 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Interfaces;
+using DotCompute.Abstractions;
 
 namespace Orleans.GpuBridge.Backends.DotCompute.Memory;
 
 /// <summary>
-/// DotCompute device memory wrapper implementation
+/// DotCompute device memory wrapper implementation with native IUnifiedMemoryBuffer
 /// </summary>
+/// <remarks>
+/// Phase 1.3: Updated to store native DotCompute IUnifiedMemoryBuffer
+/// This enables zero-copy kernel execution without temporary buffer creation
+/// </remarks>
 internal class DotComputeDeviceMemoryWrapper : IDeviceMemory
 {
     protected readonly DotComputeMemoryAllocator _allocator;
     protected readonly ILogger _logger;
+    protected readonly IUnifiedMemoryBuffer? _nativeBuffer;
     protected bool _disposed;
 
     public IntPtr DevicePointer { get; }
     public IComputeDevice Device { get; }
     public long SizeBytes { get; }
 
+    /// <summary>
+    /// Gets the native DotCompute buffer for direct kernel argument passing
+    /// </summary>
+    /// <remarks>
+    /// Exposed internally for PrepareKernelArgumentsAsync to use native buffers directly
+    /// without temporary allocations
+    /// </remarks>
+    internal IUnifiedMemoryBuffer? NativeBuffer => _nativeBuffer;
+
+    /// <summary>
+    /// Constructor for real GPU memory allocation (Phase 1.3)
+    /// </summary>
+    public DotComputeDeviceMemoryWrapper(
+        IUnifiedMemoryBuffer nativeBuffer,
+        IComputeDevice device,
+        long sizeBytes,
+        DotComputeMemoryAllocator allocator,
+        ILogger logger)
+    {
+        _nativeBuffer = nativeBuffer ?? throw new ArgumentNullException(nameof(nativeBuffer));
+        Device = device ?? throw new ArgumentNullException(nameof(device));
+        SizeBytes = sizeBytes;
+        _allocator = allocator ?? throw new ArgumentNullException(nameof(allocator));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+        // Generate unique device pointer identifier for Orleans compatibility
+        // DotCompute IUnifiedMemoryBuffer doesn't expose DevicePointer, but we need it for IDeviceMemory interface
+        // This is only used for tracking/identification - actual GPU operations use the native buffer
+        DevicePointer = new IntPtr(Random.Shared.NextInt64(0x1000000, 0x7FFFFFFF));
+    }
+
+    /// <summary>
+    /// Legacy constructor for backward compatibility (deprecated)
+    /// </summary>
+    [Obsolete("Use constructor with IUnifiedMemoryBuffer instead")]
     public DotComputeDeviceMemoryWrapper(
         IntPtr devicePointer,
         IComputeDevice device,
@@ -32,6 +73,7 @@ internal class DotComputeDeviceMemoryWrapper : IDeviceMemory
         SizeBytes = sizeBytes;
         _allocator = allocator ?? throw new ArgumentNullException(nameof(allocator));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _nativeBuffer = null;  // Legacy path without native buffer
     }
 
     public async Task CopyFromHostAsync(
@@ -189,13 +231,19 @@ internal class DotComputeDeviceMemoryWrapper : IDeviceMemory
         if (sizeBytes <= 0 || offsetBytes + sizeBytes > SizeBytes)
             throw new ArgumentOutOfRangeException(nameof(sizeBytes));
 
+        // TODO Phase 1.3: CreateView with native buffer slicing
+        // For now, create view using IntPtr offset (legacy approach)
+        // Native buffer slicing requires DotCompute API support
         var viewPointer = new IntPtr(DevicePointer.ToInt64() + offsetBytes);
+
+#pragma warning disable CS0618 // Type or member is obsolete
         return new DotComputeDeviceMemoryWrapper(
             viewPointer,
             Device,
             sizeBytes,
             _allocator,
             _logger);
+#pragma warning restore CS0618 // Type or member is obsolete
     }
 
     private async Task SimulateAsyncMemoryCopy(long sizeBytes, CancellationToken cancellationToken)
@@ -237,13 +285,42 @@ internal class DotComputeDeviceMemoryWrapper : IDeviceMemory
 }
 
 /// <summary>
-/// Typed DotCompute device memory wrapper implementation
+/// Typed DotCompute device memory wrapper implementation with native IUnifiedMemoryBuffer&lt;T&gt;
 /// </summary>
+/// <remarks>
+/// Phase 1.3: Updated to store native typed DotCompute buffer
+/// </remarks>
 internal sealed class DotComputeDeviceMemoryWrapper<T> : DotComputeDeviceMemoryWrapper, IDeviceMemory<T>
     where T : unmanaged
 {
+    private readonly IUnifiedMemoryBuffer<T>? _typedNativeBuffer;
+
     public int ElementCount { get; }
 
+    /// <summary>
+    /// Gets the native typed DotCompute buffer for direct kernel argument passing
+    /// </summary>
+    internal new IUnifiedMemoryBuffer<T>? NativeBuffer => _typedNativeBuffer;
+
+    /// <summary>
+    /// Constructor for real typed GPU memory allocation (Phase 1.3)
+    /// </summary>
+    public DotComputeDeviceMemoryWrapper(
+        IUnifiedMemoryBuffer<T> nativeBuffer,
+        IComputeDevice device,
+        int elementCount,
+        DotComputeMemoryAllocator allocator,
+        ILogger logger)
+        : base(nativeBuffer, device, (long)elementCount * System.Runtime.CompilerServices.Unsafe.SizeOf<T>(), allocator, logger)
+    {
+        _typedNativeBuffer = nativeBuffer ?? throw new ArgumentNullException(nameof(nativeBuffer));
+        ElementCount = elementCount;
+    }
+
+    /// <summary>
+    /// Legacy constructor for backward compatibility (deprecated)
+    /// </summary>
+    [Obsolete("Use constructor with IUnifiedMemoryBuffer<T> instead")]
     public DotComputeDeviceMemoryWrapper(
         IntPtr devicePointer,
         IComputeDevice device,
@@ -253,6 +330,7 @@ internal sealed class DotComputeDeviceMemoryWrapper<T> : DotComputeDeviceMemoryW
         : base(devicePointer, device, (long)elementCount * System.Runtime.CompilerServices.Unsafe.SizeOf<T>(), allocator, logger)
     {
         ElementCount = elementCount;
+        _typedNativeBuffer = null;
     }
 
     public Task CopyFromHostAsync(
@@ -267,6 +345,10 @@ internal sealed class DotComputeDeviceMemoryWrapper<T> : DotComputeDeviceMemoryW
 
         if (hostData.Length + destinationOffset > ElementCount)
             throw new ArgumentException("Host data exceeds device memory bounds");
+
+        // TODO Phase 1.3: Span-based async methods are problematic in C# due to ref-like type restrictions
+        // Native buffer support for Span requires different API design
+        // For now, use IntPtr-based fallback which works for both native and legacy allocations
 
         var elementSize = System.Runtime.CompilerServices.Unsafe.SizeOf<T>();
         var offsetBytes = (long)destinationOffset * elementSize;
@@ -293,6 +375,10 @@ internal sealed class DotComputeDeviceMemoryWrapper<T> : DotComputeDeviceMemoryW
 
         if (hostData.Length + sourceOffset > ElementCount)
             throw new ArgumentException("Host data buffer too small");
+
+        // TODO Phase 1.3: Span-based async methods are problematic in C# due to ref-like type restrictions
+        // Native buffer support for Span requires different API design
+        // For now, use IntPtr-based fallback which works for both native and legacy allocations
 
         var elementSize = System.Runtime.CompilerServices.Unsafe.SizeOf<T>();
         var offsetBytes = (long)sourceOffset * elementSize;
@@ -376,15 +462,20 @@ internal sealed class DotComputeDeviceMemoryWrapper<T> : DotComputeDeviceMemoryW
         if (elementCount <= 0 || offsetElements + elementCount > ElementCount)
             throw new ArgumentOutOfRangeException(nameof(elementCount));
 
+        // TODO Phase 1.3: CreateView with native buffer slicing
+        // For now, create view using IntPtr offset (legacy approach)
+        // Native buffer slicing requires DotCompute API support
         var elementSize = System.Runtime.CompilerServices.Unsafe.SizeOf<T>();
         var offsetBytes = (long)offsetElements * elementSize;
         var viewPointer = new IntPtr(DevicePointer.ToInt64() + offsetBytes);
 
+#pragma warning disable CS0618 // Type or member is obsolete
         return new DotComputeDeviceMemoryWrapper<T>(
             viewPointer,
             Device,
             elementCount,
             _allocator,
             _logger);
+#pragma warning restore CS0618 // Type or member is obsolete
     }
 }

@@ -18,6 +18,14 @@ using Orleans.GpuBridge.Abstractions.Providers.Execution.Results.Statistics;
 using Orleans.GpuBridge.Abstractions.Providers.Execution.Enums;
 using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Backends.DotCompute.Kernels;
+using Orleans.GpuBridge.Backends.DotCompute.DeviceManagement;
+using Orleans.GpuBridge.Backends.DotCompute.Memory;
+using DotCompute.Abstractions;
+using DotCompute.Abstractions.Kernels;
+// Type aliases to avoid ambiguity with Orleans.GpuBridge types
+using OrleansCompiledKernel = Orleans.GpuBridge.Abstractions.Models.CompiledKernel;
+using DotComputeKernelArguments = DotCompute.Abstractions.Kernels.KernelArguments;
+using DotComputeCompiledKernel = DotCompute.Abstractions.ICompiledKernel;
 
 namespace Orleans.GpuBridge.Backends.DotCompute.Execution;
 
@@ -54,7 +62,7 @@ internal sealed class DotComputeKernelExecutor : IKernelExecutor
     }
 
     public async Task<KernelExecutionResult> ExecuteAsync(
-        CompiledKernel kernel,
+        OrleansCompiledKernel kernel,
         KernelExecutionParameters parameters,
         CancellationToken cancellationToken = default)
     {
@@ -157,7 +165,7 @@ internal sealed class DotComputeKernelExecutor : IKernelExecutor
     }
 
     public Task<IKernelExecution> ExecuteAsyncNonBlocking(
-        CompiledKernel kernel,
+        OrleansCompiledKernel kernel,
         KernelExecutionParameters parameters,
         CancellationToken cancellationToken = default)
     {
@@ -302,7 +310,7 @@ internal sealed class DotComputeKernelExecutor : IKernelExecutor
     }
 
     public async Task<KernelProfile> ProfileAsync(
-        CompiledKernel kernel,
+        OrleansCompiledKernel kernel,
         KernelExecutionParameters parameters,
         int iterations = 100,
         CancellationToken cancellationToken = default)
@@ -402,26 +410,77 @@ internal sealed class DotComputeKernelExecutor : IKernelExecutor
                throw new InvalidOperationException("No suitable device available for kernel execution");
     }
 
-    private Task<object[]> PrepareKernelArgumentsAsync(
+    /// <summary>
+    /// Prepares DotCompute kernel arguments from Orleans execution parameters
+    /// </summary>
+    /// <remarks>
+    /// Phase 1.3: Updated to use native IUnifiedMemoryBuffer directly
+    ///
+    /// Converts Orleans.GpuBridge memory and scalar arguments to DotCompute KernelArguments.
+    ///
+    /// For memory arguments:
+    /// - Uses native IUnifiedMemoryBuffer from DotComputeDeviceMemoryWrapper
+    /// - Zero-copy execution - no temporary buffer allocation
+    ///
+    /// For scalar arguments:
+    /// - Directly passes through using KernelArguments.AddScalar()
+    /// </remarks>
+    private Task<DotComputeKernelArguments> PrepareKernelArgumentsAsync(
         KernelExecutionParameters parameters,
         IComputeDevice device,
         CancellationToken cancellationToken)
     {
-        var args = new List<object>();
+        // Create kernel arguments with capacity hint
+        var totalArgs = parameters.MemoryArguments.Count + parameters.ScalarArguments.Count;
+        var kernelArgs = new DotComputeKernelArguments(totalArgs);
 
-        // Add memory arguments
+        // Process memory arguments
         foreach (var memArg in parameters.MemoryArguments)
         {
-            args.Add(memArg.Value);
+            if (memArg.Value is DotComputeDeviceMemoryWrapper dotComputeMemory)
+            {
+                // ✅ Phase 1.3: Use native buffer directly (zero-copy)
+                if (dotComputeMemory.NativeBuffer != null)
+                {
+                    kernelArgs.AddBuffer(dotComputeMemory.NativeBuffer);
+
+                    _logger.LogDebug(
+                        "Added native buffer for argument '{ArgName}' ({SizeBytes} bytes)",
+                        memArg.Key,
+                        dotComputeMemory.SizeBytes);
+                }
+                else
+                {
+                    throw new InvalidOperationException(
+                        $"Memory argument '{memArg.Key}' does not have a native buffer. " +
+                        "This may be due to legacy allocation. Please recreate the memory buffer.");
+                }
+            }
+            else if (memArg.Value is IDeviceMemory deviceMemory)
+            {
+                throw new InvalidOperationException(
+                    $"Memory argument '{memArg.Key}' is not a DotComputeDeviceMemoryWrapper. " +
+                    $"Cannot use memory from other backends. Got type: {deviceMemory.GetType().Name}");
+            }
+            else
+            {
+                throw new InvalidOperationException(
+                    $"Memory argument '{memArg.Key}' is not an IDeviceMemory instance");
+            }
         }
 
-        // Add scalar arguments
+        // Process scalar arguments - these work directly
         foreach (var scalarArg in parameters.ScalarArguments)
         {
-            args.Add(scalarArg.Value);
+            kernelArgs.AddScalar(scalarArg.Value);
         }
 
-        return Task.FromResult(args.ToArray());
+        _logger.LogDebug(
+            "Prepared DotCompute kernel arguments: {BufferCount} buffers, {ScalarCount} scalars (zero-copy)",
+            parameters.MemoryArguments.Count,
+            parameters.ScalarArguments.Count);
+
+        return Task.FromResult(kernelArgs);
     }
 
     private WorkDimensions CalculateWorkDimensions(KernelExecutionParameters parameters)
@@ -432,19 +491,66 @@ internal sealed class DotComputeKernelExecutor : IKernelExecutor
         return new WorkDimensions(globalSize, localSize);
     }
 
+    /// <summary>
+    /// Executes a DotCompute kernel on the GPU with real GPU acceleration
+    /// </summary>
+    /// <remarks>
+    /// This method performs actual GPU kernel execution using DotCompute's ExecuteAsync API.
+    ///
+    /// Key features:
+    /// - Real CUDA kernel execution via NVRTC
+    /// - Automatic launch configuration (DotCompute handles grid/block dimensions)
+    /// - Asynchronous GPU synchronization
+    /// - Production-grade error handling
+    ///
+    /// WorkDimensions are currently informational only - DotCompute v0.4.1-rc2
+    /// automatically determines optimal launch configuration based on kernel characteristics.
+    /// </remarks>
     private async Task ExecuteDotComputeKernelAsync(
         object kernel,
-        object[] arguments,
+        DotComputeKernelArguments arguments,
         WorkDimensions workDimensions,
         IComputeDevice device,
         CancellationToken cancellationToken)
     {
-        // In a real DotCompute implementation, this would execute the kernel
-        // using DotCompute APIs with the specified work dimensions
-        
-        // Simulate kernel execution time
-        var executionTime = Math.Max(1, workDimensions.GlobalSize.Aggregate(1, (a, b) => a * b) / 1000000);
-        await Task.Delay(executionTime, cancellationToken);
+        // Validate kernel type - must be DotCompute ICompiledKernel
+        if (kernel is not DotComputeCompiledKernel compiledKernel)
+        {
+            throw new InvalidOperationException(
+                $"Kernel is not a DotCompute ICompiledKernel. Got type: {kernel?.GetType().FullName ?? "null"}");
+        }
+
+        _logger.LogDebug(
+            "Executing DotCompute kernel '{KernelName}' on device '{DeviceId}' with {ArgCount} arguments",
+            compiledKernel.Name,
+            device.DeviceId,
+            arguments.Count);
+
+        try
+        {
+            // ✅ REAL API: Execute kernel on GPU using DotCompute
+            // DotCompute v0.4.1-rc2: ExecuteAsync automatically handles:
+            // - Optimal grid/block dimension calculation
+            // - GPU memory synchronization
+            // - Asynchronous execution with proper await
+            await compiledKernel.ExecuteAsync(arguments, cancellationToken);
+
+            _logger.LogDebug(
+                "Successfully executed DotCompute kernel '{KernelName}' on GPU",
+                compiledKernel.Name);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+                ex,
+                "Failed to execute DotCompute kernel '{KernelName}' on device '{DeviceId}'",
+                compiledKernel.Name,
+                device.DeviceId);
+
+            throw new InvalidOperationException(
+                $"DotCompute kernel execution failed: {ex.Message}",
+                ex);
+        }
     }
 
     private void UpdateExecutionStatistics(string kernelName, TimeSpan executionTime, bool success)
@@ -505,7 +611,7 @@ internal record WorkDimensions(int[] GlobalSize, int[]? LocalSize);
 /// </summary>
 internal sealed class DotComputeKernelExecution : IKernelExecution
 {
-    private readonly CompiledKernel _kernel;
+    private readonly OrleansCompiledKernel _kernel;
     private readonly DotComputeKernelExecutor _executor;
     private readonly ILogger _logger;
     private readonly TaskCompletionSource<KernelExecutionResult> _completionSource;
@@ -519,13 +625,13 @@ internal sealed class DotComputeKernelExecution : IKernelExecution
     public bool IsCompleted => _isCompleted;
     public bool IsComplete => _isCompleted;
     public bool IsCanceled => _isCanceled;
-    public CompiledKernel Kernel => _kernel;
+    public OrleansCompiledKernel Kernel => _kernel;
     public KernelExecutionStatus Status => _status;
     public double Progress => _progress;
 
     public DotComputeKernelExecution(
         string executionId,
-        CompiledKernel kernel,
+        OrleansCompiledKernel kernel,
         DotComputeKernelExecutor executor,
         ILogger logger)
     {
@@ -634,7 +740,7 @@ internal sealed class DotComputeKernelGraph : IKernelGraph
         _nodes = new List<KernelGraphNode>();
     }
 
-    public IKernelGraph AddNode(string nodeId, CompiledKernel kernel, KernelExecutionParameters parameters)
+    public IKernelGraph AddNode(string nodeId, OrleansCompiledKernel kernel, KernelExecutionParameters parameters)
     {
         if (string.IsNullOrEmpty(nodeId))
             throw new ArgumentException("Node ID cannot be null or empty", nameof(nodeId));
@@ -742,7 +848,7 @@ internal sealed class DotComputeKernelGraph : IKernelGraph
         }
     }
 
-    public IGraphNode AddKernel(CompiledKernel kernel, KernelExecutionParameters parameters, IReadOnlyList<IGraphNode>? dependencies = null)
+    public IGraphNode AddKernel(OrleansCompiledKernel kernel, KernelExecutionParameters parameters, IReadOnlyList<IGraphNode>? dependencies = null)
     {
         var nodeId = Guid.NewGuid().ToString();
         AddNode(nodeId, kernel, parameters);

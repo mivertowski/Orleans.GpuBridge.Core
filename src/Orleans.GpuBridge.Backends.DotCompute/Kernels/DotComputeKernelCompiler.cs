@@ -11,6 +11,12 @@ using Orleans.GpuBridge.Abstractions.Enums.Compilation;
 using Orleans.GpuBridge.Abstractions.Models;
 using Orleans.GpuBridge.Abstractions.Models.Compilation;
 using Orleans.GpuBridge.Abstractions.Providers;
+using Orleans.GpuBridge.Backends.DotCompute.DeviceManagement;
+using DotCompute.Abstractions;
+// Type aliases to avoid ambiguity with Orleans.GpuBridge types
+using DotComputeKernelDef = DotCompute.Abstractions.Kernels.KernelDefinition;
+using DotComputeCompilationOptions = DotCompute.Abstractions.CompilationOptions;
+using DotComputeKernelLanguage = DotCompute.Abstractions.Kernels.Types.KernelLanguage;
 
 namespace Orleans.GpuBridge.Backends.DotCompute.Kernels;
 
@@ -352,19 +358,88 @@ internal sealed class DotComputeKernelCompiler : IKernelCompiler
         return kernel;
     }
 
-    // TODO: [DOTCOMPUTE-API] Kernel compilation API investigation needed
-    // DotCompute v0.3.0-rc1: CompileKernelAsync signature and availability unclear
-    // Need to investigate:
-    //   - Does IAccelerator have CompileKernelAsync method?
-    //   - What are the parameters and return types?
-    //   - Is there a separate IKernelCompiler interface?
-    //
-    // Expected integration pattern (pending API discovery):
-    //   var adapter = device as DotComputeAcceleratorAdapter;
-    //   var accelerator = adapter?.Accelerator;
-    //   var nativeKernel = await accelerator.CompileKernelAsync(...);
-    //
-    // Current: Simulation pending API discovery
+    /// <summary>
+    /// Maps Orleans.GpuBridge kernel language to DotCompute kernel language
+    /// </summary>
+    private static DotComputeKernelLanguage MapLanguage(Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage language)
+    {
+        return language switch
+        {
+            Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.CUDA => DotComputeKernelLanguage.Cuda,
+            Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.OpenCL => DotComputeKernelLanguage.OpenCL,
+            Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.CSharp => DotComputeKernelLanguage.CSharp,
+            Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.HLSL => DotComputeKernelLanguage.HLSL,
+            Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.PTX => DotComputeKernelLanguage.Ptx,
+            Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.SPIRV => DotComputeKernelLanguage.SPIRV,
+            _ => DotComputeKernelLanguage.Auto
+        };
+    }
+
+    /// <summary>
+    /// Maps Orleans.GpuBridge compilation options to DotCompute compilation options
+    /// </summary>
+    private static DotComputeCompilationOptions MapCompilationOptions(KernelCompilationOptions options)
+    {
+        // Start with appropriate base options based on optimization level
+        var dotComputeOptions = options.OptimizationLevel == OptimizationLevel.O0
+            ? DotComputeCompilationOptions.Debug
+            : DotComputeCompilationOptions.Release;
+
+        // Map optimization-specific settings
+        if (options.EnableFastMath)
+        {
+            dotComputeOptions.EnableFastMath = true;
+            dotComputeOptions.FastMath = true;
+            dotComputeOptions.UseFastMath = true;
+        }
+
+        // Apply aggressive optimizations for O3
+        if (options.OptimizationLevel == OptimizationLevel.O3)
+        {
+            dotComputeOptions.AggressiveOptimizations = true;
+            dotComputeOptions.EnableLoopUnrolling = true;
+            dotComputeOptions.UnrollLoops = true;
+            dotComputeOptions.EnableVectorization = true;
+            dotComputeOptions.EnableInlining = true;
+        }
+
+        // Map defines (CompilationOptions.Defines is read-only, need to add to existing dictionary)
+        if (options.Defines?.Any() == true)
+        {
+            foreach (var define in options.Defines)
+            {
+                dotComputeOptions.Defines.Add(define.Key, define.Value);
+            }
+        }
+
+        // Map register count settings
+        if (options.MaxRegisterCount > 0)
+        {
+            dotComputeOptions.MaxRegisters = options.MaxRegisterCount;
+            dotComputeOptions.MaxRegistersPerThread = options.MaxRegisterCount;
+        }
+
+        // Map debug settings
+        if (options.EnableDebugInfo)
+        {
+            dotComputeOptions.EnableDebugInfo = true;
+            dotComputeOptions.GenerateDebugInfo = true;
+            dotComputeOptions.EnableDeviceDebugging = true;
+            dotComputeOptions.GenerateLineInfo = true;
+        }
+
+        // Map profiling settings
+        if (options.EnableProfiling)
+        {
+            dotComputeOptions.EnableProfiling = true;
+        }
+
+        return dotComputeOptions;
+    }
+
+    /// <summary>
+    /// Compiles kernel for DotCompute device using real GPU compilation
+    /// </summary>
     private async Task<DotComputeCompiledKernel> CompileKernelForDeviceAsync(
         KernelSource source,
         IComputeDevice device,
@@ -374,47 +449,74 @@ internal sealed class DotComputeKernelCompiler : IKernelCompiler
         _logger.LogInformation("Compiling DotCompute kernel: {KernelName} for device: {DeviceId}",
             source.Name, device.DeviceId);
 
-        // TODO: [PHASE 2] Integrate real kernel compilation when API is confirmed
-        // For now, maintaining simulation to keep system functional
-        // This allows device discovery and memory management to be tested
-        // while kernel compilation API is being investigated
+        // Extract DotCompute accelerator from device adapter
+        var adapter = device as DotComputeAcceleratorAdapter
+            ?? throw new InvalidOperationException($"Device {device.DeviceId} is not a DotCompute device");
 
-        var kernelId = $"{source.Name}_{device.DeviceId}_{source.GetHashCode()}";
+        var accelerator = adapter.Accelerator;
 
-        // Simulate compilation time (will be replaced with real compilation)
-        await Task.Delay(100, cancellationToken);
-
-        _logger.LogWarning(
-            "Using simulated kernel compilation for {KernelName}. " +
-            "Real DotCompute kernel compilation pending API investigation.",
-            source.Name);
-
-        // Create native kernel placeholder
-        var nativeKernel = new DotComputeNativeKernel(source.Name, source.SourceCode);
-        _nativeKernels[kernelId] = nativeKernel;
-
-        var metadata = new Dictionary<string, object>
+        // Create kernel definition with source and entry point
+        var kernelDef = new DotComputeKernelDef(
+            name: source.Name,
+            source: source.SourceCode,
+            entryPoint: source.EntryPoint ?? source.Name)
         {
-            ["compiled_for_device"] = device.DeviceId,
-            ["compilation_time"] = DateTime.UtcNow,
-            ["language"] = source.Language.ToString(),
-            ["entry_point"] = source.EntryPoint ?? source.Name,
-            ["optimization_level"] = options.OptimizationLevel.ToString(),
-            ["status"] = "simulated_pending_api"
+            Language = MapLanguage(source.Language)
         };
 
-        if (options.Defines?.Any() == true)
-        {
-            metadata["defines"] = string.Join(";", options.Defines.Select(kv => $"{kv.Key}={kv.Value}"));
-        }
+        // Map compilation options from Orleans to DotCompute
+        var compilationOptions = MapCompilationOptions(options);
 
-        return new DotComputeCompiledKernel(
-            kernelId: kernelId,
-            name: source.Name,
-            device: device,
-            metadata: metadata,
-            nativeKernel: nativeKernel,
-            logger: _logger);
+        try
+        {
+            // ✅ REAL API: Compile kernel using DotCompute NVRTC/CUDA Driver API
+            var nativeKernel = await accelerator.CompileKernelAsync(
+                kernelDef,
+                compilationOptions,
+                cancellationToken);
+
+            _logger.LogInformation(
+                "Successfully compiled DotCompute kernel: {KernelName} (ID: {KernelId})",
+                nativeKernel.Name,
+                nativeKernel.Id);
+
+            // Generate unique kernel ID
+            var kernelId = $"{source.Name}_{device.DeviceId}_{nativeKernel.Id}";
+
+            // Store native kernel for execution
+            _nativeKernels[kernelId] = nativeKernel;
+
+            // Build metadata
+            var metadata = new Dictionary<string, object>
+            {
+                ["compiled_for_device"] = device.DeviceId,
+                ["compilation_time"] = DateTime.UtcNow,
+                ["language"] = source.Language.ToString(),
+                ["entry_point"] = source.EntryPoint ?? source.Name,
+                ["optimization_level"] = options.OptimizationLevel.ToString(),
+                ["native_kernel_id"] = nativeKernel.Id.ToString(),
+                ["status"] = "compiled_real_gpu_kernel"  // ✅ No longer simulated!
+            };
+
+            if (options.Defines?.Any() == true)
+            {
+                metadata["defines"] = string.Join(";", options.Defines.Select(kv => $"{kv.Key}={kv.Value}"));
+            }
+
+            // Create Orleans kernel wrapper
+            return new DotComputeCompiledKernel(
+                kernelId: kernelId,
+                name: source.Name,
+                device: device,
+                metadata: metadata,
+                nativeKernel: nativeKernel,  // Store real CudaCompiledKernel
+                logger: _logger);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to compile kernel {KernelName} with DotCompute", source.Name);
+            throw new InvalidOperationException($"Kernel compilation failed: {ex.Message}", ex);
+        }
     }
 
     private IComputeDevice SelectTargetDevice(IComputeDevice? preferredDevice)

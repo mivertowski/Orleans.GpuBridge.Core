@@ -13,8 +13,8 @@
   <!-- Expose internal types to test assembly -->
   <ItemGroup>
     <InternalsVisibleTo Include="Orleans.GpuBridge.Backends.DotCompute.Tests" />
+    <InternalsVisibleTo Include="BackendIntegrationTest" />
   </ItemGroup>
-
   <PropertyGroup>
 
     <!-- Package Metadata -->
@@ -36,16 +36,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- DotCompute Framework - Production Release -->
+    <!-- DotCompute Framework v0.4.1-rc2 - Production Release with AddDotComputeRuntime() -->
+    <!-- Release Date: January 2025 -->
+    <!-- Features: Unified DI registration, fixed provider registration, GPU acceleration -->
 
     <!-- Backend Targets -->
-    <PackageReference Include="DotCompute.Abstractions" Version="0.3.0-rc1" />
-    <PackageReference Include="DotCompute.Backends.CUDA" Version="0.3.0-rc1" />
-    <PackageReference Include="DotCompute.Backends.OpenCL" Version="0.3.0-rc1" />
-    <PackageReference Include="DotCompute.Backends.CPU" Version="0.3.0-rc1" />
-    <PackageReference Include="DotCompute.Backends.Metal" Version="0.2.0-alpha" Condition="$([MSBuild]::IsOSPlatform('OSX'))" />
-    <PackageReference Include="DotCompute.Core" Version="0.3.0-rc1" />
-    <PackageReference Include="DotCompute.Runtime" Version="0.3.0-rc1" />
+    <PackageReference Include="DotCompute.Abstractions" Version="0.4.1-rc2" />
+    <PackageReference Include="DotCompute.Backends.CUDA" Version="0.4.1-rc2" />
+    <PackageReference Include="DotCompute.Backends.OpenCL" Version="0.4.1-rc2" />
+    <PackageReference Include="DotCompute.Backends.CPU" Version="0.4.1-rc2" />
+    <PackageReference Include="DotCompute.Backends.Metal" Version="0.4.1-rc2" Condition="$([MSBuild]::IsOSPlatform('OSX'))" />
+    <PackageReference Include="DotCompute.Core" Version="0.4.1-rc2" />
+    <PackageReference Include="DotCompute.Runtime" Version="0.4.1-rc2" />
 
     <!-- Orleans Dependencies -->
     <PackageReference Include="Microsoft.Orleans.Core" Version="9.2.1" />

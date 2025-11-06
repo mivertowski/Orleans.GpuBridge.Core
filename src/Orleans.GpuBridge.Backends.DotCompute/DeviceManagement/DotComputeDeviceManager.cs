@@ -6,7 +6,13 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using DotCompute.Abstractions;
+using DotCompute.Abstractions.Factories;
 using DotCompute.Core.Compute;
+using DotCompute.Runtime; // ✅ Unified namespace for AddDotComputeRuntime()
+using DotCompute.Runtime.Configuration;
+using DotCompute.Runtime.Factories;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Abstractions.Providers;
@@ -18,13 +24,15 @@ using GpuBridgeDeviceMetrics = Orleans.GpuBridge.Abstractions.Models.DeviceMetri
 namespace Orleans.GpuBridge.Backends.DotCompute.DeviceManagement;
 
 /// <summary>
-/// DotCompute device manager implementation with real DotCompute v0.3.0-rc1 API integration
+/// DotCompute device manager implementation with real DotCompute v0.4.0-rc2 API integration
+/// Uses IUnifiedAcceleratorFactory pattern for reliable device discovery
 /// </summary>
 internal sealed class DotComputeDeviceManager : IDeviceManager
 {
     private readonly ILogger<DotComputeDeviceManager> _logger;
     private readonly ConcurrentDictionary<string, DotComputeAcceleratorAdapter> _devices;
-    private IAcceleratorManager? _acceleratorManager;
+    private IUnifiedAcceleratorFactory? _factory;
+    private IServiceProvider? _serviceProvider;
     private bool _initialized;
     private bool _disposed;
 
@@ -41,21 +49,45 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
 
         try
         {
-            _logger.LogInformation("Initializing DotCompute device manager with real API integration (v0.3.0-rc1)");
+            _logger.LogInformation("Initializing DotCompute device manager with unified DI API (v0.4.1-rc2)");
 
-            // ✅ REAL API: Initialize IAcceleratorManager using factory
-            _acceleratorManager = await DefaultAcceleratorManagerFactory.CreateAsync()
-                .ConfigureAwait(false);
+            // ✅ NEW API: Use Host.CreateApplicationBuilder with AddDotComputeRuntime()
+            var hostBuilder = Host.CreateApplicationBuilder();
 
-            _logger.LogDebug("DotCompute AcceleratorManager created successfully");
+            // Add logging
+            hostBuilder.Services.AddLogging(builder =>
+            {
+                builder.AddConsole();
+                builder.SetMinimumLevel(LogLevel.Information);
+            });
 
-            // ✅ REAL API: Discover devices using GetAcceleratorsAsync
+            // Configure DotCompute runtime options (optional, set before AddDotComputeRuntime)
+            hostBuilder.Services.Configure<DotComputeRuntimeOptions>(options =>
+            {
+                // CRITICAL: Disable capability validation for WSL2 compatibility
+                options.ValidateCapabilities = false;
+                options.AcceleratorLifetime = global::DotCompute.Runtime.Configuration.ServiceLifetime.Transient;
+            });
+
+            // ✅ UNIFIED METHOD: Registers ALL services (factory, orchestrator, providers)
+            hostBuilder.Services.AddDotComputeRuntime();
+
+            var host = hostBuilder.Build();
+            _serviceProvider = host.Services;
+            _factory = _serviceProvider.GetRequiredService<IUnifiedAcceleratorFactory>();
+
+            _logger.LogInformation("DotCompute IUnifiedAcceleratorFactory registered via AddDotComputeRuntime()");
+
+            // ✅ NEW API: Discover devices using GetAvailableDevicesAsync
             await DiscoverDevicesAsync(cancellationToken).ConfigureAwait(false);
 
             _initialized = true;
             _logger.LogInformation(
-                "DotCompute device manager initialized with {DeviceCount} real devices",
-                _devices.Count);
+                "DotCompute device manager initialized with {DeviceCount} real devices (CUDA: {CudaCount}, OpenCL: {OpenClCount}, CPU: {CpuCount})",
+                _devices.Count,
+                _devices.Values.Count(d => d.Type == DeviceType.CUDA),
+                _devices.Values.Count(d => d.Type == DeviceType.OpenCL),
+                _devices.Values.Count(d => d.Type == DeviceType.CPU));
         }
         catch (Exception ex)
         {
@@ -143,52 +175,98 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
     }
 
     /// <summary>
-    /// Discovers available compute devices using DotCompute v0.3.0-rc1 GetAcceleratorsAsync API
+    /// Discovers available compute devices using DotCompute v0.4.0-rc2 GetAvailableDevicesAsync API
     /// </summary>
     private async Task DiscoverDevicesAsync(CancellationToken cancellationToken)
     {
-        if (_acceleratorManager == null)
-            throw new InvalidOperationException("AcceleratorManager not initialized");
+        if (_factory == null)
+            throw new InvalidOperationException("IUnifiedAcceleratorFactory not initialized");
 
-        _logger.LogInformation("Starting DotCompute device discovery using real API");
+        _logger.LogInformation("Starting DotCompute device discovery using IUnifiedAcceleratorFactory API");
 
         try
         {
-            // ✅ REAL API: GetAcceleratorsAsync returns Task<IEnumerable<IAccelerator>>
-            var accelerators = await _acceleratorManager.GetAcceleratorsAsync()
+            // ✅ NEW API: GetAvailableDevicesAsync returns device descriptors
+            var deviceDescriptors = await _factory.GetAvailableDevicesAsync()
                 .ConfigureAwait(false);
 
+            _logger.LogDebug("Retrieved {Count} device descriptors", deviceDescriptors.Count);
+
+            // Diagnostic: Log available methods on factory
+            var factoryMethods = _factory.GetType().GetMethods()
+                .Where(m => m.IsPublic && !m.IsSpecialName)
+                .Select(m => $"{m.Name}({string.Join(", ", m.GetParameters().Select(p => p.ParameterType.Name))})")
+                .ToList();
+            _logger.LogDebug("Available factory methods: {Methods}", string.Join(", ", factoryMethods));
+
+            // Diagnostic: Log device descriptor type
+            if (deviceDescriptors.Count > 0)
+            {
+                var descType = deviceDescriptors[0].GetType();
+                _logger.LogDebug("Device descriptor type: {Type}, Interfaces: {Interfaces}",
+                    descType.FullName,
+                    string.Join(", ", descType.GetInterfaces().Select(i => i.Name)));
+            }
+
             var index = 0;
-            foreach (var accelerator in accelerators)
+            foreach (var deviceDesc in deviceDescriptors)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                // Create adapter to wrap IAccelerator as IComputeDevice
-                var adapter = new DotComputeAcceleratorAdapter(accelerator, index++, _logger);
-                _devices[adapter.Id] = adapter;
+                try
+                {
+                    // ✅ NEW API: Create accelerator from AcceleratorInfo
+                    // Working pattern: await factory.CreateAsync(device)
+                    var accelerator = await _factory.CreateAsync(deviceDesc)
+                        .ConfigureAwait(false);
 
-                _logger.LogInformation(
-                    "Discovered DotCompute device: {DeviceId} - {DeviceName} ({DeviceType}, {Architecture})",
-                    adapter.Id,
-                    adapter.Name,
-                    adapter.Type,
-                    adapter.Architecture);
+                    if (accelerator == null)
+                    {
+                        _logger.LogWarning(
+                            "Factory returned null accelerator for device: {DeviceName} ({DeviceType}). Skipping.",
+                            deviceDesc.Name,
+                            deviceDesc.DeviceType);
+                        continue;
+                    }
 
-                _logger.LogDebug(
-                    "Device details: ComputeUnits={ComputeUnits}, Memory={MemoryGB:F2}GB, WarpSize={WarpSize}",
-                    adapter.ComputeUnits,
-                    adapter.TotalMemoryBytes / (1024.0 * 1024.0 * 1024.0),
-                    adapter.WarpSize);
+                    // Create adapter to wrap IAccelerator as IComputeDevice
+                    var adapter = new DotComputeAcceleratorAdapter(accelerator, index++, _logger);
+                    _devices[adapter.Id] = adapter;
+
+                    _logger.LogInformation(
+                        "Discovered DotCompute device: {DeviceId} - {DeviceName} ({DeviceType}, {Architecture})",
+                        adapter.Id,
+                        adapter.Name,
+                        adapter.Type,
+                        adapter.Architecture);
+
+                    _logger.LogDebug(
+                        "Device details: ComputeUnits={ComputeUnits}, Memory={MemoryGB:F2}GB, WarpSize={WarpSize}",
+                        adapter.ComputeUnits,
+                        adapter.TotalMemoryBytes / (1024.0 * 1024.0 * 1024.0),
+                        adapter.WarpSize);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex,
+                        "Failed to process device: {DeviceName} ({DeviceType}). Skipping.",
+                        deviceDesc.Name,
+                        deviceDesc.DeviceType);
+                }
             }
 
             _logger.LogInformation(
-                "Device discovery complete. Found {DeviceCount} real device(s)",
-                _devices.Count);
+                "Device discovery complete. Found {DeviceCount} real device(s) across {DescriptorCount} descriptors",
+                _devices.Count,
+                deviceDescriptors.Count);
 
             if (_devices.Count == 0)
             {
                 _logger.LogWarning(
-                    "No devices discovered. Ensure CUDA/OpenCL drivers are installed and devices are available.");
+                    "No devices discovered. This may be due to:" + Environment.NewLine +
+                    "  - Missing CUDA/OpenCL drivers" + Environment.NewLine +
+                    "  - WSL2 GPU passthrough not configured" + Environment.NewLine +
+                    "  - No compatible compute devices available");
             }
         }
         catch (Exception ex)
@@ -403,6 +481,12 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
                     _logger.LogWarning("Async disposal timed out, performing sync disposal");
                     DisposeSynchronously();
                 }
+            }
+
+            // Dispose service provider
+            if (_serviceProvider is IDisposable disposableProvider)
+            {
+                disposableProvider.Dispose();
             }
         }
         catch (Exception ex)

@@ -1,0 +1,103 @@
+#!/usr/bin/env dotnet-script
+#r "nuget: DotCompute.Abstractions, 0.3.0-rc1"
+#r "nuget: DotCompute.Core, 0.3.0-rc1"
+#r "nuget: DotCompute.Runtime, 0.3.0-rc1"
+#r "nuget: DotCompute.Backends.CUDA, 0.3.0-rc1"
+#r "nuget: DotCompute.Backends.OpenCL, 0.3.0-rc1"
+#r "nuget: DotCompute.Backends.CPU, 0.3.0-rc1"
+
+using DotCompute.Core.Compute;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+
+Console.WriteLine("=== DotCompute Device Discovery ===");
+Console.WriteLine();
+
+try
+{
+    Console.WriteLine("Initializing DotCompute AcceleratorManager...");
+    var manager = await DefaultAcceleratorManagerFactory.CreateAsync();
+    Console.WriteLine("✓ AcceleratorManager created successfully");
+    Console.WriteLine();
+
+    Console.WriteLine("Discovering compute devices...");
+    var accelerators = await manager.GetAcceleratorsAsync();
+    var deviceList = accelerators.ToList();
+
+    Console.WriteLine($"✓ Found {deviceList.Count} device(s)");
+    Console.WriteLine();
+    Console.WriteLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    Console.WriteLine();
+
+    for (int i = 0; i < deviceList.Count; i++)
+    {
+        var device = deviceList[i];
+        var info = device.Info;
+        var memory = device.Memory;
+
+        Console.WriteLine($"Device #{i}: {info.Name}");
+        Console.WriteLine($"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        Console.WriteLine($"  Type:              {info.Type}");
+        Console.WriteLine($"  Vendor:            {info.Vendor ?? "Unknown"}");
+        Console.WriteLine($"  Architecture:      {info.Architecture ?? "Unknown"}");
+        Console.WriteLine($"  Compute Units:     {info.ComputeUnits}");
+        Console.WriteLine($"  Max Work Group:    {info.MaxWorkGroupSize}");
+        Console.WriteLine($"  Warp Size:         {info.WarpSize}");
+        Console.WriteLine($"  Version:           {info.MajorVersion}.{info.MinorVersion}");
+
+        // Memory information
+        Console.WriteLine();
+        Console.WriteLine($"  Memory Info:");
+        Console.WriteLine($"    Total:           {memory.TotalAvailableMemory / (1024.0 * 1024.0 * 1024.0):F2} GB");
+        Console.WriteLine($"    Allocated:       {memory.CurrentAllocatedMemory / (1024.0 * 1024.0 * 1024.0):F2} GB");
+        Console.WriteLine($"    Available:       {(memory.TotalAvailableMemory - memory.CurrentAllocatedMemory) / (1024.0 * 1024.0 * 1024.0):F2} GB");
+
+        // Extensions
+        if (info.Extensions != null && info.Extensions.Count > 0)
+        {
+            Console.WriteLine();
+            Console.WriteLine($"  Extensions ({info.Extensions.Count}):");
+            foreach (var ext in info.Extensions.Take(5))
+            {
+                Console.WriteLine($"    - {ext}");
+            }
+            if (info.Extensions.Count > 5)
+            {
+                Console.WriteLine($"    ... and {info.Extensions.Count - 5} more");
+            }
+        }
+
+        // Features
+        if (info.Features != null && info.Features.Count > 0)
+        {
+            Console.WriteLine();
+            Console.WriteLine($"  Features ({info.Features.Count}):");
+            foreach (var feature in info.Features.Take(5))
+            {
+                Console.WriteLine($"    - {feature.Key}: {feature.Value}");
+            }
+            if (info.Features.Count > 5)
+            {
+                Console.WriteLine($"    ... and {info.Features.Count - 5} more");
+            }
+        }
+
+        Console.WriteLine();
+        Console.WriteLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        Console.WriteLine();
+    }
+
+    Console.WriteLine($"Device discovery completed successfully!");
+    Console.WriteLine($"Total devices: {deviceList.Count}");
+    Console.WriteLine($"  GPU devices: {deviceList.Count(d => d.Info.Type.ToUpperInvariant() == "GPU")}");
+    Console.WriteLine($"  CPU devices: {deviceList.Count(d => d.Info.Type.ToUpperInvariant() == "CPU")}");
+
+    await manager.DisposeAsync();
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"❌ Error during device discovery:");
+    Console.WriteLine($"   {ex.GetType().Name}: {ex.Message}");
+    Console.WriteLine($"   {ex.StackTrace}");
+}

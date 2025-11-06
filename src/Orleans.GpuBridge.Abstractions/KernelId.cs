@@ -1,11 +1,13 @@
 using System.Diagnostics.CodeAnalysis;
+using Orleans;
 
 namespace Orleans.GpuBridge.Abstractions;
 
 /// <summary>
 /// Represents a unique kernel identifier
 /// </summary>
-public readonly record struct KernelId(string Value)
+[GenerateSerializer]
+public readonly record struct KernelId([property: Id(0)] string Value)
 {
     public override string ToString() => Value;
     

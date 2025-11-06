@@ -1,16 +1,19 @@
+using Orleans;
+
 namespace Orleans.GpuBridge.Abstractions;
 
 /// <summary>
 /// Hints for GPU kernel execution optimization
 /// </summary>
+[GenerateSerializer]
 public sealed record GpuExecutionHints(
-    int? PreferredDevice = null,
-    bool HighPriority = false,
-    int? MaxMicroBatch = null,
-    bool Persistent = true,
-    bool PreferGpu = true,
-    TimeSpan? Timeout = null,
-    int? MaxRetries = null)
+    [property: Id(0)] int? PreferredDevice = null,
+    [property: Id(1)] bool HighPriority = false,
+    [property: Id(2)] int? MaxMicroBatch = null,
+    [property: Id(3)] bool Persistent = true,
+    [property: Id(4)] bool PreferGpu = true,
+    [property: Id(5)] TimeSpan? Timeout = null,
+    [property: Id(6)] int? MaxRetries = null)
 {
     /// <summary>
     /// Default execution hints

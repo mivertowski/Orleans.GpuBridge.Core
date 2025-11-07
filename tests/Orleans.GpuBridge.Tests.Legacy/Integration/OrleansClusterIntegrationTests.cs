@@ -36,7 +36,7 @@ public class OrleansClusterIntegrationTests : IClassFixture<GpuClusterFixture>
     {
         // Arrange
         var grainFactory = _fixture.Cluster.GrainFactory;
-        var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(), Guid.NewGuid().ToString(), "vector-add");
+        var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>("vector-add", Guid.NewGuid());
         
         var input = new[]
         {
@@ -89,7 +89,7 @@ public class OrleansClusterIntegrationTests : IClassFixture<GpuClusterFixture>
         for (int i = 0; i < 10; i++)
         {
             var grainId = $"concurrent-test-{i}";
-            var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), grainId);
+            var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(grainId, Guid.NewGuid());
             var input = new[] { new float[] { i, i + 1, i + 2 } };
             tasks.Add(grain.ExecuteAsync(input));
         }
@@ -166,7 +166,7 @@ public class OrleansClusterIntegrationTests : IClassFixture<GpuClusterFixture>
         var grains = new List<IGpuBatchGrain<float[], float[]>>();
         for (int i = 0; i < 5; i++)
         {
-            var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(), Guid.NewGuid().ToString(), $"placement-test-{i}");
+            var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>($"placement-test-{i}", Guid.NewGuid());
             grains.Add(grain);
             
             // Execute to ensure activation
@@ -185,7 +185,7 @@ public class OrleansClusterIntegrationTests : IClassFixture<GpuClusterFixture>
     {
         // Arrange
         var grainFactory = _fixture.Cluster.GrainFactory;
-        var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(),"fallback-test");
+        var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>("fallback-test", Guid.NewGuid());
         
         // Use data that might cause GPU issues (but should work on CPU)
         var problematicInput = new[]
@@ -206,7 +206,7 @@ public class OrleansClusterIntegrationTests : IClassFixture<GpuClusterFixture>
     public async Task HealthChecks_GpuBridgeSystem_ShouldReportCorrectStatus()
     {
         // Arrange
-        var services = _fixture.Cluster.Host.Services;
+        var services = _fixture.Cluster.Services;
         var healthCheckService = services.GetService<Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckService>();
 
         if (healthCheckService == null)
@@ -233,7 +233,7 @@ public class OrleansClusterIntegrationTests : IClassFixture<GpuClusterFixture>
         var grainId = Guid.NewGuid().ToString();
         
         // Act - Activate grain
-        var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(),grainId);
+        var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(grainId, Guid.NewGuid());
         var input = new[] { new float[] { 1.0f, 2.0f, 3.0f } };
         var result1 = await grain.ExecuteAsync(input);
         
@@ -254,7 +254,7 @@ public class OrleansClusterIntegrationTests : IClassFixture<GpuClusterFixture>
     {
         // Arrange
         var grainFactory = _fixture.Cluster.GrainFactory;
-        var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(),"compilation-cache-test");
+        var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>("compilation-cache-test", Guid.NewGuid());
         var input = new[] { new float[] { 1.0f, 2.0f, 3.0f } };
 
         // Act - First execution (should compile kernel)
@@ -273,7 +273,7 @@ public class OrleansClusterIntegrationTests : IClassFixture<GpuClusterFixture>
         
         // Second execution should typically be faster due to caching
         // (Note: In CPU fallback mode, this difference might be minimal)
-        result2.ExecutionTime.Should().BeLessOrEqualTo(result1.ExecutionTime.Add(TimeSpan.FromMilliseconds(100)));
+        result2.ExecutionTime.Should().BeLessThanOrEqualTo(result1.ExecutionTime.Add(TimeSpan.FromMilliseconds(100)));
     }
 
     [Fact]
@@ -281,7 +281,7 @@ public class OrleansClusterIntegrationTests : IClassFixture<GpuClusterFixture>
     {
         // Arrange
         var grainFactory = _fixture.Cluster.GrainFactory;
-        var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(),"large-data-test");
+        var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>("large-data-test", Guid.NewGuid());
         
         // Create large dataset
         var largeInput = Enumerable.Range(0, 100)

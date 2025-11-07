@@ -555,4 +555,72 @@ public sealed class GpuResidentGrainEnhanced<T> : Grain, IGpuResidentGrain<T>
             throw new InvalidOperationException("Ring Kernel not initialized. Grain may not be activated.");
         }
     }
+
+    /// <inheritdoc />
+    public async Task StoreDataAsync(T[] data, GpuMemoryType memoryType = GpuMemoryType.Default)
+    {
+        ArgumentNullException.ThrowIfNull(data);
+
+        _logger.LogDebug(
+            "Storing {Count} elements of type {Type} (enhanced)",
+            data.Length, typeof(T).Name);
+
+        // Calculate required memory size
+        long totalBytes;
+        unsafe
+        {
+            var elementSize = sizeof(T);
+            totalBytes = data.Length * elementSize;
+        }
+
+        // Allocate GPU memory for the data using enhanced ring kernel
+        var handle = await AllocateAsync(totalBytes, memoryType);
+
+        // Write the data to GPU memory using DMA transfers
+        await WriteAsync(handle, data, 0);
+
+        // Store the handle in state for later retrieval
+        _state.State.LastModified = DateTime.UtcNow;
+        await _state.WriteStateAsync();
+
+        _logger.LogInformation(
+            "Stored {Count} elements ({Bytes:N0} bytes) in GPU memory (enhanced) with handle {Handle}",
+            data.Length, totalBytes, handle.Id);
+    }
+
+    /// <inheritdoc />
+    public Task<T[]?> GetDataAsync()
+    {
+        // If no allocations exist, return null
+        if (_state.State.Allocations.Count == 0)
+        {
+            _logger.LogDebug("No stored data found (enhanced)");
+            return Task.FromResult<T[]?>(null);
+        }
+
+        // Get the first allocation (assuming single data store per grain for this high-level API)
+        var allocation = _state.State.Allocations.Values.FirstOrDefault();
+        if (allocation?.Handle == null)
+        {
+            _logger.LogDebug("No valid allocation found (enhanced)");
+            return Task.FromResult<T[]?>(null);
+        }
+
+        var handle = allocation.Handle;
+
+        _logger.LogDebug(
+            "Retrieving stored data from handle {Handle}, {Bytes:N0} bytes (enhanced)",
+            handle.Id, handle.SizeBytes);
+
+        // Calculate element count from memory size
+        int count;
+        unsafe
+        {
+            var elementSize = sizeof(T);
+            count = (int)(handle.SizeBytes / elementSize);
+        }
+
+        // Read the data from GPU memory using DMA transfers
+        return ReadAsync<T>(handle, count, 0)!;
+    }
 }

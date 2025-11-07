@@ -120,7 +120,7 @@ public sealed class GpuStreamGrainEnhancedTests
 
         // Assert - Should have processed the batch
         metrics = await grain.GetMetricsAsync();
-        metrics.TotalBatchesProcessed.Should().BeGreaterOrEqualTo(1);
+        metrics.TotalBatchesProcessed.Should().BeGreaterThanOrEqualTo(1);
     }
 
     [Fact]
@@ -260,7 +260,7 @@ public sealed class GpuStreamGrainEnhancedTests
         // Assert - Should have split into multiple batches
         var metrics = await grain.GetMetricsAsync();
         metrics.TotalBatchesProcessed.Should().BeGreaterThan(3); // At least 1000/256 batches
-        metrics.AverageBatchSize.Should().BeLessOrEqualTo(256);
+        metrics.AverageBatchSize.Should().BeLessThanOrEqualTo(256);
     }
 
     #endregion
@@ -305,7 +305,7 @@ public sealed class GpuStreamGrainEnhancedTests
 
         // Assert - Should have paused
         var metrics = await grain.GetMetricsAsync();
-        metrics.TotalPauseCount.Should().BeGreaterOrEqualTo(1);
+        metrics.TotalPauseCount.Should().BeGreaterThanOrEqualTo(1);
         metrics.BufferUtilization.Should().BeGreaterThan(0.9);
     }
 
@@ -340,7 +340,7 @@ public sealed class GpuStreamGrainEnhancedTests
         // Assert - Should have resumed
         var metrics = await grain.GetMetricsAsync();
         metrics.BufferUtilization.Should().BeLessThan(0.5);
-        metrics.TotalPauseCount.Should().BeGreaterOrEqualTo(1);
+        metrics.TotalPauseCount.Should().BeGreaterThanOrEqualTo(1);
         metrics.TotalPauseDuration.Should().BeGreaterThan(TimeSpan.Zero);
     }
 
@@ -548,7 +548,7 @@ public sealed class GpuStreamGrainEnhancedTests
         var metrics = await grain.GetMetricsAsync();
         metrics.AverageLatencyMs.Should().BeGreaterThan(0);
         metrics.P50LatencyMs.Should().BeGreaterThan(0);
-        metrics.P99LatencyMs.Should().BeGreaterOrEqualTo(metrics.P50LatencyMs);
+        metrics.P99LatencyMs.Should().BeGreaterThanOrEqualTo(metrics.P50LatencyMs);
     }
 
     [Fact]
@@ -571,7 +571,7 @@ public sealed class GpuStreamGrainEnhancedTests
         // Assert - Current throughput should reflect recent performance (last 10 seconds)
         var metrics = await grain.GetMetricsAsync();
         metrics.CurrentThroughput.Should().BeGreaterThan(0);
-        metrics.PeakThroughput.Should().BeGreaterOrEqualTo(metrics.CurrentThroughput);
+        metrics.PeakThroughput.Should().BeGreaterThanOrEqualTo(metrics.CurrentThroughput);
     }
 
     [Fact]

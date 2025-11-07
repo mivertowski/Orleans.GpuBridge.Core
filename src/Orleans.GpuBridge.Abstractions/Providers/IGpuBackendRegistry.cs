@@ -32,9 +32,20 @@ public interface IGpuBackendRegistry : IDisposable
     /// </summary>
     [RequiresUnreferencedCode("Creates provider instances using reflection which may not work with trimming.")]
     Task<IGpuBackendProvider?> GetProviderAsync(
-        [NotNull] string providerId, 
+        [NotNull] string providerId,
         CancellationToken cancellationToken = default);
-    
+
+    /// <summary>
+    /// Gets a specific backend provider by ID (alias for GetProviderAsync)
+    /// </summary>
+    [RequiresUnreferencedCode("Creates provider instances using reflection which may not work with trimming.")]
+    Task<IGpuBackendProvider?> GetProviderByIdAsync(
+        [NotNull] string providerId,
+        CancellationToken cancellationToken = default)
+    {
+        return GetProviderAsync(providerId, cancellationToken);
+    }
+
     /// <summary>
     /// Gets list of registered provider IDs
     /// </summary>

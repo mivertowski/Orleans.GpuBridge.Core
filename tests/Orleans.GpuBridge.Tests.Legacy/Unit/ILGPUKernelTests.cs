@@ -304,7 +304,8 @@ namespace Orleans.GpuBridge.Tests.Unit
 
                 if (accelerator is CudaAccelerator cudaAccelerator)
                 {
-                    memoryUsages.Add(cudaAccelerator.MemoryInfo.UsedBytes);
+                    var memoryInfo = cudaAccelerator.GetMemoryInfo();
+                    memoryUsages.Add(memoryInfo.UsedBytes);
                 }
             }
 
@@ -376,7 +377,7 @@ namespace Orleans.GpuBridge.Tests.Unit
             using var bufferB = accelerator.Allocate1D(b);
             using var bufferC = accelerator.Allocate1D<float>(a.Length);
 
-            kernel(new Index1D((int)bufferA.Length), bufferA.View, bufferB.View, bufferC.View);
+            kernel(accelerator.DefaultStream, new Index1D((int)bufferA.Length), bufferA.View, bufferB.View, bufferC.View);
             accelerator.Synchronize();
 
             return bufferC.GetAsArray1D();
@@ -393,16 +394,16 @@ namespace Orleans.GpuBridge.Tests.Unit
                 throw new ArgumentException("Matrix dimensions don't match for multiplication");
 
             var kernel = accelerator.LoadAutoGroupedStreamKernel<
-                Index2D, 
-                ArrayView2D<float, Stride2D.DenseX>, 
-                ArrayView2D<float, Stride2D.DenseX>, 
+                Index2D,
+                ArrayView2D<float, Stride2D.DenseX>,
+                ArrayView2D<float, Stride2D.DenseX>,
                 ArrayView2D<float, Stride2D.DenseX>>(MatrixMultiplyKernel);
 
             using var bufferA = accelerator.Allocate2DDenseX(a);
             using var bufferB = accelerator.Allocate2DDenseX(b);
             using var bufferC = accelerator.Allocate2DDenseX<float>(new Index2D(rowsA, colsB));
 
-            kernel(new Index2D((int)bufferC.Extent.X, (int)bufferC.Extent.Y), bufferA.View, bufferB.View, bufferC.View);
+            kernel(accelerator.DefaultStream, new Index2D((int)bufferC.Extent.X, (int)bufferC.Extent.Y), bufferA.View, bufferB.View, bufferC.View);
             accelerator.Synchronize();
 
             return bufferC.GetAsArray2D();
@@ -416,7 +417,7 @@ namespace Orleans.GpuBridge.Tests.Unit
             using var bufferIn = accelerator.Allocate1D(input);
             using var bufferOut = accelerator.Allocate1D<float>(input.Length);
 
-            kernel(new Index1D((int)bufferIn.Length), bufferIn.View, scalar, bufferOut.View);
+            kernel(accelerator.DefaultStream, new Index1D((int)bufferIn.Length), bufferIn.View, scalar, bufferOut.View);
             accelerator.Synchronize();
 
             return bufferOut.GetAsArray1D();

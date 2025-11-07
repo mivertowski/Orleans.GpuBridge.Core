@@ -137,15 +137,71 @@ public class ParallelKernelExecutor
     }
 
     public async Task<TResult> ExecuteAsync<TInput, TResult>(
-        string kernelId, 
-        TInput input, 
+        string kernelId,
+        TInput input,
         int batchSize = 1000)
     {
         _logger.LogInformation($"Executing kernel {kernelId} with batch size {batchSize}");
-        
+
         // Mock execution - return default for now
         await Task.Delay(10); // Simulate work
         return default(TResult)!;
+    }
+
+    /// <summary>
+    /// Executes a vectorized operation on input data
+    /// </summary>
+    /// <param name="input">Input data array</param>
+    /// <param name="operation">Vector operation to perform</param>
+    /// <param name="parameters">Operation parameters</param>
+    /// <returns>Result array after operation</returns>
+    public async Task<float[]> ExecuteVectorizedAsync(
+        float[] input,
+        VectorOperation operation,
+        float[] parameters)
+    {
+        _logger.LogInformation($"Executing vectorized operation {operation} on {input.Length} elements");
+
+        await Task.Delay(1); // Simulate async work
+
+        var result = new float[input.Length];
+
+        // Perform the operation based on type
+        switch (operation)
+        {
+            case VectorOperation.Add:
+                for (int i = 0; i < input.Length; i++)
+                    result[i] = input[i] + parameters[0];
+                break;
+
+            case VectorOperation.Subtract:
+                for (int i = 0; i < input.Length; i++)
+                    result[i] = input[i] - parameters[0];
+                break;
+
+            case VectorOperation.Multiply:
+                for (int i = 0; i < input.Length; i++)
+                    result[i] = input[i] * parameters[0];
+                break;
+
+            case VectorOperation.Divide:
+                for (int i = 0; i < input.Length; i++)
+                    result[i] = input[i] / parameters[0];
+                break;
+
+            case VectorOperation.FusedMultiplyAdd:
+                // FMA: result = input * params[0] + params[1]
+                var multiplier = parameters.Length > 0 ? parameters[0] : 1.0f;
+                var addend = parameters.Length > 1 ? parameters[1] : 0.0f;
+                for (int i = 0; i < input.Length; i++)
+                    result[i] = input[i] * multiplier + addend;
+                break;
+
+            default:
+                throw new NotImplementedException($"Vector operation {operation} not implemented");
+        }
+
+        return result;
     }
 }
 

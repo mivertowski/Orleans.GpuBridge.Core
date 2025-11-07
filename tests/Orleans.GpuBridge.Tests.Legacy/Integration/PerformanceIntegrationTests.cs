@@ -85,8 +85,8 @@ public class PerformanceIntegrationTests : IClassFixture<GpuClusterFixture>
         {
             var grainId = $"scalability-test-{i}";
             grainIds.Add(grainId);
-            
-            var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(), grainId);
+
+            var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(grainId, Guid.NewGuid());
             var inputs = Enumerable.Range(0, operationsPerGrain)
                 .Select(_ => GenerateRandomVector(100))
                 .ToArray();
@@ -117,7 +117,7 @@ public class PerformanceIntegrationTests : IClassFixture<GpuClusterFixture>
     {
         // Arrange
         var grainFactory = _fixture.Cluster.GrainFactory;
-        var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(),"memory-test");
+        var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>("memory-test", Guid.NewGuid());
         
         const int batchCount = 10;
         const int vectorsPerBatch = 100;
@@ -170,7 +170,7 @@ public class PerformanceIntegrationTests : IClassFixture<GpuClusterFixture>
     {
         // Arrange
         var grainFactory = _fixture.Cluster.GrainFactory;
-        var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(),"latency-test");
+        var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>("latency-test", Guid.NewGuid());
         
         const int iterations = 100;
         var latencies = new List<TimeSpan>();
@@ -228,7 +228,7 @@ public class PerformanceIntegrationTests : IClassFixture<GpuClusterFixture>
             var workerId = worker;
             tasks.Add(Task.Run(async () =>
             {
-                var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(), Guid.NewGuid().ToString(), $"load-test-{workerId}");
+                var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>($"load-test-{workerId}", Guid.NewGuid());
                 var operationCount = 0;
 
                 while (!cancellation.Token.IsCancellationRequested)
@@ -351,8 +351,8 @@ public class PerformanceIntegrationTests : IClassFixture<GpuClusterFixture>
         {
             var grainId = $"cleanup-test-{i}";
             grainIds.Add(grainId);
-            
-            var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(), grainId);
+
+            var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(grainId, Guid.NewGuid());
             var inputs = Enumerable.Range(0, operationsPerGrain)
                 .Select(_ => GenerateRandomVector(1000))
                 .ToArray();
@@ -373,7 +373,7 @@ public class PerformanceIntegrationTests : IClassFixture<GpuClusterFixture>
         for (int i = 0; i < grainCount; i++)
         {
             var grainId = grainIds[i];
-            var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(), grainId);
+            var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(grainId, Guid.NewGuid());
             var input = new[] { GenerateRandomVector(100) };
             
             var result = await grain.ExecuteAsync(input);

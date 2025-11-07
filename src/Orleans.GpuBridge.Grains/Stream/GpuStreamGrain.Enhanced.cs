@@ -22,6 +22,7 @@ using Orleans.GpuBridge.Abstractions.Providers.Memory.Allocators;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Enums;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Interfaces;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Options;
+using Orleans.GpuBridge.Grains.Batch;
 using Orleans.GpuBridge.Grains.Stream.Configuration;
 using Orleans.GpuBridge.Grains.Stream.Metrics;
 using Orleans.Streams;
@@ -679,6 +680,68 @@ public sealed class GpuStreamGrainEnhanced<TIn, TOut> : Grain, IGpuStreamGrain<T
         {
             await _outputStream.OnNextAsync(result);
         }
+    }
+
+    #endregion
+
+    #region Observer Pattern Methods
+
+    /// <inheritdoc />
+    public Task StartStreamAsync(
+        string streamId,
+        IGpuResultObserver<TOut> observer,
+        GpuExecutionHints? hints = null)
+    {
+        ArgumentNullException.ThrowIfNull(observer);
+        ArgumentException.ThrowIfNullOrEmpty(streamId);
+
+        if (_status == StreamProcessingStatus.Processing)
+        {
+            throw new InvalidOperationException("Stream processing is already active");
+        }
+
+        _logger.LogInformation(
+            "Starting enhanced custom stream processing with observer for stream {StreamId}",
+            streamId);
+
+        // Note: Enhanced version uses the same StartProcessingAsync infrastructure
+        // For observer pattern, we would need to extend the implementation
+        // For now, throw NotImplementedException to indicate this needs proper integration
+        throw new NotImplementedException(
+            "Observer pattern for enhanced stream grain requires additional infrastructure. " +
+            "Use StartProcessingAsync with Orleans Streams instead.");
+    }
+
+    /// <inheritdoc />
+    public async Task ProcessItemAsync(TIn item)
+    {
+        if (_status != StreamProcessingStatus.Processing)
+        {
+            throw new InvalidOperationException("Stream processing is not active. Call StartProcessingAsync first.");
+        }
+
+        await _buffer.Writer.WriteAsync(item);
+
+        _logger.LogTrace("Queued item for enhanced processing");
+    }
+
+    /// <inheritdoc />
+    public async Task FlushStreamAsync()
+    {
+        if (_status != StreamProcessingStatus.Processing)
+        {
+            throw new InvalidOperationException("Stream processing is not active");
+        }
+
+        _logger.LogDebug("Flushing enhanced stream buffer");
+
+        // Wait until buffer is empty
+        while (_buffer.Reader.Count > 0)
+        {
+            await Task.Delay(50);
+        }
+
+        _logger.LogInformation("Enhanced stream buffer flushed");
     }
 
     #endregion

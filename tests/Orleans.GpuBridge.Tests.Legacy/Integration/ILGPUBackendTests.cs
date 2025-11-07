@@ -162,22 +162,24 @@ namespace Orleans.GpuBridge.Tests.Integration
             
             // Assert
             Assert.Equal(size, buffer.Length);
-            Assert.True(accelerator.MemoryInfo.TotalBytes > 0);
-            
-            var memoryBefore = accelerator.MemoryInfo.AvailableBytes;
+            var memoryInfo = accelerator.GetMemoryInfo();
+            Assert.True(memoryInfo.TotalBytes > 0);
+
+            var memoryBefore = memoryInfo.AvailableBytes;
             _output.WriteLine($"Available memory before: {memoryBefore:N0} bytes");
-            
+
             // Test memory operations
             var hostData = Enumerable.Range(0, size).Select(i => (float)i).ToArray();
             buffer.CopyFromCPU(hostData);
-            
+
             var resultData = new float[size];
             buffer.CopyToCPU(resultData);
-            
+
             // Verify data integrity
             Assert.Equal(hostData.Take(100), resultData.Take(100));
-            
-            var memoryAfter = accelerator.MemoryInfo.AvailableBytes;
+
+            var memoryInfoAfter = accelerator.GetMemoryInfo();
+            var memoryAfter = memoryInfoAfter.AvailableBytes;
             _output.WriteLine($"Available memory after: {memoryAfter:N0} bytes");
         }
 

@@ -38,9 +38,8 @@ public class GpuPlacementDirectorTests
         SiloAddress.New(new System.Net.IPEndPoint(System.Net.IPAddress.Loopback, port), 0);
 
     private static PlacementTarget CreateTestTarget() =>
-        new PlacementTarget(
+        new(
             GrainId.Create("test", Guid.NewGuid().ToString()),
-            null,
             null);
 
     [Fact]

@@ -236,11 +236,12 @@ public class KernelExecutionPipelineTests : TestFixtureBase
             return results;
         });
 
-        var results = await Task.WhenAll(task1, task2);
+        var results1 = await task1;
+        var results2 = await task2;
 
         // Assert
-        results[0].Should().Equal(6f); // Sum: 1+2+3
-        results[1][0].Should().Equal(new[] { 8f, 10f, 12f }); // Multiply by 2: 4*2, 5*2, 6*2
+        results1.Should().Equal(new[] { 6f }); // Sum: 1+2+3
+        results2[0].Should().Equal(new[] { 8f, 10f, 12f }); // Multiply by 2: 4*2, 5*2, 6*2
     }
 
     [Fact]

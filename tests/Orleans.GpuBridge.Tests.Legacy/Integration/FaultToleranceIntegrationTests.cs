@@ -34,7 +34,7 @@ public class FaultToleranceIntegrationTests : IClassFixture<GpuClusterFixture>
     {
         // Arrange
         var grainFactory = _fixture.Cluster.GrainFactory;
-        var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(),"failure-recovery-test");
+        var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>("failure-recovery-test", Guid.NewGuid());
         
         var validInput = new[] { new float[] { 1.0f, 2.0f, 3.0f } };
         var invalidInput = new[] { new float[] { float.NaN, float.PositiveInfinity } };
@@ -69,7 +69,7 @@ public class FaultToleranceIntegrationTests : IClassFixture<GpuClusterFixture>
         // Act - Generate mix of valid and invalid operations
         for (int i = 0; i < totalOperations; i++)
         {
-            var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(), Guid.NewGuid().ToString(), $"error-test-{i}");
+            var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>($"error-test-{i}", Guid.NewGuid());
             
             float[] input;
             if (i < errorOperations && random.NextDouble() < 0.5) // Randomly distribute errors
@@ -118,7 +118,7 @@ public class FaultToleranceIntegrationTests : IClassFixture<GpuClusterFixture>
             var grainId = $"cascade-test-{i}";
             tasks.Add(Task.Run(async () =>
             {
-                var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), grainId);
+                var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(grainId, Guid.NewGuid());
                 
                 // Normal operation
                 var normalInput = new[] { new float[] { i, i + 1, i + 2 } };
@@ -154,7 +154,7 @@ public class FaultToleranceIntegrationTests : IClassFixture<GpuClusterFixture>
     {
         // Arrange
         var grainFactory = _fixture.Cluster.GrainFactory;
-        var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(),"memory-pressure-test");
+        var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>("memory-pressure-test", Guid.NewGuid());
         
         const int iterations = 20;
         const int largeVectorSize = 100000; // 100k elements per vector
@@ -219,8 +219,8 @@ public class FaultToleranceIntegrationTests : IClassFixture<GpuClusterFixture>
         var grainFactory = _fixture.Cluster.GrainFactory;
         
         // Use a grain that might take longer to process
-        var slowGrain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(), "timeout-test-slow");
-        var fastGrain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(), "timeout-test-fast");
+        var slowGrain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>("timeout-test-slow", Guid.NewGuid());
+        var fastGrain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>("timeout-test-fast", Guid.NewGuid());
 
         var largeInput = Enumerable.Range(0, 10000)
             .Select(x => (float)x)
@@ -270,7 +270,7 @@ public class FaultToleranceIntegrationTests : IClassFixture<GpuClusterFixture>
         // Act - Create excessive number of concurrent operations
         for (int i = 0; i < excessiveGrainCount; i++)
         {
-            var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(), Guid.NewGuid().ToString(), $"exhaustion-test-{i}");
+            var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>($"exhaustion-test-{i}", Guid.NewGuid());
             grains.Add(grain);
             
             var input = new[] { Enumerable.Range(0, 1000).Select(x => (float)x).ToArray() };
@@ -301,7 +301,7 @@ public class FaultToleranceIntegrationTests : IClassFixture<GpuClusterFixture>
     {
         // Arrange
         var grainFactory = _fixture.Cluster.GrainFactory;
-        var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(),"partial-failure-test");
+        var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>("partial-failure-test", Guid.NewGuid());
         
         // Create batch with mix of valid and invalid data
         var batch = new List<float[]>
@@ -389,7 +389,7 @@ public class FaultToleranceIntegrationTests : IClassFixture<GpuClusterFixture>
             
             for (int op = 0; op < operationsPerPhase; op++)
             {
-                var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>(Guid.NewGuid(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), $"recovery-{phase}-{op}");
+                var grain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>($"recovery-{phase}-{op}", Guid.NewGuid());
                 
                 // Mix of normal and challenging operations
                 float[] input = op % 3 == 0 

@@ -273,7 +273,7 @@ namespace Orleans.GpuBridge.Tests.Performance
                     // Warmup
                     for (int w = 0; w < 10; w++)
                     {
-                        kernel(accelerator.DefaultStream, workSize, buffer.View);
+                        kernel(accelerator.DefaultStream, (Index1D)workSize, buffer.View);
                         accelerator.Synchronize();
                     }
 
@@ -281,7 +281,7 @@ namespace Orleans.GpuBridge.Tests.Performance
                     for (int i = 0; i < iterations; i++)
                     {
                         var sw = Stopwatch.StartNew();
-                        kernel(accelerator.DefaultStream, workSize, buffer.View);
+                        kernel(accelerator.DefaultStream, (Index1D)workSize, buffer.View);
                         accelerator.Synchronize();
                         sw.Stop();
                         times.Add(sw.Elapsed.TotalMilliseconds);
@@ -395,7 +395,7 @@ namespace Orleans.GpuBridge.Tests.Performance
             return matrix;
         }
 
-        private async Task RunVectorAdditionWarmup(Accelerator accelerator, 
+        private async Task RunVectorAdditionWarmup(Accelerator accelerator,
             Action<AcceleratorStream, Index1D, ArrayView<float>, ArrayView<float>, ArrayView<float>> kernel,
             float[] inputA, float[] inputB)
         {
@@ -405,7 +405,7 @@ namespace Orleans.GpuBridge.Tests.Performance
 
             for (int i = 0; i < 3; i++)
             {
-                kernel(accelerator.DefaultStream, bufferA.IntLength, bufferA.View, bufferB.View, bufferC.View);
+                kernel(accelerator.DefaultStream, (Index1D)bufferA.IntLength, bufferA.View, bufferB.View, bufferC.View);
                 accelerator.Synchronize();
             }
         }
@@ -419,7 +419,7 @@ namespace Orleans.GpuBridge.Tests.Performance
             using var bufferC = accelerator.Allocate1D<float>(inputA.Length);
 
             var sw = Stopwatch.StartNew();
-            kernel(accelerator.DefaultStream, bufferA.IntLength, bufferA.View, bufferB.View, bufferC.View);
+            kernel(accelerator.DefaultStream, (Index1D)bufferA.IntLength, bufferA.View, bufferB.View, bufferC.View);
             accelerator.Synchronize();
             sw.Stop();
 
@@ -436,7 +436,7 @@ namespace Orleans.GpuBridge.Tests.Performance
 
             for (int i = 0; i < 2; i++)
             {
-                kernel(accelerator.DefaultStream, bufferC.IntExtent, bufferA.View, bufferB.View, bufferC.View);
+                kernel(accelerator.DefaultStream, (Index2D)bufferC.IntExtent, bufferA.View, bufferB.View, bufferC.View);
                 accelerator.Synchronize();
             }
         }
@@ -450,7 +450,7 @@ namespace Orleans.GpuBridge.Tests.Performance
             using var bufferC = accelerator.Allocate2DDenseX<float>(new Index2D(size, size));
 
             var sw = Stopwatch.StartNew();
-            kernel(accelerator.DefaultStream, bufferC.IntExtent, bufferA.View, bufferB.View, bufferC.View);
+            kernel(accelerator.DefaultStream, (Index2D)bufferC.IntExtent, bufferA.View, bufferB.View, bufferC.View);
             accelerator.Synchronize();
             sw.Stop();
 
@@ -481,7 +481,7 @@ namespace Orleans.GpuBridge.Tests.Performance
             var kernel = accelerator.LoadAutoGroupedStreamKernel<Index1D, ArrayView<float>>(MemoryAccessKernel);
 
             var sw = Stopwatch.StartNew();
-            kernel(accelerator.DefaultStream, buffer.IntLength, buffer.View);
+            kernel(accelerator.DefaultStream, (Index1D)buffer.IntLength, buffer.View);
             accelerator.Synchronize();
             sw.Stop();
 

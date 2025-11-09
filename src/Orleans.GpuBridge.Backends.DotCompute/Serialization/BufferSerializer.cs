@@ -1,7 +1,6 @@
 using System;
 using System.Buffers;
 using System.Buffers.Binary;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -20,7 +19,7 @@ public static class BufferSerializer
     private const int HeaderSize = 16;
     private const uint MagicNumber = 0x47505542; // "GPUB"
     private const byte CurrentVersion = 1;
-    
+
     /// <summary>
     /// Serializes data to a binary format optimized for GPU transfer
     /// </summary>
@@ -29,13 +28,13 @@ public static class BufferSerializer
         var elementSize = Unsafe.SizeOf<T>();
         var dataSize = data.Length * elementSize;
         var totalSize = HeaderSize + dataSize;
-        
+
         var buffer = new byte[totalSize];
         var span = buffer.AsSpan();
-        
+
         // Write header
         WriteHeader(span, data.Length, elementSize, typeof(T));
-        
+
         // Write data
         unsafe
         {
@@ -45,10 +44,10 @@ public static class BufferSerializer
                 Buffer.MemoryCopy(src, dst, dataSize, dataSize);
             }
         }
-        
+
         return buffer;
     }
-    
+
     /// <summary>
     /// Deserializes data from binary format
     /// </summary>
@@ -56,25 +55,25 @@ public static class BufferSerializer
     {
         if (buffer.Length < HeaderSize)
             throw new ArgumentException("Buffer too small for header");
-        
+
         // Read and validate header
         var header = ReadHeader(buffer);
-        
+
         if (header.Magic != MagicNumber)
             throw new InvalidDataException("Invalid magic number");
-        
+
         if (header.Version != CurrentVersion)
             throw new InvalidDataException($"Unsupported version: {header.Version}");
-        
+
         var expectedElementSize = Unsafe.SizeOf<T>();
         if (header.ElementSize != expectedElementSize)
             throw new InvalidDataException(
                 $"Element size mismatch. Expected {expectedElementSize}, got {header.ElementSize}");
-        
+
         // Read data
         var result = new T[header.ElementCount];
         var dataSpan = buffer.Slice(HeaderSize);
-        
+
         unsafe
         {
             fixed (byte* src = dataSpan)
@@ -84,10 +83,10 @@ public static class BufferSerializer
                 Buffer.MemoryCopy(src, dst, size, size);
             }
         }
-        
+
         return result;
     }
-    
+
     /// <summary>
     /// Async serialization with streaming support
     /// </summary>
@@ -100,7 +99,7 @@ public static class BufferSerializer
         var elementSize = Unsafe.SizeOf<T>();
         var buffer = ArrayPool<T>.Shared.Rent(4096);
         var byteBuffer = ArrayPool<byte>.Shared.Rent(4096 * elementSize);
-        
+
         try
         {
             // Write placeholder header
@@ -109,14 +108,14 @@ public static class BufferSerializer
             writer.Write(0); // Element count (will update)
             writer.Write(elementSize);
             writer.Write(GetTypeId<T>());
-            
+
             var count = 0;
             var bufferIndex = 0;
-            
+
             await foreach (var item in data.WithCancellation(ct))
             {
                 buffer[bufferIndex++] = item;
-                
+
                 if (bufferIndex >= buffer.Length)
                 {
                     // Flush buffer
@@ -125,14 +124,14 @@ public static class BufferSerializer
                     bufferIndex = 0;
                 }
             }
-            
+
             // Flush remaining
             if (bufferIndex > 0)
             {
                 await WriteBufferAsync(stream, buffer, bufferIndex, byteBuffer, ct);
                 count += bufferIndex;
             }
-            
+
             // Update count in header
             stream.Position = 5;
             writer.Write(count);
@@ -145,7 +144,7 @@ public static class BufferSerializer
             writer.Dispose();
         }
     }
-    
+
     /// <summary>
     /// Async deserialization with streaming support
     /// </summary>
@@ -154,30 +153,30 @@ public static class BufferSerializer
         [EnumeratorCancellation] CancellationToken ct = default) where T : unmanaged
     {
         var reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true);
-        
+
         // Read header
         var magic = reader.ReadUInt32();
         if (magic != MagicNumber)
             throw new InvalidDataException("Invalid magic number");
-        
+
         var version = reader.ReadByte();
         if (version != CurrentVersion)
             throw new InvalidDataException($"Unsupported version: {version}");
-        
+
         var count = reader.ReadInt32();
         var elementSize = reader.ReadInt32();
         var typeId = reader.ReadInt32();
-        
+
         var expectedElementSize = Unsafe.SizeOf<T>();
         if (elementSize != expectedElementSize)
             throw new InvalidDataException(
                 $"Element size mismatch. Expected {expectedElementSize}, got {elementSize}");
-        
+
         // Read data in chunks
         var chunkSize = Math.Min(4096, count);
         var buffer = ArrayPool<byte>.Shared.Rent(chunkSize * elementSize);
         var items = new T[chunkSize];
-        
+
         try
         {
             var remaining = count;
@@ -185,13 +184,13 @@ public static class BufferSerializer
             {
                 var toRead = Math.Min(chunkSize, remaining);
                 var bytesToRead = toRead * elementSize;
-                
+
                 var bytesRead = await stream.ReadAsync(
                     buffer.AsMemory(0, bytesToRead), ct);
-                
+
                 if (bytesRead < bytesToRead)
                     throw new EndOfStreamException();
-                
+
                 // Convert bytes to items
                 unsafe
                 {
@@ -201,12 +200,12 @@ public static class BufferSerializer
                         Buffer.MemoryCopy(src, dst, bytesToRead, bytesToRead);
                     }
                 }
-                
+
                 for (int i = 0; i < toRead; i++)
                 {
                     yield return items[i];
                 }
-                
+
                 remaining -= toRead;
             }
         }
@@ -216,7 +215,7 @@ public static class BufferSerializer
             reader.Dispose();
         }
     }
-    
+
     /// <summary>
     /// Compressed serialization for network transfer
     /// </summary>
@@ -226,13 +225,13 @@ public static class BufferSerializer
         CancellationToken ct = default) where T : unmanaged
     {
         using var ms = new MemoryStream();
-        
+
         // Write uncompressed header
         await ms.WriteAsync(BitConverter.GetBytes(MagicNumber), ct);
         await ms.WriteAsync(new[] { CurrentVersion }, ct);
         await ms.WriteAsync(BitConverter.GetBytes(data.Length), ct);
         await ms.WriteAsync(BitConverter.GetBytes(Unsafe.SizeOf<T>()), ct);
-        
+
         // Compress data
         using (var compressor = new System.IO.Compression.BrotliStream(
             ms, level.ToCompressionLevel(), leaveOpen: true))
@@ -240,10 +239,10 @@ public static class BufferSerializer
             var bytes = MemoryMarshal.AsBytes(data.AsSpan()).ToArray();
             await compressor.WriteAsync(bytes, ct);
         }
-        
+
         return ms.ToArray();
     }
-    
+
     /// <summary>
     /// Decompressed deserialization
     /// </summary>
@@ -252,41 +251,41 @@ public static class BufferSerializer
         CancellationToken ct = default) where T : unmanaged
     {
         using var ms = new MemoryStream(compressedData);
-        
+
         // Read header
         var headerBuffer = new byte[HeaderSize];
         await ms.ReadAsync(headerBuffer, ct);
-        
+
         var magic = BitConverter.ToUInt32(headerBuffer, 0);
         if (magic != MagicNumber)
             throw new InvalidDataException("Invalid magic number");
-        
+
         var version = headerBuffer[4];
         if (version != CurrentVersion)
             throw new InvalidDataException($"Unsupported version: {version}");
-        
+
         var count = BitConverter.ToInt32(headerBuffer, 5);
         var elementSize = BitConverter.ToInt32(headerBuffer, 9);
-        
+
         // Decompress data
         using var decompressor = new System.IO.Compression.BrotliStream(
             ms, System.IO.Compression.CompressionMode.Decompress);
-        
+
         var dataSize = count * elementSize;
         var buffer = new byte[dataSize];
-        
+
         var totalRead = 0;
         while (totalRead < dataSize)
         {
             var read = await decompressor.ReadAsync(
                 buffer.AsMemory(totalRead, dataSize - totalRead), ct);
-            
+
             if (read == 0)
                 throw new EndOfStreamException();
-            
+
             totalRead += read;
         }
-        
+
         // Convert to array
         var result = new T[count];
         unsafe
@@ -297,10 +296,10 @@ public static class BufferSerializer
                 Buffer.MemoryCopy(src, dst, dataSize, dataSize);
             }
         }
-        
+
         return result;
     }
-    
+
     private static void WriteHeader(Span<byte> buffer, int count, int elementSize, Type type)
     {
         BinaryPrimitives.WriteUInt32LittleEndian(buffer, MagicNumber);
@@ -309,7 +308,7 @@ public static class BufferSerializer
         BinaryPrimitives.WriteInt32LittleEndian(buffer.Slice(9), elementSize);
         BinaryPrimitives.WriteInt32LittleEndian(buffer.Slice(13), GetTypeId(type));
     }
-    
+
     private static Header ReadHeader(ReadOnlySpan<byte> buffer)
     {
         return new Header
@@ -321,7 +320,7 @@ public static class BufferSerializer
             TypeId = BinaryPrimitives.ReadInt32LittleEndian(buffer.Slice(13))
         };
     }
-    
+
     private static async Task WriteBufferAsync<T>(
         Stream stream,
         T[] buffer,
@@ -330,7 +329,7 @@ public static class BufferSerializer
         CancellationToken ct) where T : unmanaged
     {
         var bytes = count * Unsafe.SizeOf<T>();
-        
+
         unsafe
         {
             fixed (T* src = buffer)
@@ -339,12 +338,12 @@ public static class BufferSerializer
                 Buffer.MemoryCopy(src, dst, bytes, bytes);
             }
         }
-        
+
         await stream.WriteAsync(byteBuffer.AsMemory(0, bytes), ct);
     }
-    
+
     private static int GetTypeId<T>() => GetTypeId(typeof(T));
-    
+
     private static int GetTypeId(Type type)
     {
         return type.Name switch
@@ -364,7 +363,7 @@ public static class BufferSerializer
             _ => type.GetHashCode()
         };
     }
-    
+
     private readonly struct Header
     {
         public uint Magic { get; init; }
@@ -372,128 +371,5 @@ public static class BufferSerializer
         public int ElementCount { get; init; }
         public int ElementSize { get; init; }
         public int TypeId { get; init; }
-    }
-}
-
-/// <summary>
-/// Compression levels for buffer serialization
-/// </summary>
-public enum CompressionLevel
-{
-    /// <summary>
-    /// No compression (fastest, largest size)
-    /// </summary>
-    None,
-
-    /// <summary>
-    /// Fastest compression with moderate size reduction
-    /// </summary>
-    Fastest,
-
-    /// <summary>
-    /// Balanced compression optimizing both speed and size
-    /// </summary>
-    Optimal,
-
-    /// <summary>
-    /// Maximum compression (slowest, smallest size)
-    /// </summary>
-    Maximum
-}
-
-internal static class CompressionExtensions
-{
-    public static System.IO.Compression.CompressionLevel ToCompressionLevel(
-        this CompressionLevel level)
-    {
-        return level switch
-        {
-            CompressionLevel.None => System.IO.Compression.CompressionLevel.NoCompression,
-            CompressionLevel.Fastest => System.IO.Compression.CompressionLevel.Fastest,
-            CompressionLevel.Maximum => System.IO.Compression.CompressionLevel.SmallestSize,
-            _ => System.IO.Compression.CompressionLevel.Optimal
-        };
-    }
-}
-
-/// <summary>
-/// Buffer pool for serialization operations
-/// </summary>
-public sealed class SerializationBufferPool
-{
-    private readonly ConcurrentBag<byte[]> _smallBuffers = new();
-    private readonly ConcurrentBag<byte[]> _mediumBuffers = new();
-    private readonly ConcurrentBag<byte[]> _largeBuffers = new();
-    
-    private const int SmallSize = 4 * 1024;      // 4KB
-    private const int MediumSize = 64 * 1024;    // 64KB
-    private const int LargeSize = 1024 * 1024;   // 1MB
-
-    /// <summary>
-    /// Rents a buffer of at least the specified size from the pool
-    /// </summary>
-    /// <param name="minSize">Minimum required buffer size in bytes</param>
-    /// <returns>A byte array that is at least minSize bytes</returns>
-    public byte[] Rent(int minSize)
-    {
-        if (minSize <= SmallSize)
-        {
-            if (_smallBuffers.TryTake(out var small))
-                return small;
-            return new byte[SmallSize];
-        }
-        
-        if (minSize <= MediumSize)
-        {
-            if (_mediumBuffers.TryTake(out var medium))
-                return medium;
-            return new byte[MediumSize];
-        }
-        
-        if (minSize <= LargeSize)
-        {
-            if (_largeBuffers.TryTake(out var large))
-                return large;
-            return new byte[LargeSize];
-        }
-        
-        // For very large buffers, don't pool
-        return new byte[minSize];
-    }
-
-    /// <summary>
-    /// Returns a rented buffer back to the pool after clearing sensitive data
-    /// </summary>
-    /// <param name="buffer">The buffer to return to the pool</param>
-    public void Return(byte[] buffer)
-    {
-        if (buffer == null) return;
-        
-        // Clear sensitive data
-        Array.Clear(buffer);
-        
-        switch (buffer.Length)
-        {
-            case SmallSize:
-                _smallBuffers.Add(buffer);
-                break;
-            case MediumSize:
-                _mediumBuffers.Add(buffer);
-                break;
-            case LargeSize:
-                _largeBuffers.Add(buffer);
-                break;
-            // Don't pool non-standard sizes
-        }
-    }
-
-    /// <summary>
-    /// Clears all buffers from the pool, releasing memory
-    /// </summary>
-    public void Clear()
-    {
-        _smallBuffers.Clear();
-        _mediumBuffers.Clear();
-        _largeBuffers.Clear();
     }
 }

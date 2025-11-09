@@ -32,7 +32,7 @@ public sealed class KernelTemplateRegistry
         _templates = new Dictionary<string, KernelTemplate>();
         _compiledKernels = new Dictionary<string, CompiledKernelInfo>();
         _compilationLock = new SemaphoreSlim(1, 1);
-        
+
         RegisterBuiltInTemplates();
     }
 
@@ -62,7 +62,7 @@ public sealed class KernelTemplateRegistry
         RegisterTemplate("vector/saxpy", typeof(VectorOperationKernels), nameof(VectorOperationKernels.SAXPY));
         RegisterTemplate("vector/copy", typeof(VectorOperationKernels), nameof(VectorOperationKernels.Copy));
         RegisterTemplate("vector/fill", typeof(VectorOperationKernels), nameof(VectorOperationKernels.Fill));
-        
+
         // Reduction operations
         RegisterTemplate("reduction/sum", typeof(ReductionKernels), nameof(ReductionKernels.SumReduction));
         RegisterTemplate("reduction/max", typeof(ReductionKernels), nameof(ReductionKernels.MaxReduction));
@@ -74,7 +74,7 @@ public sealed class KernelTemplateRegistry
         RegisterTemplate("reduction/stddev_pass2", typeof(ReductionKernels), nameof(ReductionKernels.StdDevPass2));
         RegisterTemplate("reduction/argmax", typeof(ReductionKernels), nameof(ReductionKernels.ArgMaxReduction));
         RegisterTemplate("reduction/histogram", typeof(ReductionKernels), nameof(ReductionKernels.Histogram));
-        
+
         // Matrix operations
         RegisterTemplate("matrix/multiply", typeof(MatrixOperationKernels), nameof(MatrixOperationKernels.MatrixMultiply));
         RegisterTemplate("matrix/transpose", typeof(MatrixOperationKernels), nameof(MatrixOperationKernels.MatrixTranspose));
@@ -92,7 +92,7 @@ public sealed class KernelTemplateRegistry
         RegisterTemplate("matrix/relu", typeof(MatrixOperationKernels), nameof(MatrixOperationKernels.ApplyReLU));
         RegisterTemplate("matrix/sigmoid", typeof(MatrixOperationKernels), nameof(MatrixOperationKernels.ApplySigmoid));
         RegisterTemplate("matrix/tanh", typeof(MatrixOperationKernels), nameof(MatrixOperationKernels.ApplyTanh));
-        
+
         // Image processing operations
         RegisterTemplate("image/rgb_to_grayscale", typeof(ImageProcessingKernels), nameof(ImageProcessingKernels.RGBToGrayscale));
         RegisterTemplate("image/gaussian_blur_3x3", typeof(ImageProcessingKernels), nameof(ImageProcessingKernels.GaussianBlur3x3));
@@ -107,7 +107,7 @@ public sealed class KernelTemplateRegistry
         RegisterTemplate("image/contrast", typeof(ImageProcessingKernels), nameof(ImageProcessingKernels.AdjustContrast));
         RegisterTemplate("image/gamma", typeof(ImageProcessingKernels), nameof(ImageProcessingKernels.GammaCorrection));
         RegisterTemplate("image/convolution", typeof(ImageProcessingKernels), nameof(ImageProcessingKernels.Convolution));
-        
+
         _logger.LogInformation("Registered {Count} kernel templates", _templates.Count);
     }
 
@@ -122,7 +122,7 @@ public sealed class KernelTemplateRegistry
             _logger.LogWarning("Failed to find kernel method: {Type}.{Method}", type.Name, methodName);
             return;
         }
-        
+
         _templates[name] = new KernelTemplate
         {
             Name = name,
@@ -145,15 +145,15 @@ public sealed class KernelTemplateRegistry
             _logger.LogWarning("Kernel template not found: {Template}", templateName);
             return null;
         }
-        
+
         var cacheKey = $"{templateName}_{accelerator.AcceleratorType}";
-        
+
         // Check if already compiled
         if (_compiledKernels.TryGetValue(cacheKey, out var compiled))
         {
             return compiled;
         }
-        
+
         // Compile the kernel
         await _compilationLock.WaitAsync(cancellationToken);
         try
@@ -163,21 +163,21 @@ public sealed class KernelTemplateRegistry
             {
                 return compiled;
             }
-            
+
             _logger.LogInformation("Compiling kernel template: {Template} for {Accelerator}",
                 templateName, accelerator.AcceleratorType);
-            
+
             var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-            
+
             // Compile the kernel using ILGPU with explicit typing
             // Note: This is a simplified approach - in a real implementation, we'd analyze method signature
             // and use appropriate index type and parameter types based on the template
             var kernel = accelerator.LoadAutoGroupedStreamKernel<Index1D, ArrayView<float>>(
                 (Action<Index1D, ArrayView<float>>)Delegate.CreateDelegate(
                     typeof(Action<Index1D, ArrayView<float>>), template.Method));
-            
+
             stopwatch.Stop();
-            
+
             compiled = new CompiledKernelInfo
             {
                 Template = template,
@@ -185,12 +185,12 @@ public sealed class KernelTemplateRegistry
                 Accelerator = accelerator,
                 CompilationTime = stopwatch.Elapsed
             };
-            
+
             _compiledKernels[cacheKey] = compiled;
-            
+
             _logger.LogInformation("Successfully compiled kernel template: {Template} in {Time}ms",
                 templateName, stopwatch.ElapsedMilliseconds);
-            
+
             return compiled;
         }
         catch (Exception ex)
@@ -221,17 +221,17 @@ public sealed class KernelTemplateRegistry
                 Success: false,
                 ErrorMessage: $"Failed to compile kernel template: {templateName}");
         }
-        
+
         try
         {
             _logger.LogDebug("Executing kernel template: {Template}", templateName);
-            
+
             var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-            
+
             // Execute the kernel
             var stream = accelerator.DefaultStream;
             var kernelConfig = config ?? GetDefaultConfig(accelerator, arguments);
-            
+
             // Cast the kernel to the appropriate delegate type and execute
             if (compiledKernel.Kernel is Action<AcceleratorStream, Index1D, ArrayView<int>> kernelDelegate)
             {
@@ -244,12 +244,12 @@ public sealed class KernelTemplateRegistry
                 throw new InvalidOperationException($"Unsupported kernel delegate type: {compiledKernel.Kernel.GetType()}");
             }
             stream.Synchronize();
-            
+
             stopwatch.Stop();
-            
+
             _logger.LogDebug("Kernel template execution completed: {Template} in {Time}ms",
                 templateName, stopwatch.ElapsedMilliseconds);
-            
+
             return new KernelExecutionResult(
                 Success: true,
                 Timing: new KernelTiming(
@@ -302,7 +302,7 @@ public sealed class KernelTemplateRegistry
         var workSize = arguments.GetWorkSize();
         var blockSize = Math.Min(256, accelerator.MaxNumThreadsPerGroup);
         var gridSize = (workSize + blockSize - 1) / blockSize;
-        
+
         return new KernelConfig(gridSize, blockSize);
     }
 
@@ -311,77 +311,5 @@ public sealed class KernelTemplateRegistry
         _compilationLock?.Dispose();
         _compiledKernels.Clear();
         _templates.Clear();
-    }
-}
-
-/// <summary>
-/// Represents a kernel template
-/// </summary>
-public class KernelTemplate
-{
-    public required string Name { get; init; }
-    public required Type Type { get; init; }
-    public required MethodInfo Method { get; init; }
-    public required KernelCategory Category { get; init; }
-}
-
-/// <summary>
-/// Represents compiled kernel information
-/// </summary>
-public class CompiledKernelInfo
-{
-    public required KernelTemplate Template { get; init; }
-    public required object Kernel { get; init; }
-    public required Accelerator Accelerator { get; init; }
-    public required TimeSpan CompilationTime { get; init; }
-}
-
-/// <summary>
-/// Kernel categories
-/// </summary>
-public enum KernelCategory
-{
-    Vector,
-    Reduction,
-    Matrix,
-    Image,
-    Custom
-}
-
-/// <summary>
-/// Kernel arguments wrapper
-/// </summary>
-public class KernelArguments
-{
-    private readonly List<object> _arguments = new();
-    
-    public void Add(object argument) => _arguments.Add(argument);
-    
-    public object[] ToArray() => _arguments.ToArray();
-    
-    public int GetWorkSize()
-    {
-        // Try to determine work size from first array argument
-        foreach (var arg in _arguments)
-        {
-            if (arg is ArrayView<float> view)
-                return (int)view.Length;
-            if (arg is ArrayView2D<float, Stride2D.DenseX> view2d)
-                return view2d.IntExtent.X * view2d.IntExtent.Y;
-        }
-        return 1024; // Default
-    }
-    
-    public ArrayView<int> GetArrayView()
-    {
-        // Try to find an appropriate ArrayView in the arguments
-        foreach (var arg in _arguments)
-        {
-            if (arg is ArrayView<int> intView)
-                return intView;
-        }
-        
-        // Return empty ArrayView as fallback
-        return new ArrayView<int>();
     }
 }

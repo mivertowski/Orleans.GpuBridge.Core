@@ -299,18 +299,19 @@ internal sealed class ILGPUUnifiedMemory : IUnifiedMemory
         else
         {
             // Fallback: Copy through host memory
+            // Use GCHandle for pinning to enable async/await across pin lifetime
             var tempBuffer = new byte[sizeBytes];
-            // Extract operations outside of unsafe context
-            IntPtr tempPtr;
-            unsafe
+            var handle = System.Runtime.InteropServices.GCHandle.Alloc(tempBuffer, System.Runtime.InteropServices.GCHandleType.Pinned);
+            try
             {
-                fixed (byte* ptr = tempBuffer)
-                {
-                    tempPtr = new IntPtr(ptr);
-                    // Perform sync operations to avoid await in unsafe context
-                    source.CopyToHostAsync(tempPtr, sourceOffset, sizeBytes, cancellationToken).Wait();
-                    CopyFromHostAsync(tempPtr, destinationOffset, sizeBytes, cancellationToken).Wait();
-                }
+                var tempPtr = handle.AddrOfPinnedObject();
+                // Properly await async operations with pinned memory
+                await source.CopyToHostAsync(tempPtr, sourceOffset, sizeBytes, cancellationToken).ConfigureAwait(false);
+                await CopyFromHostAsync(tempPtr, destinationOffset, sizeBytes, cancellationToken).ConfigureAwait(false);
+            }
+            finally
+            {
+                handle.Free();
             }
             return;
         }

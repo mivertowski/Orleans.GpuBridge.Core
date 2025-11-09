@@ -36,7 +36,7 @@ internal static class ApiCompilationTest
     /// <summary>
     /// Compile-time test for DotCompute v0.3.0-rc1 APIs we need
     /// </summary>
-    private static async void TestApisCompile()
+    private static async Task TestApisCompile()
     {
         // ✅ TEST 1: Factory method exists
         IAcceleratorManager manager = await DefaultAcceleratorManagerFactory.CreateAsync();

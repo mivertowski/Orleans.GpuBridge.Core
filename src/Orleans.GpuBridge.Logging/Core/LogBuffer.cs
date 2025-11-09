@@ -42,12 +42,12 @@ public sealed class LogBuffer : IAsyncDisposable
     public LogBuffer(LogBufferOptions? options = null)
     {
         _options = options ?? new LogBufferOptions();
-        
+
         // Create bounded channel for backpressure control
         var channelOptions = new BoundedChannelOptions(_options.Capacity)
         {
-            FullMode = _options.DropOnOverflow 
-                ? BoundedChannelFullMode.DropOldest 
+            FullMode = _options.DropOnOverflow
+                ? BoundedChannelFullMode.DropOldest
                 : BoundedChannelFullMode.Wait,
             SingleReader = true,
             SingleWriter = false,
@@ -74,16 +74,16 @@ public sealed class LogBuffer : IAsyncDisposable
 
         try
         {
-            await _writer.WriteAsync(entry, cancellationToken);
-            
+            await _writer.WriteAsync(entry, cancellationToken).ConfigureAwait(false);
+
             // Update statistics
             var stats = Statistics;
-            Statistics = stats with 
-            { 
+            Statistics = stats with
+            {
                 TotalEnqueued = stats.TotalEnqueued + 1,
                 LastEnqueueTime = DateTimeOffset.UtcNow
             };
-            
+
             return true;
         }
         catch (ChannelClosedException)
@@ -111,12 +111,12 @@ public sealed class LogBuffer : IAsyncDisposable
         try
         {
             var added = _writer.TryWrite(entry);
-            
+
             if (added)
             {
                 var stats = Statistics;
-                Statistics = stats with 
-                { 
+                Statistics = stats with
+                {
                     TotalEnqueued = stats.TotalEnqueued + 1,
                     LastEnqueueTime = DateTimeOffset.UtcNow
                 };
@@ -125,7 +125,7 @@ public sealed class LogBuffer : IAsyncDisposable
             {
                 OnBufferOverflow(entry);
             }
-            
+
             return added;
         }
         catch (ChannelClosedException)
@@ -148,17 +148,17 @@ public sealed class LogBuffer : IAsyncDisposable
         while (_reader.TryRead(out var entry))
         {
             batch.Add(entry);
-            
+
             if (batch.Count >= _options.MaxBatchSize)
             {
-                await ProcessBatch(batch, cancellationToken);
+                await ProcessBatch(batch, cancellationToken).ConfigureAwait(false);
                 batch.Clear();
             }
         }
 
         if (batch.Count > 0)
         {
-            await ProcessBatch(batch, cancellationToken);
+            await ProcessBatch(batch, cancellationToken).ConfigureAwait(false);
         }
     }
 
@@ -168,8 +168,8 @@ public sealed class LogBuffer : IAsyncDisposable
     public BufferHealth GetHealth()
     {
         var currentCount = BufferedCount;
-        var utilizationPercent = currentCount >= 0 
-            ? (double)currentCount / _options.Capacity * 100 
+        var utilizationPercent = currentCount >= 0
+            ? (double)currentCount / _options.Capacity * 100
             : 0;
 
         return new BufferHealth
@@ -198,11 +198,11 @@ public sealed class LogBuffer : IAsyncDisposable
         _writer.TryComplete();
 
         // Cancel processing
-        await _shutdownToken.CancelAsync();
+        await _shutdownToken.CancelAsync().ConfigureAwait(false);
 
         try
         {
-            await _processingTask;
+            await _processingTask.ConfigureAwait(false);
         }
         catch (OperationCanceledException)
         {
@@ -210,7 +210,7 @@ public sealed class LogBuffer : IAsyncDisposable
         }
 
         // Process remaining entries
-        await FlushAsync(CancellationToken.None);
+        await FlushAsync(CancellationToken.None).ConfigureAwait(false);
 
         _shutdownToken.Dispose();
     }
@@ -222,7 +222,7 @@ public sealed class LogBuffer : IAsyncDisposable
 
         try
         {
-            await foreach (var entry in _reader.ReadAllAsync(cancellationToken))
+            await foreach (var entry in _reader.ReadAllAsync(cancellationToken).ConfigureAwait(false))
             {
                 batch.Add(entry);
 
@@ -232,7 +232,7 @@ public sealed class LogBuffer : IAsyncDisposable
 
                 if (shouldFlush)
                 {
-                    await ProcessBatch(batch, cancellationToken);
+                    await ProcessBatch(batch, cancellationToken).ConfigureAwait(false);
                     batch.Clear();
                     lastFlushTime = DateTimeOffset.UtcNow;
                 }
@@ -246,7 +246,7 @@ public sealed class LogBuffer : IAsyncDisposable
         // Process remaining entries
         if (batch.Count > 0)
         {
-            await ProcessBatch(batch, CancellationToken.None);
+            await ProcessBatch(batch, CancellationToken.None).ConfigureAwait(false);
         }
     }
 
@@ -258,11 +258,11 @@ public sealed class LogBuffer : IAsyncDisposable
         try
         {
             var startTime = DateTimeOffset.UtcNow;
-            
-            await BatchReady(batch, cancellationToken);
-            
+
+            await BatchReady(batch, cancellationToken).ConfigureAwait(false);
+
             var processingTime = DateTimeOffset.UtcNow - startTime;
-            
+
             // Update statistics
             var stats = Statistics;
             Statistics = stats with
@@ -271,7 +271,7 @@ public sealed class LogBuffer : IAsyncDisposable
                 TotalBatches = stats.TotalBatches + 1,
                 LastProcessTime = DateTimeOffset.UtcNow,
                 AverageProcessingTime = TimeSpan.FromTicks(
-                    (stats.AverageProcessingTime.Ticks * stats.TotalBatches + processingTime.Ticks) / 
+                    (stats.AverageProcessingTime.Ticks * stats.TotalBatches + processingTime.Ticks) /
                     (stats.TotalBatches + 1)),
                 MaxBatchSize = Math.Max(stats.MaxBatchSize, batch.Count)
             };
@@ -286,7 +286,7 @@ public sealed class LogBuffer : IAsyncDisposable
                 LastError = ex.Message,
                 LastErrorTime = DateTimeOffset.UtcNow
             };
-            
+
             // Don't rethrow to avoid stopping the processing loop
             Console.WriteLine($"Error processing log batch: {ex.Message}");
         }
@@ -295,98 +295,12 @@ public sealed class LogBuffer : IAsyncDisposable
     private void OnBufferOverflow(LogEntry droppedEntry)
     {
         var stats = Statistics;
-        Statistics = stats with 
-        { 
+        Statistics = stats with
+        {
             TotalDropped = stats.TotalDropped + 1,
             LastDropTime = DateTimeOffset.UtcNow
         };
 
         BufferOverflow?.Invoke(this, new BufferOverflowEventArgs(droppedEntry));
-    }
-}
-
-/// <summary>
-/// Configuration options for the log buffer.
-/// </summary>
-public sealed record LogBufferOptions
-{
-    /// <summary>
-    /// Maximum number of log entries to buffer.
-    /// </summary>
-    public int Capacity { get; init; } = 10000;
-
-    /// <summary>
-    /// Maximum number of entries per batch.
-    /// </summary>
-    public int MaxBatchSize { get; init; } = 100;
-
-    /// <summary>
-    /// Maximum time to wait before flushing a partial batch.
-    /// </summary>
-    public TimeSpan FlushInterval { get; init; } = TimeSpan.FromSeconds(1);
-
-    /// <summary>
-    /// Whether to drop old entries when buffer is full.
-    /// </summary>
-    public bool DropOnOverflow { get; init; } = true;
-
-    /// <summary>
-    /// Whether to prioritize high-severity entries.
-    /// </summary>
-    public bool PrioritizeHighSeverity { get; init; } = true;
-}
-
-/// <summary>
-/// Statistics about buffer performance.
-/// </summary>
-public sealed record BufferStatistics
-{
-    public long TotalEnqueued { get; init; }
-    public long TotalProcessed { get; init; }
-    public long TotalDropped { get; init; }
-    public long TotalErrors { get; init; }
-    public long TotalBatches { get; init; }
-    public int MaxBatchSize { get; init; }
-    public TimeSpan AverageProcessingTime { get; init; }
-    public DateTimeOffset LastEnqueueTime { get; init; }
-    public DateTimeOffset LastProcessTime { get; init; }
-    public DateTimeOffset LastDropTime { get; init; }
-    public DateTimeOffset LastErrorTime { get; init; }
-    public string? LastError { get; init; }
-}
-
-/// <summary>
-/// Buffer health status.
-/// </summary>
-public sealed record BufferHealth
-{
-    public BufferHealthStatus Status { get; init; }
-    public double UtilizationPercent { get; init; }
-    public int BufferedEntries { get; init; }
-    public int Capacity { get; init; }
-    public BufferStatistics Statistics { get; init; } = new();
-}
-
-/// <summary>
-/// Buffer health status enumeration.
-/// </summary>
-public enum BufferHealthStatus
-{
-    Healthy,
-    Warning,
-    Critical
-}
-
-/// <summary>
-/// Event arguments for buffer overflow.
-/// </summary>
-public sealed class BufferOverflowEventArgs : EventArgs
-{
-    public LogEntry DroppedEntry { get; }
-    public DateTimeOffset Timestamp { get; } = DateTimeOffset.UtcNow;
-
-    public BufferOverflowEventArgs(LogEntry droppedEntry)
-    {
-        DroppedEntry = droppedEntry ?? throw new ArgumentNullException(nameof(droppedEntry));
     }
 }

@@ -1,3 +1,5 @@
+using Orleans.GpuBridge.Abstractions.Enums;
+
 namespace Orleans.GpuBridge.Backends.DotCompute.Configuration;
 
 /// <summary>
@@ -52,45 +54,4 @@ public sealed class DotComputeOptions
     /// Default is 60000 (60 seconds).
     /// </summary>
     public int ExecutionTimeoutMs { get; set; } = 60000;
-}
-
-/// <summary>
-/// Accelerator type enumeration for device selection.
-/// </summary>
-public enum AcceleratorType
-{
-    /// <summary>
-    /// Automatically select the best available device.
-    /// </summary>
-    Auto,
-
-    /// <summary>
-    /// Use CPU for computation.
-    /// </summary>
-    CPU,
-
-    /// <summary>
-    /// Use NVIDIA CUDA-capable GPU.
-    /// </summary>
-    CUDA,
-
-    /// <summary>
-    /// Use OpenCL-capable device.
-    /// </summary>
-    OpenCL,
-
-    /// <summary>
-    /// Use Apple Metal on macOS/iOS.
-    /// </summary>
-    Metal,
-
-    /// <summary>
-    /// Use DirectCompute on Windows.
-    /// </summary>
-    DirectCompute,
-
-    /// <summary>
-    /// Use Vulkan compute.
-    /// </summary>
-    Vulkan
 }

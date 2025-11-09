@@ -73,7 +73,7 @@ public sealed record LogEntry
     /// <summary>
     /// Performance metrics associated with this log entry.
     /// </summary>
-    public PerformanceMetrics? Metrics { get; init; }
+    public LogPerformanceMetrics? Metrics { get; init; }
 
     /// <summary>
     /// Thread ID where this log entry was created.
@@ -142,7 +142,7 @@ public sealed record LogEntry
     /// <summary>
     /// Creates a copy of this log entry with performance metrics.
     /// </summary>
-    public LogEntry WithMetrics(PerformanceMetrics metrics)
+    public LogEntry WithMetrics(LogPerformanceMetrics metrics)
     {
         return this with { Metrics = metrics };
     }
@@ -155,8 +155,9 @@ public sealed record LogScope(string Name, IReadOnlyDictionary<string, object?> 
 
 /// <summary>
 /// Performance metrics for log entries.
+/// Distinct from Orleans.GpuBridge.Abstractions.Domain.ValueObjects.PerformanceMetrics which is for GPU device monitoring.
 /// </summary>
-public sealed record PerformanceMetrics
+public sealed record LogPerformanceMetrics
 {
     /// <summary>
     /// Duration of the operation being logged.
@@ -176,24 +177,24 @@ public sealed record PerformanceMetrics
     /// <summary>
     /// Custom performance counters.
     /// </summary>
-    public IReadOnlyDictionary<string, double> Counters { get; init; } = 
+    public IReadOnlyDictionary<string, double> Counters { get; init; } =
         new Dictionary<string, double>();
 
     /// <summary>
     /// Creates performance metrics with duration.
     /// </summary>
-    public static PerformanceMetrics WithDuration(TimeSpan duration) =>
+    public static LogPerformanceMetrics WithDuration(TimeSpan duration) =>
         new() { Duration = duration };
 
     /// <summary>
     /// Creates performance metrics with memory usage.
     /// </summary>
-    public static PerformanceMetrics WithMemory(long bytes) =>
+    public static LogPerformanceMetrics WithMemory(long bytes) =>
         new() { MemoryUsage = bytes };
 
     /// <summary>
     /// Creates performance metrics with custom counters.
     /// </summary>
-    public static PerformanceMetrics WithCounters(IReadOnlyDictionary<string, double> counters) =>
+    public static LogPerformanceMetrics WithCounters(IReadOnlyDictionary<string, double> counters) =>
         new() { Counters = counters };
 }

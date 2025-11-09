@@ -1,3 +1,4 @@
+using Orleans.GpuBridge.Abstractions.Domain.ValueObjects;
 using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Abstractions.Models;
 using DeviceFeatures = Orleans.GpuBridge.Abstractions.Models.DeviceFeatures;
@@ -186,72 +187,4 @@ public sealed record GpuDevice(
             _ => new ComputeCapability(5, 2)        // Maxwell fallback
         };
     }
-}
-
-
-
-/// <summary>
-/// CUDA compute capability
-/// </summary>
-public sealed record ComputeCapability(int Major, int Minor)
-{
-    public override string ToString() => $"{Major}.{Minor}";
-    
-    /// <summary>
-    /// Checks if this compute capability is at least the specified version
-    /// </summary>
-    public bool IsAtLeast(int major, int minor) => 
-        Major > major || (Major == major && Minor >= minor);
-}
-
-/// <summary>
-/// Thermal information for device monitoring
-/// </summary>
-public sealed record ThermalInfo(
-    int TemperatureCelsius,
-    int MaxTemperatureCelsius,
-    int ThrottleTemperatureCelsius,
-    bool IsThrottling)
-{
-    /// <summary>
-    /// Temperature utilization as percentage of max safe temperature
-    /// </summary>
-    public double TemperatureUtilization => MaxTemperatureCelsius > 0 
-        ? Math.Min(1.0, TemperatureCelsius / (double)MaxTemperatureCelsius) 
-        : 0.0;
-
-    /// <summary>
-    /// Whether the device is approaching thermal limits
-    /// </summary>
-    public bool IsNearThermalLimit => TemperatureCelsius >= (ThrottleTemperatureCelsius * 0.9);
-}
-
-/// <summary>
-/// Performance metrics for device monitoring
-/// </summary>
-public sealed record PerformanceMetrics(
-    double UtilizationPercent,
-    long MemoryUsedBytes,
-    double PowerUsageWatts,
-    int ClockSpeedMHz,
-    int MemoryClockMHz)
-{
-    /// <summary>
-    /// Memory utilization percentage
-    /// </summary>
-    public double MemoryUtilizationPercent { get; init; }
-
-    /// <summary>
-    /// Power efficiency metric (operations per watt estimate)
-    /// </summary>
-    public double PowerEfficiency => PowerUsageWatts > 0 
-        ? UtilizationPercent / PowerUsageWatts 
-        : 0.0;
-
-    /// <summary>
-    /// Overall device health score (0.0 to 1.0)
-    /// </summary>
-    public double HealthScore => Math.Max(0.0, Math.Min(1.0, 
-        (1.0 - Math.Max(0, UtilizationPercent - 80) / 20.0) * // Penalize high utilization
-        (PowerUsageWatts > 0 ? Math.Min(1.0, 100.0 / PowerUsageWatts) : 1.0))); // Reward efficiency
 }

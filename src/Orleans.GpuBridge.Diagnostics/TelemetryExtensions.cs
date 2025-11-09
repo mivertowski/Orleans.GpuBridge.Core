@@ -5,7 +5,7 @@ using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using Orleans.GpuBridge.Diagnostics.Abstractions;
+using Orleans.GpuBridge.Abstractions.Metrics;
 using Orleans.GpuBridge.Diagnostics.Configuration;
 using Orleans.GpuBridge.Diagnostics.Implementation;
 using Orleans.GpuBridge.Diagnostics.Interfaces;

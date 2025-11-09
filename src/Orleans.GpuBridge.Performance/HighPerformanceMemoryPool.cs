@@ -1,10 +1,10 @@
 using System;
 using System.Buffers;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 namespace Orleans.GpuBridge.Performance;
@@ -23,7 +23,7 @@ public sealed class HighPerformanceMemoryPool<T> : MemoryPool<T> where T : unman
     private long _totalRentedBytes;
     private int _totalAllocatedBuffers;
 
-    private static readonly int[] BucketSizes = 
+    private static readonly int[] BucketSizes =
     {
         16, 64, 256, 1024, 4096, 16384, 65536, 262144, 1048576, 4194304, 16777216
     };
@@ -36,10 +36,10 @@ public sealed class HighPerformanceMemoryPool<T> : MemoryPool<T> where T : unman
         _logger = logger;
         _maxBuffersPerBucket = maxBuffersPerBucket;
         _useNumaOptimization = useNumaOptimization && OperatingSystem.IsWindows();
-        
+
         _buckets = new MemoryPoolBucket[BucketSizes.Length];
         _freeBuckets = new ConcurrentQueue<IMemoryOwner<T>>[BucketSizes.Length];
-        
+
         for (int i = 0; i < BucketSizes.Length; i++)
         {
             _buckets[i] = new MemoryPoolBucket(BucketSizes[i], _maxBuffersPerBucket);
@@ -47,7 +47,7 @@ public sealed class HighPerformanceMemoryPool<T> : MemoryPool<T> where T : unman
         }
 
         MaxBufferSize = BucketSizes[^1];
-        
+
         _logger.LogDebug("High-performance memory pool initialized with {BucketCount} buckets, NUMA: {Numa}",
             BucketSizes.Length, _useNumaOptimization);
     }
@@ -85,7 +85,7 @@ public sealed class HighPerformanceMemoryPool<T> : MemoryPool<T> where T : unman
     private IMemoryOwner<T> AllocateBuffer(int size, int bucketIndex)
     {
         Memory<T> memory;
-        
+
         if (_useNumaOptimization)
         {
             // Allocate on preferred NUMA node
@@ -172,7 +172,7 @@ public sealed class HighPerformanceMemoryPool<T> : MemoryPool<T> where T : unman
         var totalAllocated = Interlocked.Read(ref _totalAllocatedBytes);
         var totalRented = Interlocked.Read(ref _totalRentedBytes);
         var totalBuffers = _totalAllocatedBuffers;
-        
+
         var bucketStats = new BucketStats[_buckets.Length];
         for (int i = 0; i < _buckets.Length; i++)
         {
@@ -199,7 +199,7 @@ public sealed class HighPerformanceMemoryPool<T> : MemoryPool<T> where T : unman
         if (disposing)
         {
             _logger.LogDebug("Disposing high-performance memory pool");
-            
+
             // Dispose all pooled buffers
             for (int i = 0; i < _freeBuckets.Length; i++)
             {
@@ -233,7 +233,7 @@ public sealed class HighPerformanceMemoryPool<T> : MemoryPool<T> where T : unman
                 return (int)(highest + 1);
         }
         catch { }
-        
+
         return Environment.ProcessorCount > 4 ? 2 : 1; // Reasonable default
     }
 
@@ -274,112 +274,4 @@ public sealed class HighPerformanceMemoryPool<T> : MemoryPool<T> where T : unman
         public void IncrementAvailable() => Interlocked.Increment(ref _availableCount);
         public void DecrementAvailable() => Interlocked.Decrement(ref _availableCount);
     }
-}
-
-/// <summary>
-/// High-performance memory owner with efficient disposal
-/// </summary>
-public sealed class HighPerformanceMemoryOwner<T> : IMemoryOwner<T> where T : unmanaged
-{
-    private Memory<T> _memory;
-    private readonly HighPerformanceMemoryPool<T> _pool;
-    private readonly int _bucketIndex;
-    private readonly ILogger _logger;
-    private int _isDisposed;
-
-    public HighPerformanceMemoryOwner(
-        Memory<T> memory, 
-        HighPerformanceMemoryPool<T> pool, 
-        int bucketIndex,
-        ILogger logger)
-    {
-        _memory = memory;
-        _pool = pool;
-        _bucketIndex = bucketIndex;
-        _logger = logger;
-    }
-
-    public Memory<T> Memory => _isDisposed == 0 ? _memory : throw new ObjectDisposedException(nameof(HighPerformanceMemoryOwner<T>));
-
-    public bool IsDisposed => _isDisposed != 0;
-
-    public void Reset()
-    {
-        if (_isDisposed == 0)
-        {
-            _memory.Span.Clear();
-        }
-    }
-
-    public void Dispose()
-    {
-        if (Interlocked.CompareExchange(ref _isDisposed, 1, 0) == 0)
-        {
-            _pool.Return(this, _bucketIndex);
-        }
-    }
-}
-
-/// <summary>
-/// Unmanaged memory manager for NUMA-allocated memory
-/// </summary>
-internal unsafe class UnmanagedMemoryManager<T> : MemoryManager<T> where T : unmanaged
-{
-    private readonly T* _pointer;
-    private readonly int _length;
-    private readonly IntPtr _originalPointer;
-
-    public UnmanagedMemoryManager(T* pointer, int length, IntPtr originalPointer)
-    {
-        _pointer = pointer;
-        _length = length;
-        _originalPointer = originalPointer;
-    }
-
-    protected override void Dispose(bool disposing)
-    {
-        if (_originalPointer != IntPtr.Zero)
-        {
-            VirtualFree(_originalPointer, 0, FreeType.Release);
-        }
-    }
-
-    public override Span<T> GetSpan() => new(_pointer, _length);
-
-    public override MemoryHandle Pin(int elementIndex = 0)
-    {
-        if ((uint)elementIndex > (uint)_length)
-            throw new ArgumentOutOfRangeException(nameof(elementIndex));
-            
-        return new MemoryHandle(_pointer + elementIndex);
-    }
-
-    public override void Unpin() { }
-
-    [DllImport("kernel32.dll")]
-    private static extern bool VirtualFree(IntPtr lpAddress, UIntPtr dwSize, FreeType dwFreeType);
-
-    private enum FreeType : uint
-    {
-        Release = 0x8000
-    }
-}
-
-/// <summary>
-/// Memory pool statistics
-/// </summary>
-public record MemoryPoolStats
-{
-    public long TotalAllocatedBytes { get; init; }
-    public long TotalRentedBytes { get; init; }
-    public int TotalBuffers { get; init; }
-    public double EfficiencyPercent { get; init; }
-    public BucketStats[] BucketStats { get; init; } = Array.Empty<BucketStats>();
-}
-
-public record BucketStats
-{
-    public int Size { get; init; }
-    public int Available { get; init; }
-    public int Total { get; init; }
 }

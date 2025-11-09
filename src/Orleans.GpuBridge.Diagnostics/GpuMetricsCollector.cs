@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Orleans.GpuBridge.Abstractions.Metrics;
 using Orleans.GpuBridge.Abstractions.Models;
-using Orleans.GpuBridge.Diagnostics.Abstractions;
 using Orleans.GpuBridge.Diagnostics.Configuration;
 using Orleans.GpuBridge.Diagnostics.Implementation;
 using Orleans.GpuBridge.Diagnostics.Interfaces;
@@ -39,8 +38,7 @@ namespace Orleans.GpuBridge.Diagnostics;
 /// - Intel: Windows performance counters (future implementation)
 /// </para>
 /// </remarks>
-public sealed class GpuMetricsCollector : BackgroundService, 
-    Orleans.GpuBridge.Diagnostics.Abstractions.IGpuMetricsCollector,
+public sealed class GpuMetricsCollector : BackgroundService,
     Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector
 {
     private readonly ILogger<GpuMetricsCollector> _logger;

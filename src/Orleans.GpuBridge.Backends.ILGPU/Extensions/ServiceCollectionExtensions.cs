@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Runtime.Builders;
 using ILGPU;
@@ -76,7 +77,7 @@ public class ILGPUBackendConfiguration
     /// </summary>
     public List<AcceleratorType> PreferredAcceleratorTypes { get; set; } = new()
     {
-        AcceleratorType.Cuda,
+        AcceleratorType.CUDA,
         AcceleratorType.OpenCL,
         AcceleratorType.CPU
     };
@@ -126,14 +127,4 @@ public class ILGPUMemorySettings
     /// Defragmentation threshold (percentage of fragmented memory)
     /// </summary>
     public double DefragmentationThreshold { get; set; } = 0.3; // 30%
-}
-
-/// <summary>
-/// Accelerator type enumeration for ILGPU configuration
-/// </summary>
-public enum AcceleratorType
-{
-    CPU,
-    Cuda,
-    OpenCL
 }

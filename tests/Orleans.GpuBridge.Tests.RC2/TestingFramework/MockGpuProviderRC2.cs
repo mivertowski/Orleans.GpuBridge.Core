@@ -47,6 +47,9 @@ public class MockGpuProviderRC2 : IDisposable
     {
         ThrowIfDisposed();
 
+        // Track allocation attempts for all execution types
+        AllocationAttempts++;
+
         // Simulate GPU crash
         if (SimulateGpuCrash)
         {
@@ -54,18 +57,16 @@ public class MockGpuProviderRC2 : IDisposable
             throw new InvalidOperationException("GPU device crashed during execution");
         }
 
-        // Simulate GPU timeout
+        // Simulate GPU timeout - throw immediately without delay to ensure TimeoutException is thrown
         if (SimulateGpuTimeout)
         {
             _logger.LogWarning("Simulating GPU timeout for kernel {KernelId}", kernelId);
-            await Task.Delay(ExecutionTimeout + TimeSpan.FromSeconds(5), cancellationToken);
             throw new TimeoutException($"Kernel execution timeout after {ExecutionTimeout.TotalSeconds}s");
         }
 
         // Simulate out of memory
         if (SimulateOutOfMemory)
         {
-            AllocationAttempts++;
             _logger.LogError("Simulating GPU out of memory for kernel {KernelId}", kernelId);
             throw new OutOfMemoryException("GPU device out of memory");
         }
@@ -211,6 +212,22 @@ public class MockKernelRC2<TIn, TOut> : IGpuKernel<TIn, TOut>
             if (SimulateFailure && ExceptionToThrow != null)
                 throw ExceptionToThrow;
 
+            // If provider is set, check for simulation flags before execution
+            if (_provider != null)
+            {
+                // Simulate GPU crash
+                if (_provider.SimulateGpuCrash)
+                {
+                    throw new InvalidOperationException("GPU device crashed during execution");
+                }
+
+                // Simulate GPU timeout
+                if (_provider.SimulateGpuTimeout)
+                {
+                    throw new TimeoutException($"Kernel execution timeout after {_provider.ExecutionTimeout.TotalSeconds}s");
+                }
+            }
+
             await Task.Delay(ExecutionDelay, ct);
 
             if (_customExecution != null)
@@ -223,22 +240,57 @@ public class MockKernelRC2<TIn, TOut> : IGpuKernel<TIn, TOut>
             else
             {
                 // Default: return mock results
-                foreach (var _ in items)
+                // If provider is set, execute through provider to trigger allocation attempts and failures
+                foreach (var item in items)
                 {
                     ct.ThrowIfCancellationRequested();
 
-                    if (typeof(TOut) == typeof(float))
-                        yield return (TOut)(object)42.0f;
-                    else if (typeof(TOut) == typeof(float[]))
-                        yield return (TOut)(object)new[] { 1.0f, 2.0f, 3.0f };
+                    TOut result;
+                    if (_provider != null)
+                    {
+                        // Execute through provider to trigger allocation attempts and failures
+                        result = await ExecuteWithFallbackAsync(item, ct);
+                    }
                     else
-                        yield return default(TOut)!;
+                    {
+                        // No provider, return mock results directly
+                        result = GetDefaultResult();
+                    }
+
+                    yield return result;
                 }
             }
         }
         finally
         {
             _batches.Remove(handle.Id);
+        }
+    }
+
+    private TOut GetDefaultResult()
+    {
+        if (typeof(TOut) == typeof(float))
+            return (TOut)(object)42.0f;
+        else if (typeof(TOut) == typeof(float[]))
+            return (TOut)(object)new[] { 1.0f, 2.0f, 3.0f };
+        else
+            return default(TOut)!;
+    }
+
+    private async Task<TOut> ExecuteWithFallbackAsync(TIn item, CancellationToken ct)
+    {
+        try
+        {
+            return await _provider!.ExecuteKernelAsync<TIn, TOut>(
+                _info.Id.Value,
+                item,
+                ct);
+        }
+        catch (OutOfMemoryException) when (_provider!.HasCpuFallback)
+        {
+            // Fallback to CPU
+            _provider.FallbackCount++;
+            return GetDefaultResult();
         }
     }
 

@@ -60,6 +60,18 @@ public sealed class GpuPipeline
         _stages.Add(new TransformStage<TIn, TOut>(transform));
         return this;
     }
+
+    /// <summary>
+    /// Adds an async transform stage to the pipeline
+    /// </summary>
+    public GpuPipeline Transform<TIn, TOut>(
+        Func<TIn, Task<TOut>> asyncTransform)
+        where TIn : notnull
+        where TOut : notnull
+    {
+        _stages.Add(new AsyncTransformStage<TIn, TOut>(asyncTransform));
+        return this;
+    }
     
     /// <summary>
     /// Adds a batch stage to the pipeline
@@ -165,7 +177,9 @@ public sealed class GpuPipelineBuilder<TIn, TOut>
     /// <summary>
     /// Executes the pipeline with the given input data
     /// </summary>
-    public async Task<IReadOnlyList<TOut>> ExecuteAsync(IReadOnlyList<TIn> input)
+    public async Task<IReadOnlyList<TOut>> ExecuteAsync(
+        IReadOnlyList<TIn> input,
+        CancellationToken cancellationToken = default)
     {
         var results = new List<TOut>();
 
@@ -174,6 +188,9 @@ public sealed class GpuPipelineBuilder<TIn, TOut>
         // Process input in batches using Orleans grains
         for (int i = 0; i < input.Count; i += _batchSize)
         {
+            // Check for cancellation before processing each batch
+            cancellationToken.ThrowIfCancellationRequested();
+
             var batchEnd = Math.Min(i + _batchSize, input.Count);
             var batch = input.Skip(i).Take(batchEnd - i).ToList();
 

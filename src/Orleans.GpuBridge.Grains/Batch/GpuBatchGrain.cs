@@ -37,14 +37,20 @@ public sealed class GpuBatchGrain<TIn, TOut> : Grain, IGpuBatchGrain<TIn, TOut>
     
     public override async Task OnActivateAsync(CancellationToken ct)
     {
-        _kernelId = KernelId.Parse(this.GetPrimaryKeyString());
+        // Extract kernelId from compound primary key (format: "guid+kernelId" or just "kernelId")
+        var primaryKey = this.GetPrimaryKeyString();
+        var kernelIdString = primaryKey.Contains('+')
+            ? primaryKey.Split('+', 2)[1]
+            : primaryKey;
+
+        _kernelId = KernelId.Parse(kernelIdString);
         _bridge = ServiceProvider.GetRequiredService<IGpuBridge>();
         _kernel = await _bridge.GetKernelAsync<TIn, TOut>(_kernelId, ct);
-        
+
         _logger.LogInformation(
             "Activated GPU batch grain for kernel {KernelId}",
             _kernelId);
-        
+
         await base.OnActivateAsync(ct);
     }
     

@@ -214,13 +214,29 @@ public sealed class GpuStreamGrain<TIn, TOut> : Grain, IGpuStreamGrain<TIn, TOut
 
         _logger.LogDebug("Flushing stream buffer");
 
-        // Wait until buffer is empty
-        while (_buffer.Reader.Count > 0)
+        // Wait until buffer is empty by checking if we can peek at items
+        // Use timeout-based approach to avoid infinite loop with unbounded channels
+        const int maxAttempts = 100; // 5 seconds total (50ms * 100)
+        int attempts = 0;
+
+        while (attempts < maxAttempts)
         {
-            await Task.Delay(50);
+            // If we can't peek at any item, buffer is empty
+            if (!_buffer.Reader.TryPeek(out _))
+            {
+                _logger.LogInformation("Stream buffer flushed successfully");
+                return;
+            }
+
+            // Wait for processing task to drain the buffer
+            await Task.Delay(50).ConfigureAwait(false);
+            attempts++;
         }
 
-        _logger.LogInformation("Stream buffer flushed");
+        // Log warning if flush timeout reached (buffer not empty after max attempts)
+        _logger.LogWarning(
+            "FlushStreamAsync reached timeout after {Attempts} attempts. Buffer may still contain items.",
+            maxAttempts);
     }
 
     private async Task ProcessStreamWithObserverAsync(

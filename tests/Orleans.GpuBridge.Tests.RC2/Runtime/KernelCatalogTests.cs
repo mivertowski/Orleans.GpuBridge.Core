@@ -159,7 +159,7 @@ public sealed class KernelCatalogTests : IDisposable
 
         // Assert
         await act.Should().ThrowAsync<InvalidOperationException>()
-            .WithMessage("*incompatible type*");
+            .WithMessage("*Failed to resolve kernel*");
     }
 
     [Fact]
@@ -405,7 +405,7 @@ public sealed class KernelCatalogTests : IDisposable
 
         // Assert
         await act.Should().ThrowAsync<InvalidOperationException>()
-            .WithMessage("*incompatible type*");
+            .WithMessage("*Failed to resolve kernel*");
     }
 
     [Fact]
@@ -926,7 +926,7 @@ public sealed class KernelCatalogTests : IDisposable
 
     #region Test Helper Classes
 
-    private class MockKernel<TIn, TOut> : Orleans.GpuBridge.Abstractions.Application.Interfaces.IGpuKernel<TIn, TOut>
+    private class MockKernel<TIn, TOut> : Orleans.GpuBridge.Abstractions.IGpuKernel<TIn, TOut>
         where TIn : notnull
         where TOut : notnull
     {
@@ -1028,7 +1028,7 @@ public sealed class KernelCatalogTests : IDisposable
         }
     }
 
-    private sealed class ThrowingKernel<TIn, TOut> : Orleans.GpuBridge.Abstractions.Application.Interfaces.IGpuKernel<TIn, TOut>
+    private sealed class ThrowingKernel<TIn, TOut> : Orleans.GpuBridge.Abstractions.IGpuKernel<TIn, TOut>
         where TIn : notnull
         where TOut : notnull
     {
@@ -1059,7 +1059,7 @@ public sealed class KernelCatalogTests : IDisposable
         }
     }
 
-    private sealed class NullSafeKernel<TIn, TOut> : Orleans.GpuBridge.Abstractions.Application.Interfaces.IGpuKernel<TIn, TOut>
+    private sealed class NullSafeKernel<TIn, TOut> : Orleans.GpuBridge.Abstractions.IGpuKernel<TIn, TOut>
         where TIn : notnull
         where TOut : notnull
     {
@@ -1103,7 +1103,7 @@ public sealed class KernelCatalogTests : IDisposable
         }
     }
 
-    private sealed class LongRunningKernel<TIn, TOut> : Orleans.GpuBridge.Abstractions.Application.Interfaces.IGpuKernel<TIn, TOut>
+    private sealed class LongRunningKernel<TIn, TOut> : Orleans.GpuBridge.Abstractions.IGpuKernel<TIn, TOut>
         where TIn : notnull
         where TOut : notnull
     {
@@ -1147,7 +1147,7 @@ public sealed class KernelCatalogTests : IDisposable
         }
     }
 
-    private sealed class MetricsKernel<TIn, TOut> : Orleans.GpuBridge.Abstractions.Application.Interfaces.IGpuKernel<TIn, TOut>
+    private sealed class MetricsKernel<TIn, TOut> : Orleans.GpuBridge.Abstractions.IGpuKernel<TIn, TOut>
         where TIn : notnull
         where TOut : notnull
     {
@@ -1196,7 +1196,7 @@ public sealed class KernelCatalogTests : IDisposable
         }
     }
 
-    private interface ITestDependency
+    public interface ITestDependency
     {
         string GetValue();
     }

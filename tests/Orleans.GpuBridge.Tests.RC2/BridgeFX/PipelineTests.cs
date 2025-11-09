@@ -361,7 +361,6 @@ public sealed class PipelineTests : IDisposable
             .Build();
 
         var cts = new CancellationTokenSource();
-        cts.CancelAfter(TimeSpan.FromMilliseconds(50));
 
         var services = new ServiceCollection();
         services.AddLogging(b => b.AddConsole());
@@ -371,23 +370,51 @@ public sealed class PipelineTests : IDisposable
         var bridge = provider.GetRequiredService<IGpuBridge>();
         var logger = provider.GetRequiredService<ILogger<GpuPipeline>>();
 
+        var processedCount = 0;
         var pipeline = new GpuPipeline(bridge, logger)
-            .Transform<float, float>(x => x * 2) // Synchronous transform
+            .Transform<float, float>(async x =>
+            {
+                // Cancel after processing 100 items to ensure deterministic behavior
+                var count = Interlocked.Increment(ref processedCount);
+                if (count == 100)
+                {
+                    cts.Cancel();
+                }
+
+                // Add small async yield to allow cancellation detection
+                await Task.Yield();
+                return x * 2;
+            })
             .Build<float, float>();
 
         var inputs = data.ToAsyncEnumerable();
 
         // Act & Assert
         var results = new List<float>();
-        await foreach (var result in pipeline.ProcessManyAsync(inputs, cts.Token))
-        {
-            results.Add(result);
-        }
 
-        // Should process some items before cancellation
-        results.Should().NotBeEmpty();
-        results.Count.Should().BeLessThan(1000);
-        _logger.LogInformation("Cancellation stopped processing at {Count} items", results.Count);
+        // ProcessManyAsync should throw OperationCanceledException when cancelled
+        var act = async () =>
+        {
+            await foreach (var result in pipeline.ProcessManyAsync(inputs, cts.Token))
+            {
+                results.Add(result);
+            }
+        };
+
+        // Should throw when cancellation occurs
+        await act.Should().ThrowAsync<OperationCanceledException>();
+
+        // Should process some items before cancellation (but not all 1000)
+        results.Should().NotBeEmpty("some items should be processed before cancellation");
+        results.Count.Should().BeLessThan(1000, "cancellation should stop processing");
+
+        // Should process around 100 items (might be slightly more due to async timing)
+        results.Count.Should().BeGreaterThanOrEqualTo(100, "should process at least 100 items before cancel");
+        results.Count.Should().BeLessThanOrEqualTo(150, "should stop soon after cancel at 100 items");
+
+        _logger.LogInformation(
+            "Cancellation stopped processing at {ResultCount} results (processed {ProcessedCount} transforms)",
+            results.Count, processedCount);
     }
 
     [Fact]

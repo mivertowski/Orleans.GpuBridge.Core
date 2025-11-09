@@ -75,8 +75,13 @@ public sealed class GpuStreamGrainTests : IClassFixture<ClusterFixture>
 
         // Assert - Items should be processed
         observer.ReceivedItems.Should().NotBeEmpty();
-        observer.Completed.Should().BeTrue();
         observer.Error.Should().BeNull();
+
+        // Stop processing to trigger completion
+        await grain.StopProcessingAsync();
+
+        // Now completion should be signaled
+        observer.Completed.Should().BeTrue();
     }
 
     [Fact]

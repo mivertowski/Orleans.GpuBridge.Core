@@ -98,12 +98,17 @@ internal sealed class ExecutablePipeline<TInput, TOutput> : IPipeline<TInput, TO
             {
                 output = await ProcessAsync(input, ct);
             }
+            catch (OperationCanceledException)
+            {
+                // Re-throw cancellation exceptions to properly propagate cancellation
+                throw;
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Pipeline processing failed for input");
                 continue;
             }
-            
+
             yield return output;
         }
     }

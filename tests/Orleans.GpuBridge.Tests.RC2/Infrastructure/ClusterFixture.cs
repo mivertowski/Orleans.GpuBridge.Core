@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -67,7 +68,19 @@ public sealed class ClusterFixture : IDisposable
                 services.AddSingleton<ILogger<DeviceBroker>>(sp =>
                     sp.GetRequiredService<ILoggerFactory>().CreateLogger<DeviceBroker>());
                 services.AddSingleton<IOptions<GpuBridgeOptions>>(Options.Create(new GpuBridgeOptions()));
-                services.AddSingleton<DeviceBroker>();
+
+                // Register and initialize DeviceBroker
+                services.AddSingleton<DeviceBroker>(sp =>
+                {
+                    var logger = sp.GetRequiredService<ILogger<DeviceBroker>>();
+                    var options = sp.GetRequiredService<IOptions<GpuBridgeOptions>>();
+                    var broker = new DeviceBroker(logger, options);
+
+                    // Initialize synchronously in test environment
+                    broker.InitializeAsync(CancellationToken.None).GetAwaiter().GetResult();
+
+                    return broker;
+                });
 
                 // Configure logging
                 services.AddLogging(logging =>
@@ -117,10 +130,11 @@ public sealed class ClusterFixture : IDisposable
 /// <summary>
 /// Mock GPU Bridge implementation for testing.
 /// Provides CPU-based fallback for GPU operations during tests.
+/// Thread-safe for concurrent kernel access.
 /// </summary>
 internal sealed class MockGpuBridge : IGpuBridge
 {
-    private readonly Dictionary<KernelId, object> _kernels = new();
+    private readonly ConcurrentDictionary<KernelId, object> _kernels = new();
 
     public ValueTask<IGpuKernel<TIn, TOut>> GetKernelAsync<TIn, TOut>(
         KernelId kernelId,
@@ -128,13 +142,8 @@ internal sealed class MockGpuBridge : IGpuBridge
         where TIn : notnull
         where TOut : notnull
     {
-        if (!_kernels.TryGetValue(kernelId, out var kernel))
-        {
-            // Create mock kernel
-            kernel = new MockGpuKernel<TIn, TOut>(kernelId);
-            _kernels[kernelId] = kernel;
-        }
-
+        // GetOrAdd is atomic and thread-safe
+        var kernel = _kernels.GetOrAdd(kernelId, _ => new MockGpuKernel<TIn, TOut>(kernelId));
         return ValueTask.FromResult((IGpuKernel<TIn, TOut>)kernel);
     }
 
@@ -177,12 +186,14 @@ internal sealed class MockGpuBridge : IGpuBridge
 /// <summary>
 /// Mock GPU Kernel implementation for testing.
 /// Simulates GPU kernel execution using CPU operations.
+/// Thread-safe for concurrent pipeline execution.
 /// </summary>
 internal sealed class MockGpuKernel<TIn, TOut> : IGpuKernel<TIn, TOut>
     where TIn : notnull
     where TOut : notnull
 {
     private readonly KernelId _kernelId;
+    private readonly ConcurrentDictionary<string, IReadOnlyList<TIn>> _batches = new();
 
     public MockGpuKernel(KernelId kernelId)
     {
@@ -197,7 +208,10 @@ internal sealed class MockGpuKernel<TIn, TOut> : IGpuKernel<TIn, TOut>
         // Simulate async GPU work
         await Task.Delay(10, cancellationToken);
 
-        return KernelHandle.Create();
+        var handle = KernelHandle.Create();
+        _batches[handle.Id] = batch;
+
+        return handle;
     }
 
     public async IAsyncEnumerable<TOut> ReadResultsAsync(
@@ -207,26 +221,58 @@ internal sealed class MockGpuKernel<TIn, TOut> : IGpuKernel<TIn, TOut>
         // Simulate reading results
         await Task.Delay(5, cancellationToken);
 
-        // For testing, return mock results
-        // In real implementation, this would read actual GPU results
-        // Return 3 results per batch for testing
-        for (int i = 0; i < 3; i++)
+        // Retrieve the batch associated with this handle
+        if (!_batches.TryGetValue(handle.Id, out var batch))
         {
-            // Mock result creation - assumes TOut has a default constructor
-            // For float results, return mock values
-            if (typeof(TOut) == typeof(float))
+            throw new ArgumentException($"Invalid kernel handle: {handle.Id}", nameof(handle));
+        }
+
+        try
+        {
+            // For testing, return one result per input item
+            // This matches the expected 1:1 mapping for most GPU kernels
+            for (int i = 0; i < batch.Count; i++)
             {
-                yield return (TOut)(object)(i * 2.0f);
+                cancellationToken.ThrowIfCancellationRequested();
+
+                // Mock result creation based on output type
+                // For float results, return mock values (simulate x * 2)
+                if (typeof(TOut) == typeof(float))
+                {
+                    if (typeof(TIn) == typeof(float) && batch[i] is float inputValue)
+                    {
+                        // Simulate a simple transformation: input * 2
+                        yield return (TOut)(object)(inputValue * 2.0f);
+                    }
+                    else
+                    {
+                        // If input type is not float, use index-based value
+                        yield return (TOut)(object)(i * 2.0f);
+                    }
+                }
+                else if (typeof(TOut) == typeof(int))
+                {
+                    if (typeof(TIn) == typeof(int) && batch[i] is int inputIntValue)
+                    {
+                        yield return (TOut)(object)(inputIntValue * 2);
+                    }
+                    else
+                    {
+                        yield return (TOut)(object)(i * 2);
+                    }
+                }
+                else
+                {
+                    // For other types, try to create default instance
+                    yield return default!;
+                }
             }
-            else if (typeof(TOut) == typeof(int))
-            {
-                yield return (TOut)(object)(i * 2);
-            }
-            else
-            {
-                // For other types, try to create default instance
-                yield return default!;
-            }
+        }
+        finally
+        {
+            // Clean up the batch after reading results
+            // Use TryRemove to handle thread-safe removal
+            _batches.TryRemove(handle.Id, out _);
         }
     }
 

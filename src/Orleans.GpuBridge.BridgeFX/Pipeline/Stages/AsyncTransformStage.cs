@@ -6,11 +6,9 @@ using Orleans.GpuBridge.BridgeFX.Pipeline.Core;
 namespace Orleans.GpuBridge.BridgeFX.Pipeline.Stages;
 
 /// <summary>
-/// Async transform stage for pipeline processing
+/// Async transform stage with nullable type support
 /// </summary>
 internal sealed class AsyncTransformStage<TIn, TOut> : IPipelineStage
-    where TIn : notnull
-    where TOut : notnull
 {
     private readonly Func<TIn, Task<TOut>> _transform;
 
@@ -22,17 +20,33 @@ internal sealed class AsyncTransformStage<TIn, TOut> : IPipelineStage
         _transform = transform;
     }
 
-    public async Task<object?> ProcessAsync(object input, CancellationToken ct)
+    public async Task<object?> ProcessAsync(object? input, CancellationToken ct)
     {
+        // Handle null inputs for nullable type support
         if (input is not TIn typedInput)
         {
-            throw new ArgumentException($"Expected {typeof(TIn)}, got {input.GetType()}");
+            // Special handling for null values with nullable types
+            if (input == null && Nullable.GetUnderlyingType(typeof(TIn)) != null)
+            {
+                // Allow null for nullable types (e.g., int?, string?)
+                typedInput = default(TIn)!;
+            }
+            else
+            {
+                throw new ArgumentException(
+                    $"Expected {typeof(TIn)}, got {input?.GetType()?.ToString() ?? "null"}");
+            }
         }
 
         // Check for cancellation before processing
         ct.ThrowIfCancellationRequested();
 
         var result = await _transform(typedInput);
+
+        // Check for cancellation after processing completes
+        // This catches cancellations that occur during transform execution
+        ct.ThrowIfCancellationRequested();
+
         return result;
     }
 }

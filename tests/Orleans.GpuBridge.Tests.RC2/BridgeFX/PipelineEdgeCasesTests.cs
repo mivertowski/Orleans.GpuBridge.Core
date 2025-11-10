@@ -701,17 +701,23 @@ public sealed class PipelineEdgeCasesTests : IDisposable
             inputChannel.Writer.Complete();
         });
 
+        // Read from output channel concurrently to avoid deadlock
+        var readTask = Task.Run(async () =>
+        {
+            var count = 0;
+            await foreach (var _ in outputChannel.Reader.ReadAllAsync(_cts.Token))
+            {
+                count++;
+            }
+            return count;
+        });
+
         await writeTask;
         await processingTask;
+        var resultCount = await readTask;
 
         // Assert
-        var count = 0;
-        await foreach (var _ in outputChannel.Reader.ReadAllAsync(_cts.Token))
-        {
-            count++;
-        }
-
-        count.Should().Be(50);
+        resultCount.Should().Be(50);
     }
 
     [Fact]

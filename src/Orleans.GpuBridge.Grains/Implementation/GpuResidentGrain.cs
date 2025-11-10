@@ -117,6 +117,14 @@ public sealed class GpuResidentGrain<T> : Grain, IGpuResidentGrain<T> where T : 
         long sizeBytes,
         GpuMemoryType memoryType = GpuMemoryType.Default)
     {
+        // Validate allocation size
+        if (sizeBytes <= 0)
+        {
+            throw new ArgumentException(
+                $"Allocation size must be greater than zero, but was {sizeBytes}",
+                nameof(sizeBytes));
+        }
+
         _logger.LogDebug(
             "Allocating {Bytes:N0} bytes of {Type} memory",
             sizeBytes, memoryType);

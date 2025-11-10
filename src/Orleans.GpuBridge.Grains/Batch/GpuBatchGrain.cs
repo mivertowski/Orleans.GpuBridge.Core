@@ -58,8 +58,22 @@ public sealed class GpuBatchGrain<TIn, TOut> : Grain, IGpuBatchGrain<TIn, TOut>
         IReadOnlyList<TIn> batch,
         GpuExecutionHints? hints = null)
     {
+        // Validate null batch (error)
+        if (batch == null)
+        {
+            _logger.LogError("Null batch provided for kernel {KernelId}", _kernelId);
+
+            return new GpuBatchResult<TOut>(
+                Array.Empty<TOut>(),
+                TimeSpan.Zero,
+                string.Empty,
+                _kernelId,
+                Error: "Batch cannot be null",
+                Metrics: null);
+        }
+
         // Handle empty batch gracefully (return success with empty results)
-        if (batch == null || batch.Count == 0)
+        if (batch.Count == 0)
         {
             _logger.LogDebug("Empty batch provided for kernel {KernelId}, returning empty results", _kernelId);
 

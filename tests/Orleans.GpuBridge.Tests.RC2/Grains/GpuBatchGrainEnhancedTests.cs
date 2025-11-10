@@ -92,8 +92,10 @@ public sealed class GpuBatchGrainEnhancedTests : IClassFixture<ClusterFixture>
 
         // Assert
         result.Should().NotBeNull();
+        result.Success.Should().BeTrue();
         result.Results.Should().BeEmpty();
-        result.Error.Should().NotBeNullOrEmpty();
+        result.Metrics.Should().NotBeNull();
+        result.Metrics!.TotalItems.Should().Be(0);
     }
 
     #endregion

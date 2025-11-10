@@ -58,15 +58,30 @@ public sealed class GpuBatchGrain<TIn, TOut> : Grain, IGpuBatchGrain<TIn, TOut>
         IReadOnlyList<TIn> batch,
         GpuExecutionHints? hints = null)
     {
-        // Validate input batch
+        // Handle empty batch gracefully (return success with empty results)
         if (batch == null || batch.Count == 0)
         {
+            _logger.LogDebug("Empty batch provided for kernel {KernelId}, returning empty results", _kernelId);
+
+            var emptyMetrics = new GpuBatchMetrics(
+                TotalItems: 0,
+                SubBatchCount: 0,
+                SuccessfulSubBatches: 0,
+                TotalExecutionTime: TimeSpan.Zero,
+                KernelExecutionTime: TimeSpan.Zero,
+                MemoryTransferTime: TimeSpan.Zero,
+                Throughput: 0,
+                MemoryAllocated: 0,
+                DeviceType: "CPU",
+                DeviceName: "CPU Fallback");
+
             return new GpuBatchResult<TOut>(
                 Array.Empty<TOut>(),
                 TimeSpan.Zero,
-                string.Empty,
+                Guid.NewGuid().ToString(),
                 _kernelId,
-                Error: "Empty batch provided");
+                Error: null,
+                Metrics: emptyMetrics);
         }
 
         await _concurrencyLimit.WaitAsync();

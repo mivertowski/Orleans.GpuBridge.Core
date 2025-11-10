@@ -78,16 +78,31 @@ public sealed class GpuBatchGrain<TIn, TOut> : Grain, IGpuBatchGrain<TIn, TOut>
             }
             
             stopwatch.Stop();
-            
+
             _logger.LogInformation(
                 "Executed batch of {Count} items in {ElapsedMs}ms",
                 batch.Count, stopwatch.ElapsedMilliseconds);
-            
+
+            // Create basic metrics for monitoring
+            var metrics = new GpuBatchMetrics(
+                TotalItems: batch.Count,
+                SubBatchCount: 1,
+                SuccessfulSubBatches: 1,
+                TotalExecutionTime: stopwatch.Elapsed,
+                KernelExecutionTime: stopwatch.Elapsed,
+                MemoryTransferTime: TimeSpan.Zero,
+                Throughput: batch.Count / stopwatch.Elapsed.TotalSeconds,
+                MemoryAllocated: 0,
+                DeviceType: "CPU",
+                DeviceName: "CPU Fallback");
+
             return new GpuBatchResult<TOut>(
                 results,
                 stopwatch.Elapsed,
                 handle.Id,
-                _kernelId);
+                _kernelId,
+                Error: null,
+                Metrics: metrics);
         }
         catch (Exception ex)
         {
@@ -100,7 +115,8 @@ public sealed class GpuBatchGrain<TIn, TOut> : Grain, IGpuBatchGrain<TIn, TOut>
                 TimeSpan.Zero,
                 string.Empty,
                 _kernelId,
-                ex.Message);
+                Error: ex.Message,
+                Metrics: null);
         }
         finally
         {

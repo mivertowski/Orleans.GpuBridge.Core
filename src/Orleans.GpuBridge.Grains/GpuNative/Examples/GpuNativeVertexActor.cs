@@ -64,7 +64,7 @@ public sealed class GpuNativeVertexActor : GpuNativeActorGrain, IGpuNativeVertex
             }
         };
 
-        await InitializeAsync(actorConfig).ConfigureAwait(false);
+        await InitializeAsync(actorConfig);
     }
 
     /// <summary>
@@ -99,7 +99,7 @@ public sealed class GpuNativeVertexActor : GpuNativeActorGrain, IGpuNativeVertex
             }
         }
 
-        return await SendMessageAsync(message).ConfigureAwait(false);
+        return await SendMessageAsync(message);
     }
 
     /// <summary>
@@ -130,7 +130,7 @@ public sealed class GpuNativeVertexActor : GpuNativeActorGrain, IGpuNativeVertex
             }
         }
 
-        return await SendMessageAsync(message).ConfigureAwait(false);
+        return await SendMessageAsync(message);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public sealed class GpuNativeVertexActor : GpuNativeActorGrain, IGpuNativeVertex
         // Serialize key and value to payload
         // (simplified - production would use proper serialization)
 
-        return await SendMessageAsync(message).ConfigureAwait(false);
+        return await SendMessageAsync(message);
     }
 
     /// <summary>

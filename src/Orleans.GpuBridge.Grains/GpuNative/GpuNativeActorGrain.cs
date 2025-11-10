@@ -65,7 +65,7 @@ public abstract class GpuNativeActorGrain : Grain, IGpuNativeActor
             ActorId);
 
         // Initialize HLC
-        await _hlc.InitializeAsync(ct).ConfigureAwait(false);
+        await _hlc.InitializeAsync(ct);
 
         await base.OnActivateAsync(ct);
     }
@@ -81,7 +81,7 @@ public abstract class GpuNativeActorGrain : Grain, IGpuNativeActor
                 _totalMessagesProcessed,
                 _totalMessagesSent);
 
-            await ShutdownInternalAsync(ct).ConfigureAwait(false);
+            await ShutdownInternalAsync(ct);
         }
 
         await base.OnDeactivateAsync(reason, ct);
@@ -119,10 +119,10 @@ public abstract class GpuNativeActorGrain : Grain, IGpuNativeActor
                 configuration.MessageQueueCapacity,
                 configuration.MessageSize);
 
-            await _messageQueue.InitializeAsync().ConfigureAwait(false);
+            await _messageQueue.InitializeAsync();
 
             // Compile ring kernel
-            var kernel = await CompileRingKernelAsync(configuration).ConfigureAwait(false);
+            var kernel = await CompileRingKernelAsync(configuration);
 
             // Build kernel arguments (queue pointers + custom args)
             var queueConfig = _messageQueue.GetConfiguration();
@@ -142,7 +142,7 @@ public abstract class GpuNativeActorGrain : Grain, IGpuNativeActor
 
             _ringKernelHandle = await _ringKernelManager.LaunchRingKernelAsync(
                 kernel,
-                ringConfig).ConfigureAwait(false);
+                ringConfig);
 
             _isInitialized = true;
 
@@ -180,7 +180,7 @@ public abstract class GpuNativeActorGrain : Grain, IGpuNativeActor
         }
 
         // Update HLC for send event
-        var timestamp = await _hlc.UpdateAsync().ConfigureAwait(false);
+        var timestamp = await _hlc.UpdateAsync();
 
         // Update message with current HLC timestamp
         message.TimestampPhysical = timestamp.PhysicalTime;
@@ -220,7 +220,7 @@ public abstract class GpuNativeActorGrain : Grain, IGpuNativeActor
             };
         }
 
-        var queueStats = await _messageQueue!.GetStatisticsAsync().ConfigureAwait(false);
+        var queueStats = await _messageQueue!.GetStatisticsAsync();
 
         return new GpuActorStatus
         {
@@ -250,7 +250,7 @@ public abstract class GpuNativeActorGrain : Grain, IGpuNativeActor
             };
         }
 
-        var queueStats = await _messageQueue!.GetStatisticsAsync().ConfigureAwait(false);
+        var queueStats = await _messageQueue!.GetStatisticsAsync();
         var uptime = (DateTimeOffset.UtcNow - _activationTime).TotalSeconds;
         var throughput = uptime > 0 ? _totalMessagesProcessed / uptime : 0;
 
@@ -277,7 +277,7 @@ public abstract class GpuNativeActorGrain : Grain, IGpuNativeActor
             return;
         }
 
-        await ShutdownInternalAsync(CancellationToken.None).ConfigureAwait(false);
+        await ShutdownInternalAsync(CancellationToken.None);
     }
 
     private async Task ShutdownInternalAsync(CancellationToken ct)
@@ -299,7 +299,7 @@ public abstract class GpuNativeActorGrain : Grain, IGpuNativeActor
             // Stop ring kernel
             if (_ringKernelHandle != null)
             {
-                await _ringKernelHandle.StopAsync(ct).ConfigureAwait(false);
+                await _ringKernelHandle.StopAsync(ct);
                 _ringKernelHandle.Dispose();
                 _ringKernelHandle = null;
             }

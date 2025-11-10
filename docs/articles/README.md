@@ -140,12 +140,29 @@ Advanced hypergraph-based systems that naturally model multi-way relationships, 
    - Monitoring, observability, and health checks
    - Performance optimization techniques
 
+## Knowledge Organisms Series
+
+A visionary exploration of emergent living systems arising from GPU-native temporal hypergraph actors.
+
+1. **[Knowledge Organisms: The Evolution of Living Knowledge Systems](knowledge-organisms/README.md)**
+   - The evolutionary ladder: Graphs → Hypergraphs → Knowledge Graphs → Knowledge Organisms
+   - Three prerequisites for living knowledge (sub-microsecond response, temporal causality, massive parallelism)
+   - Theoretical foundations: Emergence, self-organization, and collective intelligence
+   - The metabolism of knowledge organisms
+   - Emergent intelligence: Pattern recognition, associative memory, attention mechanisms
+   - Applications: Digital twins as living entities, physics simulation, cognitive architectures
+   - Consciousness and Integrated Information Theory (IIT)
+   - Philosophical implications: Nature of life, ethics, and rights
+   - Research directions: From 1B+ actors to AGI
+
 ## Additional Topics
 
 Coming soon:
 - GPU Kernel Integration
 - DotCompute Backend Architecture
 - Placement Strategies for GPU Grains
+- Ring Kernel Design Patterns
+- GPU-to-GPU Communication Protocols
 
 ## Contributing
 

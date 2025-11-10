@@ -1,6 +1,6 @@
-# Temporal Correctness Examples - Phase 1
+# Temporal Correctness Examples - Phases 1-3
 
-This directory contains practical examples demonstrating Phase 1 temporal correctness features in Orleans.GpuBridge.Core.
+This directory contains practical examples demonstrating temporal correctness features in Orleans.GpuBridge.Core.
 
 ## Overview
 
@@ -74,6 +74,29 @@ dotnet run --project examples/Temporal 2
 dotnet run --project examples/Temporal 3
 ```
 
+### Example 4: Pattern Detection Engine (`04_PatternDetectionExample.cs`) - Phase 3
+
+**What it demonstrates:**
+- Advanced pattern detection with multiple simultaneous patterns
+- Rapid split pattern (money laundering detection)
+- Circular flow pattern (layering detection)
+- High-frequency pattern (bot detection)
+- Velocity change pattern (sudden large transactions)
+- Multi-pattern detection on complex scenarios
+
+**Key concepts:**
+- Sliding time windows for pattern matching
+- Confidence scoring for detected patterns
+- Pattern severity levels (Info/Low/Medium/High/Critical)
+- Real-time fraud detection
+- Pattern match deduplication
+- Statistics tracking and performance monitoring
+
+**Run it:**
+```bash
+dotnet run --project examples/Temporal 4
+```
+
 ## Building and Running
 
 ### Prerequisites
@@ -106,6 +129,9 @@ dotnet run --project examples/Temporal 2
 
 # Run example 3 (Financial Transactions)
 dotnet run --project examples/Temporal 3
+
+# Run example 4 (Pattern Detection)
+dotnet run --project examples/Temporal 4
 ```
 
 ## Example Output
@@ -175,9 +201,10 @@ A → B ($1000) → C ($500) + D ($500) within 2 seconds
 examples/Temporal/
 ├── README.md                          # This file
 ├── Program.cs                         # Main entry point
-├── 01_BasicHLCExample.cs             # HLC basics
-├── 02_MessagePassingExample.cs       # Message passing and dependencies
-└── 03_FinancialTransactionExample.cs # Real-world financial use case
+├── 01_BasicHLCExample.cs             # HLC basics (Phase 1)
+├── 02_MessagePassingExample.cs       # Message passing and dependencies (Phase 1)
+├── 03_FinancialTransactionExample.cs # Real-world financial use case (Phase 1)
+└── 04_PatternDetectionExample.cs     # Advanced pattern detection (Phase 3)
 ```
 
 ## Learning Path
@@ -196,6 +223,13 @@ examples/Temporal/
    - Pattern detection in practice
    - Temporal queries on transaction data
    - Graph analysis for suspicious activity
+
+4. **Advanced with Example 4**: Master pattern detection (Phase 3)
+   - Multiple simultaneous pattern detection
+   - Sliding window pattern matching
+   - Confidence scoring and severity levels
+   - Real-time fraud detection
+   - Performance monitoring and statistics
 
 ## Key Takeaways
 
@@ -254,6 +288,8 @@ After exploring these examples:
 
 ---
 
-**Phase 1 Status**: ✅ COMPLETE
-**Production-Ready**: Week 8 (after Phase 4)
-**GPU-Native Timing**: Week 10 (after Phase 5)
+**Phase 1 Status**: ✅ COMPLETE (HLC, Messages, Queues)
+**Phase 2 Status**: ✅ COMPLETE (Temporal Graphs, Path Finding)
+**Phase 3 Status**: ✅ COMPLETE (Pattern Detection Engine)
+**Production-Ready**: Week 8 (after Phase 4 - Causal Correctness)
+**GPU-Native Timing**: Week 10 (after Phase 5 - GPU Extensions)

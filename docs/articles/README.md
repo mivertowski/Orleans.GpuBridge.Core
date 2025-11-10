@@ -155,6 +155,24 @@ A visionary exploration of emergent living systems arising from GPU-native tempo
    - Philosophical implications: Nature of life, ethics, and rights
    - Research directions: From 1B+ actors to AGI
 
+## Process Intelligence and Object-Centric Process Mining
+
+A comprehensive case study demonstrating how GPU-native hypergraph actors revolutionize process mining and enable real-time process intelligence.
+
+1. **[GPU-Native Actors for Object-Centric Process Mining](process-intelligence/README.md)**
+   - Theoretical foundations: Mapping OCEL 2.0 to temporal hypergraphs
+   - Formal proof of OCEL-Hypergraph equivalence
+   - GPU-accelerated process discovery (640× faster than traditional tools)
+   - Real-time conformance checking (450μs per trace vs 3.2s sequential)
+   - Multi-object pattern matching for fraud detection
+   - Production case studies:
+     - Manufacturing: Order-to-cash process mining ($18.7M annual savings, ROI: 780%)
+     - Healthcare: Patient journey optimization (47 lives saved, 22% sepsis mortality reduction)
+     - Finance: Multi-party transaction analysis ($232M fraud prevented, 89% detection rate)
+   - Performance benchmarks: 100-1000× improvements across all operations
+   - C# and CUDA implementation patterns
+   - Future research directions: Predictive/prescriptive process mining, quantum-classical hybrids
+
 ## Additional Topics
 
 Coming soon:

@@ -84,6 +84,62 @@ A comprehensive guide to building GPU-accelerated distributed applications with 
    - Performance optimization
    - Security and observability
 
+## Hypergraph Actors Series
+
+Advanced hypergraph-based systems that naturally model multi-way relationships, advancing beyond traditional graph databases.
+
+### Foundational Concepts
+
+1. **[Introduction to Hypergraph Actors](hypergraph-actors/introduction/README.md)**
+   - The Hypergraph Actor paradigm
+   - Multi-way relationships vs binary edges
+   - GPU-accelerated hypergraph traversal and pattern matching
+   - Temporal hypergraphs for time-varying relationships
+   - Advantages over traditional graph databases (10-500× performance)
+
+2. **[Hypergraph Theory and Computational Advantages](hypergraph-actors/theory/README.md)**
+   - Mathematical foundations of hypergraphs
+   - Formal complexity analysis and proofs
+   - Expressiveness comparison with traditional graphs
+   - Storage efficiency (75-80% reduction)
+   - Algorithmic performance benchmarks
+   - Scalability analysis and theoretical limits
+
+3. **[Real-Time Analytics with Hypergraphs](hypergraph-actors/analytics/README.md)**
+   - Incremental algorithms (PageRank, centrality, clustering)
+   - Streaming pattern detection (<100μs latency)
+   - GPU-accelerated analytics (100-1000× speedup)
+   - Live dashboard architecture
+   - Production deployment patterns with 99.99% availability
+
+### Applications and Practice
+
+4. **[Industry Use Cases](hypergraph-actors/use-cases/README.md)**
+   - Financial services: AML, fraud detection, HFT risk analytics
+   - Life sciences: Drug interactions, disease pathways
+   - Cybersecurity: APT detection, insider threat monitoring
+   - Supply chain: Multi-modal logistics, risk assessment
+   - Social networks: Group recommendations, community detection
+   - Scientific computing: Protein folding, climate modeling
+   - Production results from 12+ case studies
+
+5. **[Getting Started Tutorial](hypergraph-actors/getting-started/README.md)**
+   - Installation and project setup
+   - Creating vertex and hyperedge grains
+   - Implementing GPU-accelerated pattern matching
+   - Building a fraud detection system
+   - Docker and Kubernetes deployment
+   - Performance benchmarking
+
+6. **[System Architecture](hypergraph-actors/architecture/README.md)**
+   - Layered architecture design
+   - Vertex and hyperedge grain components
+   - GPU integration with ring kernels
+   - Distributed deployment and fault tolerance
+   - Streaming architecture and backpressure
+   - Monitoring, observability, and health checks
+   - Performance optimization techniques
+
 ## Additional Topics
 
 Coming soon:

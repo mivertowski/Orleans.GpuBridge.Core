@@ -100,4 +100,26 @@ public interface IGpuResidentGrain<T> : IGrainWithStringKey where T : unmanaged
     /// </summary>
     /// <returns>A task representing the asynchronous clear operation.</returns>
     Task ClearAsync();
+
+    /// <summary>
+    /// Stores data in persistent grain state with automatic GPU memory allocation.
+    /// This is a high-level convenience method that combines memory allocation and data writing.
+    /// The data is persisted across grain activations and stored in GPU-accessible memory.
+    /// </summary>
+    /// <param name="data">The data array to store in GPU memory.</param>
+    /// <param name="memoryType">The type of memory allocation to use (default, pinned, shared, etc.).</param>
+    /// <returns>A task representing the asynchronous store operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when data is null.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when GPU memory allocation fails.</exception>
+    Task StoreDataAsync(T[] data, GpuMemoryType memoryType = GpuMemoryType.Default);
+
+    /// <summary>
+    /// Retrieves the stored data from persistent grain state.
+    /// This is a high-level convenience method that reads data from GPU memory back to host memory.
+    /// If no data has been stored, returns null.
+    /// </summary>
+    /// <returns>
+    /// A task that resolves to the stored data array, or null if no data has been stored.
+    /// </returns>
+    Task<T[]?> GetDataAsync();
 }

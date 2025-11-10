@@ -58,6 +58,9 @@ public sealed class KernelCatalog
         where TIn : notnull
         where TOut : notnull
     {
+        if (sp == null)
+            throw new ArgumentNullException(nameof(sp), "Service provider cannot be null");
+
         var operationName = $"KernelResolve_{id.Value}";
         var startTime = DateTimeOffset.UtcNow;
 
@@ -101,10 +104,20 @@ public sealed class KernelCatalog
                 _catalogLock.Release();
             }
         }
+        catch (OperationCanceledException)
+        {
+            // Rethrow cancellation exceptions (includes TaskCanceledException) directly
+            throw;
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to resolve kernel {KernelId}", id.Value);
-            throw new InvalidOperationException($"Failed to resolve kernel: {id.Value}", ex);
+
+            // Preserve original exception message for better error diagnostics
+            // This ensures messages like "incompatible type" are visible to callers
+            var errorMessage = $"Failed to resolve kernel: {id.Value}. {ex.Message}";
+
+            throw new InvalidOperationException(errorMessage, ex);
         }
     }
 }

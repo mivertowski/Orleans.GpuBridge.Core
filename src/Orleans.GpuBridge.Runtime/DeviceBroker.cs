@@ -90,23 +90,23 @@ public sealed partial class DeviceBroker : IDisposable
             try
             {
                 if (_initialized) return;
-                
+
                 _logger.LogInformation("Initializing device broker with GPU detection");
-                
+
                 // Detect physical GPUs
                 await DetectGpuDevicesAsync(ct).ConfigureAwait(false);
-                
+
                 // Always add CPU fallback device
                 AddCpuDevice();
-                
+
                 // Initialize work queues for each device
                 foreach (var device in _devices)
                 {
                     _workQueues[device.Index] = new DeviceWorkQueue(device);
                 }
-                
+
                 _initialized = true;
-                
+
                 _logger.LogInformation(
                     "Device broker initialized with {Count} devices, {Memory:N0} bytes total memory",
                     _devices.Count, TotalMemoryBytes);
@@ -116,11 +116,17 @@ public sealed partial class DeviceBroker : IDisposable
                 _initLock.Release();
             }
         }
+        catch (OperationCanceledException)
+        {
+            // Re-throw cancellation exceptions directly without wrapping
+            _logger.LogWarning("Device broker initialization cancelled");
+            throw;
+        }
         catch (Exception ex)
         {
             // _telemetryCollector.RecordOperation(operationName, DateTimeOffset.UtcNow - startTime, false, ex.GetType().Name);
             _logger.LogError(ex, "Failed to initialize device broker");
-            throw new InvalidOperationException($"Device broker initialization failed: {operationName}");
+            throw new InvalidOperationException($"Device broker initialization failed: {operationName}", ex);
         }
     }
     

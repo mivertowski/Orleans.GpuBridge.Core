@@ -60,6 +60,18 @@ public sealed class GpuPipeline
         _stages.Add(new TransformStage<TIn, TOut>(transform));
         return this;
     }
+
+    /// <summary>
+    /// Adds an async transform stage to the pipeline
+    /// </summary>
+    public GpuPipeline Transform<TIn, TOut>(
+        Func<TIn, Task<TOut>> asyncTransform)
+        where TIn : notnull
+        where TOut : notnull
+    {
+        _stages.Add(new AsyncTransformStage<TIn, TOut>(asyncTransform));
+        return this;
+    }
     
     /// <summary>
     /// Adds a batch stage to the pipeline
@@ -126,13 +138,14 @@ public sealed class GpuPipelineBuilder<TIn, TOut>
     private readonly IGrainFactory _grainFactory;
     private readonly KernelId _kernelId;
     private int _batchSize = 100;
-    
+    private int _maxConcurrency = 1;
+
     public GpuPipelineBuilder(IGrainFactory grainFactory, KernelId kernelId)
     {
         _grainFactory = grainFactory;
         _kernelId = kernelId;
     }
-    
+
     /// <summary>
     /// Sets the batch size for processing
     /// </summary>
@@ -141,31 +154,57 @@ public sealed class GpuPipelineBuilder<TIn, TOut>
         _batchSize = batchSize;
         return this;
     }
-    
+
+    /// <summary>
+    /// Sets the maximum concurrency for parallel batch execution
+    /// </summary>
+    /// <param name="maxConcurrency">Maximum number of concurrent batch operations</param>
+    /// <returns>The pipeline builder for fluent chaining</returns>
+    /// <remarks>
+    /// Controls how many batches can be processed in parallel.
+    /// Default is 1 (sequential processing).
+    /// TODO: Implement parallel batch execution using SemaphoreSlim or similar
+    /// </remarks>
+    public GpuPipelineBuilder<TIn, TOut> WithMaxConcurrency(int maxConcurrency)
+    {
+        if (maxConcurrency < 1)
+            throw new ArgumentOutOfRangeException(nameof(maxConcurrency), "Max concurrency must be at least 1");
+
+        _maxConcurrency = maxConcurrency;
+        return this;
+    }
+
     /// <summary>
     /// Executes the pipeline with the given input data
     /// </summary>
-    public async Task<IReadOnlyList<TOut>> ExecuteAsync(IReadOnlyList<TIn> input)
+    public async Task<IReadOnlyList<TOut>> ExecuteAsync(
+        IReadOnlyList<TIn> input,
+        CancellationToken cancellationToken = default)
     {
         var results = new List<TOut>();
-        
+
+        // TODO: Implement parallel batch processing using _maxConcurrency
+        // For now, process sequentially
         // Process input in batches using Orleans grains
         for (int i = 0; i < input.Count; i += _batchSize)
         {
+            // Check for cancellation before processing each batch
+            cancellationToken.ThrowIfCancellationRequested();
+
             var batchEnd = Math.Min(i + _batchSize, input.Count);
             var batch = input.Skip(i).Take(batchEnd - i).ToList();
-            
+
             // Get a batch grain and execute
             var grain = _grainFactory.GetGrain<IGpuBatchGrain<TIn, TOut>>(
                 Guid.NewGuid(), _kernelId.Value, null);
-            
+
             var batchResult = await grain.ExecuteAsync(batch);
             if (batchResult.Success && batchResult.Results != null)
             {
                 results.AddRange(batchResult.Results);
             }
         }
-        
+
         return results;
     }
 }

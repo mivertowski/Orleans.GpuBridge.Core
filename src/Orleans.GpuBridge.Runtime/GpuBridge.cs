@@ -78,4 +78,22 @@ public sealed class GpuBridge : IGpuBridge
         var devices = _deviceBroker.GetDevices();
         return new ValueTask<IReadOnlyList<GpuDevice>>(devices);
     }
+
+    public async ValueTask<object> ExecuteKernelAsync(string kernelId, object input, CancellationToken ct = default)
+    {
+        _logger.LogDebug("Executing kernel {KernelId} with dynamic input", kernelId);
+
+        // TODO: Implement dynamic kernel execution with proper type resolution
+        // This is a stub implementation that throws NotImplementedException
+        // Full implementation requires:
+        // 1. Runtime type discovery from input object
+        // 2. Dynamic kernel resolution from catalog
+        // 3. Dynamic invocation with reflection or compiled expression trees
+        // 4. Proper error handling for type mismatches
+
+        throw new NotImplementedException(
+            $"Dynamic kernel execution for kernel '{kernelId}' is not yet implemented. " +
+            "Use strongly-typed GetKernelAsync<TIn, TOut> instead. " +
+            "TODO: Implement runtime type resolution and dynamic invocation.");
+    }
 }

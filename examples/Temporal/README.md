@@ -97,6 +97,29 @@ dotnet run --project examples/Temporal 3
 dotnet run --project examples/Temporal 4
 ```
 
+### Example 5: Causal Correctness (`05_CausalCorrectnessExample.cs`) - Phase 4
+
+**What it demonstrates:**
+- Vector clock operations (increment, merge, causal comparison)
+- Hybrid causal clocks combining HLC + Vector Clock
+- Causal message ordering with out-of-order delivery
+- Distributed banking with conflict detection
+- Collaborative document editing with concurrent operations
+- Multi-actor causal dependency resolution
+
+**Key concepts:**
+- Causal relationships (happens-before, happens-after, concurrent)
+- Vector clock merge for knowledge propagation
+- Conflict detection in distributed systems
+- Causal message delivery guarantees
+- Operational transformation and conflict resolution
+- Using HLC for tie-breaking concurrent events
+
+**Run it:**
+```bash
+dotnet run --project examples/Temporal 5
+```
+
 ## Building and Running
 
 ### Prerequisites
@@ -132,6 +155,9 @@ dotnet run --project examples/Temporal 3
 
 # Run example 4 (Pattern Detection)
 dotnet run --project examples/Temporal 4
+
+# Run example 5 (Causal Correctness)
+dotnet run --project examples/Temporal 5
 ```
 
 ## Example Output
@@ -204,7 +230,8 @@ examples/Temporal/
 ├── 01_BasicHLCExample.cs             # HLC basics (Phase 1)
 ├── 02_MessagePassingExample.cs       # Message passing and dependencies (Phase 1)
 ├── 03_FinancialTransactionExample.cs # Real-world financial use case (Phase 1)
-└── 04_PatternDetectionExample.cs     # Advanced pattern detection (Phase 3)
+├── 04_PatternDetectionExample.cs     # Advanced pattern detection (Phase 3)
+└── 05_CausalCorrectnessExample.cs    # Causal correctness with vector clocks (Phase 4)
 ```
 
 ## Learning Path
@@ -230,6 +257,13 @@ examples/Temporal/
    - Confidence scoring and severity levels
    - Real-time fraud detection
    - Performance monitoring and statistics
+
+5. **Expert with Example 5**: Understand causal correctness (Phase 4)
+   - Vector clocks for distributed causality
+   - Hybrid causal timestamps (HLC + VC)
+   - Detecting concurrent operations and conflicts
+   - Causal message ordering guarantees
+   - Real-world conflict resolution strategies
 
 ## Key Takeaways
 
@@ -291,5 +325,6 @@ After exploring these examples:
 **Phase 1 Status**: ✅ COMPLETE (HLC, Messages, Queues)
 **Phase 2 Status**: ✅ COMPLETE (Temporal Graphs, Path Finding)
 **Phase 3 Status**: ✅ COMPLETE (Pattern Detection Engine)
-**Production-Ready**: Week 8 (after Phase 4 - Causal Correctness)
-**GPU-Native Timing**: Week 10 (after Phase 5 - GPU Extensions)
+**Phase 4 Status**: ✅ COMPLETE (Vector Clocks, Causal Ordering)
+**Production-Ready**: ✅ MILESTONE REACHED (Week 8)
+**GPU-Native Timing**: Week 10 (Phase 5 - GPU Extensions)

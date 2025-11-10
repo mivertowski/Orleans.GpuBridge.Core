@@ -40,6 +40,50 @@ A comprehensive exploration of temporal correctness mechanisms for GPU-native di
    - Performance results and analysis
    - Scalability considerations
 
+## GPU-Native Actors Series
+
+A comprehensive guide to building GPU-accelerated distributed applications with Orleans.GpuBridge.Core.
+
+### Foundational Concepts
+
+1. **[Introduction to GPU-Native Actors](gpu-actors/introduction/README.md)**
+   - The GPU-Native Actor paradigm
+   - Comparison with traditional GPU programming (CUDA, OpenCL)
+   - Benefits over CPU-only actor systems
+   - Ring kernels and persistent GPU computation
+
+2. **[Use Cases and Applications](gpu-actors/use-cases/README.md)**
+   - Financial services (HFT, risk analytics, fraud detection)
+   - Scientific computing (molecular dynamics, weather forecasting)
+   - Real-time analytics (stream processing, graph analytics)
+   - Gaming and simulation (multiplayer servers, digital twins)
+   - Production case studies and performance results
+
+3. **[Developer Experience](gpu-actors/developer-experience/README.md)**
+   - C# vs C/C++ for GPU programming
+   - Advantages over Python-based solutions
+   - Enterprise-grade tooling and debugging
+   - Team productivity and maintainability
+   - Testing and observability
+
+### Practical Guides
+
+4. **[Getting Started Tutorial](gpu-actors/getting-started/README.md)**
+   - Installation and setup
+   - Creating your first GPU grain
+   - Writing CUDA kernels
+   - Orleans cluster configuration
+   - Testing and debugging
+   - Deployment best practices
+
+5. **[Architecture Overview](gpu-actors/architecture/README.md)**
+   - System architecture and components
+   - Ring kernels and memory architecture
+   - Distribution and scalability
+   - Fault tolerance and grain lifecycle
+   - Performance optimization
+   - Security and observability
+
 ## Additional Topics
 
 Coming soon:

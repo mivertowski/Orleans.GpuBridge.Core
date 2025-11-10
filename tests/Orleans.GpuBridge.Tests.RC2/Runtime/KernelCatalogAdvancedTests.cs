@@ -1602,8 +1602,11 @@ public sealed class KernelCatalogAdvancedTests : IDisposable
             Id = new KernelId("async-init-fail"),
             InType = typeof(float),
             OutType = typeof(float),
-            Factory = sp => new AsyncInitializableKernel<float, float>(() =>
-                throw new InvalidOperationException("Init failed"))
+            Factory = sp => new AsyncInitializableKernel<float, float>(async () =>
+            {
+                await Task.Yield();
+                throw new InvalidOperationException("Init failed");
+            })
         };
 
         var catalog = CreateCatalog(descriptor);

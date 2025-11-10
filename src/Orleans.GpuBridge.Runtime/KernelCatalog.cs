@@ -94,10 +94,10 @@ public sealed class KernelCatalog
                 if (_factories.TryGetValue(id.Value, out var factory))
                 {
                     _logger.LogDebug("Resolving kernel {KernelId} from factory", id.Value);
-                    
+
                     // Execute factory asynchronously for complex kernels
                     var kernelObject = await Task.Run(() => factory(sp), cancellationToken).ConfigureAwait(false);
-                    
+
                     if (kernelObject is IGpuKernel<TIn, TOut> kernel)
                     {
                         // Initialize kernel asynchronously if it supports it
@@ -105,7 +105,7 @@ public sealed class KernelCatalog
                         {
                             await asyncInitializable.InitializeAsync(cancellationToken).ConfigureAwait(false);
                         }
-                        
+
                         return kernel;
                     }
                     else

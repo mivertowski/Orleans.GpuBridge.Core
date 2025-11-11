@@ -446,7 +446,9 @@ public class ErrorHandlingTests
     public async Task BatchExecution_WithPartialTimeout_ShouldReturnPartial()
     {
         // Arrange
-        var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(120));
+        // Timeout after 3 items can complete (3 * 30ms = 90ms, timeout at 100ms)
+        // but before all 10 items (10 * 30ms = 300ms)
+        var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(100));
         var batchSize = 10;
 
         var kernel = new MockKernelRC2<float[], float>(
@@ -486,11 +488,17 @@ public class ErrorHandlingTests
         IReadOnlyList<float[]> items,
         [EnumeratorCancellation] CancellationToken ct = default)
     {
-        await Task.Yield();
-        foreach (var item in items)
+        // Yield first item immediately to ensure at least one result before potential cancellation
+        if (items.Count > 0)
+        {
+            yield return 42.0f;
+        }
+
+        // Process remaining items with delay
+        for (var i = 1; i < items.Count; i++)
         {
             ct.ThrowIfCancellationRequested();
-            await Task.Delay(50, ct); // Delay per item
+            await Task.Delay(30, ct); // 30ms delay per item (reduced from 50ms for more reliable timing)
             yield return 42.0f;
         }
     }

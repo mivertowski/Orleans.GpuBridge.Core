@@ -67,16 +67,16 @@ internal sealed class ILGPUComputeDevice : IComputeDevice, IDisposable
     {
         return feature.ToLowerInvariant() switch
         {
-            "shared-memory" => Accelerator.AcceleratorType != AcceleratorType.CPU,
+            "shared-memory" => Accelerator.AcceleratorType != global::ILGPU.Runtime.AcceleratorType.CPU,
             "atomics" => true, // ILGPU supports atomics on all accelerators
-            "warp-shuffle" => Accelerator.AcceleratorType == AcceleratorType.Cuda,
-            "local-memory" => Accelerator.AcceleratorType != AcceleratorType.CPU,
+            "warp-shuffle" => Accelerator.AcceleratorType == global::ILGPU.Runtime.AcceleratorType.Cuda,
+            "local-memory" => Accelerator.AcceleratorType != global::ILGPU.Runtime.AcceleratorType.CPU,
             "64bit-global-memory" => true,
             "unified-memory" => Accelerator is CudaAccelerator,
             "profiling" => true,
             "debug" => true,
             "barriers" => true,
-            "group-operations" => Accelerator.AcceleratorType != AcceleratorType.CPU,
+            "group-operations" => Accelerator.AcceleratorType != global::ILGPU.Runtime.AcceleratorType.CPU,
             _ => _properties.ContainsKey($"feature_{feature}")
         };
     }
@@ -98,13 +98,13 @@ internal sealed class ILGPUComputeDevice : IComputeDevice, IDisposable
         }
     }
 
-    private static DeviceType MapAcceleratorType(AcceleratorType acceleratorType)
+    private static DeviceType MapAcceleratorType(global::ILGPU.Runtime.AcceleratorType acceleratorType)
     {
         return acceleratorType switch
         {
-            AcceleratorType.CPU => DeviceType.CPU,
-            AcceleratorType.Cuda => DeviceType.CUDA,
-            AcceleratorType.OpenCL => DeviceType.OpenCL,
+            global::ILGPU.Runtime.AcceleratorType.CPU => DeviceType.CPU,
+            global::ILGPU.Runtime.AcceleratorType.Cuda => DeviceType.CUDA,
+            global::ILGPU.Runtime.AcceleratorType.OpenCL => DeviceType.OpenCL,
             _ => DeviceType.Custom
         };
     }
@@ -218,7 +218,7 @@ internal sealed class ILGPUComputeDevice : IComputeDevice, IDisposable
             ["backend"] = accelerator.AcceleratorType.ToString(),
             ["memory_bandwidth_gb_per_sec"] = 0.0, // Would need device-specific info
             ["supports_double_precision"] = true, // ILGPU supports double precision
-            ["supports_int64_atomics"] = accelerator.AcceleratorType != AcceleratorType.CPU
+            ["supports_int64_atomics"] = accelerator.AcceleratorType != global::ILGPU.Runtime.AcceleratorType.CPU
         };
 
         // Add accelerator-specific properties

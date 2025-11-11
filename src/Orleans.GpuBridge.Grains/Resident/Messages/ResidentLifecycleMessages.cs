@@ -1,4 +1,5 @@
 namespace Orleans.GpuBridge.Grains.Resident.Messages;
+using Orleans.GpuBridge.Abstractions.Temporal;
 
 /// <summary>
 /// Message to initialize the Ring Kernel.

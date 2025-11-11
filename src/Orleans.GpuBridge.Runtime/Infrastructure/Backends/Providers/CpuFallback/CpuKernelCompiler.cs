@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions.Enums.Compilation;
+using Orleans.GpuBridge.Abstractions.Models;
 using Orleans.GpuBridge.Abstractions.Models.Compilation;
 using Orleans.GpuBridge.Abstractions.Providers;
 

@@ -2,7 +2,6 @@ using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Orleans.GpuBridge.Abstractions;
-using Orleans.GpuBridge.Abstractions.Application.Interfaces;
 using Orleans.GpuBridge.Abstractions.Kernels;
 using Orleans.GpuBridge.Runtime;
 using KernelId = Orleans.GpuBridge.Abstractions.KernelId;

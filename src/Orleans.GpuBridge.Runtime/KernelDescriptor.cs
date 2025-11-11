@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Orleans.GpuBridge.Abstractions;
 using Orleans.GpuBridge.Abstractions.Kernels;
 
 namespace Orleans.GpuBridge.Runtime;

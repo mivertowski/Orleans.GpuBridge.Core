@@ -233,7 +233,7 @@ public sealed class DeviceBrokerTests : IDisposable
     }
 
     [Fact]
-    public async Task GetDevices_BeforeInitialization_ShouldThrow()
+    public void GetDevices_BeforeInitialization_ShouldThrow()
     {
         // Arrange
         var broker = CreateDeviceBroker();

@@ -181,7 +181,6 @@ public sealed class PipelineTests : IDisposable
         var bridge = provider.GetRequiredService<IGpuBridge>();
         var logger = provider.GetRequiredService<ILogger<GpuPipeline>>();
 
-        var errorCount = 0;
         var pipeline = new GpuPipeline(bridge, logger)
             .Transform<int, float>(x =>
             {
@@ -355,7 +354,6 @@ public sealed class PipelineTests : IDisposable
     public async Task Pipeline_ExecuteAsync_WithCancellation_ShouldCancel()
     {
         // Arrange
-        var kernelId = "test-kernel-cancel";
         var data = TestDataBuilders.FloatArray(1000)
             .WithSequentialValues()
             .Build();

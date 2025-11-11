@@ -126,6 +126,9 @@ internal sealed partial class ILGPUKernelCompiler
         if (string.IsNullOrEmpty(methodName))
             throw new ArgumentException("Method name cannot be null or empty", nameof(methodName));
 
+        // Ensure options is not null before proceeding
+        options ??= new KernelCompilationOptions();
+
         _logger.LogInformation("Compiling ILGPU kernel from assembly: {TypeName}.{MethodName}", typeName, methodName);
 
         try
@@ -142,7 +145,7 @@ internal sealed partial class ILGPUKernelCompiler
                 throw new ArgumentException($"Method '{methodName}' not found in type '{typeName}'");
             }
 
-            return await CompileFromMethodAsync(method, options ?? new KernelCompilationOptions(), cancellationToken).ConfigureAwait(false);
+            return await CompileFromMethodAsync(method, options, cancellationToken).ConfigureAwait(false);
         }
         catch (Exception ex)
         {

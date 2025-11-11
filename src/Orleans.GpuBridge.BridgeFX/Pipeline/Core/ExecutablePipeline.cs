@@ -71,11 +71,13 @@ internal sealed class ExecutablePipeline<TInput, TOutput> : IPipeline<TInput, TO
 
         foreach (var stage in _stages)
         {
-            // Allow null values to flow through the pipeline for nullable type support
-            // Stages are responsible for handling null appropriately
-            current = await stage.ProcessAsync(current, ct);
+            // ProcessAsync may return null if TOutput is a nullable reference type
+            // We allow null to flow through the pipeline - stages handle nullability
+            current = await stage.ProcessAsync(current!, ct);
         }
 
+        // If current is null and TOutput is a reference type, cast will succeed
+        // If TOutput is non-nullable, the validation above ensures correctness
         if (current is not TOutput output)
         {
             throw new InvalidOperationException(

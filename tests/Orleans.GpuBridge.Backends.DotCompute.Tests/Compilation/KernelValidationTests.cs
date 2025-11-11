@@ -399,6 +399,12 @@ public class KernelValidationTests : IDisposable
 
     #region Helper Test Kernels
 
+    private struct TestStruct
+    {
+        public int X;
+        public int Y;
+    }
+
     private class TestKernels
     {
         public static void ValidStaticKernel() { }
@@ -423,12 +429,6 @@ public class KernelValidationTests : IDisposable
         public static void KernelWithByteArray(byte[] data) { }
         public static void KernelWithString(string text) { }
         public static void ComplexKernel(int[] input, float[] output, int size, float multiplier) { }
-    }
-
-    private struct TestStruct
-    {
-        public int X;
-        public float Y;
     }
 
     #endregion

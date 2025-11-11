@@ -62,7 +62,6 @@ public sealed class ResidentMemoryRingKernel : IDisposable
 
     // Ring Kernel state
     private bool _isInitialized;
-    private bool _isShuttingDown;
     private readonly SemaphoreSlim _operationLock;
 
     public ResidentMemoryRingKernel(
@@ -298,9 +297,10 @@ public sealed class ResidentMemoryRingKernel : IDisposable
             }
 
             // Get or compile kernel (cache hit = no compilation overhead!)
-            bool isCacheHit = _kernelCache.TryGetValue(message.KernelId, out var compiledKernel);
+            CompiledKernel? compiledKernel;
+            bool isCacheHit = _kernelCache.TryGetValue(message.KernelId, out compiledKernel);
 
-            if (!isCacheHit)
+            if (!isCacheHit || compiledKernel is null)
             {
                 // TODO: Compile kernel using IKernelCompiler
                 // For now, create stub compiled kernel
@@ -350,6 +350,7 @@ public sealed class ResidentMemoryRingKernel : IDisposable
                 ScalarArguments = message.Parameters ?? new Dictionary<string, object>()
             };
 
+            // compiledKernel is guaranteed non-null here
             var result = await _kernelExecutor.ExecuteAsync(
                 compiledKernel,
                 executionParams,
@@ -359,7 +360,7 @@ public sealed class ResidentMemoryRingKernel : IDisposable
             RecordLatency(sw.ElapsedTicks);
             Interlocked.Increment(ref _totalMessagesProcessed);
 
-            // ✅ Use Timing property correctly
+            // ✅ Timing may be null for unsuccessful executions
             var kernelTimeUs = result.Timing?.KernelTime.TotalMicroseconds ?? 0;
 
             _logger.LogInformation(
@@ -494,8 +495,6 @@ public sealed class ResidentMemoryRingKernel : IDisposable
     /// </summary>
     public async Task<ShutdownResponse> ShutdownAsync(ShutdownMessage message, CancellationToken ct = default)
     {
-        _isShuttingDown = true;
-
         _logger.LogInformation(
             "Shutting down Ring Kernel: {Messages} messages processed, pool hit rate: {HitRate:P0}",
             _totalMessagesProcessed,

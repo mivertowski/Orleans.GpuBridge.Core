@@ -307,7 +307,7 @@ public sealed class KernelCatalogEdgeCasesTests : IDisposable
         // Arrange
         var spWithMissingService = new Mock<IServiceProvider>();
         spWithMissingService.Setup(sp => sp.GetService(typeof(IRequiredService)))
-            .Returns(null); // Missing required service
+            .Returns((object?)null); // Missing required service - explicitly typed as nullable
 
         var descriptor = new KernelDescriptor
         {
@@ -448,7 +448,7 @@ public sealed class KernelCatalogEdgeCasesTests : IDisposable
     {
         // Arrange
         _mockServiceProvider.Setup(sp => sp.GetService(typeof(IOptionalService)))
-            .Returns(null); // Optional service not available
+            .Returns((object?)null); // Optional service not available - explicitly typed as nullable
 
         var descriptor = new KernelDescriptor
         {

@@ -308,7 +308,7 @@ public sealed class DeviceBrokerComprehensiveTests : IDisposable
     }
 
     [Fact]
-    public async Task GetDevices_BeforeInitialization_ShouldThrowInvalidOperationException()
+    public void GetDevices_BeforeInitialization_ShouldThrowInvalidOperationException()
     {
         // Arrange
         var broker = CreateDeviceBroker();
@@ -402,7 +402,7 @@ public sealed class DeviceBrokerComprehensiveTests : IDisposable
     }
 
     [Fact]
-    public async Task GetBestDevice_BeforeInitialization_ShouldThrowInvalidOperationException()
+    public void GetBestDevice_BeforeInitialization_ShouldThrowInvalidOperationException()
     {
         // Arrange
         var broker = CreateDeviceBroker();

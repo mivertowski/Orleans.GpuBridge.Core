@@ -771,7 +771,7 @@ public sealed class ServiceRegistrationTests : IDisposable
     {
         // Arrange
         var configuration = new ConfigurationBuilder()
-            .AddInMemoryCollection(new Dictionary<string, string>
+            .AddInMemoryCollection(new Dictionary<string, string?>
             {
                 { "GpuBridge:PreferGpu", "true" },
                 { "GpuBridge:EnableMetrics", "true" }
@@ -797,7 +797,7 @@ public sealed class ServiceRegistrationTests : IDisposable
     #region Integration Tests (10 tests)
 
     [Fact]
-    public async Task Integration_FullStack_WorksCorrectly()
+    public void Integration_FullStack_WorksCorrectly()
     {
         // Act
         _services.AddGpuBridge()
@@ -883,10 +883,9 @@ public sealed class ServiceRegistrationTests : IDisposable
     public void Integration_WithLogging_LogsCorrectly()
     {
         // Arrange
-        var logged = false;
         _services.AddLogging(builder =>
         {
-            builder.AddProvider(new TestLoggerProvider(() => logged = true));
+            builder.AddProvider(new TestLoggerProvider(() => { }));
         });
 
         // Act
@@ -985,7 +984,7 @@ public sealed class ServiceRegistrationTests : IDisposable
     }
 
     [Fact]
-    public async Task Integration_FullLifecycle_NoLeaks()
+    public void Integration_FullLifecycle_NoLeaks()
     {
         // Act
         _services.AddGpuBridge();

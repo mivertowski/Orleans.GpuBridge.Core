@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -41,6 +42,8 @@ public sealed class GpuBridgeProviderSelector : IGpuBridgeProviderSelector
     /// <summary>
     /// Initializes the provider selector and discovers available providers
     /// </summary>
+    [UnconditionalSuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code",
+        Justification = "Provider discovery uses reflection to find GPU backend providers. When using AOT/trimming, providers must be registered explicitly via RegisterProvider() instead of relying on automatic discovery. This is acceptable as provider discovery is opt-in via EnableProviderDiscovery option.")]
     public async Task InitializeAsync(CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Initializing GPU backend provider selector");
@@ -107,6 +110,8 @@ public sealed class GpuBridgeProviderSelector : IGpuBridgeProviderSelector
     /// <summary>
     /// Gets a provider by name
     /// </summary>
+    [UnconditionalSuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code",
+        Justification = "GetProviderAsync uses reflection to instantiate providers. When using AOT/trimming, providers must be registered with factory delegates via RegisterProvider() to avoid reflection-based instantiation. Built-in providers (CPU, ILGPU, DotCompute) are registered with factories in RegisterBuiltInProviders().")]
     public async Task<IGpuBackendProvider?> GetProviderByNameAsync(
         string providerName,
         CancellationToken cancellationToken = default)

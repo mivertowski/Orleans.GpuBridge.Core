@@ -165,7 +165,7 @@ internal sealed class ILGPUKernelExecutor : IKernelExecutor
         }
     }
 
-    public async Task<IKernelExecution> ExecuteAsyncNonBlocking(
+    public Task<IKernelExecution> ExecuteAsyncNonBlocking(
         CompiledKernel kernel,
         KernelExecutionParameters parameters,
         CancellationToken cancellationToken = default)
@@ -203,7 +203,7 @@ internal sealed class ILGPUKernelExecutor : IKernelExecutor
             }
         }, cancellationToken);
 
-        return execution;
+        return Task.FromResult<IKernelExecution>(execution);
     }
 
     public async Task<BatchExecutionResult> ExecuteBatchAsync(
@@ -440,7 +440,7 @@ internal sealed class ILGPUKernelExecutor : IKernelExecutor
                throw new InvalidOperationException("No suitable device available for kernel execution");
     }
 
-    private async Task<object[]> PrepareKernelArgumentsAsync(
+    private Task<object[]> PrepareKernelArgumentsAsync(
         KernelExecutionParameters parameters,
         ILGPUComputeDevice device,
         CancellationToken cancellationToken)
@@ -468,7 +468,7 @@ internal sealed class ILGPUKernelExecutor : IKernelExecutor
             args.Add(scalarArg.Value);
         }
 
-        return args.ToArray();
+        return Task.FromResult(args.ToArray());
     }
 
     private KernelConfig CalculateKernelConfig(

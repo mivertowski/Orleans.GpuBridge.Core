@@ -124,12 +124,19 @@ public sealed class PipelineEdgeCasesTests : IDisposable
     [Fact]
     public async Task NullableTypes_WithNull_ShouldHandle()
     {
-        // Arrange
+        // Arrange - Use wrapper class to handle nullable values with notnull constraint
         var pipeline = new GpuPipeline(_bridge, _logger)
-            .Transform<int?, string>(x => x.HasValue ? x.Value.ToString() : "null")
-            .Build<int?, string>();
+            .Transform<NullableInt, string>(x => x.HasValue ? x.Value!.Value.ToString() : "null")
+            .Build<NullableInt, string>();
 
-        var inputs = new int?[] { 1, null, 3, null, 5 }.ToAsyncEnumerable();
+        var inputs = new[]
+        {
+            new NullableInt(1),
+            new NullableInt(null),
+            new NullableInt(3),
+            new NullableInt(null),
+            new NullableInt(5)
+        }.ToAsyncEnumerable();
 
         // Act
         var results = new List<string>();
@@ -142,17 +149,33 @@ public sealed class PipelineEdgeCasesTests : IDisposable
         results.Should().Equal("1", "null", "3", "null", "5");
     }
 
+    /// <summary>
+    /// Wrapper for nullable int to satisfy notnull constraint
+    /// </summary>
+    private sealed record NullableInt(int? Value)
+    {
+        public bool HasValue => Value.HasValue;
+    }
+
     [Fact]
     public async Task ComplexNullHandling_ShouldFilterNulls()
     {
-        // Arrange
+        // Arrange - Use wrapper classes to handle nullable values with notnull constraint
         var pipeline = new GpuPipeline(_bridge, _logger)
-            .Transform<string?, int?>(s => s != null ? s.Length : null)
-            .Filter<int?>(x => x.HasValue)
-            .Transform<int?, int>(x => x!.Value)
-            .Build<string?, int>();
+            .Transform<NullableString, NullableInt>(s => new NullableInt(s.Value?.Length))
+            .Filter<NullableInt>(x => x.HasValue)
+            .Transform<NullableInt, int>(x => x.Value!.Value)
+            .Build<NullableString, int>();
 
-        var inputs = new[] { "hello", null, "world", "", null, "test" }.ToAsyncEnumerable();
+        var inputs = new[]
+        {
+            new NullableString("hello"),
+            new NullableString(null),
+            new NullableString("world"),
+            new NullableString(""),
+            new NullableString(null),
+            new NullableString("test")
+        }.ToAsyncEnumerable();
 
         // Act
         var results = new List<int>();
@@ -164,6 +187,11 @@ public sealed class PipelineEdgeCasesTests : IDisposable
         // Assert
         results.Should().Equal(5, 5, 0, 4); // Lengths of non-null strings
     }
+
+    /// <summary>
+    /// Wrapper for nullable string to satisfy notnull constraint
+    /// </summary>
+    private sealed record NullableString(string? Value);
 
     #endregion
 

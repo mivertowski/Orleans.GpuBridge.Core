@@ -156,14 +156,18 @@ public sealed partial class GpuBatchGrainEnhanced<TIn, TOut>
                     var (results, readTime) = await ReadResultsFromGpuAsync(outputMemory, subBatch.Count).ConfigureAwait(false);
                     allResults.AddRange(results);
 
-                    totalKernelTime += kernelResult.Timing.KernelTime;
+                    // Timing may be null even on success in some backends
+                    if (kernelResult.Timing is not null)
+                    {
+                        totalKernelTime += kernelResult.Timing.KernelTime;
+                    }
                     totalMemoryTransferTime += allocTime + readTime;
                     successfulBatches++;
 
                     _logger.LogDebug(
                         "Executed sub-batch: {Items} items in {KernelTime}ms (transfer: {TransferTime}ms)",
                         subBatch.Count,
-                        kernelResult.Timing.KernelTime.TotalMilliseconds,
+                        kernelResult.Timing?.KernelTime.TotalMilliseconds ?? 0,
                         (allocTime + readTime).TotalMilliseconds);
                 }
                 else

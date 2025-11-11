@@ -1529,7 +1529,7 @@ public sealed class KernelCatalogAdvancedTests : IDisposable
     #region Error Handling Tests (10 tests)
 
     [Fact]
-    public async Task NullLogger_ThrowsArgumentNullException()
+    public void NullLogger_ThrowsArgumentNullException()
     {
         // Arrange & Act
         var act = () => new KernelCatalog(null!, Options.Create(new KernelCatalogOptions()));
@@ -1539,7 +1539,7 @@ public sealed class KernelCatalogAdvancedTests : IDisposable
     }
 
     [Fact]
-    public async Task NullOptions_ThrowsArgumentNullException()
+    public void NullOptions_ThrowsArgumentNullException()
     {
         // Arrange & Act
         var act = () => new KernelCatalog(_mockLogger.Object, null!);

@@ -79,7 +79,7 @@ public sealed class GpuBridge : IGpuBridge
         return new ValueTask<IReadOnlyList<GpuDevice>>(devices);
     }
 
-    public async ValueTask<object> ExecuteKernelAsync(string kernelId, object input, CancellationToken ct = default)
+    public ValueTask<object> ExecuteKernelAsync(string kernelId, object input, CancellationToken ct = default)
     {
         _logger.LogDebug("Executing kernel {KernelId} with dynamic input", kernelId);
 

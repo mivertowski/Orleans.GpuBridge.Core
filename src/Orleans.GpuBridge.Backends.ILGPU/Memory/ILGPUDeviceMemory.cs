@@ -52,7 +52,7 @@ internal sealed class ILGPUDeviceMemoryWrapper : IDeviceMemory, IILGPUMemoryWrap
         SizeBytes = sizeBytes;
     }
 
-    public async Task CopyFromHostAsync(
+    public Task CopyFromHostAsync(
         IntPtr hostPointer,
         long offsetBytes,
         long sizeBytes,
@@ -89,6 +89,7 @@ internal sealed class ILGPUDeviceMemoryWrapper : IDeviceMemory, IILGPUMemoryWrap
             stream.Synchronize();
 
             _logger.LogTrace("Host to device copy completed");
+            return Task.CompletedTask;
         }
         catch (Exception ex)
         {
@@ -97,7 +98,7 @@ internal sealed class ILGPUDeviceMemoryWrapper : IDeviceMemory, IILGPUMemoryWrap
         }
     }
 
-    public async Task CopyToHostAsync(
+    public Task CopyToHostAsync(
         IntPtr hostPointer,
         long offsetBytes,
         long sizeBytes,
@@ -134,6 +135,7 @@ internal sealed class ILGPUDeviceMemoryWrapper : IDeviceMemory, IILGPUMemoryWrap
             stream.Synchronize();
 
             _logger.LogTrace("Device to host copy completed");
+            return Task.CompletedTask;
         }
         catch (Exception ex)
         {
@@ -142,7 +144,7 @@ internal sealed class ILGPUDeviceMemoryWrapper : IDeviceMemory, IILGPUMemoryWrap
         }
     }
 
-    public async Task CopyFromAsync(
+    public Task CopyFromAsync(
         IDeviceMemory source,
         long sourceOffset,
         long destinationOffset,
@@ -182,6 +184,7 @@ internal sealed class ILGPUDeviceMemoryWrapper : IDeviceMemory, IILGPUMemoryWrap
             stream.Synchronize();
 
             _logger.LogTrace("Device to device copy completed");
+            return Task.CompletedTask;
         }
         catch (Exception ex)
         {
@@ -190,7 +193,7 @@ internal sealed class ILGPUDeviceMemoryWrapper : IDeviceMemory, IILGPUMemoryWrap
         }
     }
 
-    public async Task FillAsync(
+    public Task FillAsync(
         byte value,
         long offsetBytes,
         long sizeBytes,
@@ -222,7 +225,7 @@ internal sealed class ILGPUDeviceMemoryWrapper : IDeviceMemory, IILGPUMemoryWrap
                 // This implements the fill operation using ILGPU memory operations
                 var fillBuffer = new byte[sizeBytes];
                 Array.Fill(fillBuffer, value);
-                
+
                 unsafe
                 {
                     fixed (byte* bufferPtr = fillBuffer)
@@ -237,6 +240,7 @@ internal sealed class ILGPUDeviceMemoryWrapper : IDeviceMemory, IILGPUMemoryWrap
             stream.Synchronize();
 
             _logger.LogTrace("Memory fill completed");
+            return Task.CompletedTask;
         }
         catch (Exception ex)
         {
@@ -341,7 +345,7 @@ internal sealed class ILGPUDeviceMemoryWrapper<T> : IDeviceMemory<T>, IILGPUMemo
             "Use CopyToHostAsync to transfer data to host memory first.");
     }
 
-    public async Task CopyFromHostAsync(
+    public Task CopyFromHostAsync(
         T[] source,
         int sourceOffset,
         int destinationOffset,
@@ -379,6 +383,7 @@ internal sealed class ILGPUDeviceMemoryWrapper<T> : IDeviceMemory<T>, IILGPUMemo
             stream.Synchronize();
 
             _logger.LogTrace("Host array to device copy completed");
+            return Task.CompletedTask;
         }
         catch (Exception ex)
         {
@@ -387,7 +392,7 @@ internal sealed class ILGPUDeviceMemoryWrapper<T> : IDeviceMemory<T>, IILGPUMemo
         }
     }
 
-    public async Task CopyToHostAsync(
+    public Task CopyToHostAsync(
         T[] destination,
         int sourceOffset,
         int destinationOffset,
@@ -425,6 +430,7 @@ internal sealed class ILGPUDeviceMemoryWrapper<T> : IDeviceMemory<T>, IILGPUMemo
             stream.Synchronize();
 
             _logger.LogTrace("Device to host array copy completed");
+            return Task.CompletedTask;
         }
         catch (Exception ex)
         {
@@ -433,7 +439,7 @@ internal sealed class ILGPUDeviceMemoryWrapper<T> : IDeviceMemory<T>, IILGPUMemo
         }
     }
 
-    public async Task FillAsync(
+    public Task FillAsync(
         T value,
         int offset,
         int count,
@@ -473,6 +479,7 @@ internal sealed class ILGPUDeviceMemoryWrapper<T> : IDeviceMemory<T>, IILGPUMemo
             stream.Synchronize();
 
             _logger.LogTrace("Typed memory fill completed");
+            return Task.CompletedTask;
         }
         catch (Exception ex)
         {
@@ -515,7 +522,7 @@ internal sealed class ILGPUDeviceMemoryWrapper<T> : IDeviceMemory<T>, IILGPUMemo
             }, cancellationToken);
     }
 
-    public async Task CopyFromAsync(IDeviceMemory source, long sourceOffset, long destinationOffset, long sizeBytes, CancellationToken cancellationToken = default)
+    public Task CopyFromAsync(IDeviceMemory source, long sourceOffset, long destinationOffset, long sizeBytes, CancellationToken cancellationToken = default)
     {
         if (source is not ILGPUDeviceMemoryWrapper<T> typedSource)
         {
@@ -535,6 +542,7 @@ internal sealed class ILGPUDeviceMemoryWrapper<T> : IDeviceMemory<T>, IILGPUMemo
 
         destView.CopyFrom(stream, sourceView);
         stream.Synchronize();
+        return Task.CompletedTask;
     }
 
     public Task FillAsync(byte value, long offsetBytes, long sizeBytes, CancellationToken cancellationToken = default)

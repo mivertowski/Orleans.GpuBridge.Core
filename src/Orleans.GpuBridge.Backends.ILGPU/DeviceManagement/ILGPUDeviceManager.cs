@@ -171,7 +171,7 @@ internal sealed class ILGPUDeviceManager : IDeviceManager
         return context;
     }
 
-    public async Task<DeviceMetrics> GetDeviceMetricsAsync(
+    public Task<DeviceMetrics> GetDeviceMetricsAsync(
         IComputeDevice device,
         CancellationToken cancellationToken = default)
     {
@@ -185,7 +185,7 @@ internal sealed class ILGPUDeviceManager : IDeviceManager
         try
         {
             var accelerator = ilgpuDevice.Accelerator;
-            
+
             // Basic metrics that ILGPU can provide
             // Note: ILGPU doesn't expose detailed memory info directly
             var totalMemory = ilgpuDevice.TotalMemoryBytes;
@@ -205,14 +205,14 @@ internal sealed class ILGPUDeviceManager : IDeviceManager
                 Uptime = TimeSpan.FromMilliseconds(Environment.TickCount64)
             };
 
-            return metrics;
+            return Task.FromResult(metrics);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to get metrics for device: {DeviceName}", device.Name);
-            
+
             // Return default metrics on error
-            return new DeviceMetrics
+            return Task.FromResult(new DeviceMetrics
             {
                 GpuUtilizationPercent = 0,
                 MemoryUtilizationPercent = 0,
@@ -223,7 +223,7 @@ internal sealed class ILGPUDeviceManager : IDeviceManager
                 KernelsExecuted = 0,
                 BytesTransferred = 0,
                 Uptime = TimeSpan.Zero
-            };
+            });
         }
     }
 

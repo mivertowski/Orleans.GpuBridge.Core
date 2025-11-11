@@ -25,10 +25,11 @@ public sealed class GpuBridgeLogger : ILogger
 
     public IDisposable BeginScope<TState>(TState state) where TState : notnull
     {
+        // state is constrained to notnull, so ToString() cannot return null
         var scope = new LogScope(
-            state?.ToString() ?? "Unknown",
+            state.ToString() ?? "Unknown",
             ExtractProperties(state));
-        
+
         _scopes.Push(scope);
         return new ScopeDisposable(_scopes);
     }

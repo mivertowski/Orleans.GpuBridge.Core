@@ -35,13 +35,15 @@ public sealed class GpuBackendRegistry : IGpuBackendRegistry
     }
 
     /// <inheritdoc/>
+    [UnconditionalSuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code",
+        Justification = "InitializeAsync calls DiscoverProvidersAsync which uses reflection for provider discovery. When using AOT/trimming, applications should disable automatic discovery and register providers explicitly via RegisterProvider() with factory delegates. This maintains compatibility with both reflection-based and trimming-safe scenarios.")]
     public async Task InitializeAsync(CancellationToken cancellationToken = default)
     {
         ThrowIfDisposed();
-        
+
         if (_discoveryCompleted)
             return;
-            
+
         await _discoveryLock.WaitAsync(cancellationToken);
         try
         {
@@ -150,6 +152,8 @@ public sealed class GpuBackendRegistry : IGpuBackendRegistry
     }
 
     /// <inheritdoc/>
+    [UnconditionalSuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code",
+        Justification = "GetAvailableProvidersAsync calls DiscoverProvidersAsync and GetProviderAsync which use reflection. When using AOT/trimming, ensure providers are pre-registered with factory delegates and automatic discovery is disabled. The method will still function correctly with explicitly registered providers.")]
     public async Task<IReadOnlyList<IGpuBackendProvider>> GetAvailableProvidersAsync(
         CancellationToken cancellationToken = default)
     {
@@ -160,7 +164,7 @@ public sealed class GpuBackendRegistry : IGpuBackendRegistry
             await DiscoverProvidersAsync(cancellationToken);
 
         var providers = new List<IGpuBackendProvider>();
-        
+
         foreach (var (providerId, registration) in _registrations.OrderBy(x => x.Value.Priority))
         {
             try
@@ -179,6 +183,8 @@ public sealed class GpuBackendRegistry : IGpuBackendRegistry
     }
 
     /// <inheritdoc/>
+    [UnconditionalSuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code",
+        Justification = "SelectProviderAsync calls GetProviderAsync which uses reflection to instantiate providers. When using AOT/trimming, providers should be registered with factory delegates during application startup to avoid reflection-based instantiation. Provider selection logic remains fully functional with explicitly registered providers.")]
     public async Task<IGpuBackendProvider?> SelectProviderAsync(
         [NotNull] ProviderSelectionCriteria criteria,
         CancellationToken cancellationToken = default)

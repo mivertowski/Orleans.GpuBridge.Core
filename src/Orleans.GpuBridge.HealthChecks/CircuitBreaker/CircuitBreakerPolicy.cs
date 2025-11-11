@@ -193,12 +193,11 @@ public class CircuitBreakerPolicy : ICircuitBreakerPolicy
             _ => false
         };
     }
-    
+
     // Events for monitoring
     public event Action<string, TimeSpan>? OnCircuitBreak;
     public event Action<string>? OnCircuitReset;
-    public event Action<string>? OnCircuitHalfOpen;
-    
+
     private class CircuitBreakerStateProvider
     {
         public CircuitState CircuitState { get; set; } = CircuitState.Closed;

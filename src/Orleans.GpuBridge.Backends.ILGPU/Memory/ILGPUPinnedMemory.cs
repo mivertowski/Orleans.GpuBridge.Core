@@ -64,7 +64,7 @@ internal sealed class ILGPUPinnedMemory : IPinnedMemory
         return new Span<byte>((void*)HostPointer, (int)SizeBytes);
     }
 
-    public async Task RegisterWithDeviceAsync(
+    public Task RegisterWithDeviceAsync(
         IComputeDevice device,
         CancellationToken cancellationToken = default)
     {
@@ -81,9 +81,9 @@ internal sealed class ILGPUPinnedMemory : IPinnedMemory
 
             // ILGPU doesn't have explicit memory registration like CUDA
             // Pinned memory is automatically optimal for transfers
-            await Task.CompletedTask;
 
             _logger.LogDebug("Pinned memory registered successfully");
+            return Task.CompletedTask;
         }
         catch (Exception ex)
         {
@@ -92,7 +92,7 @@ internal sealed class ILGPUPinnedMemory : IPinnedMemory
         }
     }
 
-    public async Task UnregisterFromDeviceAsync(
+    public Task UnregisterFromDeviceAsync(
         IComputeDevice device,
         CancellationToken cancellationToken = default)
     {
@@ -108,9 +108,9 @@ internal sealed class ILGPUPinnedMemory : IPinnedMemory
                 device.Name);
 
             // ILGPU doesn't require explicit memory unregistration
-            await Task.CompletedTask;
 
             _logger.LogDebug("Pinned memory unregistered successfully");
+            return Task.CompletedTask;
         }
         catch (Exception ex)
         {
@@ -236,7 +236,7 @@ internal sealed class ILGPUUnifiedMemory : IUnifiedMemory
     }
 
     // IDeviceMemory interface implementations
-    public async Task CopyFromHostAsync(IntPtr hostPointer, long offsetBytes, long sizeBytes, CancellationToken cancellationToken = default)
+    public Task CopyFromHostAsync(IntPtr hostPointer, long offsetBytes, long sizeBytes, CancellationToken cancellationToken = default)
     {
         if (hostPointer == IntPtr.Zero)
             throw new ArgumentException("Host pointer cannot be zero", nameof(hostPointer));
@@ -251,9 +251,10 @@ internal sealed class ILGPUUnifiedMemory : IUnifiedMemory
             targetView.CopyFromCPU(stream, hostSpan);
         }
         stream.Synchronize();
+        return Task.CompletedTask;
     }
 
-    public async Task CopyToHostAsync(IntPtr hostPointer, long offsetBytes, long sizeBytes, CancellationToken cancellationToken = default)
+    public Task CopyToHostAsync(IntPtr hostPointer, long offsetBytes, long sizeBytes, CancellationToken cancellationToken = default)
     {
         if (hostPointer == IntPtr.Zero)
             throw new ArgumentException("Host pointer cannot be zero", nameof(hostPointer));
@@ -268,6 +269,7 @@ internal sealed class ILGPUUnifiedMemory : IUnifiedMemory
             sourceView.CopyToCPU(stream, hostSpan);
         }
         stream.Synchronize();
+        return Task.CompletedTask;
     }
 
     public async Task CopyFromAsync(IDeviceMemory source, long sourceOffset, long destinationOffset, long sizeBytes, CancellationToken cancellationToken = default)
@@ -319,7 +321,7 @@ internal sealed class ILGPUUnifiedMemory : IUnifiedMemory
         stream.Synchronize();
     }
 
-    public async Task FillAsync(byte value, long offsetBytes, long sizeBytes, CancellationToken cancellationToken = default)
+    public Task FillAsync(byte value, long offsetBytes, long sizeBytes, CancellationToken cancellationToken = default)
     {
         var accelerator = _device.Accelerator;
         var stream = accelerator.DefaultStream;
@@ -336,6 +338,7 @@ internal sealed class ILGPUUnifiedMemory : IUnifiedMemory
             targetView.CopyFromCPU(stream, fillBuffer.AsSpan());
         }
         stream.Synchronize();
+        return Task.CompletedTask;
     }
 
     public IDeviceMemory CreateView(long offsetBytes, long sizeBytes)

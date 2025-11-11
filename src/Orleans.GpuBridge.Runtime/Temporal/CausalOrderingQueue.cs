@@ -147,7 +147,7 @@ public sealed class CausalOrderingQueue
     /// Attempts to deliver all messages whose dependencies are satisfied.
     /// </summary>
     /// <returns>List of messages that were delivered</returns>
-    private async Task<IReadOnlyList<CausalMessage>> TryDeliverReadyMessagesAsync(
+    private Task<IReadOnlyList<CausalMessage>> TryDeliverReadyMessagesAsync(
         CancellationToken ct = default)
     {
         var delivered = new List<CausalMessage>();
@@ -193,7 +193,7 @@ public sealed class CausalOrderingQueue
             _deliveredMessages.RemoveRange(0, _deliveredMessages.Count - 1000);
         }
 
-        return delivered;
+        return Task.FromResult<IReadOnlyList<CausalMessage>>(delivered);
     }
 
     /// <summary>

@@ -347,10 +347,10 @@ public sealed class ILGPUBackendProvider : IGpuBackendProvider
         _disposed = true;
     }
 
-    private async ValueTask DisposeAsync()
+    private ValueTask DisposeAsync()
     {
         if (_disposed)
-            return;
+            return default;
 
         _logger.LogInformation("Disposing ILGPU backend provider (async)");
 
@@ -377,5 +377,6 @@ public sealed class ILGPUBackendProvider : IGpuBackendProvider
         }
 
         _disposed = true;
+        return default;
     }
 }

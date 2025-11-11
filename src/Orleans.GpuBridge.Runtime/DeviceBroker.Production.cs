@@ -21,9 +21,6 @@ public sealed partial class DeviceBroker
     private readonly ConcurrentDictionary<string, DeviceCapabilityCache> _deviceCapabilities = new();
     private readonly SemaphoreSlim _deviceDiscoveryLock = new(1, 1);
     private readonly Random _random = new();
-    
-    private volatile bool _isHealthMonitoringEnabled = true;
-    private volatile bool _isLoadBalancingEnabled = true;
 
     /// <summary>
     /// Detects NVIDIA CUDA-capable devices with comprehensive capability detection

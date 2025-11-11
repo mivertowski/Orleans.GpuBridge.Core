@@ -284,7 +284,8 @@ public sealed class LatencyStatistics
             MedianRtt = sorted[sorted.Length / 2];
             MinRtt = sorted[0];
             MaxRtt = sorted[^1];
-            P99Rtt = sorted[(int)(sorted.Length * 0.99)];
+            // P99: 99th percentile = value at index (count - 1) * 0.99
+            P99Rtt = sorted[Math.Min(sorted.Length - 1, (int)((sorted.Length - 1) * 0.99))];
 
             _logger.LogTrace(
                 "RTT statistics for {Endpoint}: median={Median:F3}ms, min={Min:F3}ms, max={Max:F3}ms, p99={P99:F3}ms",

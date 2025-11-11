@@ -1,5 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Runtime.Builders;
 using ILGPU;
@@ -75,11 +74,11 @@ public class ILGPUBackendConfiguration
     /// <summary>
     /// Prefer specific accelerator types
     /// </summary>
-    public List<AcceleratorType> PreferredAcceleratorTypes { get; set; } = new()
+    public List<global::ILGPU.Runtime.AcceleratorType> PreferredAcceleratorTypes { get; set; } = new()
     {
-        AcceleratorType.CUDA,
-        AcceleratorType.OpenCL,
-        AcceleratorType.CPU
+        global::ILGPU.Runtime.AcceleratorType.Cuda,
+        global::ILGPU.Runtime.AcceleratorType.OpenCL,
+        global::ILGPU.Runtime.AcceleratorType.CPU
     };
 
     /// <summary>

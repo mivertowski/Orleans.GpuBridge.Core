@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions.Temporal;
-using Orleans.GpuBridge.Grains.Resident.Messages;
 
 namespace Orleans.GpuBridge.Runtime.Temporal;
 

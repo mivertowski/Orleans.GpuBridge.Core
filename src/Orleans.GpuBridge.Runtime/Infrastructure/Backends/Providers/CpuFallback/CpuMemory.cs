@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Enums;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Interfaces;
 

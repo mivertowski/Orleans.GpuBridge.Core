@@ -2,11 +2,9 @@ using Orleans.GpuBridge.Abstractions;
 using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Abstractions.Kernels;
 using Orleans.GpuBridge.Abstractions.Models;
+using Orleans.GpuBridge.Abstractions.Domain.ValueObjects;
 using System.Reflection;
 using KernelId = Orleans.GpuBridge.Abstractions.KernelId;
-using ComputeCapability = Orleans.GpuBridge.Abstractions.ComputeCapability;
-using ThermalInfo = Orleans.GpuBridge.Abstractions.ThermalInfo;
-using PerformanceMetrics = Orleans.GpuBridge.Abstractions.PerformanceMetrics;
 
 namespace Orleans.GpuBridge.Tests.RC2.Abstractions;
 

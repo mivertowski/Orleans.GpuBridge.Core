@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Abstractions.Models;
 using Orleans.GpuBridge.Abstractions.Models.Compilation;
 using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Abstractions.Providers.Execution.Parameters;

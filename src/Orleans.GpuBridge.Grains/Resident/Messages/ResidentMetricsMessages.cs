@@ -1,4 +1,5 @@
 using System;
+using Orleans.GpuBridge.Abstractions.Temporal;
 
 namespace Orleans.GpuBridge.Grains.Resident.Messages;
 

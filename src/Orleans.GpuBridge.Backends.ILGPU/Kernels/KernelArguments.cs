@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using ILGPU;
+using ILGPU.Runtime;
 
 namespace Orleans.GpuBridge.Backends.ILGPU.Kernels;
 

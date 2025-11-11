@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Immutable;
+using Orleans;
 using Orleans.GpuBridge.Abstractions.Temporal;
 
-namespace Orleans.GpuBridge.Grains.Resident.Messages;
+namespace Orleans.GpuBridge.Abstractions.Temporal;
 
 /// <summary>
 /// Base message type for Ring Kernel communication with temporal correctness metadata.

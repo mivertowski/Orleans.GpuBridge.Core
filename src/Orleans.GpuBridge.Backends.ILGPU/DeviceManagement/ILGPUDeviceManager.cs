@@ -313,7 +313,7 @@ internal sealed class ILGPUDeviceManager : IDeviceManager
         if (criteria.RequireUnifiedMemory)
         {
             // ILGPU supports unified memory on supported devices
-            var supportsUnifiedMemory = device.Accelerator.AcceleratorType != AcceleratorType.CPU;
+            var supportsUnifiedMemory = device.Accelerator.AcceleratorType != global::ILGPU.Runtime.AcceleratorType.CPU;
             if (!supportsUnifiedMemory)
             {
                 score -= 100; // Penalty for not supporting unified memory
@@ -409,9 +409,9 @@ internal sealed class ILGPUDeviceManager : IDeviceManager
                         
                         var deviceType = accelerator.AcceleratorType switch
                         {
-                            AcceleratorType.Cuda => "CUDA",
-                            AcceleratorType.OpenCL => "OpenCL", 
-                            AcceleratorType.CPU => "CPU",
+                            global::ILGPU.Runtime.AcceleratorType.Cuda => "CUDA",
+                            global::ILGPU.Runtime.AcceleratorType.OpenCL => "OpenCL",
+                            global::ILGPU.Runtime.AcceleratorType.CPU => "CPU",
                             _ => "Unknown"
                         };
                         

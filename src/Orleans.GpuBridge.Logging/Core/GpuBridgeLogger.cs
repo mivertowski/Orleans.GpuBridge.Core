@@ -70,8 +70,8 @@ public sealed class GpuBridgeLogger : ILogger
     /// <summary>
     /// Logs with performance metrics tracking.
     /// </summary>
-    public void LogWithMetrics<TState>(LogLevel logLevel, EventId eventId, TState state, 
-        Exception? exception, Func<TState, Exception?, string> formatter, PerformanceMetrics metrics)
+    public void LogWithMetrics<TState>(LogLevel logLevel, EventId eventId, TState state,
+        Exception? exception, Func<TState, Exception?, string> formatter, LogPerformanceMetrics metrics)
     {
         if (!IsEnabled(logLevel))
             return;
@@ -117,7 +117,7 @@ public sealed class GpuBridgeLogger : ILogger
             ["KernelId"] = kernelId
         };
 
-        var metrics = new PerformanceMetrics
+        var metrics = new LogPerformanceMetrics
         {
             Duration = duration,
             MemoryUsage = memoryUsage
@@ -161,7 +161,7 @@ public sealed class GpuBridgeLogger : ILogger
             ["OperationType"] = "Grain"
         };
 
-        var metrics = duration.HasValue ? PerformanceMetrics.WithDuration(duration.Value) : null;
+        var metrics = duration.HasValue ? LogPerformanceMetrics.WithDuration(duration.Value) : null;
 
         var entry = new LogEntry
         {
@@ -278,7 +278,7 @@ public static class GpuBridgeLoggerExtensions
         if (logger is GpuBridgeLogger gpuLogger)
         {
             var level = success ? LogLevel.Information : LogLevel.Error;
-            var metrics = new PerformanceMetrics
+            var metrics = new LogPerformanceMetrics
             {
                 Duration = duration,
                 Counters = new Dictionary<string, double>
@@ -349,10 +349,10 @@ public static class GpuBridgeLoggerExtensions
     /// <summary>
     /// Logs performance metrics.
     /// </summary>
-    public static void LogPerformance(this ILogger logger, string operation, 
+    public static void LogPerformance(this ILogger logger, string operation,
         TimeSpan duration, Dictionary<string, double>? counters = null)
     {
-        var metrics = new PerformanceMetrics
+        var metrics = new LogPerformanceMetrics
         {
             Duration = duration,
             Counters = counters ?? new Dictionary<string, double>()

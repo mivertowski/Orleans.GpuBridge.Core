@@ -8,6 +8,7 @@ using Orleans;
 using Orleans.Concurrency;
 using Orleans.GpuBridge.Abstractions;
 using Orleans.GpuBridge.Abstractions.Enums;
+using Orleans.GpuBridge.Abstractions.Models;
 using Orleans.GpuBridge.Abstractions.Models.Compilation;
 using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Abstractions.Providers.Execution.Interfaces;

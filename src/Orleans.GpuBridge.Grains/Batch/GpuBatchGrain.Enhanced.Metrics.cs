@@ -1,4 +1,5 @@
 using System;
+using Orleans.GpuBridge.Abstractions;
 using Orleans;
 
 namespace Orleans.GpuBridge.Grains.Batch;

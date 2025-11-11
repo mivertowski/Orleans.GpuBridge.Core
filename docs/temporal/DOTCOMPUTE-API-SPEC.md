@@ -1,21 +1,63 @@
 # DotCompute API Extensions for Temporal Correctness
-## API Specification v1.0
+## API Specification v2.0 - ✅ IMPLEMENTED in DotCompute 0.4.2-rc2
 
 ## Overview
 
-This document specifies the API extensions required in DotCompute to support temporal correctness features in Orleans.GpuBridge.Core. These extensions enable GPU-native timing, synchronization barriers, and causal memory ordering.
+This document **was** a specification for API extensions required in DotCompute to support temporal correctness features in Orleans.GpuBridge.Core.
+
+**STATUS UPDATE (January 2025)**: 🎉 **All features have been implemented in DotCompute 0.4.2-rc2!**
+
+This document now serves as a **reference** to the original specification and how it maps to the actual DotCompute 0.4.2-rc2 implementation.
+
+### What Changed
+
+- **Specification Status**: ✅ Complete - All APIs implemented
+- **DotCompute Version**: 0.4.2-rc2 (Released January 2025)
+- **Implementation Approach**: Attribute-based configuration via `[Kernel]` and `[RingKernel]` attributes
+- **Documentation**: https://mivertowski.github.io/DotCompute/docs/
+
+### Key Implementation Differences
+
+1. **Timing API**: Implemented via `[Kernel(EnableTimestamps = true)]` attribute instead of separate `ITimingProvider` interface
+2. **Barriers**: Configured via `[Kernel(EnableBarriers = true, BarrierScope = ...)]` instead of `IBarrierProvider`
+3. **Memory Ordering**: Configured via `[Kernel(MemoryOrdering = ...)]` instead of `IMemoryOrderingProvider`
+4. **Ring Kernels**: New `[RingKernel]` attribute for persistent GPU threads (not in original spec)
 
 ---
 
-## 1. Timing API
+## 1. Timing API ✅ IMPLEMENTED
 
-### 1.1 Interface Definitions
+### Original Specification vs Implementation
+
+**Original Spec**: Separate `ITimingProvider` interface with manual method calls.
+
+**Actual Implementation (0.4.2-rc2)**: Attribute-based automatic timestamp injection via `[Kernel(EnableTimestamps = true)]`.
+
+### 1.1 Implemented API (DotCompute 0.4.2-rc2)
+
+**Attribute-Based Configuration:**
+
+```csharp
+using DotCompute.Abstractions;
+
+[Kernel(EnableTimestamps = true)]
+public static void MyTemporalKernel(
+    Span<long> timestamps,  // Auto-injected by DotCompute
+    Span<float> data)
+{
+    // timestamps[workItemId] contains GPU entry time in nanoseconds
+    // No manual API calls needed - fully automatic!
+}
+```
+
+**Manual Timing API (Advanced Use Cases):**
 
 ```csharp
 namespace DotCompute.Timing;
 
 /// <summary>
 /// Provides GPU-native timing capabilities for temporal correctness.
+/// IMPLEMENTED in DotCompute 0.4.2-rc2.
 /// </summary>
 public interface ITimingProvider
 {

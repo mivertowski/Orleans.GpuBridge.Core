@@ -1,0 +1,284 @@
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Orleans.GpuBridge.Abstractions.Temporal;
+
+namespace Orleans.GpuBridge.Runtime.Temporal;
+
+/// <summary>
+/// Calibrates GPU clock against CPU time for temporal correctness.
+/// Performs statistical analysis of clock offset and drift to enable accurate time conversion.
+/// </summary>
+public sealed class GpuClockCalibrator
+{
+    private readonly ILogger<GpuClockCalibrator> _logger;
+    private ClockCalibration? _currentCalibration;
+    private readonly SemaphoreSlim _calibrationLock = new(1, 1);
+
+    /// <summary>
+    /// Default calibration interval (5 minutes).
+    /// </summary>
+    public static readonly TimeSpan DefaultCalibrationInterval = TimeSpan.FromMinutes(5);
+
+    public GpuClockCalibrator(ILogger<GpuClockCalibrator> logger)
+    {
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    }
+
+    /// <summary>
+    /// Gets the current clock calibration (performs calibration if not cached or stale).
+    /// </summary>
+    public async Task<ClockCalibration> GetCalibrationAsync(CancellationToken ct = default)
+    {
+        // Check if calibration exists and is fresh
+        if (_currentCalibration != null)
+        {
+            long currentTime = DateTimeOffset.UtcNow.ToUnixTimeNanoseconds();
+            if (!_currentCalibration.Value.IsStale(currentTime))
+            {
+                return _currentCalibration.Value;
+            }
+        }
+
+        // Perform new calibration
+        await _calibrationLock.WaitAsync(ct);
+        try
+        {
+            // Double-check after acquiring lock
+            if (_currentCalibration != null)
+            {
+                long currentTime = DateTimeOffset.UtcNow.ToUnixTimeNanoseconds();
+                if (!_currentCalibration.Value.IsStale(currentTime))
+                {
+                    return _currentCalibration.Value;
+                }
+            }
+
+            _currentCalibration = await CalibrateAsync(sampleCount: 1000, ct);
+            return _currentCalibration.Value;
+        }
+        finally
+        {
+            _calibrationLock.Release();
+        }
+    }
+
+    /// <summary>
+    /// Performs GPU-CPU clock calibration with specified sample count.
+    /// Uses statistical analysis to determine offset, drift, and error bounds.
+    /// </summary>
+    /// <param name="sampleCount">Number of round-trip samples to collect (more = more accurate).</param>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns>Clock calibration result.</returns>
+    public async Task<ClockCalibration> CalibrateAsync(
+        int sampleCount = 100,
+        CancellationToken ct = default)
+    {
+        if (sampleCount < 10)
+            throw new ArgumentException("Sample count must be at least 10.", nameof(sampleCount));
+
+        _logger.LogInformation("Starting GPU clock calibration with {SampleCount} samples...", sampleCount);
+
+        long calibrationStartTime = DateTimeOffset.UtcNow.ToUnixTimeNanoseconds();
+
+        // Collect timestamp samples
+        // In a real implementation, this would call DotCompute timing API
+        // For now, we simulate GPU timestamps with CPU time + synthetic offset
+        var samples = await CollectTimestampSamplesAsync(sampleCount, ct);
+
+        // Calculate offset (median to reject outliers)
+        long medianOffset = CalculateMedian(samples.Select(s => s.offset).ToArray());
+
+        // Calculate drift (linear regression of offset over time)
+        double driftPPM = CalculateDrift(samples, calibrationStartTime);
+
+        // Calculate error bound (standard deviation * 3 for 99.7% confidence)
+        long errorBound = CalculateErrorBound(samples, medianOffset);
+
+        var calibration = new ClockCalibration(
+            offsetNanos: medianOffset,
+            driftPPM: driftPPM,
+            errorBoundNanos: errorBound,
+            sampleCount: sampleCount,
+            calibrationTimestampNanos: calibrationStartTime);
+
+        _logger.LogInformation(
+            "GPU clock calibration complete: Offset={OffsetNs}ns, Drift={DriftPPM:F3}ppm, Error=±{ErrorBoundNs}ns",
+            calibration.OffsetNanos,
+            calibration.DriftPPM,
+            calibration.ErrorBoundNanos);
+
+        return calibration;
+    }
+
+    /// <summary>
+    /// Converts GPU timestamp to CPU time using current calibration.
+    /// </summary>
+    public long GpuToCpuTime(long gpuTimeNanos)
+    {
+        if (_currentCalibration == null)
+        {
+            throw new InvalidOperationException("Clock not calibrated. Call GetCalibrationAsync() first.");
+        }
+
+        return _currentCalibration.Value.GpuToCpuTime(gpuTimeNanos);
+    }
+
+    /// <summary>
+    /// Converts CPU timestamp to GPU time using current calibration.
+    /// </summary>
+    public long CpuToGpuTime(long cpuTimeNanos)
+    {
+        if (_currentCalibration == null)
+        {
+            throw new InvalidOperationException("Clock not calibrated. Call GetCalibrationAsync() first.");
+        }
+
+        return _currentCalibration.Value.CpuToGpuTime(cpuTimeNanos);
+    }
+
+    /// <summary>
+    /// Collects timestamp samples by querying both GPU and CPU clocks.
+    /// </summary>
+    private async Task<(long cpuTime, long gpuTime, long offset)[]> CollectTimestampSamplesAsync(
+        int sampleCount,
+        CancellationToken ct)
+    {
+        var samples = new (long cpuTime, long gpuTime, long offset)[sampleCount];
+
+        for (int i = 0; i < sampleCount; i++)
+        {
+            ct.ThrowIfCancellationRequested();
+
+            // Get CPU time
+            long cpuTime = DateTimeOffset.UtcNow.ToUnixTimeNanoseconds();
+
+            // Get GPU time (simulated for now - will be replaced with DotCompute API)
+            long gpuTime = await SimulateGpuTimestampAsync();
+
+            // Calculate offset
+            long offset = gpuTime - cpuTime;
+
+            samples[i] = (cpuTime, gpuTime, offset);
+
+            // Small delay between samples to get temporal distribution
+            if (i < sampleCount - 1)
+            {
+                await Task.Delay(1, ct);
+            }
+        }
+
+        return samples;
+    }
+
+    /// <summary>
+    /// Simulates GPU timestamp query.
+    /// TODO: Replace with actual DotCompute timing API call.
+    /// </summary>
+    private Task<long> SimulateGpuTimestampAsync()
+    {
+        // Simulate GPU clock with synthetic offset and drift
+        const long syntheticOffset = 1_000_000_000L; // 1 second offset
+        const double syntheticDriftPPM = 10.0; // 10 PPM drift
+
+        long cpuTime = DateTimeOffset.UtcNow.ToUnixTimeNanoseconds();
+        long drift = (long)(cpuTime * (syntheticDriftPPM / 1_000_000.0));
+
+        return Task.FromResult(cpuTime + syntheticOffset + drift);
+    }
+
+    /// <summary>
+    /// Calculates median value from samples (robust to outliers).
+    /// </summary>
+    private static long CalculateMedian(long[] values)
+    {
+        if (values.Length == 0)
+            throw new ArgumentException("Cannot calculate median of empty array.");
+
+        Array.Sort(values);
+        int mid = values.Length / 2;
+
+        if (values.Length % 2 == 0)
+        {
+            return (values[mid - 1] + values[mid]) / 2;
+        }
+        else
+        {
+            return values[mid];
+        }
+    }
+
+    /// <summary>
+    /// Calculates clock drift using linear regression.
+    /// </summary>
+    private static double CalculateDrift(
+        (long cpuTime, long gpuTime, long offset)[] samples,
+        long startTime)
+    {
+        if (samples.Length < 2)
+            return 0.0;
+
+        // Linear regression: offset = drift * time + constant
+        // drift = covariance(time, offset) / variance(time)
+
+        double n = samples.Length;
+        double sumTime = 0;
+        double sumOffset = 0;
+        double sumTimeOffset = 0;
+        double sumTimeSquared = 0;
+
+        foreach (var (cpuTime, _, offset) in samples)
+        {
+            double time = cpuTime - startTime;
+            sumTime += time;
+            sumOffset += offset;
+            sumTimeOffset += time * offset;
+            sumTimeSquared += time * time;
+        }
+
+        double meanTime = sumTime / n;
+        double meanOffset = sumOffset / n;
+
+        double covariance = (sumTimeOffset / n) - (meanTime * meanOffset);
+        double variance = (sumTimeSquared / n) - (meanTime * meanTime);
+
+        if (variance == 0)
+            return 0.0;
+
+        // Drift in parts per million (PPM)
+        double driftFraction = covariance / variance;
+        return driftFraction * 1_000_000.0;
+    }
+
+    /// <summary>
+    /// Calculates error bound using standard deviation (3-sigma for 99.7% confidence).
+    /// </summary>
+    private static long CalculateErrorBound(
+        (long cpuTime, long gpuTime, long offset)[] samples,
+        long medianOffset)
+    {
+        if (samples.Length < 2)
+            return 0;
+
+        // Calculate standard deviation of offsets
+        double sumSquaredDiff = 0;
+        foreach (var (_, _, offset) in samples)
+        {
+            double diff = offset - medianOffset;
+            sumSquaredDiff += diff * diff;
+        }
+
+        double variance = sumSquaredDiff / samples.Length;
+        double stdDev = Math.Sqrt(variance);
+
+        // 3-sigma for 99.7% confidence interval
+        return (long)(3.0 * stdDev);
+    }
+
+    public void Dispose()
+    {
+        _calibrationLock.Dispose();
+    }
+}

@@ -1,59 +1,40 @@
 using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace Orleans.GpuBridge.Abstractions.Temporal;
 
 /// <summary>
-/// Represents a Hybrid Logical Clock (HLC) timestamp combining physical time with logical ordering.
+/// Hybrid Logical Clock timestamp combining physical time and logical counter.
+/// Provides happens-before ordering for distributed events.
 /// </summary>
 /// <remarks>
-/// <para>
-/// Hybrid Logical Clocks provide total ordering of events across distributed systems while
-/// maintaining bounded drift from physical time. The timestamp consists of:
-/// </para>
-/// <list type="bullet">
-///   <item><description>Physical time component (nanoseconds since epoch)</description></item>
-///   <item><description>Logical counter (increments on concurrent events)</description></item>
-///   <item><description>Node identifier (for tie-breaking)</description></item>
-/// </list>
-/// <para>
-/// Properties:
-/// - If event A happens-before event B, then HLC(A) &lt; HLC(B)
-/// - Bounded drift from physical time (within clock synchronization error)
-/// - Total ordering of all events (no ambiguity)
-/// </para>
-/// <para>
-/// Reference: "Logical Physical Clocks and Consistent Snapshots in Globally Distributed Databases"
-/// by Kulkarni et al., 2014
-/// </para>
+/// HLC timestamps ensure:
+/// 1. Monotonicity: Timestamps never decrease for an actor
+/// 2. Causality: If event A happens-before event B, then HLC(A) &lt; HLC(B)
+/// 3. Physical time approximation: HLC tracks physical time closely
 /// </remarks>
-[StructLayout(LayoutKind.Sequential, Pack = 8)]
-public readonly struct HybridTimestamp : IEquatable<HybridTimestamp>, IComparable<HybridTimestamp>
+[StructLayout(LayoutKind.Sequential)]
+public readonly struct HybridTimestamp : IComparable<HybridTimestamp>, IEquatable<HybridTimestamp>
 {
     /// <summary>
-    /// Physical time component in nanoseconds since Unix epoch (1970-01-01 00:00:00 UTC).
+    /// Physical time component in nanoseconds since Unix epoch.
     /// </summary>
     public long PhysicalTime { get; init; }
 
     /// <summary>
-    /// Logical counter that increments when physical times are equal.
-    /// Used to establish ordering for concurrent events.
+    /// Logical counter for events occurring at the same physical time.
     /// </summary>
     public long LogicalCounter { get; init; }
 
     /// <summary>
-    /// Node identifier for deterministic tie-breaking when physical time and logical counter are equal.
+    /// Node identifier for tie-breaking concurrent events (optional).
     /// </summary>
     public ushort NodeId { get; init; }
 
     /// <summary>
-    /// Creates a new hybrid timestamp.
+    /// Creates a new HLC timestamp.
     /// </summary>
-    /// <param name="physicalTime">Physical time in nanoseconds since Unix epoch</param>
-    /// <param name="logicalCounter">Logical counter for ordering</param>
-    /// <param name="nodeId">Node identifier</param>
-    public HybridTimestamp(long physicalTime, long logicalCounter, ushort nodeId)
+    public HybridTimestamp(long physicalTime, long logicalCounter, ushort nodeId = 0)
     {
         PhysicalTime = physicalTime;
         LogicalCounter = logicalCounter;
@@ -61,140 +42,163 @@ public readonly struct HybridTimestamp : IEquatable<HybridTimestamp>, IComparabl
     }
 
     /// <summary>
-    /// Creates a timestamp from current physical time.
+    /// Creates an HLC timestamp from current system time.
     /// </summary>
-    /// <param name="nodeId">Node identifier</param>
-    /// <returns>New timestamp with physical time set to current time</returns>
-    public static HybridTimestamp FromCurrentTime(ushort nodeId)
+    public static HybridTimestamp Now(ushort nodeId = 0)
     {
-        return new HybridTimestamp(GetCurrentPhysicalTimeNanos(), 0, nodeId);
+        long physicalTime = DateTimeOffset.UtcNow.ToUnixTimeNanoseconds();
+        return new HybridTimestamp(physicalTime, 0, nodeId);
     }
 
     /// <summary>
     /// Gets current physical time in nanoseconds since Unix epoch.
     /// </summary>
-    /// <returns>Current time in nanoseconds</returns>
     public static long GetCurrentPhysicalTimeNanos()
     {
-        // Use DateTimeOffset for cross-platform compatibility
-        var utcNow = DateTimeOffset.UtcNow;
-        var epochTicks = new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero).Ticks;
-        var elapsedTicks = utcNow.Ticks - epochTicks;
-
-        // Convert ticks (100ns resolution) to nanoseconds
-        return elapsedTicks * 100;
+        return DateTimeOffset.UtcNow.ToUnixTimeNanoseconds();
     }
 
     /// <summary>
-    /// Compares two hybrid timestamps for ordering.
+    /// Updates HLC timestamp based on received timestamp (Lamport clock algorithm).
     /// </summary>
-    /// <remarks>
-    /// Comparison order:
-    /// 1. Physical time (most significant)
-    /// 2. Logical counter
-    /// 3. Node ID (for deterministic tie-breaking)
-    /// </remarks>
+    /// <param name="local">Local HLC timestamp.</param>
+    /// <param name="received">Received HLC timestamp from remote actor.</param>
+    /// <param name="physicalTime">Current physical time in nanoseconds.</param>
+    /// <returns>Updated HLC timestamp maintaining causal ordering.</returns>
+    public static HybridTimestamp Update(
+        HybridTimestamp local,
+        HybridTimestamp received,
+        long physicalTime)
+    {
+        // Take maximum of all three times
+        long maxPhysical = Math.Max(Math.Max(local.PhysicalTime, received.PhysicalTime), physicalTime);
+        long newLogical;
+
+        if (maxPhysical == local.PhysicalTime && maxPhysical == received.PhysicalTime)
+        {
+            // Both local and received have same physical time
+            newLogical = Math.Max(local.LogicalCounter, received.LogicalCounter) + 1;
+        }
+        else if (maxPhysical == local.PhysicalTime)
+        {
+            // Local time is ahead
+            newLogical = local.LogicalCounter + 1;
+        }
+        else if (maxPhysical == received.PhysicalTime)
+        {
+            // Received time is ahead
+            newLogical = received.LogicalCounter + 1;
+        }
+        else
+        {
+            // Physical time is ahead of both
+            newLogical = 0;
+        }
+
+        return new HybridTimestamp(maxPhysical, newLogical, local.NodeId);
+    }
+
+    /// <summary>
+    /// Increments the logical counter for a local event.
+    /// </summary>
+    public HybridTimestamp Increment(long physicalTime)
+    {
+        if (physicalTime > PhysicalTime)
+        {
+            // Physical time advanced - reset logical counter
+            return new HybridTimestamp(physicalTime, 0, NodeId);
+        }
+        else
+        {
+            // Same physical time - increment logical counter
+            return new HybridTimestamp(PhysicalTime, LogicalCounter + 1, NodeId);
+        }
+    }
+
+    /// <summary>
+    /// Compares two HLC timestamps for happens-before ordering.
+    /// </summary>
+    /// <returns>
+    /// -1 if this &lt; other (this happens-before other)
+    /// 0 if this == other (concurrent or same event)
+    /// 1 if this &gt; other (other happens-before this)
+    /// </returns>
     public int CompareTo(HybridTimestamp other)
     {
         // Compare physical time first
-        var physicalComparison = PhysicalTime.CompareTo(other.PhysicalTime);
+        int physicalComparison = PhysicalTime.CompareTo(other.PhysicalTime);
         if (physicalComparison != 0)
             return physicalComparison;
 
-        // Physical times equal, compare logical counter
-        var logicalComparison = LogicalCounter.CompareTo(other.LogicalCounter);
+        // If physical times are equal, compare logical counters
+        int logicalComparison = LogicalCounter.CompareTo(other.LogicalCounter);
         if (logicalComparison != 0)
             return logicalComparison;
 
-        // Both equal, use node ID for deterministic ordering
+        // If both are equal, use node ID for total ordering
         return NodeId.CompareTo(other.NodeId);
     }
 
-    /// <summary>
-    /// Checks if this timestamp equals another timestamp.
-    /// </summary>
-    public bool Equals(HybridTimestamp other)
-    {
-        return PhysicalTime == other.PhysicalTime &&
-               LogicalCounter == other.LogicalCounter &&
-               NodeId == other.NodeId;
-    }
+    public bool Equals(HybridTimestamp other) =>
+        PhysicalTime == other.PhysicalTime &&
+        LogicalCounter == other.LogicalCounter &&
+        NodeId == other.NodeId;
 
-    /// <inheritdoc/>
-    public override bool Equals(object? obj)
-    {
-        return obj is HybridTimestamp other && Equals(other);
-    }
+    public override bool Equals(object? obj) =>
+        obj is HybridTimestamp timestamp && Equals(timestamp);
 
-    /// <inheritdoc/>
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(PhysicalTime, LogicalCounter, NodeId);
-    }
+    public override int GetHashCode() =>
+        HashCode.Combine(PhysicalTime, LogicalCounter, NodeId);
 
-    /// <inheritdoc/>
-    public override string ToString()
-    {
-        return $"HLC({PhysicalTime}ns, L{LogicalCounter}, N{NodeId})";
-    }
+    public override string ToString() =>
+        $"HLC({PhysicalTime}, {LogicalCounter}, Node={NodeId})";
 
-    /// <summary>
-    /// Converts the timestamp to a human-readable string with date/time.
-    /// </summary>
-    public string ToDetailedString()
-    {
-        var epochTicks = new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero).Ticks;
-        var timestampTicks = epochTicks + (PhysicalTime / 100); // Convert nanos to ticks
-        var dateTime = new DateTimeOffset(timestampTicks, TimeSpan.Zero);
+    public static bool operator ==(HybridTimestamp left, HybridTimestamp right) =>
+        left.Equals(right);
 
-        return $"HLC({dateTime:yyyy-MM-dd HH:mm:ss.fffffff}, L{LogicalCounter}, N{NodeId})";
-    }
+    public static bool operator !=(HybridTimestamp left, HybridTimestamp right) =>
+        !left.Equals(right);
 
-    /// <summary>
-    /// Checks if this timestamp happens-before another timestamp.
-    /// </summary>
-    /// <param name="other">The other timestamp</param>
-    /// <returns>True if this timestamp happens before the other</returns>
-    public bool HappensBefore(HybridTimestamp other)
-    {
-        return CompareTo(other) < 0;
-    }
+    public static bool operator <(HybridTimestamp left, HybridTimestamp right) =>
+        left.CompareTo(right) < 0;
+
+    public static bool operator <=(HybridTimestamp left, HybridTimestamp right) =>
+        left.CompareTo(right) <= 0;
+
+    public static bool operator >(HybridTimestamp left, HybridTimestamp right) =>
+        left.CompareTo(right) > 0;
+
+    public static bool operator >=(HybridTimestamp left, HybridTimestamp right) =>
+        left.CompareTo(right) >= 0;
+}
+
+/// <summary>
+/// Utility methods for Unix nanosecond timestamps.
+/// </summary>
+public static class DateTimeOffsetExtensions
+{
+    // Unix epoch: January 1, 1970 00:00:00 UTC in ticks
+    private const long UnixEpochTicks = 621355968000000000L;
 
     /// <summary>
-    /// Checks if this timestamp is concurrent with another timestamp.
+    /// Converts DateTimeOffset to Unix nanoseconds.
     /// </summary>
-    /// <remarks>
-    /// Two timestamps are concurrent if they have the same physical time and logical counter
-    /// but different node IDs.
-    /// </remarks>
-    public bool IsConcurrentWith(HybridTimestamp other)
+    public static long ToUnixTimeNanoseconds(this DateTimeOffset dateTimeOffset)
     {
-        return PhysicalTime == other.PhysicalTime &&
-               LogicalCounter == other.LogicalCounter &&
-               NodeId != other.NodeId;
+        long ticks = dateTimeOffset.UtcDateTime.Ticks;
+        long elapsedTicks = ticks - UnixEpochTicks;
+        // Convert ticks (100ns) to nanoseconds by multiplying by 100
+        return elapsedTicks * 100L;
     }
 
     /// <summary>
-    /// Gets the elapsed time in nanoseconds since this timestamp.
+    /// Converts Unix nanoseconds to DateTimeOffset.
     /// </summary>
-    public long GetElapsedNanos()
+    public static DateTimeOffset FromUnixTimeNanoseconds(long nanos)
     {
-        return GetCurrentPhysicalTimeNanos() - PhysicalTime;
+        // Convert nanoseconds to ticks (divide by 100)
+        long elapsedTicks = nanos / 100L;
+        long ticks = UnixEpochTicks + elapsedTicks;
+        return new DateTimeOffset(ticks, TimeSpan.Zero);
     }
-
-    /// <summary>
-    /// Gets the time difference in nanoseconds between this and another timestamp.
-    /// </summary>
-    public long GetDifferenceNanos(HybridTimestamp other)
-    {
-        return PhysicalTime - other.PhysicalTime;
-    }
-
-    // Comparison operators
-    public static bool operator ==(HybridTimestamp left, HybridTimestamp right) => left.Equals(right);
-    public static bool operator !=(HybridTimestamp left, HybridTimestamp right) => !left.Equals(right);
-    public static bool operator <(HybridTimestamp left, HybridTimestamp right) => left.CompareTo(right) < 0;
-    public static bool operator >(HybridTimestamp left, HybridTimestamp right) => left.CompareTo(right) > 0;
-    public static bool operator <=(HybridTimestamp left, HybridTimestamp right) => left.CompareTo(right) <= 0;
-    public static bool operator >=(HybridTimestamp left, HybridTimestamp right) => left.CompareTo(right) >= 0;
 }

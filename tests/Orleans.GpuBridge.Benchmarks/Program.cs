@@ -35,5 +35,10 @@ public class Program
         Console.WriteLine("  - HLC Now(): 0 bytes (stack-only structs)");
         Console.WriteLine("  - IntervalTree node: ~64 bytes per node");
         Console.WriteLine("  - GC Gen0: Minimize collections");
+        Console.WriteLine("\nGPU Acceleration Benchmarks:");
+        Console.WriteLine("  - VectorAdd 1K: CPU faster (kernel overhead)");
+        Console.WriteLine("  - VectorAdd 100K: GPU 5-20× faster");
+        Console.WriteLine("  - VectorAdd 1M: GPU 10-50× faster");
+        Console.WriteLine("  - Target bandwidth: >1,935 GB/s (RTX GPU)");
     }
 }

@@ -110,8 +110,6 @@ public sealed class DotComputeKernel<TIn, TOut> : GpuKernelBase<TIn, TOut>
         if (!validationResult.IsValid)
             throw new ArgumentException(validationResult.ErrorMessage, nameof(input));
 
-        IUnifiedMemoryBuffer? outputBuffer = null;
-
         try
         {
             // Convert input to kernel arguments
@@ -142,11 +140,9 @@ public sealed class DotComputeKernel<TIn, TOut> : GpuKernelBase<TIn, TOut>
         }
         finally
         {
-            // Cleanup GPU memory
-            if (outputBuffer != null)
-            {
-                _accelerator.Memory.Free(outputBuffer);
-            }
+            // Note: GPU memory buffers in KernelArguments are managed by DotCompute
+            // and will be disposed when the KernelArguments is disposed.
+            // Manual cleanup is not needed here.
         }
     }
 
@@ -291,31 +287,51 @@ public sealed class DotComputeKernel<TIn, TOut> : GpuKernelBase<TIn, TOut>
                 // DotCompute v0.4.2-rc2 allocates memory on GPU
                 if (elementType == typeof(float))
                 {
-                    inputBuffer = _accelerator.Memory.AllocateAsync<float>(
+                    var typedBuffer = _accelerator.Memory.AllocateAsync<float>(
                         count: length,
                         options: default,
                         cancellationToken: CancellationToken.None).GetAwaiter().GetResult();
+                    inputBuffer = typedBuffer;
+
+                    // Copy host data to GPU device memory
+                    var hostArray = (float[])array;
+                    typedBuffer.CopyFromAsync(hostArray.AsMemory(), CancellationToken.None).GetAwaiter().GetResult();
                 }
                 else if (elementType == typeof(int))
                 {
-                    inputBuffer = _accelerator.Memory.AllocateAsync<int>(
+                    var typedBuffer = _accelerator.Memory.AllocateAsync<int>(
                         count: length,
                         options: default,
                         cancellationToken: CancellationToken.None).GetAwaiter().GetResult();
+                    inputBuffer = typedBuffer;
+
+                    // Copy host data to GPU device memory
+                    var hostArray = (int[])array;
+                    typedBuffer.CopyFromAsync(hostArray.AsMemory(), CancellationToken.None).GetAwaiter().GetResult();
                 }
                 else if (elementType == typeof(byte))
                 {
-                    inputBuffer = _accelerator.Memory.AllocateAsync<byte>(
+                    var typedBuffer = _accelerator.Memory.AllocateAsync<byte>(
                         count: length,
                         options: default,
                         cancellationToken: CancellationToken.None).GetAwaiter().GetResult();
+                    inputBuffer = typedBuffer;
+
+                    // Copy host data to GPU device memory
+                    var hostArray = (byte[])array;
+                    typedBuffer.CopyFromAsync(hostArray.AsMemory(), CancellationToken.None).GetAwaiter().GetResult();
                 }
                 else if (elementType == typeof(double))
                 {
-                    inputBuffer = _accelerator.Memory.AllocateAsync<double>(
+                    var typedBuffer = _accelerator.Memory.AllocateAsync<double>(
                         count: length,
                         options: default,
                         cancellationToken: CancellationToken.None).GetAwaiter().GetResult();
+                    inputBuffer = typedBuffer;
+
+                    // Copy host data to GPU device memory
+                    var hostArray = (double[])array;
+                    typedBuffer.CopyFromAsync(hostArray.AsMemory(), CancellationToken.None).GetAwaiter().GetResult();
                 }
                 else
                 {
@@ -406,32 +422,57 @@ public sealed class DotComputeKernel<TIn, TOut> : GpuKernelBase<TIn, TOut>
 
             try
             {
-                // TODO: Implement actual GPU-to-host memory copy once DotCompute API is clear
-                // For now, we need to provide a working placeholder that compiles
-                // The actual data transfer will be implemented when kernel execution is tested
-
                 // Cast to typed buffer for proper memory reading
-                // TODO: Implement actual device-to-host memory copy using DotCompute API
-                // For now, return placeholder empty array to allow compilation
                 if (elementType == typeof(float))
                 {
-                    // Placeholder: Return empty array - will be replaced with actual GPU read
-                    var result = Array.Empty<float>();
+                    var typedBuffer = (IUnifiedMemoryBuffer<float>)buffer;
+
+                    // Ensure data is on host and synchronized
+                    typedBuffer.EnsureOnHostAsync(cancellationToken: CancellationToken.None).GetAwaiter().GetResult();
+                    typedBuffer.SynchronizeAsync(cancellationToken: CancellationToken.None).GetAwaiter().GetResult();
+
+                    // Read data via span
+                    var span = typedBuffer.AsSpan();
+                    var result = span.ToArray();
                     return (TOut)(object)result;
                 }
                 else if (elementType == typeof(int))
                 {
-                    var result = Array.Empty<int>();
+                    var typedBuffer = (IUnifiedMemoryBuffer<int>)buffer;
+
+                    // Ensure data is on host and synchronized
+                    typedBuffer.EnsureOnHostAsync(cancellationToken: CancellationToken.None).GetAwaiter().GetResult();
+                    typedBuffer.SynchronizeAsync(cancellationToken: CancellationToken.None).GetAwaiter().GetResult();
+
+                    // Read data via span
+                    var span = typedBuffer.AsSpan();
+                    var result = span.ToArray();
                     return (TOut)(object)result;
                 }
                 else if (elementType == typeof(byte))
                 {
-                    var result = Array.Empty<byte>();
+                    var typedBuffer = (IUnifiedMemoryBuffer<byte>)buffer;
+
+                    // Ensure data is on host and synchronized
+                    typedBuffer.EnsureOnHostAsync(cancellationToken: CancellationToken.None).GetAwaiter().GetResult();
+                    typedBuffer.SynchronizeAsync(cancellationToken: CancellationToken.None).GetAwaiter().GetResult();
+
+                    // Read data via span
+                    var span = typedBuffer.AsSpan();
+                    var result = span.ToArray();
                     return (TOut)(object)result;
                 }
                 else if (elementType == typeof(double))
                 {
-                    var result = Array.Empty<double>();
+                    var typedBuffer = (IUnifiedMemoryBuffer<double>)buffer;
+
+                    // Ensure data is on host and synchronized
+                    typedBuffer.EnsureOnHostAsync(cancellationToken: CancellationToken.None).GetAwaiter().GetResult();
+                    typedBuffer.SynchronizeAsync(cancellationToken: CancellationToken.None).GetAwaiter().GetResult();
+
+                    // Read data via span
+                    var span = typedBuffer.AsSpan();
+                    var result = span.ToArray();
                     return (TOut)(object)result;
                 }
                 else

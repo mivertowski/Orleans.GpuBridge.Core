@@ -1,0 +1,94 @@
+  Determining projects to restore...
+/home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/tests/Orleans.GpuBridge.Hardware.Tests/Orleans.GpuBridge.Hardware.Tests.csproj : warning NU1608: Detected package version outside of dependency constraint: Microsoft.CodeAnalysis.CSharp 4.1.0 requires Microsoft.CodeAnalysis.Common (= 4.1.0) but version Microsoft.CodeAnalysis.Common 4.5.0 was resolved.
+  All projects are up-to-date for restore.
+/home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/tests/Orleans.GpuBridge.Hardware.Tests/Orleans.GpuBridge.Hardware.Tests.csproj : warning NU1608: Detected package version outside of dependency constraint: Microsoft.CodeAnalysis.CSharp 4.1.0 requires Microsoft.CodeAnalysis.Common (= 4.1.0) but version Microsoft.CodeAnalysis.Common 4.5.0 was resolved.
+  Orleans.GpuBridge.Abstractions -> /home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/src/Orleans.GpuBridge.Abstractions/bin/Release/net9.0/Orleans.GpuBridge.Abstractions.dll
+/usr/share/dotnet/sdk/9.0.203/Microsoft.Common.CurrentVersion.targets(2424,5): warning MSB3245: Could not resolve this reference. Could not locate the assembly "ILGPU". Check to make sure the assembly exists on disk. If this reference is required by your code, you may get compilation errors. [/home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/tests/Orleans.GpuBridge.Hardware.Tests/Orleans.GpuBridge.Hardware.Tests.csproj]
+/usr/share/dotnet/sdk/9.0.203/Microsoft.Common.CurrentVersion.targets(2424,5): warning MSB3245: Could not resolve this reference. Could not locate the assembly "ILGPU.Algorithms". Check to make sure the assembly exists on disk. If this reference is required by your code, you may get compilation errors. [/home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/tests/Orleans.GpuBridge.Hardware.Tests/Orleans.GpuBridge.Hardware.Tests.csproj]
+  Orleans.GpuBridge.Hardware.Tests -> /home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/tests/Orleans.GpuBridge.Hardware.Tests/bin/Release/net9.0/Orleans.GpuBridge.Hardware.Tests.dll
+Test run for /home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/tests/Orleans.GpuBridge.Hardware.Tests/bin/Release/net9.0/Orleans.GpuBridge.Hardware.Tests.dll (.NETCoreApp,Version=v9.0)
+VSTest version 17.13.0 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.0.0+e341b939fe (64-bit .NET 9.0.4)
+[xUnit.net 00:00:00.07]   Discovering: Orleans.GpuBridge.Hardware.Tests
+[xUnit.net 00:00:00.13]   Discovered:  Orleans.GpuBridge.Hardware.Tests
+[xUnit.net 00:00:00.17]   Starting:    Orleans.GpuBridge.Hardware.Tests
+Loaded CUDA runtime: /usr/local/cuda/lib64/libcudart.so.13.0.48
+Loaded CUDA runtime: /usr/local/cuda/lib64/libcudart.so.13.0.48
+Loaded CUDA runtime: /usr/local/cuda/lib64/libcudart.so.13.0.48
+Loaded CUDA runtime: /usr/local/cuda/lib64/libcudart.so.13.0.48
+Loaded CUDA runtime: /usr/local/cuda/lib64/libcudart.so.13.0.48
+Loaded CUDA runtime: /usr/local/cuda/lib64/libcudart.so.13.0.48
+Loaded CUDA runtime: /usr/local/cuda/lib64/libcudart.so.13.0.48
+Loaded CUDA runtime: /usr/local/cuda/lib64/libcudart.so.13.0.48
+  Passed Orleans.GpuBridge.Hardware.Tests.CudaIntegrationTests.MemoryTransfer_LargeArray_ShouldComplete [5 s]
+Loaded CUDA runtime: /usr/local/cuda/lib64/libcudart.so.13.0.48
+Loaded CUDA runtime: /usr/local/cuda/lib64/libcudart.so.13.0.48
+Loaded CUDA runtime: /usr/local/cuda/lib64/libcudart.so.13.0.48
+Loaded CUDA runtime: /usr/local/cuda/lib64/libcudart.so.13.0.48
+  Passed Orleans.GpuBridge.Hardware.Tests.CudaIntegrationTests.GpuVsCpu_Performance_Comparison [46 ms]
+[xUnit.net 00:00:10.27]     Orleans.GpuBridge.Hardware.Tests.CudaIntegrationTests.BatchExecution_OnCuda_ShouldOptimize [FAIL]
+[xUnit.net 00:00:10.27]       System.InvalidOperationException : Failed to compile CUDA kernel 'vector_add_batch'
+[xUnit.net 00:00:10.27]       ---- DotCompute.Backends.CUDA.Types.KernelCompilationException : Compilation pipeline failed for kernel 'vector_add_batch'
+[xUnit.net 00:00:10.27]       -------- System.InvalidOperationException : Failed to resolve kernel function for 'vector_add_batch' with entry point 'VectorAddKernel.Execute'
+[xUnit.net 00:00:10.27]       Stack Trace:
+[xUnit.net 00:00:10.27]            at DotCompute.Backends.CUDA.Compilation.CudaKernelCompiler.CompileAsync(KernelDefinition definition, CompilationOptions options, CancellationToken cancellationToken)
+[xUnit.net 00:00:10.27]            at DotCompute.Backends.CUDA.CudaAccelerator.CompileKernelCoreAsync(KernelDefinition definition, CompilationOptions options, CancellationToken cancellationToken)
+[xUnit.net 00:00:10.27]            at DotCompute.Abstractions.AcceleratorUtilities.CompileKernelWithLoggingAsync(KernelDefinition definition, CompilationOptions options, ILogger logger, String acceleratorType, Func`4 compileFunc, CancellationToken cancellationToken)
+[xUnit.net 00:00:10.27]         /home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/tests/Orleans.GpuBridge.Hardware.Tests/CudaIntegrationTests.cs(224,0): at Orleans.GpuBridge.Hardware.Tests.CudaIntegrationTests.BatchExecution_OnCuda_ShouldOptimize()
+[xUnit.net 00:00:10.27]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:10.27]         ----- Inner Stack Trace -----
+[xUnit.net 00:00:10.27]            at DotCompute.Backends.CUDA.Compilation.CudaCompilationPipeline.CompileKernelAsync(KernelDefinition definition, CompilationOptions options, CancellationToken cancellationToken)
+[xUnit.net 00:00:10.27]            at DotCompute.Backends.CUDA.Compilation.CudaKernelCompiler.CompileAsync(KernelDefinition definition, CompilationOptions options, CancellationToken cancellationToken)
+[xUnit.net 00:00:10.27]         ----- Inner Stack Trace -----
+[xUnit.net 00:00:10.27]            at DotCompute.Backends.CUDA.Compilation.CudaCompiledKernel.LoadModule()
+[xUnit.net 00:00:10.27]            at DotCompute.Backends.CUDA.Compilation.CudaCompiledKernel..ctor(CudaContext context, String name, String entryPoint, Byte[] ptxData, CompilationOptions options, ILogger logger)
+[xUnit.net 00:00:10.27]            at DotCompute.Backends.CUDA.Compilation.CudaCompilationPipeline.CompileKernelAsync(KernelDefinition definition, CompilationOptions options, CancellationToken cancellationToken)
+[xUnit.net 00:00:10.27]       Output:
+[xUnit.net 00:00:10.27]         ✅ CUDA runtime detected and accelerator initialized
+[xUnit.net 00:00:10.27]         📋 Executing BatchExecution_OnCuda with real GPU kernel
+[xUnit.net 00:00:10.27]            Batch size: 100 operations
+[xUnit.net 00:00:10.27]            Vector size: 500 elements each
+[xUnit.net 00:00:10.27]            Total operations: 50,000
+[xUnit.net 00:00:10.27]            GPU: NVIDIA RTX 2000 Ada Generation Laptop GPU
+[xUnit.net 00:00:10.27]         ✅ CUDA integration tests completed
+  Failed Orleans.GpuBridge.Hardware.Tests.CudaIntegrationTests.BatchExecution_OnCuda_ShouldOptimize [4 s]
+  Error Message:
+   System.InvalidOperationException : Failed to compile CUDA kernel 'vector_add_batch'
+---- DotCompute.Backends.CUDA.Types.KernelCompilationException : Compilation pipeline failed for kernel 'vector_add_batch'
+-------- System.InvalidOperationException : Failed to resolve kernel function for 'vector_add_batch' with entry point 'VectorAddKernel.Execute'
+  Stack Trace:
+     at DotCompute.Backends.CUDA.Compilation.CudaKernelCompiler.CompileAsync(KernelDefinition definition, CompilationOptions options, CancellationToken cancellationToken)
+   at DotCompute.Backends.CUDA.CudaAccelerator.CompileKernelCoreAsync(KernelDefinition definition, CompilationOptions options, CancellationToken cancellationToken)
+   at DotCompute.Abstractions.AcceleratorUtilities.CompileKernelWithLoggingAsync(KernelDefinition definition, CompilationOptions options, ILogger logger, String acceleratorType, Func`4 compileFunc, CancellationToken cancellationToken)
+   at Orleans.GpuBridge.Hardware.Tests.CudaIntegrationTests.BatchExecution_OnCuda_ShouldOptimize() in /home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/tests/Orleans.GpuBridge.Hardware.Tests/CudaIntegrationTests.cs:line 224
+--- End of stack trace from previous location ---
+----- Inner Stack Trace -----
+   at DotCompute.Backends.CUDA.Compilation.CudaCompilationPipeline.CompileKernelAsync(KernelDefinition definition, CompilationOptions options, CancellationToken cancellationToken)
+   at DotCompute.Backends.CUDA.Compilation.CudaKernelCompiler.CompileAsync(KernelDefinition definition, CompilationOptions options, CancellationToken cancellationToken)
+----- Inner Stack Trace -----
+   at DotCompute.Backends.CUDA.Compilation.CudaCompiledKernel.LoadModule()
+   at DotCompute.Backends.CUDA.Compilation.CudaCompiledKernel..ctor(CudaContext context, String name, String entryPoint, Byte[] ptxData, CompilationOptions options, ILogger logger)
+   at DotCompute.Backends.CUDA.Compilation.CudaCompilationPipeline.CompileKernelAsync(KernelDefinition definition, CompilationOptions options, CancellationToken cancellationToken)
+  Standard Output Messages:
+ ✅ CUDA runtime detected and accelerator initialized
+ 📋 Executing BatchExecution_OnCuda with real GPU kernel
+    Batch size: 100 operations
+    Vector size: 500 elements each
+    Total operations: 50,000
+    GPU: NVIDIA RTX 2000 Ada Generation Laptop GPU
+ ✅ CUDA integration tests completed
+
+
+[xUnit.net 00:00:10.41]   Finished:    Orleans.GpuBridge.Hardware.Tests
+  Passed Orleans.GpuBridge.Hardware.Tests.CudaIntegrationTests.VectorMultiplication_OnCuda_ShouldExecuteCorrectly [58 ms]
+  Passed Orleans.GpuBridge.Hardware.Tests.CudaIntegrationTests.ConcurrentAllocations_ShouldBeThreadSafe [36 ms]
+  Passed Orleans.GpuBridge.Hardware.Tests.CudaIntegrationTests.VectorAddition_OnCuda_ShouldExecuteCorrectly [47 ms]
+
+Test Run Failed.
+Total tests: 6
+     Passed: 5
+     Failed: 1
+ Total time: 11.0197 Seconds

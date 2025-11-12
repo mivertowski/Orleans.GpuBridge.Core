@@ -3,6 +3,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using DotCompute.Abstractions;
+using DotCompute.Abstractions.Kernels;
+using DotCompute.Abstractions.Kernels.Types;
+using DotCompute.Abstractions.Types;
+using DotCompute.Backends.CUDA;
+using DotCompute.Backends.CUDA.Configuration;
+using DotCompute.Core.Extensions;
 using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
@@ -14,14 +21,19 @@ namespace Orleans.GpuBridge.Hardware.Tests;
 /// Tests vector operations, batch processing, memory transfers, and performance comparisons.
 /// All tests skip gracefully if CUDA is unavailable.
 ///
-/// NOTE: These tests require DotCompute CUDA backend integration to be completed.
-/// They serve as a specification for the expected functionality.
+/// Executes real CUDA kernels via DotCompute on RTX GPU hardware.
 /// </summary>
 public class CudaIntegrationTests : IDisposable
 {
     private readonly ITestOutputHelper _output;
     private readonly bool _isCudaAvailable;
+    private static IAccelerator? _cudaAccelerator;
+    private static readonly object _initLock = new();
 
+    /// <summary>
+    /// Initializes test fixture with CUDA accelerator if available.
+    /// </summary>
+    /// <param name="output">xUnit test output helper</param>
     public CudaIntegrationTests(ITestOutputHelper output)
     {
         _output = output;
@@ -29,13 +41,67 @@ public class CudaIntegrationTests : IDisposable
 
         if (_isCudaAvailable)
         {
-            _output.WriteLine("✅ CUDA runtime detected");
+            InitializeCudaAccelerator();
+            _output.WriteLine("✅ CUDA runtime detected and accelerator initialized");
         }
         else
         {
             _output.WriteLine("⚠️ CUDA runtime not detected - tests will be skipped");
         }
     }
+
+    /// <summary>
+    /// Initialize CUDA accelerator (thread-safe, called once).
+    /// </summary>
+    private void InitializeCudaAccelerator()
+    {
+        lock (_initLock)
+        {
+            if (_cudaAccelerator != null)
+                return;
+
+            try
+            {
+                // Create CUDA accelerator using DotCompute CUDA backend
+                _cudaAccelerator = new CudaAccelerator();
+                _output.WriteLine($"✅ CUDA Accelerator: {_cudaAccelerator.Info.Name}");
+                _output.WriteLine($"   Type: {_cudaAccelerator.Type}");
+                _output.WriteLine($"   Compute Units: {_cudaAccelerator.Info.MaxComputeUnits}");
+            }
+            catch (Exception ex)
+            {
+                _output.WriteLine($"⚠️ Failed to initialize CUDA accelerator: {ex.Message}");
+            }
+        }
+    }
+
+    #region Kernel Source Code
+
+    /// <summary>
+    /// CUDA kernel source for vector addition: result[i] = a[i] + b[i]
+    /// Uses CUDA C++ syntax with __global__ attribute and CUDA threading model.
+    /// </summary>
+    private const string VectorAddKernelSource = @"
+extern ""C"" __global__ void vectorAdd(float* a, float* b, float* result, int size) {
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    if (idx < size) {
+        result[idx] = a[idx] + b[idx];
+    }
+}";
+
+    /// <summary>
+    /// CUDA kernel source for vector multiplication: result[i] = a[i] * b[i]
+    /// Uses CUDA C++ syntax with __global__ attribute and CUDA threading model.
+    /// </summary>
+    private const string VectorMultiplyKernelSource = @"
+extern ""C"" __global__ void vectorMultiply(float* a, float* b, float* result, int size) {
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    if (idx < size) {
+        result[idx] = a[idx] * b[idx];
+    }
+}";
+
+    #endregion
 
     /// <summary>
     /// Tests vector addition kernel on CUDA hardware with actual GPU execution.
@@ -45,7 +111,7 @@ public class CudaIntegrationTests : IDisposable
     [SkippableFact]
     public async Task VectorAddition_OnCuda_ShouldExecuteCorrectly()
     {
-        Skip.If(!_isCudaAvailable, "CUDA accelerator not available");
+        Skip.If(!_isCudaAvailable || _cudaAccelerator == null, "CUDA accelerator not available");
 
         // Arrange
         const int size = 1000;
@@ -53,26 +119,15 @@ public class CudaIntegrationTests : IDisposable
         var b = Enumerable.Range(0, size).Select(i => (float)(i * 2)).ToArray();
         var expected = a.Zip(b, (x, y) => x + y).ToArray();
 
-        // TODO: Create DotCompute CUDA kernel when backend is integrated
-        // var kernel = CreateCudaVectorAddKernel();
-        // await kernel.InitializeAsync();
-
-        _output.WriteLine($"📋 Test specification for VectorAddition_OnCuda");
+        _output.WriteLine($"📋 Executing VectorAddition_OnCuda with real GPU kernel");
         _output.WriteLine($"   Input A: {size} floats (0, 1, 2, ..., {size - 1})");
         _output.WriteLine($"   Input B: {size} floats (0, 2, 4, ..., {(size - 1) * 2})");
         _output.WriteLine($"   Expected: Element-wise addition A + B");
-        _output.WriteLine($"   GPU: CUDA accelerator");
-        _output.WriteLine($"   Expected latency: <100μs for {size} elements");
+        _output.WriteLine($"   GPU: {_cudaAccelerator!.Info.Name}");
 
-        // Act - When DotCompute CUDA backend is available
-        // var sw = Stopwatch.StartNew();
-        // var result = await kernel.ExecuteAsync(a, CancellationToken.None);
-        // sw.Stop();
-
-        // Simulate expected behavior for specification purposes
-        var result = SimulateCudaVectorAdd(a, b);
+        // Act - Execute real CUDA kernel
         var sw = Stopwatch.StartNew();
-        await Task.Delay(1); // Simulate async GPU execution
+        var result = await ExecuteCudaVectorAddAsync(a, b, size);
         sw.Stop();
 
         // Assert
@@ -82,8 +137,8 @@ public class CudaIntegrationTests : IDisposable
 
         _output.WriteLine($"✅ VectorAddition correctness verified");
         _output.WriteLine($"   Vector size: {size} elements");
-        _output.WriteLine($"   Expected execution time: <100 μs");
-        _output.WriteLine($"   Expected throughput: >{size / 0.1:F2} ops/ms");
+        _output.WriteLine($"   Actual execution time: {sw.Elapsed.TotalMicroseconds:F2} μs");
+        _output.WriteLine($"   Throughput: {size / sw.Elapsed.TotalMilliseconds:F2} ops/ms");
     }
 
     /// <summary>
@@ -93,7 +148,7 @@ public class CudaIntegrationTests : IDisposable
     [SkippableFact]
     public async Task VectorMultiplication_OnCuda_ShouldExecuteCorrectly()
     {
-        Skip.If(!_isCudaAvailable, "CUDA accelerator not available");
+        Skip.If(!_isCudaAvailable || _cudaAccelerator == null, "CUDA accelerator not available");
 
         // Arrange
         const int size = 1000;
@@ -101,15 +156,16 @@ public class CudaIntegrationTests : IDisposable
         var b = Enumerable.Range(1, size).Select(i => (float)(i + 1)).ToArray();
         var expected = a.Zip(b, (x, y) => x * y).ToArray();
 
-        _output.WriteLine($"📋 Test specification for VectorMultiplication_OnCuda");
+        _output.WriteLine($"📋 Executing VectorMultiplication_OnCuda with real GPU kernel");
         _output.WriteLine($"   Input A: {size} floats (1, 2, 3, ..., {size})");
         _output.WriteLine($"   Input B: {size} floats (2, 3, 4, ..., {size + 1})");
         _output.WriteLine($"   Expected: Element-wise multiplication A * B");
-        _output.WriteLine($"   Expected latency: <100μs");
+        _output.WriteLine($"   GPU: {_cudaAccelerator!.Info.Name}");
 
-        // Act - Simulate until backend is available
-        var result = SimulateCudaVectorMultiply(a, b);
-        await Task.Delay(1);
+        // Act - Execute real CUDA kernel
+        var sw = Stopwatch.StartNew();
+        var result = await ExecuteCudaVectorMultiplyAsync(a, b, size);
+        sw.Stop();
 
         // Assert
         result.Should().NotBeNull();
@@ -117,6 +173,8 @@ public class CudaIntegrationTests : IDisposable
         result.Should().BeEquivalentTo(expected, options => options.WithStrictOrdering());
 
         _output.WriteLine($"✅ VectorMultiplication correctness verified");
+        _output.WriteLine($"   Actual execution time: {sw.Elapsed.TotalMicroseconds:F2} μs");
+        _output.WriteLine($"   Throughput: {size / sw.Elapsed.TotalMilliseconds:F2} ops/ms");
     }
 
     /// <summary>
@@ -127,48 +185,48 @@ public class CudaIntegrationTests : IDisposable
     [SkippableFact]
     public async Task BatchExecution_OnCuda_ShouldOptimize()
     {
-        Skip.If(!_isCudaAvailable, "CUDA accelerator not available");
+        Skip.If(!_isCudaAvailable || _cudaAccelerator == null, "CUDA accelerator not available");
 
         // Arrange
         const int batchSize = 100;
         const int vectorSize = 500;
 
-        _output.WriteLine($"📋 Test specification for BatchExecution_OnCuda");
+        _output.WriteLine($"📋 Executing BatchExecution_OnCuda with real GPU kernel");
         _output.WriteLine($"   Batch size: {batchSize} operations");
         _output.WriteLine($"   Vector size: {vectorSize} elements each");
         _output.WriteLine($"   Total operations: {batchSize * vectorSize:N0}");
-        _output.WriteLine($"   Expected: Batch mode 2-10x faster than sequential");
-        _output.WriteLine($"   Reason: Amortized kernel launch overhead");
+        _output.WriteLine($"   GPU: {_cudaAccelerator!.Info.Name}");
 
         // Create batch inputs
         var batchInputs = Enumerable.Range(0, batchSize)
             .Select(i => Enumerable.Range(0, vectorSize).Select(j => (float)(i + j)).ToArray())
             .ToArray();
 
-        // Act - Sequential simulation
+        // Act - Sequential execution with real GPU kernels
         var sequentialSw = Stopwatch.StartNew();
         var sequentialResults = new float[batchSize][];
         for (int i = 0; i < batchSize; i++)
         {
-            sequentialResults[i] = SimulateCudaVectorAdd(
+            sequentialResults[i] = await ExecuteCudaVectorAddAsync(
                 batchInputs[i],
-                batchInputs[i]
+                batchInputs[i],
+                vectorSize
             );
-            await Task.Delay(TimeSpan.FromMicroseconds(100)); // Simulate 100μs per kernel launch
         }
         sequentialSw.Stop();
 
-        // Act - Batch simulation (optimized)
+        // Act - Batch execution (optimized with kernel reuse)
         var batchSw = Stopwatch.StartNew();
         var batchResults = new float[batchSize][];
+
+        // Compile kernel once, execute multiple times
+        var kernelDef = new KernelDefinition("vector_add_batch", VectorAddKernelSource, "vectorAdd");
+        var compiledKernel = await _cudaAccelerator!.CompileKernelAsync(kernelDef, CompilationOptions.Default);
+
         for (int i = 0; i < batchSize; i++)
         {
-            batchResults[i] = SimulateCudaVectorAdd(
-                batchInputs[i],
-                batchInputs[i]
-            );
+            batchResults[i] = await ExecuteCompiledVectorAddAsync(compiledKernel, batchInputs[i], batchInputs[i], vectorSize);
         }
-        await Task.Delay(TimeSpan.FromMicroseconds(500)); // Single kernel launch + batch execution
         batchSw.Stop();
 
         // Assert
@@ -181,12 +239,14 @@ public class CudaIntegrationTests : IDisposable
 
         _output.WriteLine($"✅ Batch execution performance comparison");
         _output.WriteLine($"   Sequential time: {sequentialTimeMs:F2} ms");
-        _output.WriteLine($"   Batch time: {batchTimeMs:F2} ms");
+        _output.WriteLine($"   Batch time (kernel reuse): {batchTimeMs:F2} ms");
         _output.WriteLine($"   Speedup: {speedup:F2}x");
-        _output.WriteLine($"   Expected speedup in real implementation: 2-10x");
 
-        // Batch should be significantly faster
+        // Batch should be faster due to kernel reuse
         batchTimeMs.Should().BeLessThan(sequentialTimeMs);
+
+        // Cleanup
+        compiledKernel.Dispose();
     }
 
     /// <summary>
@@ -385,36 +445,135 @@ public class CudaIntegrationTests : IDisposable
     }
 
     /// <summary>
-    /// Simulates CUDA vector addition for testing purposes.
-    /// Replace with actual DotCompute CUDA kernel when backend is integrated.
+    /// Executes CUDA vector addition kernel on real GPU hardware.
     /// </summary>
-    private float[] SimulateCudaVectorAdd(float[] a, float[] b)
+    /// <param name="a">First input vector</param>
+    /// <param name="b">Second input vector</param>
+    /// <param name="size">Vector size</param>
+    /// <returns>Result vector</returns>
+    private async Task<float[]> ExecuteCudaVectorAddAsync(float[] a, float[] b, int size)
     {
-        var result = new float[a.Length];
-        for (int i = 0; i < a.Length; i++)
+        if (_cudaAccelerator == null)
+            throw new InvalidOperationException("CUDA accelerator not initialized");
+
+        // Create kernel definition with correct CUDA function name
+        var kernelDef = new KernelDefinition("vectorAdd", VectorAddKernelSource, "vectorAdd");
+
+        // Compile kernel
+        var compiledKernel = await _cudaAccelerator.CompileKernelAsync(kernelDef, CompilationOptions.Default);
+
+        try
         {
-            result[i] = a[i] + b[i];
+            return await ExecuteCompiledVectorAddAsync(compiledKernel, a, b, size);
         }
-        return result;
+        finally
+        {
+            compiledKernel.Dispose();
+        }
     }
 
     /// <summary>
-    /// Simulates CUDA vector multiplication for testing purposes.
+    /// Executes CUDA vector multiplication kernel on real GPU hardware.
     /// </summary>
-    private float[] SimulateCudaVectorMultiply(float[] a, float[] b)
+    /// <param name="a">First input vector</param>
+    /// <param name="b">Second input vector</param>
+    /// <param name="size">Vector size</param>
+    /// <returns>Result vector</returns>
+    private async Task<float[]> ExecuteCudaVectorMultiplyAsync(float[] a, float[] b, int size)
     {
-        var result = new float[a.Length];
-        for (int i = 0; i < a.Length; i++)
+        if (_cudaAccelerator == null)
+            throw new InvalidOperationException("CUDA accelerator not initialized");
+
+        // Create kernel definition with correct CUDA function name
+        var kernelDef = new KernelDefinition("vectorMultiply", VectorMultiplyKernelSource, "vectorMultiply");
+
+        // Compile kernel
+        var compiledKernel = await _cudaAccelerator.CompileKernelAsync(kernelDef, CompilationOptions.Default);
+
+        try
         {
-            result[i] = a[i] * b[i];
+            // Allocate GPU memory
+            await using var bufferA = await _cudaAccelerator.Memory.AllocateAsync<float>(size);
+            await using var bufferB = await _cudaAccelerator.Memory.AllocateAsync<float>(size);
+            await using var bufferResult = await _cudaAccelerator.Memory.AllocateAsync<float>(size);
+
+            // Copy host -> device using CopyFromAsync from abstractions
+            await bufferA.CopyFromAsync(a.AsMemory());
+            await bufferB.CopyFromAsync(b.AsMemory());
+
+            // Configure launch parameters (1D grid)
+            const int blockSize = 256;
+            var gridSize = (size + blockSize - 1) / blockSize;
+            var launchConfig = new LaunchConfiguration
+            {
+                GridSize = new Dim3(gridSize),
+                BlockSize = new Dim3(blockSize)
+            };
+
+            // Execute kernel using extension method from DotCompute.Core.Extensions
+            await compiledKernel.LaunchAsync<float>(launchConfig, bufferA, bufferB, bufferResult, size);
+            await _cudaAccelerator.SynchronizeAsync();
+
+            // Copy device -> host using CopyToAsync from abstractions
+            var result = new float[size];
+            await bufferResult.CopyToAsync(result.AsMemory());
+
+            return result;
         }
+        finally
+        {
+            compiledKernel.Dispose();
+        }
+    }
+
+    /// <summary>
+    /// Executes an already-compiled vector addition kernel (for batch optimization).
+    /// </summary>
+    private async Task<float[]> ExecuteCompiledVectorAddAsync(ICompiledKernel compiledKernel, float[] a, float[] b, int size)
+    {
+        if (_cudaAccelerator == null)
+            throw new InvalidOperationException("CUDA accelerator not initialized");
+
+        // Allocate GPU memory
+        await using var bufferA = await _cudaAccelerator.Memory.AllocateAsync<float>(size);
+        await using var bufferB = await _cudaAccelerator.Memory.AllocateAsync<float>(size);
+        await using var bufferResult = await _cudaAccelerator.Memory.AllocateAsync<float>(size);
+
+        // Copy host -> device using CopyFromAsync from abstractions
+        await bufferA.CopyFromAsync(a.AsMemory());
+        await bufferB.CopyFromAsync(b.AsMemory());
+
+        // Configure launch parameters (1D grid)
+        const int blockSize = 256;
+        var gridSize = (size + blockSize - 1) / blockSize;
+        var launchConfig = new LaunchConfiguration
+        {
+            GridSize = new Dim3(gridSize),
+            BlockSize = new Dim3(blockSize)
+        };
+
+        // Execute kernel using extension method from DotCompute.Core.Extensions
+        await compiledKernel.LaunchAsync<float>(launchConfig, bufferA, bufferB, bufferResult, size);
+        await _cudaAccelerator.SynchronizeAsync();
+
+        // Copy device -> host using CopyToAsync from abstractions
+        var result = new float[size];
+        await bufferResult.CopyToAsync(result.AsMemory());
+
         return result;
     }
 
     #endregion
 
+    /// <summary>
+    /// Dispose test resources and clean up CUDA accelerator.
+    /// </summary>
     public void Dispose()
     {
         _output.WriteLine("✅ CUDA integration tests completed");
+
+        // Note: _cudaAccelerator is static and shared across all tests
+        // It will be cleaned up when the test runner exits
+        // Individual tests are responsible for cleaning up their own GPU allocations
     }
 }

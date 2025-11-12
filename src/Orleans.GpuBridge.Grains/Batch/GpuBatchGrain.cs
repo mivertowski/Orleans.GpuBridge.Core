@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Concurrency;
 using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Abstractions.Kernels;
 using Orleans.GpuBridge.Runtime;
 
 namespace Orleans.GpuBridge.Grains.Batch;
@@ -118,21 +119,15 @@ public sealed class GpuBatchGrain<TIn, TOut> : Grain, IGpuBatchGrain<TIn, TOut>
             var memoryTransferTime = TimeSpan.FromMilliseconds(
                 Math.Max(1, memoryAllocated / (1024 * 1024))); // 1ms per MB
 
-            // Submit batch to kernel
-            var handle = await _kernel.SubmitBatchAsync(batch, hints);
-
-            // Collect results
-            var results = new List<TOut>();
-            await foreach (var result in _kernel.ReadResultsAsync(handle))
-            {
-                results.Add(result);
-            }
+            // Execute batch using new API
+            var batchArray = batch.ToArray();
+            var results = await _kernel.ExecuteBatchAsync(batchArray);
 
             stopwatch.Stop();
 
             _logger.LogInformation(
-                "Executed batch of {Count} items in {ElapsedMs}ms ({SubBatches} sub-batches)",
-                batch.Count, stopwatch.ElapsedMilliseconds, subBatchCount);
+                "Executed batch of {Count} items in {ElapsedMs}ms ({SubBatches} sub-batches, {ResultCount} results)",
+                batch.Count, stopwatch.ElapsedMilliseconds, subBatchCount, results.Length);
 
             // Calculate kernel execution time (total time minus transfer time)
             var kernelTime = stopwatch.Elapsed - memoryTransferTime;
@@ -153,9 +148,9 @@ public sealed class GpuBatchGrain<TIn, TOut> : Grain, IGpuBatchGrain<TIn, TOut>
                 DeviceName: "CPU Fallback");
 
             return new GpuBatchResult<TOut>(
-                results,
+                results.ToList(),
                 stopwatch.Elapsed,
-                handle.Id,
+                Guid.NewGuid().ToString(),
                 _kernelId,
                 Error: null,
                 Metrics: metrics);

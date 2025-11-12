@@ -188,105 +188,79 @@ internal sealed class MockGpuBridge : IGpuBridge
 /// Simulates GPU kernel execution using CPU operations.
 /// Thread-safe for concurrent pipeline execution.
 /// </summary>
-internal sealed class MockGpuKernel<TIn, TOut> : IGpuKernel<TIn, TOut>
+internal sealed class MockGpuKernel<TIn, TOut> : GpuKernelBase<TIn, TOut>
     where TIn : notnull
     where TOut : notnull
 {
     private readonly KernelId _kernelId;
-    private readonly ConcurrentDictionary<string, IReadOnlyList<TIn>> _batches = new();
 
     public MockGpuKernel(KernelId kernelId)
     {
         _kernelId = kernelId;
     }
 
-    public async ValueTask<KernelHandle> SubmitBatchAsync(
-        IReadOnlyList<TIn> batch,
-        GpuExecutionHints? hints = null,
-        CancellationToken cancellationToken = default)
+    public override string KernelId => _kernelId.Value;
+    public override string BackendProvider => "Mock";
+    public override bool IsGpuAccelerated => false;
+
+    public override Task InitializeAsync(CancellationToken cancellationToken = default)
+    {
+        // Mock initialization is instant
+        return base.InitializeAsync(cancellationToken);
+    }
+
+    public override async Task<TOut> ExecuteAsync(TIn input, CancellationToken cancellationToken = default)
     {
         // Simulate async GPU work
         await Task.Delay(10, cancellationToken);
 
-        var handle = KernelHandle.Create();
-        _batches[handle.Id] = batch;
-
-        return handle;
-    }
-
-    public async IAsyncEnumerable<TOut> ReadResultsAsync(
-        KernelHandle handle,
-        [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken = default)
-    {
-        // Simulate reading results
-        await Task.Delay(5, cancellationToken);
-
-        // Retrieve the batch associated with this handle
-        if (!_batches.TryGetValue(handle.Id, out var batch))
+        // Mock result creation based on output type
+        if (typeof(TOut) == typeof(float))
         {
-            throw new ArgumentException($"Invalid kernel handle: {handle.Id}", nameof(handle));
-        }
-
-        try
-        {
-            // For testing, return one result per input item
-            // This matches the expected 1:1 mapping for most GPU kernels
-            for (int i = 0; i < batch.Count; i++)
+            if (typeof(TIn) == typeof(float) && input is float inputValue)
             {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                // Mock result creation based on output type
-                // For float results, return mock values (simulate x * 2)
-                if (typeof(TOut) == typeof(float))
-                {
-                    if (typeof(TIn) == typeof(float) && batch[i] is float inputValue)
-                    {
-                        // Simulate a simple transformation: input * 2
-                        yield return (TOut)(object)(inputValue * 2.0f);
-                    }
-                    else
-                    {
-                        // If input type is not float, use index-based value
-                        yield return (TOut)(object)(i * 2.0f);
-                    }
-                }
-                else if (typeof(TOut) == typeof(int))
-                {
-                    if (typeof(TIn) == typeof(int) && batch[i] is int inputIntValue)
-                    {
-                        yield return (TOut)(object)(inputIntValue * 2);
-                    }
-                    else
-                    {
-                        yield return (TOut)(object)(i * 2);
-                    }
-                }
-                else
-                {
-                    // For other types, try to create default instance
-                    yield return default!;
-                }
+                return (TOut)(object)(inputValue * 2.0f);
             }
+            return (TOut)(object)1.0f;
         }
-        finally
+        else if (typeof(TOut) == typeof(int))
         {
-            // Clean up the batch after reading results
-            // Use TryRemove to handle thread-safe removal
-            _batches.TryRemove(handle.Id, out _);
+            if (typeof(TIn) == typeof(int) && input is int inputIntValue)
+            {
+                return (TOut)(object)(inputIntValue * 2);
+            }
+            return (TOut)(object)1;
         }
+
+        return default!;
     }
 
-    public ValueTask<KernelInfo> GetInfoAsync(CancellationToken ct = default)
+    public override async Task<TOut[]> ExecuteBatchAsync(TIn[] inputs, CancellationToken cancellationToken = default)
     {
-        var info = new KernelInfo(
-            Id: _kernelId,
-            Description: "Mock GPU kernel for testing",
-            InputType: typeof(TIn),
-            OutputType: typeof(TOut),
-            SupportsGpu: false, // CPU fallback for testing
-            PreferredBatchSize: 128,
-            Metadata: null);
+        // Simulate async GPU work
+        await Task.Delay(10, cancellationToken);
 
-        return ValueTask.FromResult(info);
+        var results = new TOut[inputs.Length];
+        for (int i = 0; i < inputs.Length; i++)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            results[i] = await ExecuteAsync(inputs[i], cancellationToken);
+        }
+
+        return results;
+    }
+
+    public override long GetEstimatedExecutionTimeMicroseconds(int inputSize)
+    {
+        return inputSize * 10; // ~10μs per item
+    }
+
+    public override KernelMemoryRequirements GetMemoryRequirements()
+    {
+        return new KernelMemoryRequirements(
+            InputMemoryBytes: 1024,
+            OutputMemoryBytes: 1024,
+            WorkingMemoryBytes: 512,
+            TotalMemoryBytes: 2560);
     }
 }

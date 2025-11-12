@@ -1,111 +1,127 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using Orleans.GpuBridge.Abstractions;
 using Orleans.GpuBridge.Abstractions.Kernels;
 
 namespace Orleans.GpuBridge.Runtime;
 
 /// <summary>
-/// CPU-based vector addition kernel that processes pairs of float arrays
+/// CPU-based vector addition kernel that processes float arrays
 /// and returns their element-wise sum. Used for testing and CPU fallback scenarios.
 /// </summary>
-public sealed class CpuVectorAddKernel : IGpuKernel<float[], float>
+public sealed class CpuVectorAddKernel : GpuKernelBase<float[], float>
 {
-    private readonly Dictionary<string, IReadOnlyList<float[]>> _batches = new();
+    /// <summary>
+    /// Kernel unique identifier
+    /// </summary>
+    public override string KernelId => "cpu-vector-add";
 
     /// <summary>
-    /// Executes vector addition on two float arrays, returning the sum of all element-wise additions.
+    /// Kernel display name
     /// </summary>
-    /// <param name="a">First vector.</param>
-    /// <param name="b">Second vector.</param>
-    /// <returns>The sum of element-wise additions.</returns>
-    public static float Execute(float[] a, float[] b)
+    public override string DisplayName => "CPU Vector Addition Kernel";
+
+    /// <summary>
+    /// Backend provider name
+    /// </summary>
+    public override string BackendProvider => "CPU";
+
+    /// <summary>
+    /// Whether kernel uses GPU acceleration (always false for CPU)
+    /// </summary>
+    public override bool IsGpuAccelerated => false;
+
+    /// <summary>
+    /// Executes vector addition on a float array, returning the sum of all elements.
+    /// </summary>
+    /// <param name="input">Input vector (float array).</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The sum of all elements.</returns>
+    public override async Task<float> ExecuteAsync(float[] input, CancellationToken cancellationToken = default)
     {
-        var n = Math.Min(a.Length, b.Length);
-        var sum = 0f;
-        for (int i = 0; i < n; i++)
-            sum += a[i] + b[i];
-        return sum;
+        EnsureInitialized();
+        EnsureNotDisposed();
+
+        // Execute computation asynchronously for large vectors
+        return await Task.Run(() =>
+        {
+            float sum = 0f;
+            for (int i = 0; i < input.Length; i++)
+            {
+                sum += input[i];
+            }
+            return sum;
+        }, cancellationToken).ConfigureAwait(false);
     }
 
     /// <summary>
-    /// Submits a batch of float arrays for vector addition processing.
-    /// Arrays are processed in pairs.
+    /// Execute vector addition for batch of inputs (optimized for CPU).
     /// </summary>
-    /// <param name="items">The float arrays to process.</param>
-    /// <param name="hints">Optional execution hints (ignored for CPU execution).</param>
-    /// <param name="ct">Cancellation token.</param>
-    /// <returns>A handle to retrieve results.</returns>
-    public ValueTask<KernelHandle> SubmitBatchAsync(
-        IReadOnlyList<float[]> items,
-        GpuExecutionHints? hints = null,
-        CancellationToken ct = default)
+    /// <param name="inputs">Array of input vectors.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Array of sums (one per input vector).</returns>
+    public override async Task<float[]> ExecuteBatchAsync(float[][] inputs, CancellationToken cancellationToken = default)
     {
-        var handle = KernelHandle.Create();
-        _batches[handle.Id] = items;
-        return new(handle);
+        EnsureInitialized();
+        EnsureNotDisposed();
+
+        var results = new float[inputs.Length];
+
+        // Process in parallel on CPU for better throughput
+        await Task.Run(() =>
+        {
+            Parallel.For(0, inputs.Length, new ParallelOptions
+            {
+                CancellationToken = cancellationToken,
+                MaxDegreeOfParallelism = Environment.ProcessorCount
+            }, i =>
+            {
+                float sum = 0f;
+                for (int j = 0; j < inputs[i].Length; j++)
+                {
+                    sum += inputs[i][j];
+                }
+                results[i] = sum;
+            });
+        }, cancellationToken).ConfigureAwait(false);
+
+        return results;
     }
 
     /// <summary>
-    /// Reads results asynchronously from a previously submitted batch.
-    /// Processes arrays in pairs and returns the sum of each pair.
-    /// If an odd number of arrays is provided, the last array's sum is returned.
+    /// Get estimated execution time for input size.
+    /// CPU vector addition is ~1μs per 1000 elements.
     /// </summary>
-    /// <param name="handle">The batch handle.</param>
-    /// <param name="ct">Cancellation token.</param>
-    /// <returns>An async enumerable of results.</returns>
-    public async IAsyncEnumerable<float> ReadResultsAsync(
-        KernelHandle handle,
-        [EnumeratorCancellation] CancellationToken ct = default)
+    public override long GetEstimatedExecutionTimeMicroseconds(int inputSize)
     {
-        await Task.Yield(); // Ensure async
-        if (!_batches.TryGetValue(handle.Id, out var items))
-        {
-            yield break;
-        }
-
-        // Process pairs of vectors asynchronously for large datasets
-        for (int i = 0; i < items.Count - 1; i += 2)
-        {
-            ct.ThrowIfCancellationRequested();
-
-            var a = items[i];
-            var b = items[i + 1];
-
-            // Execute computation asynchronously for large vectors
-            var result = await Task.Run(() => Execute(a, b), ct).ConfigureAwait(false);
-            yield return result;
-        }
-
-        // If odd number of items, return sum of last vector
-        if (items.Count % 2 == 1)
-        {
-            var lastVector = items[items.Count - 1];
-            var sum = await Task.Run(() => lastVector.Sum(), ct).ConfigureAwait(false);
-            yield return sum;
-        }
-
-        // Clean up the batch after processing
-        _batches.Remove(handle.Id);
+        // ~1μs per 1000 elements for vector addition on CPU
+        return Math.Max(1, inputSize / 1000);
     }
 
     /// <summary>
-    /// Gets information about this kernel.
+    /// Get memory requirements for vector addition.
     /// </summary>
-    /// <param name="ct">Cancellation token.</param>
-    /// <returns>Kernel information.</returns>
-    public ValueTask<KernelInfo> GetInfoAsync(CancellationToken ct = default)
+    public override KernelMemoryRequirements GetMemoryRequirements()
     {
-        return new(new KernelInfo(
-            new KernelId("cpu-vector-add"),
-            "CPU vector addition kernel",
-            typeof(float[]),
-            typeof(float),
-            false,
-            1024));
+        return new KernelMemoryRequirements(
+            InputMemoryBytes: 4096,  // Assume 1024 floats (4KB)
+            OutputMemoryBytes: 4,    // Single float result
+            WorkingMemoryBytes: 0,   // No working memory
+            TotalMemoryBytes: 4100);
+    }
+
+    /// <summary>
+    /// Validate input vector.
+    /// </summary>
+    public override KernelValidationResult ValidateInput(float[] input)
+    {
+        if (input == null)
+            return KernelValidationResult.Invalid("Input vector cannot be null");
+
+        if (input.Length == 0)
+            return KernelValidationResult.Invalid("Input vector cannot be empty");
+
+        return KernelValidationResult.Valid();
     }
 }

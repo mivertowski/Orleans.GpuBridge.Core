@@ -12,141 +12,272 @@ public class KernelInterfacesTests
     #region IGpuKernel Tests
 
     [Fact]
-    public async Task IGpuKernel_SubmitBatchAsync_WithValidItems_ReturnsHandle()
+    public void IGpuKernel_Properties_ReturnExpectedValues()
     {
         // Arrange
         var mockKernel = new Mock<IGpuKernel<int, int>>();
-        var expectedHandle = new KernelHandle("test-kernel", DateTimeOffset.UtcNow);
-        var items = new List<int> { 1, 2, 3 };
-
-        mockKernel
-            .Setup(k => k.SubmitBatchAsync(It.IsAny<IReadOnlyList<int>>(), null, default))
-            .ReturnsAsync(expectedHandle);
+        mockKernel.Setup(k => k.KernelId).Returns("test-kernel");
+        mockKernel.Setup(k => k.DisplayName).Returns("Test Kernel");
+        mockKernel.Setup(k => k.BackendProvider).Returns("CUDA");
+        mockKernel.Setup(k => k.IsInitialized).Returns(true);
+        mockKernel.Setup(k => k.IsGpuAccelerated).Returns(true);
 
         // Act
-        var result = await mockKernel.Object.SubmitBatchAsync(items);
+        var kernel = mockKernel.Object;
 
         // Assert
-        result.Should().Be(expectedHandle);
-        mockKernel.Verify(k => k.SubmitBatchAsync(items, null, default), Times.Once);
+        kernel.KernelId.Should().Be("test-kernel");
+        kernel.DisplayName.Should().Be("Test Kernel");
+        kernel.BackendProvider.Should().Be("CUDA");
+        kernel.IsInitialized.Should().BeTrue();
+        kernel.IsGpuAccelerated.Should().BeTrue();
     }
 
     [Fact]
-    public async Task IGpuKernel_SubmitBatchAsync_WithHints_PassesHintsCorrectly()
+    public async Task IGpuKernel_InitializeAsync_CompletesSuccessfully()
     {
         // Arrange
-        var mockKernel = new Mock<IGpuKernel<float, float>>();
-        var expectedHandle = new KernelHandle("test-kernel", DateTimeOffset.UtcNow);
-        var items = new List<float> { 1.0f, 2.0f };
-        var hints = new GpuExecutionHints(PreferGpu: true, MaxMicroBatch: 128);
-
+        var mockKernel = new Mock<IGpuKernel<int, int>>();
         mockKernel
-            .Setup(k => k.SubmitBatchAsync(items, hints, default))
-            .ReturnsAsync(expectedHandle);
+            .Setup(k => k.InitializeAsync(default))
+            .Returns(Task.CompletedTask);
 
         // Act
-        var result = await mockKernel.Object.SubmitBatchAsync(items, hints);
+        await mockKernel.Object.InitializeAsync();
 
         // Assert
-        result.Should().Be(expectedHandle);
-        mockKernel.Verify(k => k.SubmitBatchAsync(items, hints, default), Times.Once);
+        mockKernel.Verify(k => k.InitializeAsync(default), Times.Once);
     }
 
     [Fact]
-    public async Task IGpuKernel_SubmitBatchAsync_WithCancellation_PropagatesToken()
+    public async Task IGpuKernel_InitializeAsync_WithCancellation_PropagatesToken()
     {
         // Arrange
-        var mockKernel = new Mock<IGpuKernel<string, string>>();
-        var items = new List<string> { "test" };
+        var mockKernel = new Mock<IGpuKernel<int, int>>();
         var cts = new CancellationTokenSource();
 
         mockKernel
-            .Setup(k => k.SubmitBatchAsync(items, null, cts.Token))
+            .Setup(k => k.InitializeAsync(cts.Token))
             .ThrowsAsync(new OperationCanceledException());
 
         // Act & Assert
         await Assert.ThrowsAsync<OperationCanceledException>(
-            async () => await mockKernel.Object.SubmitBatchAsync(items, ct: cts.Token));
+            async () => await mockKernel.Object.InitializeAsync(cts.Token));
     }
 
     [Fact]
-    public async Task IGpuKernel_ReadResultsAsync_WithValidHandle_ReturnsResults()
+    public async Task IGpuKernel_ExecuteAsync_WithValidInput_ReturnsResult()
     {
         // Arrange
         var mockKernel = new Mock<IGpuKernel<int, int>>();
-        var handle = new KernelHandle("test-kernel", DateTimeOffset.UtcNow);
-        var expectedResults = new[] { 1, 2, 3 };
+        var input = 42;
+        var expectedOutput = 84;
 
         mockKernel
-            .Setup(k => k.ReadResultsAsync(handle, default))
-            .Returns(ToAsyncEnumerable(expectedResults));
+            .Setup(k => k.ExecuteAsync(input, default))
+            .ReturnsAsync(expectedOutput);
 
         // Act
-        var results = new List<int>();
-        await foreach (var result in mockKernel.Object.ReadResultsAsync(handle))
-        {
-            results.Add(result);
-        }
+        var result = await mockKernel.Object.ExecuteAsync(input);
 
         // Assert
-        results.Should().BeEquivalentTo(expectedResults);
+        result.Should().Be(expectedOutput);
+        mockKernel.Verify(k => k.ExecuteAsync(input, default), Times.Once);
     }
 
     [Fact]
-    public async Task IGpuKernel_ReadResultsAsync_WithEmptyResults_ReturnsEmpty()
+    public async Task IGpuKernel_ExecuteAsync_WithCancellation_PropagatesToken()
+    {
+        // Arrange
+        var mockKernel = new Mock<IGpuKernel<string, string>>();
+        var input = "test";
+        var cts = new CancellationTokenSource();
+
+        mockKernel
+            .Setup(k => k.ExecuteAsync(input, cts.Token))
+            .ThrowsAsync(new OperationCanceledException());
+
+        // Act & Assert
+        await Assert.ThrowsAsync<OperationCanceledException>(
+            async () => await mockKernel.Object.ExecuteAsync(input, cts.Token));
+    }
+
+    [Fact]
+    public async Task IGpuKernel_ExecuteBatchAsync_WithValidInputs_ReturnsResults()
     {
         // Arrange
         var mockKernel = new Mock<IGpuKernel<int, int>>();
-        var handle = new KernelHandle("test-kernel", DateTimeOffset.UtcNow);
+        var inputs = new[] { 1, 2, 3 };
+        var expectedOutputs = new[] { 2, 4, 6 };
 
         mockKernel
-            .Setup(k => k.ReadResultsAsync(handle, default))
-            .Returns(ToAsyncEnumerable(Array.Empty<int>()));
+            .Setup(k => k.ExecuteBatchAsync(inputs, default))
+            .ReturnsAsync(expectedOutputs);
 
         // Act
-        var results = new List<int>();
-        await foreach (var result in mockKernel.Object.ReadResultsAsync(handle))
-        {
-            results.Add(result);
-        }
+        var results = await mockKernel.Object.ExecuteBatchAsync(inputs);
+
+        // Assert
+        results.Should().BeEquivalentTo(expectedOutputs);
+        mockKernel.Verify(k => k.ExecuteBatchAsync(inputs, default), Times.Once);
+    }
+
+    [Fact]
+    public async Task IGpuKernel_ExecuteBatchAsync_WithEmptyInput_ReturnsEmpty()
+    {
+        // Arrange
+        var mockKernel = new Mock<IGpuKernel<int, int>>();
+        var inputs = Array.Empty<int>();
+        var expectedOutputs = Array.Empty<int>();
+
+        mockKernel
+            .Setup(k => k.ExecuteBatchAsync(inputs, default))
+            .ReturnsAsync(expectedOutputs);
+
+        // Act
+        var results = await mockKernel.Object.ExecuteBatchAsync(inputs);
 
         // Assert
         results.Should().BeEmpty();
     }
 
-    private static async IAsyncEnumerable<T> ToAsyncEnumerable<T>(IEnumerable<T> source)
+    [Fact]
+    public async Task IGpuKernel_ExecuteBatchAsync_WithCancellation_PropagatesToken()
     {
-        foreach (var item in source)
-        {
-            yield return await Task.FromResult(item);
-        }
+        // Arrange
+        var mockKernel = new Mock<IGpuKernel<float, float>>();
+        var inputs = new[] { 1.0f, 2.0f };
+        var cts = new CancellationTokenSource();
+
+        mockKernel
+            .Setup(k => k.ExecuteBatchAsync(inputs, cts.Token))
+            .ThrowsAsync(new OperationCanceledException());
+
+        // Act & Assert
+        await Assert.ThrowsAsync<OperationCanceledException>(
+            async () => await mockKernel.Object.ExecuteBatchAsync(inputs, cts.Token));
     }
 
     [Fact]
-    public async Task IGpuKernel_GetInfoAsync_ReturnsKernelInfo()
+    public void IGpuKernel_GetEstimatedExecutionTimeMicroseconds_ReturnsValidEstimate()
     {
         // Arrange
         var mockKernel = new Mock<IGpuKernel<int, int>>();
-        var expectedInfo = new KernelInfo(
-            Id: new KernelId("test-kernel"),
-            Description: "Test Kernel v1.0.0",
-            InputType: typeof(int),
-            OutputType: typeof(int),
-            SupportsGpu: true,
-            PreferredBatchSize: 256
+        var inputSize = 1000;
+        var expectedTime = 150L; // 150 microseconds
+
+        mockKernel
+            .Setup(k => k.GetEstimatedExecutionTimeMicroseconds(inputSize))
+            .Returns(expectedTime);
+
+        // Act
+        var result = mockKernel.Object.GetEstimatedExecutionTimeMicroseconds(inputSize);
+
+        // Assert
+        result.Should().Be(expectedTime);
+        result.Should().BeGreaterThan(0);
+    }
+
+    [Fact]
+    public void IGpuKernel_GetMemoryRequirements_ReturnsMemoryBreakdown()
+    {
+        // Arrange
+        var mockKernel = new Mock<IGpuKernel<int, int>>();
+        var expectedRequirements = new KernelMemoryRequirements(
+            InputMemoryBytes: 4096,
+            OutputMemoryBytes: 4096,
+            WorkingMemoryBytes: 8192,
+            TotalMemoryBytes: 16384
         );
 
         mockKernel
-            .Setup(k => k.GetInfoAsync(default))
-            .ReturnsAsync(expectedInfo);
+            .Setup(k => k.GetMemoryRequirements())
+            .Returns(expectedRequirements);
 
         // Act
-        var result = await mockKernel.Object.GetInfoAsync();
+        var result = mockKernel.Object.GetMemoryRequirements();
 
         // Assert
-        result.Should().Be(expectedInfo);
-        result.Id.Value.Should().Be("test-kernel");
-        result.Description.Should().Be("Test Kernel v1.0.0");
+        result.Should().Be(expectedRequirements);
+        result.TotalMemoryBytes.Should().Be(16384);
+        result.InputMemoryBytes.Should().BeGreaterThan(0);
+    }
+
+    [Fact]
+    public void IGpuKernel_ValidateInput_WithValidInput_ReturnsValid()
+    {
+        // Arrange
+        var mockKernel = new Mock<IGpuKernel<int, int>>();
+        var input = 42;
+        var expectedResult = KernelValidationResult.Valid();
+
+        mockKernel
+            .Setup(k => k.ValidateInput(input))
+            .Returns(expectedResult);
+
+        // Act
+        var result = mockKernel.Object.ValidateInput(input);
+
+        // Assert
+        result.IsValid.Should().BeTrue();
+        result.ErrorMessage.Should().BeNull();
+        result.ValidationErrors.Should().BeNull();
+    }
+
+    [Fact]
+    public void IGpuKernel_ValidateInput_WithInvalidInput_ReturnsErrors()
+    {
+        // Arrange
+        var mockKernel = new Mock<IGpuKernel<int, int>>();
+        var input = -1;
+        var expectedResult = KernelValidationResult.Invalid(
+            "Input must be positive",
+            "Value is negative: -1"
+        );
+
+        mockKernel
+            .Setup(k => k.ValidateInput(input))
+            .Returns(expectedResult);
+
+        // Act
+        var result = mockKernel.Object.ValidateInput(input);
+
+        // Assert
+        result.IsValid.Should().BeFalse();
+        result.ErrorMessage.Should().Be("Input must be positive");
+        result.ValidationErrors.Should().Contain("Value is negative: -1");
+    }
+
+    [Fact]
+    public async Task IGpuKernel_WarmupAsync_CompletesSuccessfully()
+    {
+        // Arrange
+        var mockKernel = new Mock<IGpuKernel<int, int>>();
+        mockKernel
+            .Setup(k => k.WarmupAsync(default))
+            .Returns(Task.CompletedTask);
+
+        // Act
+        await mockKernel.Object.WarmupAsync();
+
+        // Assert
+        mockKernel.Verify(k => k.WarmupAsync(default), Times.Once);
+    }
+
+    [Fact]
+    public async Task IGpuKernel_WarmupAsync_WithCancellation_PropagatesToken()
+    {
+        // Arrange
+        var mockKernel = new Mock<IGpuKernel<int, int>>();
+        var cts = new CancellationTokenSource();
+
+        mockKernel
+            .Setup(k => k.WarmupAsync(cts.Token))
+            .ThrowsAsync(new OperationCanceledException());
+
+        // Act & Assert
+        await Assert.ThrowsAsync<OperationCanceledException>(
+            async () => await mockKernel.Object.WarmupAsync(cts.Token));
     }
 
     #endregion

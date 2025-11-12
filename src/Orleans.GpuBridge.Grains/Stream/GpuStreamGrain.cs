@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Concurrency;
 using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Abstractions.Kernels;
 using Orleans.GpuBridge.Grains.Batch;
 using Orleans.GpuBridge.Grains.Stream.Internal;
 using Orleans.GpuBridge.Runtime;
@@ -306,9 +307,10 @@ public sealed class GpuStreamGrain<TIn, TOut> : Grain, IGpuStreamGrain<TIn, TOut
 
         try
         {
-            var handle = await _kernel.SubmitBatchAsync(batch, hints, ct);
+            var batchArray = batch.ToArray();
+            var results = await _kernel.ExecuteBatchAsync(batchArray, ct);
 
-            await foreach (var result in _kernel.ReadResultsAsync(handle, ct))
+            foreach (var result in results)
             {
                 await observer.OnNextAsync(result);
             }
@@ -393,13 +395,14 @@ public sealed class GpuStreamGrain<TIn, TOut> : Grain, IGpuStreamGrain<TIn, TOut
         
         try
         {
-            var handle = await _kernel.SubmitBatchAsync(batch, hints, ct);
-            
-            await foreach (var result in _kernel.ReadResultsAsync(handle, ct))
+            var batchArray = batch.ToArray();
+            var results = await _kernel.ExecuteBatchAsync(batchArray, ct);
+
+            foreach (var result in results)
             {
                 await _outputStream.OnNextAsync(result);
             }
-            
+
             stopwatch.Stop();
             _stats.RecordSuccess(batch.Count, stopwatch.Elapsed);
             

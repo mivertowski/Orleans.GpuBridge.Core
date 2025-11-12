@@ -1202,24 +1202,41 @@ public sealed class ServiceRegistrationTests : IDisposable
 
     #region Helper Classes
 
-    private class TestKernel<TIn, TOut> : IGpuKernel<TIn, TOut>
+    private class TestKernel<TIn, TOut> : GpuKernelBase<TIn, TOut>
         where TIn : notnull
         where TOut : notnull
     {
         private readonly int _id;
         public TestKernel(int id = 0) => _id = id;
 
-        public ValueTask<KernelHandle> SubmitBatchAsync(IReadOnlyList<TIn> items, GpuExecutionHints? hints = null, CancellationToken ct = default)
-            => new(KernelHandle.Create());
+        public override string KernelId => $"test-kernel-{_id}";
+        public override string BackendProvider => "Mock";
+        public override bool IsGpuAccelerated => false;
 
-        public async IAsyncEnumerable<TOut> ReadResultsAsync(KernelHandle handle, [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken ct = default)
+        public override async Task<TOut> ExecuteAsync(TIn input, CancellationToken cancellationToken = default)
         {
-            await Task.Yield();
-            yield break;
+            await Task.Delay(10, cancellationToken);
+
+            if (input is TOut result)
+                return result;
+
+            return default!;
         }
 
-        public ValueTask<KernelInfo> GetInfoAsync(CancellationToken ct = default)
-            => new(new KernelInfo(new KernelId("test-kernel"), "Test", typeof(TIn), typeof(TOut), false, 1024));
+        public override async Task<TOut[]> ExecuteBatchAsync(TIn[] inputs, CancellationToken cancellationToken = default)
+        {
+            var results = new TOut[inputs.Length];
+            for (int i = 0; i < inputs.Length; i++)
+            {
+                results[i] = await ExecuteAsync(inputs[i], cancellationToken);
+            }
+            return results;
+        }
+
+        public override long GetEstimatedExecutionTimeMicroseconds(int inputSize) => inputSize * 10;
+
+        public override KernelMemoryRequirements GetMemoryRequirements() =>
+            new KernelMemoryRequirements(1024, 1024, 512, 2560);
     }
 
     private interface ITestService { }

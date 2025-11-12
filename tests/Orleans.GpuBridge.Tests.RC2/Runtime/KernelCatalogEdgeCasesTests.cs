@@ -47,9 +47,8 @@ public sealed class KernelCatalogEdgeCasesTests : IDisposable
 
         // Assert
         kernel.Should().NotBeNull("CPU passthrough should be returned for unknown kernels");
-        var info = await kernel.GetInfoAsync(_cts.Token);
-        info.SupportsGpu.Should().BeFalse();
-        info.Id.Value.Should().Be("cpu-passthrough");
+        kernel.IsGpuAccelerated.Should().BeFalse();
+        kernel.KernelId.Should().Be("cpu-passthrough");
     }
 
     [Fact]
@@ -711,8 +710,7 @@ public sealed class KernelCatalogEdgeCasesTests : IDisposable
         {
             var kernel = await catalog.ResolveAsync<float, float>(
                 descriptor.Id, _mockServiceProvider.Object, _cts.Token);
-            var handle = await kernel.SubmitBatchAsync(new[] { (float)i }, null, _cts.Token);
-            return await kernel.ReadResultsAsync(handle, _cts.Token).ToListAsync(_cts.Token);
+            return await kernel.ExecuteBatchAsync(new[] { (float)i }, _cts.Token);
         });
 
         var results = await Task.WhenAll(tasks);
@@ -720,7 +718,7 @@ public sealed class KernelCatalogEdgeCasesTests : IDisposable
 
         // Assert
         results.Should().HaveCount(1000);
-        results.Should().OnlyContain(r => r.Count > 0);
+        results.Should().OnlyContain(r => r.Length > 0);
         sw.ElapsedMilliseconds.Should().BeLessThan(30000, "should complete in reasonable time");
     }
 
@@ -901,8 +899,7 @@ public sealed class KernelCatalogEdgeCasesTests : IDisposable
 
         // Act
         var largeArray = Enumerable.Range(0, 100000).Select(i => (float)i).ToArray();
-        var handle = await kernel.SubmitBatchAsync(new[] { largeArray }, null, _cts.Token);
-        var results = await kernel.ReadResultsAsync(handle, _cts.Token).ToListAsync(_cts.Token);
+        var results = await kernel.ExecuteBatchAsync(new[] { largeArray }, _cts.Token);
 
         // Assert
         results.Should().HaveCount(1);
@@ -919,8 +916,7 @@ public sealed class KernelCatalogEdgeCasesTests : IDisposable
 
         // Act
         var complexData = new ComplexData { Id = 123, Name = "Test", Values = new[] { 1.0f, 2.0f } };
-        var handle = await kernel.SubmitBatchAsync(new[] { complexData }, null, _cts.Token);
-        var results = await kernel.ReadResultsAsync(handle, _cts.Token).ToListAsync(_cts.Token);
+        var results = await kernel.ExecuteBatchAsync(new[] { complexData }, _cts.Token);
 
         // Assert
         results.Should().HaveCount(1);
@@ -937,8 +933,7 @@ public sealed class KernelCatalogEdgeCasesTests : IDisposable
 
         // Act
         var data = new[] { "value1", null!, "value3" };
-        var handle = await kernel.SubmitBatchAsync(data, null, _cts.Token);
-        var results = await kernel.ReadResultsAsync(handle, _cts.Token).ToListAsync(_cts.Token);
+        var results = await kernel.ExecuteBatchAsync(data, _cts.Token);
 
         // Assert
         results.Should().HaveCount(3);
@@ -955,8 +950,7 @@ public sealed class KernelCatalogEdgeCasesTests : IDisposable
 
         // Act
         var integers = new[] { 1, 2, 3, 4, 5 };
-        var handle = await kernel.SubmitBatchAsync(integers, null, _cts.Token);
-        var results = await kernel.ReadResultsAsync(handle, _cts.Token).ToListAsync(_cts.Token);
+        var results = await kernel.ExecuteBatchAsync(integers, _cts.Token);
 
         // Assert
         results.Should().HaveCount(5);
@@ -972,8 +966,7 @@ public sealed class KernelCatalogEdgeCasesTests : IDisposable
             new KernelId("empty-batch"), _mockServiceProvider.Object, _cts.Token);
 
         // Act
-        var handle = await kernel.SubmitBatchAsync(Array.Empty<float>(), null, _cts.Token);
-        var results = await kernel.ReadResultsAsync(handle, _cts.Token).ToListAsync(_cts.Token);
+        var results = await kernel.ExecuteBatchAsync(Array.Empty<float>(), _cts.Token);
 
         // Assert
         results.Should().BeEmpty();
@@ -988,8 +981,7 @@ public sealed class KernelCatalogEdgeCasesTests : IDisposable
             new KernelId("single-item"), _mockServiceProvider.Object, _cts.Token);
 
         // Act
-        var handle = await kernel.SubmitBatchAsync(new[] { 42.0f }, null, _cts.Token);
-        var results = await kernel.ReadResultsAsync(handle, _cts.Token).ToListAsync(_cts.Token);
+        var results = await kernel.ExecuteBatchAsync(new[] { 42.0f }, _cts.Token);
 
         // Assert
         results.Should().ContainSingle();
@@ -1008,15 +1000,14 @@ public sealed class KernelCatalogEdgeCasesTests : IDisposable
         var tasks = Enumerable.Range(0, 20).Select(async i =>
         {
             var data = Enumerable.Range(i * 100, 10).ToArray();
-            var handle = await kernel.SubmitBatchAsync(data, null, _cts.Token);
-            return await kernel.ReadResultsAsync(handle, _cts.Token).ToListAsync(_cts.Token);
+            return await kernel.ExecuteBatchAsync(data, _cts.Token);
         });
 
         var allResults = await Task.WhenAll(tasks);
 
         // Assert
         allResults.Should().HaveCount(20);
-        allResults.Should().OnlyContain(r => r.Count == 10);
+        allResults.Should().OnlyContain(r => r.Length == 10);
     }
 
     [Fact]
@@ -1031,11 +1022,8 @@ public sealed class KernelCatalogEdgeCasesTests : IDisposable
         var kernel2 = await catalog.ResolveAsync<float, float>(
             new KernelId("passthrough-2"), _mockServiceProvider.Object, _cts.Token);
 
-        var handle1 = await kernel1.SubmitBatchAsync(new[] { 1.0f }, null, _cts.Token);
-        var handle2 = await kernel2.SubmitBatchAsync(new[] { 2.0f }, null, _cts.Token);
-
-        var results1 = await kernel1.ReadResultsAsync(handle1, _cts.Token).ToListAsync(_cts.Token);
-        var results2 = await kernel2.ReadResultsAsync(handle2, _cts.Token).ToListAsync(_cts.Token);
+        var results1 = await kernel1.ExecuteBatchAsync(new[] { 1.0f }, _cts.Token);
+        var results2 = await kernel2.ExecuteBatchAsync(new[] { 2.0f }, _cts.Token);
 
         // Assert
         results1[0].Should().Be(1.0f);
@@ -1184,54 +1172,43 @@ public sealed class KernelCatalogEdgeCasesTests : IDisposable
 
     #region Test Helper Classes
 
-    private class SimpleKernel<TIn, TOut> : IGpuKernel<TIn, TOut>
+    private class SimpleKernel<TIn, TOut> : GpuKernelBase<TIn, TOut>
         where TIn : notnull
         where TOut : notnull
     {
         private readonly int _id;
-        private readonly ConcurrentDictionary<string, IReadOnlyList<TIn>> _batches = new();
 
         public SimpleKernel(int id = 0) => _id = id;
 
-        public ValueTask<KernelHandle> SubmitBatchAsync(
-            IReadOnlyList<TIn> items,
-            GpuExecutionHints? hints = null,
-            CancellationToken ct = default)
+        public override string KernelId => $"simple-kernel-{_id}";
+        public override string BackendProvider => "Mock";
+        public override bool IsGpuAccelerated => false;
+
+        public override async Task<TOut> ExecuteAsync(TIn input, CancellationToken cancellationToken = default)
         {
-            var handle = KernelHandle.Create();
-            _batches[handle.Id] = items;
-            return new ValueTask<KernelHandle>(handle);
+            await Task.Delay(10, cancellationToken);
+
+            // Transform input to output
+            if (input is TOut result)
+                return result;
+
+            return default!;
         }
 
-        public async IAsyncEnumerable<TOut> ReadResultsAsync(
-            KernelHandle handle,
-            [EnumeratorCancellation] CancellationToken ct = default)
+        public override async Task<TOut[]> ExecuteBatchAsync(TIn[] inputs, CancellationToken cancellationToken = default)
         {
-            await Task.Yield();
-            if (_batches.TryGetValue(handle.Id, out var items))
+            var results = new TOut[inputs.Length];
+            for (int i = 0; i < inputs.Length; i++)
             {
-                foreach (var item in items)
-                {
-                    ct.ThrowIfCancellationRequested();
-                    if (item is TOut result)
-                        yield return result;
-                    else
-                        yield return default(TOut)!;
-                }
-                _batches.TryRemove(handle.Id, out _);
+                results[i] = await ExecuteAsync(inputs[i], cancellationToken);
             }
+            return results;
         }
 
-        public ValueTask<KernelInfo> GetInfoAsync(CancellationToken ct = default)
-        {
-            return new ValueTask<KernelInfo>(new KernelInfo(
-                new KernelId($"simple-kernel-{_id}"),
-                "Simple test kernel",
-                typeof(TIn),
-                typeof(TOut),
-                false,
-                1024));
-        }
+        public override long GetEstimatedExecutionTimeMicroseconds(int inputSize) => inputSize * 10;
+
+        public override KernelMemoryRequirements GetMemoryRequirements() =>
+            new KernelMemoryRequirements(1024, 1024, 512, 2560);
     }
 
     private class WrongInterfaceKernel
@@ -1312,17 +1289,18 @@ public sealed class KernelCatalogEdgeCasesTests : IDisposable
         private readonly byte[] _largeBuffer = new byte[10 * 1024 * 1024];
     }
 
-    private class DisposableTestKernel<TIn, TOut> : SimpleKernel<TIn, TOut>, IDisposable
+    private class DisposableTestKernel<TIn, TOut> : SimpleKernel<TIn, TOut>
         where TIn : notnull
         where TOut : notnull
     {
         private bool _disposed;
 
-        public void Dispose()
+        public override void Dispose()
         {
             if (!_disposed)
             {
                 _disposed = true;
+                base.Dispose();
             }
         }
     }

@@ -47,7 +47,7 @@ public static class TestHelpers
     public static KernelDescriptor CreateTestKernelDescriptor<TIn, TOut>(
         string kernelId,
         MockGpuProviderRC2? mockProvider = null,
-        Func<IReadOnlyList<TIn>, IAsyncEnumerable<TOut>>? execution = null)
+        Func<TIn, Task<TOut>>? execution = null)
         where TIn : notnull
         where TOut : notnull
     {
@@ -161,11 +161,11 @@ public class TestKernelCatalogBuilder
     public TestKernelCatalogBuilder AddKernel<TIn, TOut>(
         string kernelId,
         MockGpuProviderRC2? mockProvider = null,
-        Func<IReadOnlyList<TIn>, IAsyncEnumerable<TOut>>? execution = null)
+        Func<TIn, Task<TOut>>? execution = null)
         where TIn : notnull
         where TOut : notnull
     {
-        _descriptors.Add(TestHelpers.CreateTestKernelDescriptor(kernelId, mockProvider, execution));
+        _descriptors.Add(TestHelpers.CreateTestKernelDescriptor<TIn, TOut>(kernelId, mockProvider, execution));
         return this;
     }
 

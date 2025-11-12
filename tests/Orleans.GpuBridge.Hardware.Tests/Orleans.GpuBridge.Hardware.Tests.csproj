@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <RootNamespace>Orleans.GpuBridge.Hardware.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" Version="6.12.2" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
+    <PackageReference Include="Xunit.SkippableFact" Version="1.4.13" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Orleans.GpuBridge.Abstractions\Orleans.GpuBridge.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\Orleans.GpuBridge.Backends.DotCompute\Orleans.GpuBridge.Backends.DotCompute.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="DotCompute.Abstractions">
+      <HintPath>/home/mivertowski/DotCompute/DotCompute/src/Core/DotCompute.Abstractions/bin/Debug/net9.0/DotCompute.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="DotCompute.Core">
+      <HintPath>/home/mivertowski/DotCompute/DotCompute/src/Core/DotCompute.Core/bin/Debug/net9.0/DotCompute.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DotCompute.Backends.CUDA">
+      <HintPath>/home/mivertowski/DotCompute/DotCompute/src/Backends/CUDA/DotCompute.Backends.CUDA/bin/Debug/net9.0/DotCompute.Backends.CUDA.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

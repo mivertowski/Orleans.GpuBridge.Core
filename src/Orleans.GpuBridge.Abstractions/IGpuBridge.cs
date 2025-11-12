@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
+using Orleans.GpuBridge.Abstractions.Kernels;
 
 namespace Orleans.GpuBridge.Abstractions;
 

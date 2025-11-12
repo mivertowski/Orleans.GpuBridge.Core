@@ -955,76 +955,70 @@ public sealed class InfrastructureComponentTests : IDisposable
     /// <summary>
     /// Mock kernel that implements IGpuKernel<byte[], byte[]> for testing.
     /// </summary>
-    private sealed class MockByteKernel : IGpuKernel<byte[], byte[]>
+    private sealed class MockByteKernel : GpuKernelBase<byte[], byte[]>
     {
-        private readonly Dictionary<string, List<byte[]>> _batches = new();
+        public override string KernelId => "mock-byte-kernel";
+        public override string BackendProvider => "Mock";
+        public override bool IsGpuAccelerated => false;
 
-        public ValueTask<KernelHandle> SubmitBatchAsync(
-            IReadOnlyList<byte[]> items,
-            GpuExecutionHints? hints = null,
-            CancellationToken ct = default)
+        public override Task<byte[]> ExecuteAsync(byte[] input, CancellationToken ct = default)
         {
-            var handle = KernelHandle.Create();
-            _batches[handle.Id] = new List<byte[]>(items);
-            return new ValueTask<KernelHandle>(handle);
+            // Echo the input
+            return Task.FromResult(input);
         }
 
-        public async IAsyncEnumerable<byte[]> ReadResultsAsync(
-            KernelHandle handle,
-            [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken ct = default)
+        public override Task<byte[][]> ExecuteBatchAsync(byte[][] inputs, CancellationToken ct = default)
         {
-            await Task.Yield();
-            if (_batches.TryGetValue(handle.Id, out var items))
-            {
-                foreach (var item in items)
-                {
-                    ct.ThrowIfCancellationRequested();
-                    yield return item;
-                }
-            }
+            // Echo all inputs
+            return Task.FromResult(inputs);
         }
 
-        public ValueTask<KernelInfo> GetInfoAsync(CancellationToken ct = default)
+        public override long GetEstimatedExecutionTimeMicroseconds(int inputSize)
         {
-            return new ValueTask<KernelInfo>(new KernelInfo(
-                new KernelId("mock-byte-kernel"),
-                "Mock byte kernel for testing",
-                typeof(byte[]),
-                typeof(byte[]),
-                false,
-                1024));
+            return inputSize * 10;
+        }
+
+        public override KernelMemoryRequirements GetMemoryRequirements()
+        {
+            return new KernelMemoryRequirements(
+                InputMemoryBytes: 1024,
+                OutputMemoryBytes: 1024,
+                WorkingMemoryBytes: 512,
+                TotalMemoryBytes: 2560);
         }
     }
 
     /// <summary>
     /// Kernel that simulates failures for testing error handling.
     /// </summary>
-    private sealed class FailingByteKernel : IGpuKernel<byte[], byte[]>
+    private sealed class FailingByteKernel : GpuKernelBase<byte[], byte[]>
     {
-        public ValueTask<KernelHandle> SubmitBatchAsync(
-            IReadOnlyList<byte[]> items,
-            GpuExecutionHints? hints = null,
-            CancellationToken ct = default)
+        public override string KernelId => "failing-kernel";
+        public override string BackendProvider => "Mock";
+        public override bool IsGpuAccelerated => false;
+
+        public override Task<byte[]> ExecuteAsync(byte[] input, CancellationToken ct = default)
         {
             throw new InvalidOperationException("Kernel failed");
         }
 
-        public IAsyncEnumerable<byte[]> ReadResultsAsync(
-            KernelHandle handle,
-            CancellationToken ct = default)
+        public override Task<byte[][]> ExecuteBatchAsync(byte[][] inputs, CancellationToken ct = default)
         {
-            throw new InvalidOperationException("Cannot read results");
+            throw new InvalidOperationException("Kernel failed");
         }
 
-        public ValueTask<KernelInfo> GetInfoAsync(CancellationToken ct = default)
+        public override long GetEstimatedExecutionTimeMicroseconds(int inputSize)
         {
-            return new ValueTask<KernelInfo>(new KernelInfo(
-                new KernelId("failing-kernel"),
-                "Failing kernel for testing",
-                typeof(byte[]),
-                typeof(byte[]),
-                false,
-                1024));
+            return inputSize * 10;
+        }
+
+        public override KernelMemoryRequirements GetMemoryRequirements()
+        {
+            return new KernelMemoryRequirements(
+                InputMemoryBytes: 1024,
+                OutputMemoryBytes: 1024,
+                WorkingMemoryBytes: 512,
+                TotalMemoryBytes: 2560);
         }
     }
 

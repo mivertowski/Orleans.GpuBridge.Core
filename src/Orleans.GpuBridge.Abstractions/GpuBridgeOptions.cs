@@ -59,12 +59,7 @@ public sealed class GpuBridgeOptions
     /// Enable automatic discovery of backend providers
     /// </summary>
     public bool EnableProviderDiscovery { get; set; } = true;
-    
-    /// <summary>
-    /// Enable ILGPU backend support
-    /// </summary>
-    public bool EnableILGPU { get; set; } = false;
-    
+
     /// <summary>
     /// Provider-specific configuration options
     /// </summary>

@@ -109,35 +109,7 @@ public sealed class BackendCapabilities
         SupportedKernelLanguages = new[] { "C#" },
         SupportedPlatforms = new[] { "Windows", "Linux", "macOS" }
     };
-    
-    /// <summary>
-    /// Creates capabilities for ILGPU backend
-    /// </summary>
-    public static BackendCapabilities CreateILGPU() => new()
-    {
-        SupportedBackends = new[] { GpuBackend.CUDA, GpuBackend.OpenCL, GpuBackend.CPU },
-        SupportedDataTypes = new[] { typeof(float), typeof(double), typeof(int), typeof(long), typeof(byte), typeof(short), typeof(uint), typeof(ulong) },
-        MaxConcurrentDevices = 16,
-        SupportsJitCompilation = true,
-        SupportsAotCompilation = false,
-        SupportsUnifiedMemory = true,
-        SupportsDynamicSharedMemory = true,
-        SupportsAtomicOperations = true,
-        SupportsWarpIntrinsics = true,
-        SupportsTensorOperations = false,
-        SupportsCpuDebugging = true,
-        SupportsProfiling = true,
-        SupportedKernelLanguages = new[] { "C#", "F#" },
-        SupportedPlatforms = new[] { "Windows", "Linux", "macOS" },
-        MinimumComputeCapability = new Version(3, 0),
-        ExtendedCapabilities = new Dictionary<string, object>
-        {
-            ["MaxWorkGroupSize"] = 1024,
-            ["SupportsImplicitGrouping"] = true,
-            ["SupportsSpecializedGenerics"] = true
-        }
-    };
-    
+
     /// <summary>
     /// Creates capabilities for DotCompute backend
     /// </summary>

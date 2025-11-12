@@ -17,180 +17,154 @@ public class InterfaceContractTests
     #region IGpuKernel Interface Contracts (8 tests)
 
     [Fact]
-    public async Task IGpuKernel_SubmitBatchAsync_WithValidData_ShouldReturnHandle()
+    public async Task IGpuKernel_ExecuteBatchAsync_WithValidData_ShouldReturnResults()
     {
         // Arrange
         var mockKernel = new Mock<IGpuKernel<int, int>>();
-        var expectedHandle = new KernelHandle("test-123", DateTimeOffset.UtcNow, KernelStatus.Queued);
-        var batch = new List<int> { 1, 2, 3 }.AsReadOnly();
-
-        mockKernel
-            .Setup(k => k.SubmitBatchAsync(
-                It.IsAny<IReadOnlyList<int>>(),
-                It.IsAny<GpuExecutionHints?>(),
-                It.IsAny<CancellationToken>()))
-            .ReturnsAsync(expectedHandle);
-
-        // Act
-        var result = await mockKernel.Object.SubmitBatchAsync(batch, null, CancellationToken.None);
-
-        // Assert
-        result.Should().Be(expectedHandle);
-        mockKernel.Verify(k => k.SubmitBatchAsync(batch, null, CancellationToken.None), Times.Once);
-    }
-
-    [Fact]
-    public async Task IGpuKernel_SubmitBatchAsync_WithNullBatch_ShouldThrow()
-    {
-        // Arrange
-        var mockKernel = new Mock<IGpuKernel<int, int>>();
-        mockKernel
-            .Setup(k => k.SubmitBatchAsync(
-                null!,
-                It.IsAny<GpuExecutionHints?>(),
-                It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new ArgumentNullException("items"));
-
-        // Act & Assert
-        await Assert.ThrowsAsync<ArgumentNullException>(async () =>
-            await mockKernel.Object.SubmitBatchAsync(null!, null, CancellationToken.None));
-    }
-
-    [Fact]
-    public async Task IGpuKernel_SubmitBatchAsync_WithEmptyBatch_ShouldReturnHandle()
-    {
-        // Arrange
-        var mockKernel = new Mock<IGpuKernel<int, int>>();
-        var expectedHandle = new KernelHandle("empty-batch", DateTimeOffset.UtcNow, KernelStatus.Completed);
-        var emptyBatch = new List<int>().AsReadOnly();
-
-        mockKernel
-            .Setup(k => k.SubmitBatchAsync(emptyBatch, null, CancellationToken.None))
-            .ReturnsAsync(expectedHandle);
-
-        // Act
-        var result = await mockKernel.Object.SubmitBatchAsync(emptyBatch, null, CancellationToken.None);
-
-        // Assert
-        result.Should().Be(expectedHandle);
-        result.Status.Should().Be(KernelStatus.Completed);
-    }
-
-    [Fact]
-    public async Task IGpuKernel_SubmitBatchAsync_WithExecutionHints_ShouldPassHints()
-    {
-        // Arrange
-        var mockKernel = new Mock<IGpuKernel<int, int>>();
-        var hints = new GpuExecutionHints(PreferredDevice: 0, HighPriority: true, MaxMicroBatch: 512);
-        var batch = new List<int> { 1, 2, 3 }.AsReadOnly();
-        var expectedHandle = KernelHandle.Create();
-
-        mockKernel
-            .Setup(k => k.SubmitBatchAsync(batch, hints, CancellationToken.None))
-            .ReturnsAsync(expectedHandle);
-
-        // Act
-        var result = await mockKernel.Object.SubmitBatchAsync(batch, hints, CancellationToken.None);
-
-        // Assert
-        result.Should().NotBeNull();
-        mockKernel.Verify(k => k.SubmitBatchAsync(batch, hints, CancellationToken.None), Times.Once);
-    }
-
-    [Fact]
-    public async Task IGpuKernel_ReadResultsAsync_ReturnsAsyncEnumerable()
-    {
-        // Arrange
-        var mockKernel = new Mock<IGpuKernel<int, int>>();
-        var handle = KernelHandle.Create();
+        var batch = new[] { 1, 2, 3 };
         var expectedResults = new[] { 10, 20, 30 };
 
         mockKernel
-            .Setup(k => k.ReadResultsAsync(handle, CancellationToken.None))
-            .Returns(expectedResults.ToAsyncEnumerable());
+            .Setup(k => k.ExecuteBatchAsync(
+                It.IsAny<int[]>(),
+                It.IsAny<CancellationToken>()))
+            .ReturnsAsync(expectedResults);
 
         // Act
-        var results = new List<int>();
-        await foreach (var result in mockKernel.Object.ReadResultsAsync(handle, CancellationToken.None))
-        {
-            results.Add(result);
-        }
+        var results = await mockKernel.Object.ExecuteBatchAsync(batch, CancellationToken.None);
 
         // Assert
         results.Should().Equal(expectedResults);
+        mockKernel.Verify(k => k.ExecuteBatchAsync(batch, CancellationToken.None), Times.Once);
     }
 
     [Fact]
-    public async Task IGpuKernel_ReadResultsAsync_WithCancellation_ShouldRespectToken()
+    public async Task IGpuKernel_ExecuteBatchAsync_WithNullBatch_ShouldThrow()
     {
         // Arrange
         var mockKernel = new Mock<IGpuKernel<int, int>>();
-        var handle = KernelHandle.Create();
-        var cts = new CancellationTokenSource();
-        cts.Cancel();
+        mockKernel
+            .Setup(k => k.ExecuteBatchAsync(
+                null!,
+                It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new ArgumentNullException("inputs"));
+
+        // Act & Assert
+        await Assert.ThrowsAsync<ArgumentNullException>(async () =>
+            await mockKernel.Object.ExecuteBatchAsync(null!, CancellationToken.None));
+    }
+
+    [Fact]
+    public async Task IGpuKernel_ExecuteBatchAsync_WithEmptyBatch_ShouldReturnEmpty()
+    {
+        // Arrange
+        var mockKernel = new Mock<IGpuKernel<int, int>>();
+        var emptyBatch = Array.Empty<int>();
+        var emptyResults = Array.Empty<int>();
 
         mockKernel
-            .Setup(k => k.ReadResultsAsync(handle, cts.Token))
-            .Returns(AsyncEnumerable.Empty<int>());
+            .Setup(k => k.ExecuteBatchAsync(emptyBatch, CancellationToken.None))
+            .ReturnsAsync(emptyResults);
 
         // Act
-        var results = new List<int>();
-        await foreach (var result in mockKernel.Object.ReadResultsAsync(handle, cts.Token))
-        {
-            results.Add(result);
-        }
+        var results = await mockKernel.Object.ExecuteBatchAsync(emptyBatch, CancellationToken.None);
 
         // Assert
         results.Should().BeEmpty();
     }
 
     [Fact]
-    public async Task IGpuKernel_GetInfoAsync_ReturnsKernelInfo()
+    public async Task IGpuKernel_ExecuteBatchAsync_WithCancellation_ShouldRespectToken()
     {
         // Arrange
         var mockKernel = new Mock<IGpuKernel<int, int>>();
-        var kernelId = new KernelId("test-kernel");
-        var expectedInfo = new KernelInfo(
-            Id: kernelId,
-            Description: "Test kernel",
-            InputType: typeof(int),
-            OutputType: typeof(int),
-            SupportsGpu: true,
-            PreferredBatchSize: 1024,
-            Metadata: null);
+        var batch = new[] { 1, 2, 3 };
+        var cts = new CancellationTokenSource();
+        cts.Cancel();
 
         mockKernel
-            .Setup(k => k.GetInfoAsync(CancellationToken.None))
-            .ReturnsAsync(expectedInfo);
+            .Setup(k => k.ExecuteBatchAsync(batch, cts.Token))
+            .ThrowsAsync(new OperationCanceledException());
 
-        // Act
-        var result = await mockKernel.Object.GetInfoAsync(CancellationToken.None);
-
-        // Assert
-        result.Should().Be(expectedInfo);
-        result.Id.Should().Be(kernelId);
-        result.SupportsGpu.Should().BeTrue();
-        result.PreferredBatchSize.Should().Be(1024);
+        // Act & Assert
+        await Assert.ThrowsAsync<OperationCanceledException>(async () =>
+            await mockKernel.Object.ExecuteBatchAsync(batch, cts.Token));
     }
 
     [Fact]
-    public async Task IGpuKernel_MultipleSubmitBatchAsync_ShouldReturnDifferentHandles()
+    public async Task IGpuKernel_ExecuteAsync_WithValidInput_ShouldReturnResult()
     {
         // Arrange
         var mockKernel = new Mock<IGpuKernel<int, int>>();
-        var batch = new List<int> { 1, 2, 3 }.AsReadOnly();
+        var input = 5;
+        var expectedResult = 25;
 
         mockKernel
-            .Setup(k => k.SubmitBatchAsync(batch, null, CancellationToken.None))
-            .ReturnsAsync(() => KernelHandle.Create());
+            .Setup(k => k.ExecuteAsync(input, CancellationToken.None))
+            .ReturnsAsync(expectedResult);
 
         // Act
-        var handle1 = await mockKernel.Object.SubmitBatchAsync(batch, null, CancellationToken.None);
-        var handle2 = await mockKernel.Object.SubmitBatchAsync(batch, null, CancellationToken.None);
+        var result = await mockKernel.Object.ExecuteAsync(input, CancellationToken.None);
 
         // Assert
-        handle1.Id.Should().NotBe(handle2.Id);
-        mockKernel.Verify(k => k.SubmitBatchAsync(batch, null, CancellationToken.None), Times.Exactly(2));
+        result.Should().Be(expectedResult);
+        mockKernel.Verify(k => k.ExecuteAsync(input, CancellationToken.None), Times.Once);
+    }
+
+    [Fact]
+    public void IGpuKernel_Properties_ShouldBeAccessible()
+    {
+        // Arrange
+        var mockKernel = new Mock<IGpuKernel<int, int>>();
+
+        mockKernel.Setup(k => k.KernelId).Returns("test-kernel-123");
+        mockKernel.Setup(k => k.DisplayName).Returns("Test Kernel");
+        mockKernel.Setup(k => k.BackendProvider).Returns("CUDA");
+        mockKernel.Setup(k => k.IsInitialized).Returns(true);
+        mockKernel.Setup(k => k.IsGpuAccelerated).Returns(true);
+
+        // Act & Assert
+        mockKernel.Object.KernelId.Should().Be("test-kernel-123");
+        mockKernel.Object.DisplayName.Should().Be("Test Kernel");
+        mockKernel.Object.BackendProvider.Should().Be("CUDA");
+        mockKernel.Object.IsInitialized.Should().BeTrue();
+        mockKernel.Object.IsGpuAccelerated.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task IGpuKernel_InitializeAsync_ShouldComplete()
+    {
+        // Arrange
+        var mockKernel = new Mock<IGpuKernel<int, int>>();
+        mockKernel
+            .Setup(k => k.InitializeAsync(CancellationToken.None))
+            .Returns(Task.CompletedTask);
+
+        // Act
+        await mockKernel.Object.InitializeAsync(CancellationToken.None);
+
+        // Assert
+        mockKernel.Verify(k => k.InitializeAsync(CancellationToken.None), Times.Once);
+    }
+
+    [Fact]
+    public void IGpuKernel_ValidateInput_ShouldReturnValidationResult()
+    {
+        // Arrange
+        var mockKernel = new Mock<IGpuKernel<int, int>>();
+        var input = 42;
+        var validResult = KernelValidationResult.Valid();
+
+        mockKernel
+            .Setup(k => k.ValidateInput(input))
+            .Returns(validResult);
+
+        // Act
+        var result = mockKernel.Object.ValidateInput(input);
+
+        // Assert
+        result.Should().Be(validResult);
+        result.IsValid.Should().BeTrue();
     }
 
     #endregion
@@ -234,7 +208,7 @@ public class InterfaceContractTests
     }
 
     [Fact]
-    public async Task IGpuBridge_GetInfoAsync_ReturnsValidInfo()
+    public async Task IGpuBridge_Info_Property_ReturnsValidInfo()
     {
         // Arrange
         var mockBridge = new Mock<IGpuBridge>();
@@ -247,11 +221,11 @@ public class InterfaceContractTests
             Metadata: null);
 
         mockBridge
-            .Setup(b => b.GetInfoAsync(CancellationToken.None))
+            .Setup(b => b.GetInfoAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedInfo);
 
         // Act
-        var result = await mockBridge.Object.GetInfoAsync(CancellationToken.None);
+        var result = await mockBridge.Object.GetInfoAsync();
 
         // Assert
         result.Should().Be(expectedInfo);

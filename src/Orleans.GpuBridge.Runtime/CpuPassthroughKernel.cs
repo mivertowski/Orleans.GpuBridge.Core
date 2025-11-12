@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using Orleans.GpuBridge.Abstractions;
 using Orleans.GpuBridge.Abstractions.Kernels;
 
 namespace Orleans.GpuBridge.Runtime;
@@ -15,120 +12,155 @@ namespace Orleans.GpuBridge.Runtime;
 /// </summary>
 /// <typeparam name="TIn">The input type.</typeparam>
 /// <typeparam name="TOut">The output type.</typeparam>
-internal sealed class CpuPassthroughKernel<TIn, TOut> : IGpuKernel<TIn, TOut>
-    where TIn : notnull
-    where TOut : notnull
+internal sealed class CpuPassthroughKernel<TIn, TOut> : GpuKernelBase<TIn, TOut>
 {
-    private readonly Dictionary<string, IReadOnlyList<TIn>> _batches = new();
-
     /// <summary>
-    /// Submits a batch of items for processing.
+    /// Kernel unique identifier
     /// </summary>
-    /// <param name="items">The items to process.</param>
-    /// <param name="hints">Optional execution hints (ignored for CPU execution).</param>
-    /// <param name="ct">Cancellation token.</param>
-    /// <returns>A handle to retrieve results.</returns>
-    public ValueTask<KernelHandle> SubmitBatchAsync(
-        IReadOnlyList<TIn> items,
-        GpuExecutionHints? hints = null,
-        CancellationToken ct = default)
-    {
-        var handle = KernelHandle.Create();
-        _batches[handle.Id] = items;
-        return new(handle);
-    }
+    public override string KernelId => "cpu-passthrough";
 
     /// <summary>
-    /// Reads results asynchronously from a previously submitted batch.
+    /// Kernel display name
+    /// </summary>
+    public override string DisplayName => "CPU Passthrough Kernel";
+
+    /// <summary>
+    /// Backend provider name
+    /// </summary>
+    public override string BackendProvider => "CPU";
+
+    /// <summary>
+    /// Whether kernel uses GPU acceleration (always false for CPU)
+    /// </summary>
+    public override bool IsGpuAccelerated => false;
+
+    /// <summary>
+    /// Executes passthrough transformation from TIn to TOut.
     /// Attempts direct casting if types match, otherwise attempts conversion.
     /// </summary>
-    /// <param name="handle">The batch handle.</param>
-    /// <param name="ct">Cancellation token.</param>
-    /// <returns>An async enumerable of results.</returns>
-    public async IAsyncEnumerable<TOut> ReadResultsAsync(
-        KernelHandle handle,
-        [EnumeratorCancellation] CancellationToken ct = default)
+    /// <param name="input">The input value.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Transformed output value.</returns>
+    public override async Task<TOut> ExecuteAsync(TIn input, CancellationToken cancellationToken = default)
     {
-        await Task.Yield(); // Ensure async
-        if (!_batches.TryGetValue(handle.Id, out var items))
-        {
-            yield break;
-        }
+        EnsureInitialized();
+        EnsureNotDisposed();
 
         // For passthrough, attempt to cast directly if types match
         if (typeof(TIn) == typeof(TOut))
         {
-            foreach (var item in items)
+            if (input is TOut directResult)
             {
-                ct.ThrowIfCancellationRequested();
-
-                // Process item asynchronously for large datasets
-                var result = await Task.Run(() =>
-                {
-                    if (item is TOut directResult)
-                    {
-                        return directResult;
-                    }
-                    else
-                    {
-                        return default(TOut)!;
-                    }
-                }, ct).ConfigureAwait(false);
-
-                yield return result;
+                return directResult;
             }
         }
-        else
-        {
-            // For different types, use async conversion
-            foreach (var item in items)
-            {
-                ct.ThrowIfCancellationRequested();
 
-                // Try to convert using common patterns asynchronously
-                var result = await Task.Run(() =>
+        // For different types, use async conversion
+        return await Task.Run(() =>
+        {
+            TOut convertedResult = default(TOut)!;
+            try
+            {
+                if (input is IConvertible convertible)
                 {
-                    TOut convertedResult = default(TOut)!;
+                    var converted = Convert.ChangeType(input, typeof(TOut));
+                    if (converted is TOut typedResult)
+                    {
+                        convertedResult = typedResult;
+                    }
+                }
+            }
+            catch
+            {
+                // Use default for conversion failures
+            }
+
+            return convertedResult;
+        }, cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Execute passthrough transformation for batch of inputs.
+    /// Optimized for parallel CPU execution.
+    /// </summary>
+    /// <param name="inputs">Input array.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Transformed output array.</returns>
+    public override async Task<TOut[]> ExecuteBatchAsync(TIn[] inputs, CancellationToken cancellationToken = default)
+    {
+        EnsureInitialized();
+        EnsureNotDisposed();
+
+        var results = new TOut[inputs.Length];
+
+        // Process in parallel on CPU for better throughput
+        await Task.Run(() =>
+        {
+            Parallel.For(0, inputs.Length, new ParallelOptions
+            {
+                CancellationToken = cancellationToken,
+                MaxDegreeOfParallelism = Environment.ProcessorCount
+            }, i =>
+            {
+                // Direct cast if types match
+                if (typeof(TIn) == typeof(TOut) && inputs[i] is TOut directResult)
+                {
+                    results[i] = directResult;
+                }
+                else
+                {
+                    // Attempt conversion
                     try
                     {
-                        if (item is IConvertible convertible)
+                        if (inputs[i] is IConvertible convertible)
                         {
-                            var converted = Convert.ChangeType(item, typeof(TOut));
+                            var converted = Convert.ChangeType(inputs[i], typeof(TOut));
                             if (converted is TOut typedResult)
                             {
-                                convertedResult = typedResult;
+                                results[i] = typedResult;
                             }
                         }
                     }
                     catch
                     {
-                        // Use default for conversion failures
+                        results[i] = default(TOut)!;
                     }
+                }
+            });
+        }, cancellationToken).ConfigureAwait(false);
 
-                    return convertedResult;
-                }, ct).ConfigureAwait(false);
-
-                yield return result;
-            }
-        }
-
-        // Clean up the batch after processing
-        _batches.Remove(handle.Id);
+        return results;
     }
 
     /// <summary>
-    /// Gets information about this kernel.
+    /// Get estimated execution time for input size.
+    /// CPU passthrough is very fast (1μs per element).
     /// </summary>
-    /// <param name="ct">Cancellation token.</param>
-    /// <returns>Kernel information.</returns>
-    public ValueTask<KernelInfo> GetInfoAsync(CancellationToken ct = default)
+    public override long GetEstimatedExecutionTimeMicroseconds(int inputSize)
     {
-        return new(new KernelInfo(
-            new KernelId("cpu-passthrough"),
-            "CPU passthrough kernel",
-            typeof(TIn),
-            typeof(TOut),
-            false,
-            1024));
+        return inputSize; // 1μs per element for CPU passthrough
+    }
+
+    /// <summary>
+    /// Get memory requirements for CPU passthrough (minimal).
+    /// </summary>
+    public override KernelMemoryRequirements GetMemoryRequirements()
+    {
+        return new KernelMemoryRequirements(
+            InputMemoryBytes: 64,  // Small buffer
+            OutputMemoryBytes: 64, // Small buffer
+            WorkingMemoryBytes: 0, // No working memory
+            TotalMemoryBytes: 128);
+    }
+
+    /// <summary>
+    /// Validate input (CPU passthrough accepts all inputs).
+    /// </summary>
+    public override KernelValidationResult ValidateInput(TIn input)
+    {
+        if (input == null)
+            return KernelValidationResult.Invalid("Input cannot be null");
+
+        return KernelValidationResult.Valid();
     }
 }

@@ -64,11 +64,11 @@ public sealed class PersistentKernelInstance : IDisposable
         try
         {
             // Initialize kernel
-            var info = await _kernel.GetInfoAsync(ct);
+            await _kernel.InitializeAsync(ct);
 
             _logger.LogDebug(
-                "Starting persistent kernel {KernelId} with batch size {BatchSize}",
-                info.Id, _options.BatchSize);
+                "Starting persistent kernel {KernelId} (Provider: {Provider}) with batch size {BatchSize}",
+                _kernel.KernelId, _kernel.BackendProvider, _options.BatchSize);
 
             // Start execution loop
             _executionTask = ExecutionLoopAsync(_cts.Token);
@@ -188,15 +188,9 @@ public sealed class PersistentKernelInstance : IDisposable
 
         try
         {
-            // Submit batch to kernel
-            var handle = await _kernel.SubmitBatchAsync(batch, null, ct);
-
-            // Read results
-            var results = new List<byte[]>();
-            await foreach (var result in _kernel.ReadResultsAsync(handle, ct))
-            {
-                results.Add(result);
-            }
+            // Execute batch using new API
+            var batchArray = batch.ToArray();
+            var results = await _kernel.ExecuteBatchAsync(batchArray, ct);
 
             stopwatch.Stop();
 
@@ -207,10 +201,11 @@ public sealed class PersistentKernelInstance : IDisposable
             _lastActivity = DateTime.UtcNow;
 
             _logger.LogTrace(
-                "Processed batch of {Count} items in {Time}ms ({Throughput:F2} MB/s)",
+                "Processed batch of {Count} items in {Time}ms ({Throughput:F2} MB/s) - {ResultCount} results",
                 batch.Count,
                 stopwatch.ElapsedMilliseconds,
-                (bytesProcessed / 1024.0 / 1024.0) / stopwatch.Elapsed.TotalSeconds);
+                (bytesProcessed / 1024.0 / 1024.0) / stopwatch.Elapsed.TotalSeconds,
+                results.Length);
         }
         catch (Exception ex)
         {

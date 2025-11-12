@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Abstractions.Kernels;
 using Orleans.GpuBridge.Abstractions.Metrics;
 using Orleans.GpuBridge.Diagnostics;
 using Orleans.GpuBridge.HealthChecks.Configuration;
@@ -240,18 +242,12 @@ public class GpuHealthCheck : IHealthCheck
             // Attempt to get and execute a test kernel
             var kernel = await _gpuBridge.GetKernelAsync<float[], float>(
                 new KernelId("test/sum"));
-            
-            // Submit test data for processing
-            var handle = await kernel.SubmitBatchAsync(new[] { testData });
-            
+
+            // Execute test data for processing
+            var results = await kernel.ExecuteBatchAsync(new[] { testData }, cancellationToken);
+
             // Retrieve and validate results
-            var results = kernel.ReadResultsAsync(handle);
-            var result = 0f;
-            await foreach (var r in results)
-            {
-                result = r;
-                break; // Get first result only
-            }
+            var result = results.FirstOrDefault();
             
             // Verify that the computed result matches expected value
             var tolerance = 0.001f; // Allow for small floating-point precision differences

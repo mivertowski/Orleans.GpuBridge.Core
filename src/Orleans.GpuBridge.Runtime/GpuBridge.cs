@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Orleans.GpuBridge.Abstractions;
 using Orleans.GpuBridge.Abstractions.Enums;
+using Orleans.GpuBridge.Abstractions.Kernels;
 
 namespace Orleans.GpuBridge.Runtime;
 

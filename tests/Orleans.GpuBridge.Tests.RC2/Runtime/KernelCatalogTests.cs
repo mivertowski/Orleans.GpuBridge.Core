@@ -236,13 +236,10 @@ public sealed class KernelCatalogTests : IDisposable
             _mockServiceProvider.Object,
             _cts.Token);
 
-        var info = await kernel.GetInfoAsync(_cts.Token);
-
         // Assert
-        info.Should().NotBeNull();
-        info.Metadata.Should().NotBeNull();
-        info.Metadata.Should().ContainKey("version");
-        info.Metadata!["version"].Should().Be("1.0");
+        kernel.Should().NotBeNull();
+        kernel.KernelId.Should().Be("metadata-kernel");
+        kernel.IsGpuAccelerated.Should().BeFalse();
     }
 
     [Fact]
@@ -320,8 +317,7 @@ public sealed class KernelCatalogTests : IDisposable
         kernel.Should().NotBeNull();
         // CpuPassthroughKernel is internal, just verify fallback kernel works
         fallbackKernel.Should().NotBeNull();
-        var handle = await fallbackKernel.SubmitBatchAsync(new[] { 1.0f }, null, _cts.Token);
-        var results = await fallbackKernel.ReadResultsAsync(handle, _cts.Token).ToListAsync(_cts.Token);
+        var results = await fallbackKernel.ExecuteBatchAsync(new[] { 1.0f }, _cts.Token);
         results.Should().NotBeEmpty();
     }
 
@@ -616,15 +612,11 @@ public sealed class KernelCatalogTests : IDisposable
             _mockServiceProvider.Object,
             _cts.Token);
 
-        var info = await kernel.GetInfoAsync(_cts.Token);
-
         // Assert
-        info.Should().NotBeNull();
-        info.Id.Value.Should().Be("metadata-kernel");
-        info.Description.Should().Be("Test kernel with metadata");
-        info.InputType.Should().Be(typeof(float));
-        info.OutputType.Should().Be(typeof(float));
-        info.PreferredBatchSize.Should().Be(512);
+        kernel.Should().NotBeNull();
+        kernel.KernelId.Should().Be("metadata-kernel");
+        kernel.IsGpuAccelerated.Should().BeFalse();
+        kernel.BackendProvider.Should().Be("Mock");
     }
 
     #endregion
@@ -657,8 +649,7 @@ public sealed class KernelCatalogTests : IDisposable
             _cts.Token);
 
         var input = new[] { 1.0f, 2.0f, 3.0f };
-        var handle = await kernel.SubmitBatchAsync(new[] { input }, null, _cts.Token);
-        var results = await kernel.ReadResultsAsync(handle, _cts.Token).ToListAsync(_cts.Token);
+        var results = await kernel.ExecuteBatchAsync(new[] { input }, _cts.Token);
 
         // Assert
         results.Should().NotBeEmpty();
@@ -690,7 +681,7 @@ public sealed class KernelCatalogTests : IDisposable
             _mockServiceProvider.Object,
             _cts.Token);
 
-        var act = async () => await kernel.SubmitBatchAsync(new[] { 1.0f }, null, _cts.Token);
+        var act = async () => await kernel.ExecuteBatchAsync(new[] { 1.0f }, _cts.Token);
 
         // Assert
         await act.Should().ThrowAsync<InvalidOperationException>()
@@ -722,8 +713,7 @@ public sealed class KernelCatalogTests : IDisposable
             _mockServiceProvider.Object,
             _cts.Token);
 
-        var handle = await kernel.SubmitBatchAsync(Array.Empty<float[]>(), null, _cts.Token);
-        var results = await kernel.ReadResultsAsync(handle, _cts.Token).ToListAsync(_cts.Token);
+        var results = await kernel.ExecuteBatchAsync(Array.Empty<float[]>(), _cts.Token);
 
         // Assert
         results.Should().BeEmpty();
@@ -755,12 +745,10 @@ public sealed class KernelCatalogTests : IDisposable
             _mockServiceProvider.Object,
             cts.Token);
 
-        var handle = await kernel.SubmitBatchAsync(new[] { 1.0f }, null, cts.Token);
-
         // Cancel immediately
         cts.Cancel();
 
-        var act = async () => await kernel.ReadResultsAsync(handle, cts.Token).ToListAsync(cts.Token);
+        var act = async () => await kernel.ExecuteBatchAsync(new[] { 1.0f }, cts.Token);
 
         // Assert
         await act.Should().ThrowAsync<OperationCanceledException>();
@@ -792,8 +780,7 @@ public sealed class KernelCatalogTests : IDisposable
             _mockServiceProvider.Object,
             cts.Token);
 
-        var handle = await kernel.SubmitBatchAsync(new[] { 1.0f }, null, cts.Token);
-        var act = async () => await kernel.ReadResultsAsync(handle, cts.Token).ToListAsync(cts.Token);
+        var act = async () => await kernel.ExecuteBatchAsync(new[] { 1.0f }, cts.Token);
 
         // Assert
         await act.Should().ThrowAsync<OperationCanceledException>();
@@ -826,15 +813,14 @@ public sealed class KernelCatalogTests : IDisposable
 
         var tasks = Enumerable.Range(0, 10).Select(async i =>
         {
-            var handle = await kernel.SubmitBatchAsync(new[] { (float)i }, null, _cts.Token);
-            return await kernel.ReadResultsAsync(handle, _cts.Token).ToListAsync(_cts.Token);
+            return await kernel.ExecuteBatchAsync(new[] { (float)i }, _cts.Token);
         }).ToArray();
 
         var allResults = await Task.WhenAll(tasks);
 
         // Assert
         allResults.Should().HaveCount(10);
-        allResults.Should().OnlyContain(r => r.Count > 0);
+        allResults.Should().OnlyContain(r => r.Length > 0);
     }
 
     [Fact]
@@ -850,8 +836,7 @@ public sealed class KernelCatalogTests : IDisposable
             _mockServiceProvider.Object,
             _cts.Token);
 
-        var handle = await kernel.SubmitBatchAsync(new[] { 1.0f, 2.0f, 3.0f }, null, _cts.Token);
-        var results = await kernel.ReadResultsAsync(handle, _cts.Token).ToListAsync(_cts.Token);
+        var results = await kernel.ExecuteBatchAsync(new[] { 1.0f, 2.0f, 3.0f }, _cts.Token);
 
         // Assert - CpuPassthroughKernel is internal, just verify behavior
         kernel.Should().NotBeNull();
@@ -908,8 +893,7 @@ public sealed class KernelCatalogTests : IDisposable
             _cts.Token);
 
         // Execute and verify metrics
-        var handle = await kernel.SubmitBatchAsync(new[] { 1.0f }, null, _cts.Token);
-        var results = await kernel.ReadResultsAsync(handle, _cts.Token).ToListAsync(_cts.Token);
+        var results = await kernel.ExecuteBatchAsync(new[] { 1.0f }, _cts.Token);
 
         // Assert - MetricsKernel tracks execution internally
         kernel.Should().NotBeNull();
@@ -925,12 +909,10 @@ public sealed class KernelCatalogTests : IDisposable
 
     #region Test Helper Classes
 
-    private class MockKernel<TIn, TOut> : Orleans.GpuBridge.Abstractions.IGpuKernel<TIn, TOut>
+    private class MockKernel<TIn, TOut> : GpuKernelBase<TIn, TOut>
         where TIn : notnull
         where TOut : notnull
     {
-        private readonly ConcurrentDictionary<string, IReadOnlyList<TIn>> _batches = new();
-
         public string Identifier { get; }
 
         public MockKernel(string identifier = "mock")
@@ -938,45 +920,35 @@ public sealed class KernelCatalogTests : IDisposable
             Identifier = identifier;
         }
 
-        public ValueTask<KernelHandle> SubmitBatchAsync(
-            IReadOnlyList<TIn> items,
-            GpuExecutionHints? hints = null,
-            CancellationToken ct = default)
+        public override string KernelId => Identifier;
+        public override string BackendProvider => "Mock";
+        public override bool IsGpuAccelerated => false;
+
+        public override async Task<TOut> ExecuteAsync(TIn input, CancellationToken cancellationToken = default)
         {
-            var handle = KernelHandle.Create();
-            _batches[handle.Id] = items;
-            return new ValueTask<KernelHandle>(handle);
+            await Task.Delay(10, cancellationToken);
+
+            // Transform input to output
+            if (input is TOut result)
+                return result;
+
+            return default!;
         }
 
-        public async IAsyncEnumerable<TOut> ReadResultsAsync(
-            KernelHandle handle,
-            [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken ct = default)
+        public override async Task<TOut[]> ExecuteBatchAsync(TIn[] inputs, CancellationToken cancellationToken = default)
         {
-            await Task.Yield();
-            if (_batches.TryGetValue(handle.Id, out var items))
+            var results = new TOut[inputs.Length];
+            for (int i = 0; i < inputs.Length; i++)
             {
-                foreach (var item in items)
-                {
-                    ct.ThrowIfCancellationRequested();
-                    if (item is TOut result)
-                        yield return result;
-                    else
-                        yield return default!;
-                }
+                results[i] = await ExecuteAsync(inputs[i], cancellationToken);
             }
+            return results;
         }
 
-        public virtual ValueTask<KernelInfo> GetInfoAsync(CancellationToken ct = default)
-        {
-            return new ValueTask<KernelInfo>(new KernelInfo(
-                new KernelId("mock-kernel"),
-                "Mock kernel for testing",
-                typeof(TIn),
-                typeof(TOut),
-                false,
-                1024,
-                null));
-        }
+        public override long GetEstimatedExecutionTimeMicroseconds(int inputSize) => inputSize * 10;
+
+        public override KernelMemoryRequirements GetMemoryRequirements() =>
+            new KernelMemoryRequirements(1024, 1024, 512, 2560);
     }
 
     private sealed class MockKernelWithMetadata<TIn, TOut> : MockKernel<TIn, TOut>
@@ -987,23 +959,8 @@ public sealed class KernelCatalogTests : IDisposable
         {
         }
 
-        public override ValueTask<KernelInfo> GetInfoAsync(CancellationToken ct = default)
-        {
-            var metadata = new Dictionary<string, object>
-            {
-                { "version", "1.0" },
-                { "author", "test" }
-            };
-
-            return new ValueTask<KernelInfo>(new KernelInfo(
-                new KernelId("metadata-kernel"),
-                "Test kernel with metadata",
-                typeof(TIn),
-                typeof(TOut),
-                false,
-                512,
-                metadata));
-        }
+        // Note: GetInfoAsync() is not part of the new GpuKernelBase API
+        // Metadata can be returned via kernel properties if needed
     }
 
     private sealed class MockKernelWithDependency<TIn, TOut> : MockKernel<TIn, TOut>
@@ -1027,172 +984,141 @@ public sealed class KernelCatalogTests : IDisposable
         }
     }
 
-    private sealed class ThrowingKernel<TIn, TOut> : Orleans.GpuBridge.Abstractions.IGpuKernel<TIn, TOut>
+    private sealed class ThrowingKernel<TIn, TOut> : GpuKernelBase<TIn, TOut>
         where TIn : notnull
         where TOut : notnull
     {
-        public ValueTask<KernelHandle> SubmitBatchAsync(
-            IReadOnlyList<TIn> items,
-            GpuExecutionHints? hints = null,
-            CancellationToken ct = default)
+        public override string KernelId => "throwing-kernel";
+        public override string BackendProvider => "Mock";
+        public override bool IsGpuAccelerated => false;
+
+        public override Task<TOut> ExecuteAsync(TIn input, CancellationToken cancellationToken = default)
         {
             throw new InvalidOperationException("Kernel execution failed");
         }
 
-        public IAsyncEnumerable<TOut> ReadResultsAsync(
-            KernelHandle handle,
-            CancellationToken ct = default)
+        public override Task<TOut[]> ExecuteBatchAsync(TIn[] inputs, CancellationToken cancellationToken = default)
         {
-            throw new InvalidOperationException("Cannot read results");
+            throw new InvalidOperationException("Kernel execution failed");
         }
 
-        public ValueTask<KernelInfo> GetInfoAsync(CancellationToken ct = default)
-        {
-            return new ValueTask<KernelInfo>(new KernelInfo(
-                new KernelId("throwing-kernel"),
-                "Kernel that throws",
-                typeof(TIn),
-                typeof(TOut),
-                false,
-                1024));
-        }
+        public override long GetEstimatedExecutionTimeMicroseconds(int inputSize) => inputSize * 10;
+
+        public override KernelMemoryRequirements GetMemoryRequirements() =>
+            new KernelMemoryRequirements(1024, 1024, 512, 2560);
     }
 
-    private sealed class NullSafeKernel<TIn, TOut> : Orleans.GpuBridge.Abstractions.IGpuKernel<TIn, TOut>
+    private sealed class NullSafeKernel<TIn, TOut> : GpuKernelBase<TIn, TOut>
         where TIn : notnull
         where TOut : notnull
     {
-        private readonly ConcurrentDictionary<string, IReadOnlyList<TIn>> _batches = new();
+        public override string KernelId => "null-safe-kernel";
+        public override string BackendProvider => "Mock";
+        public override bool IsGpuAccelerated => false;
 
-        public ValueTask<KernelHandle> SubmitBatchAsync(
-            IReadOnlyList<TIn> items,
-            GpuExecutionHints? hints = null,
-            CancellationToken ct = default)
+        public override async Task<TOut> ExecuteAsync(TIn input, CancellationToken cancellationToken = default)
         {
-            var handle = KernelHandle.Create();
-            _batches[handle.Id] = items ?? Array.Empty<TIn>();
-            return new ValueTask<KernelHandle>(handle);
+            await Task.Delay(10, cancellationToken);
+
+            if (input == null)
+                return default!;
+
+            if (input is TOut result)
+                return result;
+
+            return default!;
         }
 
-        public async IAsyncEnumerable<TOut> ReadResultsAsync(
-            KernelHandle handle,
-            [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken ct = default)
+        public override async Task<TOut[]> ExecuteBatchAsync(TIn[] inputs, CancellationToken cancellationToken = default)
         {
-            await Task.Yield();
-            if (_batches.TryGetValue(handle.Id, out var items))
+            if (inputs == null || inputs.Length == 0)
+                return Array.Empty<TOut>();
+
+            var results = new TOut[inputs.Length];
+            for (int i = 0; i < inputs.Length; i++)
             {
-                foreach (var item in items)
-                {
-                    ct.ThrowIfCancellationRequested();
-                    if (item is TOut result)
-                        yield return result;
-                }
+                results[i] = await ExecuteAsync(inputs[i], cancellationToken);
             }
+            return results;
         }
 
-        public ValueTask<KernelInfo> GetInfoAsync(CancellationToken ct = default)
-        {
-            return new ValueTask<KernelInfo>(new KernelInfo(
-                new KernelId("null-safe-kernel"),
-                "Null-safe kernel",
-                typeof(TIn),
-                typeof(TOut),
-                false,
-                1024));
-        }
+        public override long GetEstimatedExecutionTimeMicroseconds(int inputSize) => inputSize * 10;
+
+        public override KernelMemoryRequirements GetMemoryRequirements() =>
+            new KernelMemoryRequirements(1024, 1024, 512, 2560);
     }
 
-    private sealed class LongRunningKernel<TIn, TOut> : Orleans.GpuBridge.Abstractions.IGpuKernel<TIn, TOut>
+    private sealed class LongRunningKernel<TIn, TOut> : GpuKernelBase<TIn, TOut>
         where TIn : notnull
         where TOut : notnull
     {
-        private readonly ConcurrentDictionary<string, IReadOnlyList<TIn>> _batches = new();
+        public override string KernelId => "long-running-kernel";
+        public override string BackendProvider => "Mock";
+        public override bool IsGpuAccelerated => false;
 
-        public ValueTask<KernelHandle> SubmitBatchAsync(
-            IReadOnlyList<TIn> items,
-            GpuExecutionHints? hints = null,
-            CancellationToken ct = default)
+        public override async Task<TOut> ExecuteAsync(TIn input, CancellationToken cancellationToken = default)
         {
-            var handle = KernelHandle.Create();
-            _batches[handle.Id] = items;
-            return new ValueTask<KernelHandle>(handle);
+            await Task.Delay(TimeSpan.FromSeconds(10), cancellationToken); // Long delay
+
+            if (input is TOut result)
+                return result;
+
+            return default!;
         }
 
-        public async IAsyncEnumerable<TOut> ReadResultsAsync(
-            KernelHandle handle,
-            [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken ct = default)
+        public override async Task<TOut[]> ExecuteBatchAsync(TIn[] inputs, CancellationToken cancellationToken = default)
         {
-            if (_batches.TryGetValue(handle.Id, out var items))
+            var results = new TOut[inputs.Length];
+            for (int i = 0; i < inputs.Length; i++)
             {
-                foreach (var item in items)
-                {
-                    ct.ThrowIfCancellationRequested();
-                    await Task.Delay(TimeSpan.FromSeconds(10), ct); // Long delay
-                    if (item is TOut result)
-                        yield return result;
-                }
+                results[i] = await ExecuteAsync(inputs[i], cancellationToken);
             }
+            return results;
         }
 
-        public ValueTask<KernelInfo> GetInfoAsync(CancellationToken ct = default)
-        {
-            return new ValueTask<KernelInfo>(new KernelInfo(
-                new KernelId("long-running-kernel"),
-                "Long running kernel",
-                typeof(TIn),
-                typeof(TOut),
-                false,
-                1024));
-        }
+        public override long GetEstimatedExecutionTimeMicroseconds(int inputSize) => inputSize * 10_000_000; // 10s per item
+
+        public override KernelMemoryRequirements GetMemoryRequirements() =>
+            new KernelMemoryRequirements(1024, 1024, 512, 2560);
     }
 
-    private sealed class MetricsKernel<TIn, TOut> : Orleans.GpuBridge.Abstractions.IGpuKernel<TIn, TOut>
+    private sealed class MetricsKernel<TIn, TOut> : GpuKernelBase<TIn, TOut>
         where TIn : notnull
         where TOut : notnull
     {
-        private readonly ConcurrentDictionary<string, IReadOnlyList<TIn>> _batches = new();
         private int _executionCount;
 
         public int ExecutionCount => _executionCount;
 
-        public ValueTask<KernelHandle> SubmitBatchAsync(
-            IReadOnlyList<TIn> items,
-            GpuExecutionHints? hints = null,
-            CancellationToken ct = default)
-        {
-            var handle = KernelHandle.Create();
-            _batches[handle.Id] = items;
-            return new ValueTask<KernelHandle>(handle);
-        }
+        public override string KernelId => "metrics-kernel";
+        public override string BackendProvider => "Mock";
+        public override bool IsGpuAccelerated => false;
 
-        public async IAsyncEnumerable<TOut> ReadResultsAsync(
-            KernelHandle handle,
-            [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken ct = default)
+        public override async Task<TOut> ExecuteAsync(TIn input, CancellationToken cancellationToken = default)
         {
-            await Task.Yield();
+            await Task.Delay(10, cancellationToken);
             Interlocked.Increment(ref _executionCount);
 
-            if (_batches.TryGetValue(handle.Id, out var items))
-            {
-                foreach (var item in items)
-                {
-                    ct.ThrowIfCancellationRequested();
-                    if (item is TOut result)
-                        yield return result;
-                }
-            }
+            if (input is TOut result)
+                return result;
+
+            return default!;
         }
 
-        public ValueTask<KernelInfo> GetInfoAsync(CancellationToken ct = default)
+        public override async Task<TOut[]> ExecuteBatchAsync(TIn[] inputs, CancellationToken cancellationToken = default)
         {
-            return new ValueTask<KernelInfo>(new KernelInfo(
-                new KernelId("metrics-kernel"),
-                "Metrics tracking kernel",
-                typeof(TIn),
-                typeof(TOut),
-                false,
-                1024));
+            var results = new TOut[inputs.Length];
+            for (int i = 0; i < inputs.Length; i++)
+            {
+                results[i] = await ExecuteAsync(inputs[i], cancellationToken);
+            }
+            return results;
         }
+
+        public override long GetEstimatedExecutionTimeMicroseconds(int inputSize) => inputSize * 10;
+
+        public override KernelMemoryRequirements GetMemoryRequirements() =>
+            new KernelMemoryRequirements(1024, 1024, 512, 2560);
     }
 
     public interface ITestDependency

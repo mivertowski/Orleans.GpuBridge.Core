@@ -33,13 +33,8 @@ public class ErrorHandlingTests
             new KernelId("test-kernel"),
             CreateServiceProvider());
 
-        var handle = await kernel.SubmitBatchAsync(new[] { new[] { 1f, 2f, 3f } });
-        var results = new List<float>();
-
-        await foreach (var result in kernel.ReadResultsAsync(handle))
-        {
-            results.Add(result);
-        }
+        var results = await kernel.ExecuteBatchAsync(
+            new[] { new[] { 1f, 2f, 3f } });
 
         // Assert
         results.Should().NotBeEmpty("CPU fallback should provide results");
@@ -63,17 +58,11 @@ public class ErrorHandlingTests
         var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(200));
 
         // Act & Assert
-        var handle = await kernel.SubmitBatchAsync(
-            new[] { new[] { 1f, 2f, 3f } },
-            null,
-            cts.Token);
-
         var act = async () =>
         {
-            await foreach (var _ in kernel.ReadResultsAsync(handle, cts.Token))
-            {
-                // Should timeout before results
-            }
+            await kernel.ExecuteBatchAsync(
+                new[] { new[] { 1f, 2f, 3f } },
+                cts.Token);
         };
 
         await act.Should().ThrowAsync<TimeoutException>()
@@ -94,13 +83,9 @@ public class ErrorHandlingTests
             mockGpu);
 
         // Act & Assert - First execution crashes
-        var handle1 = await kernel.SubmitBatchAsync(new[] { new[] { 1f, 2f, 3f } });
-
         var firstExecution = async () =>
         {
-            await foreach (var _ in kernel.ReadResultsAsync(handle1))
-            {
-            }
+            await kernel.ExecuteBatchAsync(new[] { new[] { 1f, 2f, 3f } });
         };
 
         await firstExecution.Should().ThrowAsync<InvalidOperationException>()
@@ -110,13 +95,8 @@ public class ErrorHandlingTests
         mockGpu.SimulateGpuCrash = false;
         mockGpu.Reset();
 
-        var handle2 = await kernel.SubmitBatchAsync(new[] { new[] { 1f, 2f, 3f } });
-        var results = new List<float>();
-
-        await foreach (var result in kernel.ReadResultsAsync(handle2))
-        {
-            results.Add(result);
-        }
+        var results = await kernel.ExecuteBatchAsync(
+            new[] { new[] { 1f, 2f, 3f } });
 
         // Assert - Should recover after reset
         results.Should().NotBeEmpty("Kernel should recover after GPU crash reset");
@@ -193,12 +173,12 @@ public class ErrorHandlingTests
         // Assert - Should get CPU passthrough kernel
         kernel.Should().NotBeNull();
 
-        var info = await kernel.GetInfoAsync();
-        info.Should().NotBeNull();
+        kernel.KernelId.Should().NotBeNullOrEmpty();
+        kernel.DisplayName.Should().NotBeNullOrEmpty();
 
         // Verify it works (even if it's CPU fallback)
-        var handle = await kernel.SubmitBatchAsync(new[] { new[] { 1f, 2f, 3f } });
-        var results = await kernel.ReadResultsAsync(handle).ToListAsync();
+        var results = await kernel.ExecuteBatchAsync(
+            new[] { new[] { 1f, 2f, 3f } });
 
         results.Should().NotBeEmpty("CPU fallback should provide results");
     }
@@ -216,23 +196,17 @@ public class ErrorHandlingTests
             new KernelId("cpu-kernel"),
             CreateServiceProvider());
 
-        var handle = await kernel.SubmitBatchAsync(new[] { new[] { 1f, 2f, 3f } });
-        var results = await kernel.ReadResultsAsync(handle).ToListAsync();
+        var results = await kernel.ExecuteBatchAsync(
+            new[] { new[] { 1f, 2f, 3f } });
 
         // Assert
         results.Should().ContainSingle()
             .Which.Should().Be(42.0f);
     }
 
-    private static Func<IReadOnlyList<float[]>, IAsyncEnumerable<float>> CreateCpuKernelExecution()
+    private static Func<float[], Task<float>> CreateCpuKernelExecution()
     {
-        return items => CreateCpuResultsAsync(items);
-    }
-
-    private static async IAsyncEnumerable<float> CreateCpuResultsAsync(IReadOnlyList<float[]> items)
-    {
-        await Task.Yield();
-        yield return 42.0f;
+        return item => Task.FromResult(42.0f);
     }
 
     [Fact]
@@ -249,8 +223,7 @@ public class ErrorHandlingTests
         // Should get CPU passthrough, but it won't know how to process
         kernel.Should().NotBeNull("Should get passthrough kernel");
 
-        var info = await kernel.GetInfoAsync();
-        info.Id.Value.Should().Be("cpu-passthrough");
+        kernel.KernelId.Should().Be("cpu-passthrough");
     }
 
     [Fact]
@@ -276,13 +249,8 @@ public class ErrorHandlingTests
             try
             {
                 var kernel = CreateMockKernel(provider);
-                var handle = await kernel.SubmitBatchAsync(new[] { new[] { 1f, 2f } });
-
-                var results = new List<float>();
-                await foreach (var result in kernel.ReadResultsAsync(handle))
-                {
-                    results.Add(result);
-                }
+                var results = await kernel.ExecuteBatchAsync(
+                    new[] { new[] { 1f, 2f } });
 
                 if (results.Any())
                 {
@@ -322,12 +290,7 @@ public class ErrorHandlingTests
             try
             {
                 var kernel = CreateMockKernel(mockGpu);
-                var handle = await kernel.SubmitBatchAsync(new[] { new[] { 1f, 2f } });
-
-                await foreach (var _ in kernel.ReadResultsAsync(handle))
-                {
-                    // Process results
-                }
+                await kernel.ExecuteBatchAsync(new[] { new[] { 1f, 2f } });
             }
             catch
             {
@@ -360,20 +323,14 @@ public class ErrorHandlingTests
 
         var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(100));
 
-        // Act
-        var handle = await kernel.SubmitBatchAsync(
-            new[] { new[] { 1f, 2f, 3f } },
-            null,
-            cts.Token);
-
+        // Act & Assert
         var act = async () =>
         {
-            await foreach (var _ in kernel.ReadResultsAsync(handle, cts.Token))
-            {
-            }
+            await kernel.ExecuteBatchAsync(
+                new[] { new[] { 1f, 2f, 3f } },
+                cts.Token);
         };
 
-        // Assert
         await act.Should().ThrowAsync<OperationCanceledException>();
     }
 
@@ -452,55 +409,33 @@ public class ErrorHandlingTests
         var batchSize = 10;
 
         var kernel = new MockKernelRC2<float[], float>(
-            TestHelpers.CreateKernelInfo("partial-timeout"),
-            customExecution: items => CreatePartialTimeoutResults(items, cts.Token));
+            TestHelpers.CreateKernelInfo("partial-timeout"))
+        {
+            ExecutionDelay = TimeSpan.FromMilliseconds(30) // 30ms per item
+        };
 
         // Act
-        var handle = await kernel.SubmitBatchAsync(
-            TestHelpers.CreateSampleBatch(batchSize, 10),
-            null,
-            cts.Token);
-
-        var results = new List<float>();
         var processedCount = 0;
 
         try
         {
-            await foreach (var result in kernel.ReadResultsAsync(handle, cts.Token))
-            {
-                results.Add(result);
-                processedCount++;
-            }
+            var results = await kernel.ExecuteBatchAsync(
+                TestHelpers.CreateSampleBatch(batchSize, 10).ToArray(),
+                cts.Token);
+
+            processedCount = results.Length;
         }
         catch (OperationCanceledException)
         {
-            // Expected - partial processing
+            // Expected - should timeout before completing all items
+            processedCount = 0; // Batch operation cancelled before completion
         }
 
         // Assert
-        results.Should().NotBeEmpty("Should have partial results before timeout");
-        results.Count.Should().BeLessThan(batchSize,
+        // With 100ms timeout and 30ms per item, we should process 3 items before timeout
+        // But since ExecuteBatchAsync waits for all items, cancellation means partial or no results
+        processedCount.Should().BeLessThan(batchSize,
             "Should timeout before completing all items");
-        processedCount.Should().BeGreaterThan(0, "Should process some items");
-    }
-
-    private static async IAsyncEnumerable<float> CreatePartialTimeoutResults(
-        IReadOnlyList<float[]> items,
-        [EnumeratorCancellation] CancellationToken ct = default)
-    {
-        // Yield first item immediately to ensure at least one result before potential cancellation
-        if (items.Count > 0)
-        {
-            yield return 42.0f;
-        }
-
-        // Process remaining items with delay
-        for (var i = 1; i < items.Count; i++)
-        {
-            ct.ThrowIfCancellationRequested();
-            await Task.Delay(30, ct); // 30ms delay per item (reduced from 50ms for more reliable timing)
-            yield return 42.0f;
-        }
     }
 
     #endregion
@@ -515,27 +450,20 @@ public class ErrorHandlingTests
             .BuildCatalog();
     }
 
-    private static async IAsyncEnumerable<float> ExecuteWithFallback(
+    private static async Task<float> ExecuteWithFallback(
         MockGpuProviderRC2 mockGpu,
-        IReadOnlyList<float[]> items)
+        float[] item)
     {
-        await Task.Yield();
-
         // Try GPU first
-        foreach (var item in items)
+        try
         {
-            float result;
-            try
-            {
-                result = await mockGpu.ExecuteKernelAsync<float[], float>("test-kernel", item);
-            }
-            catch (OutOfMemoryException)
-            {
-                // Fallback to CPU
-                mockGpu.FallbackCount++;
-                result = item.Sum();
-            }
-            yield return result;
+            return await mockGpu.ExecuteKernelAsync<float[], float>("test-kernel", item);
+        }
+        catch (OutOfMemoryException)
+        {
+            // Fallback to CPU
+            mockGpu.FallbackCount++;
+            return item.Sum();
         }
     }
 

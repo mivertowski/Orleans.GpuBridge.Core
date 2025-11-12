@@ -111,7 +111,7 @@ public sealed class GpuBridgeProviderSelector : IGpuBridgeProviderSelector
     /// Gets a provider by name
     /// </summary>
     [UnconditionalSuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code",
-        Justification = "GetProviderAsync uses reflection to instantiate providers. When using AOT/trimming, providers must be registered with factory delegates via RegisterProvider() to avoid reflection-based instantiation. Built-in providers (CPU, ILGPU, DotCompute) are registered with factories in RegisterBuiltInProviders().")]
+        Justification = "GetProviderAsync uses reflection to instantiate providers. When using AOT/trimming, providers must be registered with factory delegates via RegisterProvider() to avoid reflection-based instantiation. Built-in providers (CPU, DotCompute) are registered with factories in RegisterBuiltInProviders().")]
     public async Task<IGpuBackendProvider?> GetProviderByNameAsync(
         string providerName,
         CancellationToken cancellationToken = default)
@@ -158,7 +158,7 @@ public sealed class GpuBridgeProviderSelector : IGpuBridgeProviderSelector
                 sp.GetService<ILoggerFactory>()!),
             Priority: 10));
 
-        // Note: ILGPU and DotCompute providers will be registered via discovery
+        // Note: DotCompute providers will be registered via discovery
         // or explicit registration when their assemblies are loaded
     }
 

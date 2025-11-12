@@ -18,12 +18,7 @@ public sealed record ProviderSelectionCriteria(
     bool PreferGpu = true)
 {
     public static ProviderSelectionCriteria Default => new();
-    
-    public static ProviderSelectionCriteria PreferILGPU => new(
-        PreferredProviderId: "ILGPU",
-        RequireJitCompilation: true,
-        RequireCpuDebugging: true);
-    
+
     public static ProviderSelectionCriteria PreferDotCompute => new(
         PreferredProviderId: "DotCompute",
         RequireJitCompilation: true);

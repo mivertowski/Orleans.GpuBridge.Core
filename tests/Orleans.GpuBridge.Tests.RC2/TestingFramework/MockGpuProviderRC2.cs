@@ -162,109 +162,79 @@ public class MockGpuProviderRC2 : IDisposable
 /// <summary>
 /// Enhanced mock kernel for RC2 testing with error simulation
 /// </summary>
-public class MockKernelRC2<TIn, TOut> : IGpuKernel<TIn, TOut>
+public class MockKernelRC2<TIn, TOut> : GpuKernelBase<TIn, TOut>
     where TIn : notnull
     where TOut : notnull
 {
     private readonly KernelInfo _info;
     private readonly MockGpuProviderRC2? _provider;
-    private readonly Dictionary<string, IReadOnlyList<TIn>> _batches = new();
-    private readonly Func<IReadOnlyList<TIn>, IAsyncEnumerable<TOut>>? _customExecution;
+    private readonly Func<TIn, Task<TOut>>? _customExecution;
 
     public bool SimulateFailure { get; set; }
     public Exception? ExceptionToThrow { get; set; }
     public TimeSpan ExecutionDelay { get; set; } = TimeSpan.FromMilliseconds(10);
 
+    public override string KernelId => _info.Id;
+    public override string BackendProvider => "MockRC2";
+    public override bool IsGpuAccelerated => false;
+
     public MockKernelRC2(
         KernelInfo info,
         MockGpuProviderRC2? provider = null,
-        Func<IReadOnlyList<TIn>, IAsyncEnumerable<TOut>>? customExecution = null)
+        Func<TIn, Task<TOut>>? customExecution = null)
     {
         _info = info;
         _provider = provider;
         _customExecution = customExecution;
     }
 
-    public async ValueTask<KernelHandle> SubmitBatchAsync(
-        IReadOnlyList<TIn> items,
-        GpuExecutionHints? hints = null,
-        CancellationToken ct = default)
+    public override async Task<TOut> ExecuteAsync(TIn input, CancellationToken ct = default)
     {
         if (SimulateFailure && ExceptionToThrow != null)
             throw ExceptionToThrow;
 
-        var handle = KernelHandle.Create();
-        _batches[handle.Id] = items;
+        // Check for simulation flags
+        if (_provider != null)
+        {
+            if (_provider.SimulateGpuCrash)
+                throw new InvalidOperationException("GPU device crashed during execution");
 
-        await Task.Delay(5, ct); // Simulate submission overhead
-        return handle;
+            if (_provider.SimulateGpuTimeout)
+                throw new TimeoutException($"Kernel execution timeout after {_provider.ExecutionTimeout.TotalSeconds}s");
+        }
+
+        await Task.Delay(ExecutionDelay, ct);
+
+        if (_customExecution != null)
+        {
+            return await _customExecution(input);
+        }
+
+        return GetDefaultResult();
     }
 
-    public async IAsyncEnumerable<TOut> ReadResultsAsync(
-        KernelHandle handle,
-        [EnumeratorCancellation] CancellationToken ct = default)
+    public override async Task<TOut[]> ExecuteBatchAsync(TIn[] inputs, CancellationToken ct = default)
     {
-        if (!_batches.TryGetValue(handle.Id, out var items))
-            throw new ArgumentException("Invalid handle", nameof(handle));
-
-        try
+        var results = new TOut[inputs.Length];
+        for (int i = 0; i < inputs.Length; i++)
         {
-            if (SimulateFailure && ExceptionToThrow != null)
-                throw ExceptionToThrow;
-
-            // If provider is set, check for simulation flags before execution
-            if (_provider != null)
-            {
-                // Simulate GPU crash
-                if (_provider.SimulateGpuCrash)
-                {
-                    throw new InvalidOperationException("GPU device crashed during execution");
-                }
-
-                // Simulate GPU timeout
-                if (_provider.SimulateGpuTimeout)
-                {
-                    throw new TimeoutException($"Kernel execution timeout after {_provider.ExecutionTimeout.TotalSeconds}s");
-                }
-            }
-
-            await Task.Delay(ExecutionDelay, ct);
-
-            if (_customExecution != null)
-            {
-                await foreach (var result in _customExecution(items).WithCancellation(ct))
-                {
-                    yield return result;
-                }
-            }
-            else
-            {
-                // Default: return mock results
-                // If provider is set, execute through provider to trigger allocation attempts and failures
-                foreach (var item in items)
-                {
-                    ct.ThrowIfCancellationRequested();
-
-                    TOut result;
-                    if (_provider != null)
-                    {
-                        // Execute through provider to trigger allocation attempts and failures
-                        result = await ExecuteWithFallbackAsync(item, ct);
-                    }
-                    else
-                    {
-                        // No provider, return mock results directly
-                        result = GetDefaultResult();
-                    }
-
-                    yield return result;
-                }
-            }
+            results[i] = await ExecuteAsync(inputs[i], ct);
         }
-        finally
-        {
-            _batches.Remove(handle.Id);
-        }
+        return results;
+    }
+
+    public override long GetEstimatedExecutionTimeMicroseconds(int inputSize)
+    {
+        return inputSize * 10; // ~10μs per item
+    }
+
+    public override KernelMemoryRequirements GetMemoryRequirements()
+    {
+        return new KernelMemoryRequirements(
+            InputMemoryBytes: 1024,
+            OutputMemoryBytes: 1024,
+            WorkingMemoryBytes: 512,
+            TotalMemoryBytes: 2560);
     }
 
     private TOut GetDefaultResult()

@@ -22,24 +22,6 @@ public static class BackendProviderExtensions
     }
 
     /// <summary>
-    /// Adds the ILGPU backend provider (requires Orleans.GpuBridge.Backends.ILGPU package)
-    /// </summary>
-    [RequiresUnreferencedCode("Scans for ILGPU backend provider types which may be trimmed.")]
-    public static IGpuBridgeBuilder AddILGPUBackend(this IGpuBridgeBuilder builder)
-    {
-        // This would be in the ILGPU package assembly
-        var ilgpuProviderType = TryGetILGPUProviderType();
-        if (ilgpuProviderType != null)
-        {
-            builder.Services.AddSingleton(typeof(IGpuBackendProvider), ilgpuProviderType);
-            return builder;
-        }
-        
-        throw new InvalidOperationException(
-            "ILGPU backend provider not found. Ensure Orleans.GpuBridge.Backends.ILGPU package is installed.");
-    }
-
-    /// <summary>
     /// Adds the DotCompute backend provider (requires Orleans.GpuBridge.Backends.DotCompute package)
     /// </summary>
     [RequiresUnreferencedCode("Scans for DotCompute backend provider types which may be trimmed.")]
@@ -82,32 +64,6 @@ public static class BackendProviderExtensions
     {
         builder.Services.Configure(configure);
         return builder;
-    }
-
-    [RequiresUnreferencedCode("Uses Assembly.GetTypes() which is not compatible with trimming.")]
-    private static Type? TryGetILGPUProviderType()
-    {
-        try
-        {
-            // Try to find ILGPU provider in loaded assemblies
-            var assemblies = System.AppDomain.CurrentDomain.GetAssemblies();
-            foreach (var assembly in assemblies)
-            {
-                var providerType = assembly.GetTypes()
-                    .FirstOrDefault(t => 
-                        t.Name == "ILGPUBackendProvider" && 
-                        t.IsAssignableTo(typeof(IGpuBackendProvider)));
-                        
-                if (providerType != null)
-                    return providerType;
-            }
-            
-            return null;
-        }
-        catch
-        {
-            return null;
-        }
     }
 
     [RequiresUnreferencedCode("Uses Assembly.GetTypes() which is not compatible with trimming.")]

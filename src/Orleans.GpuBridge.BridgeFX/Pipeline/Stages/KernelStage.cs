@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Abstractions.Kernels;
 using Orleans.GpuBridge.BridgeFX.Pipeline.Core;
 
 namespace Orleans.GpuBridge.BridgeFX.Pipeline.Stages;
@@ -43,15 +44,8 @@ internal sealed class KernelStage<TIn, TOut> : IPipelineStage
         
         // Get kernel lazily
         _kernel ??= await _bridge.GetKernelAsync<TIn, TOut>(_kernelId, ct);
-        
-        // Process single item
-        var handle = await _kernel.SubmitBatchAsync(new[] { typedInput }, null, ct);
-        
-        await foreach (var result in _kernel.ReadResultsAsync(handle, ct))
-        {
-            return result;
-        }
-        
-        return null;
+
+        // Process single item using new API
+        return await _kernel.ExecuteAsync(typedInput, ct);
     }
 }

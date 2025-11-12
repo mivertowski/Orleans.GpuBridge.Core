@@ -1,0 +1,1063 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "Orleans.GpuBridge GPU Kernel Catalog",
+  "description": "Comprehensive catalog of GPU kernels for commercial add-on package",
+  "version": "1.0.0",
+  "generated": "2025-01-11",
+  "categories": [
+    "Process Intelligence",
+    "Financial Services",
+    "Healthcare & Life Sciences",
+    "Cybersecurity",
+    "Graph Analytics",
+    "Scientific Computing",
+    "Real-time Analytics",
+    "Gaming & Simulation"
+  ],
+  "kernels": [
+    {
+      "id": "dfg-construction",
+      "name": "Directly-Follows Graph Construction",
+      "category": "Process Intelligence",
+      "domain": "Object-Centric Process Mining",
+      "description": "Constructs process model DFG from object lifecycles by analyzing consecutive activity pairs",
+      "complexity": "moderate",
+      "inputType": {
+        "type": "DFGInput",
+        "schema": {
+          "lifecycles": "Lifecycle[]",
+          "lifecycle_count": "int",
+          "object_type": "ObjectType"
+        },
+        "description": "Array of object lifecycles with events, timestamps, and activities"
+      },
+      "outputType": {
+        "type": "DFGOutput",
+        "schema": {
+          "dfg_edges": "DFGEdge[]",
+          "dfg_edge_count": "int",
+          "activity_stats": "ActivityStats[]",
+          "unique_activities": "int",
+          "execution_time": "TimeSpan"
+        },
+        "description": "DFG edges with frequencies, durations, and activity statistics"
+      },
+      "performance": {
+        "latency": "3.2s",
+        "throughput": "312K events/s",
+        "testSize": "1M events",
+        "gpuUtilization": "89-96%",
+        "speedupVsCpu": "716x"
+      },
+      "parallelization": {
+        "strategy": "object-parallel",
+        "description": "Each object lifecycle processed independently, consecutive activity pairs analyzed in parallel",
+        "cudaPattern": "grid-stride loop over lifecycles"
+      },
+      "requirements": {
+        "minGpuMemory": "2GB",
+        "recommendedGpu": "NVIDIA A100",
+        "cudaCapability": "7.0+"
+      },
+      "useCases": [
+        "Manufacturing order-to-cash process discovery",
+        "Healthcare patient journey analysis",
+        "Supply chain process mining"
+      ]
+    },
+    {
+      "id": "variant-detection",
+      "name": "Process Variant Detection",
+      "category": "Process Intelligence",
+      "domain": "Process Mining",
+      "description": "Detects unique activity sequences (variants) using hash-based grouping",
+      "complexity": "moderate",
+      "inputType": {
+        "type": "VariantInput",
+        "schema": {
+          "lifecycles": "Lifecycle[]",
+          "lifecycle_count": "int",
+          "min_support": "int"
+        },
+        "description": "Object lifecycles with minimum frequency threshold"
+      },
+      "outputType": {
+        "type": "VariantOutput",
+        "schema": {
+          "variants": "VariantInfo[]",
+          "variant_count": "int"
+        },
+        "description": "Unique variants with hash, frequency, activity sequence, duration stats"
+      },
+      "performance": {
+        "latency": "8.1s",
+        "throughput": "116K traces/s",
+        "testSize": "500K traces",
+        "speedupVsCpu": "386x"
+      },
+      "parallelization": {
+        "strategy": "trace-parallel",
+        "description": "Each trace hashed independently, atomic updates for variant frequencies",
+        "cudaPattern": "parallel hash computation with atomicAdd"
+      },
+      "requirements": {
+        "minGpuMemory": "1.5GB",
+        "recommendedGpu": "NVIDIA A100"
+      },
+      "useCases": [
+        "Process variant analysis in manufacturing",
+        "Treatment pathway detection in healthcare",
+        "Customer journey variant discovery"
+      ]
+    },
+    {
+      "id": "conformance-checking",
+      "name": "Multi-Object Token Replay Conformance Checking",
+      "category": "Process Intelligence",
+      "domain": "Process Mining Conformance",
+      "description": "Performs token replay on multi-object Petri nets to check trace conformance",
+      "complexity": "complex",
+      "inputType": {
+        "type": "ConformanceInput",
+        "schema": {
+          "traces": "Trace[]",
+          "trace_count": "int",
+          "net": "MultiObjectPetriNet",
+          "event": "OcelEvent"
+        },
+        "description": "Process traces and multi-object Petri net model"
+      },
+      "outputType": {
+        "type": "ConformanceResult",
+        "schema": {
+          "trace_id": "Guid",
+          "fitness": "float",
+          "precision": "float",
+          "violations": "int",
+          "missing_tokens": "int",
+          "remaining_tokens": "int",
+          "conformance_score": "float"
+        },
+        "description": "Conformance metrics including fitness, precision, violations"
+      },
+      "performance": {
+        "latency": "450μs per trace (P50)",
+        "throughput": "2.2M traces/s (NVIDIA A100)",
+        "testSize": "10K traces",
+        "batchLatency": "11.8s",
+        "speedupVsCpu": "600-7111x"
+      },
+      "parallelization": {
+        "strategy": "trace-parallel",
+        "description": "Each trace replayed independently with per-trace marking state",
+        "cudaPattern": "one thread per trace, state machine in registers/local memory"
+      },
+      "requirements": {
+        "minGpuMemory": "3GB",
+        "recommendedGpu": "NVIDIA A100"
+      },
+      "useCases": [
+        "Real-time process conformance monitoring",
+        "Clinical guideline compliance checking",
+        "Regulatory compliance validation"
+      ]
+    },
+    {
+      "id": "ocpm-pattern-matching",
+      "name": "OCPM Temporal Pattern Matching",
+      "category": "Process Intelligence",
+      "domain": "Fraud Detection, Process Mining",
+      "description": "Matches complex multi-object temporal patterns in hypergraphs (money laundering, fraud)",
+      "complexity": "complex",
+      "inputType": {
+        "type": "FraudInput",
+        "schema": {
+          "graph": "TemporalHypergraph",
+          "pattern": "OCPMPattern",
+          "transaction": "OcelEvent",
+          "account_histories": "Lifecycle[]",
+          "fraud_patterns": "OCPMPattern[]"
+        },
+        "description": "Temporal hypergraph and pattern specification with placeholders and constraints"
+      },
+      "outputType": {
+        "type": "FraudOutput",
+        "schema": {
+          "matches": "PatternMatch[]",
+          "match_count": "int",
+          "max_risk_score": "float",
+          "matched_patterns": "PatternInfo[]"
+        },
+        "description": "Pattern matches with object bindings, confidence scores, timestamps"
+      },
+      "performance": {
+        "latency": "450μs per transaction (P99)",
+        "throughput": "476K events/s",
+        "testSize": "1M events",
+        "speedupVsCpu": "679-1739x (depending on pattern complexity)"
+      },
+      "parallelization": {
+        "strategy": "vertex-parallel",
+        "description": "Each vertex attempts pattern matching, recursive backtracking with pruning",
+        "cudaPattern": "parallel pattern matching with shared memory for candidates"
+      },
+      "requirements": {
+        "minGpuMemory": "4GB",
+        "recommendedGpu": "NVIDIA A100"
+      },
+      "useCases": [
+        "Money laundering detection (layering, smurfing, TBML)",
+        "Fraud pattern detection in financial transactions",
+        "Insider threat detection",
+        "Market manipulation detection"
+      ]
+    },
+    {
+      "id": "object-lifecycle",
+      "name": "Object Lifecycle Query",
+      "category": "Process Intelligence",
+      "domain": "Process Mining",
+      "description": "Queries and filters object lifecycle events within time ranges",
+      "complexity": "simple",
+      "inputType": {
+        "type": "LifecycleQuery",
+        "schema": {
+          "object_id": "Guid",
+          "events": "Guid[]",
+          "timestamps": "HybridTimestamp[]",
+          "time_range": "TimeRange"
+        },
+        "description": "Object ID with events and time range filter"
+      },
+      "outputType": {
+        "type": "LifecycleResult",
+        "schema": {
+          "events": "Event[]",
+          "event_count": "int",
+          "time_span": "TimeSpan"
+        },
+        "description": "Filtered lifecycle events"
+      },
+      "performance": {
+        "latency": "<100μs (estimated)",
+        "throughput": "500K queries/s (estimated)"
+      },
+      "parallelization": {
+        "strategy": "data-parallel",
+        "description": "Parallel filtering and sorting of event arrays",
+        "cudaPattern": "parallel filter with prefix sum for compaction"
+      },
+      "requirements": {
+        "minGpuMemory": "1GB",
+        "recommendedGpu": "NVIDIA RTX 3090+"
+      },
+      "useCases": [
+        "Object history queries in process mining",
+        "Event filtering for analytics"
+      ]
+    },
+    {
+      "id": "temporal-join",
+      "name": "Temporal Event Join",
+      "category": "Process Intelligence",
+      "domain": "Process Mining",
+      "description": "Joins temporal events based on time windows and object relationships",
+      "complexity": "moderate",
+      "inputType": {
+        "type": "JoinInput",
+        "schema": {
+          "events": "Event[]",
+          "event_count": "int",
+          "join_predicate": "Predicate"
+        }
+      },
+      "outputType": {
+        "type": "JoinOutput",
+        "schema": {
+          "joined_events": "JoinedEvent[]",
+          "join_count": "int"
+        }
+      },
+      "performance": {
+        "latency": "5.7s",
+        "throughput": "351K events/s",
+        "testSize": "2M events"
+      },
+      "parallelization": {
+        "strategy": "sort-merge join",
+        "description": "Parallel sorting followed by merge-based join",
+        "cudaPattern": "GPU sort + parallel merge"
+      },
+      "requirements": {
+        "minGpuMemory": "2GB",
+        "recommendedGpu": "NVIDIA A100"
+      },
+      "useCases": [
+        "Event correlation in process mining",
+        "Multi-source data fusion"
+      ]
+    },
+    {
+      "id": "order-matching",
+      "name": "Order Book Matching Engine",
+      "category": "Financial Services",
+      "domain": "High-Frequency Trading",
+      "description": "Matches orders against GPU-resident order book using ring kernel",
+      "complexity": "complex",
+      "inputType": {
+        "type": "Order",
+        "schema": {
+          "order_id": "Guid",
+          "symbol": "string",
+          "side": "BuySell",
+          "price": "decimal",
+          "quantity": "int"
+        }
+      },
+      "outputType": {
+        "type": "OrderResult",
+        "schema": {
+          "matched": "bool",
+          "trade": "Trade",
+          "remaining_quantity": "int"
+        }
+      },
+      "performance": {
+        "latency": "3-8μs (P99)",
+        "throughput": "1.2M orders/s per GPU"
+      },
+      "parallelization": {
+        "strategy": "ring-kernel",
+        "description": "Persistent GPU kernel with order book in GPU memory, lock-free matching",
+        "cudaPattern": "persistent kernel with GPU-resident state"
+      },
+      "requirements": {
+        "minGpuMemory": "8GB",
+        "recommendedGpu": "NVIDIA A100",
+        "persistent": true
+      },
+      "useCases": [
+        "High-frequency trading order execution",
+        "Market making",
+        "Exchange order matching"
+      ]
+    },
+    {
+      "id": "monte-carlo-var",
+      "name": "Monte Carlo VaR Calculation",
+      "category": "Financial Services",
+      "domain": "Risk Analytics",
+      "description": "Calculates Value-at-Risk using Monte Carlo simulation",
+      "complexity": "complex",
+      "inputType": {
+        "type": "MarketData",
+        "schema": {
+          "portfolio": "Position[]",
+          "correlation_matrix": "float[][]",
+          "volatilities": "float[]",
+          "num_simulations": "int"
+        }
+      },
+      "outputType": {
+        "type": "RiskMetrics",
+        "schema": {
+          "var_95": "decimal",
+          "var_99": "decimal",
+          "cvar": "decimal",
+          "expected_shortfall": "decimal"
+        }
+      },
+      "performance": {
+        "latency": "850μs for 10K simulations (P50)",
+        "throughput": "10K portfolios/s per GPU"
+      },
+      "parallelization": {
+        "strategy": "simulation-parallel",
+        "description": "Each simulation path independent, parallel RNG",
+        "cudaPattern": "parallel Monte Carlo with cuRAND"
+      },
+      "requirements": {
+        "minGpuMemory": "4GB",
+        "recommendedGpu": "NVIDIA A100"
+      },
+      "useCases": [
+        "Portfolio risk calculation",
+        "Regulatory capital requirements (Basel III)",
+        "Stress testing"
+      ]
+    },
+    {
+      "id": "fraud-pattern-match",
+      "name": "Fraud Pattern Matching",
+      "category": "Financial Services",
+      "domain": "Fraud Detection",
+      "description": "Detects fraud patterns in transaction streams (rapid split, circular flow, velocity changes)",
+      "complexity": "complex",
+      "inputType": {
+        "type": "Transaction",
+        "schema": {
+          "transaction_id": "Guid",
+          "source_account": "Guid",
+          "target_account": "Guid",
+          "amount": "decimal",
+          "timestamp": "long"
+        }
+      },
+      "outputType": {
+        "type": "FraudScore",
+        "schema": {
+          "risk_score": "float",
+          "matched_patterns": "PatternMatch[]",
+          "blocked": "bool",
+          "confidence": "float"
+        }
+      },
+      "performance": {
+        "latency": "87μs (P99)",
+        "throughput": "50K transactions/s per GPU"
+      },
+      "parallelization": {
+        "strategy": "transaction-parallel",
+        "description": "Each transaction checked against pattern library in parallel",
+        "cudaPattern": "parallel pattern matching with shared memory cache"
+      },
+      "requirements": {
+        "minGpuMemory": "3GB",
+        "recommendedGpu": "NVIDIA RTX 3090+"
+      },
+      "useCases": [
+        "Real-time transaction fraud detection",
+        "Money laundering prevention",
+        "Payment fraud detection"
+      ]
+    },
+    {
+      "id": "correlation-matrix",
+      "name": "Real-time Correlation Matrix",
+      "category": "Financial Services",
+      "domain": "HFT Risk Analytics",
+      "description": "Computes correlation matrix for securities within sliding time window",
+      "complexity": "moderate",
+      "inputType": {
+        "type": "CorrelationInput",
+        "schema": {
+          "securities": "Guid[]",
+          "prices": "float[][]",
+          "window_size": "int"
+        }
+      },
+      "outputType": {
+        "type": "CorrelationOutput",
+        "schema": {
+          "correlations": "(Guid, Guid, float)[]",
+          "breakdowns": "CorrelationBreakdown[]"
+        }
+      },
+      "performance": {
+        "latency": "120μs for risk check"
+      },
+      "parallelization": {
+        "strategy": "pair-parallel",
+        "description": "Each security pair correlation computed independently",
+        "cudaPattern": "parallel correlation with shared memory for price data"
+      },
+      "requirements": {
+        "minGpuMemory": "2GB",
+        "recommendedGpu": "NVIDIA A100"
+      },
+      "useCases": [
+        "Multi-leg order risk analysis",
+        "Correlation breakdown detection",
+        "Market regime change detection"
+      ]
+    },
+    {
+      "id": "md-integration",
+      "name": "Molecular Dynamics Integration",
+      "category": "Scientific Computing",
+      "domain": "Computational Chemistry",
+      "description": "Integrates equations of motion for molecular dynamics simulation",
+      "complexity": "complex",
+      "inputType": {
+        "type": "MDTimestep",
+        "schema": {
+          "step": "int",
+          "delta_t": "double",
+          "positions": "float3[]",
+          "velocities": "float3[]",
+          "forces": "float3[]"
+        }
+      },
+      "outputType": {
+        "type": "SystemState",
+        "schema": {
+          "positions": "float3[]",
+          "velocities": "float3[]",
+          "energy": "double",
+          "temperature": "double"
+        }
+      },
+      "performance": {
+        "latency": "2ms per timestep (100K atoms)",
+        "throughput": "500 timesteps/s",
+        "speedupVsCpu": "100x"
+      },
+      "parallelization": {
+        "strategy": "atom-parallel",
+        "description": "Force calculation for each atom independent, neighbor list acceleration",
+        "cudaPattern": "persistent kernel with GPU-resident atomic positions"
+      },
+      "requirements": {
+        "minGpuMemory": "8GB",
+        "recommendedGpu": "NVIDIA A100",
+        "persistent": true
+      },
+      "useCases": [
+        "Protein folding simulation",
+        "Drug discovery molecular simulation",
+        "Material science simulations"
+      ]
+    },
+    {
+      "id": "weather-integration",
+      "name": "Weather Forecast Integration",
+      "category": "Scientific Computing",
+      "domain": "Numerical Weather Prediction",
+      "description": "Integrates Navier-Stokes equations for weather grid",
+      "complexity": "complex",
+      "inputType": {
+        "type": "GridState",
+        "schema": {
+          "temperature": "float[]",
+          "pressure": "float[]",
+          "wind_u": "float[]",
+          "wind_v": "float[]",
+          "humidity": "float[]"
+        }
+      },
+      "outputType": {
+        "type": "GridState",
+        "schema": {
+          "temperature": "float[]",
+          "pressure": "float[]",
+          "wind_u": "float[]",
+          "wind_v": "float[]",
+          "humidity": "float[]"
+        }
+      },
+      "performance": {
+        "latency": "15ms per timestep (1M grid points)",
+        "throughput": "66 timesteps/s",
+        "speedupVsCpu": "80x"
+      },
+      "parallelization": {
+        "strategy": "grid-parallel",
+        "description": "Each grid point updated independently with halo exchange",
+        "cudaPattern": "stencil computation with shared memory halo"
+      },
+      "requirements": {
+        "minGpuMemory": "16GB",
+        "recommendedGpu": "NVIDIA A100"
+      },
+      "useCases": [
+        "Weather forecasting",
+        "Climate modeling",
+        "Atmospheric simulation"
+      ]
+    },
+    {
+      "id": "windowed-aggregation",
+      "name": "Sliding Window Aggregation",
+      "category": "Real-time Analytics",
+      "domain": "IoT Stream Processing",
+      "description": "Performs aggregations over sliding time windows on event streams",
+      "complexity": "moderate",
+      "inputType": {
+        "type": "Event",
+        "schema": {
+          "event_id": "Guid",
+          "sensor_id": "Guid",
+          "value": "double",
+          "timestamp": "long"
+        }
+      },
+      "outputType": {
+        "type": "AggregationResult",
+        "schema": {
+          "avg": "double",
+          "min": "double",
+          "max": "double",
+          "stddev": "double",
+          "count": "int"
+        }
+      },
+      "performance": {
+        "latency": "650μs per event",
+        "throughput": "100K events/s per GPU"
+      },
+      "parallelization": {
+        "strategy": "window-parallel",
+        "description": "Multiple windows processed concurrently",
+        "cudaPattern": "parallel reduction over window with shared memory"
+      },
+      "requirements": {
+        "minGpuMemory": "2GB",
+        "recommendedGpu": "NVIDIA RTX 3090+"
+      },
+      "useCases": [
+        "IoT sensor analytics",
+        "Manufacturing equipment monitoring",
+        "Real-time dashboards"
+      ]
+    },
+    {
+      "id": "pagerank",
+      "name": "Hypergraph PageRank",
+      "category": "Graph Analytics",
+      "domain": "Social Networks, Recommendation",
+      "description": "Computes PageRank on hypergraph partitions",
+      "complexity": "moderate",
+      "inputType": {
+        "type": "GraphPartition",
+        "schema": {
+          "vertices": "Vertex[]",
+          "edges": "Edge[]",
+          "hyperedges": "Hyperedge[]"
+        }
+      },
+      "outputType": {
+        "type": "RankingResult",
+        "schema": {
+          "ranks": "float[]",
+          "iterations": "int",
+          "converged": "bool"
+        }
+      },
+      "performance": {
+        "latency": "12ms per iteration (10M edges)",
+        "throughput": "80 iterations/s",
+        "speedupVsCpu": "20x"
+      },
+      "parallelization": {
+        "strategy": "vertex-parallel",
+        "description": "Each vertex rank updated independently in iterations",
+        "cudaPattern": "iterative SpMV with atomicAdd for edge contributions"
+      },
+      "requirements": {
+        "minGpuMemory": "6GB",
+        "recommendedGpu": "NVIDIA A100"
+      },
+      "useCases": [
+        "Social network influence ranking",
+        "Recommendation systems",
+        "Web search ranking"
+      ]
+    },
+    {
+      "id": "shortest-path",
+      "name": "Temporal Shortest Path",
+      "category": "Graph Analytics",
+      "domain": "Graph Queries",
+      "description": "Finds shortest path with temporal constraints using parallel BFS/Dijkstra",
+      "complexity": "moderate",
+      "inputType": {
+        "type": "PathQuery",
+        "schema": {
+          "source": "ulong",
+          "target": "ulong",
+          "max_time_span": "long"
+        }
+      },
+      "outputType": {
+        "type": "PathResult",
+        "schema": {
+          "path": "ulong[]",
+          "distance": "double",
+          "found": "bool"
+        }
+      },
+      "performance": {
+        "latency": "3ms (P99)"
+      },
+      "parallelization": {
+        "strategy": "frontier-parallel",
+        "description": "Parallel frontier expansion with work-efficient scheduling",
+        "cudaPattern": "parallel BFS with dual frontier buffers"
+      },
+      "requirements": {
+        "minGpuMemory": "4GB",
+        "recommendedGpu": "NVIDIA RTX 3090+"
+      },
+      "useCases": [
+        "Route planning",
+        "Network analysis",
+        "Dependency graph queries"
+      ]
+    },
+    {
+      "id": "physics-simulation",
+      "name": "Game Physics Simulation",
+      "category": "Gaming & Simulation",
+      "domain": "Game Engines",
+      "description": "Simulates rigid body physics for game entities",
+      "complexity": "moderate",
+      "inputType": {
+        "type": "PhysicsState",
+        "schema": {
+          "positions": "float3[]",
+          "velocities": "float3[]",
+          "forces": "float3[]",
+          "masses": "float[]"
+        }
+      },
+      "outputType": {
+        "type": "PhysicsState",
+        "schema": {
+          "positions": "float3[]",
+          "velocities": "float3[]",
+          "collisions": "Collision[]"
+        }
+      },
+      "performance": {
+        "latency": "8ms per frame (10K entities)",
+        "throughput": "125 FPS sustained",
+        "speedupVsCpu": "50x"
+      },
+      "parallelization": {
+        "strategy": "entity-parallel",
+        "description": "Each entity's physics integrated independently, parallel collision detection",
+        "cudaPattern": "parallel integration with spatial grid for collision"
+      },
+      "requirements": {
+        "minGpuMemory": "4GB",
+        "recommendedGpu": "NVIDIA RTX 3090+"
+      },
+      "useCases": [
+        "MMORPG physics",
+        "Real-time simulation",
+        "Physics-based games"
+      ]
+    },
+    {
+      "id": "ai-update",
+      "name": "Game AI Decision Engine",
+      "category": "Gaming & Simulation",
+      "domain": "Game AI",
+      "description": "Executes behavior trees and pathfinding for AI entities",
+      "complexity": "moderate",
+      "inputType": {
+        "type": "AIState",
+        "schema": {
+          "entity_states": "EntityState[]",
+          "goals": "Goal[]",
+          "world_state": "WorldState"
+        }
+      },
+      "outputType": {
+        "type": "AIActions",
+        "schema": {
+          "actions": "Action[]"
+        }
+      },
+      "performance": {
+        "latency": "<8ms per frame",
+        "entityCapacity": "10K entities per GPU"
+      },
+      "parallelization": {
+        "strategy": "entity-parallel",
+        "description": "Each AI entity evaluates behavior tree independently",
+        "cudaPattern": "parallel behavior tree evaluation with shared world state"
+      },
+      "requirements": {
+        "minGpuMemory": "3GB",
+        "recommendedGpu": "NVIDIA RTX 3090+"
+      },
+      "useCases": [
+        "NPC AI in MMORPGs",
+        "RTS unit AI",
+        "Strategy game AI"
+      ]
+    },
+    {
+      "id": "process-simulation",
+      "name": "Industrial Process Simulation",
+      "category": "Gaming & Simulation",
+      "domain": "Digital Twin",
+      "description": "Simulates industrial processes for digital twin applications",
+      "complexity": "moderate",
+      "inputType": {
+        "type": "SensorData",
+        "schema": {
+          "sensor_readings": "float[]",
+          "control_inputs": "float[]",
+          "timestamp": "long"
+        }
+      },
+      "outputType": {
+        "type": "ProcessState",
+        "schema": {
+          "predicted_state": "float[]",
+          "anomaly_score": "float"
+        }
+      },
+      "performance": {
+        "latency": "5ms per timestep (10K entities)",
+        "throughput": "200 timesteps/s"
+      },
+      "parallelization": {
+        "strategy": "entity-parallel",
+        "description": "Each machine/process simulated independently",
+        "cudaPattern": "parallel ODE solver for process dynamics"
+      },
+      "requirements": {
+        "minGpuMemory": "4GB",
+        "recommendedGpu": "NVIDIA A100"
+      },
+      "useCases": [
+        "Predictive maintenance",
+        "Factory digital twins",
+        "Process optimization"
+      ]
+    },
+    {
+      "id": "drug-interaction-prediction",
+      "name": "Multi-Drug Interaction Prediction",
+      "category": "Healthcare & Life Sciences",
+      "domain": "Pharmacology",
+      "description": "Predicts adverse drug interactions using hypergraph neural networks",
+      "complexity": "complex",
+      "inputType": {
+        "type": "InteractionPredictionInput",
+        "schema": {
+          "drug_embeddings": "float[][]",
+          "drug_ids": "Guid[]"
+        }
+      },
+      "outputType": {
+        "type": "InteractionPrediction",
+        "schema": {
+          "severity": "Severity",
+          "confidence": "float",
+          "mechanism": "string"
+        }
+      },
+      "performance": {
+        "latency": "<1s (estimated)",
+        "accuracy": "91% (multi-drug)",
+        "baselineAccuracy": "72% (pairwise)"
+      },
+      "parallelization": {
+        "strategy": "batch-parallel",
+        "description": "Batch inference of neural network predictions",
+        "cudaPattern": "parallel matrix operations with cuBLAS/cuDNN"
+      },
+      "requirements": {
+        "minGpuMemory": "8GB",
+        "recommendedGpu": "NVIDIA A100",
+        "requiresCuDNN": true
+      },
+      "useCases": [
+        "Clinical decision support",
+        "Drug safety screening",
+        "Pharmacovigilance"
+      ]
+    },
+    {
+      "id": "eigen-solver",
+      "name": "Sparse Matrix Eigensolver",
+      "category": "Graph Analytics",
+      "domain": "Spectral Analysis",
+      "description": "Computes eigenvalues/eigenvectors for hypergraph Laplacian (community detection)",
+      "complexity": "complex",
+      "inputType": {
+        "type": "EigenInput",
+        "schema": {
+          "matrix": "SparseMatrix",
+          "num_eigenvalues": "int"
+        }
+      },
+      "outputType": {
+        "type": "EigenOutput",
+        "schema": {
+          "eigenvalues": "float[]",
+          "eigenvectors": "float[][]"
+        }
+      },
+      "performance": {
+        "latency": "varies by matrix size",
+        "scalability": "500M node graphs"
+      },
+      "parallelization": {
+        "strategy": "iterative-parallel",
+        "description": "Parallel iterative eigendecomposition (Lanczos/Arnoldi)",
+        "cudaPattern": "parallel SpMV with cuSPARSE"
+      },
+      "requirements": {
+        "minGpuMemory": "16GB",
+        "recommendedGpu": "NVIDIA A100",
+        "requiresCuSparse": true
+      },
+      "useCases": [
+        "Community detection",
+        "Graph clustering",
+        "Spectral embedding"
+      ]
+    },
+    {
+      "id": "kmeans-clustering",
+      "name": "K-Means Clustering",
+      "category": "Graph Analytics",
+      "domain": "Machine Learning",
+      "description": "Performs k-means clustering on high-dimensional data",
+      "complexity": "moderate",
+      "inputType": {
+        "type": "KMeansInput",
+        "schema": {
+          "points": "float[][]",
+          "k": "int",
+          "max_iterations": "int"
+        }
+      },
+      "outputType": {
+        "type": "KMeansOutput",
+        "schema": {
+          "clusters": "int[]",
+          "centroids": "float[][]",
+          "iterations": "int"
+        }
+      },
+      "performance": {
+        "latency": "varies by k and dimensions",
+        "convergence": "typically <100 iterations"
+      },
+      "parallelization": {
+        "strategy": "point-parallel",
+        "description": "Parallel distance calculation and assignment",
+        "cudaPattern": "parallel reduction for centroid updates"
+      },
+      "requirements": {
+        "minGpuMemory": "4GB",
+        "recommendedGpu": "NVIDIA RTX 3090+"
+      },
+      "useCases": [
+        "Community detection (after spectral embedding)",
+        "Customer segmentation",
+        "Data clustering"
+      ]
+    },
+    {
+      "id": "rapid-split-detection",
+      "name": "Rapid Transaction Split Detection",
+      "category": "Financial Services",
+      "domain": "Fraud Detection",
+      "description": "Detects money laundering rapid split patterns in real-time transaction streams",
+      "complexity": "moderate",
+      "inputType": {
+        "type": "Event[]",
+        "schema": {
+          "events": "TemporalEvent[]",
+          "window_size_nanos": "long",
+          "minimum_splits": "int",
+          "minimum_amount": "double"
+        }
+      },
+      "outputType": {
+        "type": "Match[]",
+        "schema": {
+          "matches": "PatternMatch[]",
+          "confidence": "float",
+          "metadata": "Dictionary<string, object>"
+        }
+      },
+      "performance": {
+        "latency": "95μs (P99)",
+        "throughput": "50K events/s",
+        "cpuLatency": "Current CPU implementation"
+      },
+      "parallelization": {
+        "strategy": "account-parallel",
+        "description": "Each account analyzed for split patterns in parallel",
+        "cudaPattern": "parallel grouping with atomicAdd for pattern counting"
+      },
+      "requirements": {
+        "minGpuMemory": "2GB",
+        "recommendedGpu": "NVIDIA RTX 3090+",
+        "futureEnhancement": "Phase 5 - GPU acceleration planned for 10-100x speedup"
+      },
+      "useCases": [
+        "Money laundering detection",
+        "Structuring/smurfing detection",
+        "AML compliance"
+      ]
+    },
+    {
+      "id": "circular-flow-detection",
+      "name": "Circular Flow Pattern Detection",
+      "category": "Financial Services",
+      "domain": "Fraud Detection",
+      "description": "Detects circular money flows (layering) using temporal graph path finding",
+      "complexity": "complex",
+      "inputType": {
+        "type": "Event[]",
+        "schema": {
+          "events": "TemporalEvent[]",
+          "graph": "TemporalGraphStorage",
+          "window_size_nanos": "long",
+          "minimum_hops": "int"
+        }
+      },
+      "outputType": {
+        "type": "Match[]",
+        "schema": {
+          "matches": "PatternMatch[]",
+          "path": "ulong[]",
+          "total_amount": "decimal"
+        }
+      },
+      "performance": {
+        "latency": "180μs (P99)",
+        "throughput": "25K events/s"
+      },
+      "parallelization": {
+        "strategy": "path-parallel",
+        "description": "Parallel path search from each transaction target",
+        "cudaPattern": "parallel graph traversal with frontier expansion"
+      },
+      "requirements": {
+        "minGpuMemory": "4GB",
+        "recommendedGpu": "NVIDIA A100",
+        "requiresTemporalGraph": true
+      },
+      "useCases": [
+        "Layering detection",
+        "Round-tripping detection",
+        "Trade-based money laundering"
+      ]
+    }
+  ],
+  "performanceSummary": {
+    "totalKernels": 24,
+    "averageSpeedupVsCpu": "100-1000x",
+    "targetLatencies": {
+      "simple": "<100μs",
+      "moderate": "100μs - 10ms",
+      "complex": "10ms - 1s"
+    },
+    "recommendedHardware": {
+      "production": "NVIDIA A100 80GB",
+      "development": "NVIDIA RTX 3090/4090",
+      "minimum": "NVIDIA RTX 3060 Ti"
+    }
+  },
+  "implementationNotes": {
+    "cudaVersion": "12.3+",
+    "dotnetVersion": "9.0+",
+    "orleansVersion": "8.2.0+",
+    "dotComputeVersion": "0.4.0-RC2+",
+    "supportedPlatforms": ["Linux", "Windows"],
+    "licenses": {
+      "documentation": "CC BY 4.0",
+      "code": "Commercial - Orleans.GpuBridge.Commercial.AddOns"
+    }
+  }
+}

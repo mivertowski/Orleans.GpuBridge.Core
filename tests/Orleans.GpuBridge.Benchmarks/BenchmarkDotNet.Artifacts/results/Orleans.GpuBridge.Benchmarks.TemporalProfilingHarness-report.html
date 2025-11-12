@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>Orleans.GpuBridge.Benchmarks.TemporalProfilingHarness-20251112-162934</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet v0.14.0, Ubuntu 22.04.5 LTS (Jammy Jellyfish) WSL
+Intel Core Ultra 7 165H, 1 CPU, 22 logical and 11 physical cores
+.NET SDK 9.0.203
+  [Host]     : .NET 9.0.4 (9.0.425.16305), X64 RyuJIT AVX2
+  Job-CXGQGO : .NET 9.0.4 (9.0.425.16305), X64 RyuJIT AVX2
+  Job-WJIJIW : .NET 9.0.4 (9.0.425.16305), X64 RyuJIT AVX2
+</code></pre>
+<pre><code>IterationCount=100  WarmupCount=10  
+</code></pre>
+
+<table>
+<thead><tr><th>Method                         </th><th>Job </th><th>InvocationCount</th><th>UnrollFactor</th><th>Mean    </th><th>Error  </th><th>StdDev </th><th>Median  </th><th>Gen0</th><th>Gen1</th><th>Allocated</th>
+</tr>
+</thead><tbody><tr><td>&#39;Graph: Add edge&#39;</td><td>Job-CXGQGO</td><td>1</td><td>1</td><td>10,062.9565 ns</td><td>603.8077 ns</td><td>1,703.0503 ns</td><td>9,738.5000 ns</td><td>-</td><td>-</td><td>1744 B</td>
+</tr><tr><td>&#39;HLC: Generate timestamp&#39;</td><td>Job-WJIJIW</td><td>Default</td><td>16</td><td>51.1471 ns</td><td>0.9706 ns</td><td>2.8158 ns</td><td>50.4210 ns</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>&#39;HLC: Update with received timestamp&#39;</td><td>Job-WJIJIW</td><td>Default</td><td>16</td><td>81.1575 ns</td><td>2.2703 ns</td><td>6.5503 ns</td><td>80.5689 ns</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>&#39;HLC: Compare timestamps&#39;</td><td>Job-WJIJIW</td><td>Default</td><td>16</td><td>0.1409 ns</td><td>0.0511 ns</td><td>0.1424 ns</td><td>0.1220 ns</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>&#39;Graph: Query time range&#39;</td><td>Job-WJIJIW</td><td>Default</td><td>16</td><td>541.8434 ns</td><td>20.6602 ns</td><td>56.9041 ns</td><td>525.2010 ns</td><td>0.0238</td><td>-</td><td>304 B</td>
+</tr><tr><td>&#39;Graph: Find temporal paths&#39;</td><td>Job-WJIJIW</td><td>Default</td><td>16</td><td>6,005.7806 ns</td><td>193.3014 ns</td><td>538.8472 ns</td><td>5,900.9102 ns</td><td>0.6409</td><td>0.0076</td><td>8104 B</td>
+</tr><tr><td>&#39;Graph: Get reachable nodes&#39;</td><td>Job-WJIJIW</td><td>Default</td><td>16</td><td>62,675.1198 ns</td><td>1,769.3509 ns</td><td>4,961.4499 ns</td><td>62,074.1489 ns</td><td>2.9907</td><td>0.0610</td><td>38032 B</td>
+</tr><tr><td>&#39;Graph: Get statistics&#39;</td><td>Job-WJIJIW</td><td>Default</td><td>16</td><td>0.0159 ns</td><td>0.0147 ns</td><td>0.0433 ns</td><td>0.0000 ns</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>&#39;Combined: HLC + Graph query&#39;</td><td>Job-WJIJIW</td><td>Default</td><td>16</td><td>388.9052 ns</td><td>9.4974 ns</td><td>27.0967 ns</td><td>384.8867 ns</td><td>0.0238</td><td>-</td><td>304 B</td>
+</tr></tbody></table>
+</body>
+</html>

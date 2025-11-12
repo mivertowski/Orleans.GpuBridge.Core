@@ -1,0 +1,290 @@
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Diagnosers;
+using BenchmarkDotNet.Jobs;
+using Microsoft.Extensions.Logging.Abstractions;
+using Orleans.GpuBridge.Abstractions.Temporal;
+using Orleans.GpuBridge.Runtime.Temporal;
+using Orleans.GpuBridge.Runtime.Temporal.Graph;
+
+namespace Orleans.GpuBridge.Temporal.Tests.Profiling;
+
+/// <summary>
+/// Profiling harness for temporal components using BenchmarkDotNet.
+/// Identifies hot paths and memory allocation patterns.
+/// </summary>
+[MemoryDiagnoser]
+[ThreadingDiagnoser]
+[DisassemblyDiagnoser(maxDepth: 3)]
+[Config(typeof(Config))]
+public class TemporalProfilingHarness
+{
+    private HybridLogicalClock? _hlc;
+    private TemporalMessageQueue? _queue;
+    private TemporalGraphStorage? _graph;
+    private TemporalResidentMessage? _sampleMessage;
+
+    private class Config : ManualConfig
+    {
+        public Config()
+        {
+            AddJob(Job.Default
+                .WithIterationCount(100)
+                .WithWarmupCount(10)
+                .WithMaxIterationCount(200));
+
+            AddDiagnoser(MemoryDiagnoser.Default);
+            AddDiagnoser(ThreadingDiagnoser.Default);
+        }
+    }
+
+    [GlobalSetup]
+    public void Setup()
+    {
+        _hlc = new HybridLogicalClock(nodeId: 1);
+        _queue = new TemporalMessageQueue();
+        _graph = new TemporalGraphStorage();
+
+        // Pre-populate graph with test data
+        for (ulong i = 1; i <= 100; i++)
+        {
+            for (ulong j = i + 1; j <= Math.Min(i + 10, 100); j++)
+            {
+                var edge = new TemporalEdge
+                {
+                    SourceId = i,
+                    TargetId = j,
+                    ValidFrom = i * 1_000_000_000L,
+                    ValidTo = (i + 10) * 1_000_000_000L,
+                    EdgeType = "test"
+                };
+                _graph.AddEdge(edge);
+            }
+        }
+
+        // Create sample message for queue operations
+        _sampleMessage = new TemporalResidentMessage
+        {
+            HLC = _hlc.Now(),
+            Priority = MessagePriority.Normal,
+            MessageId = Guid.NewGuid(),
+            Payload = new byte[64]
+        };
+    }
+
+    #region HLC Benchmarks
+
+    /// <summary>
+    /// Benchmark: Generate HLC timestamp for local event.
+    /// Target: &lt;40ns (current baseline: 42ns from Phase 6).
+    /// </summary>
+    [Benchmark(Description = "HLC: Generate timestamp")]
+    public HybridTimestamp HlcGenerate()
+    {
+        return _hlc!.Now();
+    }
+
+    /// <summary>
+    /// Benchmark: Update HLC with received timestamp.
+    /// Target: &lt;70ns.
+    /// </summary>
+    [Benchmark(Description = "HLC: Update with received timestamp")]
+    public HybridTimestamp HlcUpdate()
+    {
+        var received = new HybridTimestamp(
+            physicalTimeNanos: DateTimeOffset.UtcNow.ToUnixTimeNanoseconds(),
+            logicalCounter: 42,
+            nodeId: 2);
+        return _hlc!.Update(received);
+    }
+
+    /// <summary>
+    /// Benchmark: Compare two HLC timestamps.
+    /// Target: &lt;20ns.
+    /// </summary>
+    [Benchmark(Description = "HLC: Compare timestamps")]
+    public int HlcCompare()
+    {
+        var ts1 = new HybridTimestamp(1000000000L, 42, 1);
+        var ts2 = new HybridTimestamp(1000000001L, 43, 2);
+        return ts1.CompareTo(ts2);
+    }
+
+    #endregion
+
+    #region Message Queue Benchmarks
+
+    /// <summary>
+    /// Benchmark: Enqueue message to temporal queue.
+    /// Target: &lt;100ns (current baseline: 125ns from Phase 6).
+    /// </summary>
+    [Benchmark(Description = "Queue: Enqueue message")]
+    public void QueueEnqueue()
+    {
+        var message = new TemporalResidentMessage
+        {
+            HLC = _hlc!.Now(),
+            Priority = MessagePriority.Normal,
+            MessageId = Guid.NewGuid()
+        };
+        _queue!.Enqueue(message);
+    }
+
+    /// <summary>
+    /// Benchmark: Dequeue message from temporal queue.
+    /// Target: &lt;90ns.
+    /// </summary>
+    [Benchmark(Description = "Queue: Dequeue message")]
+    public bool QueueDequeue()
+    {
+        // Ensure queue has messages
+        if (_queue!.Count == 0)
+        {
+            var message = new TemporalResidentMessage
+            {
+                HLC = _hlc!.Now(),
+                Priority = MessagePriority.Normal,
+                MessageId = Guid.NewGuid()
+            };
+            _queue.Enqueue(message);
+        }
+
+        return _queue.TryDequeue(out _);
+    }
+
+    /// <summary>
+    /// Benchmark: Peek at queue without dequeuing.
+    /// Target: &lt;30ns.
+    /// </summary>
+    [Benchmark(Description = "Queue: Peek message")]
+    public bool QueuePeek()
+    {
+        // Ensure queue has messages
+        if (_queue!.Count == 0)
+        {
+            _queue.Enqueue(_sampleMessage!);
+        }
+
+        return _queue.TryPeek(out _);
+    }
+
+    /// <summary>
+    /// Benchmark: Check queue count.
+    /// Target: &lt;10ns.
+    /// </summary>
+    [Benchmark(Description = "Queue: Get count")]
+    public int QueueCount()
+    {
+        return _queue!.Count;
+    }
+
+    #endregion
+
+    #region Temporal Graph Benchmarks
+
+    /// <summary>
+    /// Benchmark: Query edges in time range.
+    /// Target: &lt;200ns (current baseline: 457ns from Phase 6).
+    /// </summary>
+    [Benchmark(Description = "Graph: Query time range")]
+    public IEnumerable<TemporalEdge> GraphQueryTimeRange()
+    {
+        return _graph!.GetEdgesInTimeRange(
+            sourceId: 50,
+            startTimeNanos: 45_000_000_000L,
+            endTimeNanos: 55_000_000_000L);
+    }
+
+    /// <summary>
+    /// Benchmark: Add edge to graph.
+    /// Target: &lt;150ns.
+    /// </summary>
+    [Benchmark(Description = "Graph: Add edge")]
+    public void GraphAddEdge()
+    {
+        var edge = new TemporalEdge
+        {
+            SourceId = 200,
+            TargetId = 201,
+            ValidFrom = DateTimeOffset.UtcNow.ToUnixTimeNanoseconds(),
+            ValidTo = DateTimeOffset.UtcNow.ToUnixTimeNanoseconds() + 1_000_000_000L,
+            EdgeType = "test"
+        };
+        _graph!.AddEdge(edge);
+    }
+
+    /// <summary>
+    /// Benchmark: Get all edges for a node.
+    /// Target: &lt;100ns.
+    /// </summary>
+    [Benchmark(Description = "Graph: Get node edges")]
+    public IEnumerable<TemporalEdge> GraphGetNodeEdges()
+    {
+        return _graph!.GetEdges(50);
+    }
+
+    /// <summary>
+    /// Benchmark: Check if edge exists.
+    /// Target: &lt;80ns.
+    /// </summary>
+    [Benchmark(Description = "Graph: Edge exists check")]
+    public bool GraphEdgeExists()
+    {
+        return _graph!.GetEdges(50).Any();
+    }
+
+    /// <summary>
+    /// Benchmark: Get graph statistics.
+    /// Target: &lt;50ns.
+    /// </summary>
+    [Benchmark(Description = "Graph: Get statistics")]
+    public (int nodes, int edges) GraphGetStats()
+    {
+        return (_graph!.NodeCount, _graph.EdgeCount);
+    }
+
+    #endregion
+
+    #region Combined Operations Benchmarks
+
+    /// <summary>
+    /// Benchmark: Complete workflow (HLC + Queue + Graph).
+    /// Simulates real-world usage pattern.
+    /// Target: &lt;500ns.
+    /// </summary>
+    [Benchmark(Description = "Combined: Full workflow")]
+    public void CombinedWorkflow()
+    {
+        // Generate timestamp
+        var timestamp = _hlc!.Now();
+
+        // Create and enqueue message
+        var message = new TemporalResidentMessage
+        {
+            HLC = timestamp,
+            Priority = MessagePriority.Normal,
+            MessageId = Guid.NewGuid()
+        };
+        _queue!.Enqueue(message);
+
+        // Query graph
+        var edges = _graph!.GetEdgesInTimeRange(
+            sourceId: 50,
+            startTimeNanos: timestamp.PhysicalTimeNanos - 1_000_000_000L,
+            endTimeNanos: timestamp.PhysicalTimeNanos + 1_000_000_000L);
+
+        // Consume result to prevent optimization
+        _ = edges.Count();
+
+        // Dequeue message
+        _queue.TryDequeue(out _);
+    }
+
+    #endregion
+
+    [GlobalCleanup]
+    public void Cleanup()
+    {
+        // Cleanup if needed
+    }
+}

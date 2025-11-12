@@ -162,20 +162,77 @@ public sealed class TemporalGraphStorage
         if (!ContainsNode(startNode) || !ContainsNode(endNode))
             return Enumerable.Empty<TemporalPath>();
 
-        var paths = new List<TemporalPath>();
+        // Use optimized BFS with early termination for better performance
+        var shortestPath = FindShortestPathBFS(startNode, endNode, maxTimeSpanNanos, maxPathLength);
+        return shortestPath != null
+            ? new[] { shortestPath }
+            : Enumerable.Empty<TemporalPath>();
+    }
+
+    /// <summary>
+    /// Finds the shortest temporal path using optimized BFS with early termination.
+    /// Much faster than DFS for finding any path (stops at first path found).
+    /// </summary>
+    private TemporalPath? FindShortestPathBFS(
+        ulong startNode,
+        ulong endNode,
+        long maxTimeSpanNanos,
+        int maxPathLength)
+    {
+        var queue = new Queue<(ulong node, TemporalPath path)>();
         var visited = new HashSet<ulong>();
 
-        // Use BFS to find all paths
-        FindPathsRecursive(
-            currentNode: startNode,
-            targetNode: endNode,
-            currentPath: new TemporalPath(),
-            maxTimeSpan: maxTimeSpanNanos,
-            maxDepth: maxPathLength,
-            visited: visited,
-            results: paths);
+        // Start with empty path from startNode
+        queue.Enqueue((startNode, new TemporalPath()));
+        visited.Add(startNode);
 
-        return paths;
+        while (queue.Count > 0)
+        {
+            var (currentNode, currentPath) = queue.Dequeue();
+
+            // Check if we reached the target
+            if (currentNode == endNode && currentPath.Length > 0)
+            {
+                return currentPath; // Early termination - return first path found
+            }
+
+            // Check depth limit
+            if (currentPath.Length >= maxPathLength)
+                continue;
+
+            // Determine time window for next edge
+            long earliestTime = currentPath.Length == 0
+                ? long.MinValue
+                : currentPath.EndTime;
+            long latestTime = currentPath.Length == 0
+                ? long.MaxValue
+                : currentPath.StartTime + maxTimeSpanNanos;
+
+            // Explore outgoing edges
+            var edges = GetEdgesInTimeRange(currentNode, earliestTime, latestTime);
+
+            foreach (var edge in edges)
+            {
+                // Skip if target node already visited
+                if (visited.Contains(edge.TargetId))
+                    continue;
+
+                // Check temporal constraint
+                if (currentPath.Length > 0)
+                {
+                    var pathDuration = edge.ValidFrom - currentPath.StartTime;
+                    if (pathDuration > maxTimeSpanNanos)
+                        continue;
+                }
+
+                // Add edge to path and enqueue
+                var newPath = currentPath.Append(edge);
+                queue.Enqueue((edge.TargetId, newPath));
+                visited.Add(edge.TargetId);
+            }
+        }
+
+        return null; // No path found
     }
 
     /// <summary>

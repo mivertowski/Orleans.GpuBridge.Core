@@ -31,6 +31,7 @@ public sealed class IntervalTree<TKey, TValue> where TKey : IComparable<TKey>
 {
     private IntervalNode? _root;
     private int _count;
+    private long _insertionSequence; // Monotonic counter for guaranteed uniqueness
 
     /// <summary>
     /// Gets the number of intervals in the tree.
@@ -48,7 +49,8 @@ public sealed class IntervalTree<TKey, TValue> where TKey : IComparable<TKey>
         if (start.CompareTo(end) > 0)
             throw new ArgumentException("Start must be <= End");
 
-        var interval = new Interval(start, end, value);
+        var insertionId = _insertionSequence++;
+        var interval = new Interval(start, end, value, insertionId);
         _root = Insert(_root, interval);
         _count++;
     }
@@ -104,12 +106,14 @@ public sealed class IntervalTree<TKey, TValue> where TKey : IComparable<TKey>
         public TKey Start { get; }
         public TKey End { get; }
         public TValue Value { get; }
+        public long InsertionId { get; }
 
-        public Interval(TKey start, TKey end, TValue value)
+        public Interval(TKey start, TKey end, TValue value, long insertionId)
         {
             Start = start;
             End = end;
             Value = value;
+            InsertionId = insertionId;
         }
 
         /// <summary>
@@ -124,12 +128,13 @@ public sealed class IntervalTree<TKey, TValue> where TKey : IComparable<TKey>
     }
 
     /// <summary>
-    /// Node in the interval tree.
+    /// Node in the AVL-balanced interval tree.
     /// </summary>
     private sealed class IntervalNode
     {
         public Interval Interval { get; }
         public TKey Max { get; set; } // Maximum End value in subtree
+        public int Height { get; set; } // Height for AVL balancing
         public IntervalNode? Left { get; set; }
         public IntervalNode? Right { get; set; }
 
@@ -137,11 +142,12 @@ public sealed class IntervalTree<TKey, TValue> where TKey : IComparable<TKey>
         {
             Interval = interval;
             Max = interval.End;
+            Height = 1; // New node has height 1
         }
     }
 
     /// <summary>
-    /// Inserts an interval into the tree.
+    /// Inserts an interval into the AVL-balanced tree.
     /// </summary>
     private static IntervalNode Insert(IntervalNode? node, Interval interval)
     {
@@ -149,8 +155,26 @@ public sealed class IntervalTree<TKey, TValue> where TKey : IComparable<TKey>
         if (node == null)
             return new IntervalNode(interval);
 
-        // Choose subtree based on start time (use as BST key)
-        var comparison = interval.Start.CompareTo(node.Interval.Start);
+        // Choose subtree based on start time (primary key) and end time (tie-breaker)
+        // This ensures total ordering and prevents infinite recursion with duplicate start times
+        var startComparison = interval.Start.CompareTo(node.Interval.Start);
+
+        // Use end time as tie-breaker when start times are equal
+        int comparison;
+        if (startComparison == 0)
+        {
+            comparison = interval.End.CompareTo(node.Interval.End);
+            // If both start AND end are equal, use insertion sequence as final tie-breaker
+            // This guarantees total ordering with O(1) comparison and no hash collisions
+            if (comparison == 0)
+            {
+                comparison = interval.InsertionId.CompareTo(node.Interval.InsertionId);
+            }
+        }
+        else
+        {
+            comparison = startComparison;
+        }
 
         if (comparison < 0)
         {
@@ -168,7 +192,122 @@ public sealed class IntervalTree<TKey, TValue> where TKey : IComparable<TKey>
         if (node.Right != null)
             node.Max = MaxOf(node.Max, node.Right.Max);
 
+        // Update height of current node
+        node.Height = 1 + Math.Max(GetHeight(node.Left), GetHeight(node.Right));
+
+        // Get balance factor to check if rebalancing is needed
+        int balance = GetBalance(node);
+
+        // Left-Left case: Right rotation
+        if (balance > 1 && GetBalance(node.Left) >= 0)
+        {
+            return RotateRight(node);
+        }
+
+        // Left-Right case: Left rotation on left child, then right rotation on node
+        if (balance > 1 && GetBalance(node.Left) < 0)
+        {
+            node.Left = RotateLeft(node.Left!);
+            return RotateRight(node);
+        }
+
+        // Right-Right case: Left rotation
+        if (balance < -1 && GetBalance(node.Right) <= 0)
+        {
+            return RotateLeft(node);
+        }
+
+        // Right-Left case: Right rotation on right child, then left rotation on node
+        if (balance < -1 && GetBalance(node.Right) > 0)
+        {
+            node.Right = RotateRight(node.Right!);
+            return RotateLeft(node);
+        }
+
         return node;
+    }
+
+    /// <summary>
+    /// Gets the height of a node (0 for null nodes).
+    /// </summary>
+    private static int GetHeight(IntervalNode? node)
+    {
+        return node?.Height ?? 0;
+    }
+
+    /// <summary>
+    /// Gets the balance factor of a node.
+    /// Positive means left-heavy, negative means right-heavy.
+    /// </summary>
+    private static int GetBalance(IntervalNode? node)
+    {
+        if (node == null)
+            return 0;
+        return GetHeight(node.Left) - GetHeight(node.Right);
+    }
+
+    /// <summary>
+    /// Performs a right rotation on the subtree rooted at node.
+    /// </summary>
+    private static IntervalNode RotateRight(IntervalNode node)
+    {
+        var newRoot = node.Left!;
+        var temp = newRoot.Right;
+
+        // Perform rotation
+        newRoot.Right = node;
+        node.Left = temp;
+
+        // Update heights
+        node.Height = 1 + Math.Max(GetHeight(node.Left), GetHeight(node.Right));
+        newRoot.Height = 1 + Math.Max(GetHeight(newRoot.Left), GetHeight(newRoot.Right));
+
+        // Update max values
+        node.Max = node.Interval.End;
+        if (node.Left != null)
+            node.Max = MaxOf(node.Max, node.Left.Max);
+        if (node.Right != null)
+            node.Max = MaxOf(node.Max, node.Right.Max);
+
+        newRoot.Max = newRoot.Interval.End;
+        if (newRoot.Left != null)
+            newRoot.Max = MaxOf(newRoot.Max, newRoot.Left.Max);
+        if (newRoot.Right != null)
+            newRoot.Max = MaxOf(newRoot.Max, newRoot.Right.Max);
+
+        return newRoot;
+    }
+
+    /// <summary>
+    /// Performs a left rotation on the subtree rooted at node.
+    /// </summary>
+    private static IntervalNode RotateLeft(IntervalNode node)
+    {
+        var newRoot = node.Right!;
+        var temp = newRoot.Left;
+
+        // Perform rotation
+        newRoot.Left = node;
+        node.Right = temp;
+
+        // Update heights
+        node.Height = 1 + Math.Max(GetHeight(node.Left), GetHeight(node.Right));
+        newRoot.Height = 1 + Math.Max(GetHeight(newRoot.Left), GetHeight(newRoot.Right));
+
+        // Update max values
+        node.Max = node.Interval.End;
+        if (node.Left != null)
+            node.Max = MaxOf(node.Max, node.Left.Max);
+        if (node.Right != null)
+            node.Max = MaxOf(node.Max, node.Right.Max);
+
+        newRoot.Max = newRoot.Interval.End;
+        if (newRoot.Left != null)
+            newRoot.Max = MaxOf(newRoot.Max, newRoot.Left.Max);
+        if (newRoot.Right != null)
+            newRoot.Max = MaxOf(newRoot.Max, newRoot.Right.Max);
+
+        return newRoot;
     }
 
     /// <summary>

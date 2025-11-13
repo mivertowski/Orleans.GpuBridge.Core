@@ -8,6 +8,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Microsoft.Extensions.Logging;
 using DotCompute.Abstractions;
+using DotCompute.Abstractions.Memory;
+using DotCompute.Backends.CUDA;
+using DotCompute.Backends.CUDA.Memory;
 
 namespace Orleans.GpuBridge.Runtime.Memory;
 
@@ -36,6 +39,8 @@ public sealed class GpuBufferPool : IDisposable
     private readonly ConcurrentDictionary<int, ConcurrentQueue<GpuMemoryHandle>> _buckets = new();
     private readonly ConcurrentDictionary<ulong, GpuMemoryHandle> _activeAllocations = new();
     private readonly object _statsLock = new();
+    private readonly CudaContext? _cudaContext;
+    private readonly CudaMemoryManager? _memoryManager;
     private bool _disposed;
 
     // Statistics
@@ -64,12 +69,25 @@ public sealed class GpuBufferPool : IDisposable
     /// Initializes a new GPU buffer pool.
     /// </summary>
     /// <param name="logger">Logger instance.</param>
-    public GpuBufferPool(ILogger<GpuBufferPool> logger)
+    /// <param name="cudaContext">Optional CUDA context for GPU memory allocation.</param>
+    /// <param name="memoryManager">Optional CUDA memory manager for GPU memory allocation.</param>
+    /// <remarks>
+    /// If cudaContext and memoryManager are provided, the pool will use actual GPU unified memory.
+    /// If not provided, the pool will use CPU memory with CPU-GPU transfer support via DotCompute.
+    /// </remarks>
+    public GpuBufferPool(
+        ILogger<GpuBufferPool> logger,
+        CudaContext? cudaContext = null,
+        CudaMemoryManager? memoryManager = null)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _cudaContext = cudaContext;
+        _memoryManager = memoryManager;
 
+        var mode = _memoryManager != null ? "GPU unified memory" : "CPU memory with GPU transfer";
         _logger.LogInformation(
-            "Initialized GPU buffer pool (min={MinSize}KB, max={MaxSize}MB, bucketsPerSize={MaxPerBucket})",
+            "Initialized GPU buffer pool ({Mode}, min={MinSize}KB, max={MaxSize}MB, bucketsPerSize={MaxPerBucket})",
+            mode,
             MinBufferSize / 1024,
             MaxBufferSize / (1024 * 1024),
             MaxBuffersPerBucket);
@@ -294,29 +312,60 @@ public sealed class GpuBufferPool : IDisposable
     /// <param name="sizeBytes">Size in bytes.</param>
     /// <returns>GPU memory handle.</returns>
     /// <remarks>
-    /// TODO: Integrate CudaMemoryManager for proper GPU memory allocation.
-    /// Currently uses CPU memory with DotCompute's copy operations for host-device transfers.
-    /// To enable actual GPU memory:
-    /// 1. Add CudaContext dependency to GpuBufferPool constructor
-    /// 2. Create CudaMemoryManager instance
-    /// 3. Use manager.AllocateAsync&lt;byte&gt;(sizeBytes, MemoryOptions.Unified)
-    /// 4. Extract pointer and buffer from allocation result
+    /// <para>
+    /// Uses CudaMemoryManager.AllocateAsync with MemoryOptions.Unified when available.
+    /// Unified memory provides zero-copy access from both CPU and GPU.
+    /// </para>
+    /// <para>
+    /// Falls back to CPU memory (Marshal.AllocHGlobal) when CUDA is not available.
+    /// CPU memory still works with DotCompute's copy operations for explicit transfers.
+    /// </para>
     /// </remarks>
     private GpuMemoryHandle AllocateGpuBuffer(long sizeBytes)
     {
+        // Try GPU unified memory allocation if CudaMemoryManager is available
+        if (_memoryManager != null)
+        {
+            try
+            {
+                // Allocate unified memory (accessible from both CPU and GPU)
+                var buffer = _memoryManager.AllocateAsync<byte>(
+                    sizeBytes,
+                    MemoryOptions.Unified,
+                    CancellationToken.None).GetAwaiter().GetResult();
+
+                // Get device memory pointer via DotCompute's API
+                var deviceMemory = buffer.GetDeviceMemory();
+                IntPtr devicePtr = deviceMemory.Handle;
+
+                _logger.LogTrace(
+                    "Allocated GPU unified memory via DotCompute: {Size} bytes at 0x{Pointer:X}",
+                    sizeBytes,
+                    devicePtr.ToInt64());
+
+                return new GpuMemoryHandle(devicePtr, sizeBytes, this, buffer);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(
+                    ex,
+                    "Failed to allocate GPU unified memory, falling back to CPU memory: {Size} bytes",
+                    sizeBytes);
+
+                // Fall through to CPU memory allocation
+            }
+        }
+
+        // CPU memory fallback
         try
         {
-            // TODO: Replace with CudaMemoryManager.AllocateAsync when CudaContext is available
-            // For now, use CPU memory which still works with DotCompute's copy operations
             IntPtr cpuPtr = Marshal.AllocHGlobal((int)sizeBytes);
 
             _logger.LogTrace(
-                "Allocated CPU-backed buffer (GPU integration pending): {Size} bytes at 0x{Pointer:X}",
+                "Allocated CPU memory (CUDA unavailable): {Size} bytes at 0x{Pointer:X}",
                 sizeBytes,
                 cpuPtr.ToInt64());
 
-            // Return CPU memory handle (no DotCompute buffer yet)
-            // Copy operations in GpuMemoryManager will handle host-device transfers
             return new GpuMemoryHandle(cpuPtr, sizeBytes, this);
         }
         catch (Exception ex)

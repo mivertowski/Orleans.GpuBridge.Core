@@ -3,10 +3,12 @@
 
 using System;
 using System.Buffers;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using DotCompute.Abstractions;
 
 namespace Orleans.GpuBridge.Runtime.Memory;
 
@@ -107,28 +109,46 @@ public sealed class GpuMemoryManager : IDisposable
             typeof(T).Name,
             destination.SizeBytes);
 
-        // TODO: Replace with actual GPU memory copy when DotCompute integration is complete
-        // Real implementation would be:
-        // cudaMemcpyAsync(destination.DevicePointer, source, size, cudaMemcpyHostToDevice, stream)
-        // or DotCompute equivalent with pinned memory for zero-copy
-
-        await Task.Run(() =>
+        // Use DotCompute's optimized copy if buffer supports it
+        if (destination.DotComputeBuffer is IUnifiedMemoryBuffer<T> typedBuffer)
         {
-            // Placeholder: simulate copy
-            unsafe
-            {
-                fixed (T* srcPtr = source)
-                {
-                    Buffer.MemoryCopy(
-                        srcPtr,
-                        destination.DevicePointer.ToPointer(),
-                        destination.SizeBytes,
-                        source.Length * sizeof(T));
-                }
-            }
-        }, cancellationToken);
+            await typedBuffer.CopyFromAsync(source.AsMemory(), cancellationToken);
 
-        _logger.LogTrace("GPU copy completed: {Size} bytes", destination.SizeBytes);
+            _logger.LogTrace(
+                "GPU copy completed via DotCompute: {Size} bytes",
+                destination.SizeBytes);
+        }
+        else if (destination.DotComputeBuffer != null)
+        {
+            // Non-generic buffer - use base interface with explicit type and offset
+            await destination.DotComputeBuffer.CopyFromAsync<T>(source.AsMemory(), 0, cancellationToken);
+
+            _logger.LogTrace(
+                "GPU copy completed via DotCompute (untyped): {Size} bytes",
+                destination.SizeBytes);
+        }
+        else
+        {
+            // Fallback for CPU memory
+            await Task.Run(() =>
+            {
+                unsafe
+                {
+                    fixed (T* srcPtr = source)
+                    {
+                        Buffer.MemoryCopy(
+                            srcPtr,
+                            destination.DevicePointer.ToPointer(),
+                            destination.SizeBytes,
+                            source.Length * sizeof(T));
+                    }
+                }
+            }, cancellationToken);
+
+            _logger.LogTrace(
+                "CPU fallback copy completed: {Size} bytes",
+                destination.SizeBytes);
+        }
     }
 
     /// <summary>
@@ -169,27 +189,46 @@ public sealed class GpuMemoryManager : IDisposable
             typeof(T).Name,
             source.SizeBytes);
 
-        // TODO: Replace with actual GPU memory copy when DotCompute integration is complete
-        // Real implementation would be:
-        // cudaMemcpyAsync(destination, source.DevicePointer, size, cudaMemcpyDeviceToHost, stream)
-
-        await Task.Run(() =>
+        // Use DotCompute's optimized copy if buffer supports it
+        if (source.DotComputeBuffer is IUnifiedMemoryBuffer<T> typedBuffer)
         {
-            // Placeholder: simulate copy
-            unsafe
-            {
-                fixed (T* dstPtr = destination)
-                {
-                    Buffer.MemoryCopy(
-                        source.DevicePointer.ToPointer(),
-                        dstPtr,
-                        destination.Length * sizeof(T),
-                        destination.Length * sizeof(T));
-                }
-            }
-        }, cancellationToken);
+            await typedBuffer.CopyToAsync(destination.AsMemory(), cancellationToken);
 
-        _logger.LogTrace("GPU copy completed: {Size} bytes", source.SizeBytes);
+            _logger.LogTrace(
+                "GPU copy completed via DotCompute: {Size} bytes",
+                source.SizeBytes);
+        }
+        else if (source.DotComputeBuffer != null)
+        {
+            // Non-generic buffer - use base interface with explicit type and offset
+            await source.DotComputeBuffer.CopyToAsync<T>(destination.AsMemory(), 0, cancellationToken);
+
+            _logger.LogTrace(
+                "GPU copy completed via DotCompute (untyped): {Size} bytes",
+                source.SizeBytes);
+        }
+        else
+        {
+            // Fallback for CPU memory
+            await Task.Run(() =>
+            {
+                unsafe
+                {
+                    fixed (T* dstPtr = destination)
+                    {
+                        Buffer.MemoryCopy(
+                            source.DevicePointer.ToPointer(),
+                            dstPtr,
+                            destination.Length * sizeof(T),
+                            destination.Length * sizeof(T));
+                    }
+                }
+            }, cancellationToken);
+
+            _logger.LogTrace(
+                "CPU fallback copy completed: {Size} bytes",
+                source.SizeBytes);
+        }
     }
 
     /// <summary>

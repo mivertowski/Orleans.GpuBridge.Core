@@ -3,6 +3,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using DotCompute.Abstractions;
 
 namespace Orleans.GpuBridge.Runtime.Memory;
 
@@ -25,6 +26,7 @@ public sealed class GpuMemoryHandle : IDisposable, IEquatable<GpuMemoryHandle>
     private readonly IntPtr _devicePointer;
     private readonly long _sizeBytes;
     private readonly GpuBufferPool? _pool;
+    private readonly IUnifiedMemoryBuffer? _dotComputeBuffer;
     private int _referenceCount = 1;
     private bool _disposed;
     private readonly object _disposeLock = new();
@@ -35,11 +37,13 @@ public sealed class GpuMemoryHandle : IDisposable, IEquatable<GpuMemoryHandle>
     /// <param name="devicePointer">GPU device pointer.</param>
     /// <param name="sizeBytes">Allocation size in bytes.</param>
     /// <param name="pool">Optional buffer pool for recycling.</param>
-    internal GpuMemoryHandle(IntPtr devicePointer, long sizeBytes, GpuBufferPool? pool = null)
+    /// <param name="dotComputeBuffer">Optional DotCompute unified memory buffer.</param>
+    internal GpuMemoryHandle(IntPtr devicePointer, long sizeBytes, GpuBufferPool? pool = null, IUnifiedMemoryBuffer? dotComputeBuffer = null)
     {
         _devicePointer = devicePointer;
         _sizeBytes = sizeBytes;
         _pool = pool;
+        _dotComputeBuffer = dotComputeBuffer;
     }
 
     /// <summary>
@@ -69,6 +73,11 @@ public sealed class GpuMemoryHandle : IDisposable, IEquatable<GpuMemoryHandle>
     /// Gets whether this handle is from a buffer pool (recyclable).
     /// </summary>
     public bool IsPooled => _pool != null;
+
+    /// <summary>
+    /// Gets the underlying DotCompute buffer (if allocated via DotCompute).
+    /// </summary>
+    internal IUnifiedMemoryBuffer? DotComputeBuffer => _dotComputeBuffer;
 
     /// <summary>
     /// Gets current reference count (for diagnostics).
@@ -123,10 +132,16 @@ public sealed class GpuMemoryHandle : IDisposable, IEquatable<GpuMemoryHandle>
             }
             else
             {
-                // Free GPU memory directly
-                // TODO: Call actual GPU memory free API when DotCompute integration is complete
-                // For now, this is a placeholder
-                // cudaFree(_devicePointer) or equivalent
+                // Free GPU memory directly via DotCompute
+                if (_dotComputeBuffer != null)
+                {
+                    _dotComputeBuffer.Dispose();
+                }
+                // Fallback for legacy non-DotCompute allocations
+                else if (_devicePointer != IntPtr.Zero)
+                {
+                    Marshal.FreeHGlobal(_devicePointer);
+                }
             }
 
             _disposed = true;

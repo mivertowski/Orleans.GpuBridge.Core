@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Microsoft.Extensions.Logging;
+using DotCompute.Abstractions;
 
 namespace Orleans.GpuBridge.Runtime.Memory;
 
@@ -288,33 +289,85 @@ public sealed class GpuBufferPool : IDisposable
     }
 
     /// <summary>
-    /// Allocates GPU memory.
+    /// Allocates GPU memory via DotCompute CUDA backend.
     /// </summary>
     /// <param name="sizeBytes">Size in bytes.</param>
     /// <returns>GPU memory handle.</returns>
+    /// <remarks>
+    /// TODO: Integrate CudaMemoryManager for proper GPU memory allocation.
+    /// Currently uses CPU memory with DotCompute's copy operations for host-device transfers.
+    /// To enable actual GPU memory:
+    /// 1. Add CudaContext dependency to GpuBufferPool constructor
+    /// 2. Create CudaMemoryManager instance
+    /// 3. Use manager.AllocateAsync&lt;byte&gt;(sizeBytes, MemoryOptions.Unified)
+    /// 4. Extract pointer and buffer from allocation result
+    /// </remarks>
     private GpuMemoryHandle AllocateGpuBuffer(long sizeBytes)
     {
-        // TODO: Replace with actual GPU memory allocation when DotCompute integration is complete
-        // For now, use placeholder CPU memory
-        // Real implementation would be:
-        // cudaMalloc(&devicePtr, sizeBytes) or DotCompute equivalent
+        try
+        {
+            // TODO: Replace with CudaMemoryManager.AllocateAsync when CudaContext is available
+            // For now, use CPU memory which still works with DotCompute's copy operations
+            IntPtr cpuPtr = Marshal.AllocHGlobal((int)sizeBytes);
 
-        IntPtr devicePtr = Marshal.AllocHGlobal((int)sizeBytes); // Placeholder
+            _logger.LogTrace(
+                "Allocated CPU-backed buffer (GPU integration pending): {Size} bytes at 0x{Pointer:X}",
+                sizeBytes,
+                cpuPtr.ToInt64());
 
-        return new GpuMemoryHandle(devicePtr, sizeBytes, this);
+            // Return CPU memory handle (no DotCompute buffer yet)
+            // Copy operations in GpuMemoryManager will handle host-device transfers
+            return new GpuMemoryHandle(cpuPtr, sizeBytes, this);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+                ex,
+                "Failed to allocate memory: {Size} bytes",
+                sizeBytes);
+
+            throw;
+        }
     }
 
     /// <summary>
-    /// Frees GPU memory.
+    /// Frees GPU memory via DotCompute or fallback.
     /// </summary>
     /// <param name="handle">GPU memory handle.</param>
     private void FreeGpuBuffer(GpuMemoryHandle handle)
     {
-        // TODO: Replace with actual GPU memory free when DotCompute integration is complete
-        // Real implementation would be:
-        // cudaFree(devicePtr) or DotCompute equivalent
+        try
+        {
+            if (handle.DotComputeBuffer != null)
+            {
+                // DotCompute buffer handles its own disposal (calls cudaFree internally)
+                handle.DotComputeBuffer.Dispose();
 
-        Marshal.FreeHGlobal(handle.DevicePointer); // Placeholder
+                _logger.LogTrace(
+                    "Freed GPU memory via DotCompute: {Size} bytes",
+                    handle.SizeBytes);
+            }
+            else
+            {
+                // Fallback for CPU-allocated memory
+                if (handle.DevicePointer != IntPtr.Zero)
+                {
+                    Marshal.FreeHGlobal(handle.DevicePointer);
+
+                    _logger.LogTrace(
+                        "Freed CPU fallback memory: {Size} bytes",
+                        handle.SizeBytes);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+                ex,
+                "Error freeing GPU memory (ptr=0x{Pointer:X}, size={Size} bytes)",
+                handle.DevicePointer.ToInt64(),
+                handle.SizeBytes);
+        }
     }
 
     private void ThrowIfDisposed()

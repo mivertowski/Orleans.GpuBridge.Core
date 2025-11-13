@@ -192,6 +192,7 @@ public sealed class GpuBufferPool : IDisposable
         {
             // Pool full, free the buffer directly
             FreeGpuBuffer(handle);
+            handle.MarkDisposed(); // Mark as actually disposed
 
             Interlocked.Add(ref _totalBytesAllocated, -bucketSize);
 
@@ -248,6 +249,7 @@ public sealed class GpuBufferPool : IDisposable
             while (bucket.TryDequeue(out var handle))
             {
                 FreeGpuBuffer(handle);
+                handle.MarkDisposed(); // Mark as actually disposed
                 Interlocked.Add(ref _totalBytesAllocated, -handle.SizeBytes);
             }
         }
@@ -385,8 +387,14 @@ public sealed class GpuBufferPool : IDisposable
     /// <param name="handle">GPU memory handle.</param>
     private void FreeGpuBuffer(GpuMemoryHandle handle)
     {
+        // Capture values before disposal for error logging
+        long sizeBytes = handle.SizeBytes;
+        IntPtr devicePtr = IntPtr.Zero;
+
         try
         {
+            devicePtr = handle.DevicePointer;
+
             if (handle.DotComputeBuffer != null)
             {
                 // DotCompute buffer handles its own disposal (calls cudaFree internally)
@@ -394,28 +402,35 @@ public sealed class GpuBufferPool : IDisposable
 
                 _logger.LogTrace(
                     "Freed GPU memory via DotCompute: {Size} bytes",
-                    handle.SizeBytes);
+                    sizeBytes);
             }
             else
             {
                 // Fallback for CPU-allocated memory
-                if (handle.DevicePointer != IntPtr.Zero)
+                if (devicePtr != IntPtr.Zero)
                 {
-                    Marshal.FreeHGlobal(handle.DevicePointer);
+                    Marshal.FreeHGlobal(devicePtr);
 
                     _logger.LogTrace(
                         "Freed CPU fallback memory: {Size} bytes",
-                        handle.SizeBytes);
+                        sizeBytes);
                 }
             }
+        }
+        catch (ObjectDisposedException)
+        {
+            // Handle was already disposed - this is fine, just skip freeing
+            _logger.LogTrace(
+                "GPU memory handle already disposed: {Size} bytes",
+                sizeBytes);
         }
         catch (Exception ex)
         {
             _logger.LogError(
                 ex,
                 "Error freeing GPU memory (ptr=0x{Pointer:X}, size={Size} bytes)",
-                handle.DevicePointer.ToInt64(),
-                handle.SizeBytes);
+                devicePtr.ToInt64(),
+                sizeBytes);
         }
     }
 

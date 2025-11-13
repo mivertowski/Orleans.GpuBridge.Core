@@ -127,8 +127,9 @@ public sealed class GpuMemoryHandle : IDisposable, IEquatable<GpuMemoryHandle>
 
             if (_pool != null)
             {
-                // Return to pool for recycling
+                // Return to pool for recycling (handle stays alive for reuse)
                 _pool.ReturnBuffer(this);
+                // Don't set _disposed = true here - handle is still valid in the pool
             }
             else
             {
@@ -142,10 +143,10 @@ public sealed class GpuMemoryHandle : IDisposable, IEquatable<GpuMemoryHandle>
                 {
                     Marshal.FreeHGlobal(_devicePointer);
                 }
-            }
 
-            _disposed = true;
-            GC.SuppressFinalize(this);
+                _disposed = true;
+                GC.SuppressFinalize(this);
+            }
         }
     }
 
@@ -181,6 +182,19 @@ public sealed class GpuMemoryHandle : IDisposable, IEquatable<GpuMemoryHandle>
         {
             throw new ObjectDisposedException(nameof(GpuMemoryHandle),
                 "Cannot access disposed GPU memory handle.");
+        }
+    }
+
+    /// <summary>
+    /// Internal method to mark handle as disposed without returning to pool.
+    /// Used by GpuBufferPool when actually freeing memory.
+    /// </summary>
+    internal void MarkDisposed()
+    {
+        lock (_disposeLock)
+        {
+            _disposed = true;
+            GC.SuppressFinalize(this);
         }
     }
 

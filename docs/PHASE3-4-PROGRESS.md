@@ -91,18 +91,25 @@
 
 ## 📋 Remaining Phase 3 & 4 Tasks
 
-### Phase 4: GPU Memory Management ✅ Complete (CPU Fallback)
+### Phase 4: GPU Memory Management ✅ Complete (GPU Unified Memory)
 
 **Objective**: Handle large vector operations that exceed inline message capacity
 
-**Implemented (Committed: 6f48c76)**
+**Implemented (Committed: 6f48c76, 633cf1e)**
 
-✅ **GpuBufferPool.cs** - Power-of-2 bucket-based buffer pool
+✅ **GpuBufferPool.cs** - Power-of-2 bucket-based buffer pool with actual GPU allocation
 - Lock-free buffer management with ConcurrentQueue
 - Pool hit rate tracking (50-500× speedup for repeated allocations)
 - Automatic bucket-based allocation (1KB to 1GB)
-- CPU memory allocation with TODO for CudaMemoryManager integration
+- **GPU unified memory via CudaMemoryManager.AllocateAsync<byte>()**
+- **MemoryOptions.Unified for zero-copy CPU/GPU access**
 - Thread-safe allocation tracking and statistics
+- Graceful CPU fallback when CUDA unavailable
+
+✅ **GpuBufferPoolFactory.cs** - Factory for GPU buffer pool creation
+- **CreateAuto()**: Automatic CUDA detection with CPU fallback
+- **CreateGpuMode()**: GPU-only mode (requires CUDA)
+- **CreateCpuFallbackMode()**: CPU-only mode (testing/development)
 
 ✅ **GpuMemoryManager.cs** - High-level GPU memory operations
 - Zero-copy transfer support via DotCompute IUnifiedMemoryBuffer<T>
@@ -121,13 +128,15 @@
 **DotCompute Integration Status:**
 - ✅ IUnifiedMemoryBuffer<T> copy operations (CopyFromAsync/CopyToAsync)
 - ✅ Typed and untyped buffer support
-- 🚧 CudaMemoryManager integration pending (requires CudaContext dependency)
-- 🚧 Actual GPU memory allocation deferred to Phase 5 (accelerator infrastructure)
+- ✅ CudaMemoryManager integration complete (CudaContext + MemoryManager)
+- ✅ Actual GPU unified memory allocation via AllocateAsync<byte>()
+- ✅ Device pointer extraction via GetDeviceMemory().Handle
 
 **Current Implementation:**
-- Uses CPU memory (Marshal.AllocHGlobal) with DotCompute copy operations
+- **GPU Mode**: Uses CudaMemoryManager.AllocateAsync() with MemoryOptions.Unified
+- **CPU Fallback**: Uses Marshal.AllocHGlobal() when CUDA unavailable
+- **Factory Pattern**: GpuBufferPoolFactory provides Auto/GPU/CPU modes
 - All buffer pool infrastructure is production-ready
-- DotCompute unified memory will be enabled when CudaContext is available
 
 **Performance Characteristics:**
 - Pooled allocation: ~100-500ns (vs ~10-50μs for cold allocation)
@@ -297,6 +306,8 @@ Time Elapsed 00:00:54.01
 1. **87180ee**: Phase 1 & 2 Ring Kernel Integration
 2. **27b7fd8**: Phase 3 GPU-Aware Placement Strategy
 3. **6f48c76**: Phase 4 GPU Memory Management with DotCompute integration (CPU fallback)
+4. **92faf64**: Documentation update for Phase 4 completion
+5. **633cf1e**: Phase 4 GPU Memory Management with actual CUDA unified memory
 
 ---
 

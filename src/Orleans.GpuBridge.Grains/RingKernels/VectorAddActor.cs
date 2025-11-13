@@ -4,6 +4,7 @@
 using DotCompute.Abstractions.RingKernels;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Runtime.RingKernels;
+using Orleans.GpuBridge.Runtime.Placement;
 
 namespace Orleans.GpuBridge.Grains.RingKernels;
 
@@ -18,6 +19,7 @@ namespace Orleans.GpuBridge.Grains.RingKernels;
 /// - Sub-microsecond latency (100-500ns target)
 /// - Persistent ring kernel execution
 /// - Integration with DotCompute ring kernel runtime
+/// - GPU-aware placement with ring kernel metrics
 /// </para>
 /// <para>
 /// The actor maintains a GPU-resident state including:
@@ -35,6 +37,10 @@ namespace Orleans.GpuBridge.Grains.RingKernels;
     OutputQueueSize = 256,
     GridSize = 1,
     BlockSize = 256)]
+[GpuNativePlacement(
+    MinMemoryMB = 512,
+    MaxQueueUtilization = 0.75,
+    PreferLocalGpu = true)]
 public class VectorAddActor : GpuNativeGrain, IVectorAddActor
 {
     private readonly ILogger<VectorAddActor> _actorLogger;

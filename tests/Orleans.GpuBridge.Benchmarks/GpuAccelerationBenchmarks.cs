@@ -7,6 +7,10 @@ using DotCompute.Abstractions;
 using DotCompute.Abstractions.Kernels;
 using DotCompute.Abstractions.Kernels.Types;
 using DotCompute.Abstractions.Memory;
+using DotCompute.Abstractions.Types;
+using DotCompute.Backends.CUDA;
+using DotCompute.Backends.CUDA.Configuration;
+using DotCompute.Core.Extensions;
 
 namespace Orleans.GpuBridge.Benchmarks;
 
@@ -49,10 +53,12 @@ public class GpuAccelerationBenchmarks
 
     // DotCompute GPU infrastructure
     private DotComputeAcceleratorProvider? _provider;
+    private IAccelerator? _cudaAccelerator;
     private IAccelerator? _gpuAccelerator;
     private IAccelerator? _cpuAccelerator;
     private DotComputeKernel<(float[] a, float[] b), float[]>? _gpuKernel;
     private DotComputeKernel<(float[] a, float[] b), float[]>? _cpuKernel;
+    private ICompiledKernel? _compiledCudaKernel;
     private bool _gpuAvailable;
 
     [GlobalSetup]
@@ -76,36 +82,38 @@ public class GpuAccelerationBenchmarks
         _data1M_B = GenerateRandomData(1_000_000, random);
         _data1M_Result = new float[1_000_000];
 
-        // Initialize DotCompute GPU provider
+        // Initialize CUDA GPU accelerator
         try
         {
-            _provider = new DotComputeAcceleratorProvider(CompilationOptions.Default);
+            // Create CUDA accelerator (auto-selects first CUDA device)
+            _cudaAccelerator = new CudaAccelerator();
+            _gpuAccelerator = _cudaAccelerator;
+            _gpuAvailable = true;
 
-            // Try to discover CUDA accelerator
-            // Note: This requires DotCompute.CUDA package to be installed
-            try
-            {
-                // Attempt to create CUDA accelerator
-                // In a real implementation, we would use DotCompute.CUDA provider
-                // For now, we'll mark GPU as unavailable if CUDA init fails
-                _gpuAvailable = false;
+            // Define CUDA kernel for vector addition
+            const string cudaKernelSource = @"
+extern ""C"" __global__ void vectorAdd(float* a, float* b, float* result, int size) {
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    if (idx < size) {
+        result[idx] = a[idx] + b[idx];
+    }
+}";
 
-                Console.WriteLine("GPU acceleration disabled: CUDA accelerator initialization requires DotCompute.CUDA package");
-                Console.WriteLine("To enable GPU benchmarks:");
-                Console.WriteLine("  1. Install DotCompute.CUDA NuGet package");
-                Console.WriteLine("  2. Ensure CUDA drivers are installed");
-                Console.WriteLine("  3. Verify GPU is available via nvidia-smi");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"CUDA accelerator not available: {ex.Message}");
-                _gpuAvailable = false;
-            }
+            // Compile the CUDA kernel
+            var kernelDef = new KernelDefinition("vector_add", cudaKernelSource, "vectorAdd");
+            _compiledCudaKernel = _cudaAccelerator.CompileKernelAsync(kernelDef, CompilationOptions.Default).GetAwaiter().GetResult();
+
+            Console.WriteLine($"✅ CUDA GPU initialized successfully");
+            Console.WriteLine($"   Device: {_cudaAccelerator.Info.Name}");
+            Console.WriteLine($"   Type: {_cudaAccelerator.Type}");
+            Console.WriteLine($"   Compute Units: {_cudaAccelerator.Info.MaxComputeUnits}");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"WARNING: Failed to initialize GPU provider: {ex.Message}");
+            Console.WriteLine($"⚠️  CUDA accelerator not available: {ex.Message}");
             _gpuAvailable = false;
+            _cudaAccelerator = null;
+            _compiledCudaKernel = null;
         }
 
         Console.WriteLine("=== GPU Acceleration Benchmarks ===");
@@ -124,9 +132,11 @@ public class GpuAccelerationBenchmarks
     [GlobalCleanup]
     public void Cleanup()
     {
+        _compiledCudaKernel?.Dispose();
         _gpuKernel?.Dispose();
         _cpuKernel?.Dispose();
         _provider?.Dispose();
+        // Note: CudaAccelerator doesn't implement IDisposable in DotCompute 0.4.2-rc2
     }
 
     #region CPU Scalar Benchmarks (Baseline)
@@ -212,7 +222,7 @@ public class GpuAccelerationBenchmarks
     [Benchmark]
     public void VectorAdd_Gpu_1K()
     {
-        if (!_gpuAvailable || _gpuKernel == null)
+        if (!_gpuAvailable || _cudaAccelerator == null || _compiledCudaKernel == null)
         {
             // Skip GPU benchmark if GPU not available
             return;
@@ -220,7 +230,7 @@ public class GpuAccelerationBenchmarks
 
         try
         {
-            _ = _gpuKernel.ExecuteAsync((_data1K_A, _data1K_B)).GetAwaiter().GetResult();
+            ExecuteCudaVectorAdd(_data1K_A, _data1K_B, _data1K_Result).GetAwaiter().GetResult();
         }
         catch (Exception ex)
         {
@@ -239,14 +249,14 @@ public class GpuAccelerationBenchmarks
     [Benchmark]
     public void VectorAdd_Gpu_100K()
     {
-        if (!_gpuAvailable || _gpuKernel == null)
+        if (!_gpuAvailable || _cudaAccelerator == null || _compiledCudaKernel == null)
         {
             return;
         }
 
         try
         {
-            _ = _gpuKernel.ExecuteAsync((_data100K_A, _data100K_B)).GetAwaiter().GetResult();
+            ExecuteCudaVectorAdd(_data100K_A, _data100K_B, _data100K_Result).GetAwaiter().GetResult();
         }
         catch (Exception ex)
         {
@@ -266,14 +276,14 @@ public class GpuAccelerationBenchmarks
     [Benchmark]
     public void VectorAdd_Gpu_1M()
     {
-        if (!_gpuAvailable || _gpuKernel == null)
+        if (!_gpuAvailable || _cudaAccelerator == null || _compiledCudaKernel == null)
         {
             return;
         }
 
         try
         {
-            _ = _gpuKernel.ExecuteAsync((_data1M_A, _data1M_B)).GetAwaiter().GetResult();
+            ExecuteCudaVectorAdd(_data1M_A, _data1M_B, _data1M_Result).GetAwaiter().GetResult();
         }
         catch (Exception ex)
         {
@@ -335,6 +345,45 @@ public class GpuAccelerationBenchmarks
             data[i] = (float)random.NextDouble() * 100.0f;
         }
         return data;
+    }
+
+    /// <summary>
+    /// Execute CUDA vector addition kernel on GPU.
+    /// Allocates GPU memory, transfers data, launches kernel, and retrieves results.
+    /// </summary>
+    private async Task ExecuteCudaVectorAdd(float[] a, float[] b, float[] result)
+    {
+        if (_cudaAccelerator == null || _compiledCudaKernel == null)
+            throw new InvalidOperationException("CUDA not initialized");
+
+        var size = a.Length;
+
+        // Allocate GPU memory for input and output arrays
+        await using var bufferA = await _cudaAccelerator.Memory.AllocateAsync<float>(size);
+        await using var bufferB = await _cudaAccelerator.Memory.AllocateAsync<float>(size);
+        await using var bufferResult = await _cudaAccelerator.Memory.AllocateAsync<float>(size);
+
+        // Copy input data from host to GPU
+        await bufferA.CopyFromAsync(a.AsMemory());
+        await bufferB.CopyFromAsync(b.AsMemory());
+
+        // Configure kernel launch parameters
+        const int blockSize = 256;
+        var gridSize = (size + blockSize - 1) / blockSize;
+        var launchConfig = new LaunchConfiguration
+        {
+            GridSize = new Dim3(gridSize),
+            BlockSize = new Dim3(blockSize)
+        };
+
+        // Launch CUDA kernel: vectorAdd(float* a, float* b, float* result, int size)
+        await _compiledCudaKernel.LaunchAsync<float>(launchConfig, bufferA, bufferB, bufferResult, size);
+
+        // Wait for GPU to complete
+        await _cudaAccelerator.SynchronizeAsync();
+
+        // Copy results from GPU back to host
+        await bufferResult.CopyToAsync(result.AsMemory());
     }
 
     #endregion

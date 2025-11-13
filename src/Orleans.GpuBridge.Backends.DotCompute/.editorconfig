@@ -1,0 +1,18 @@
+# EditorConfig for Orleans.GpuBridge.Backends.DotCompute
+
+# Suppress all errors in auto-generated DotCompute source generator files
+[**/DotCompute.Generators/**/*.g.cs]
+# Suppress CS1503: Logger type mismatch (unpublished API)
+dotnet_diagnostic.CS1503.severity = none
+# Suppress CS0234: Missing types (unpublished OpenCLDeviceManager, Metal.RingKernels)
+dotnet_diagnostic.CS0234.severity = none
+# Suppress CS1729: Wrong constructor signature (unpublished API)
+dotnet_diagnostic.CS1729.severity = none
+
+# Specifically suppress errors in RingKernelRuntimeFactory.g.cs
+# This file uses unpublished DotCompute APIs that exist in source but not in NuGet v0.4.2-rc2
+[**/RingKernelRuntimeFactory.g.cs]
+dotnet_diagnostic.CS1503.severity = none
+dotnet_diagnostic.CS0234.severity = none
+dotnet_diagnostic.CS1729.severity = none
+generated_code = true

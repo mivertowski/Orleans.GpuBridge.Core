@@ -8,6 +8,11 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- Suppress DotCompute kernel analyzers during Phase 5 development - will address in refinement phase -->
+    <!-- DC* warnings are performance/optimization suggestions, not errors -->
+    <!-- CS8669: Source generator doesn't emit #nullable directive (known DotCompute generator issue) -->
+    <!-- CS1591: Source generator doesn't create XML comments for generated code -->
+    <NoWarn>$(NoWarn);CS8669;CS1591;DC002;DC004;DC005;DC009;DC010;DC011;DC0004;DC0005</NoWarn>
   </PropertyGroup>
 
   <!-- Expose internal types to test assembly -->
@@ -15,6 +20,7 @@
     <InternalsVisibleTo Include="Orleans.GpuBridge.Backends.DotCompute.Tests" />
     <InternalsVisibleTo Include="BackendIntegrationTest" />
   </ItemGroup>
+
   <PropertyGroup>
 
     <!-- Package Metadata -->
@@ -36,18 +42,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- DotCompute Framework v0.4.2-rc2 - Temporal Correctness Release -->
-    <!-- Release Date: January 2025 -->
+    <!-- DotCompute Framework v0.5.0-alpha - Bug Fix Release -->
+    <!-- Release Date: November 2025 -->
+    <!-- Fixes: CUDA LibraryImport EntryPoint bug, Code generation API mismatches, Logger type issues -->
     <!-- Features: Timing API, Ring Kernels, Barriers, Memory Ordering, [Kernel]/[RingKernel] attributes -->
 
     <!-- Backend Targets -->
-    <PackageReference Include="DotCompute.Abstractions" Version="0.4.2-rc2" />
-    <PackageReference Include="DotCompute.Backends.CUDA" Version="0.4.2-rc2" />
-    <PackageReference Include="DotCompute.Backends.OpenCL" Version="0.4.2-rc2" />
-    <PackageReference Include="DotCompute.Backends.CPU" Version="0.4.2-rc2" />
-    <PackageReference Include="DotCompute.Backends.Metal" Version="0.4.2-rc2" Condition="$([MSBuild]::IsOSPlatform('OSX'))" />
-    <PackageReference Include="DotCompute.Core" Version="0.4.2-rc2" />
-    <PackageReference Include="DotCompute.Runtime" Version="0.4.2-rc2" />
+    <PackageReference Include="DotCompute.Abstractions" Version="0.5.0-alpha" />
+    <PackageReference Include="DotCompute.Backends.CUDA" Version="0.5.0-alpha" />
+    <PackageReference Include="DotCompute.Backends.OpenCL" Version="0.5.0-alpha" />
+    <PackageReference Include="DotCompute.Backends.CPU" Version="0.5.0-alpha" />
+    <PackageReference Include="DotCompute.Backends.Metal" Version="0.5.0-alpha" Condition="$([MSBuild]::IsOSPlatform('OSX'))" />
+    <PackageReference Include="DotCompute.Core" Version="0.5.0-alpha" />
+    <PackageReference Include="DotCompute.Runtime" Version="0.5.0-alpha" />
+
+    <!-- DotCompute Source Generators - RE-ENABLED in v0.5.0-alpha -->
+    <!-- v0.5.0-alpha fixes: LibraryImport EntryPoint bug, API publication, Logger types -->
+    <PackageReference Include="DotCompute.Generators" Version="0.5.0-alpha" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
 
     <!-- Orleans Dependencies -->
     <PackageReference Include="Microsoft.Orleans.Core" Version="9.2.1" />

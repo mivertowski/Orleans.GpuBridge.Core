@@ -2,8 +2,9 @@
 // Licensed under the MIT License.
 
 using System;
+using DotCompute.Abstractions.Attributes;
+using DotCompute.Abstractions.RingKernels;
 using Orleans.GpuBridge.Abstractions.Temporal;
-using Orleans.GpuBridge.Grains.RingKernels;
 
 namespace Orleans.GpuBridge.Backends.DotCompute.Temporal;
 
@@ -38,11 +39,15 @@ public static class VectorAddRingKernel
     ///
     /// This is the actual implementation that validates the GPU-native actor paradigm.
     /// </remarks>
-    [global::DotCompute.Generators.Kernel.Attributes.RingKernel(
-        MessageQueueSize = 256,  // Matches VectorAddActor InputQueueSize
-        ProcessingMode = global::DotCompute.Generators.Kernel.Attributes.RingProcessingMode.Continuous,
-        EnableTimestamps = true,
-        MemoryOrdering = global::DotCompute.Generators.Kernel.Attributes.MemoryOrderingMode.ReleaseAcquire)]
+    [RingKernel(
+        KernelId = "VectorAddProcessor",
+        Domain = RingKernelDomain.ActorModel,
+        Mode = RingKernelMode.Persistent,
+        MessagingStrategy = MessagePassingStrategy.SharedMemory,
+        Capacity = 1024,
+        InputQueueSize = 256,
+        OutputQueueSize = 256,
+        Backends = KernelBackends.CUDA | KernelBackends.OpenCL)]
     public static void VectorAddProcessorRing(
         Span<long> timestamps,                      // GPU timestamps
         Span<VectorAddRequest> requestQueue,        // Input message queue

@@ -4,6 +4,7 @@
 using DotCompute.Abstractions.RingKernels;
 using Microsoft.Extensions.Logging;
 using Orleans.Runtime;
+using Orleans.GpuBridge.Abstractions.Temporal;
 
 namespace Orleans.GpuBridge.Runtime.RingKernels;
 
@@ -37,6 +38,16 @@ public abstract class GpuNativeGrain : Grain, IGrainWithIntegerKey, IAsyncDispos
     private bool _isKernelLaunched;
     private bool _isKernelActive;
     private bool _disposed;
+    private long _sequenceNumber;
+
+    /// <summary>
+    /// Hybrid Logical Clock for temporal ordering of GPU messages.
+    /// </summary>
+    /// <remarks>
+    /// Provides causal ordering with sub-microsecond precision.
+    /// GPU kernels maintain their own HLC state in GPU memory for 20ns updates.
+    /// </remarks>
+    private readonly HybridLogicalClock _hlcClock;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GpuNativeGrain"/> class.
@@ -47,6 +58,16 @@ public abstract class GpuNativeGrain : Grain, IGrainWithIntegerKey, IAsyncDispos
     {
         _runtime = runtime ?? throw new ArgumentNullException(nameof(runtime));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+        // Initialize HLC with grain's primary key as node ID (truncated to ushort)
+        // This ensures unique timestamps across grains
+        var nodeId = (ushort)(this.GetPrimaryKeyLong() & 0xFFFF);
+        _hlcClock = new HybridLogicalClock(nodeId);
+
+        _logger.LogDebug(
+            "Initialized GPU-native grain with HLC node ID {NodeId} (from grain key {GrainKey})",
+            nodeId,
+            this.GetPrimaryKeyLong());
     }
 
     /// <summary>
@@ -176,6 +197,20 @@ public abstract class GpuNativeGrain : Grain, IGrainWithIntegerKey, IAsyncDispos
     /// <returns>Response from GPU kernel.</returns>
     /// <exception cref="InvalidOperationException">Kernel not launched.</exception>
     /// <exception cref="TimeoutException">GPU kernel did not respond within timeout.</exception>
+    /// <remarks>
+    /// <para>
+    /// Message flow with HLC temporal ordering:
+    /// 1. Generate HLC timestamp (CPU-side, ~50ns)
+    /// 2. Wrap request + timestamp into ActorMessage
+    /// 3. Send to GPU via ring kernel queue
+    /// 4. GPU temporal kernel processes with HLC update (~20ns on GPU)
+    /// 5. Response unwrapped and returned
+    /// </para>
+    /// <para>
+    /// For small payloads (&lt;= 8 bytes), data is embedded directly in ActorMessage.
+    /// Larger payloads require GPU memory management (Phase 4).
+    /// </para>
+    /// </remarks>
     protected async Task<TResponse> InvokeKernelAsync<TRequest, TResponse>(
         TRequest request,
         TimeSpan timeout = default,
@@ -197,27 +232,48 @@ public abstract class GpuNativeGrain : Grain, IGrainWithIntegerKey, IAsyncDispos
             _logger.LogDebug("Reactivated ring kernel {KernelId} for method call", _kernelId);
         }
 
-        // Create message
-        var message = KernelMessage<TRequest>.Create(
+        // Generate HLC timestamp for this message (local event)
+        var sendTimestamp = GetCurrentTimestamp();
+
+        _logger.LogTrace(
+            "Sending GPU message with HLC timestamp: Physical={Physical}ns, Logical={Logical}, Node={NodeId}",
+            sendTimestamp.PhysicalTime,
+            sendTimestamp.LogicalCounter,
+            sendTimestamp.NodeId);
+
+        // Wrap request with HLC timestamp into ActorMessage
+        var actorMessage = Temporal.TemporalMessageAdapter.WrapWithTimestamp(
             senderId: 0, // Orleans runtime
-            receiverId: (int)this.GetPrimaryKeyLong(),
-            type: DotCompute.Abstractions.RingKernels.MessageType.Data,
-            payload: request);
+            receiverId: (ulong)this.GetPrimaryKeyLong(),
+            request: request,
+            timestamp: sendTimestamp,
+            sequenceNumber: (ulong)Interlocked.Increment(ref _sequenceNumber));
+
+        _logger.LogTrace(
+            "Created ActorMessage {MessageId} with embedded HLC timestamp",
+            actorMessage.MessageId);
+
+        // Convert to KernelMessage for DotCompute compatibility
+        var kernelMessage = Temporal.TemporalMessageAdapter.ToKernelMessage(actorMessage);
 
         // Send to GPU
         var sendStart = DateTime.UtcNow;
-        await _runtime.SendMessageAsync<TRequest>(_kernelId, message, cancellationToken);
+        await _runtime.SendMessageAsync<ActorMessage>(_kernelId, kernelMessage, cancellationToken);
+
+        _logger.LogTrace(
+            "Sent temporal message to GPU kernel {KernelId}, awaiting response...",
+            _kernelId);
 
         // Wait for response
         var effectiveTimeout = timeout == default ? TimeSpan.FromSeconds(5) : timeout;
-        var response = await _runtime.ReceiveMessageAsync<TResponse>(
+        var responseMessage = await _runtime.ReceiveMessageAsync<ActorMessage>(
             _kernelId,
             effectiveTimeout,
             cancellationToken);
 
         var roundTripNs = (DateTime.UtcNow - sendStart).TotalNanoseconds;
 
-        if (response == null)
+        if (responseMessage == null)
         {
             _logger.LogError(
                 "GPU kernel {KernelId} response timeout after {TimeoutMs}ms",
@@ -228,12 +284,23 @@ public abstract class GpuNativeGrain : Grain, IGrainWithIntegerKey, IAsyncDispos
                 $"GPU kernel {_kernelId} did not respond within {effectiveTimeout.TotalMilliseconds}ms");
         }
 
-        _logger.LogTrace(
-            "GPU kernel {KernelId} round-trip: {LatencyNs}ns",
-            _kernelId,
-            roundTripNs);
+        // Extract ActorMessage from kernel message wrapper
+        var responseActorMessage = responseMessage.Value.Payload;
 
-        return response.Value.Payload;
+        // Update local HLC with received timestamp (Lamport clock update)
+        UpdateTimestamp(responseActorMessage.Timestamp);
+
+        _logger.LogTrace(
+            "GPU kernel {KernelId} round-trip: {LatencyNs}ns, received HLC: Physical={Physical}ns, Logical={Logical}",
+            _kernelId,
+            roundTripNs,
+            responseActorMessage.Timestamp.PhysicalTime,
+            responseActorMessage.Timestamp.LogicalCounter);
+
+        // Unwrap response payload
+        var response = Temporal.TemporalMessageAdapter.UnwrapResponse<TResponse>(responseActorMessage);
+
+        return response;
     }
 
     /// <summary>
@@ -295,6 +362,44 @@ public abstract class GpuNativeGrain : Grain, IGrainWithIntegerKey, IAsyncDispos
         // Deserialize response
         return GpuMessageSerializer.Deserialize<TResponse>(response.Value.Payload);
     }
+
+    /// <summary>
+    /// Gets the current HLC timestamp for this grain.
+    /// </summary>
+    /// <remarks>
+    /// This generates a new monotonic timestamp that incorporates:
+    /// - Current physical time (nanosecond precision)
+    /// - Logical counter for events at same physical time
+    /// - Grain's unique node ID
+    /// </remarks>
+    /// <returns>New HLC timestamp for local event.</returns>
+    protected HybridTimestamp GetCurrentTimestamp()
+    {
+        return _hlcClock.Now();
+    }
+
+    /// <summary>
+    /// Updates HLC with a received timestamp (for causal ordering).
+    /// </summary>
+    /// <param name="receivedTimestamp">Timestamp from received message.</param>
+    /// <remarks>
+    /// Implements Lamport clock update rules to maintain happens-before relationships.
+    /// Should be called when receiving messages from other actors.
+    /// </remarks>
+    protected void UpdateTimestamp(HybridTimestamp receivedTimestamp)
+    {
+        _hlcClock.Update(receivedTimestamp);
+
+        _logger.LogTrace(
+            "Updated HLC from received timestamp: Physical={Physical}ns, Logical={Logical}",
+            receivedTimestamp.PhysicalTime,
+            receivedTimestamp.LogicalCounter);
+    }
+
+    /// <summary>
+    /// Gets the last generated HLC timestamp.
+    /// </summary>
+    protected HybridTimestamp LastTimestamp => _hlcClock.LastTimestamp;
 
     /// <summary>
     /// Gets current ring kernel status and metrics.

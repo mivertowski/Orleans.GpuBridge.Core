@@ -42,6 +42,16 @@ class Program
         // Determine which test to run
         var runCuda = args.Length > 0 && args[0].Equals("cuda", StringComparison.OrdinalIgnoreCase);
         var runAll = args.Length > 0 && args[0].Equals("all", StringComparison.OrdinalIgnoreCase);
+        var runMessage = args.Length > 0 && args[0].Equals("message", StringComparison.OrdinalIgnoreCase);
+        var runMessageCuda = args.Length > 0 && args[0].Equals("message-cuda", StringComparison.OrdinalIgnoreCase);
+
+        // Message passing tests
+        if (runMessage || runMessageCuda)
+        {
+            var backend = runMessageCuda ? "CUDA" : "CPU";
+            var messageResult = await MessagePassingTest.RunAsync(loggerFactory, backend);
+            return messageResult;
+        }
 
         if (runCuda || runAll)
         {
@@ -131,11 +141,12 @@ class Program
             Console.WriteLine("  6. Deactivation (loop paused)");
             Console.WriteLine("  7. Termination (cleanup)");
             Console.WriteLine();
-            Console.WriteLine("Run CUDA test:");
-            Console.WriteLine("  dotnet run -- cuda");
-            Console.WriteLine();
-            Console.WriteLine("Run all tests:");
-            Console.WriteLine("  dotnet run -- all");
+            Console.WriteLine("Available Tests:");
+            Console.WriteLine("  dotnet run                  # CPU lifecycle test (this test)");
+            Console.WriteLine("  dotnet run -- cuda          # CUDA/GPU lifecycle test");
+            Console.WriteLine("  dotnet run -- message       # Message passing test (CPU)");
+            Console.WriteLine("  dotnet run -- message-cuda  # Message passing test (CUDA/GPU)");
+            Console.WriteLine("  dotnet run -- all           # Run all lifecycle tests");
             Console.WriteLine();
 
             return 0; // Success

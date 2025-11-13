@@ -201,9 +201,34 @@ public sealed class GpuMemoryHandle : IDisposable, IEquatable<GpuMemoryHandle>
     /// <summary>
     /// Finalizer to ensure GPU memory is released even if Dispose() is not called.
     /// </summary>
+    /// <remarks>
+    /// Finalizer does NOT return buffers to pool (pool may be disposed).
+    /// It only frees actual GPU memory directly.
+    /// </remarks>
     ~GpuMemoryHandle()
     {
-        Dispose();
+        // Don't return to pool from finalizer - pool may be disposed
+        // Only free actual GPU memory directly
+        if (_disposed)
+            return;
+
+        try
+        {
+            // Free GPU memory directly via DotCompute
+            if (_dotComputeBuffer != null)
+            {
+                _dotComputeBuffer.Dispose();
+            }
+            // Fallback for legacy non-DotCompute allocations
+            else if (_devicePointer != IntPtr.Zero)
+            {
+                Marshal.FreeHGlobal(_devicePointer);
+            }
+        }
+        catch
+        {
+            // Suppress exceptions in finalizer
+        }
     }
 }
 

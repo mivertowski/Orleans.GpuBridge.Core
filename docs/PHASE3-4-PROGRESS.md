@@ -158,7 +158,7 @@ enabling development and testing on non-GPU systems.
 - Copy from GPU: ~1-10μs/MB
 - Pool hit rate typically > 90% for steady-state workloads
 
-**VectorAddActor Large Vector Integration (Committed: TBD):**
+**VectorAddActor Large Vector Integration (Committed: eb9a830):**
 ✅ **GPU Memory Support for Large Vectors** - Complete implementation
 - Small vectors (≤25 elements): Inline data in 228-byte message payload
 - Large vectors (>25 elements): GPU memory handles with zero-copy transfers

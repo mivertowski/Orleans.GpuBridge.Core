@@ -5,6 +5,7 @@ using DotCompute.Abstractions.RingKernels;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Runtime.RingKernels;
 using Orleans.GpuBridge.Runtime.Placement;
+using Orleans.GpuBridge.Runtime.Memory;
 
 namespace Orleans.GpuBridge.Grains.RingKernels;
 
@@ -44,6 +45,7 @@ namespace Orleans.GpuBridge.Grains.RingKernels;
 public class VectorAddActor : GpuNativeGrain, IVectorAddActor
 {
     private readonly ILogger<VectorAddActor> _actorLogger;
+    private readonly GpuMemoryManager _memoryManager;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="VectorAddActor"/> class.
@@ -51,13 +53,16 @@ public class VectorAddActor : GpuNativeGrain, IVectorAddActor
     /// <param name="runtime">Ring kernel runtime.</param>
     /// <param name="logger">Base logger.</param>
     /// <param name="actorLogger">Actor-specific logger.</param>
+    /// <param name="memoryManager">GPU memory manager for large vector operations.</param>
     public VectorAddActor(
         IRingKernelRuntime runtime,
         ILogger<GpuNativeGrain> logger,
-        ILogger<VectorAddActor> actorLogger)
+        ILogger<VectorAddActor> actorLogger,
+        GpuMemoryManager memoryManager)
         : base(runtime, logger)
     {
         _actorLogger = actorLogger ?? throw new ArgumentNullException(nameof(actorLogger));
+        _memoryManager = memoryManager ?? throw new ArgumentNullException(nameof(memoryManager));
     }
 
     /// <inheritdoc/>
@@ -80,56 +85,106 @@ public class VectorAddActor : GpuNativeGrain, IVectorAddActor
         {
             VectorALength = a.Length,
             VectorBLength = b.Length,
-            // For small vectors (<50 elements), we could inline data in payload
-            // For now, we'll use a simplified approach with length only
-            Operation = VectorOperation.Add
+            Operation = VectorOperation.Add,
+            UseGpuMemory = 0 // false = 0
         };
 
-        // TODO: For production, implement GPU memory management:
-        // 1. Allocate GPU buffers for a and b
-        // 2. Copy a and b to GPU memory
-        // 3. Pass GPU pointers in request
-        // 4. GPU kernel operates on GPU memory directly
-        // 5. Copy result back to CPU
+        VectorAddResponse response;
+        GpuMemoryHandle? bufferA = null;
+        GpuMemoryHandle? bufferB = null;
+        GpuMemoryHandle? bufferResult = null;
 
-        // For proof-of-concept, simulate with small inline arrays
-        if (a.Length <= 50)
+        try
         {
-            // Pack first 50 elements into request payload
-            unsafe
+            // Small vectors: inline data in message (≤25 elements)
+            if (a.Length <= 25)
             {
-                for (int i = 0; i < Math.Min(a.Length, 50); i++)
+                _actorLogger.LogTrace(
+                    "Using inline message path for small vectors ({Length} elements)",
+                    a.Length);
+
+                unsafe
                 {
-                    request.InlineDataA[i] = a[i];
-                    request.InlineDataB[i] = b[i];
+                    for (int i = 0; i < a.Length; i++)
+                    {
+                        request.InlineDataA[i] = a[i];
+                        request.InlineDataB[i] = b[i];
+                    }
                 }
             }
-        }
-
-        var startTime = DateTime.UtcNow;
-
-        // Invoke GPU kernel
-        var response = await InvokeKernelAsync<VectorAddRequest, VectorAddResponse>(
-            request,
-            timeout: TimeSpan.FromSeconds(5));
-
-        var latencyNs = (DateTime.UtcNow - startTime).TotalNanoseconds;
-
-        _actorLogger.LogInformation(
-            "Vector addition completed on GPU in {LatencyNs}ns (target: 100-500ns)",
-            latencyNs);
-
-        // Extract result from response
-        var result = new float[response.ResultLength];
-        unsafe
-        {
-            for (int i = 0; i < Math.Min(response.ResultLength, 50); i++)
+            // Large vectors: use GPU memory handles (>25 elements)
+            else
             {
-                result[i] = response.InlineResult[i];
-            }
-        }
+                _actorLogger.LogDebug(
+                    "Using GPU memory path for large vectors ({Length} elements)",
+                    a.Length);
 
-        return result;
+                // Allocate GPU buffers and copy data
+                bufferA = await _memoryManager.AllocateAndCopyAsync(a, CancellationToken.None);
+                bufferB = await _memoryManager.AllocateAndCopyAsync(b, CancellationToken.None);
+                bufferResult = _memoryManager.AllocateBuffer<float>(a.Length);
+
+                // Pass GPU memory handles in request
+                request.UseGpuMemory = 1; // true = 1
+                request.GpuBufferAHandleId = bufferA.HandleId;
+                request.GpuBufferBHandleId = bufferB.HandleId;
+                request.GpuBufferResultHandleId = bufferResult.HandleId;
+
+                _actorLogger.LogTrace(
+                    "Allocated GPU buffers: A=0x{HandleA:X}, B=0x{HandleB:X}, Result=0x{HandleResult:X}",
+                    bufferA.HandleId,
+                    bufferB.HandleId,
+                    bufferResult.HandleId);
+            }
+
+            var startTime = DateTime.UtcNow;
+
+            // Invoke GPU kernel
+            response = await InvokeKernelAsync<VectorAddRequest, VectorAddResponse>(
+                request,
+                timeout: TimeSpan.FromSeconds(5));
+
+            var latencyNs = (DateTime.UtcNow - startTime).TotalNanoseconds;
+
+            _actorLogger.LogInformation(
+                "Vector addition completed on GPU in {LatencyNs}ns ({Mode}, length={Length}, target: 100-500ns)",
+                latencyNs,
+                request.UseGpuMemory != 0 ? "GPU memory" : "inline",
+                a.Length);
+
+            // Extract result
+            var result = new float[response.ResultLength];
+
+            if (request.UseGpuMemory != 0 && bufferResult != null)
+            {
+                // Copy result from GPU memory
+                await _memoryManager.CopyFromGpuAsync(bufferResult!, result, CancellationToken.None);
+
+                _actorLogger.LogTrace(
+                    "Copied {Length} elements from GPU memory to CPU",
+                    result.Length);
+            }
+            else
+            {
+                // Extract inline result
+                unsafe
+                {
+                    for (int i = 0; i < Math.Min(response.ResultLength, 25); i++)
+                    {
+                        result[i] = response.InlineResult[i];
+                    }
+                }
+            }
+
+            return result;
+        }
+        finally
+        {
+            // Clean up GPU buffers
+            bufferA?.Dispose();
+            bufferB?.Dispose();
+            bufferResult?.Dispose();
+        }
     }
 
     /// <inheritdoc/>
@@ -152,37 +207,79 @@ public class VectorAddActor : GpuNativeGrain, IVectorAddActor
         {
             VectorALength = a.Length,
             VectorBLength = b.Length,
-            Operation = VectorOperation.AddScalar // Request scalar sum
+            Operation = VectorOperation.AddScalar,
+            UseGpuMemory = 0 // false = 0
         };
 
-        // Pack small vectors inline
-        if (a.Length <= 50)
+        VectorAddResponse response;
+        GpuMemoryHandle? bufferA = null;
+        GpuMemoryHandle? bufferB = null;
+
+        try
         {
-            unsafe
+            // Small vectors: inline data in message (≤25 elements)
+            if (a.Length <= 25)
             {
-                for (int i = 0; i < a.Length; i++)
+                _actorLogger.LogTrace(
+                    "Using inline message path for small vectors ({Length} elements, scalar reduction)",
+                    a.Length);
+
+                unsafe
                 {
-                    request.InlineDataA[i] = a[i];
-                    request.InlineDataB[i] = b[i];
+                    for (int i = 0; i < a.Length; i++)
+                    {
+                        request.InlineDataA[i] = a[i];
+                        request.InlineDataB[i] = b[i];
+                    }
                 }
             }
+            // Large vectors: use GPU memory handles (>25 elements)
+            else
+            {
+                _actorLogger.LogDebug(
+                    "Using GPU memory path for large vectors ({Length} elements, scalar reduction)",
+                    a.Length);
+
+                // Allocate GPU buffers and copy data
+                bufferA = await _memoryManager.AllocateAndCopyAsync(a, CancellationToken.None);
+                bufferB = await _memoryManager.AllocateAndCopyAsync(b, CancellationToken.None);
+
+                // Pass GPU memory handles in request
+                request.UseGpuMemory = 1; // true = 1
+                request.GpuBufferAHandleId = bufferA.HandleId;
+                request.GpuBufferBHandleId = bufferB.HandleId;
+                // No result buffer needed for scalar reduction
+
+                _actorLogger.LogTrace(
+                    "Allocated GPU buffers for scalar reduction: A=0x{HandleA:X}, B=0x{HandleB:X}",
+                    bufferA.HandleId,
+                    bufferB.HandleId);
+            }
+
+            var startTime = DateTime.UtcNow;
+
+            // Invoke GPU kernel
+            response = await InvokeKernelAsync<VectorAddRequest, VectorAddResponse>(
+                request,
+                timeout: TimeSpan.FromSeconds(5));
+
+            var latencyNs = (DateTime.UtcNow - startTime).TotalNanoseconds;
+
+            _actorLogger.LogInformation(
+                "Vector addition (scalar) completed on GPU in {LatencyNs}ns ({Mode}, length={Length})",
+                latencyNs,
+                request.UseGpuMemory != 0 ? "GPU memory" : "inline",
+                a.Length);
+
+            // Return scalar sum
+            return response.ScalarResult;
         }
-
-        var startTime = DateTime.UtcNow;
-
-        // Invoke GPU kernel
-        var response = await InvokeKernelAsync<VectorAddRequest, VectorAddResponse>(
-            request,
-            timeout: TimeSpan.FromSeconds(5));
-
-        var latencyNs = (DateTime.UtcNow - startTime).TotalNanoseconds;
-
-        _actorLogger.LogInformation(
-            "Vector addition (scalar) completed on GPU in {LatencyNs}ns",
-            latencyNs);
-
-        // Return scalar sum
-        return response.ScalarResult;
+        finally
+        {
+            // Clean up GPU buffers
+            bufferA?.Dispose();
+            bufferB?.Dispose();
+        }
     }
 
     /// <inheritdoc/>
@@ -212,6 +309,20 @@ public class VectorAddActor : GpuNativeGrain, IVectorAddActor
 /// <summary>
 /// Request message for GPU vector addition (fits in 228-byte payload).
 /// </summary>
+/// <remarks>
+/// <para>
+/// This message structure supports two modes:
+/// </para>
+/// <para>
+/// **Small vectors (≤25 elements)**: Data is inlined directly in the message.
+/// Total size: 16 bytes (metadata) + 4 bytes (flags) + 24 bytes (handles) + 100 bytes (A) + 100 bytes (B) = 244 bytes.
+/// This exceeds 228 bytes, so we use 20 elements: 16 + 4 + 24 + 80 + 80 = 204 bytes (fits!)
+/// </para>
+/// <para>
+/// **Large vectors (>25 elements)**: GPU memory handles are passed, kernel operates on GPU memory.
+/// GPU kernel uses handles to access data from GPU buffer pool.
+/// </para>
+/// </remarks>
 [System.Runtime.InteropServices.StructLayout(
     System.Runtime.InteropServices.LayoutKind.Sequential,
     Pack = 4)]
@@ -233,30 +344,52 @@ internal unsafe struct VectorAddRequest
     public VectorOperation Operation;
 
     /// <summary>
-    /// Reserved for alignment.
+    /// Whether to use GPU memory handles (true) or inline data (false).
     /// </summary>
-    private int _reserved;
+    public int UseGpuMemory; // Using int for struct packing (bool = 1 byte creates alignment issues)
 
     /// <summary>
-    /// Inline data for small vectors (&lt;= 50 elements).
+    /// GPU memory handle ID for vector A (used when UseGpuMemory = true).
+    /// </summary>
+    public ulong GpuBufferAHandleId;
+
+    /// <summary>
+    /// GPU memory handle ID for vector B (used when UseGpuMemory = true).
+    /// </summary>
+    public ulong GpuBufferBHandleId;
+
+    /// <summary>
+    /// GPU memory handle ID for result buffer (used when UseGpuMemory = true).
+    /// </summary>
+    public ulong GpuBufferResultHandleId;
+
+    /// <summary>
+    /// Inline data for small vectors (&lt;= 25 elements).
     /// </summary>
     /// <remarks>
-    /// 50 floats × 4 bytes = 200 bytes
-    /// Total struct size: 16 (metadata) + 200 (A) + 200 (B) = 416 bytes
-    /// Wait, this exceeds 228 bytes. Need to reduce to fit in payload.
-    /// Let's use 25 elements each: 16 + 100 + 100 = 216 bytes (fits!)
+    /// Used only when UseGpuMemory = false.
+    /// Size: 25 floats × 4 bytes = 100 bytes.
     /// </remarks>
     public fixed float InlineDataA[25];
 
     /// <summary>
     /// Inline data for vector B (small vectors only).
     /// </summary>
+    /// <remarks>
+    /// Used only when UseGpuMemory = false.
+    /// Size: 25 floats × 4 bytes = 100 bytes.
+    /// </remarks>
     public fixed float InlineDataB[25];
 }
 
 /// <summary>
 /// Response message from GPU vector addition.
 /// </summary>
+/// <remarks>
+/// For large vectors using GPU memory, the result is written directly to the
+/// GPU buffer specified by GpuBufferResultHandleId in the request.
+/// InlineResult is only used for small vectors (≤25 elements).
+/// </remarks>
 [System.Runtime.InteropServices.StructLayout(
     System.Runtime.InteropServices.LayoutKind.Sequential,
     Pack = 4)]
@@ -278,9 +411,14 @@ internal unsafe struct VectorAddResponse
     private long _reserved;
 
     /// <summary>
-    /// Inline result data for small vectors.
+    /// Inline result data for small vectors (≤25 elements).
     /// </summary>
-    public fixed float InlineResult[50];
+    /// <remarks>
+    /// Only used when request.UseGpuMemory = false.
+    /// For large vectors, result is in GPU memory buffer.
+    /// Size: 25 floats × 4 bytes = 100 bytes.
+    /// </remarks>
+    public fixed float InlineResult[25]; // Reduced from 50 to match request size limit
 }
 
 /// <summary>

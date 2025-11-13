@@ -95,7 +95,7 @@
 
 **Objective**: Handle large vector operations that exceed inline message capacity
 
-**Implemented (Committed: 6f48c76, 633cf1e)**
+**Implemented (Committed: 6f48c76, 633cf1e, 9c8b97d)**
 
 ✅ **GpuBufferPool.cs** - Power-of-2 bucket-based buffer pool with actual GPU allocation
 - Lock-free buffer management with ConcurrentQueue
@@ -137,6 +137,20 @@
 - **CPU Fallback**: Uses Marshal.AllocHGlobal() when CUDA unavailable
 - **Factory Pattern**: GpuBufferPoolFactory provides Auto/GPU/CPU modes
 - All buffer pool infrastructure is production-ready
+
+**Test Suite (Committed: 9c8b97d):**
+✅ **10/10 Tests Passing** - Comprehensive GPU buffer pool validation
+- Factory creation tests (Auto, GPU mode, CPU fallback)
+- Buffer rent/return lifecycle verification
+- GPU unified memory allocation tests (with CUDA hardware detection)
+- Pool hit rate tracking and statistics
+- Reference counting mechanism
+- Memory manager copy operations (CPU↔GPU round-trip)
+- Memory pressure detection
+- Pool clearing and cleanup
+
+All tests use `[SkippableFact]` to gracefully skip when CUDA hardware is unavailable,
+enabling development and testing on non-GPU systems.
 
 **Performance Characteristics:**
 - Pooled allocation: ~100-500ns (vs ~10-50μs for cold allocation)
@@ -308,6 +322,7 @@ Time Elapsed 00:00:54.01
 3. **6f48c76**: Phase 4 GPU Memory Management with DotCompute integration (CPU fallback)
 4. **92faf64**: Documentation update for Phase 4 completion
 5. **633cf1e**: Phase 4 GPU Memory Management with actual CUDA unified memory
+6. **9c8b97d**: GPU buffer pool disposal lifecycle fixes and comprehensive test suite (10/10 passing)
 
 ---
 

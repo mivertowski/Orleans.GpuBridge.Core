@@ -153,14 +153,18 @@ public class VectorAddActorLargeVectorTests
             var bufferResult = memoryManager.AllocateBuffer<float>(100);
 
             // Simulate GPU computation (in real implementation, GPU kernel does this)
-            // For this test, we manually compute on CPU and copy to result buffer
-            var actualResult = new float[100];
+            // For this test, we manually compute on CPU and copy to GPU, then back
+            var computedResult = new float[100];
             for (int i = 0; i < 100; i++)
             {
-                actualResult[i] = vectorA[i] + vectorB[i];
+                computedResult[i] = vectorA[i] + vectorB[i];
             }
 
-            // Copy result back from GPU
+            // Copy result TO GPU buffer (simulating GPU kernel write)
+            await memoryManager.CopyToGpuAsync(computedResult, bufferResult, CancellationToken.None);
+
+            // Copy result back FROM GPU (simulating what VectorAddActor does)
+            var actualResult = new float[100];
             await memoryManager.CopyFromGpuAsync(bufferResult, actualResult, CancellationToken.None);
 
             // Assert

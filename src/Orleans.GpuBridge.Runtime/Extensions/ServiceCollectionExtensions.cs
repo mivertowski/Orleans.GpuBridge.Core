@@ -101,11 +101,15 @@ public static class ServiceCollectionExtensions
             return new CudaRingKernelCompiler(logger);
         });
 
+        // Register DotCompute message queue registry (required for named queues)
+        services.TryAddSingleton<DotCompute.Core.Messaging.MessageQueueRegistry>();
+
         services.TryAddSingleton<CudaRingKernelRuntime>(sp =>
         {
             var logger = sp.GetRequiredService<ILogger<CudaRingKernelRuntime>>();
             var compiler = sp.GetRequiredService<CudaRingKernelCompiler>();
-            return new CudaRingKernelRuntime(logger, compiler);
+            var registry = sp.GetRequiredService<DotCompute.Core.Messaging.MessageQueueRegistry>();
+            return new CudaRingKernelRuntime(logger, compiler, registry);
         });
 
         // Register Orleans integration wrapper

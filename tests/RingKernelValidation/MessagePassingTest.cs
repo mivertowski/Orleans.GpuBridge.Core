@@ -51,6 +51,18 @@ public static class MessagePassingTest
             logger.LogInformation("✓ Kernel activated");
             Console.WriteLine();
 
+            // Step 4.5: Query actual message queue names (generated with GUIDs)
+            logger.LogInformation("Step 4.5: Querying message queue names...");
+            var queueNames = await runtime.ListNamedMessageQueuesAsync();
+            var inputQueueName = queueNames.FirstOrDefault(q => q.Contains("VectorAddRequestMessage"))
+                ?? throw new InvalidOperationException("Input queue not found");
+            var outputQueueName = queueNames.FirstOrDefault(q => q.Contains("VectorAddResponseMessage"))
+                ?? throw new InvalidOperationException("Output queue not found");
+            logger.LogInformation($"  Input queue: {inputQueueName}");
+            logger.LogInformation($"  Output queue: {outputQueueName}");
+            logger.LogInformation("✓ Queue names resolved");
+            Console.WriteLine();
+
             // Step 2: Prepare test vectors
             logger.LogInformation("Step 5: Preparing test vectors...");
             var testCases = new[]
@@ -76,44 +88,37 @@ public static class MessagePassingTest
             {
                 logger.LogInformation($"Test: {name}");
 
-                // Create VectorAddRequest
-                var request = new VectorAddRequest
+                // Create VectorAddRequestMessage (IRingKernelMessage implementation)
+                var request = new VectorAddRequestMessage
                 {
+                    MessageId = Guid.NewGuid(),
+                    Priority = 128,  // Normal priority
                     VectorALength = size,
                     Operation = VectorOperation.Add,
-                    UseGpuMemory = size > 25 ? 1 : 0,
+                    UseGpuMemory = size > 25,
                     GpuBufferAHandleId = 0,
                     GpuBufferBHandleId = 0,
-                    GpuBufferResultHandleId = 0
+                    GpuBufferResultHandleId = 0,
+                    InlineDataA = a.Take(Math.Min(size, 25)).ToArray(),  // Direct array assignment (managed memory)
+                    InlineDataB = b.Take(Math.Min(size, 25)).ToArray()   // No unsafe blocks needed
                 };
-
-                // Copy inline data using unsafe fixed buffers
-                unsafe
-                {
-                    int copyCount = Math.Min(size, 25);
-                    for (int i = 0; i < copyCount; i++)
-                    {
-                        request.InlineDataA[i] = a[i];
-                        request.InlineDataB[i] = b[i];
-                    }
-                }
 
                 // Calculate expected result
                 var expected = a.Zip(b, (x, y) => x + y).ToArray();
 
-                // Create kernel message
-                var message = KernelMessage<VectorAddRequest>.Create(
-                    senderId: 0,      // Host sender ID
-                    receiverId: 1,    // Kernel instance ID
-                    type: MessageType.Data,
-                    payload: request
-                );
-
-                // Send message
-                logger.LogInformation($"  Sending request (size={size}, inline={request.UseGpuMemory == 0})...");
+                // Send message using named message queue API
+                logger.LogInformation($"  Sending request (size={size}, inline={!request.UseGpuMemory})...");
                 var sendStart = DateTime.UtcNow;
 
-                await runtime.SendMessageAsync("VectorAddProcessor", message, CancellationToken.None);
+                // Send directly to named queue (no KernelMessage wrapper needed)
+                var sent = await runtime.SendToNamedQueueAsync(inputQueueName, request, CancellationToken.None);
+
+                if (!sent)
+                {
+                    logger.LogError($"  ✗ Failed to send message to queue!");
+                    Console.WriteLine($"  ✗ FAILED: Message send failed");
+                    continue;
+                }
 
                 var sendDuration = (DateTime.UtcNow - sendStart).TotalMicroseconds;
                 logger.LogInformation($"  ✓ Message sent in {sendDuration:F2}μs");
@@ -122,13 +127,22 @@ public static class MessagePassingTest
                 logger.LogInformation($"  Waiting for response...");
                 var receiveStart = DateTime.UtcNow;
 
-                var response = await runtime.ReceiveMessageAsync<VectorAddResponse>(
-                    "VectorAddProcessor",
-                    timeout: TimeSpan.FromSeconds(5),
-                    cancellationToken: CancellationToken.None
-                );
+                // Receive directly from named queue
+                VectorAddResponseMessage? responseMsg = null;
+                var timeoutEnd = DateTime.UtcNow.AddSeconds(5);
+                while (DateTime.UtcNow < timeoutEnd)
+                {
+                    responseMsg = await runtime.ReceiveFromNamedQueueAsync<VectorAddResponseMessage>(
+                        outputQueueName,
+                        cancellationToken: CancellationToken.None);
 
-                if (response == null)
+                    if (responseMsg != null)
+                        break;
+
+                    await Task.Delay(10); // Small delay before retry
+                }
+
+                if (responseMsg == null)
                 {
                     logger.LogError($"  ✗ Timeout waiting for response!");
                     Console.WriteLine($"  ✗ FAILED: Timeout");
@@ -140,19 +154,8 @@ public static class MessagePassingTest
 
                 logger.LogInformation($"  ✓ Response received in {receiveDuration:F2}μs (total: {totalLatency:F2}μs)");
 
-                // Validate result - extract from fixed buffer
-                var result = response.Value.Payload;
-                float[] actualResult;
-                unsafe
-                {
-                    int resultCount = Math.Min(size, 25);
-                    actualResult = new float[resultCount];
-                    for (int i = 0; i < resultCount; i++)
-                    {
-                        actualResult[i] = result.InlineResult[i];
-                    }
-                }
-
+                // Validate result - direct array access (no unsafe needed)
+                var actualResult = responseMsg.InlineResult.Take(Math.Min(size, 25)).ToArray();
                 var expectedResult = expected.Take(Math.Min(size, 25)).ToArray();
 
                 bool isCorrect = actualResult.Zip(expectedResult, (a, e) => Math.Abs(a - e) < 0.001f).All(x => x);

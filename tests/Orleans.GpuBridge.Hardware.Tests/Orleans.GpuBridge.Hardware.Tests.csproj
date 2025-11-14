@@ -21,21 +21,14 @@
     <PackageReference Include="Xunit.SkippableFact" Version="1.4.13" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.10" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.10" />
-    <!-- Fix version conflict with Orleans -->
-    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.5.0" />
+    <!-- Fix version conflict with DotCompute (requires 4.14.0) -->
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.14.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Orleans.GpuBridge.Abstractions\Orleans.GpuBridge.Abstractions.csproj" />
     <ProjectReference Include="..\..\src\Orleans.GpuBridge.Runtime\Orleans.GpuBridge.Runtime.csproj" />
     <ProjectReference Include="..\..\src\Orleans.GpuBridge.Grains\Orleans.GpuBridge.Grains.csproj" />
-    <!-- Temporarily commented out until DotCompute backend compilation errors are fixed -->
-    <!-- <ProjectReference Include="..\..\src\Orleans.GpuBridge.Backends.DotCompute\Orleans.GpuBridge.Backends.DotCompute.csproj" /> -->
-  </ItemGroup>
-
-  <!-- DotCompute NuGet packages from official NuGet.org feed -->
-  <ItemGroup>
-    <PackageReference Include="DotCompute.Backends.CUDA" Version="0.4.2-rc2" />
-    <PackageReference Include="DotCompute.Core" Version="0.4.2-rc2" />
+    <ProjectReference Include="..\..\src\Orleans.GpuBridge.Backends.DotCompute\Orleans.GpuBridge.Backends.DotCompute.csproj" />
   </ItemGroup>
 </Project>

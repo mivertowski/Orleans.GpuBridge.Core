@@ -123,7 +123,7 @@ public abstract class GpuNativeGrain : Grain, IGrainWithIntegerKey, IAsyncDispos
         {
             // Launch persistent ring kernel
             var launchStart = DateTime.UtcNow;
-            await _runtime.LaunchAsync(_kernelId, gridSize, blockSize, cancellationToken);
+            await _runtime.LaunchAsync(_kernelId, gridSize, blockSize, options: null, cancellationToken);
             var launchDuration = DateTime.UtcNow - launchStart;
 
             _isKernelLaunched = true;

@@ -12,7 +12,8 @@
     <!-- DC* warnings are performance/optimization suggestions, not errors -->
     <!-- CS8669: Source generator doesn't emit #nullable directive (known DotCompute generator issue) -->
     <!-- CS1591: Source generator doesn't create XML comments for generated code -->
-    <NoWarn>$(NoWarn);CS8669;CS1591;DC002;DC004;DC005;DC009;DC010;DC011;DC0004;DC0005</NoWarn>
+    <!-- IL2095: DotCompute message queue AOT trim analysis - will be fixed in DotCompute source -->
+    <NoWarn>$(NoWarn);CS8669;CS1591;DC002;DC004;DC005;DC009;DC010;DC011;DC0004;DC0005;IL2095</NoWarn>
   </PropertyGroup>
 
   <!-- Expose internal types to test assembly -->
@@ -42,23 +43,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- DotCompute Framework v0.5.0-alpha - Bug Fix Release -->
-    <!-- Release Date: November 2025 -->
-    <!-- Fixes: CUDA LibraryImport EntryPoint bug, Code generation API mismatches, Logger type issues -->
-    <!-- Features: Timing API, Ring Kernels, Barriers, Memory Ordering, [Kernel]/[RingKernel] attributes -->
+    <!-- DotCompute Framework v0.5.0-alpha with Message Queue Support (Local Build) -->
+    <!-- Release Date: November 14, 2025 -->
+    <!-- NEW: IRingKernelMessage interface, IMessageQueue<T>, Named message queues -->
+    <!-- Features: Message queues, Timing API, Ring Kernels, Barriers, Memory Ordering -->
 
-    <!-- Backend Targets -->
-    <PackageReference Include="DotCompute.Abstractions" Version="0.5.0-alpha" />
-    <PackageReference Include="DotCompute.Backends.CUDA" Version="0.5.0-alpha" />
-    <PackageReference Include="DotCompute.Backends.OpenCL" Version="0.5.0-alpha" />
-    <PackageReference Include="DotCompute.Backends.CPU" Version="0.5.0-alpha" />
-    <PackageReference Include="DotCompute.Backends.Metal" Version="0.5.0-alpha" Condition="$([MSBuild]::IsOSPlatform('OSX'))" />
-    <PackageReference Include="DotCompute.Core" Version="0.5.0-alpha" />
-    <PackageReference Include="DotCompute.Runtime" Version="0.5.0-alpha" />
+    <!-- Use local DotCompute project references for message queue features -->
+    <ProjectReference Include="/home/mivertowski/DotCompute/DotCompute/src/Core/DotCompute.Abstractions/DotCompute.Abstractions.csproj" />
+    <ProjectReference Include="/home/mivertowski/DotCompute/DotCompute/src/Core/DotCompute.Core/DotCompute.Core.csproj" />
+    <ProjectReference Include="/home/mivertowski/DotCompute/DotCompute/src/Runtime/DotCompute.Runtime/DotCompute.Runtime.csproj" />
+    <ProjectReference Include="/home/mivertowski/DotCompute/DotCompute/src/Backends/DotCompute.Backends.CPU/DotCompute.Backends.CPU.csproj" />
+    <ProjectReference Include="/home/mivertowski/DotCompute/DotCompute/src/Backends/DotCompute.Backends.CUDA/DotCompute.Backends.CUDA.csproj" />
 
-    <!-- DotCompute Source Generators - RE-ENABLED in v0.5.0-alpha -->
-    <!-- v0.5.0-alpha fixes: LibraryImport EntryPoint bug, API publication, Logger types -->
-    <PackageReference Include="DotCompute.Generators" Version="0.5.0-alpha" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
+    <!-- DotCompute Source Generators -->
+    <ProjectReference Include="/home/mivertowski/DotCompute/DotCompute/src/Runtime/DotCompute.Generators/DotCompute.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
 
     <!-- Orleans Dependencies -->
     <PackageReference Include="Microsoft.Orleans.Core" Version="9.2.1" />

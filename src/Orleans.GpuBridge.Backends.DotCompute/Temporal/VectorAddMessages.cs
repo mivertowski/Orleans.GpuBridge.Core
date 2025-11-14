@@ -1,115 +1,69 @@
 // Copyright (c) 2025 Michael Ivertowski
 // Licensed under the MIT License.
 
-using System.Runtime.InteropServices;
+using System;
+using DotCompute.Abstractions.Messaging;
+using MemoryPack;
 
 namespace Orleans.GpuBridge.Backends.DotCompute.Temporal;
 
 /// <summary>
-/// Vector addition operation type.
+/// Vector operation types supported by vector add kernel.
 /// </summary>
 public enum VectorOperation
 {
-    /// <summary>
-    /// Element-wise vector addition.
-    /// </summary>
+    /// <summary>Element-wise addition: result[i] = a[i] + b[i]</summary>
     Add = 0,
-
-    /// <summary>
-    /// Scalar reduction (sum all elements).
-    /// </summary>
-    AddScalar = 1
+    /// <summary>Element-wise subtraction: result[i] = a[i] - b[i]</summary>
+    Subtract = 1,
+    /// <summary>Element-wise multiplication: result[i] = a[i] * b[i]</summary>
+    Multiply = 2,
+    /// <summary>Element-wise division: result[i] = a[i] / b[i]</summary>
+    Divide = 3
 }
 
 /// <summary>
 /// Request message for vector addition ring kernel.
 /// </summary>
 /// <remarks>
-/// <para>
-/// <strong>NOTE: TEMPORARY PLACEHOLDER</strong>
-/// </para>
-/// <para>
-/// This type is a placeholder until DotCompute.Generators source generator can be used
-/// (requires .NET SDK 9.0.300+ with Roslyn 4.14.0). Once the SDK is upgraded, this will
-/// be replaced by auto-generated code from the [RingKernel] attribute.
-/// </para>
-/// <para>
-/// Message layout: 228 bytes total
-/// - Inline data path: 2 × 25 floats (200 bytes) + metadata (28 bytes)
-/// - GPU memory path: 3 × 8-byte handles (24 bytes) + metadata (28 bytes)
-/// </para>
+/// MemoryPack source generator auto-generates high-performance serialization
+/// for this message type (2-5x faster than MessagePack, AOT-compatible).
 /// </remarks>
-[StructLayout(LayoutKind.Sequential)]
-public unsafe struct VectorAddRequest
+[MemoryPackable]
+public partial class VectorAddRequestMessage : IRingKernelMessage
 {
-    /// <summary>
-    /// Length of vector A (and B).
-    /// </summary>
-    public int VectorALength;
+    // IRingKernelMessage core properties
+    public Guid MessageId { get; set; } = Guid.NewGuid();
+    public byte Priority { get; set; } = 128;
+    public Guid? CorrelationId { get; set; }
 
-    /// <summary>
-    /// Operation type (Add or AddScalar).
-    /// </summary>
-    public VectorOperation Operation;
-
-    /// <summary>
-    /// 1 = use GPU memory handles, 0 = use inline data.
-    /// </summary>
-    public int UseGpuMemory;
-
-    /// <summary>
-    /// GPU buffer handle for vector A (when UseGpuMemory = 1).
-    /// </summary>
-    public ulong GpuBufferAHandleId;
-
-    /// <summary>
-    /// GPU buffer handle for vector B (when UseGpuMemory = 1).
-    /// </summary>
-    public ulong GpuBufferBHandleId;
-
-    /// <summary>
-    /// GPU buffer handle for result vector (when UseGpuMemory = 1).
-    /// </summary>
-    public ulong GpuBufferResultHandleId;
-
-    /// <summary>
-    /// Inline data for vector A (max 25 elements).
-    /// </summary>
-    public fixed float InlineDataA[25];
-
-    /// <summary>
-    /// Inline data for vector B (max 25 elements).
-    /// </summary>
-    public fixed float InlineDataB[25];
+    // Application data
+    public int VectorALength { get; set; }
+    public VectorOperation Operation { get; set; } = VectorOperation.Add;
+    public bool UseGpuMemory { get; set; }
+    public ulong GpuBufferAHandleId { get; set; }
+    public ulong GpuBufferBHandleId { get; set; }
+    public ulong GpuBufferResultHandleId { get; set; }
+    public float[] InlineDataA { get; set; } = Array.Empty<float>();
+    public float[] InlineDataB { get; set; } = Array.Empty<float>();
 }
 
 /// <summary>
 /// Response message from vector addition ring kernel.
 /// </summary>
-/// <remarks>
-/// <para>
-/// <strong>NOTE: TEMPORARY PLACEHOLDER</strong>
-/// </para>
-/// <para>
-/// This type is a placeholder until DotCompute.Generators source generator can be used.
-/// Will be replaced by auto-generated code from the [RingKernel] attribute.
-/// </para>
-/// </remarks>
-[StructLayout(LayoutKind.Sequential)]
-public unsafe struct VectorAddResponse
+[MemoryPackable]
+public partial class VectorAddResponseMessage : IRingKernelMessage
 {
-    /// <summary>
-    /// Scalar result (when Operation = AddScalar).
-    /// </summary>
-    public float ScalarResult;
+    // IRingKernelMessage core properties
+    public Guid MessageId { get; set; } = Guid.NewGuid();
+    public byte Priority { get; set; } = 128;
+    public Guid? CorrelationId { get; set; }
 
-    /// <summary>
-    /// Length of result vector (0 for scalar results).
-    /// </summary>
-    public int ResultLength;
-
-    /// <summary>
-    /// Inline result data (max 25 elements).
-    /// </summary>
-    public fixed float InlineResult[25];
+    // Application data
+    public bool Success { get; set; }
+    public string? ErrorMessage { get; set; }
+    public int ProcessedElements { get; set; }
+    public ulong GpuResultBufferHandleId { get; set; }
+    public float[] InlineResult { get; set; } = Array.Empty<float>();
+    public long ProcessingTimeNs { get; set; }
 }

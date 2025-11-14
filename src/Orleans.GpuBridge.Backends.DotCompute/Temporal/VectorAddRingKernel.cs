@@ -50,8 +50,8 @@ public static class VectorAddRingKernel
         Backends = KernelBackends.CUDA | KernelBackends.OpenCL)]
     public static void VectorAddProcessorRing(
         Span<long> timestamps,                      // GPU timestamps
-        Span<VectorAddRequest> requestQueue,        // Input message queue
-        Span<VectorAddResponse> responseQueue,      // Output message queue
+        Span<VectorAddRequestMessage> requestQueue,        // Input message queue
+        Span<VectorAddResponseMessage> responseQueue,      // Output message queue
         Span<int> requestHead,                      // Producer index
         Span<int> requestTail,                      // Consumer index
         Span<int> responseHead,                     // Response producer
@@ -74,15 +74,15 @@ public static class VectorAddRingKernel
             {
                 // Message available - dequeue request
                 int requestIndex = tail % requestQueue.Length;
-                VectorAddRequest request = requestQueue[requestIndex];
+                VectorAddRequestMessage request = requestQueue[requestIndex];
 
                 // Get GPU timestamp
                 long gpuTime = timestamps[actorId];
 
                 // Process vector addition based on mode
-                VectorAddResponse response;
+                VectorAddResponseMessage response;
 
-                if (request.UseGpuMemory == 0)
+                if (!request.UseGpuMemory)
                 {
                     // Small vectors (≤25 elements): Inline data path
                     response = ProcessInlineVectorAddition(request);
@@ -122,36 +122,29 @@ public static class VectorAddRingKernel
     /// Data is embedded directly in the message payload.
     /// This is the fastest path: pure GPU register/cache operations.
     /// </remarks>
-    private static unsafe VectorAddResponse ProcessInlineVectorAddition(VectorAddRequest request)
+    private static unsafe VectorAddResponseMessage ProcessInlineVectorAddition(VectorAddRequestMessage request)
     {
-        var response = new VectorAddResponse();
+        var response = new VectorAddResponseMessage();
         int length = request.VectorALength;
 
-        if (request.Operation == VectorOperation.AddScalar)
-        {
-            // Scalar reduction: sum all elements
-            float sum = 0.0f;
-            for (int i = 0; i < length; i++)
-            {
-                float a = request.InlineDataA[i];
-                float b = request.InlineDataB[i];
-                sum += (a + b);
-            }
+        // Element-wise vector operation
+        response.ProcessedElements = length;
+        response.Success = true;
 
-            response.ScalarResult = sum;
-            response.ResultLength = 0; // Scalar result, no vector
-        }
-        else // VectorOperation.Add
+        // Perform operation based on type
+        for (int i = 0; i < length && i < 25; i++)
         {
-            // Element-wise addition
-            response.ResultLength = length;
+            float a = request.InlineDataA[i];
+            float b = request.InlineDataB[i];
 
-            for (int i = 0; i < length && i < 25; i++)
+            response.InlineResult[i] = request.Operation switch
             {
-                float a = request.InlineDataA[i];
-                float b = request.InlineDataB[i];
-                response.InlineResult[i] = a + b;
-            }
+                VectorOperation.Add => a + b,
+                VectorOperation.Subtract => a - b,
+                VectorOperation.Multiply => a * b,
+                VectorOperation.Divide => a / b,
+                _ => a + b // Default to addition
+            };
         }
 
         return response;
@@ -171,12 +164,12 @@ public static class VectorAddRingKernel
     /// Performance: True zero-copy, data never leaves GPU memory.
     /// </para>
     /// </remarks>
-    private static unsafe VectorAddResponse ProcessGpuMemoryVectorAddition(
-        VectorAddRequest request,
+    private static unsafe VectorAddResponseMessage ProcessGpuMemoryVectorAddition(
+        VectorAddRequestMessage request,
         Span<float> gpuBufferPool,
         Span<ulong> gpuBufferHandles)
     {
-        var response = new VectorAddResponse();
+        var response = new VectorAddResponseMessage();
         int length = request.VectorALength;
 
         // Lookup GPU buffer offsets from handles
@@ -191,33 +184,26 @@ public static class VectorAddRingKernel
         int offsetB = (int)(handleB % (ulong)gpuBufferPool.Length);
         int offsetResult = (int)(handleResult % (ulong)gpuBufferPool.Length);
 
-        if (request.Operation == VectorOperation.AddScalar)
-        {
-            // Scalar reduction from GPU memory
-            float sum = 0.0f;
-            for (int i = 0; i < length; i++)
-            {
-                float a = gpuBufferPool[offsetA + i];
-                float b = gpuBufferPool[offsetB + i];
-                sum += (a + b);
-            }
+        // Element-wise vector operation in GPU memory (zero-copy!)
+        response.ProcessedElements = length;
+        response.Success = true;
+        response.GpuResultBufferHandleId = handleResult;
 
-            response.ScalarResult = sum;
-            response.ResultLength = 0;
-        }
-        else // VectorOperation.Add
+        // Parallel vector operation on GPU
+        // In production, this would be massively parallel across GPU cores
+        for (int i = 0; i < length; i++)
         {
-            // Element-wise addition in GPU memory (zero-copy!)
-            response.ResultLength = length;
+            float a = gpuBufferPool[offsetA + i];
+            float b = gpuBufferPool[offsetB + i];
 
-            // Parallel vector addition on GPU
-            // In production, this would be massively parallel across GPU cores
-            for (int i = 0; i < length; i++)
+            gpuBufferPool[offsetResult + i] = request.Operation switch
             {
-                float a = gpuBufferPool[offsetA + i];
-                float b = gpuBufferPool[offsetB + i];
-                gpuBufferPool[offsetResult + i] = a + b;
-            }
+                VectorOperation.Add => a + b,
+                VectorOperation.Subtract => a - b,
+                VectorOperation.Multiply => a * b,
+                VectorOperation.Divide => a / b,
+                _ => a + b // Default to addition
+            };
         }
 
         return response;

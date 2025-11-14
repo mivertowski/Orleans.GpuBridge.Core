@@ -5,6 +5,8 @@ using DotCompute.Abstractions.RingKernels;
 using DotCompute.Backends.CUDA.RingKernels;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions.Temporal;
+using MessageQueueOptions = DotCompute.Abstractions.Messaging.MessageQueueOptions;
+using IRingKernelMessage = DotCompute.Abstractions.Messaging.IRingKernelMessage;
 
 namespace Orleans.GpuBridge.Runtime.RingKernels;
 
@@ -56,6 +58,7 @@ public sealed class DotComputeRingKernelRuntime : IRingKernelRuntime
         string kernelId,
         int gridSize,
         int blockSize,
+        RingKernelLaunchOptions? options = null,
         CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(kernelId);
@@ -71,7 +74,7 @@ public sealed class DotComputeRingKernelRuntime : IRingKernelRuntime
         try
         {
             // Delegate to CUDA runtime for actual GPU kernel launch
-            await _cudaRuntime.LaunchAsync(kernelId, gridSize, blockSize, cancellationToken);
+            await _cudaRuntime.LaunchAsync(kernelId, gridSize, blockSize, options, cancellationToken);
 
             var launchDuration = DateTime.UtcNow - launchStart;
 
@@ -326,7 +329,7 @@ public sealed class DotComputeRingKernelRuntime : IRingKernelRuntime
     }
 
     /// <inheritdoc/>
-    public async Task<IMessageQueue<T>> CreateMessageQueueAsync<T>(
+    public Task<IMessageQueue<T>> CreateMessageQueueAsync<T>(
         int capacity,
         CancellationToken cancellationToken = default)
         where T : unmanaged
@@ -334,7 +337,7 @@ public sealed class DotComputeRingKernelRuntime : IRingKernelRuntime
         try
         {
             // Delegate to CUDA runtime for GPU memory allocation
-            var queue = await _cudaRuntime.CreateMessageQueueAsync<T>(capacity, cancellationToken);
+            var queue = _cudaRuntime.CreateMessageQueueAsync<T>(capacity, cancellationToken);
 
             _logger.LogDebug(
                 "Created message queue for type '{TypeName}' with capacity {Capacity}",
@@ -348,6 +351,237 @@ public sealed class DotComputeRingKernelRuntime : IRingKernelRuntime
             _logger.LogError(ex,
                 "Failed to create message queue for type '{TypeName}'",
                 typeof(T).Name);
+            throw;
+        }
+    }
+
+    /// <inheritdoc/>
+    public Task<DotCompute.Abstractions.Messaging.IMessageQueue<T>> CreateNamedMessageQueueAsync<[System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembers(System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] T>(
+        string queueName,
+        MessageQueueOptions options,
+        CancellationToken cancellationToken = default)
+        where T : IRingKernelMessage
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(queueName);
+
+        try
+        {
+            var queue = _cudaRuntime.CreateNamedMessageQueueAsync<T>(queueName, options, cancellationToken);
+
+            _logger.LogDebug(
+                "Created named message queue '{QueueName}' for type '{TypeName}' with capacity {Capacity}",
+                queueName,
+                typeof(T).Name,
+                options.Capacity);
+
+            return queue;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex,
+                "Failed to create named message queue '{QueueName}' for type '{TypeName}'",
+                queueName,
+                typeof(T).Name);
+            throw;
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task<DotCompute.Abstractions.Messaging.IMessageQueue<T>?> GetNamedMessageQueueAsync<T>(
+        string queueName,
+        CancellationToken cancellationToken = default)
+        where T : IRingKernelMessage
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(queueName);
+
+        try
+        {
+            var queue = await _cudaRuntime.GetNamedMessageQueueAsync<T>(queueName, cancellationToken);
+
+            _logger.LogTrace("Retrieved named message queue '{QueueName}'", queueName);
+
+            return queue;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex,
+                "Failed to get named message queue '{QueueName}'",
+                queueName);
+            throw;
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task<bool> SendToNamedQueueAsync<T>(
+        string queueName,
+        T message,
+        CancellationToken cancellationToken = default)
+        where T : IRingKernelMessage
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(queueName);
+
+        try
+        {
+            var result = await _cudaRuntime.SendToNamedQueueAsync(queueName, message, cancellationToken);
+
+            _logger.LogTrace("Sent message to named queue '{QueueName}'", queueName);
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex,
+                "Failed to send message to named queue '{QueueName}'",
+                queueName);
+            throw;
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task<T?> ReceiveFromNamedQueueAsync<T>(
+        string queueName,
+        CancellationToken cancellationToken = default)
+        where T : IRingKernelMessage
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(queueName);
+
+        try
+        {
+            var message = await _cudaRuntime.ReceiveFromNamedQueueAsync<T>(queueName, cancellationToken);
+
+            if (message != null)
+            {
+                _logger.LogTrace("Received message from named queue '{QueueName}'", queueName);
+            }
+
+            return message;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex,
+                "Failed to receive message from named queue '{QueueName}'",
+                queueName);
+            throw;
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task<bool> DestroyNamedMessageQueueAsync(
+        string queueName,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(queueName);
+
+        try
+        {
+            var result = await _cudaRuntime.DestroyNamedMessageQueueAsync(queueName, cancellationToken);
+
+            _logger.LogDebug("Destroyed named message queue '{QueueName}'", queueName);
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex,
+                "Failed to destroy named message queue '{QueueName}'",
+                queueName);
+            throw;
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task<IReadOnlyCollection<string>> ListNamedMessageQueuesAsync(
+        CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var queues = await _cudaRuntime.ListNamedMessageQueuesAsync(cancellationToken);
+
+            _logger.LogTrace("Listed {QueueCount} named message queues", queues.Count);
+
+            return queues;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to list named message queues");
+            throw;
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task<RingKernelTelemetry> GetTelemetryAsync(
+        string kernelId,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(kernelId);
+
+        try
+        {
+            var telemetry = await _cudaRuntime.GetTelemetryAsync(kernelId, cancellationToken);
+
+            _logger.LogTrace(
+                "Retrieved telemetry for ring kernel '{KernelId}': {MessagesProcessed} messages processed",
+                kernelId,
+                telemetry.MessagesProcessed);
+
+            return telemetry;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex,
+                "Failed to get telemetry for ring kernel '{KernelId}'",
+                kernelId);
+            throw;
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task SetTelemetryEnabledAsync(
+        string kernelId,
+        bool enabled,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(kernelId);
+
+        try
+        {
+            await _cudaRuntime.SetTelemetryEnabledAsync(kernelId, enabled, cancellationToken);
+
+            _logger.LogInformation(
+                "{Action} telemetry for ring kernel '{KernelId}'",
+                enabled ? "Enabled" : "Disabled",
+                kernelId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex,
+                "Failed to set telemetry enabled={Enabled} for ring kernel '{KernelId}'",
+                enabled,
+                kernelId);
+            throw;
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task ResetTelemetryAsync(
+        string kernelId,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(kernelId);
+
+        try
+        {
+            await _cudaRuntime.ResetTelemetryAsync(kernelId, cancellationToken);
+
+            _logger.LogInformation(
+                "Reset telemetry counters for ring kernel '{KernelId}'",
+                kernelId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex,
+                "Failed to reset telemetry for ring kernel '{KernelId}'",
+                kernelId);
             throw;
         }
     }

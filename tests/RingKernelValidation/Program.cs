@@ -44,8 +44,21 @@ class Program
         var runAll = args.Length > 0 && args[0].Equals("all", StringComparison.OrdinalIgnoreCase);
         var runMessage = args.Length > 0 && args[0].Equals("message", StringComparison.OrdinalIgnoreCase);
         var runMessageCuda = args.Length > 0 && args[0].Equals("message-cuda", StringComparison.OrdinalIgnoreCase);
+        var runProfile = args.Length > 0 && args[0].Equals("profile", StringComparison.OrdinalIgnoreCase);
 
-        // Message passing tests
+        // GPU profiling test
+        if (runProfile)
+        {
+            int duration = 5; // Default 5 seconds
+            if (args.Length > 1 && int.TryParse(args[1], out var parsedDuration))
+            {
+                duration = parsedDuration;
+            }
+            var profileResult = await GpuProfilingTest.RunAsync(loggerFactory, duration);
+            return profileResult;
+        }
+
+        // Message passing tests - RE-ENABLED (DotCompute SDK updated with message queue support)
         if (runMessage || runMessageCuda)
         {
             var backend = runMessageCuda ? "CUDA" : "CPU";
@@ -142,11 +155,16 @@ class Program
             Console.WriteLine("  7. Termination (cleanup)");
             Console.WriteLine();
             Console.WriteLine("Available Tests:");
-            Console.WriteLine("  dotnet run                  # CPU lifecycle test (this test)");
-            Console.WriteLine("  dotnet run -- cuda          # CUDA/GPU lifecycle test");
-            Console.WriteLine("  dotnet run -- message       # Message passing test (CPU)");
-            Console.WriteLine("  dotnet run -- message-cuda  # Message passing test (CUDA/GPU)");
-            Console.WriteLine("  dotnet run -- all           # Run all lifecycle tests");
+            Console.WriteLine("  dotnet run                      # CPU lifecycle test (this test)");
+            Console.WriteLine("  dotnet run -- cuda              # CUDA/GPU lifecycle test");
+            Console.WriteLine("  dotnet run -- profile [secs]    # GPU profiling test (default: 5s)");
+            Console.WriteLine("  dotnet run -- message           # Message passing test (CPU)");
+            Console.WriteLine("  dotnet run -- message-cuda      # Message passing test (CUDA/GPU)");
+            Console.WriteLine("  dotnet run -- all               # Run all lifecycle tests");
+            Console.WriteLine();
+            Console.WriteLine("GPU Profiling Commands:");
+            Console.WriteLine("  ncu --set full dotnet run -- profile        # Nsight Compute (detailed metrics)");
+            Console.WriteLine("  nsys profile -t cuda dotnet run -- profile  # Nsight Systems (timeline)");
             Console.WriteLine();
 
             return 0; // Success

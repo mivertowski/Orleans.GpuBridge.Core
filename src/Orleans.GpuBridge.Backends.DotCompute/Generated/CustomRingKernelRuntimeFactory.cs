@@ -4,6 +4,7 @@
 using DotCompute.Abstractions.RingKernels;
 using DotCompute.Backends.CPU.RingKernels;
 using DotCompute.Backends.CUDA.RingKernels;
+using DotCompute.Core.Messaging;
 using Microsoft.Extensions.Logging;
 
 namespace Orleans.GpuBridge.Backends.DotCompute.Generated;
@@ -49,6 +50,7 @@ public static class CustomRingKernelRuntimeFactory
         var runtimeLogger = loggerFactory?.CreateLogger<CudaRingKernelRuntime>();
         var compilerLogger = loggerFactory?.CreateLogger<CudaRingKernelCompiler>();
         var compiler = new CudaRingKernelCompiler(compilerLogger!);
-        return new CudaRingKernelRuntime(runtimeLogger!, compiler);
+        var registry = new MessageQueueRegistry();
+        return new CudaRingKernelRuntime(runtimeLogger!, compiler, registry);
     }
 }

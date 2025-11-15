@@ -51,13 +51,11 @@ public static class MessagePassingTest
             logger.LogInformation("✓ Kernel activated");
             Console.WriteLine();
 
-            // Step 4.5: Query actual message queue names (generated with GUIDs)
-            logger.LogInformation("Step 4.5: Querying message queue names...");
-            var queueNames = await runtime.ListNamedMessageQueuesAsync();
-            var inputQueueName = queueNames.FirstOrDefault(q => q.Contains("VectorAddRequestMessage"))
-                ?? throw new InvalidOperationException("Input queue not found");
-            var outputQueueName = queueNames.FirstOrDefault(q => q.Contains("VectorAddResponseMessage"))
-                ?? throw new InvalidOperationException("Output queue not found");
+            // Step 4.5: Use deterministic queue names (ringkernel_{MessageType}_{KernelId})
+            logger.LogInformation("Step 4.5: Using deterministic queue names...");
+            var kernelId = "VectorAddProcessor";
+            var inputQueueName = $"ringkernel_VectorAddRequestMessage_{kernelId}";
+            var outputQueueName = $"ringkernel_VectorAddResponseMessage_{kernelId}";
             logger.LogInformation($"  Input queue: {inputQueueName}");
             logger.LogInformation($"  Output queue: {outputQueueName}");
             logger.LogInformation("✓ Queue names resolved");

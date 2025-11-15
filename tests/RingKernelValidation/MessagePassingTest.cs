@@ -54,8 +54,13 @@ public static class MessagePassingTest
             // Step 4.5: Use deterministic queue names (ringkernel_{MessageType}_{KernelId})
             logger.LogInformation("Step 4.5: Using deterministic queue names...");
             var kernelId = "VectorAddProcessor";
-            var inputQueueName = $"ringkernel_VectorAddRequestMessage_{kernelId}";
-            var outputQueueName = $"ringkernel_VectorAddResponseMessage_{kernelId}";
+
+            // CUDA backend adds _input/_output suffixes, CPU doesn't
+            var inputSuffix = backend == "CUDA" ? "_input" : "";
+            var outputSuffix = backend == "CUDA" ? "_output" : "";
+
+            var inputQueueName = $"ringkernel_VectorAddRequestMessage_{kernelId}{inputSuffix}";
+            var outputQueueName = $"ringkernel_VectorAddResponseMessage_{kernelId}{outputSuffix}";
             logger.LogInformation($"  Input queue: {inputQueueName}");
             logger.LogInformation($"  Output queue: {outputQueueName}");
             logger.LogInformation("✓ Queue names resolved");

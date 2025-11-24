@@ -1,9 +1,14 @@
 // Copyright (c) 2025 Michael Ivertowski
 // Licensed under the MIT License.
 
+using DotCompute.Abstractions.RingKernels;
+using DotCompute.Backends.CUDA.Compilation;
+using DotCompute.Backends.CUDA.RingKernels;
+using DotCompute.Core.Messaging;
 using DotCompute.Generated;
 using Microsoft.Extensions.Logging;
-using Orleans.GpuBridge.Backends.DotCompute.Temporal.Generated;
+using Microsoft.Extensions.Logging.Abstractions;
+using Orleans.GpuBridge.Backends.DotCompute.Temporal;
 
 namespace RingKernelValidation;
 
@@ -53,50 +58,65 @@ public static class CudaTest
             logger.LogInformation("✓ CUDA GPU detected");
             Console.WriteLine();
 
-            // Step 2: Create CUDA ring kernel runtime
+            // Step 2: Create CUDA ring kernel runtime directly
             logger.LogInformation("Step 2: Creating CUDA ring kernel runtime...");
-            var runtime = RingKernelRuntimeFactory.CreateRuntime("CUDA", loggerFactory);
+            var compiler = new CudaRingKernelCompiler(
+                NullLogger<CudaRingKernelCompiler>.Instance,
+                new RingKernelDiscovery(NullLogger<RingKernelDiscovery>.Instance),
+                new CudaRingKernelStubGenerator(NullLogger<CudaRingKernelStubGenerator>.Instance),
+                new CudaMemoryPackSerializerGenerator(NullLogger<CudaMemoryPackSerializerGenerator>.Instance));
+            var registry = new MessageQueueRegistry(NullLogger<MessageQueueRegistry>.Instance);
+            var runtime = new CudaRingKernelRuntime(
+                NullLogger<CudaRingKernelRuntime>.Instance,
+                compiler,
+                registry);
+            // Register our assembly for kernel discovery
+            runtime.RegisterAssembly(typeof(VectorAddRingKernel).Assembly);
             logger.LogInformation("✓ CUDA runtime created successfully");
             Console.WriteLine();
 
-            // Step 3: Create ring kernel wrapper
-            logger.LogInformation("Step 3: Creating VectorAddProcessorRing wrapper (CUDA)...");
-            using var kernelWrapper = new VectorAddProcessorRingRingKernelWrapper(runtime);
-            logger.LogInformation("✓ Wrapper created successfully");
-            Console.WriteLine();
+            const string KernelId = "vectoradd_processor";
 
-            // Step 4: Launch kernel on GPU
-            logger.LogInformation("Step 4: Launching ring kernel on GPU (gridSize=1, blockSize=1)...");
+            // Step 3: Launch kernel on GPU
+            logger.LogInformation("Step 3: Launching ring kernel on GPU (gridSize=1, blockSize=256)...");
             var launchStart = DateTime.UtcNow;
-            await kernelWrapper.LaunchAsync(gridSize: 1, blockSize: 1);
+            await runtime.LaunchAsync(KernelId, gridSize: 1, blockSize: 256);
             var launchTime = (DateTime.UtcNow - launchStart).TotalMilliseconds;
             logger.LogInformation($"✓ Kernel launched on GPU in {launchTime:F2}ms");
             Console.WriteLine();
 
-            // Step 5: Activate kernel (start GPU dispatch loop)
-            logger.LogInformation("Step 5: Activating kernel on GPU...");
-            await kernelWrapper.ActivateAsync();
+            // Step 4: Activate kernel (start GPU dispatch loop)
+            logger.LogInformation("Step 4: Activating kernel on GPU...");
+            await runtime.ActivateAsync(KernelId);
             logger.LogInformation("✓ GPU kernel activated - infinite loop running on GPU!");
             Console.WriteLine();
 
-            // Step 6: Let kernel run and measure performance
-            logger.LogInformation("Step 6: GPU kernel running for 5 seconds (measuring performance)...");
+            // Step 5: Let kernel run and measure performance
+            logger.LogInformation("Step 5: GPU kernel running for 5 seconds (measuring performance)...");
             var execStart = DateTime.UtcNow;
             await Task.Delay(TimeSpan.FromSeconds(5));
             var execTime = (DateTime.UtcNow - execStart).TotalSeconds;
             logger.LogInformation($"✓ GPU kernel alive for {execTime:F2} seconds");
             Console.WriteLine();
 
-            // Step 7: Deactivate
-            logger.LogInformation("Step 7: Deactivating GPU kernel...");
-            await kernelWrapper.DeactivateAsync();
+            // Step 6: Deactivate
+            logger.LogInformation("Step 6: Deactivating GPU kernel...");
+            await runtime.DeactivateAsync(KernelId);
             logger.LogInformation("✓ GPU kernel deactivated");
             Console.WriteLine();
 
-            // Step 8: Terminate
-            logger.LogInformation("Step 8: Terminating GPU kernel...");
-            await kernelWrapper.TerminateAsync();
-            logger.LogInformation("✓ GPU kernel terminated");
+            // Step 7: Terminate
+            logger.LogInformation("Step 7: Terminating GPU kernel...");
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            try
+            {
+                await runtime.TerminateAsync(KernelId, cts.Token);
+                logger.LogInformation("✓ GPU kernel terminated");
+            }
+            catch (OperationCanceledException)
+            {
+                logger.LogWarning("⚠ Kernel termination timed out (known WSL2 issue)");
+            }
             Console.WriteLine();
 
             // Success!

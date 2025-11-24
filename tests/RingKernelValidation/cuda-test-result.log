@@ -1,0 +1,151 @@
+/home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/src/Orleans.GpuBridge.Runtime/Orleans.GpuBridge.Runtime.csproj : warning NU1608: Detected package version outside of dependency constraint: Microsoft.CodeAnalysis.Workspaces.Common 4.5.0 requires Microsoft.CodeAnalysis.Common (= 4.5.0) but version Microsoft.CodeAnalysis.Common 4.14.0 was resolved. [/home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/tests/RingKernelValidation/RingKernelValidation.csproj]
+/home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/src/Orleans.GpuBridge.Runtime/Orleans.GpuBridge.Runtime.csproj : warning NU1608: Detected package version outside of dependency constraint: Microsoft.CodeAnalysis.Workspaces.Common 4.5.0 requires Microsoft.CodeAnalysis.Common (= 4.5.0) but version Microsoft.CodeAnalysis.Common 4.14.0 was resolved.
+/home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/src/Orleans.GpuBridge.Runtime/Orleans.GpuBridge.Runtime.csproj : warning NU1608: Detected package version outside of dependency constraint: Microsoft.CodeAnalysis.Workspaces.Common 4.5.0 requires Microsoft.CodeAnalysis.Common (= 4.5.0) but version Microsoft.CodeAnalysis.Common 4.14.0 was resolved.
+╔════════════════════════════════════════════════════════════════╗
+║         Ring Kernel Validation Test Suite                     ║
+║         Orleans.GpuBridge.Core - GPU-Native Actors             ║
+╚════════════════════════════════════════════════════════════════╝
+
+
+=== Message Passing Validation Test (CUDA) ===
+Testing: VectorAddRequest → Ring Kernel → VectorAddResponse
+
+info: MessagePassingTest[0]
+      Step 1: Creating CUDA ring kernel runtime...
+info: DotCompute.Core.Messaging.MessageQueueRegistry[0]
+      Message queue registry initialized
+info: MessagePassingTest[0]
+      ✓ Runtime created
+info: MessagePassingTest[0]
+      Step 2: Creating ring kernel wrapper...
+info: MessagePassingTest[0]
+      ✓ Wrapper created
+info: MessagePassingTest[0]
+      Step 3: Launching kernel...
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Launching ring kernel 'VectorAddProcessor' with grid=1, block=1
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      MessageQueueBridge<VectorAddProcessorRingRequest> started: Direction=HostToDevice, Capacity=4096, MessageSize=65792
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Created MemoryPack bridge for VectorAddProcessorRingRequest: NamedQueue=ringkernel_VectorAddProcessorRingRequest_VectorAddProcessor_input, GpuBuffer=269484032 bytes
+info: DotCompute.Core.Messaging.MessageQueueRegistry[0]
+      Registered message queue 'ringkernel_VectorAddProcessorRingRequest_VectorAddProcessor_input' for type VectorAddProcessorRingRequest on backend CUDA
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Created bridged input queue 'ringkernel_VectorAddProcessorRingRequest_VectorAddProcessor_input' for type VectorAddProcessorRingRequest
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      MessageQueueBridge<VectorAddProcessorRingResponse> started: Direction=DeviceToHost, Capacity=4096, MessageSize=65792
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Created MemoryPack bidirectional bridge for VectorAddProcessorRingResponse: Direction=DeviceToHost, NamedQueue=ringkernel_VectorAddProcessorRingResponse_VectorAddProcessor_output, GpuBuffer=269484032 bytes
+info: DotCompute.Core.Messaging.MessageQueueRegistry[0]
+      Registered message queue 'ringkernel_VectorAddProcessorRingResponse_VectorAddProcessor_output' for type VectorAddProcessorRingResponse on backend CUDA
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Created bidirectional output bridge 'ringkernel_VectorAddProcessorRingResponse_VectorAddProcessor_output' for type VectorAddProcessorRingResponse (Direction=DeviceToHost)
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelCompiler[1]
+      Starting Ring Kernel compilation for 'VectorAddProcessor'
+info: DotCompute.Backends.CUDA.Compilation.RingKernelDiscovery[1]
+      Beginning Ring Kernel discovery across 33 assemblies
+warn: DotCompute.Backends.CUDA.Compilation.RingKernelDiscovery[2]
+      Failed to load types from assembly DotCompute.Backends.CUDA, Version=0.5.0.0, Culture=neutral, PublicKeyToken=null. Loader exceptions: Could not load type 'DotCompute.Backends.CUDA.Types.Native.Structs.CudaLaunchAttributeValue' from assembly 'DotCompute.Backends.CUDA, Version=0.5.0.0, Culture=neutral, PublicKeyToken=null' because it contains an object field at offset 0 that is incorrectly aligned or overlapped by a non-object field., Could not load type 'DotCompute.Backends.CUDA.Types.Native.Structs.CudaLaunchAttributeValue' from assembly 'DotCompute.Backends.CUDA, Version=0.5.0.0, Culture=neutral, PublicKeyToken=null' because it contains an object field at offset 0 that is incorrectly aligned or overlapped by a non-object field.
+      System.Reflection.ReflectionTypeLoadException: Unable to load one or more of the requested types.
+      Could not load type 'DotCompute.Backends.CUDA.Types.Native.Structs.CudaLaunchAttributeValue' from assembly 'DotCompute.Backends.CUDA, Version=0.5.0.0, Culture=neutral, PublicKeyToken=null' because it contains an object field at offset 0 that is incorrectly aligned or overlapped by a non-object field.
+      Could not load type 'DotCompute.Backends.CUDA.Types.Native.Structs.CudaLaunchAttributeValue' from assembly 'DotCompute.Backends.CUDA, Version=0.5.0.0, Culture=neutral, PublicKeyToken=null' because it contains an object field at offset 0 that is incorrectly aligned or overlapped by a non-object field.
+         at System.Reflection.RuntimeModule.GetDefinedTypes()
+         at System.Reflection.RuntimeModule.GetTypes()
+         at DotCompute.Backends.CUDA.Compilation.RingKernelDiscovery.DiscoverKernelsInAssembly(Assembly assembly)
+         at DotCompute.Backends.CUDA.Compilation.RingKernelDiscovery.DiscoverKernels(IEnumerable`1 assemblies)
+      System.TypeLoadException: Could not load type 'DotCompute.Backends.CUDA.Types.Native.Structs.CudaLaunchAttributeValue' from assembly 'DotCompute.Backends.CUDA, Version=0.5.0.0, Culture=neutral, PublicKeyToken=null' because it contains an object field at offset 0 that is incorrectly aligned or overlapped by a non-object field.
+      System.TypeLoadException: Could not load type 'DotCompute.Backends.CUDA.Types.Native.Structs.CudaLaunchAttributeValue' from assembly 'DotCompute.Backends.CUDA, Version=0.5.0.0, Culture=neutral, PublicKeyToken=null' because it contains an object field at offset 0 that is incorrectly aligned or overlapped by a non-object field.
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 1, Successful reads: 1
+info: DotCompute.Backends.CUDA.Compilation.RingKernelDiscovery[4]
+      Ring Kernel discovery completed. Found 1 kernels
+info: DotCompute.Backends.CUDA.Compilation.RingKernelDiscovery[6]
+      Discovered kernel VectorAddProcessor: VectorAddProcessorRing
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 2, Successful reads: 2
+info: DotCompute.Backends.CUDA.Compilation.CudaRingKernelStubGenerator[1]
+      Starting CUDA stub generation for Ring Kernel 'VectorAddProcessor'
+info: DotCompute.Backends.CUDA.Compilation.CudaRingKernelStubGenerator[2]
+      Completed CUDA stub generation for Ring Kernel 'VectorAddProcessor' (210 lines)
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelCompiler[0]
+      Found message type 'VectorAddProcessorRingRequest' for kernel 'VectorAddProcessor'
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelCompiler[0]
+      Found message type 'VectorAddProcessorRingResponse' for kernel 'VectorAddProcessor'
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 3, Successful reads: 3
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 4, Successful reads: 4
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 5, Successful reads: 5
+info: DotCompute.Backends.CUDA.Compilation.CudaMemoryPackSerializerGenerator[0]
+      Generating message handler for 'VectorAddProcessorRing' (Request: VectorAddProcessorRingRequest)
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelCompiler[0]
+      Generated MemoryPack serialization code for 2 message types (14441 bytes)
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelCompiler[0]
+      No message handler found for 'VectorAddProcessorRing' (neither C# nor manual CUDA file)
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 6, Successful reads: 6
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 7, Successful reads: 7
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 8, Successful reads: 8
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 9, Successful reads: 9
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 10, Successful reads: 10
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 11, Successful reads: 11
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 12, Successful reads: 12
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 13, Successful reads: 13
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 14, Successful reads: 14
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 15, Successful reads: 15
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 16, Successful reads: 16
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 17, Successful reads: 17
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 18, Successful reads: 18
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 19, Successful reads: 19
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 20, Successful reads: 20
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 21, Successful reads: 21
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 22, Successful reads: 22
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 23, Successful reads: 23
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 24, Successful reads: 24
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 25, Successful reads: 25
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 26, Successful reads: 26
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 27, Successful reads: 27
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 28, Successful reads: 28
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 29, Successful reads: 29
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 30, Successful reads: 30
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 31, Successful reads: 31
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 32, Successful reads: 32
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 33, Successful reads: 33
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 34, Successful reads: 34
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 35, Successful reads: 35
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 36, Successful reads: 36
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 37, Successful reads: 37
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 38, Successful reads: 38

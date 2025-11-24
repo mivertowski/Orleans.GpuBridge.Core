@@ -1,0 +1,69 @@
+/home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/src/Orleans.GpuBridge.Runtime/Orleans.GpuBridge.Runtime.csproj : warning NU1608: Detected package version outside of dependency constraint: Microsoft.CodeAnalysis.Workspaces.Common 4.5.0 requires Microsoft.CodeAnalysis.Common (= 4.5.0) but version Microsoft.CodeAnalysis.Common 4.14.0 was resolved. [/home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/tests/RingKernelValidation/RingKernelValidation.csproj]
+/home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/src/Orleans.GpuBridge.Runtime/Orleans.GpuBridge.Runtime.csproj : warning NU1608: Detected package version outside of dependency constraint: Microsoft.CodeAnalysis.Workspaces.Common 4.5.0 requires Microsoft.CodeAnalysis.Common (= 4.5.0) but version Microsoft.CodeAnalysis.Common 4.14.0 was resolved.
+/home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/src/Orleans.GpuBridge.Runtime/Orleans.GpuBridge.Runtime.csproj : warning NU1608: Detected package version outside of dependency constraint: Microsoft.CodeAnalysis.Workspaces.Common 4.5.0 requires Microsoft.CodeAnalysis.Common (= 4.5.0) but version Microsoft.CodeAnalysis.Common 4.14.0 was resolved.
+╔════════════════════════════════════════════════════════════════╗
+║         Ring Kernel Validation Test Suite                     ║
+║         Orleans.GpuBridge.Core - GPU-Native Actors             ║
+╚════════════════════════════════════════════════════════════════╝
+
+
+=== Message Passing Validation Test (CUDA) ===
+Testing: VectorAddRequest → Ring Kernel → VectorAddResponse
+
+info: MessagePassingTest[0]
+      Step 1: Creating CUDA ring kernel runtime...
+info: MessagePassingTest[0]
+      ✓ Runtime created and assembly registered
+info: MessagePassingTest[0]
+      Step 2: Launching kernel...
+[DIAG] LaunchAsync starting for kernel 'vectoradd_processor'
+[DIAG] Step 1: Getting CUDA context...
+[DIAG] Step 1: Got context 0x77665C184A30
+[DIAG] Step 2: Detecting message types...
+[DIAG] Step 2: Detected Input=VectorAddProcessorRingRequest, Output=VectorAddProcessorRingResponse
+[DIAG] Step 3a: Creating bridged input queue...
+[DIAG] Step 3a: Created bridged input queue successfully
+[DIAG] Step 3b: Creating bridged output queue...
+[DIAG] Step 3b: Created bridged output queue successfully
+[DIAG] Step 4: Compiling kernel to PTX...
+[DIAG] Step 4: Compiled successfully, PTX size=70600
+[DIAG] Step 6: Allocating pinned control block...
+[DIAG] cudaSetDevice(0): Success
+[DIAG] Pinned alloc: InvalidValue, hostPtr=0x0
+[DIAG] WSL2 detected - skipping unified memory due to concurrent access issues
+[DIAG] Falling back to DEVICE memory (will block on cooperative kernels!)
+[DIAG] Restoring context before device alloc: Success
+[DIAG] Device alloc: Success, ptr=0x48400000
+[DIAG] Context restored after alloc: Success
+[DIAG] Step 6: Control block at device=0x48400000, host=0x0, unified=False
+[DIAG] Step 6b: WSL2 detected with device-only memory - creating async control block...
+[DIAG] WSL2 Async: cudaSetDevice(0): Success
+[DIAG] WSL2 Async: Pinned staging alloc: InvalidValue, ptr=0x0
+[DIAG] WSL2 Async: Falling back to regular malloc for staging (sync mode): 0x776628C30D50
+[DIAG] WSL2 Async: Read event create: Success, event=0x776628C31CB0
+[DIAG] WSL2 Async: Write event create: Success, event=0x776628C31DE0
+[DIAG] WSL2 Async: Device alloc (Runtime API): Success, ptr=0x705800000
+[DIAG] WSL2 Async: Control block initialized successfully
+[DIAG] Step 6b: Async control block created - device=0x705800000, staging=0x776628C30D50
+[DIAG] Step 6c: Driver API context restored: Success
+[DIAG] Step 7: Writing control block...
+[DIAG] Step 7: Control block written via device copy
+[DIAG] Step 7b: Driver API context restored: Success
+[DIAG] Step 8: Creating CUDA stream...
+[DIAG] Step 8: Created stream at 0x776628C31C90
+[DIAG] Step 8b: Created control stream at 0x77665CA5D930
+[DIAG] Step 9: Validating cooperative kernel support...
+[DIAG] Step 9: Device CC=8.9
+[DIAG] Step 10: Launching cooperative kernel...
+[DIAG] Step 10: Using NON-COOPERATIVE kernel (WSL2 compatibility mode)
+[DIAG] Step 10: Kernel launch returned Success
+[DIAG] LaunchAsync COMPLETED SUCCESSFULLY!
+info: MessagePassingTest[0]
+      ✓ Kernel launched
+info: MessagePassingTest[0]
+      Step 3: Activating kernel...
+[DIAG] ActivateAsync: Using async control block (WSL2 mode)
+[DIAG] WriteNonBlocking: Starting (IsActive=1, ShouldTerminate=0)
+[DIAG] WriteNonBlocking: Writing to staging buffer at 0x776628C30D50
+[DIAG] WriteNonBlocking: Staging buffer written
+[DIAG] WriteNonBlocking: Calling cudaSetDevice(0)...

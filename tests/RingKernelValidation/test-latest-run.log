@@ -1,0 +1,37 @@
+/home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/src/Orleans.GpuBridge.Runtime/Orleans.GpuBridge.Runtime.csproj : warning NU1608: Detected package version outside of dependency constraint: Microsoft.CodeAnalysis.Workspaces.Common 4.5.0 requires Microsoft.CodeAnalysis.Common (= 4.5.0) but version Microsoft.CodeAnalysis.Common 4.14.0 was resolved. [/home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/tests/RingKernelValidation/RingKernelValidation.csproj]
+/home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/src/Orleans.GpuBridge.Runtime/Orleans.GpuBridge.Runtime.csproj : warning NU1608: Detected package version outside of dependency constraint: Microsoft.CodeAnalysis.Workspaces.Common 4.5.0 requires Microsoft.CodeAnalysis.Common (= 4.5.0) but version Microsoft.CodeAnalysis.Common 4.14.0 was resolved.
+/home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/src/Orleans.GpuBridge.Runtime/Orleans.GpuBridge.Runtime.csproj : warning NU1608: Detected package version outside of dependency constraint: Microsoft.CodeAnalysis.Workspaces.Common 4.5.0 requires Microsoft.CodeAnalysis.Common (= 4.5.0) but version Microsoft.CodeAnalysis.Common 4.14.0 was resolved.
+╔════════════════════════════════════════════════════════════════╗
+║         Ring Kernel Validation Test Suite                     ║
+║         Orleans.GpuBridge.Core - GPU-Native Actors             ║
+╚════════════════════════════════════════════════════════════════╝
+
+
+=== Message Passing Validation Test (CUDA) ===
+Testing: VectorAddRequest → Ring Kernel → VectorAddResponse
+
+info: MessagePassingTest[0]
+      Step 1: Creating CUDA ring kernel runtime...
+info: MessagePassingTest[0]
+      ✓ Runtime created and assembly registered
+info: MessagePassingTest[0]
+      Step 2: Launching kernel...
+
+=== ❌ TEST FAILED ===
+fail: MessagePassingTest[0]
+      ❌ Message passing test failed!
+      System.InvalidOperationException: Failed to create GPU ring buffer bridge for type VectorAddProcessorRingRequest
+         at DotCompute.Backends.CUDA.RingKernels.CudaMessageQueueBridgeFactory.CreateGpuRingBufferBridgeForMessageType(Type messageType, Int32 deviceId, Int32 capacity, Int32 messageSize, Boolean useUnifiedMemory, Boolean enableDmaTransfer, ILogger logger)
+         at DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime.<>c__DisplayClass17_0.<<LaunchAsync>b__0>d.MoveNext()
+      --- End of stack trace from previous location ---
+         at DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime.LaunchAsync(String kernelId, Int32 gridSize, Int32 blockSize, RingKernelLaunchOptions options, CancellationToken cancellationToken)
+         at RingKernelValidation.MessagePassingTest.RunAsync(ILoggerFactory loggerFactory, String backend) in /home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/tests/RingKernelValidation/MessagePassingTest.cs:line 71
+Error: Failed to create GPU ring buffer bridge for type VectorAddProcessorRingRequest
+Type: InvalidOperationException
+
+Stack trace:
+   at DotCompute.Backends.CUDA.RingKernels.CudaMessageQueueBridgeFactory.CreateGpuRingBufferBridgeForMessageType(Type messageType, Int32 deviceId, Int32 capacity, Int32 messageSize, Boolean useUnifiedMemory, Boolean enableDmaTransfer, ILogger logger)
+   at DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime.<>c__DisplayClass17_0.<<LaunchAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime.LaunchAsync(String kernelId, Int32 gridSize, Int32 blockSize, RingKernelLaunchOptions options, CancellationToken cancellationToken)
+   at RingKernelValidation.MessagePassingTest.RunAsync(ILoggerFactory loggerFactory, String backend) in /home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/tests/RingKernelValidation/MessagePassingTest.cs:line 71

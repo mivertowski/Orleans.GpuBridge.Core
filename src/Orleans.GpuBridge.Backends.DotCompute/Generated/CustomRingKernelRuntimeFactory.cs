@@ -3,6 +3,7 @@
 
 using DotCompute.Abstractions.RingKernels;
 using DotCompute.Backends.CPU.RingKernels;
+using DotCompute.Backends.CUDA.Compilation;
 using DotCompute.Backends.CUDA.RingKernels;
 using DotCompute.Core.Messaging;
 using Microsoft.Extensions.Logging;
@@ -49,8 +50,16 @@ public static class CustomRingKernelRuntimeFactory
     {
         var runtimeLogger = loggerFactory?.CreateLogger<CudaRingKernelRuntime>();
         var compilerLogger = loggerFactory?.CreateLogger<CudaRingKernelCompiler>();
-        var compiler = new CudaRingKernelCompiler(compilerLogger!);
+        var discoveryLogger = loggerFactory?.CreateLogger<RingKernelDiscovery>();
+        var stubLogger = loggerFactory?.CreateLogger<CudaRingKernelStubGenerator>();
+        var serializerLogger = loggerFactory?.CreateLogger<CudaMemoryPackSerializerGenerator>();
+
+        var discovery = new RingKernelDiscovery(discoveryLogger!);
+        var stubGen = new CudaRingKernelStubGenerator(stubLogger!);
+        var serializerGen = new CudaMemoryPackSerializerGenerator(serializerLogger!);
+        var compiler = new CudaRingKernelCompiler(compilerLogger!, discovery, stubGen, serializerGen);
         var registry = new MessageQueueRegistry();
+
         return new CudaRingKernelRuntime(runtimeLogger!, compiler, registry);
     }
 }

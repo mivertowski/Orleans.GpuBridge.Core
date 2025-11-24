@@ -56,6 +56,7 @@
     <ProjectReference Include="/home/mivertowski/DotCompute/DotCompute/src/Backends/DotCompute.Backends.CUDA/DotCompute.Backends.CUDA.csproj" />
 
     <!-- DotCompute Source Generators -->
+    <!-- Note: RingKernelRuntimeFactory.g.cs is excluded because we use CustomRingKernelRuntimeFactory instead -->
     <ProjectReference Include="/home/mivertowski/DotCompute/DotCompute/src/Runtime/DotCompute.Generators/DotCompute.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
 
     <!-- Orleans Dependencies -->
@@ -75,6 +76,20 @@
     <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.14.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.14.0" />
+  </ItemGroup>
+
+  <!-- Exclude generated RingKernelRuntimeFactory - we use CustomRingKernelRuntimeFactory instead -->
+  <!-- The DotCompute generator hasn't been updated to use CudaMemoryPackSerializerGenerator yet -->
+  <Target Name="ExcludeGeneratedRuntimeFactory" BeforeTargets="CoreCompile">
+    <ItemGroup>
+      <Compile Remove="@(Compile)" Condition="$([System.String]::Copy('%(Identity)').Contains('RingKernelRuntimeFactory.g.cs'))" />
+    </ItemGroup>
+  </Target>
+
+  <!-- Include manual CUDA handler files as embedded resources -->
+  <ItemGroup>
+    <EmbeddedResource Include="Temporal\Handlers\*.cu" />
+    <Content Include="Temporal\Handlers\*.cu" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

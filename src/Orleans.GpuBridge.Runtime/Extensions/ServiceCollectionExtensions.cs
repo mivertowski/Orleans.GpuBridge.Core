@@ -1,4 +1,5 @@
 using DotCompute.Abstractions.RingKernels;
+using DotCompute.Backends.CUDA.Compilation;
 using DotCompute.Backends.CUDA.RingKernels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -95,10 +96,31 @@ public static class ServiceCollectionExtensions
         }
 
         // Register DotCompute ring kernel infrastructure
+        services.TryAddSingleton<RingKernelDiscovery>(sp =>
+        {
+            var logger = sp.GetRequiredService<ILogger<RingKernelDiscovery>>();
+            return new RingKernelDiscovery(logger);
+        });
+
+        services.TryAddSingleton<CudaRingKernelStubGenerator>(sp =>
+        {
+            var logger = sp.GetRequiredService<ILogger<CudaRingKernelStubGenerator>>();
+            return new CudaRingKernelStubGenerator(logger);
+        });
+
+        services.TryAddSingleton<CudaMemoryPackSerializerGenerator>(sp =>
+        {
+            var logger = sp.GetRequiredService<ILogger<CudaMemoryPackSerializerGenerator>>();
+            return new CudaMemoryPackSerializerGenerator(logger);
+        });
+
         services.TryAddSingleton<CudaRingKernelCompiler>(sp =>
         {
             var logger = sp.GetRequiredService<ILogger<CudaRingKernelCompiler>>();
-            return new CudaRingKernelCompiler(logger);
+            var kernelDiscovery = sp.GetRequiredService<RingKernelDiscovery>();
+            var stubGenerator = sp.GetRequiredService<CudaRingKernelStubGenerator>();
+            var serializerGenerator = sp.GetRequiredService<CudaMemoryPackSerializerGenerator>();
+            return new CudaRingKernelCompiler(logger, kernelDiscovery, stubGenerator, serializerGenerator);
         });
 
         // Register DotCompute message queue registry (required for named queues)

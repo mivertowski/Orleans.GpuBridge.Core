@@ -1,0 +1,70 @@
+/home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/src/Orleans.GpuBridge.Runtime/Orleans.GpuBridge.Runtime.csproj : warning NU1608: Detected package version outside of dependency constraint: Microsoft.CodeAnalysis.Workspaces.Common 4.5.0 requires Microsoft.CodeAnalysis.Common (= 4.5.0) but version Microsoft.CodeAnalysis.Common 4.14.0 was resolved. [/home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/tests/RingKernelValidation/RingKernelValidation.csproj]
+/home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/src/Orleans.GpuBridge.Runtime/Orleans.GpuBridge.Runtime.csproj : warning NU1608: Detected package version outside of dependency constraint: Microsoft.CodeAnalysis.Workspaces.Common 4.5.0 requires Microsoft.CodeAnalysis.Common (= 4.5.0) but version Microsoft.CodeAnalysis.Common 4.14.0 was resolved.
+/home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/src/Orleans.GpuBridge.Runtime/Orleans.GpuBridge.Runtime.csproj : warning NU1608: Detected package version outside of dependency constraint: Microsoft.CodeAnalysis.Workspaces.Common 4.5.0 requires Microsoft.CodeAnalysis.Common (= 4.5.0) but version Microsoft.CodeAnalysis.Common 4.14.0 was resolved.
+╔════════════════════════════════════════════════════════════════╗
+║         Ring Kernel Validation Test Suite                     ║
+║         Orleans.GpuBridge.Core - GPU-Native Actors             ║
+╚════════════════════════════════════════════════════════════════╝
+
+
+=== Message Passing Validation Test (CUDA) ===
+Testing: VectorAddRequest → Ring Kernel → VectorAddResponse
+
+info: MessagePassingTest[0]
+      Step 1: Creating CUDA ring kernel runtime...
+info: MessagePassingTest[0]
+      ✓ Runtime created and assembly registered
+info: MessagePassingTest[0]
+      Step 2: Launching kernel...
+[WSL2] Overriding Persistent mode to EventDriven mode for WSL2 compatibility (kernel: vectoradd_processor)
+info: MessagePassingTest[0]
+      ✓ Kernel launched
+info: MessagePassingTest[0]
+      Step 3: Activating kernel...
+
+info: MessagePassingTest[0]
+      ✓ Kernel activated
+
+info: MessagePassingTest[0]
+      Step 4: Using deterministic queue names...
+info: MessagePassingTest[0]
+        Input queue: ringkernel_VectorAddProcessorRingRequest_vectoradd_processor_input
+info: MessagePassingTest[0]
+        Output queue: ringkernel_VectorAddProcessorRingResponse_vectoradd_processor_output
+info: MessagePassingTest[0]
+      ✓ Queue names resolved
+info: MessagePassingTest[0]
+      Step 5: Preparing test cases (primitives-only for CUDA)...
+
+info: MessagePassingTest[0]
+      ✓ Prepared 3 test cases (primitives-only)
+info: MessagePassingTest[0]
+      Test: Addition (4 elements)
+info: MessagePassingTest[0]
+        Sending request (4 elements, operation=0)...
+info: MessagePassingTest[0]
+        ✓ Message sent in 24451.80μs
+info: MessagePassingTest[0]
+        Waiting for response...
+  ✗ FAILED: Timeout
+fail: MessagePassingTest[0]
+        ✗ Timeout waiting for response!
+info: MessagePassingTest[0]
+      Test: Subtraction (4 elements)
+info: MessagePassingTest[0]
+        Sending request (4 elements, operation=1)...
+info: MessagePassingTest[0]
+        ✓ Message sent in 141.90μs
+info: MessagePassingTest[0]
+        Waiting for response...
+  ✗ FAILED: Timeout
+fail: MessagePassingTest[0]
+        ✗ Timeout waiting for response!
+info: MessagePassingTest[0]
+      Test: Multiplication (4 elements)
+info: MessagePassingTest[0]
+        Sending request (4 elements, operation=2)...
+info: MessagePassingTest[0]
+        ✓ Message sent in 17.70μs
+info: MessagePassingTest[0]
+        Waiting for response...

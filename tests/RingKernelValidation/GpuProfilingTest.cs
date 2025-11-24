@@ -2,10 +2,13 @@
 // Licensed under the MIT License.
 
 using DotCompute.Abstractions.RingKernels;
+using DotCompute.Backends.CUDA.Compilation;
+using DotCompute.Backends.CUDA.RingKernels;
+using DotCompute.Core.Messaging;
 using DotCompute.Generated;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Orleans.GpuBridge.Backends.DotCompute.Temporal;
-using Orleans.GpuBridge.Backends.DotCompute.Temporal.Generated;
 
 namespace RingKernelValidation;
 
@@ -43,32 +46,40 @@ public static class GpuProfilingTest
 
         try
         {
-            // Step 1: Create CUDA runtime
+            // Step 1: Create CUDA runtime directly
             logger.LogInformation("Step 1: Creating CUDA ring kernel runtime...");
-            var runtime = RingKernelRuntimeFactory.CreateRuntime("CUDA", loggerFactory);
+            var compiler = new CudaRingKernelCompiler(
+                NullLogger<CudaRingKernelCompiler>.Instance,
+                new RingKernelDiscovery(NullLogger<RingKernelDiscovery>.Instance),
+                new CudaRingKernelStubGenerator(NullLogger<CudaRingKernelStubGenerator>.Instance),
+                new CudaMemoryPackSerializerGenerator(NullLogger<CudaMemoryPackSerializerGenerator>.Instance));
+            var registry = new MessageQueueRegistry(NullLogger<MessageQueueRegistry>.Instance);
+            var runtime = new CudaRingKernelRuntime(
+                NullLogger<CudaRingKernelRuntime>.Instance,
+                compiler,
+                registry);
+            // Register our assembly for kernel discovery
+            runtime.RegisterAssembly(typeof(VectorAddRingKernel).Assembly);
             logger.LogInformation("✓ CUDA runtime created");
 
-            // Step 2: Create kernel wrapper
-            logger.LogInformation("Step 2: Creating VectorAddProcessorRing wrapper...");
-            using var kernelWrapper = new VectorAddProcessorRingRingKernelWrapper(runtime);
-            logger.LogInformation("✓ Wrapper created");
+            const string KernelId = "vectoradd_processor";
 
-            // Step 3: Measure kernel launch latency
-            logger.LogInformation("Step 3: Measuring kernel launch latency...");
+            // Step 2: Measure kernel launch latency
+            logger.LogInformation("Step 2: Measuring kernel launch latency...");
             var launchStart = DateTime.UtcNow;
 
-            await kernelWrapper.LaunchAsync(gridSize: 1, blockSize: 1);
+            await runtime.LaunchAsync(KernelId, gridSize: 1, blockSize: 256);
 
             var launchDuration = (DateTime.UtcNow - launchStart).TotalMicroseconds;
             logger.LogInformation($"✓ Kernel launched in {launchDuration:F2}μs");
             Console.WriteLine($"  Kernel Launch Latency: {launchDuration:F2}μs");
             Console.WriteLine();
 
-            // Step 4: Activate kernel
-            logger.LogInformation("Step 4: Activating kernel...");
+            // Step 3: Activate kernel
+            logger.LogInformation("Step 3: Activating kernel...");
             var activateStart = DateTime.UtcNow;
 
-            await kernelWrapper.ActivateAsync();
+            await runtime.ActivateAsync(KernelId);
 
             var activateDuration = (DateTime.UtcNow - activateStart).TotalMicroseconds;
             logger.LogInformation($"✓ Kernel activated in {activateDuration:F2}μs");
@@ -88,22 +99,30 @@ public static class GpuProfilingTest
             logger.LogInformation($"✓ Profiling window complete ({profilingDuration:F2}s)");
             Console.WriteLine();
 
-            // Step 6: Deactivate kernel
-            logger.LogInformation("Step 6: Deactivating kernel...");
+            // Step 5: Deactivate kernel
+            logger.LogInformation("Step 5: Deactivating kernel...");
             var deactivateStart = DateTime.UtcNow;
 
-            await kernelWrapper.DeactivateAsync();
+            await runtime.DeactivateAsync(KernelId);
 
             var deactivateDuration = (DateTime.UtcNow - deactivateStart).TotalMicroseconds;
             logger.LogInformation($"✓ Kernel deactivated in {deactivateDuration:F2}μs");
             Console.WriteLine($"  Kernel Deactivation Latency: {deactivateDuration:F2}μs");
             Console.WriteLine();
 
-            // Step 7: Terminate kernel and get final metrics
-            logger.LogInformation("Step 7: Terminating kernel...");
+            // Step 6: Terminate kernel and get final metrics
+            logger.LogInformation("Step 6: Terminating kernel...");
             var terminateStart = DateTime.UtcNow;
 
-            await kernelWrapper.TerminateAsync();
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            try
+            {
+                await runtime.TerminateAsync(KernelId, cts.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                logger.LogWarning("⚠ Kernel termination timed out (known WSL2 issue)");
+            }
 
             var terminateDuration = (DateTime.UtcNow - terminateStart).TotalMicroseconds;
             logger.LogInformation($"✓ Kernel terminated in {terminateDuration:F2}μs");

@@ -1,0 +1,438 @@
+/home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/src/Orleans.GpuBridge.Runtime/Orleans.GpuBridge.Runtime.csproj : warning NU1608: Detected package version outside of dependency constraint: Microsoft.CodeAnalysis.Workspaces.Common 4.5.0 requires Microsoft.CodeAnalysis.Common (= 4.5.0) but version Microsoft.CodeAnalysis.Common 4.14.0 was resolved. [/home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/tests/RingKernelValidation/RingKernelValidation.csproj]
+/home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/src/Orleans.GpuBridge.Runtime/Orleans.GpuBridge.Runtime.csproj : warning NU1608: Detected package version outside of dependency constraint: Microsoft.CodeAnalysis.Workspaces.Common 4.5.0 requires Microsoft.CodeAnalysis.Common (= 4.5.0) but version Microsoft.CodeAnalysis.Common 4.14.0 was resolved.
+/home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/src/Orleans.GpuBridge.Runtime/Orleans.GpuBridge.Runtime.csproj : warning NU1608: Detected package version outside of dependency constraint: Microsoft.CodeAnalysis.Workspaces.Common 4.5.0 requires Microsoft.CodeAnalysis.Common (= 4.5.0) but version Microsoft.CodeAnalysis.Common 4.14.0 was resolved.
+╔════════════════════════════════════════════════════════════════╗
+║         Ring Kernel Validation Test Suite                     ║
+║         Orleans.GpuBridge.Core - GPU-Native Actors             ║
+╚════════════════════════════════════════════════════════════════╝
+
+
+=== Message Passing Validation Test (CUDA) ===
+Testing: VectorAddRequest → Ring Kernel → VectorAddResponse
+
+info: MessagePassingTest[0]
+      Step 1: Creating CUDA ring kernel runtime...
+info: DotCompute.Core.Messaging.MessageQueueRegistry[0]
+      Message queue registry initialized
+info: MessagePassingTest[0]
+      ✓ Runtime created
+info: MessagePassingTest[0]
+      Step 2: Creating ring kernel wrapper...
+info: MessagePassingTest[0]
+      ✓ Wrapper created
+info: MessagePassingTest[0]
+      Step 3: Launching kernel...
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Launching ring kernel 'VectorAddProcessor' with grid=1, block=1
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      MessageQueueBridge<VectorAddRequestMessage> started: Direction=HostToDevice, Capacity=4096, MessageSize=65792
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Created MemoryPack bridge for VectorAddRequestMessage: NamedQueue=ringkernel_VectorAddRequestMessage_VectorAddProcessor_input, GpuBuffer=269484032 bytes
+info: DotCompute.Core.Messaging.MessageQueueRegistry[0]
+      Registered message queue 'ringkernel_VectorAddRequestMessage_VectorAddProcessor_input' for type VectorAddRequestMessage on backend CUDA
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Created bridged input queue 'ringkernel_VectorAddRequestMessage_VectorAddProcessor_input' for type VectorAddRequestMessage
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      MessageQueueBridge<VectorAddResponseMessage> started: Direction=DeviceToHost, Capacity=4096, MessageSize=65792
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Created MemoryPack bidirectional bridge for VectorAddResponseMessage: Direction=DeviceToHost, NamedQueue=ringkernel_VectorAddResponseMessage_VectorAddProcessor_output, GpuBuffer=269484032 bytes
+info: DotCompute.Core.Messaging.MessageQueueRegistry[0]
+      Registered message queue 'ringkernel_VectorAddResponseMessage_VectorAddProcessor_output' for type VectorAddResponseMessage on backend CUDA
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Created bidirectional output bridge 'ringkernel_VectorAddResponseMessage_VectorAddProcessor_output' for type VectorAddResponseMessage (Direction=DeviceToHost)
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelCompiler[1]
+      Starting Ring Kernel compilation for 'VectorAddProcessor'
+info: DotCompute.Backends.CUDA.Compilation.RingKernelDiscovery[1]
+      Beginning Ring Kernel discovery across 36 assemblies
+warn: DotCompute.Backends.CUDA.Compilation.RingKernelDiscovery[2]
+      Failed to load types from assembly DotCompute.Backends.CUDA, Version=0.5.0.0, Culture=neutral, PublicKeyToken=null. Loader exceptions: Could not load type 'DotCompute.Backends.CUDA.Types.Native.Structs.CudaLaunchAttributeValue' from assembly 'DotCompute.Backends.CUDA, Version=0.5.0.0, Culture=neutral, PublicKeyToken=null' because it contains an object field at offset 0 that is incorrectly aligned or overlapped by a non-object field., Could not load type 'DotCompute.Backends.CUDA.Types.Native.Structs.CudaLaunchAttributeValue' from assembly 'DotCompute.Backends.CUDA, Version=0.5.0.0, Culture=neutral, PublicKeyToken=null' because it contains an object field at offset 0 that is incorrectly aligned or overlapped by a non-object field.
+      System.Reflection.ReflectionTypeLoadException: Unable to load one or more of the requested types.
+      Could not load type 'DotCompute.Backends.CUDA.Types.Native.Structs.CudaLaunchAttributeValue' from assembly 'DotCompute.Backends.CUDA, Version=0.5.0.0, Culture=neutral, PublicKeyToken=null' because it contains an object field at offset 0 that is incorrectly aligned or overlapped by a non-object field.
+      Could not load type 'DotCompute.Backends.CUDA.Types.Native.Structs.CudaLaunchAttributeValue' from assembly 'DotCompute.Backends.CUDA, Version=0.5.0.0, Culture=neutral, PublicKeyToken=null' because it contains an object field at offset 0 that is incorrectly aligned or overlapped by a non-object field.
+         at System.Reflection.RuntimeModule.GetDefinedTypes()
+         at System.Reflection.RuntimeModule.GetTypes()
+         at DotCompute.Backends.CUDA.Compilation.RingKernelDiscovery.DiscoverKernelsInAssembly(Assembly assembly) in /home/mivertowski/DotCompute/DotCompute/src/Backends/DotCompute.Backends.CUDA/Compilation/RingKernelDiscovery.cs:line 263
+         at DotCompute.Backends.CUDA.Compilation.RingKernelDiscovery.DiscoverKernels(IEnumerable`1 assemblies) in /home/mivertowski/DotCompute/DotCompute/src/Backends/DotCompute.Backends.CUDA/Compilation/RingKernelDiscovery.cs:line 166
+      System.TypeLoadException: Could not load type 'DotCompute.Backends.CUDA.Types.Native.Structs.CudaLaunchAttributeValue' from assembly 'DotCompute.Backends.CUDA, Version=0.5.0.0, Culture=neutral, PublicKeyToken=null' because it contains an object field at offset 0 that is incorrectly aligned or overlapped by a non-object field.
+      System.TypeLoadException: Could not load type 'DotCompute.Backends.CUDA.Types.Native.Structs.CudaLaunchAttributeValue' from assembly 'DotCompute.Backends.CUDA, Version=0.5.0.0, Culture=neutral, PublicKeyToken=null' because it contains an object field at offset 0 that is incorrectly aligned or overlapped by a non-object field.
+info: DotCompute.Backends.CUDA.Compilation.RingKernelDiscovery[4]
+      Ring Kernel discovery completed. Found 1 kernels
+info: DotCompute.Backends.CUDA.Compilation.RingKernelDiscovery[6]
+      Discovered kernel VectorAddProcessor: VectorAddProcessorRing
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelCompiler[4]
+      Failed to compile Ring Kernel 'VectorAddProcessor': Parameter 'requestQueue' has unsupported type 'VectorAddRequestMessage' for CUDA compilation. Supported types: primitives, Span<T>, arrays, and value types.
+      System.InvalidOperationException: Parameter 'requestQueue' has unsupported type 'VectorAddRequestMessage' for CUDA compilation. Supported types: primitives, Span<T>, arrays, and value types.
+         at DotCompute.Backends.CUDA.RingKernels.CudaRingKernelCompiler.ValidateKernelMetadata(DiscoveredRingKernel kernel) in /home/mivertowski/DotCompute/DotCompute/src/Backends/DotCompute.Backends.CUDA/RingKernels/CudaRingKernelCompiler.New.cs:line 260
+         at DotCompute.Backends.CUDA.RingKernels.CudaRingKernelCompiler.CompileRingKernelAsync(String kernelId, IntPtr cudaContext, CompilationOptions options, IEnumerable`1 assemblies, CancellationToken cancellationToken) in /home/mivertowski/DotCompute/DotCompute/src/Backends/DotCompute.Backends.CUDA/RingKernels/CudaRingKernelCompiler.New.cs:line 169
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 1, Successful reads: 1
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+
+=== ❌ TEST FAILED ===
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: MessagePassingTest[0]
+      ❌ Message passing test failed!
+      System.InvalidOperationException: Failed to compile Ring Kernel 'VectorAddProcessor': Parameter 'requestQueue' has unsupported type 'VectorAddRequestMessage' for CUDA compilation. Supported types: primitives, Span<T>, arrays, and value types.
+       ---> System.InvalidOperationException: Parameter 'requestQueue' has unsupported type 'VectorAddRequestMessage' for CUDA compilation. Supported types: primitives, Span<T>, arrays, and value types.
+         at DotCompute.Backends.CUDA.RingKernels.CudaRingKernelCompiler.ValidateKernelMetadata(DiscoveredRingKernel kernel) in /home/mivertowski/DotCompute/DotCompute/src/Backends/DotCompute.Backends.CUDA/RingKernels/CudaRingKernelCompiler.New.cs:line 260
+         at DotCompute.Backends.CUDA.RingKernels.CudaRingKernelCompiler.CompileRingKernelAsync(String kernelId, IntPtr cudaContext, CompilationOptions options, IEnumerable`1 assemblies, CancellationToken cancellationToken) in /home/mivertowski/DotCompute/DotCompute/src/Backends/DotCompute.Backends.CUDA/RingKernels/CudaRingKernelCompiler.New.cs:line 169
+         --- End of inner exception stack trace ---
+         at DotCompute.Backends.CUDA.RingKernels.CudaRingKernelCompiler.CompileRingKernelAsync(String kernelId, IntPtr cudaContext, CompilationOptions options, IEnumerable`1 assemblies, CancellationToken cancellationToken) in /home/mivertowski/DotCompute/DotCompute/src/Backends/DotCompute.Backends.CUDA/RingKernels/CudaRingKernelCompiler.New.cs:line 219
+         at DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime.<>c__DisplayClass12_0.<<LaunchAsync>b__0>d.MoveNext() in /home/mivertowski/DotCompute/DotCompute/src/Backends/DotCompute.Backends.CUDA/RingKernels/CudaRingKernelRuntime.cs:line 346
+      --- End of stack trace from previous location ---
+         at DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime.LaunchAsync(String kernelId, Int32 gridSize, Int32 blockSize, RingKernelLaunchOptions options, CancellationToken cancellationToken) in /home/mivertowski/DotCompute/DotCompute/src/Backends/DotCompute.Backends.CUDA/RingKernels/CudaRingKernelRuntime.cs:line 199
+         at Orleans.GpuBridge.Backends.DotCompute.Temporal.Generated.VectorAddProcessorRingRingKernelWrapper.LaunchAsync(Int32 gridSize, Int32 blockSize, RingKernelLaunchOptions options, CancellationToken cancellationToken) in /home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/src/Orleans.GpuBridge.Backends.DotCompute/obj/Release/net9.0/DotCompute.Generators/DotCompute.Generators.Kernel.KernelSourceGenerator/Orleans_GpuBridge_Backends_DotCompute_Temporal_VectorAddRingKernel_VectorAddProcessorRing_RingKernelWrapper.g.cs:line 42
+         at RingKernelValidation.MessagePassingTest.RunAsync(ILoggerFactory loggerFactory, String backend) in /home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/tests/RingKernelValidation/MessagePassingTest.cs:line 46
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+Error: Failed to compile Ring Kernel 'VectorAddProcessor': Parameter 'requestQueue' has unsupported type 'VectorAddRequestMessage' for CUDA compilation. Supported types: primitives, Span<T>, arrays, and value types.
+Type: InvalidOperationException
+Inner: Parameter 'requestQueue' has unsupported type 'VectorAddRequestMessage' for CUDA compilation. Supported types: primitives, Span<T>, arrays, and value types.
+
+Stack trace:
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+   at DotCompute.Backends.CUDA.RingKernels.CudaRingKernelCompiler.CompileRingKernelAsync(String kernelId, IntPtr cudaContext, CompilationOptions options, IEnumerable`1 assemblies, CancellationToken cancellationToken) in /home/mivertowski/DotCompute/DotCompute/src/Backends/DotCompute.Backends.CUDA/RingKernels/CudaRingKernelCompiler.New.cs:line 219
+   at DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime.<>c__DisplayClass12_0.<<LaunchAsync>b__0>d.MoveNext() in /home/mivertowski/DotCompute/DotCompute/src/Backends/DotCompute.Backends.CUDA/RingKernels/CudaRingKernelRuntime.cs:line 346
+--- End of stack trace from previous location ---
+   at DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime.LaunchAsync(String kernelId, Int32 gridSize, Int32 blockSize, RingKernelLaunchOptions options, CancellationToken cancellationToken) in /home/mivertowski/DotCompute/DotCompute/src/Backends/DotCompute.Backends.CUDA/RingKernels/CudaRingKernelRuntime.cs:line 199
+   at Orleans.GpuBridge.Backends.DotCompute.Temporal.Generated.VectorAddProcessorRingRingKernelWrapper.LaunchAsync(Int32 gridSize, Int32 blockSize, RingKernelLaunchOptions options, CancellationToken cancellationToken) in /home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/src/Orleans.GpuBridge.Backends.DotCompute/obj/Release/net9.0/DotCompute.Generators/DotCompute.Generators.Kernel.KernelSourceGenerator/Orleans_GpuBridge_Backends_DotCompute_Temporal_VectorAddRingKernel_VectorAddProcessorRing_RingKernelWrapper.g.cs:line 42
+   at RingKernelValidation.MessagePassingTest.RunAsync(ILoggerFactory loggerFactory, String backend) in /home/mivertowski/GpuBridgeCore/Orleans.GpuBridge.Core/tests/RingKernelValidation/MessagePassingTest.cs:line 46
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: 709
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure
+fail: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      CUDA memcpy Device→Host failed: LaunchFailure

@@ -1,0 +1,755 @@
+╔════════════════════════════════════════════════════════════════╗
+║         Ring Kernel Validation Test Suite                     ║
+║         Orleans.GpuBridge.Core - GPU-Native Actors             ║
+╚════════════════════════════════════════════════════════════════╝
+
+
+=== Message Passing Validation Test (CUDA) ===
+Testing: VectorAddRequest → Ring Kernel → VectorAddResponse
+
+info: MessagePassingTest[0]
+      Step 1: Creating CUDA ring kernel runtime...
+info: DotCompute.Core.Messaging.MessageQueueRegistry[0]
+      Message queue registry initialized
+info: MessagePassingTest[0]
+      ✓ Runtime created
+info: MessagePassingTest[0]
+      Step 2: Creating ring kernel wrapper...
+info: MessagePassingTest[0]
+      ✓ Wrapper created
+info: MessagePassingTest[0]
+      Step 3: Launching kernel...
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Launching ring kernel 'VectorAddProcessor' with grid=1, block=1
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      MessageQueueBridge<VectorAddRequestMessage> started: Direction=HostToDevice, Capacity=4096, MessageSize=65792
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Created MemoryPack bridge for VectorAddRequestMessage: NamedQueue=ringkernel_VectorAddRequestMessage_VectorAddProcessor_input, GpuBuffer=269484032 bytes
+info: DotCompute.Core.Messaging.MessageQueueRegistry[0]
+      Registered message queue 'ringkernel_VectorAddRequestMessage_VectorAddProcessor_input' for type VectorAddRequestMessage on backend CUDA
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Created bridged input queue 'ringkernel_VectorAddRequestMessage_VectorAddProcessor_input' for type VectorAddRequestMessage
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      MessageQueueBridge<VectorAddResponseMessage> started: Direction=DeviceToHost, Capacity=4096, MessageSize=65792
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Created MemoryPack bidirectional bridge for VectorAddResponseMessage: Direction=DeviceToHost, NamedQueue=ringkernel_VectorAddResponseMessage_VectorAddProcessor_output, GpuBuffer=269484032 bytes
+info: DotCompute.Core.Messaging.MessageQueueRegistry[0]
+      Registered message queue 'ringkernel_VectorAddResponseMessage_VectorAddProcessor_output' for type VectorAddResponseMessage on backend CUDA
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Created bidirectional output bridge 'ringkernel_VectorAddResponseMessage_VectorAddProcessor_output' for type VectorAddResponseMessage (Direction=DeviceToHost)
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Launching persistent kernel 'VectorAddProcessor' with grid=1, block=1, priority=Normal
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Persistent kernel 'VectorAddProcessor' launched successfully (running in background, inactive)
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Ring kernel 'VectorAddProcessor' launched successfully
+info: MessagePassingTest[0]
+      ✓ Kernel launched
+info: MessagePassingTest[0]
+      Step 4: Activating kernel...
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Activating ring kernel 'VectorAddProcessor'
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Ring kernel 'VectorAddProcessor' activated
+
+info: MessagePassingTest[0]
+      ✓ Kernel activated
+info: MessagePassingTest[0]
+      Step 4.5: Using deterministic queue names...
+info: MessagePassingTest[0]
+        Input queue: ringkernel_VectorAddRequestMessage_VectorAddProcessor_input
+info: MessagePassingTest[0]
+        Output queue: ringkernel_VectorAddResponseMessage_VectorAddProcessor_output
+
+info: MessagePassingTest[0]
+      ✓ Queue names resolved
+info: MessagePassingTest[0]
+      Step 5: Preparing test vectors...
+
+info: MessagePassingTest[0]
+      ✓ Prepared 3 test cases
+info: MessagePassingTest[0]
+      Test: Small Vector (10 elements, inline)
+info: MessagePassingTest[0]
+        Sending request (size=10, inline=True)...
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 1, Successful reads: 1
+info: MessagePassingTest[0]
+        ✓ Message sent in 4663.30μs
+info: MessagePassingTest[0]
+        Waiting for response...
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 2, Successful reads: 2
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 3, Successful reads: 3
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 4, Successful reads: 4
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 5, Successful reads: 5
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 6, Successful reads: 6
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 7, Successful reads: 7
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 8, Successful reads: 8
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 9, Successful reads: 9
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 10, Successful reads: 10
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 11, Successful reads: 11
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 12, Successful reads: 12
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 13, Successful reads: 13
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 14, Successful reads: 14
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 15, Successful reads: 15
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 16, Successful reads: 16
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 17, Successful reads: 17
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 18, Successful reads: 18
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 19, Successful reads: 19
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 20, Successful reads: 20
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 21, Successful reads: 21
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 22, Successful reads: 22
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 23, Successful reads: 23
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 24, Successful reads: 24
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 25, Successful reads: 25
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 26, Successful reads: 26
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 27, Successful reads: 27
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 28, Successful reads: 28
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 29, Successful reads: 29
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 30, Successful reads: 30
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 31, Successful reads: 31
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 32, Successful reads: 32
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 33, Successful reads: 33
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 34, Successful reads: 34
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 35, Successful reads: 35
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 36, Successful reads: 36
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 37, Successful reads: 37
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 38, Successful reads: 38
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 39, Successful reads: 39
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 40, Successful reads: 40
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 41, Successful reads: 41
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 42, Successful reads: 42
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 43, Successful reads: 43
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 44, Successful reads: 44
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 45, Successful reads: 45
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 46, Successful reads: 46
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 47, Successful reads: 47
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 48, Successful reads: 48
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 49, Successful reads: 49
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 50, Successful reads: 50
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 51, Successful reads: 51
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 52, Successful reads: 52
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 53, Successful reads: 53
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 54, Successful reads: 54
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 55, Successful reads: 55
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 56, Successful reads: 56
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 57, Successful reads: 57
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 58, Successful reads: 58
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 59, Successful reads: 59
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 60, Successful reads: 60
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 61, Successful reads: 61
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 62, Successful reads: 62
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 63, Successful reads: 63
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 64, Successful reads: 64
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 65, Successful reads: 65
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 66, Successful reads: 66
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 67, Successful reads: 67
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 68, Successful reads: 68
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 69, Successful reads: 69
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 70, Successful reads: 70
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 71, Successful reads: 71
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 72, Successful reads: 72
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 73, Successful reads: 73
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 74, Successful reads: 74
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 75, Successful reads: 75
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 76, Successful reads: 76
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 77, Successful reads: 77
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 78, Successful reads: 78
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 79, Successful reads: 79
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 80, Successful reads: 80
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 81, Successful reads: 81
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 82, Successful reads: 82
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 83, Successful reads: 83
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 84, Successful reads: 84
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 85, Successful reads: 85
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 86, Successful reads: 86
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 87, Successful reads: 87
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 88, Successful reads: 88
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 89, Successful reads: 89
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 90, Successful reads: 90
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 91, Successful reads: 91
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 92, Successful reads: 92
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 93, Successful reads: 93
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 94, Successful reads: 94
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 95, Successful reads: 95
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 96, Successful reads: 96
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 97, Successful reads: 97
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 98, Successful reads: 98
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 99, Successful reads: 99
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 100, Successful reads: 100
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 101, Successful reads: 101
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 102, Successful reads: 102
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 103, Successful reads: 103
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 104, Successful reads: 104
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 105, Successful reads: 105
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 106, Successful reads: 106
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 107, Successful reads: 107
+  ✗ FAILED: Timeout
+fail: MessagePassingTest[0]
+        ✗ Timeout waiting for response!
+info: MessagePassingTest[0]
+      Test: Boundary Vector (25 elements, inline)
+info: MessagePassingTest[0]
+        Sending request (size=25, inline=True)...
+info: MessagePassingTest[0]
+        ✓ Message sent in 799.60μs
+info: MessagePassingTest[0]
+        Waiting for response...
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 108, Successful reads: 108
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 109, Successful reads: 109
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 110, Successful reads: 110
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 111, Successful reads: 111
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 112, Successful reads: 112
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 113, Successful reads: 113
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 114, Successful reads: 114
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 115, Successful reads: 115
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 116, Successful reads: 116
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 117, Successful reads: 117
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 118, Successful reads: 118
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 119, Successful reads: 119
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 120, Successful reads: 120
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 121, Successful reads: 121
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 122, Successful reads: 122
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 123, Successful reads: 123
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 124, Successful reads: 124
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 125, Successful reads: 125
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 126, Successful reads: 126
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 127, Successful reads: 127
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 128, Successful reads: 128
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 129, Successful reads: 129
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 130, Successful reads: 130
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 131, Successful reads: 131
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 132, Successful reads: 132
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 133, Successful reads: 133
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 134, Successful reads: 134
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 135, Successful reads: 135
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 136, Successful reads: 136
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 137, Successful reads: 137
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 138, Successful reads: 138
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 139, Successful reads: 139
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 140, Successful reads: 140
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 141, Successful reads: 141
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 142, Successful reads: 142
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 143, Successful reads: 143
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 144, Successful reads: 144
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 145, Successful reads: 145
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 146, Successful reads: 146
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 147, Successful reads: 147
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 148, Successful reads: 148
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 149, Successful reads: 149
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 150, Successful reads: 150
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 151, Successful reads: 151
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 152, Successful reads: 152
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 153, Successful reads: 153
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 154, Successful reads: 154
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 155, Successful reads: 155
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 156, Successful reads: 156
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 157, Successful reads: 157
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 158, Successful reads: 158
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 159, Successful reads: 159
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 160, Successful reads: 160
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 161, Successful reads: 161
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 162, Successful reads: 162
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 163, Successful reads: 163
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 164, Successful reads: 164
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 165, Successful reads: 165
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 166, Successful reads: 166
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 167, Successful reads: 167
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 168, Successful reads: 168
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 169, Successful reads: 169
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 170, Successful reads: 170
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 171, Successful reads: 171
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 172, Successful reads: 172
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 173, Successful reads: 173
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 174, Successful reads: 174
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 175, Successful reads: 175
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 176, Successful reads: 176
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 177, Successful reads: 177
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 178, Successful reads: 178
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 179, Successful reads: 179
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 180, Successful reads: 180
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 181, Successful reads: 181
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 182, Successful reads: 182
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 183, Successful reads: 183
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 184, Successful reads: 184
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 185, Successful reads: 185
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 186, Successful reads: 186
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 187, Successful reads: 187
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 188, Successful reads: 188
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 189, Successful reads: 189
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 190, Successful reads: 190
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 191, Successful reads: 191
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 192, Successful reads: 192
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 193, Successful reads: 193
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 194, Successful reads: 194
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 195, Successful reads: 195
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 196, Successful reads: 196
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 197, Successful reads: 197
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 198, Successful reads: 198
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 199, Successful reads: 199
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 200, Successful reads: 200
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 201, Successful reads: 201
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 202, Successful reads: 202
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 203, Successful reads: 203
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 204, Successful reads: 204
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 205, Successful reads: 205
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 206, Successful reads: 206
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 207, Successful reads: 207
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 208, Successful reads: 208
+  ✗ FAILED: Timeout
+fail: MessagePassingTest[0]
+        ✗ Timeout waiting for response!
+info: MessagePassingTest[0]
+      Test: Large Vector (100 elements, GPU memory)
+info: MessagePassingTest[0]
+        Sending request (size=100, inline=False)...
+info: MessagePassingTest[0]
+        ✓ Message sent in 26979.00μs
+info: MessagePassingTest[0]
+        Waiting for response...
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 209, Successful reads: 209
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 210, Successful reads: 210
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 211, Successful reads: 211
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 212, Successful reads: 212
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 213, Successful reads: 213
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 214, Successful reads: 214
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 215, Successful reads: 215
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 216, Successful reads: 216
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 217, Successful reads: 217
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 218, Successful reads: 218
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 219, Successful reads: 219
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 220, Successful reads: 220
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 221, Successful reads: 221
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 222, Successful reads: 222
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 223, Successful reads: 223
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 224, Successful reads: 224
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 225, Successful reads: 225
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 226, Successful reads: 226
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 227, Successful reads: 227
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 228, Successful reads: 228
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 229, Successful reads: 229
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 230, Successful reads: 230
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 231, Successful reads: 231
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 232, Successful reads: 232
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 233, Successful reads: 233
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 234, Successful reads: 234
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 235, Successful reads: 235
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 236, Successful reads: 236
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 237, Successful reads: 237
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 238, Successful reads: 238
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 239, Successful reads: 239
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 240, Successful reads: 240
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 241, Successful reads: 241
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 242, Successful reads: 242
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 243, Successful reads: 243
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 244, Successful reads: 244
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 245, Successful reads: 245
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 246, Successful reads: 246
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 247, Successful reads: 247
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 248, Successful reads: 248
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 249, Successful reads: 249
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 250, Successful reads: 250
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 251, Successful reads: 251
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 252, Successful reads: 252
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 253, Successful reads: 253
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 254, Successful reads: 254
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 255, Successful reads: 255
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 256, Successful reads: 256
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 257, Successful reads: 257
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 258, Successful reads: 258
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 259, Successful reads: 259
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 260, Successful reads: 260
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 261, Successful reads: 261
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 262, Successful reads: 262
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 263, Successful reads: 263
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 264, Successful reads: 264
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 265, Successful reads: 265
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 266, Successful reads: 266
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 267, Successful reads: 267
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 268, Successful reads: 268
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 269, Successful reads: 269
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 270, Successful reads: 270
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 271, Successful reads: 271
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 272, Successful reads: 272
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 273, Successful reads: 273
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 274, Successful reads: 274
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 275, Successful reads: 275
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 276, Successful reads: 276
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 277, Successful reads: 277
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 278, Successful reads: 278
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 279, Successful reads: 279
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 280, Successful reads: 280
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 281, Successful reads: 281
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 282, Successful reads: 282
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 283, Successful reads: 283
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 284, Successful reads: 284
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 285, Successful reads: 285
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 286, Successful reads: 286
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 287, Successful reads: 287
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 288, Successful reads: 288
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 289, Successful reads: 289
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 290, Successful reads: 290
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 291, Successful reads: 291
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 292, Successful reads: 292
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 293, Successful reads: 293
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 294, Successful reads: 294
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 295, Successful reads: 295
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 296, Successful reads: 296
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 297, Successful reads: 297
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 298, Successful reads: 298
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 299, Successful reads: 299
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 300, Successful reads: 300
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 301, Successful reads: 301
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 302, Successful reads: 302
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 303, Successful reads: 303
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 304, Successful reads: 304
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 305, Successful reads: 305
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 306, Successful reads: 306
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 307, Successful reads: 307
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 308, Successful reads: 308
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 309, Successful reads: 309
+fail: MessagePassingTest[0]
+        ✗ Timeout waiting for response!
+  ✗ FAILED: Timeout
+info: MessagePassingTest[0]
+      Step 6: Deactivating kernel...
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Deactivating ring kernel 'VectorAddProcessor'
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Ring kernel 'VectorAddProcessor' deactivated
+info: MessagePassingTest[0]
+      ✓ Kernel deactivated
+info: MessagePassingTest[0]
+      Step 7: Terminating kernel...
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Terminating ring kernel 'VectorAddProcessor'
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 310, Successful reads: 310
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 311, Successful reads: 311
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Disposing MessageQueueBridge<VectorAddRequestMessage>: Transferred=3, Dropped=0, PollAttempts=0, SuccessfulReads=0, GarbageMessages=0, ValidationFailures=0
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 312, Successful reads: 312
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Disposing MessageQueueBridge<VectorAddResponseMessage>: Transferred=0, Dropped=0, PollAttempts=313, SuccessfulReads=312, GarbageMessages=1277952, ValidationFailures=0
+warn: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Device → Host poll detected 4096/4096 garbage messages (uninitialized GPU memory). Valid messages: 0. Total polls: 313, Successful reads: 313
+info: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime[0]
+      Ring kernel 'VectorAddProcessor' terminated
+
+=== TEST SUMMARY ===
+Passed: 0/3
+Failed: 3/3
+
+=== ⚠ 3 TEST(S) FAILED ===
+info: MessagePassingTest[0]
+      ✓ Kernel terminated

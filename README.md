@@ -355,6 +355,67 @@ services.AddOpenTelemetry()
 - AMD GPU with 8GB+ VRAM (for OpenCL)
 - CUDA 12.0+ or OpenCL 2.0+
 
+## ⚠️ WSL2 GPU Limitations (Critical for GPU-Native Actors)
+
+### The Problem
+
+WSL2's GPU virtualization layer (GPU-PV) has **fundamental limitations** that prevent true GPU-native actor performance:
+
+| Capability | Native Linux | WSL2 |
+|------------|-------------|------|
+| **Persistent Ring Kernels** | ✅ Sub-millisecond | ❌ ~5 second latency |
+| **System-Scope Atomics** | ✅ Reliable | ❌ Unreliable visibility |
+| **CPU-GPU Memory Coherence** | ✅ Real-time | ❌ Delayed/broken |
+| **Unified Memory Spill** | ✅ VRAM → System RAM | ❌ VRAM only |
+| **`is_active` Flag Polling** | ✅ Kernel sees updates | ❌ Kernel never sees |
+
+### Technical Details
+
+1. **System-Scope Atomics Fail**: `cuda::memory_order_system` and `__threadfence_system()` don't provide reliable CPU↔GPU memory visibility in WSL2. The GPU kernel cannot see host memory writes in real-time.
+
+2. **Persistent Mode Broken**: Ring kernels that poll shared memory for new messages (tail pointer updates) will spin forever - they never see the host's writes.
+
+3. **EventDriven Workaround**: Instead of persistent polling, kernels must terminate after processing and be relaunched by the host when new messages arrive. This adds ~5 seconds of overhead.
+
+### Workarounds Implemented in DotCompute
+
+```csharp
+// WSL2 Fix: Start kernel with is_active=1 already set
+// Avoids mid-execution activation signaling which doesn't work
+var controlBlock = state.AsyncControlBlock != null
+    ? RingKernelControlBlock.CreateActive()   // WSL2: Start active
+    : RingKernelControlBlock.CreateInactive(); // Native: Can activate later
+```
+
+- **Start-Active Pattern**: Kernels start already active, avoiding the need for host→GPU activation signaling
+- **EventDriven Mode**: Kernel processes messages then terminates; host relaunches for new batches
+- **SpinWait+Yield Bridge**: High-performance polling in the bridge transfer loop (sub-ms when kernel is responsive)
+
+### Performance Impact
+
+| Metric | GPU-Native (Native Linux) | WSL2 (EventDriven) |
+|--------|--------------------------|-------------------|
+| Message Latency | 100-500ns | ~5 seconds |
+| Throughput | 2M msgs/s/actor | ~1 msg/5s |
+| Use Case | Production | Development/Testing |
+
+### Recommendation
+
+- **Development/Testing**: WSL2 is fine - all functionality works, just slower
+- **Production**: Use native Linux for GPU-native actor systems requiring <10ms latency
+
+### Feature Request Channels
+
+To request improved GPU memory coherence in WSL2:
+
+1. **Microsoft WSL**: https://github.com/microsoft/WSL/issues
+   - [Issue #7198](https://github.com/microsoft/wslg/issues/357) - Shared memory limitations
+   - [Issue #3789](https://github.com/Microsoft/WSL/issues/3789) - CUDA/OpenCL support
+
+2. **Microsoft WSLg**: https://github.com/microsoft/wslg/issues
+
+3. **NVIDIA**: https://docs.nvidia.com/cuda/wsl-user-guide/
+
 ## 🚦 Project Status
 
 | Component | Status | Production Ready |

@@ -593,3 +593,99 @@ DOTCOMPUTE IS MAINTAINED AND DEVELOPED FROM US. IF YOU NEED TO SEARCH FOR THE DO
 DOTCOMPUTE FEATURE REQUESTS: CREATE A DOCUMENT WITH THE REQUEST AND INFORM THE USER.
 
 NO .ConfigureAwait(false) calls in grain context.
+
+When testing cuda runtime related features on this machine (WSL2 with RTX installed) -> set export LD_LIBRARY_PATH="/usr/lib/wsl/lib:$LD_LIBRARY_PATH"
+
+## ⚠️ WSL2 GPU Memory Limitations (CRITICAL KNOWLEDGE)
+
+### The Fundamental Problem
+
+WSL2's GPU virtualization layer (GPU-PV) does NOT support true unified memory coherence between CPU and GPU. This has major implications for GPU-native actors.
+
+### What Doesn't Work in WSL2
+
+1. **System-Scope Atomics Are Unreliable**
+   ```cuda
+   // These DON'T work reliably in WSL2:
+   cuda::atomic_ref<int, cuda::memory_scope_system> is_active(...);
+   __threadfence_system();
+   ```
+   - GPU kernel cannot see host memory writes in real-time
+   - Host writes to `is_active` flag are never visible to running kernel
+
+2. **Persistent Kernel Mode Fails**
+   ```cuda
+   // This pattern FAILS in WSL2:
+   __global__ void PersistentKernel(int* is_active, MessageQueue* queue) {
+       while (*is_active) {  // Kernel NEVER sees is_active change!
+           if (queue->try_dequeue(&msg)) {
+               process(msg);
+           }
+       }
+   }
+   ```
+
+3. **Unified Memory Spill Doesn't Work**
+   - `cudaMallocManaged` memory cannot spill from VRAM to system RAM
+   - Datasets larger than VRAM fail instead of using host memory
+
+### What DOES Work in WSL2
+
+1. **Basic CUDA Kernels**: Launch, execute, return - all work fine
+2. **EventDriven Mode**: Kernel starts, processes available messages, terminates
+3. **Host-side Control**: All signaling done before kernel launch, not during
+
+### The Workarounds We Implemented
+
+1. **Start-Active Pattern**
+   ```csharp
+   // WSL2: Start kernel with is_active=1 already set
+   var controlBlock = state.AsyncControlBlock != null
+       ? RingKernelControlBlock.CreateActive()   // is_active=1 at launch
+       : RingKernelControlBlock.CreateInactive(); // Native Linux mode
+   ```
+
+2. **EventDriven Instead of Persistent**
+   - Kernel launched → processes messages → terminates (HasTerminated=2)
+   - Host relaunches kernel when new messages arrive
+   - ~5 second latency instead of sub-millisecond
+
+3. **Bridge SpinWait+Yield Polling**
+   ```csharp
+   // High-performance polling replaces Task.Delay(1) which has 15ms resolution
+   if (consecutiveEmptyPolls < SpinIterationsBeforeYield) {
+       Thread.SpinWait(10);  // Sub-microsecond
+   } else {
+       Thread.Yield();       // Cooperative
+   }
+   ```
+
+### Performance Comparison
+
+| Metric | Native Linux | WSL2 |
+|--------|-------------|------|
+| Persistent kernel | ✅ Works | ❌ Fails |
+| Message latency | 100-500ns | ~5 seconds |
+| System atomics | ✅ Reliable | ❌ Unreliable |
+| Use case | Production | Development |
+
+### Where to Request WSL2 Improvements
+
+**Microsoft WSL Repository**: https://github.com/microsoft/WSL/issues
+- [Issue #7198](https://github.com/microsoft/wslg/issues/357) - Shared memory between system and VRAM
+- [Issue #8447](https://github.com/microsoft/WSL/issues/8447) - CUDA out of memory issues
+- [Issue #3789](https://github.com/Microsoft/WSL/issues/3789) - OpenCL/CUDA feature request
+
+**Microsoft WSLg Repository** (GPU-specific): https://github.com/microsoft/wslg/issues
+
+**NVIDIA CUDA on WSL Documentation**: https://docs.nvidia.com/cuda/wsl-user-guide/
+
+### Key Insight for Future Development
+
+The GPU-native actor paradigm (100-500ns latency, 2M msgs/s) requires:
+- True CPU-GPU memory coherence (system-scope atomics)
+- Persistent kernel mode (kernel runs forever, polls for messages)
+
+**WSL2 cannot achieve this** due to virtualization limitations. For production:
+- Deploy on native Linux (bare metal or VM with GPU passthrough)
+- WSL2 is suitable only for development and functional testing

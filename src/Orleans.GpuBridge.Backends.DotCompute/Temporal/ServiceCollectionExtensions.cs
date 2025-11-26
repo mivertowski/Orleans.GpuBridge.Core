@@ -1,5 +1,8 @@
+using DotCompute.Abstractions.Timing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
+using Orleans.GpuBridge.Abstractions.Temporal;
 using Orleans.GpuBridge.Runtime.Temporal;
 using System;
 
@@ -26,23 +29,38 @@ public static class ServiceCollectionExtensions
         // Register options
         services.TryAddSingleton(options);
 
-        // Register clock calibrator
-        services.TryAddSingleton<GpuClockCalibrator>();
+        // Register timing provider - try DotCompute first, fall back to CPU
+        services.TryAddSingleton<IGpuTimingProvider>(sp =>
+        {
+            var loggerFactory = sp.GetRequiredService<ILoggerFactory>();
 
-        // TODO: Register DotCompute timing provider when DI integration is complete
-        // services.AddSingleton<ITimingProvider>(sp =>
-        // {
-        //     var deviceManager = sp.GetRequiredService<IDeviceManager>();
-        //     var device = deviceManager.GetDevice(options.DeviceIndex);
-        //     var provider = deviceManager.GetTimingProvider(device);
-        //
-        //     if (options.EnableTimestampInjection)
-        //     {
-        //         provider.EnableTimestampInjection(true);
-        //     }
-        //
-        //     return provider;
-        // });
+            // Try to get DotCompute timing provider if registered
+            var dotComputeProvider = sp.GetService<ITimingProvider>();
+            if (dotComputeProvider != null)
+            {
+                var dcLogger = loggerFactory.CreateLogger<DotComputeTimingProvider>();
+                var provider = new DotComputeTimingProvider(dotComputeProvider, dcLogger);
+
+                if (options.EnableTimestampInjection)
+                {
+                    provider.EnableTimestampInjection(true);
+                }
+
+                return provider;
+            }
+
+            // Fall back to CPU timing provider
+            var cpuLogger = loggerFactory.CreateLogger<CpuTimingProvider>();
+            return new CpuTimingProvider(cpuLogger);
+        });
+
+        // Register clock calibrator with timing provider
+        services.TryAddSingleton<GpuClockCalibrator>(sp =>
+        {
+            var timingProvider = sp.GetRequiredService<IGpuTimingProvider>();
+            var logger = sp.GetRequiredService<ILogger<GpuClockCalibrator>>();
+            return new GpuClockCalibrator(timingProvider, logger);
+        });
 
         return services;
     }

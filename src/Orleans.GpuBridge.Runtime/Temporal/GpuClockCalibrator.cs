@@ -11,21 +11,80 @@ namespace Orleans.GpuBridge.Runtime.Temporal;
 /// Calibrates GPU clock against CPU time for temporal correctness.
 /// Performs statistical analysis of clock offset and drift to enable accurate time conversion.
 /// </summary>
-public sealed class GpuClockCalibrator
+/// <remarks>
+/// <para>
+/// This calibrator uses an <see cref="IGpuTimingProvider"/> to query GPU timestamps
+/// and performs linear regression to determine:
+/// <list type="bullet">
+/// <item><description><strong>Offset</strong>: Constant difference between GPU and CPU time</description></item>
+/// <item><description><strong>Drift</strong>: Rate at which clocks diverge (PPM)</description></item>
+/// <item><description><strong>Error Bound</strong>: Uncertainty in offset measurement</description></item>
+/// </list>
+/// </para>
+/// <para>
+/// <strong>Automatic Recalibration:</strong> Calibration results are cached and automatically
+/// refreshed when stale (default: 5 minutes). Call <see cref="GetCalibrationAsync"/> to get
+/// the current calibration, which will refresh if needed.
+/// </para>
+/// </remarks>
+public sealed class GpuClockCalibrator : IDisposable
 {
     private readonly ILogger<GpuClockCalibrator> _logger;
+    private readonly IGpuTimingProvider? _timingProvider;
     private ClockCalibration? _currentCalibration;
     private readonly SemaphoreSlim _calibrationLock = new(1, 1);
+    private bool _disposed;
 
     /// <summary>
     /// Default calibration interval (5 minutes).
     /// </summary>
     public static readonly TimeSpan DefaultCalibrationInterval = TimeSpan.FromMinutes(5);
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GpuClockCalibrator"/> class
+    /// with a timing provider for real GPU timestamps.
+    /// </summary>
+    /// <param name="timingProvider">GPU timing provider for timestamp queries.</param>
+    /// <param name="logger">Logger for diagnostic output.</param>
+    public GpuClockCalibrator(IGpuTimingProvider timingProvider, ILogger<GpuClockCalibrator> logger)
+    {
+        _timingProvider = timingProvider ?? throw new ArgumentNullException(nameof(timingProvider));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+        _logger.LogInformation(
+            "GpuClockCalibrator initialized with {ProviderType} (GPU-backed: {IsGpuBacked})",
+            _timingProvider.ProviderTypeName,
+            _timingProvider.IsGpuBacked);
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GpuClockCalibrator"/> class
+    /// without a timing provider (uses simulated timestamps for testing).
+    /// </summary>
+    /// <param name="logger">Logger for diagnostic output.</param>
+    /// <remarks>
+    /// This constructor is provided for backward compatibility and testing scenarios.
+    /// Production code should use the constructor that accepts <see cref="IGpuTimingProvider"/>.
+    /// </remarks>
     public GpuClockCalibrator(ILogger<GpuClockCalibrator> logger)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _timingProvider = null; // Will use simulated timestamps
+
+        _logger.LogWarning(
+            "GpuClockCalibrator initialized without timing provider - using simulated timestamps. " +
+            "For production use, provide IGpuTimingProvider via dependency injection.");
     }
+
+    /// <summary>
+    /// Gets whether this calibrator is using real GPU timestamps.
+    /// </summary>
+    public bool HasGpuTimingProvider => _timingProvider != null;
+
+    /// <summary>
+    /// Gets the timing provider type name, or "Simulated" if no provider.
+    /// </summary>
+    public string TimingProviderType => _timingProvider?.ProviderTypeName ?? "Simulated";
 
     /// <summary>
     /// Gets the current clock calibration (performs calibration if not cached or stale).
@@ -146,6 +205,8 @@ public sealed class GpuClockCalibrator
         int sampleCount,
         CancellationToken ct)
     {
+        ObjectDisposedException.ThrowIf(_disposed, this);
+
         var samples = new (long cpuTime, long gpuTime, long offset)[sampleCount];
 
         for (int i = 0; i < sampleCount; i++)
@@ -155,8 +216,10 @@ public sealed class GpuClockCalibrator
             // Get CPU time
             long cpuTime = DateTimeOffset.UtcNow.ToUnixTimeNanoseconds();
 
-            // Get GPU time (simulated for now - will be replaced with DotCompute API)
-            long gpuTime = await SimulateGpuTimestampAsync();
+            // Get GPU time - use real provider if available, otherwise simulate
+            long gpuTime = _timingProvider != null
+                ? await _timingProvider.GetGpuTimestampAsync(ct)
+                : SimulateGpuTimestamp(cpuTime);
 
             // Calculate offset
             long offset = gpuTime - cpuTime;
@@ -174,19 +237,19 @@ public sealed class GpuClockCalibrator
     }
 
     /// <summary>
-    /// Simulates GPU timestamp query.
-    /// TODO: Replace with actual DotCompute timing API call.
+    /// Simulates GPU timestamp query for testing and fallback scenarios.
     /// </summary>
-    private Task<long> SimulateGpuTimestampAsync()
+    /// <param name="cpuTime">Current CPU time in nanoseconds.</param>
+    /// <returns>Simulated GPU timestamp with synthetic offset and drift.</returns>
+    private static long SimulateGpuTimestamp(long cpuTime)
     {
         // Simulate GPU clock with synthetic offset and drift
         const long syntheticOffset = 1_000_000_000L; // 1 second offset
         const double syntheticDriftPPM = 10.0; // 10 PPM drift
 
-        long cpuTime = DateTimeOffset.UtcNow.ToUnixTimeNanoseconds();
         long drift = (long)(cpuTime * (syntheticDriftPPM / 1_000_000.0));
 
-        return Task.FromResult(cpuTime + syntheticOffset + drift);
+        return cpuTime + syntheticOffset + drift;
     }
 
     /// <summary>

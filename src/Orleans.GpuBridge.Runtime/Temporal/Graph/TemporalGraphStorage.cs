@@ -172,6 +172,7 @@ public sealed class TemporalGraphStorage
     /// <summary>
     /// Finds the shortest temporal path using optimized BFS with early termination.
     /// Much faster than DFS for finding any path (stops at first path found).
+    /// Supports circular path detection where startNode == endNode.
     /// </summary>
     private TemporalPath? FindShortestPathBFS(
         ulong startNode,
@@ -182,9 +183,18 @@ public sealed class TemporalGraphStorage
         var queue = new Queue<(ulong node, TemporalPath path)>();
         var visited = new HashSet<ulong>();
 
+        // Detect if we're looking for a cycle (circular path)
+        var lookingForCycle = startNode == endNode;
+
         // Start with empty path from startNode
         queue.Enqueue((startNode, new TemporalPath()));
-        visited.Add(startNode);
+
+        // For non-cycle detection, mark start as visited to prevent revisiting
+        // For cycle detection, we'll track visited during traversal but allow reaching start again
+        if (!lookingForCycle)
+        {
+            visited.Add(startNode);
+        }
 
         while (queue.Count > 0)
         {
@@ -200,6 +210,12 @@ public sealed class TemporalGraphStorage
             if (currentPath.Length >= maxPathLength)
                 continue;
 
+            // Mark current node as visited (for cycle detection, only after first step)
+            if (currentPath.Length > 0 || !lookingForCycle)
+            {
+                visited.Add(currentNode);
+            }
+
             // Determine time window for next edge
             long earliestTime = currentPath.Length == 0
                 ? long.MinValue
@@ -213,8 +229,11 @@ public sealed class TemporalGraphStorage
 
             foreach (var edge in edges)
             {
-                // Skip if target node already visited
-                if (visited.Contains(edge.TargetId))
+                // For cycle detection, allow reaching the start node if we have enough path length
+                var isTargetStartNode = edge.TargetId == startNode && lookingForCycle;
+
+                // Skip if target node already visited (unless it's the target for cycle detection)
+                if (visited.Contains(edge.TargetId) && !isTargetStartNode)
                     continue;
 
                 // Check temporal constraint
@@ -228,7 +247,12 @@ public sealed class TemporalGraphStorage
                 // Add edge to path and enqueue
                 var newPath = currentPath.Append(edge);
                 queue.Enqueue((edge.TargetId, newPath));
-                visited.Add(edge.TargetId);
+
+                // Don't mark start node as visited for cycle detection
+                if (!isTargetStartNode)
+                {
+                    visited.Add(edge.TargetId);
+                }
             }
         }
 

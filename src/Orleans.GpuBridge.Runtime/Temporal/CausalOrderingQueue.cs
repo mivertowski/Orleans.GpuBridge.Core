@@ -315,7 +315,7 @@ public sealed class CausalOrderingQueue
 /// <summary>
 /// Represents a message with causal ordering information.
 /// </summary>
-public sealed class CausalMessage
+public sealed class CausalMessage : IPendingMessage
 {
     /// <summary>
     /// Unique message identifier.

@@ -176,6 +176,22 @@ public readonly struct HybridTimestamp : IComparable<HybridTimestamp>, IEquatabl
 
     public static bool operator >=(HybridTimestamp left, HybridTimestamp right) =>
         left.CompareTo(right) >= 0;
+
+    /// <summary>
+    /// Converts this HLC timestamp to a 64-bit integer representation.
+    /// Uses physical time for the conversion, providing nanosecond precision.
+    /// </summary>
+    /// <returns>The physical time component in nanoseconds since Unix epoch.</returns>
+    public long ToInt64() => PhysicalTime;
+
+    /// <summary>
+    /// Creates an HLC timestamp from a 64-bit integer representation.
+    /// </summary>
+    /// <param name="value">Physical time in nanoseconds since Unix epoch.</param>
+    /// <param name="nodeId">Optional node identifier for distributed ordering.</param>
+    /// <returns>A new HLC timestamp with the specified physical time.</returns>
+    public static HybridTimestamp FromInt64(long value, ushort nodeId = 0) =>
+        new(value, 0, nodeId);
 }
 
 /// <summary>

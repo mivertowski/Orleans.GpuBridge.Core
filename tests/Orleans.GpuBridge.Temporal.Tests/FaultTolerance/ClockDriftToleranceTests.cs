@@ -8,6 +8,27 @@ using Xunit.Abstractions;
 namespace Orleans.GpuBridge.Temporal.Tests.FaultTolerance;
 
 /// <summary>
+/// Fixed clock source for deterministic HLC testing.
+/// </summary>
+internal sealed class FixedClockSource : IPhysicalClockSource
+{
+    private long _currentTimeNanos;
+
+    public FixedClockSource(long initialTimeNanos)
+    {
+        _currentTimeNanos = initialTimeNanos;
+    }
+
+    public void SetTime(long nanos) => _currentTimeNanos = nanos;
+    public void Advance(long deltaNanos) => _currentTimeNanos += deltaNanos;
+
+    public long GetCurrentTimeNanos() => _currentTimeNanos;
+    public long GetErrorBound() => 0;
+    public bool IsSynchronized => true;
+    public double GetClockDrift() => 0.0;
+}
+
+/// <summary>
 /// Tests for Hybrid Logical Clock behavior under clock drift and skew conditions.
 /// Validates tolerance to clock synchronization issues in distributed systems.
 /// </summary>
@@ -178,21 +199,24 @@ public class ClockDriftToleranceTests
     [Fact]
     public void HLC_LogicalCounterIncrementsOnSamePhysicalTime()
     {
-        // Arrange: Simulate network delay causing timestamps to collide
-        var node1 = new HybridLogicalClock(nodeId: 1);
-        var node2 = new HybridLogicalClock(nodeId: 2);
+        // Arrange: Use fixed clock source to ensure deterministic behavior
+        // Without a fixed clock, the system clock may advance between Now() and Update()
+        // causing the test to be flaky
+        var fixedTime = 1_000_000_000_000L; // 1 trillion nanoseconds (~16 minutes from epoch)
+        var clockSource = new FixedClockSource(fixedTime);
+        var node1 = new HybridLogicalClock(nodeId: 1, clockSource: clockSource);
 
-        // Both nodes generate timestamps at "same" physical time (within drift tolerance)
+        // Generate timestamp at fixed physical time
         var ts1 = node1.Now();
         var ts2 = new HybridTimestamp(ts1.PhysicalTime, 0, 2); // Same physical time, different node
 
-        // Act: Update node1 with node2's timestamp
+        // Act: Update node1 with node2's timestamp (clock source still returns same time)
         var ts3 = node1.Update(ts2);
 
-        // Assert: Logical counter disambiguates
+        // Assert: Logical counter disambiguates (since physical time is the same)
         Assert.Equal(ts1.PhysicalTime, ts3.PhysicalTime);
         Assert.True(ts3.LogicalCounter > Math.Max(ts1.LogicalCounter, ts2.LogicalCounter),
-            "Logical counter must increment to break tie");
+            $"Logical counter must increment to break tie. Got {ts3.LogicalCounter}, expected > {Math.Max(ts1.LogicalCounter, ts2.LogicalCounter)}");
 
         _output.WriteLine($"Physical time collision handled:");
         _output.WriteLine($"  ts1: PhysicalTime={ts1.PhysicalTime}, Logical={ts1.LogicalCounter}");

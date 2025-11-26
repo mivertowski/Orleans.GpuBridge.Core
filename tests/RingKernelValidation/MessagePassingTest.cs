@@ -44,15 +44,19 @@ public static class MessagePassingTest
 
             if (backend == "CUDA")
             {
-                // Create CUDA runtime directly for RegisterAssembly access
+                // Create CUDA runtime with actual loggers to trace message flow
+                // Include handler translator for unified kernel API support
+                var handlerTranslator = new RingKernelHandlerTranslator(
+                    loggerFactory.CreateLogger<RingKernelHandlerTranslator>());
                 var compiler = new CudaRingKernelCompiler(
-                    NullLogger<CudaRingKernelCompiler>.Instance,
-                    new RingKernelDiscovery(NullLogger<RingKernelDiscovery>.Instance),
-                    new CudaRingKernelStubGenerator(NullLogger<CudaRingKernelStubGenerator>.Instance),
-                    new DotCompute.Backends.CUDA.Compilation.CudaMemoryPackSerializerGenerator(NullLogger<DotCompute.Backends.CUDA.Compilation.CudaMemoryPackSerializerGenerator>.Instance));
-                var registry = new MessageQueueRegistry(NullLogger<MessageQueueRegistry>.Instance);
+                    loggerFactory.CreateLogger<CudaRingKernelCompiler>(),
+                    new RingKernelDiscovery(loggerFactory.CreateLogger<RingKernelDiscovery>()),
+                    new CudaRingKernelStubGenerator(loggerFactory.CreateLogger<CudaRingKernelStubGenerator>()),
+                    new DotCompute.Backends.CUDA.Compilation.CudaMemoryPackSerializerGenerator(loggerFactory.CreateLogger<DotCompute.Backends.CUDA.Compilation.CudaMemoryPackSerializerGenerator>()),
+                    handlerTranslator);
+                var registry = new MessageQueueRegistry(loggerFactory.CreateLogger<MessageQueueRegistry>());
                 var cudaRuntime = new CudaRingKernelRuntime(
-                    NullLogger<CudaRingKernelRuntime>.Instance,
+                    loggerFactory.CreateLogger<CudaRingKernelRuntime>(),
                     compiler,
                     registry);
                 // Register our assembly for kernel discovery

@@ -35,10 +35,10 @@ class Program
         Console.WriteLine("╚════════════════════════════════════════════════════════════════╝");
         Console.WriteLine();
 
-        // Setup logging
+        // Setup logging - Debug level to trace bridge message transfers
         using var loggerFactory = LoggerFactory.Create(builder =>
         {
-            builder.SetMinimumLevel(LogLevel.Information);
+            builder.SetMinimumLevel(LogLevel.Debug);
             builder.AddConsole();
         });
 

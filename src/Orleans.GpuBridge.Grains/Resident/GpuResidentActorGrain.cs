@@ -192,11 +192,20 @@ public interface IGpuResidentActorGrain : IGrainWithIntegerKey
 /// <summary>
 /// Snapshot of actor state for queries.
 /// </summary>
+[Orleans.GenerateSerializer]
+[Orleans.Immutable]
 public readonly struct ActorStateSnapshot
 {
+    [Orleans.Id(0)]
     public ulong ActorId { get; init; }
+
+    [Orleans.Id(1)]
     public HybridTimestamp LastTimestamp { get; init; }
+
+    [Orleans.Id(2)]
     public ulong MessageCount { get; init; }
+
+    [Orleans.Id(3)]
     public bool IsGpuResident { get; init; }
 
     public override string ToString() =>

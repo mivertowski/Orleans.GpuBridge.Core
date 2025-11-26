@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Code Coverage Configuration for Orleans.GpuBridge.Core -->
+<!-- Usage: dotnet test [settings tests/coverage.runsettings] [collect:"XPlat Code Coverage"] -->
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat Code Coverage">
+        <Configuration>
+          <!-- Output formats: cobertura for CI, opencover for detailed analysis -->
+          <Format>cobertura,opencover</Format>
+
+          <!-- Include only Orleans.GpuBridge assemblies -->
+          <Include>
+            [Orleans.GpuBridge.Abstractions]*,
+            [Orleans.GpuBridge.Runtime]*,
+            [Orleans.GpuBridge.Grains]*,
+            [Orleans.GpuBridge.BridgeFX]*,
+            [Orleans.GpuBridge.Backends.DotCompute]*
+          </Include>
+
+          <!-- Exclude test and validation assemblies -->
+          <Exclude>
+            [*Tests]*,
+            [*Validation]*,
+            [*Benchmarks]*,
+            [*Explorer]*,
+            [*Tool]*
+          </Exclude>
+
+          <!-- Exclude specific types -->
+          <ExcludeByAttribute>
+            Obsolete,
+            GeneratedCodeAttribute,
+            CompilerGeneratedAttribute,
+            ExcludeFromCodeCoverageAttribute
+          </ExcludeByAttribute>
+
+          <!-- Exclude source files by pattern -->
+          <ExcludeByFile>
+            **/obj/**,
+            **/bin/**,
+            **/*.Designer.cs,
+            **/*.g.cs,
+            **/*.generated.cs
+          </ExcludeByFile>
+
+          <!-- Accurate coverage even with optimizations -->
+          <SingleHit>false</SingleHit>
+
+          <!-- Enable source link for detailed line coverage -->
+          <UseSourceLink>true</UseSourceLink>
+
+          <!-- Don't include test assembly coverage -->
+          <IncludeTestAssembly>false</IncludeTestAssembly>
+
+          <!-- Skip auto-generated properties -->
+          <SkipAutoProps>true</SkipAutoProps>
+
+          <!-- Deterministic report only works with cobertura -->
+          <DeterministicReport>false</DeterministicReport>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+
+  <RunConfiguration>
+    <!-- Maximum parallel test execution -->
+    <MaxCpuCount>0</MaxCpuCount>
+
+    <!-- Test result directory -->
+    <ResultsDirectory>./TestResults</ResultsDirectory>
+
+    <!-- Target framework for tests -->
+    <TargetFrameworkVersion>net9.0</TargetFrameworkVersion>
+
+    <!-- Test timeout (5 minutes for GPU tests) -->
+    <TestSessionTimeout>300000</TestSessionTimeout>
+  </RunConfiguration>
+
+  <LoggerRunSettings>
+    <Loggers>
+      <Logger friendlyName="trx" enabled="True">
+        <Configuration>
+          <LogFileName>TestResults.trx</LogFileName>
+        </Configuration>
+      </Logger>
+      <Logger friendlyName="console" enabled="True">
+        <Configuration>
+          <Verbosity>normal</Verbosity>
+        </Configuration>
+      </Logger>
+    </Loggers>
+  </LoggerRunSettings>
+</RunSettings>

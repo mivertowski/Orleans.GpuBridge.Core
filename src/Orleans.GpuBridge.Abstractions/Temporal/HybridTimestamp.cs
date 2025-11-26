@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using Orleans;
 
 namespace Orleans.GpuBridge.Abstractions.Temporal;
 
@@ -14,21 +15,26 @@ namespace Orleans.GpuBridge.Abstractions.Temporal;
 /// 3. Physical time approximation: HLC tracks physical time closely
 /// </remarks>
 [StructLayout(LayoutKind.Sequential)]
+[GenerateSerializer]
+[Immutable]
 public readonly struct HybridTimestamp : IComparable<HybridTimestamp>, IEquatable<HybridTimestamp>
 {
     /// <summary>
     /// Physical time component in nanoseconds since Unix epoch.
     /// </summary>
+    [Id(0)]
     public long PhysicalTime { get; init; }
 
     /// <summary>
     /// Logical counter for events occurring at the same physical time.
     /// </summary>
+    [Id(1)]
     public long LogicalCounter { get; init; }
 
     /// <summary>
     /// Node identifier for tie-breaking concurrent events (optional).
     /// </summary>
+    [Id(2)]
     public ushort NodeId { get; init; }
 
     /// <summary>

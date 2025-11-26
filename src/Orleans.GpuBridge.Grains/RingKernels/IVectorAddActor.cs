@@ -75,40 +75,49 @@ public interface IVectorAddActor : IGpuNativeGrain
 /// <summary>
 /// Performance metrics for VectorAddActor ring kernel.
 /// </summary>
+[Orleans.GenerateSerializer]
+[Orleans.Immutable]
 public record VectorAddMetrics
 {
     /// <summary>
     /// Gets the total number of vector additions processed.
     /// </summary>
+    [Orleans.Id(0)]
     public long TotalOperations { get; init; }
 
     /// <summary>
     /// Gets the average processing time in nanoseconds.
     /// </summary>
+    [Orleans.Id(1)]
     public double AvgProcessingTimeNs { get; init; }
 
     /// <summary>
     /// Gets the messages processed per second.
     /// </summary>
+    [Orleans.Id(2)]
     public double ThroughputMsgsPerSec { get; init; }
 
     /// <summary>
     /// Gets the input queue utilization (0.0-1.0).
     /// </summary>
+    [Orleans.Id(3)]
     public double InputQueueUtilization { get; init; }
 
     /// <summary>
     /// Gets the output queue utilization (0.0-1.0).
     /// </summary>
+    [Orleans.Id(4)]
     public double OutputQueueUtilization { get; init; }
 
     /// <summary>
     /// Gets the current GPU memory usage in bytes.
     /// </summary>
+    [Orleans.Id(5)]
     public long GpuMemoryBytes { get; init; }
 
     /// <summary>
     /// Gets the ring kernel uptime.
     /// </summary>
+    [Orleans.Id(6)]
     public TimeSpan Uptime { get; init; }
 }

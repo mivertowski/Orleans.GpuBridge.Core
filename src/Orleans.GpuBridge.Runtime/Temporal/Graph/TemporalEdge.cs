@@ -402,25 +402,28 @@ internal sealed class TemporalEdgeList
     /// Queries edges that overlap with the specified time range.
     /// </summary>
     /// <remarks>
-    /// Uses binary search to find the starting point, then iterates efficiently.
-    /// Complexity: O(log N + M) where M is the number of matching edges.
+    /// <para>
+    /// For overlap queries, we must check all edges from the beginning because
+    /// an edge with ValidFrom &lt; startTime may still overlap if ValidTo &gt;= startTime.
+    /// </para>
+    /// <para>
+    /// The iteration stops when we reach edges where ValidFrom &gt; endTime (these cannot overlap).
+    /// Complexity: O(N) where N is the number of edges. For truly efficient interval queries,
+    /// consider using the interval tree index instead.
+    /// </para>
     /// </remarks>
     public IEnumerable<TemporalEdge> Query(long startTime, long endTime)
     {
-        // Find the first time bucket that could contain relevant edges
-        var keys = _edgesByTime.Keys;
-        var startIndex = BinarySearchFloor(keys, startTime);
-
-        // Iterate through time buckets
-        for (int i = startIndex; i < _edgesByTime.Count; i++)
+        // For overlap queries, we must start from the beginning because edges
+        // with ValidFrom < startTime may still be active at startTime if their ValidTo >= startTime.
+        // We can stop early when ValidFrom > endTime (no future edges can overlap).
+        foreach (var (time, edges) in _edgesByTime)
         {
-            var (time, edges) = _edgesByTime.ElementAt(i);
-
-            // Stop if we've passed the end time
+            // Stop if we've passed the end time - no future edges can overlap
             if (time > endTime)
                 break;
 
-            // Check each edge in this time bucket
+            // Check each edge in this time bucket for overlap
             foreach (var edge in edges)
             {
                 if (edge.OverlapsWith(startTime, endTime))

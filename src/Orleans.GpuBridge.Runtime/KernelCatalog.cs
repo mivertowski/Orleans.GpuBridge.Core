@@ -96,7 +96,9 @@ public sealed class KernelCatalog
                 else
                 {
                     _logger.LogInformation("Kernel {KernelId} not found in catalog, using CPU passthrough", id.Value);
-                    return new CpuPassthroughKernel<TIn, TOut>();
+                    var fallbackKernel = new CpuPassthroughKernel<TIn, TOut>();
+                    await fallbackKernel.InitializeAsync(cancellationToken).ConfigureAwait(false);
+                    return fallbackKernel;
                 }
             }
             finally

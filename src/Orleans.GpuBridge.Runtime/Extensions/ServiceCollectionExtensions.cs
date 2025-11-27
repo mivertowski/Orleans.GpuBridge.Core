@@ -7,9 +7,12 @@ using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions;
 using Orleans.GpuBridge.Abstractions.Memory;
 using Orleans.GpuBridge.Abstractions.Providers;
+using Orleans.GpuBridge.Abstractions.RingKernels;
 using Orleans.GpuBridge.Runtime.Builders;
+using Orleans.GpuBridge.Runtime.K2K;
 using Orleans.GpuBridge.Runtime.Providers;
 using Orleans.GpuBridge.Runtime.RingKernels;
+using Orleans.GpuBridge.Runtime.Routing;
 
 namespace Orleans.GpuBridge.Runtime.Extensions;
 
@@ -142,6 +145,140 @@ public static class ServiceCollectionExtensions
             return new DotComputeRingKernelRuntime(cudaRuntime, logger);
         });
 
+        return services;
+    }
+
+    /// <summary>
+    /// Adds K2K (Kernel-to-Kernel) messaging support for GPU-native actor communication.
+    /// </summary>
+    /// <param name="services">Service collection.</param>
+    /// <returns>Service collection for chaining.</returns>
+    /// <remarks>
+    /// <para>
+    /// K2K messaging enables sub-microsecond communication between GPU-resident actors
+    /// without CPU involvement. Messages are dispatched directly through GPU memory queues.
+    /// </para>
+    /// <para>
+    /// Supported routing strategies:
+    /// - Direct: Point-to-point messaging (100-500ns latency)
+    /// - Broadcast: One-to-many messaging
+    /// - Ring: Circular topology for consensus protocols
+    /// - HashRouted: Consistent hashing for load distribution
+    /// </para>
+    /// <para>
+    /// Usage:
+    /// <code>
+    /// services.AddGpuBridge()
+    ///         .AddRingKernelSupport()
+    ///         .AddK2KSupport();
+    /// </code>
+    /// </para>
+    /// </remarks>
+    public static IServiceCollection AddK2KSupport(this IServiceCollection services)
+    {
+        // K2K dispatcher - handles GPU-to-GPU message routing
+        services.TryAddSingleton<K2KDispatcher>();
+        services.TryAddSingleton<IK2KDispatcher>(sp => sp.GetRequiredService<K2KDispatcher>());
+
+        // K2K target registry - stores K2K target configurations
+        services.TryAddSingleton<K2KTargetRegistry>();
+
+        // K2K router factory - creates routers based on strategy
+        services.TryAddSingleton<K2KRouterFactory>();
+
+        // Register individual routers with keyed services
+        services.TryAddKeyedSingleton<IK2KRouter>(
+            K2KRoutingStrategy.Direct,
+            (sp, _) => new DirectRouter(sp.GetRequiredService<IK2KDispatcher>()));
+
+        services.TryAddKeyedSingleton<IK2KRouter>(
+            K2KRoutingStrategy.Broadcast,
+            (sp, _) => new BroadcastRouter(sp.GetRequiredService<K2KDispatcher>()));
+
+        services.TryAddKeyedSingleton<IK2KRouter>(
+            K2KRoutingStrategy.Ring,
+            (sp, _) => new RingRouter(sp.GetRequiredService<K2KDispatcher>()));
+
+        services.TryAddKeyedSingleton<IK2KRouter>(
+            K2KRoutingStrategy.HashRouted,
+            (sp, _) => new HashRoutedRouter(sp.GetRequiredService<K2KDispatcher>()));
+
+        return services;
+    }
+
+    /// <summary>
+    /// Adds the CPU fallback ring kernel bridge for generated actors.
+    /// </summary>
+    /// <param name="services">Service collection.</param>
+    /// <returns>Service collection for chaining.</returns>
+    /// <remarks>
+    /// <para>
+    /// This registers the CPU fallback implementation of <see cref="IRingKernelBridge"/>.
+    /// Use this for development, testing, or environments without GPU hardware.
+    /// </para>
+    /// <para>
+    /// For GPU acceleration, use the DotCompute backend's <c>AddDotComputeRingKernelBridge()</c>
+    /// extension method instead, which will replace this registration with GPU-capable implementation.
+    /// </para>
+    /// <para>
+    /// Usage:
+    /// <code>
+    /// services.AddGpuBridge()
+    ///         .AddRingKernelSupport()
+    ///         .AddRingKernelBridge(); // CPU fallback
+    /// </code>
+    /// </para>
+    /// </remarks>
+    public static IServiceCollection AddRingKernelBridge(this IServiceCollection services)
+    {
+        // Register CPU fallback as default (can be replaced by GPU implementation)
+        services.TryAddSingleton<IRingKernelBridge>(sp =>
+        {
+            var logger = sp.GetRequiredService<ILogger<CpuFallbackRingKernelBridge>>();
+            return new CpuFallbackRingKernelBridge(logger);
+        });
+
+        return services;
+    }
+
+    /// <summary>
+    /// Adds a custom ring kernel bridge implementation.
+    /// </summary>
+    /// <typeparam name="TBridge">The bridge implementation type.</typeparam>
+    /// <param name="services">Service collection.</param>
+    /// <returns>Service collection for chaining.</returns>
+    /// <remarks>
+    /// Use this to register a custom <see cref="IRingKernelBridge"/> implementation.
+    /// This replaces any previously registered bridge.
+    /// </remarks>
+    public static IServiceCollection AddRingKernelBridge<TBridge>(this IServiceCollection services)
+        where TBridge : class, IRingKernelBridge
+    {
+        // Replace any existing registration
+        services.RemoveAll<IRingKernelBridge>();
+        services.AddSingleton<IRingKernelBridge, TBridge>();
+        return services;
+    }
+
+    /// <summary>
+    /// Adds a ring kernel bridge using a factory function.
+    /// </summary>
+    /// <param name="services">Service collection.</param>
+    /// <param name="factory">Factory function to create the bridge.</param>
+    /// <returns>Service collection for chaining.</returns>
+    /// <remarks>
+    /// Use this for custom bridge initialization with DI resolution.
+    /// This replaces any previously registered bridge.
+    /// </remarks>
+    public static IServiceCollection AddRingKernelBridge(
+        this IServiceCollection services,
+        Func<IServiceProvider, IRingKernelBridge> factory)
+    {
+        ArgumentNullException.ThrowIfNull(factory);
+
+        // Replace any existing registration
+        services.RemoveAll<IRingKernelBridge>();
+        services.AddSingleton(factory);
         return services;
     }
 }

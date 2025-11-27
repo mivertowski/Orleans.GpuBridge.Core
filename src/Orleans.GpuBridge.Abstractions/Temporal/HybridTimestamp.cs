@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Orleans;
 
@@ -50,6 +51,7 @@ public readonly struct HybridTimestamp : IComparable<HybridTimestamp>, IEquatabl
     /// <summary>
     /// Creates an HLC timestamp from current system time.
     /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static HybridTimestamp Now(ushort nodeId = 0)
     {
         long physicalTime = DateTimeOffset.UtcNow.ToUnixTimeNanoseconds();
@@ -59,6 +61,7 @@ public readonly struct HybridTimestamp : IComparable<HybridTimestamp>, IEquatabl
     /// <summary>
     /// Gets current physical time in nanoseconds since Unix epoch.
     /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static long GetCurrentPhysicalTimeNanos()
     {
         return DateTimeOffset.UtcNow.ToUnixTimeNanoseconds();
@@ -129,6 +132,7 @@ public readonly struct HybridTimestamp : IComparable<HybridTimestamp>, IEquatabl
     /// 0 if this == other (concurrent or same event)
     /// 1 if this &gt; other (other happens-before this)
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int CompareTo(HybridTimestamp other)
     {
         // Compare physical time first
@@ -145,6 +149,7 @@ public readonly struct HybridTimestamp : IComparable<HybridTimestamp>, IEquatabl
         return NodeId.CompareTo(other.NodeId);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Equals(HybridTimestamp other) =>
         PhysicalTime == other.PhysicalTime &&
         LogicalCounter == other.LogicalCounter &&
@@ -153,6 +158,7 @@ public readonly struct HybridTimestamp : IComparable<HybridTimestamp>, IEquatabl
     public override bool Equals(object? obj) =>
         obj is HybridTimestamp timestamp && Equals(timestamp);
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override int GetHashCode() =>
         HashCode.Combine(PhysicalTime, LogicalCounter, NodeId);
 
@@ -205,6 +211,7 @@ public static class DateTimeOffsetExtensions
     /// <summary>
     /// Converts DateTimeOffset to Unix nanoseconds.
     /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static long ToUnixTimeNanoseconds(this DateTimeOffset dateTimeOffset)
     {
         long ticks = dateTimeOffset.UtcDateTime.Ticks;

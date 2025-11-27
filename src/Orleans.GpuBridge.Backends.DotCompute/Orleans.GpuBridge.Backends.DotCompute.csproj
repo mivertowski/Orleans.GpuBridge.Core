@@ -14,6 +14,8 @@
     <!-- CS1591: Source generator doesn't create XML comments for generated code -->
     <!-- IL2095: DotCompute message queue AOT trim analysis - will be fixed in DotCompute source -->
     <NoWarn>$(NoWarn);CS8669;CS1591;DC002;DC004;DC005;DC009;DC010;DC011;DC0004;DC0005;IL2095</NoWarn>
+    <!-- Disable DotCompute CUDA serialization generation - we use CustomRingKernelRuntimeFactory instead -->
+    <DotComputeGenerateCudaSerialization>false</DotComputeGenerateCudaSerialization>
   </PropertyGroup>
 
   <!-- Expose internal types to test assembly -->
@@ -26,14 +28,8 @@
 
     <!-- Package Metadata -->
     <PackageId>Orleans.GpuBridge.Backends.DotCompute</PackageId>
-    <Version>0.1.0-alpha</Version>
-    <Authors>Michael Ivertowski</Authors>
+    <!-- Version inherited from Directory.Build.props -->
     <Description>DotCompute backend provider for Orleans.GpuBridge.Core - Enables GPU acceleration via CUDA, OpenCL, Metal, and CPU with attribute-based kernel definition.</Description>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/mivertowski/Orleans.GpuBridge.Core</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/mivertowski/Orleans.GpuBridge.Core</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>orleans;gpu;dotcompute;cuda;opencl;metal;compute;acceleration</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -43,21 +39,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- DotCompute Framework v0.5.0-alpha with Message Queue Support (Local Build) -->
-    <!-- Release Date: November 14, 2025 -->
-    <!-- NEW: IRingKernelMessage interface, IMessageQueue<T>, Named message queues -->
+    <!-- DotCompute Framework v0.5.0 (Stable NuGet Release) -->
     <!-- Features: Message queues, Timing API, Ring Kernels, Barriers, Memory Ordering -->
-
-    <!-- Use local DotCompute project references for message queue features -->
-    <ProjectReference Include="/home/mivertowski/DotCompute/DotCompute/src/Core/DotCompute.Abstractions/DotCompute.Abstractions.csproj" />
-    <ProjectReference Include="/home/mivertowski/DotCompute/DotCompute/src/Core/DotCompute.Core/DotCompute.Core.csproj" />
-    <ProjectReference Include="/home/mivertowski/DotCompute/DotCompute/src/Runtime/DotCompute.Runtime/DotCompute.Runtime.csproj" />
-    <ProjectReference Include="/home/mivertowski/DotCompute/DotCompute/src/Backends/DotCompute.Backends.CPU/DotCompute.Backends.CPU.csproj" />
-    <ProjectReference Include="/home/mivertowski/DotCompute/DotCompute/src/Backends/DotCompute.Backends.CUDA/DotCompute.Backends.CUDA.csproj" />
+    <PackageReference Include="DotCompute.Abstractions" Version="0.5.0" />
+    <PackageReference Include="DotCompute.Core" Version="0.5.0" />
+    <PackageReference Include="DotCompute.Runtime" Version="0.5.0" />
+    <PackageReference Include="DotCompute.Backends.CPU" Version="0.5.0" />
+    <PackageReference Include="DotCompute.Backends.CUDA" Version="0.5.0" />
 
     <!-- DotCompute Source Generators -->
     <!-- Note: RingKernelRuntimeFactory.g.cs is excluded because we use CustomRingKernelRuntimeFactory instead -->
-    <ProjectReference Include="/home/mivertowski/DotCompute/DotCompute/src/Runtime/DotCompute.Generators/DotCompute.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
+    <PackageReference Include="DotCompute.Generators" Version="0.5.0" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
 
     <!-- Orleans Dependencies -->
     <PackageReference Include="Microsoft.Orleans.Core" Version="9.2.1" />

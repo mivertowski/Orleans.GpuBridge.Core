@@ -99,11 +99,26 @@ internal class DotComputeDeviceMemoryWrapper : IDeviceMemory
                 "Copying {SizeBytes} bytes from host {HostPointer:X} to device {DevicePointer:X} at offset {OffsetBytes}",
                 sizeBytes, hostPointer.ToInt64(), DevicePointer.ToInt64(), offsetBytes);
 
-            // Production DotCompute implementation would use DotCompute memory copy APIs
-            // This provides a CPU fallback with proper error handling and progress tracking
-            await SimulateAsyncMemoryCopy(sizeBytes, cancellationToken);
+            // Use native DotCompute buffer if available for real GPU transfer
+            if (_nativeBuffer != null)
+            {
+                // Extract data from host pointer (unsafe) then copy async (safe)
+                byte[] hostArray;
+                unsafe
+                {
+                    var sourceSpan = new ReadOnlySpan<byte>((void*)hostPointer, (int)sizeBytes);
+                    hostArray = sourceSpan.ToArray();
+                }
+                await _nativeBuffer.CopyFromAsync<byte>(new ReadOnlyMemory<byte>(hostArray), offsetBytes, cancellationToken);
 
-            _logger.LogTrace("Host to device memory copy completed");
+                _logger.LogTrace("Host to device memory copy completed via DotCompute native buffer");
+            }
+            else
+            {
+                // CPU fallback: simulate transfer time
+                await SimulateAsyncMemoryCopy(sizeBytes, cancellationToken);
+                _logger.LogTrace("Host to device memory copy completed (CPU simulation)");
+            }
         }
         catch (Exception ex)
         {
@@ -135,11 +150,29 @@ internal class DotComputeDeviceMemoryWrapper : IDeviceMemory
                 "Copying {SizeBytes} bytes from device {DevicePointer:X} at offset {OffsetBytes} to host {HostPointer:X}",
                 sizeBytes, DevicePointer.ToInt64(), offsetBytes, hostPointer.ToInt64());
 
-            // Production DotCompute implementation would use DotCompute memory copy APIs
-            // This provides a CPU fallback with proper error handling and progress tracking
-            await SimulateAsyncMemoryCopy(sizeBytes, cancellationToken);
+            // Use native DotCompute buffer if available for real GPU transfer
+            if (_nativeBuffer != null)
+            {
+                // Copy from device async (safe) then write to host pointer (unsafe)
+                var destArray = new byte[sizeBytes];
+                await _nativeBuffer.CopyToAsync<byte>(destArray.AsMemory(), offsetBytes, cancellationToken);
 
-            _logger.LogTrace("Device to host memory copy completed");
+                unsafe
+                {
+                    fixed (byte* srcPtr = destArray)
+                    {
+                        Buffer.MemoryCopy(srcPtr, (void*)hostPointer, sizeBytes, sizeBytes);
+                    }
+                }
+
+                _logger.LogTrace("Device to host memory copy completed via DotCompute native buffer");
+            }
+            else
+            {
+                // CPU fallback: simulate transfer time
+                await SimulateAsyncMemoryCopy(sizeBytes, cancellationToken);
+                _logger.LogTrace("Device to host memory copy completed (CPU simulation)");
+            }
         }
         catch (Exception ex)
         {
@@ -175,11 +208,23 @@ internal class DotComputeDeviceMemoryWrapper : IDeviceMemory
                 "Copying {SizeBytes} bytes from device memory {SourcePointer:X} at offset {SourceOffset} to {DestPointer:X} at offset {DestOffset}",
                 sizeBytes, source.DevicePointer.ToInt64(), sourceOffset, DevicePointer.ToInt64(), destinationOffset);
 
-            // Production DotCompute implementation would use optimized device-to-device copy APIs
-            // This implementation provides fallback through host memory with proper resource management
-            await SimulateAsyncMemoryCopy(sizeBytes, cancellationToken);
+            // Use native DotCompute buffer if both source and destination have native buffers
+            var sourceWrapper = source as DotComputeDeviceMemoryWrapper;
+            if (_nativeBuffer != null && sourceWrapper?.NativeBuffer != null)
+            {
+                // Device-to-device copy through host memory staging (DotCompute requires this)
+                var stagingBuffer = new byte[sizeBytes];
+                await sourceWrapper.NativeBuffer.CopyToAsync<byte>(stagingBuffer.AsMemory(), sourceOffset, cancellationToken);
+                await _nativeBuffer.CopyFromAsync<byte>(new ReadOnlyMemory<byte>(stagingBuffer), destinationOffset, cancellationToken);
 
-            _logger.LogTrace("Device to device memory copy completed");
+                _logger.LogTrace("Device to device memory copy completed via DotCompute native buffer (staged)");
+            }
+            else
+            {
+                // CPU fallback: simulate transfer time
+                await SimulateAsyncMemoryCopy(sizeBytes, cancellationToken);
+                _logger.LogTrace("Device to device memory copy completed (CPU simulation)");
+            }
         }
         catch (Exception ex)
         {
@@ -208,11 +253,23 @@ internal class DotComputeDeviceMemoryWrapper : IDeviceMemory
                 "Filling {SizeBytes} bytes with value {Value} at device memory {DevicePointer:X} offset {OffsetBytes}",
                 sizeBytes, value, DevicePointer.ToInt64(), offsetBytes);
 
-            // Production DotCompute implementation would use optimized GPU memory fill operations
-            // This provides a functional CPU-based implementation with proper async handling
-            await SimulateAsyncMemoryCopy(sizeBytes, cancellationToken);
+            // Use native DotCompute buffer if available for real GPU fill
+            if (_nativeBuffer != null)
+            {
+                // Create fill array on host and copy to device
+                // Note: DotCompute doesn't expose a native memset, so we stage through host memory
+                var fillArray = new byte[sizeBytes];
+                Array.Fill(fillArray, value);
+                await _nativeBuffer.CopyFromAsync<byte>(new ReadOnlyMemory<byte>(fillArray), offsetBytes, cancellationToken);
 
-            _logger.LogTrace("Device memory fill completed");
+                _logger.LogTrace("Device memory fill completed via DotCompute native buffer");
+            }
+            else
+            {
+                // CPU fallback: simulate fill time
+                await SimulateAsyncMemoryCopy(sizeBytes, cancellationToken);
+                _logger.LogTrace("Device memory fill completed (CPU simulation)");
+            }
         }
         catch (Exception ex)
         {

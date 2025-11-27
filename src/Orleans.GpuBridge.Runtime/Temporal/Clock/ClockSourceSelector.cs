@@ -177,25 +177,39 @@ public sealed class ClockSourceSelector
         }
     }
 
-    private async Task TryInitializeNtpClient(CancellationToken ct)
+    private Task TryInitializeNtpClient(CancellationToken ct)
     {
-        if (_activeSource != null) return; // Already have better source
+        if (_activeSource != null) return Task.CompletedTask; // Already have better source
 
         try
         {
-            // Use existing NtpClockSource from Phase 1
-            var ntpClock = new NtpClockSource(
-                Microsoft.Extensions.Logging.Abstractions.NullLogger<NtpClockSource>.Instance);
+            // Use the working NtpClockSource from Orleans.GpuBridge.Runtime.Temporal namespace
+            var ntpClock = new Orleans.GpuBridge.Runtime.Temporal.NtpClockSource();
 
-            // NTP requires network - may fail in offline environments
-            // For now, skip NTP initialization
-            _logger.LogDebug("NTP client not yet integrated - skipping");
-            return;
+            // NtpClockSource automatically checks OS NTP status on construction
+            if (ntpClock.IsSynchronized)
+            {
+                _availableSources.Add(ntpClock);
+                _activeSource = ntpClock;
+
+                _logger.LogInformation(
+                    "NTP clock source available (±{ErrorBound}ms accuracy, Drift: {Drift} PPM)",
+                    ntpClock.GetErrorBound() / 1_000_000.0,
+                    ntpClock.GetClockDrift());
+            }
+            else
+            {
+                // Add as fallback but don't activate
+                _availableSources.Add(ntpClock);
+                _logger.LogDebug("NTP clock available but not synchronized - added as fallback");
+            }
         }
         catch (Exception ex)
         {
             _logger.LogDebug(ex, "NTP client not available");
         }
+
+        return Task.CompletedTask;
     }
 
     private Task TryInitializeSystemClock(CancellationToken ct)
@@ -267,34 +281,4 @@ internal sealed class SystemClockSource : IPhysicalClockSource
     }
 }
 
-/// <summary>
-/// NTP clock source (Phase 1 placeholder).
-/// TODO: Implement NTP synchronization when Phase 1 integration available.
-/// </summary>
-internal sealed class NtpClockSource : IPhysicalClockSource
-{
-    private readonly ILogger<NtpClockSource> _logger;
-
-    public bool IsSynchronized => false; // Not yet implemented
-
-    public NtpClockSource(ILogger<NtpClockSource> logger)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
-
-    public long GetCurrentTimeNanos()
-    {
-        throw new NotImplementedException("NTP clock source not yet implemented");
-    }
-
-    public long GetErrorBound()
-    {
-        return 10_000_000; // ±10ms (typical NTP accuracy)
-    }
-
-    public double GetClockDrift()
-    {
-        // NTP compensates for drift automatically
-        return 0.0;
-    }
-}
+// NtpClockSource implementation is in Orleans.GpuBridge.Runtime.Temporal.NtpClockSource

@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Orleans;
@@ -140,6 +142,12 @@ public sealed class GpuPipelineBuilder<TIn, TOut>
     private int _batchSize = 100;
     private int _maxConcurrency = 1;
 
+    /// <summary>Maximum retry attempts for failed batches</summary>
+    private const int MaxRetryAttempts = 3;
+
+    /// <summary>Base delay for exponential backoff (100ms)</summary>
+    private static readonly TimeSpan BaseRetryDelay = TimeSpan.FromMilliseconds(100);
+
     public GpuPipelineBuilder(IGrainFactory grainFactory, KernelId kernelId)
     {
         _grainFactory = grainFactory;
@@ -175,36 +183,126 @@ public sealed class GpuPipelineBuilder<TIn, TOut>
     }
 
     /// <summary>
-    /// Executes the pipeline with the given input data
+    /// Executes the pipeline with the given input data using parallel batch processing
     /// </summary>
+    /// <remarks>
+    /// Uses SemaphoreSlim for concurrency control and implements retry logic with
+    /// exponential backoff for failed batches (up to 3 attempts).
+    /// </remarks>
     public async Task<IReadOnlyList<TOut>> ExecuteAsync(
         IReadOnlyList<TIn> input,
         CancellationToken cancellationToken = default)
     {
-        var results = new List<TOut>();
+        if (input.Count == 0)
+        {
+            return Array.Empty<TOut>();
+        }
 
-        // TODO: Implement parallel batch processing using _maxConcurrency
-        // For now, process sequentially
-        // Process input in batches using Orleans grains
+        // Prepare batches
+        var batches = new List<(int Index, List<TIn> Items)>();
         for (int i = 0; i < input.Count; i += _batchSize)
         {
-            // Check for cancellation before processing each batch
-            cancellationToken.ThrowIfCancellationRequested();
-
             var batchEnd = Math.Min(i + _batchSize, input.Count);
             var batch = input.Skip(i).Take(batchEnd - i).ToList();
+            batches.Add((i / _batchSize, batch));
+        }
 
-            // Get a batch grain and execute
-            var grain = _grainFactory.GetGrain<IGpuBatchGrain<TIn, TOut>>(
-                Guid.NewGuid(), _kernelId.Value, null);
+        // Results collection (thread-safe, indexed by batch)
+        var batchResults = new ConcurrentDictionary<int, IReadOnlyList<TOut>>();
 
-            var batchResult = await grain.ExecuteAsync(batch);
-            if (batchResult.Success && batchResult.Results != null)
+        // Use SemaphoreSlim for concurrency control
+        using var semaphore = new SemaphoreSlim(_maxConcurrency, _maxConcurrency);
+
+        // Execute batches in parallel with controlled concurrency
+        var batchTasks = batches.Select(batch => ProcessBatchWithRetryAsync(
+            batch.Index,
+            batch.Items,
+            batchResults,
+            semaphore,
+            cancellationToken)).ToList();
+
+        await Task.WhenAll(batchTasks);
+
+        // Aggregate results in original batch order
+        var orderedResults = new List<TOut>();
+        for (int i = 0; i < batches.Count; i++)
+        {
+            if (batchResults.TryGetValue(i, out var results))
             {
-                results.AddRange(batchResult.Results);
+                orderedResults.AddRange(results);
             }
         }
 
-        return results;
+        return orderedResults;
+    }
+
+    /// <summary>
+    /// Processes a single batch with retry logic and exponential backoff
+    /// </summary>
+    private async Task ProcessBatchWithRetryAsync(
+        int batchIndex,
+        List<TIn> batch,
+        ConcurrentDictionary<int, IReadOnlyList<TOut>> results,
+        SemaphoreSlim semaphore,
+        CancellationToken cancellationToken)
+    {
+        await semaphore.WaitAsync(cancellationToken);
+
+        try
+        {
+            for (int attempt = 1; attempt <= MaxRetryAttempts; attempt++)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                try
+                {
+                    // Get a batch grain with unique ID for parallel execution
+                    var grain = _grainFactory.GetGrain<IGpuBatchGrain<TIn, TOut>>(
+                        Guid.NewGuid(), _kernelId.Value, null);
+
+                    var batchResult = await grain.ExecuteAsync(batch);
+
+                    if (batchResult.Success && batchResult.Results != null)
+                    {
+                        results[batchIndex] = batchResult.Results;
+                        return; // Success - exit retry loop
+                    }
+
+                    // Batch failed but no exception - treat as retriable failure
+                    if (attempt < MaxRetryAttempts)
+                    {
+                        var delay = CalculateExponentialBackoff(attempt);
+                        await Task.Delay(delay, cancellationToken);
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                    throw; // Don't retry on cancellation
+                }
+                catch (Exception) when (attempt < MaxRetryAttempts)
+                {
+                    // Retry with exponential backoff
+                    var delay = CalculateExponentialBackoff(attempt);
+                    await Task.Delay(delay, cancellationToken);
+                }
+            }
+
+            // All retries exhausted - store empty result
+            results[batchIndex] = Array.Empty<TOut>();
+        }
+        finally
+        {
+            semaphore.Release();
+        }
+    }
+
+    /// <summary>
+    /// Calculates exponential backoff delay: BaseDelay * 2^(attempt-1)
+    /// </summary>
+    private static TimeSpan CalculateExponentialBackoff(int attempt)
+    {
+        // 100ms, 200ms, 400ms for attempts 1, 2, 3
+        var multiplier = Math.Pow(2, attempt - 1);
+        return TimeSpan.FromMilliseconds(BaseRetryDelay.TotalMilliseconds * multiplier);
     }
 }

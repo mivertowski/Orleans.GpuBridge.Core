@@ -378,7 +378,7 @@ public sealed class DotComputeRingKernelBridge : IRingKernelBridge
     }
 
     /// <inheritdoc/>
-    public Task<TState> ReadStateAsync<TState>(
+    public async Task<TState> ReadStateAsync<TState>(
         GpuStateHandle<TState> handle,
         CancellationToken cancellationToken = default)
         where TState : unmanaged
@@ -388,28 +388,50 @@ public sealed class DotComputeRingKernelBridge : IRingKernelBridge
         if (!handle.IsValid)
         {
             // Return shadow state for CPU fallback
-            return Task.FromResult(handle.ShadowState);
+            return handle.ShadowState;
         }
 
         try
         {
-            // TODO: Implement actual GPU memory read via DotCompute
-            // For now, return shadow state
-            _logger.LogTrace("Reading state for actor {ActorId} from shadow copy", handle.ActorId);
+            // Try GPU memory read via DotCompute native buffer
+            if (_stateHandles.TryGetValue(handle.ActorId, out var stateInfo) &&
+                stateInfo.DeviceMemory is Memory.DotComputeDeviceMemoryWrapper<TState> typedMemory &&
+                typedMemory.NativeBuffer is { } nativeBuffer)
+            {
+                // Use native buffer's CopyToAsync to read GPU memory to host
+                var hostMemory = new TState[1];
+                await nativeBuffer.CopyToAsync(hostMemory.AsMemory(), cancellationToken);
 
-            Interlocked.Add(ref _bytesFromGpu, handle.SizeBytes);
+                var state = hostMemory[0];
 
-            return Task.FromResult(handle.ShadowState);
+                // Update shadow state with GPU value
+                handle.ShadowState = state;
+
+                Interlocked.Add(ref _bytesFromGpu, handle.SizeBytes);
+
+                _logger.LogTrace(
+                    "Read state for actor {ActorId} from GPU memory via DotCompute",
+                    handle.ActorId);
+
+                return state;
+            }
+
+            // CPU fallback: return shadow state
+            _logger.LogTrace(
+                "Reading state for actor {ActorId} from shadow copy (GPU unavailable)",
+                handle.ActorId);
+
+            return handle.ShadowState;
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Error reading GPU state for actor {ActorId}", handle.ActorId);
-            return Task.FromResult(handle.ShadowState);
+            _logger.LogWarning(ex, "Error reading GPU state for actor {ActorId}, falling back to shadow", handle.ActorId);
+            return handle.ShadowState;
         }
     }
 
     /// <inheritdoc/>
-    public Task WriteStateAsync<TState>(
+    public async Task WriteStateAsync<TState>(
         GpuStateHandle<TState> handle,
         TState state,
         CancellationToken cancellationToken = default)
@@ -417,27 +439,43 @@ public sealed class DotComputeRingKernelBridge : IRingKernelBridge
     {
         ArgumentNullException.ThrowIfNull(handle);
 
-        // Always update shadow state
+        // Always update shadow state first
         handle.ShadowState = state;
 
         if (!handle.IsValid)
         {
-            return Task.CompletedTask;
+            return;
         }
 
         try
         {
-            // TODO: Implement actual GPU memory write via DotCompute
-            _logger.LogTrace("Writing state for actor {ActorId} to shadow copy", handle.ActorId);
+            // Try GPU memory write via DotCompute native buffer
+            if (_stateHandles.TryGetValue(handle.ActorId, out var stateInfo) &&
+                stateInfo.DeviceMemory is Memory.DotComputeDeviceMemoryWrapper<TState> typedMemory &&
+                typedMemory.NativeBuffer is { } nativeBuffer)
+            {
+                // Use native buffer's CopyFromAsync to write from host to GPU memory
+                var hostMemory = new TState[] { state };
+                await nativeBuffer.CopyFromAsync(new ReadOnlyMemory<TState>(hostMemory), cancellationToken);
 
-            Interlocked.Add(ref _bytesToGpu, handle.SizeBytes);
+                Interlocked.Add(ref _bytesToGpu, handle.SizeBytes);
+
+                _logger.LogTrace(
+                    "Wrote state for actor {ActorId} to GPU memory via DotCompute",
+                    handle.ActorId);
+
+                return;
+            }
+
+            // CPU fallback: shadow state already updated
+            _logger.LogTrace(
+                "Writing state for actor {ActorId} to shadow copy (GPU unavailable)",
+                handle.ActorId);
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Error writing GPU state for actor {ActorId}", handle.ActorId);
+            _logger.LogWarning(ex, "Error writing GPU state for actor {ActorId}, shadow state updated", handle.ActorId);
         }
-
-        return Task.CompletedTask;
     }
 
     /// <inheritdoc/>

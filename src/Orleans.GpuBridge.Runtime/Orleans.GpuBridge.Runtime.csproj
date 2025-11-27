@@ -22,9 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Use local DotCompute project references for message queue features -->
-    <ProjectReference Include="/home/mivertowski/DotCompute/DotCompute/src/Core/DotCompute.Abstractions/DotCompute.Abstractions.csproj" />
-    <ProjectReference Include="/home/mivertowski/DotCompute/DotCompute/src/Backends/DotCompute.Backends.CUDA/DotCompute.Backends.CUDA.csproj" />
+    <!-- DotCompute Framework v0.5.0 (Stable NuGet Release) -->
+    <PackageReference Include="DotCompute.Abstractions" Version="0.5.0" />
+    <PackageReference Include="DotCompute.Backends.CUDA" Version="0.5.0" />
     <PackageReference Include="Microsoft.DotNet.ILCompiler" Version="9.0.10" />
     <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="9.0.10" />
     <PackageReference Include="Microsoft.Orleans.Core" Version="9.2.1" />
@@ -33,6 +33,7 @@
     <PackageReference Include="Microsoft.Orleans.Server" Version="9.2.1" />
     <PackageReference Include="System.Management" Version="9.0.10" />
     <PackageReference Include="System.Threading.Channels" Version="9.0.10" />
+    <PackageReference Include="OpenTelemetry.Api" Version="1.13.1" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -41,6 +42,10 @@
     <EnableAotAnalyzer>true</EnableAotAnalyzer>
     <IsAotCompatible>true</IsAotCompatible>
     <TrimmerDefaultAction>warn</TrimmerDefaultAction>
+    <!-- Disable DotCompute CUDA serialization generation - Runtime doesn't define message types -->
+    <DotComputeGenerateCudaSerialization>false</DotComputeGenerateCudaSerialization>
+    <!-- DC015-DC017: Telemetry sequence warnings - these are wrapper methods where caller controls sequence -->
+    <NoWarn>$(NoWarn);DC015;DC016;DC017</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

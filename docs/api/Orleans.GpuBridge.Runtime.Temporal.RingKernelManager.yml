@@ -1,0 +1,1117 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.RingKernelManager
+  id: RingKernelManager
+  parent: Orleans.GpuBridge.Runtime.Temporal
+  children:
+  - Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.RingKernelManager})
+  - Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.ActorCount
+  - Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.Dispose
+  - Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.DisposeAsync
+  - Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.EnqueueMessageAsync(Orleans.GpuBridge.Abstractions.Temporal.ActorMessage,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.GetStatisticsAsync(System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.IsRunning
+  - Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.MessageQueueSize
+  - Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.StartAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.StopAsync(System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: RingKernelManager
+  nameWithType: RingKernelManager
+  fullName: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/RingKernelManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RingKernelManager
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/RingKernelManager.cs
+    startLine: 12
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: >-
+    Manages lifecycle of persistent ring kernels for actor message processing.
+
+    Handles kernel launch, graceful shutdown, and message queue management.
+  example: []
+  syntax:
+    content: 'public sealed class RingKernelManager : IDisposable, IAsyncDisposable'
+    content.vb: Public NotInheritable Class RingKernelManager Implements IDisposable, IAsyncDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - System.IDisposable
+  - System.IAsyncDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.RingKernelManager})
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.RingKernelManager})
+  id: '#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.RingKernelManager})'
+  parent: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager
+  langs:
+  - csharp
+  - vb
+  name: RingKernelManager(ILogger<RingKernelManager>)
+  nameWithType: RingKernelManager.RingKernelManager(ILogger<RingKernelManager>)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.RingKernelManager(Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.Temporal.RingKernelManager>)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/RingKernelManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/RingKernelManager.cs
+    startLine: 30
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  syntax:
+    content: public RingKernelManager(ILogger<RingKernelManager> logger)
+    parameters:
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.RingKernelManager}
+    content.vb: Public Sub New(logger As ILogger(Of RingKernelManager))
+  overload: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.#ctor*
+  nameWithType.vb: RingKernelManager.New(ILogger(Of RingKernelManager))
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.New(Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.Temporal.RingKernelManager))
+  name.vb: New(ILogger(Of RingKernelManager))
+- uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.IsRunning
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.IsRunning
+  id: IsRunning
+  parent: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager
+  langs:
+  - csharp
+  - vb
+  name: IsRunning
+  nameWithType: RingKernelManager.IsRunning
+  fullName: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.IsRunning
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/RingKernelManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsRunning
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/RingKernelManager.cs
+    startLine: 38
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Gets whether the ring kernel is currently running.
+  example: []
+  syntax:
+    content: public bool IsRunning { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsRunning As Boolean
+  overload: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.IsRunning*
+- uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.ActorCount
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.ActorCount
+  id: ActorCount
+  parent: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager
+  langs:
+  - csharp
+  - vb
+  name: ActorCount
+  nameWithType: RingKernelManager.ActorCount
+  fullName: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.ActorCount
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/RingKernelManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ActorCount
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/RingKernelManager.cs
+    startLine: 43
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Gets the number of actors managed by this ring kernel.
+  example: []
+  syntax:
+    content: public int ActorCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property ActorCount As Integer
+  overload: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.ActorCount*
+- uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.MessageQueueSize
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.MessageQueueSize
+  id: MessageQueueSize
+  parent: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager
+  langs:
+  - csharp
+  - vb
+  name: MessageQueueSize
+  nameWithType: RingKernelManager.MessageQueueSize
+  fullName: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.MessageQueueSize
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/RingKernelManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MessageQueueSize
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/RingKernelManager.cs
+    startLine: 48
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Gets the message queue size.
+  example: []
+  syntax:
+    content: public int MessageQueueSize { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property MessageQueueSize As Integer
+  overload: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.MessageQueueSize*
+- uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.StartAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.StartAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  id: StartAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager
+  langs:
+  - csharp
+  - vb
+  name: StartAsync(int, int, CancellationToken)
+  nameWithType: RingKernelManager.StartAsync(int, int, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.StartAsync(int, int, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/RingKernelManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: StartAsync
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/RingKernelManager.cs
+    startLine: 56
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Launches the ring kernel (starts infinite dispatch loop on GPU).
+  example: []
+  syntax:
+    content: public Task StartAsync(int actorCount, int messageQueueSize = 4096, CancellationToken ct = default)
+    parameters:
+    - id: actorCount
+      type: System.Int32
+      description: Number of actors to manage.
+    - id: messageQueueSize
+      type: System.Int32
+      description: Size of ring buffer for message queue.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function StartAsync(actorCount As Integer, messageQueueSize As Integer = 4096, ct As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.StartAsync*
+  nameWithType.vb: RingKernelManager.StartAsync(Integer, Integer, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.StartAsync(Integer, Integer, System.Threading.CancellationToken)
+  name.vb: StartAsync(Integer, Integer, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.StopAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.StopAsync(System.Threading.CancellationToken)
+  id: StopAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager
+  langs:
+  - csharp
+  - vb
+  name: StopAsync(CancellationToken)
+  nameWithType: RingKernelManager.StopAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.StopAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/RingKernelManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: StopAsync
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/RingKernelManager.cs
+    startLine: 108
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Gracefully stops the ring kernel and waits for completion.
+  example: []
+  syntax:
+    content: public Task StopAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function StopAsync(ct As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.StopAsync*
+- uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.EnqueueMessageAsync(Orleans.GpuBridge.Abstractions.Temporal.ActorMessage,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.EnqueueMessageAsync(Orleans.GpuBridge.Abstractions.Temporal.ActorMessage,System.Threading.CancellationToken)
+  id: EnqueueMessageAsync(Orleans.GpuBridge.Abstractions.Temporal.ActorMessage,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager
+  langs:
+  - csharp
+  - vb
+  name: EnqueueMessageAsync(ActorMessage, CancellationToken)
+  nameWithType: RingKernelManager.EnqueueMessageAsync(ActorMessage, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.EnqueueMessageAsync(Orleans.GpuBridge.Abstractions.Temporal.ActorMessage, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/RingKernelManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: EnqueueMessageAsync
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/RingKernelManager.cs
+    startLine: 159
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Enqueues a message to the ring buffer for processing by GPU actors.
+  example: []
+  syntax:
+    content: public Task<bool> EnqueueMessageAsync(ActorMessage message, CancellationToken ct = default)
+    parameters:
+    - id: message
+      type: Orleans.GpuBridge.Abstractions.Temporal.ActorMessage
+      description: Message to enqueue.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: True if message was enqueued, false if queue is full.
+    content.vb: Public Function EnqueueMessageAsync(message As ActorMessage, ct As CancellationToken = Nothing) As Task(Of Boolean)
+  overload: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.EnqueueMessageAsync*
+- uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.GetStatisticsAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.GetStatisticsAsync(System.Threading.CancellationToken)
+  id: GetStatisticsAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager
+  langs:
+  - csharp
+  - vb
+  name: GetStatisticsAsync(CancellationToken)
+  nameWithType: RingKernelManager.GetStatisticsAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.GetStatisticsAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/RingKernelManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetStatisticsAsync
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/RingKernelManager.cs
+    startLine: 182
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Gets statistics about the ring kernel performance.
+  example: []
+  syntax:
+    content: public Task<RingKernelStatistics> GetStatisticsAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Runtime.Temporal.RingKernelStatistics}
+    content.vb: Public Function GetStatisticsAsync(ct As CancellationToken = Nothing) As Task(Of RingKernelStatistics)
+  overload: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.GetStatisticsAsync*
+- uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.Dispose
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.Dispose
+  id: Dispose
+  parent: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: RingKernelManager.Dispose()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.Dispose()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/RingKernelManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Dispose
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/RingKernelManager.cs
+    startLine: 294
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+- uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.DisposeAsync
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.DisposeAsync
+  id: DisposeAsync
+  parent: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager
+  langs:
+  - csharp
+  - vb
+  name: DisposeAsync()
+  nameWithType: RingKernelManager.DisposeAsync()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.DisposeAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/RingKernelManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DisposeAsync
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/RingKernelManager.cs
+    startLine: 300
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: >-
+    Performs application-defined tasks associated with freeing, releasing, or
+
+    resetting unmanaged resources asynchronously.
+  example: []
+  syntax:
+    content: public ValueTask DisposeAsync()
+    return:
+      type: System.Threading.Tasks.ValueTask
+      description: A task that represents the asynchronous dispose operation.
+    content.vb: Public Function DisposeAsync() As ValueTask
+  overload: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.DisposeAsync*
+  implements:
+  - System.IAsyncDisposable.DisposeAsync
+references:
+- uid: Orleans.GpuBridge.Runtime.Temporal
+  commentId: N:Orleans.GpuBridge.Runtime.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Temporal
+  nameWithType: Orleans.GpuBridge.Runtime.Temporal
+  fullName: Orleans.GpuBridge.Runtime.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.IAsyncDisposable
+  commentId: T:System.IAsyncDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable
+  name: IAsyncDisposable
+  nameWithType: IAsyncDisposable
+  fullName: System.IAsyncDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.#ctor
+  href: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.html#Orleans_GpuBridge_Runtime_Temporal_RingKernelManager__ctor_Microsoft_Extensions_Logging_ILogger_Orleans_GpuBridge_Runtime_Temporal_RingKernelManager__
+  name: RingKernelManager
+  nameWithType: RingKernelManager.RingKernelManager
+  fullName: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.RingKernelManager
+  nameWithType.vb: RingKernelManager.New
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.New
+  name.vb: New
+- uid: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.RingKernelManager}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.RingKernelManager}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<RingKernelManager>
+  nameWithType: ILogger<RingKernelManager>
+  fullName: Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.Temporal.RingKernelManager>
+  nameWithType.vb: ILogger(Of RingKernelManager)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.Temporal.RingKernelManager)
+  name.vb: ILogger(Of RingKernelManager)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager
+    name: RingKernelManager
+    href: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager
+    name: RingKernelManager
+    href: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.html
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.IsRunning*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.IsRunning
+  href: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.html#Orleans_GpuBridge_Runtime_Temporal_RingKernelManager_IsRunning
+  name: IsRunning
+  nameWithType: RingKernelManager.IsRunning
+  fullName: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.IsRunning
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.ActorCount*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.ActorCount
+  href: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.html#Orleans_GpuBridge_Runtime_Temporal_RingKernelManager_ActorCount
+  name: ActorCount
+  nameWithType: RingKernelManager.ActorCount
+  fullName: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.ActorCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.MessageQueueSize*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.MessageQueueSize
+  href: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.html#Orleans_GpuBridge_Runtime_Temporal_RingKernelManager_MessageQueueSize
+  name: MessageQueueSize
+  nameWithType: RingKernelManager.MessageQueueSize
+  fullName: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.MessageQueueSize
+- uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.StartAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.StartAsync
+  href: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.html#Orleans_GpuBridge_Runtime_Temporal_RingKernelManager_StartAsync_System_Int32_System_Int32_System_Threading_CancellationToken_
+  name: StartAsync
+  nameWithType: RingKernelManager.StartAsync
+  fullName: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.StartAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.StopAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.StopAsync
+  href: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.html#Orleans_GpuBridge_Runtime_Temporal_RingKernelManager_StopAsync_System_Threading_CancellationToken_
+  name: StopAsync
+  nameWithType: RingKernelManager.StopAsync
+  fullName: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.StopAsync
+- uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.EnqueueMessageAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.EnqueueMessageAsync
+  href: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.html#Orleans_GpuBridge_Runtime_Temporal_RingKernelManager_EnqueueMessageAsync_Orleans_GpuBridge_Abstractions_Temporal_ActorMessage_System_Threading_CancellationToken_
+  name: EnqueueMessageAsync
+  nameWithType: RingKernelManager.EnqueueMessageAsync
+  fullName: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.EnqueueMessageAsync
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ActorMessage
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.ActorMessage
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.ActorMessage.html
+  name: ActorMessage
+  nameWithType: ActorMessage
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ActorMessage
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal
+  commentId: N:Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Temporal
+  nameWithType: Orleans.GpuBridge.Abstractions.Temporal
+  fullName: Orleans.GpuBridge.Abstractions.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.GetStatisticsAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.GetStatisticsAsync
+  href: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.html#Orleans_GpuBridge_Runtime_Temporal_RingKernelManager_GetStatisticsAsync_System_Threading_CancellationToken_
+  name: GetStatisticsAsync
+  nameWithType: RingKernelManager.GetStatisticsAsync
+  fullName: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.GetStatisticsAsync
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Runtime.Temporal.RingKernelStatistics}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Runtime.Temporal.RingKernelStatistics}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<RingKernelStatistics>
+  nameWithType: Task<RingKernelStatistics>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Runtime.Temporal.RingKernelStatistics>
+  nameWithType.vb: Task(Of RingKernelStatistics)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Runtime.Temporal.RingKernelStatistics)
+  name.vb: Task(Of RingKernelStatistics)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelStatistics
+    name: RingKernelStatistics
+    href: Orleans.GpuBridge.Runtime.Temporal.RingKernelStatistics.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelStatistics
+    name: RingKernelStatistics
+    href: Orleans.GpuBridge.Runtime.Temporal.RingKernelStatistics.html
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.Dispose*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.Dispose
+  href: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.html#Orleans_GpuBridge_Runtime_Temporal_RingKernelManager_Dispose
+  name: Dispose
+  nameWithType: RingKernelManager.Dispose
+  fullName: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.DisposeAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.DisposeAsync
+  href: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.html#Orleans_GpuBridge_Runtime_Temporal_RingKernelManager_DisposeAsync
+  name: DisposeAsync
+  nameWithType: RingKernelManager.DisposeAsync
+  fullName: Orleans.GpuBridge.Runtime.Temporal.RingKernelManager.DisposeAsync
+- uid: System.IAsyncDisposable.DisposeAsync
+  commentId: M:System.IAsyncDisposable.DisposeAsync
+  parent: System.IAsyncDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  name: DisposeAsync()
+  nameWithType: IAsyncDisposable.DisposeAsync()
+  fullName: System.IAsyncDisposable.DisposeAsync()
+  spec.csharp:
+  - uid: System.IAsyncDisposable.DisposeAsync
+    name: DisposeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IAsyncDisposable.DisposeAsync
+    name: DisposeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  - name: (
+  - name: )
+- uid: System.Threading.Tasks.ValueTask
+  commentId: T:System.Threading.Tasks.ValueTask
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask
+  name: ValueTask
+  nameWithType: ValueTask
+  fullName: System.Threading.Tasks.ValueTask

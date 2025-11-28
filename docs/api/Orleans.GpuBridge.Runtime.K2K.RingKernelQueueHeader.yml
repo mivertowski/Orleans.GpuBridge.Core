@@ -1,0 +1,859 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader
+  commentId: T:Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader
+  id: RingKernelQueueHeader
+  parent: Orleans.GpuBridge.Runtime.K2K
+  children:
+  - Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.Capacity
+  - Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.Create(System.Int32,System.Int32)
+  - Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetAvailableCount
+  - Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetFreeCount
+  - Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetSlotOffset(System.Int32)
+  - Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetTotalAllocationSize
+  - Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IndexToSlot(System.Int32)
+  - Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IsEmpty
+  - Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IsFull
+  - Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.MessageSize
+  - Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.ReadIndex
+  - Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.WriteCommitted
+  - Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.WriteIndex
+  langs:
+  - csharp
+  - vb
+  name: RingKernelQueueHeader
+  nameWithType: RingKernelQueueHeader
+  fullName: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader
+  type: Struct
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RingKernelQueueHeader
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+    startLine: 28
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Header structure for ring kernel message queues enabling GPU-native K2K communication.
+  remarks: >-
+    <p>
+
+    This structure is laid out to match GPU memory alignment requirements and enables
+
+    lock-free atomic queue operations for sub-microsecond K2K message passing.
+
+    </p>
+
+    <p>
+
+    Memory layout:
+
+    <pre><code class="lang-csharp">[WriteIndex:4][ReadIndex:4][WriteCommitted:4][Capacity:4][MessageSize:4][Reserved:12][Data...]</code></pre>
+
+    Total header size: 32 bytes (aligned to GPU cache line for optimal performance)
+
+    </p>
+
+    <p>
+
+    Thread safety: All index fields are accessed via atomic operations.
+
+    Writers increment WriteIndex to claim a slot, write data, then update WriteCommitted.
+
+    Readers check WriteCommitted &gt; ReadIndex before reading, then increment ReadIndex.
+
+    </p>
+  example: []
+  syntax:
+    content: public struct RingKernelQueueHeader
+    content.vb: Public Structure RingKernelQueueHeader
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.WriteIndex
+  commentId: F:Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.WriteIndex
+  id: WriteIndex
+  parent: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader
+  langs:
+  - csharp
+  - vb
+  name: WriteIndex
+  nameWithType: RingKernelQueueHeader.WriteIndex
+  fullName: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.WriteIndex
+  type: Field
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: WriteIndex
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+    startLine: 39
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Next write position (atomically incremented by writers to claim a slot).
+  remarks: >-
+    Writers use Interlocked.Increment to atomically claim the next available slot.
+
+    The actual slot index is computed as WriteIndex % Capacity.
+  example: []
+  syntax:
+    content: public int WriteIndex
+    return:
+      type: System.Int32
+    content.vb: Public WriteIndex As Integer
+- uid: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.ReadIndex
+  commentId: F:Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.ReadIndex
+  id: ReadIndex
+  parent: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader
+  langs:
+  - csharp
+  - vb
+  name: ReadIndex
+  nameWithType: RingKernelQueueHeader.ReadIndex
+  fullName: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.ReadIndex
+  type: Field
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ReadIndex
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+    startLine: 49
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Current read position (atomically incremented by readers after consuming a message).
+  remarks: >-
+    Readers check (WriteCommitted &gt; ReadIndex) to determine if messages are available,
+
+    then use Interlocked.Increment to claim the next message to read.
+  example: []
+  syntax:
+    content: public int ReadIndex
+    return:
+      type: System.Int32
+    content.vb: Public ReadIndex As Integer
+- uid: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.WriteCommitted
+  commentId: F:Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.WriteCommitted
+  id: WriteCommitted
+  parent: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader
+  langs:
+  - csharp
+  - vb
+  name: WriteCommitted
+  nameWithType: RingKernelQueueHeader.WriteCommitted
+  fullName: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.WriteCommitted
+  type: Field
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: WriteCommitted
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+    startLine: 59
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Number of messages fully written and ready for consumption.
+  remarks: >-
+    Writers update this after completing their write using a memory barrier.
+
+    This provides the synchronization point between writers and readers.
+  example: []
+  syntax:
+    content: public int WriteCommitted
+    return:
+      type: System.Int32
+    content.vb: Public WriteCommitted As Integer
+- uid: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.Capacity
+  commentId: F:Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.Capacity
+  id: Capacity
+  parent: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader
+  langs:
+  - csharp
+  - vb
+  name: Capacity
+  nameWithType: RingKernelQueueHeader.Capacity
+  fullName: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.Capacity
+  type: Field
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Capacity
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+    startLine: 69
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Maximum number of messages the queue can hold (must be power of 2).
+  remarks: >-
+    Power of 2 allows using bitwise AND instead of modulo for index calculation.
+
+    Queue is considered full when (WriteIndex - ReadIndex &gt;= Capacity).
+  example: []
+  syntax:
+    content: public int Capacity
+    return:
+      type: System.Int32
+    content.vb: Public Capacity As Integer
+- uid: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.MessageSize
+  commentId: F:Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.MessageSize
+  id: MessageSize
+  parent: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader
+  langs:
+  - csharp
+  - vb
+  name: MessageSize
+  nameWithType: RingKernelQueueHeader.MessageSize
+  fullName: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.MessageSize
+  type: Field
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MessageSize
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+    startLine: 79
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Size of each message slot in bytes (includes 4-byte message type prefix).
+  remarks: >-
+    Each slot is: [MessageTypeId:4 bytes][Payload: MessageSize - 4 bytes]
+
+    Must be a multiple of 4 for proper GPU memory alignment.
+  example: []
+  syntax:
+    content: public int MessageSize
+    return:
+      type: System.Int32
+    content.vb: Public MessageSize As Integer
+- uid: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.Create(System.Int32,System.Int32)
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.Create(System.Int32,System.Int32)
+  id: Create(System.Int32,System.Int32)
+  parent: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader
+  langs:
+  - csharp
+  - vb
+  name: Create(int, int)
+  nameWithType: RingKernelQueueHeader.Create(int, int)
+  fullName: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.Create(int, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Create
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+    startLine: 106
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Creates a new queue header with the specified capacity and message size.
+  example: []
+  syntax:
+    content: public static RingKernelQueueHeader Create(int capacity, int messageSize)
+    parameters:
+    - id: capacity
+      type: System.Int32
+      description: Queue capacity (must be power of 2).
+    - id: messageSize
+      type: System.Int32
+      description: Size of each message in bytes.
+    return:
+      type: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader
+      description: Initialized queue header.
+    content.vb: Public Shared Function Create(capacity As Integer, messageSize As Integer) As RingKernelQueueHeader
+  overload: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.Create*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: If capacity is not a power of 2 or messageSize is invalid.
+  nameWithType.vb: RingKernelQueueHeader.Create(Integer, Integer)
+  fullName.vb: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.Create(Integer, Integer)
+  name.vb: Create(Integer, Integer)
+- uid: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetAvailableCount
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetAvailableCount
+  id: GetAvailableCount
+  parent: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader
+  langs:
+  - csharp
+  - vb
+  name: GetAvailableCount()
+  nameWithType: RingKernelQueueHeader.GetAvailableCount()
+  fullName: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetAvailableCount()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetAvailableCount
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+    startLine: 132
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Gets the number of messages currently available for reading.
+  example: []
+  syntax:
+    content: public readonly int GetAvailableCount()
+    return:
+      type: System.Int32
+      description: Number of messages ready to be consumed.
+    content.vb: Public Function GetAvailableCount() As Integer
+  overload: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetAvailableCount*
+- uid: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetFreeCount
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetFreeCount
+  id: GetFreeCount
+  parent: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader
+  langs:
+  - csharp
+  - vb
+  name: GetFreeCount()
+  nameWithType: RingKernelQueueHeader.GetFreeCount()
+  fullName: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetFreeCount()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetFreeCount
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+    startLine: 141
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Gets the number of free slots available for writing.
+  example: []
+  syntax:
+    content: public readonly int GetFreeCount()
+    return:
+      type: System.Int32
+      description: Number of slots available for new messages.
+    content.vb: Public Function GetFreeCount() As Integer
+  overload: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetFreeCount*
+- uid: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IsFull
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IsFull
+  id: IsFull
+  parent: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader
+  langs:
+  - csharp
+  - vb
+  name: IsFull()
+  nameWithType: RingKernelQueueHeader.IsFull()
+  fullName: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IsFull()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsFull
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+    startLine: 150
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Determines if the queue is full.
+  example: []
+  syntax:
+    content: public readonly bool IsFull()
+    return:
+      type: System.Boolean
+      description: True if no more messages can be enqueued.
+    content.vb: Public Function IsFull() As Boolean
+  overload: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IsFull*
+- uid: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IsEmpty
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IsEmpty
+  id: IsEmpty
+  parent: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader
+  langs:
+  - csharp
+  - vb
+  name: IsEmpty()
+  nameWithType: RingKernelQueueHeader.IsEmpty()
+  fullName: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IsEmpty()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsEmpty
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+    startLine: 159
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Determines if the queue is empty.
+  example: []
+  syntax:
+    content: public readonly bool IsEmpty()
+    return:
+      type: System.Boolean
+      description: True if no messages are available for reading.
+    content.vb: Public Function IsEmpty() As Boolean
+  overload: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IsEmpty*
+- uid: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetTotalAllocationSize
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetTotalAllocationSize
+  id: GetTotalAllocationSize
+  parent: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader
+  langs:
+  - csharp
+  - vb
+  name: GetTotalAllocationSize()
+  nameWithType: RingKernelQueueHeader.GetTotalAllocationSize()
+  fullName: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetTotalAllocationSize()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetTotalAllocationSize
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+    startLine: 168
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Calculates the total memory required for this queue (header + all message slots).
+  example: []
+  syntax:
+    content: public readonly int GetTotalAllocationSize()
+    return:
+      type: System.Int32
+      description: Total bytes required for the queue allocation.
+    content.vb: Public Function GetTotalAllocationSize() As Integer
+  overload: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetTotalAllocationSize*
+- uid: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetSlotOffset(System.Int32)
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetSlotOffset(System.Int32)
+  id: GetSlotOffset(System.Int32)
+  parent: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader
+  langs:
+  - csharp
+  - vb
+  name: GetSlotOffset(int)
+  nameWithType: RingKernelQueueHeader.GetSlotOffset(int)
+  fullName: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetSlotOffset(int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetSlotOffset
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+    startLine: 178
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Calculates the byte offset for a given slot index.
+  example: []
+  syntax:
+    content: public readonly int GetSlotOffset(int slotIndex)
+    parameters:
+    - id: slotIndex
+      type: System.Int32
+      description: The slot index (0 to Capacity-1).
+    return:
+      type: System.Int32
+      description: Byte offset from the header start to the slot data.
+    content.vb: Public Function GetSlotOffset(slotIndex As Integer) As Integer
+  overload: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetSlotOffset*
+  nameWithType.vb: RingKernelQueueHeader.GetSlotOffset(Integer)
+  fullName.vb: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetSlotOffset(Integer)
+  name.vb: GetSlotOffset(Integer)
+- uid: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IndexToSlot(System.Int32)
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IndexToSlot(System.Int32)
+  id: IndexToSlot(System.Int32)
+  parent: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader
+  langs:
+  - csharp
+  - vb
+  name: IndexToSlot(int)
+  nameWithType: RingKernelQueueHeader.IndexToSlot(int)
+  fullName: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IndexToSlot(int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IndexToSlot
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/RingKernelQueueHeader.cs
+    startLine: 188
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Converts a write/read index to a slot index using modulo.
+  example: []
+  syntax:
+    content: public readonly int IndexToSlot(int index)
+    parameters:
+    - id: index
+      type: System.Int32
+      description: The WriteIndex or ReadIndex value.
+    return:
+      type: System.Int32
+      description: Slot index (0 to Capacity-1).
+    content.vb: Public Function IndexToSlot(index As Integer) As Integer
+  overload: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IndexToSlot*
+  nameWithType.vb: RingKernelQueueHeader.IndexToSlot(Integer)
+  fullName.vb: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IndexToSlot(Integer)
+  name.vb: IndexToSlot(Integer)
+references:
+- uid: Orleans.GpuBridge.Runtime.K2K
+  commentId: N:Orleans.GpuBridge.Runtime.K2K
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.K2K
+  nameWithType: Orleans.GpuBridge.Runtime.K2K
+  fullName: Orleans.GpuBridge.Runtime.K2K
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.K2K
+    name: K2K
+    href: Orleans.GpuBridge.Runtime.K2K.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.K2K
+    name: K2K
+    href: Orleans.GpuBridge.Runtime.K2K.html
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.ArgumentException
+  commentId: T:System.ArgumentException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentexception
+  name: ArgumentException
+  nameWithType: ArgumentException
+  fullName: System.ArgumentException
+- uid: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.Create*
+  commentId: Overload:Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.Create
+  href: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.html#Orleans_GpuBridge_Runtime_K2K_RingKernelQueueHeader_Create_System_Int32_System_Int32_
+  name: Create
+  nameWithType: RingKernelQueueHeader.Create
+  fullName: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.Create
+- uid: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader
+  commentId: T:Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader
+  parent: Orleans.GpuBridge.Runtime.K2K
+  href: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.html
+  name: RingKernelQueueHeader
+  nameWithType: RingKernelQueueHeader
+  fullName: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader
+- uid: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetAvailableCount*
+  commentId: Overload:Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetAvailableCount
+  href: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.html#Orleans_GpuBridge_Runtime_K2K_RingKernelQueueHeader_GetAvailableCount
+  name: GetAvailableCount
+  nameWithType: RingKernelQueueHeader.GetAvailableCount
+  fullName: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetAvailableCount
+- uid: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetFreeCount*
+  commentId: Overload:Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetFreeCount
+  href: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.html#Orleans_GpuBridge_Runtime_K2K_RingKernelQueueHeader_GetFreeCount
+  name: GetFreeCount
+  nameWithType: RingKernelQueueHeader.GetFreeCount
+  fullName: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetFreeCount
+- uid: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IsFull*
+  commentId: Overload:Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IsFull
+  href: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.html#Orleans_GpuBridge_Runtime_K2K_RingKernelQueueHeader_IsFull
+  name: IsFull
+  nameWithType: RingKernelQueueHeader.IsFull
+  fullName: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IsFull
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IsEmpty*
+  commentId: Overload:Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IsEmpty
+  href: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.html#Orleans_GpuBridge_Runtime_K2K_RingKernelQueueHeader_IsEmpty
+  name: IsEmpty
+  nameWithType: RingKernelQueueHeader.IsEmpty
+  fullName: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IsEmpty
+- uid: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetTotalAllocationSize*
+  commentId: Overload:Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetTotalAllocationSize
+  href: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.html#Orleans_GpuBridge_Runtime_K2K_RingKernelQueueHeader_GetTotalAllocationSize
+  name: GetTotalAllocationSize
+  nameWithType: RingKernelQueueHeader.GetTotalAllocationSize
+  fullName: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetTotalAllocationSize
+- uid: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetSlotOffset*
+  commentId: Overload:Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetSlotOffset
+  href: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.html#Orleans_GpuBridge_Runtime_K2K_RingKernelQueueHeader_GetSlotOffset_System_Int32_
+  name: GetSlotOffset
+  nameWithType: RingKernelQueueHeader.GetSlotOffset
+  fullName: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.GetSlotOffset
+- uid: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IndexToSlot*
+  commentId: Overload:Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IndexToSlot
+  href: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.html#Orleans_GpuBridge_Runtime_K2K_RingKernelQueueHeader_IndexToSlot_System_Int32_
+  name: IndexToSlot
+  nameWithType: RingKernelQueueHeader.IndexToSlot
+  fullName: Orleans.GpuBridge.Runtime.K2K.RingKernelQueueHeader.IndexToSlot

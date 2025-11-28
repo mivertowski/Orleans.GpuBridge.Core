@@ -741,3 +741,18 @@ This unlocks entirely new application classes:
 2. Create `VectorAddActor` proof-of-concept
 3. Benchmark ring kernel vs traditional offload
 4. Validate 100-500ns latency target
+
+## See Also
+
+- [Hybrid Layered Architecture](HYBRID-LAYERED-ARCHITECTURE.md) - Layer design and API strategy
+- [GPU Memory Operations](../implementation/GPU-MEMORY-OPERATIONS.md) - Memory management details
+- [GPU-Native Actors Developer Guide](../developer-guide/GPU-NATIVE-ACTORS.md) - Complete development workflow
+- [Kernel Attributes Guide](../articles/temporal/KERNEL-ATTRIBUTES-GUIDE.md) - DotCompute attribute reference
+- [Implementation Roadmap](../articles/temporal/IMPLEMENTATION-ROADMAP.md) - Development phases
+
+---
+
+*Ring Kernel Integration: Persistent GPU kernels for Orleans actors.*
+
+**Version**: 0.1.0
+**Last Updated**: 2025-11-28

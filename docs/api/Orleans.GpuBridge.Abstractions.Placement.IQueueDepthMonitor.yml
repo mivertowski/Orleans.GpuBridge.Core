@@ -1,0 +1,734 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor
+  commentId: T:Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor
+  id: IQueueDepthMonitor
+  parent: Orleans.GpuBridge.Abstractions.Placement
+  children:
+  - Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetAggregatedMetricsAsync(System.String,System.Int32,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetHistoryAsync(System.String,System.Int32,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetQueueDepthAsync(System.String,System.Int32,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.HasCapacityAsync(System.String,System.Int32,System.Double,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.SubscribeToAlerts(System.Double,System.Action{Orleans.GpuBridge.Abstractions.Placement.QueueDepthAlert})
+  langs:
+  - csharp
+  - vb
+  name: IQueueDepthMonitor
+  nameWithType: IQueueDepthMonitor
+  fullName: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor
+  type: Interface
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Placement/IQueueDepthMonitor.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IQueueDepthMonitor
+    path: ../src/Orleans.GpuBridge.Abstractions/Placement/IQueueDepthMonitor.cs
+    startLine: 23
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Placement
+  summary: Monitors queue depth across GPU ring kernels for intelligent placement decisions.
+  remarks: >-
+    <p>
+
+    This interface provides real-time visibility into ring kernel message queue utilization,
+
+    enabling the placement director to make informed decisions about grain placement.
+
+    </p>
+
+    <p>
+
+    <strong>Key Metrics:</strong>
+
+    <ul><li>Input queue depth: Messages waiting to be processed</li><li>Output queue depth: Responses waiting to be sent</li><li>Queue utilization: Percentage of queue capacity in use</li><li>Throughput: Messages processed per second</li></ul>
+
+    </p>
+  example: []
+  syntax:
+    content: public interface IQueueDepthMonitor
+    content.vb: Public Interface IQueueDepthMonitor
+- uid: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetQueueDepthAsync(System.String,System.Int32,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetQueueDepthAsync(System.String,System.Int32,System.Threading.CancellationToken)
+  id: GetQueueDepthAsync(System.String,System.Int32,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor
+  langs:
+  - csharp
+  - vb
+  name: GetQueueDepthAsync(string?, int, CancellationToken)
+  nameWithType: IQueueDepthMonitor.GetQueueDepthAsync(string?, int, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetQueueDepthAsync(string?, int, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Placement/IQueueDepthMonitor.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetQueueDepthAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Placement/IQueueDepthMonitor.cs
+    startLine: 32
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Placement
+  summary: Gets the current queue depth snapshot for a specific GPU/silo.
+  example: []
+  syntax:
+    content: Task<QueueDepthSnapshot> GetQueueDepthAsync(string? siloId = null, int deviceIndex = 0, CancellationToken ct = default)
+    parameters:
+    - id: siloId
+      type: System.String
+      description: Silo identifier (null for local silo).
+    - id: deviceIndex
+      type: System.Int32
+      description: 'GPU device index (default: 0).'
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Placement.QueueDepthSnapshot}
+      description: Queue depth snapshot with all metrics.
+    content.vb: Function GetQueueDepthAsync(siloId As String = Nothing, deviceIndex As Integer = 0, ct As CancellationToken = Nothing) As Task(Of QueueDepthSnapshot)
+  overload: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetQueueDepthAsync*
+  nameWithType.vb: IQueueDepthMonitor.GetQueueDepthAsync(String, Integer, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetQueueDepthAsync(String, Integer, System.Threading.CancellationToken)
+  name.vb: GetQueueDepthAsync(String, Integer, CancellationToken)
+- uid: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetAggregatedMetricsAsync(System.String,System.Int32,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetAggregatedMetricsAsync(System.String,System.Int32,System.Threading.CancellationToken)
+  id: GetAggregatedMetricsAsync(System.String,System.Int32,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor
+  langs:
+  - csharp
+  - vb
+  name: GetAggregatedMetricsAsync(string?, int, CancellationToken)
+  nameWithType: IQueueDepthMonitor.GetAggregatedMetricsAsync(string?, int, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetAggregatedMetricsAsync(string?, int, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Placement/IQueueDepthMonitor.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetAggregatedMetricsAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Placement/IQueueDepthMonitor.cs
+    startLine: 44
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Placement
+  summary: Gets aggregated queue depth metrics across all ring kernels on a device.
+  example: []
+  syntax:
+    content: Task<AggregatedQueueMetrics> GetAggregatedMetricsAsync(string? siloId = null, int deviceIndex = 0, CancellationToken ct = default)
+    parameters:
+    - id: siloId
+      type: System.String
+      description: Silo identifier (null for local silo).
+    - id: deviceIndex
+      type: System.Int32
+      description: GPU device index.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Placement.AggregatedQueueMetrics}
+      description: Aggregated metrics across all kernels.
+    content.vb: Function GetAggregatedMetricsAsync(siloId As String = Nothing, deviceIndex As Integer = 0, ct As CancellationToken = Nothing) As Task(Of AggregatedQueueMetrics)
+  overload: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetAggregatedMetricsAsync*
+  nameWithType.vb: IQueueDepthMonitor.GetAggregatedMetricsAsync(String, Integer, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetAggregatedMetricsAsync(String, Integer, System.Threading.CancellationToken)
+  name.vb: GetAggregatedMetricsAsync(String, Integer, CancellationToken)
+- uid: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetHistoryAsync(System.String,System.Int32,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetHistoryAsync(System.String,System.Int32,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)
+  id: GetHistoryAsync(System.String,System.Int32,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor
+  langs:
+  - csharp
+  - vb
+  name: GetHistoryAsync(string?, int, TimeSpan?, CancellationToken)
+  nameWithType: IQueueDepthMonitor.GetHistoryAsync(string?, int, TimeSpan?, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetHistoryAsync(string?, int, System.TimeSpan?, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Placement/IQueueDepthMonitor.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetHistoryAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Placement/IQueueDepthMonitor.cs
+    startLine: 57
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Placement
+  summary: Gets queue depth history for trend analysis.
+  example: []
+  syntax:
+    content: Task<QueueDepthHistory> GetHistoryAsync(string? siloId = null, int deviceIndex = 0, TimeSpan? duration = null, CancellationToken ct = default)
+    parameters:
+    - id: siloId
+      type: System.String
+      description: Silo identifier.
+    - id: deviceIndex
+      type: System.Int32
+      description: GPU device index.
+    - id: duration
+      type: System.Nullable{System.TimeSpan}
+      description: History duration to retrieve.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Placement.QueueDepthHistory}
+      description: Historical queue depth samples.
+    content.vb: Function GetHistoryAsync(siloId As String = Nothing, deviceIndex As Integer = 0, duration As TimeSpan? = Nothing, ct As CancellationToken = Nothing) As Task(Of QueueDepthHistory)
+  overload: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetHistoryAsync*
+  nameWithType.vb: IQueueDepthMonitor.GetHistoryAsync(String, Integer, TimeSpan?, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetHistoryAsync(String, Integer, System.TimeSpan?, System.Threading.CancellationToken)
+  name.vb: GetHistoryAsync(String, Integer, TimeSpan?, CancellationToken)
+- uid: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.HasCapacityAsync(System.String,System.Int32,System.Double,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.HasCapacityAsync(System.String,System.Int32,System.Double,System.Threading.CancellationToken)
+  id: HasCapacityAsync(System.String,System.Int32,System.Double,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor
+  langs:
+  - csharp
+  - vb
+  name: HasCapacityAsync(string?, int, double, CancellationToken)
+  nameWithType: IQueueDepthMonitor.HasCapacityAsync(string?, int, double, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.HasCapacityAsync(string?, int, double, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Placement/IQueueDepthMonitor.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: HasCapacityAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Placement/IQueueDepthMonitor.cs
+    startLine: 71
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Placement
+  summary: Checks if a device has capacity for additional grains.
+  example: []
+  syntax:
+    content: Task<bool> HasCapacityAsync(string? siloId = null, int deviceIndex = 0, double maxQueueUtilization = 0.8, CancellationToken ct = default)
+    parameters:
+    - id: siloId
+      type: System.String
+      description: Silo identifier.
+    - id: deviceIndex
+      type: System.Int32
+      description: GPU device index.
+    - id: maxQueueUtilization
+      type: System.Double
+      description: Maximum acceptable queue utilization (0.0-1.0).
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: True if device has capacity, false otherwise.
+    content.vb: Function HasCapacityAsync(siloId As String = Nothing, deviceIndex As Integer = 0, maxQueueUtilization As Double = 0.8, ct As CancellationToken = Nothing) As Task(Of Boolean)
+  overload: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.HasCapacityAsync*
+  nameWithType.vb: IQueueDepthMonitor.HasCapacityAsync(String, Integer, Double, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.HasCapacityAsync(String, Integer, Double, System.Threading.CancellationToken)
+  name.vb: HasCapacityAsync(String, Integer, Double, CancellationToken)
+- uid: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.SubscribeToAlerts(System.Double,System.Action{Orleans.GpuBridge.Abstractions.Placement.QueueDepthAlert})
+  commentId: M:Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.SubscribeToAlerts(System.Double,System.Action{Orleans.GpuBridge.Abstractions.Placement.QueueDepthAlert})
+  id: SubscribeToAlerts(System.Double,System.Action{Orleans.GpuBridge.Abstractions.Placement.QueueDepthAlert})
+  parent: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor
+  langs:
+  - csharp
+  - vb
+  name: SubscribeToAlerts(double, Action<QueueDepthAlert>)
+  nameWithType: IQueueDepthMonitor.SubscribeToAlerts(double, Action<QueueDepthAlert>)
+  fullName: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.SubscribeToAlerts(double, System.Action<Orleans.GpuBridge.Abstractions.Placement.QueueDepthAlert>)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Placement/IQueueDepthMonitor.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: SubscribeToAlerts
+    path: ../src/Orleans.GpuBridge.Abstractions/Placement/IQueueDepthMonitor.cs
+    startLine: 83
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Placement
+  summary: Subscribes to queue depth threshold alerts.
+  example: []
+  syntax:
+    content: IDisposable SubscribeToAlerts(double threshold, Action<QueueDepthAlert> callback)
+    parameters:
+    - id: threshold
+      type: System.Double
+      description: Utilization threshold that triggers alert (0.0-1.0).
+    - id: callback
+      type: System.Action{Orleans.GpuBridge.Abstractions.Placement.QueueDepthAlert}
+      description: Callback when threshold is exceeded.
+    return:
+      type: System.IDisposable
+      description: Subscription handle for unsubscription.
+    content.vb: Function SubscribeToAlerts(threshold As Double, callback As Action(Of QueueDepthAlert)) As IDisposable
+  overload: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.SubscribeToAlerts*
+  nameWithType.vb: IQueueDepthMonitor.SubscribeToAlerts(Double, Action(Of QueueDepthAlert))
+  fullName.vb: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.SubscribeToAlerts(Double, System.Action(Of Orleans.GpuBridge.Abstractions.Placement.QueueDepthAlert))
+  name.vb: SubscribeToAlerts(Double, Action(Of QueueDepthAlert))
+references:
+- uid: Orleans.GpuBridge.Abstractions.Placement
+  commentId: N:Orleans.GpuBridge.Abstractions.Placement
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Placement
+  nameWithType: Orleans.GpuBridge.Abstractions.Placement
+  fullName: Orleans.GpuBridge.Abstractions.Placement
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Placement
+    name: Placement
+    href: Orleans.GpuBridge.Abstractions.Placement.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Placement
+    name: Placement
+    href: Orleans.GpuBridge.Abstractions.Placement.html
+- uid: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetQueueDepthAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetQueueDepthAsync
+  href: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.html#Orleans_GpuBridge_Abstractions_Placement_IQueueDepthMonitor_GetQueueDepthAsync_System_String_System_Int32_System_Threading_CancellationToken_
+  name: GetQueueDepthAsync
+  nameWithType: IQueueDepthMonitor.GetQueueDepthAsync
+  fullName: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetQueueDepthAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Placement.QueueDepthSnapshot}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Placement.QueueDepthSnapshot}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<QueueDepthSnapshot>
+  nameWithType: Task<QueueDepthSnapshot>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Placement.QueueDepthSnapshot>
+  nameWithType.vb: Task(Of QueueDepthSnapshot)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Placement.QueueDepthSnapshot)
+  name.vb: Task(Of QueueDepthSnapshot)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Placement.QueueDepthSnapshot
+    name: QueueDepthSnapshot
+    href: Orleans.GpuBridge.Abstractions.Placement.QueueDepthSnapshot.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Placement.QueueDepthSnapshot
+    name: QueueDepthSnapshot
+    href: Orleans.GpuBridge.Abstractions.Placement.QueueDepthSnapshot.html
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetAggregatedMetricsAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetAggregatedMetricsAsync
+  href: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.html#Orleans_GpuBridge_Abstractions_Placement_IQueueDepthMonitor_GetAggregatedMetricsAsync_System_String_System_Int32_System_Threading_CancellationToken_
+  name: GetAggregatedMetricsAsync
+  nameWithType: IQueueDepthMonitor.GetAggregatedMetricsAsync
+  fullName: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetAggregatedMetricsAsync
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Placement.AggregatedQueueMetrics}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Placement.AggregatedQueueMetrics}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<AggregatedQueueMetrics>
+  nameWithType: Task<AggregatedQueueMetrics>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Placement.AggregatedQueueMetrics>
+  nameWithType.vb: Task(Of AggregatedQueueMetrics)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Placement.AggregatedQueueMetrics)
+  name.vb: Task(Of AggregatedQueueMetrics)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Placement.AggregatedQueueMetrics
+    name: AggregatedQueueMetrics
+    href: Orleans.GpuBridge.Abstractions.Placement.AggregatedQueueMetrics.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Placement.AggregatedQueueMetrics
+    name: AggregatedQueueMetrics
+    href: Orleans.GpuBridge.Abstractions.Placement.AggregatedQueueMetrics.html
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetHistoryAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetHistoryAsync
+  href: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.html#Orleans_GpuBridge_Abstractions_Placement_IQueueDepthMonitor_GetHistoryAsync_System_String_System_Int32_System_Nullable_System_TimeSpan__System_Threading_CancellationToken_
+  name: GetHistoryAsync
+  nameWithType: IQueueDepthMonitor.GetHistoryAsync
+  fullName: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.GetHistoryAsync
+- uid: System.Nullable{System.TimeSpan}
+  commentId: T:System.Nullable{System.TimeSpan}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan?
+  nameWithType: TimeSpan?
+  fullName: System.TimeSpan?
+  spec.csharp:
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+  spec.vb:
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Placement.QueueDepthHistory}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Placement.QueueDepthHistory}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<QueueDepthHistory>
+  nameWithType: Task<QueueDepthHistory>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Placement.QueueDepthHistory>
+  nameWithType.vb: Task(Of QueueDepthHistory)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Placement.QueueDepthHistory)
+  name.vb: Task(Of QueueDepthHistory)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Placement.QueueDepthHistory
+    name: QueueDepthHistory
+    href: Orleans.GpuBridge.Abstractions.Placement.QueueDepthHistory.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Placement.QueueDepthHistory
+    name: QueueDepthHistory
+    href: Orleans.GpuBridge.Abstractions.Placement.QueueDepthHistory.html
+  - name: )
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.HasCapacityAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.HasCapacityAsync
+  href: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.html#Orleans_GpuBridge_Abstractions_Placement_IQueueDepthMonitor_HasCapacityAsync_System_String_System_Int32_System_Double_System_Threading_CancellationToken_
+  name: HasCapacityAsync
+  nameWithType: IQueueDepthMonitor.HasCapacityAsync
+  fullName: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.HasCapacityAsync
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.SubscribeToAlerts*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.SubscribeToAlerts
+  href: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.html#Orleans_GpuBridge_Abstractions_Placement_IQueueDepthMonitor_SubscribeToAlerts_System_Double_System_Action_Orleans_GpuBridge_Abstractions_Placement_QueueDepthAlert__
+  name: SubscribeToAlerts
+  nameWithType: IQueueDepthMonitor.SubscribeToAlerts
+  fullName: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.SubscribeToAlerts
+- uid: System.Action{Orleans.GpuBridge.Abstractions.Placement.QueueDepthAlert}
+  commentId: T:System.Action{Orleans.GpuBridge.Abstractions.Placement.QueueDepthAlert}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<QueueDepthAlert>
+  nameWithType: Action<QueueDepthAlert>
+  fullName: System.Action<Orleans.GpuBridge.Abstractions.Placement.QueueDepthAlert>
+  nameWithType.vb: Action(Of QueueDepthAlert)
+  fullName.vb: System.Action(Of Orleans.GpuBridge.Abstractions.Placement.QueueDepthAlert)
+  name.vb: Action(Of QueueDepthAlert)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Placement.QueueDepthAlert
+    name: QueueDepthAlert
+    href: Orleans.GpuBridge.Abstractions.Placement.QueueDepthAlert.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Placement.QueueDepthAlert
+    name: QueueDepthAlert
+    href: Orleans.GpuBridge.Abstractions.Placement.QueueDepthAlert.html
+  - name: )
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

@@ -1,0 +1,318 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager
+  id: ITemporalBarrierManager
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  children:
+  - Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.CreateBarrier(Orleans.GpuBridge.Abstractions.Temporal.BarrierScope,System.Int32)
+  - Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.GetStatistics
+  - Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.SynchronizeAsync(Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrier,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: ITemporalBarrierManager
+  nameWithType: ITemporalBarrierManager
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager
+  type: Interface
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ITemporalBarrierManager
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+    startLine: 199
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Interface for managing GPU barriers in temporal kernels.
+  example: []
+  syntax:
+    content: public interface ITemporalBarrierManager
+    content.vb: Public Interface ITemporalBarrierManager
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.CreateBarrier(Orleans.GpuBridge.Abstractions.Temporal.BarrierScope,System.Int32)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.CreateBarrier(Orleans.GpuBridge.Abstractions.Temporal.BarrierScope,System.Int32)
+  id: CreateBarrier(Orleans.GpuBridge.Abstractions.Temporal.BarrierScope,System.Int32)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager
+  langs:
+  - csharp
+  - vb
+  name: CreateBarrier(BarrierScope, int)
+  nameWithType: ITemporalBarrierManager.CreateBarrier(BarrierScope, int)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.CreateBarrier(Orleans.GpuBridge.Abstractions.Temporal.BarrierScope, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CreateBarrier
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+    startLine: 207
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Creates a device-wide barrier for synchronization.
+  example: []
+  syntax:
+    content: ITemporalBarrier CreateBarrier(BarrierScope scope, int timeoutMs = 5000)
+    parameters:
+    - id: scope
+      type: Orleans.GpuBridge.Abstractions.Temporal.BarrierScope
+      description: Barrier scope.
+    - id: timeoutMs
+      type: System.Int32
+      description: Timeout in milliseconds.
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrier
+      description: Barrier instance.
+    content.vb: Function CreateBarrier(scope As BarrierScope, timeoutMs As Integer = 5000) As ITemporalBarrier
+  overload: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.CreateBarrier*
+  nameWithType.vb: ITemporalBarrierManager.CreateBarrier(BarrierScope, Integer)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.CreateBarrier(Orleans.GpuBridge.Abstractions.Temporal.BarrierScope, Integer)
+  name.vb: CreateBarrier(BarrierScope, Integer)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.SynchronizeAsync(Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrier,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.SynchronizeAsync(Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrier,System.Threading.CancellationToken)
+  id: SynchronizeAsync(Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrier,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager
+  langs:
+  - csharp
+  - vb
+  name: SynchronizeAsync(ITemporalBarrier, CancellationToken)
+  nameWithType: ITemporalBarrierManager.SynchronizeAsync(ITemporalBarrier, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.SynchronizeAsync(Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrier, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: SynchronizeAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+    startLine: 215
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Executes a device-wide barrier synchronization.
+  example: []
+  syntax:
+    content: Task SynchronizeAsync(ITemporalBarrier barrier, CancellationToken ct = default)
+    parameters:
+    - id: barrier
+      type: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrier
+      description: Barrier to execute.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task that completes when all threads reach the barrier.
+    content.vb: Function SynchronizeAsync(barrier As ITemporalBarrier, ct As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.SynchronizeAsync*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.GetStatistics
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.GetStatistics
+  id: GetStatistics
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager
+  langs:
+  - csharp
+  - vb
+  name: GetStatistics()
+  nameWithType: ITemporalBarrierManager.GetStatistics()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.GetStatistics()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetStatistics
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+    startLine: 220
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Gets barrier statistics.
+  example: []
+  syntax:
+    content: BarrierStatistics GetStatistics()
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.BarrierStatistics
+    content.vb: Function GetStatistics() As BarrierStatistics
+  overload: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.GetStatistics*
+references:
+- uid: Orleans.GpuBridge.Abstractions.Temporal
+  commentId: N:Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Temporal
+  nameWithType: Orleans.GpuBridge.Abstractions.Temporal
+  fullName: Orleans.GpuBridge.Abstractions.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.CreateBarrier*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.CreateBarrier
+  href: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.html#Orleans_GpuBridge_Abstractions_Temporal_ITemporalBarrierManager_CreateBarrier_Orleans_GpuBridge_Abstractions_Temporal_BarrierScope_System_Int32_
+  name: CreateBarrier
+  nameWithType: ITemporalBarrierManager.CreateBarrier
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.CreateBarrier
+- uid: Orleans.GpuBridge.Abstractions.Temporal.BarrierScope
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.BarrierScope
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.BarrierScope.html
+  name: BarrierScope
+  nameWithType: BarrierScope
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.BarrierScope
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrier
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrier
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrier.html
+  name: ITemporalBarrier
+  nameWithType: ITemporalBarrier
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrier
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.SynchronizeAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.SynchronizeAsync
+  href: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.html#Orleans_GpuBridge_Abstractions_Temporal_ITemporalBarrierManager_SynchronizeAsync_Orleans_GpuBridge_Abstractions_Temporal_ITemporalBarrier_System_Threading_CancellationToken_
+  name: SynchronizeAsync
+  nameWithType: ITemporalBarrierManager.SynchronizeAsync
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.SynchronizeAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.GetStatistics*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.GetStatistics
+  href: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.html#Orleans_GpuBridge_Abstractions_Temporal_ITemporalBarrierManager_GetStatistics
+  name: GetStatistics
+  nameWithType: ITemporalBarrierManager.GetStatistics
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalBarrierManager.GetStatistics
+- uid: Orleans.GpuBridge.Abstractions.Temporal.BarrierStatistics
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.BarrierStatistics
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.BarrierStatistics.html
+  name: BarrierStatistics
+  nameWithType: BarrierStatistics
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.BarrierStatistics

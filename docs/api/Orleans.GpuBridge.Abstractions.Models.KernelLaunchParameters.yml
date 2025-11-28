@@ -1,0 +1,786 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters
+  commentId: T:Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters
+  id: KernelLaunchParameters
+  parent: Orleans.GpuBridge.Abstractions.Models
+  children:
+  - Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.#ctor(System.Int32[],System.Int32[],System.Int32,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
+  - Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.Arguments
+  - Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.DynamicSharedMemoryBytes
+  - Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.GlobalWorkSize
+  - Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.LocalWorkSize
+  langs:
+  - csharp
+  - vb
+  name: KernelLaunchParameters
+  nameWithType: KernelLaunchParameters
+  fullName: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Models/KernelLaunchParameters.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: KernelLaunchParameters
+    path: ../src/Orleans.GpuBridge.Abstractions/Models/KernelLaunchParameters.cs
+    startLine: 35
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Models
+  summary: >-
+    Defines the parameters required for launching a kernel on a compute device.
+
+    These parameters specify the execution configuration, work distribution,
+
+    memory requirements, and kernel arguments needed for proper kernel execution.
+  example: []
+  syntax:
+    content: 'public sealed record KernelLaunchParameters : IEquatable<KernelLaunchParameters>'
+    content.vb: Public NotInheritable Class KernelLaunchParameters Implements IEquatable(Of KernelLaunchParameters)
+  inheritance:
+  - System.Object
+  implements:
+  - System.IEquatable{Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.#ctor(System.Int32[],System.Int32[],System.Int32,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
+  commentId: M:Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.#ctor(System.Int32[],System.Int32[],System.Int32,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
+  id: '#ctor(System.Int32[],System.Int32[],System.Int32,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})'
+  parent: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters
+  langs:
+  - csharp
+  - vb
+  name: KernelLaunchParameters(int[], int[]?, int, IReadOnlyDictionary<string, object>?)
+  nameWithType: KernelLaunchParameters.KernelLaunchParameters(int[], int[]?, int, IReadOnlyDictionary<string, object>?)
+  fullName: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.KernelLaunchParameters(int[], int[]?, int, System.Collections.Generic.IReadOnlyDictionary<string, object>?)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Models/KernelLaunchParameters.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Abstractions/Models/KernelLaunchParameters.cs
+    startLine: 35
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Models
+  summary: >-
+    Defines the parameters required for launching a kernel on a compute device.
+
+    These parameters specify the execution configuration, work distribution,
+
+    memory requirements, and kernel arguments needed for proper kernel execution.
+  example: []
+  syntax:
+    content: public KernelLaunchParameters(int[] GlobalWorkSize, int[]? LocalWorkSize = null, int DynamicSharedMemoryBytes = 0, IReadOnlyDictionary<string, object>? Arguments = null)
+    parameters:
+    - id: GlobalWorkSize
+      type: System.Int32[]
+      description: >-
+        The global work size for kernel execution, specified as an array of dimensions.
+
+        This defines the total amount of work to be performed across all compute units.
+
+        For example, [1024, 512] might specify a 2D grid with 1024 items in the X dimension
+
+        and 512 items in the Y dimension. The number of dimensions must match the kernel's
+
+        expected dimensionality (typically 1D, 2D, or 3D).
+    - id: LocalWorkSize
+      type: System.Int32[]
+      description: >-
+        The local work size (workgroup size) for kernel execution, specified as an array of dimensions.
+
+        This defines how the global work is divided into local workgroups that execute together
+
+        on the same compute unit. If null, the backend will automatically select an appropriate
+
+        local work size based on device characteristics and kernel requirements.
+
+        When specified, the dimensions must match those of GlobalWorkSize.
+    - id: DynamicSharedMemoryBytes
+      type: System.Int32
+      description: >-
+        The amount of dynamic shared memory to allocate per workgroup, in bytes.
+
+        Shared memory is fast on-chip memory that can be accessed by all threads
+
+        within a workgroup. This is in addition to any statically declared shared memory
+
+        in the kernel code. Default is 0, meaning no additional shared memory is allocated.
+    - id: Arguments
+      type: System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object}
+      description: >-
+        Kernel arguments as key-value pairs where keys are parameter names and values are argument data.
+
+        This dictionary contains all the parameters that need to be passed to the kernel function.
+
+        The keys should match the parameter names in the kernel signature, and values must be
+
+        compatible with the expected parameter types. If null, the kernel is assumed to have no parameters.
+    content.vb: Public Sub New(GlobalWorkSize As Integer(), LocalWorkSize As Integer() = Nothing, DynamicSharedMemoryBytes As Integer = 0, Arguments As IReadOnlyDictionary(Of String, Object) = Nothing)
+  overload: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.#ctor*
+  nameWithType.vb: KernelLaunchParameters.New(Integer(), Integer(), Integer, IReadOnlyDictionary(Of String, Object))
+  fullName.vb: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.New(Integer(), Integer(), Integer, System.Collections.Generic.IReadOnlyDictionary(Of String, Object))
+  name.vb: New(Integer(), Integer(), Integer, IReadOnlyDictionary(Of String, Object))
+- uid: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.GlobalWorkSize
+  commentId: P:Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.GlobalWorkSize
+  id: GlobalWorkSize
+  parent: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters
+  langs:
+  - csharp
+  - vb
+  name: GlobalWorkSize
+  nameWithType: KernelLaunchParameters.GlobalWorkSize
+  fullName: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.GlobalWorkSize
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Models/KernelLaunchParameters.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GlobalWorkSize
+    path: ../src/Orleans.GpuBridge.Abstractions/Models/KernelLaunchParameters.cs
+    startLine: 36
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Models
+  summary: >-
+    The global work size for kernel execution, specified as an array of dimensions.
+
+    This defines the total amount of work to be performed across all compute units.
+
+    For example, [1024, 512] might specify a 2D grid with 1024 items in the X dimension
+
+    and 512 items in the Y dimension. The number of dimensions must match the kernel's
+
+    expected dimensionality (typically 1D, 2D, or 3D).
+  example: []
+  syntax:
+    content: public int[] GlobalWorkSize { get; init; }
+    parameters: []
+    return:
+      type: System.Int32[]
+    content.vb: Public Property GlobalWorkSize As Integer()
+  overload: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.GlobalWorkSize*
+- uid: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.LocalWorkSize
+  commentId: P:Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.LocalWorkSize
+  id: LocalWorkSize
+  parent: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters
+  langs:
+  - csharp
+  - vb
+  name: LocalWorkSize
+  nameWithType: KernelLaunchParameters.LocalWorkSize
+  fullName: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.LocalWorkSize
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Models/KernelLaunchParameters.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: LocalWorkSize
+    path: ../src/Orleans.GpuBridge.Abstractions/Models/KernelLaunchParameters.cs
+    startLine: 37
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Models
+  summary: >-
+    The local work size (workgroup size) for kernel execution, specified as an array of dimensions.
+
+    This defines how the global work is divided into local workgroups that execute together
+
+    on the same compute unit. If null, the backend will automatically select an appropriate
+
+    local work size based on device characteristics and kernel requirements.
+
+    When specified, the dimensions must match those of GlobalWorkSize.
+  example: []
+  syntax:
+    content: public int[]? LocalWorkSize { get; init; }
+    parameters: []
+    return:
+      type: System.Int32[]
+    content.vb: Public Property LocalWorkSize As Integer()
+  overload: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.LocalWorkSize*
+- uid: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.DynamicSharedMemoryBytes
+  commentId: P:Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.DynamicSharedMemoryBytes
+  id: DynamicSharedMemoryBytes
+  parent: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters
+  langs:
+  - csharp
+  - vb
+  name: DynamicSharedMemoryBytes
+  nameWithType: KernelLaunchParameters.DynamicSharedMemoryBytes
+  fullName: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.DynamicSharedMemoryBytes
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Models/KernelLaunchParameters.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DynamicSharedMemoryBytes
+    path: ../src/Orleans.GpuBridge.Abstractions/Models/KernelLaunchParameters.cs
+    startLine: 38
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Models
+  summary: >-
+    The amount of dynamic shared memory to allocate per workgroup, in bytes.
+
+    Shared memory is fast on-chip memory that can be accessed by all threads
+
+    within a workgroup. This is in addition to any statically declared shared memory
+
+    in the kernel code. Default is 0, meaning no additional shared memory is allocated.
+  example: []
+  syntax:
+    content: public int DynamicSharedMemoryBytes { get; init; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property DynamicSharedMemoryBytes As Integer
+  overload: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.DynamicSharedMemoryBytes*
+- uid: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.Arguments
+  commentId: P:Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.Arguments
+  id: Arguments
+  parent: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters
+  langs:
+  - csharp
+  - vb
+  name: Arguments
+  nameWithType: KernelLaunchParameters.Arguments
+  fullName: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.Arguments
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Models/KernelLaunchParameters.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Arguments
+    path: ../src/Orleans.GpuBridge.Abstractions/Models/KernelLaunchParameters.cs
+    startLine: 39
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Models
+  summary: >-
+    Kernel arguments as key-value pairs where keys are parameter names and values are argument data.
+
+    This dictionary contains all the parameters that need to be passed to the kernel function.
+
+    The keys should match the parameter names in the kernel signature, and values must be
+
+    compatible with the expected parameter types. If null, the kernel is assumed to have no parameters.
+  example: []
+  syntax:
+    content: public IReadOnlyDictionary<string, object>? Arguments { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object}
+    content.vb: Public Property Arguments As IReadOnlyDictionary(Of String, Object)
+  overload: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.Arguments*
+references:
+- uid: Orleans.GpuBridge.Abstractions.Models
+  commentId: N:Orleans.GpuBridge.Abstractions.Models
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Models
+  nameWithType: Orleans.GpuBridge.Abstractions.Models
+  fullName: Orleans.GpuBridge.Abstractions.Models
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Models
+    name: Models
+    href: Orleans.GpuBridge.Abstractions.Models.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Models
+    name: Models
+    href: Orleans.GpuBridge.Abstractions.Models.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IEquatable{Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters}
+  commentId: T:System.IEquatable{Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<KernelLaunchParameters>
+  nameWithType: IEquatable<KernelLaunchParameters>
+  fullName: System.IEquatable<Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters>
+  nameWithType.vb: IEquatable(Of KernelLaunchParameters)
+  fullName.vb: System.IEquatable(Of Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters)
+  name.vb: IEquatable(Of KernelLaunchParameters)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters
+    name: KernelLaunchParameters
+    href: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters
+    name: KernelLaunchParameters
+    href: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.html
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.#ctor
+  href: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.html#Orleans_GpuBridge_Abstractions_Models_KernelLaunchParameters__ctor_System_Int32___System_Int32___System_Int32_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__
+  name: KernelLaunchParameters
+  nameWithType: KernelLaunchParameters.KernelLaunchParameters
+  fullName: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.KernelLaunchParameters
+  nameWithType.vb: KernelLaunchParameters.New
+  fullName.vb: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.New
+  name.vb: New
+- uid: System.Int32[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int[]
+  nameWithType: int[]
+  fullName: int[]
+  nameWithType.vb: Integer()
+  fullName.vb: Integer()
+  name.vb: Integer()
+  spec.csharp:
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: (
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object}
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<string, object>
+  nameWithType: IReadOnlyDictionary<string, object>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<string, object>
+  nameWithType.vb: IReadOnlyDictionary(Of String, Object)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of String, Object)
+  name.vb: IReadOnlyDictionary(Of String, Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyDictionary`2
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<TKey, TValue>
+  nameWithType: IReadOnlyDictionary<TKey, TValue>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>
+  nameWithType.vb: IReadOnlyDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of TKey, TValue)
+  name.vb: IReadOnlyDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.GlobalWorkSize*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.GlobalWorkSize
+  href: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.html#Orleans_GpuBridge_Abstractions_Models_KernelLaunchParameters_GlobalWorkSize
+  name: GlobalWorkSize
+  nameWithType: KernelLaunchParameters.GlobalWorkSize
+  fullName: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.GlobalWorkSize
+- uid: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.LocalWorkSize*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.LocalWorkSize
+  href: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.html#Orleans_GpuBridge_Abstractions_Models_KernelLaunchParameters_LocalWorkSize
+  name: LocalWorkSize
+  nameWithType: KernelLaunchParameters.LocalWorkSize
+  fullName: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.LocalWorkSize
+- uid: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.DynamicSharedMemoryBytes*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.DynamicSharedMemoryBytes
+  href: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.html#Orleans_GpuBridge_Abstractions_Models_KernelLaunchParameters_DynamicSharedMemoryBytes
+  name: DynamicSharedMemoryBytes
+  nameWithType: KernelLaunchParameters.DynamicSharedMemoryBytes
+  fullName: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.DynamicSharedMemoryBytes
+- uid: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.Arguments*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.Arguments
+  href: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.html#Orleans_GpuBridge_Abstractions_Models_KernelLaunchParameters_Arguments
+  name: Arguments
+  nameWithType: KernelLaunchParameters.Arguments
+  fullName: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.Arguments

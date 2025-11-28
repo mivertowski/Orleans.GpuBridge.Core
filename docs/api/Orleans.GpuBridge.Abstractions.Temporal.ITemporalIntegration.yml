@@ -1,0 +1,673 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration
+  id: ITemporalIntegration
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  children:
+  - Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.AreBarriersSupported
+  - Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.CalibrateGpuClockAsync(System.Int32,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.ConfigureTemporalKernelAsync(Orleans.GpuBridge.Abstractions.Temporal.TemporalKernelOptions,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.CurrentCalibration
+  - Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.GetGpuTimestampAsync(System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.IsGpuTimingAvailable
+  - Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.IsMemoryOrderingSupported
+  - Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.TimingProvider
+  langs:
+  - csharp
+  - vb
+  name: ITemporalIntegration
+  nameWithType: ITemporalIntegration
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration
+  type: Interface
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ITemporalIntegration
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+    startLine: 26
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Provides GPU temporal integration capabilities for Orleans actors.
+  remarks: >-
+    <p>
+
+    This interface abstracts over DotCompute's temporal features:
+
+    <ul><li>GPU-side timestamp injection via [Kernel] attributes</li><li>Device-wide barriers via Cooperative Groups</li><li>Memory ordering via fence primitives</li></ul>
+
+    </p>
+
+    <p>
+
+    Requires DotCompute 0.4.2-rc2 or later for full functionality.
+
+    </p>
+  example: []
+  syntax:
+    content: public interface ITemporalIntegration
+    content.vb: Public Interface ITemporalIntegration
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.ConfigureTemporalKernelAsync(Orleans.GpuBridge.Abstractions.Temporal.TemporalKernelOptions,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.ConfigureTemporalKernelAsync(Orleans.GpuBridge.Abstractions.Temporal.TemporalKernelOptions,System.Threading.CancellationToken)
+  id: ConfigureTemporalKernelAsync(Orleans.GpuBridge.Abstractions.Temporal.TemporalKernelOptions,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration
+  langs:
+  - csharp
+  - vb
+  name: ConfigureTemporalKernelAsync(TemporalKernelOptions, CancellationToken)
+  nameWithType: ITemporalIntegration.ConfigureTemporalKernelAsync(TemporalKernelOptions, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.ConfigureTemporalKernelAsync(Orleans.GpuBridge.Abstractions.Temporal.TemporalKernelOptions, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ConfigureTemporalKernelAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+    startLine: 34
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Enables GPU-side timestamps for temporal actors.
+  example: []
+  syntax:
+    content: Task ConfigureTemporalKernelAsync(TemporalKernelOptions options, CancellationToken ct = default)
+    parameters:
+    - id: options
+      type: Orleans.GpuBridge.Abstractions.Temporal.TemporalKernelOptions
+      description: Configuration options for temporal kernels.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task that completes when configuration is applied.
+    content.vb: Function ConfigureTemporalKernelAsync(options As TemporalKernelOptions, ct As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.ConfigureTemporalKernelAsync*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.CalibrateGpuClockAsync(System.Int32,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.CalibrateGpuClockAsync(System.Int32,System.Threading.CancellationToken)
+  id: CalibrateGpuClockAsync(System.Int32,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration
+  langs:
+  - csharp
+  - vb
+  name: CalibrateGpuClockAsync(int, CancellationToken)
+  nameWithType: ITemporalIntegration.CalibrateGpuClockAsync(int, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.CalibrateGpuClockAsync(int, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CalibrateGpuClockAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+    startLine: 42
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Calibrates GPU clock against CPU time.
+  example: []
+  syntax:
+    content: Task<ClockCalibration> CalibrateGpuClockAsync(int sampleCount = 1000, CancellationToken ct = default)
+    parameters:
+    - id: sampleCount
+      type: System.Int32
+      description: Number of samples for calibration.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration}
+      description: Calibration result with offset and drift.
+    content.vb: Function CalibrateGpuClockAsync(sampleCount As Integer = 1000, ct As CancellationToken = Nothing) As Task(Of ClockCalibration)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.CalibrateGpuClockAsync*
+  nameWithType.vb: ITemporalIntegration.CalibrateGpuClockAsync(Integer, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.CalibrateGpuClockAsync(Integer, System.Threading.CancellationToken)
+  name.vb: CalibrateGpuClockAsync(Integer, CancellationToken)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.GetGpuTimestampAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.GetGpuTimestampAsync(System.Threading.CancellationToken)
+  id: GetGpuTimestampAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration
+  langs:
+  - csharp
+  - vb
+  name: GetGpuTimestampAsync(CancellationToken)
+  nameWithType: ITemporalIntegration.GetGpuTimestampAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.GetGpuTimestampAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetGpuTimestampAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+    startLine: 49
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Gets the current GPU timestamp in nanoseconds.
+  example: []
+  syntax:
+    content: Task<long> GetGpuTimestampAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{System.Int64}
+      description: GPU timestamp in nanoseconds since device initialization.
+    content.vb: Function GetGpuTimestampAsync(ct As CancellationToken = Nothing) As Task(Of Long)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.GetGpuTimestampAsync*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.CurrentCalibration
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.CurrentCalibration
+  id: CurrentCalibration
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration
+  langs:
+  - csharp
+  - vb
+  name: CurrentCalibration
+  nameWithType: ITemporalIntegration.CurrentCalibration
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.CurrentCalibration
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CurrentCalibration
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+    startLine: 54
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Gets the current calibration status.
+  example: []
+  syntax:
+    content: ClockCalibration? CurrentCalibration { get; }
+    parameters: []
+    return:
+      type: System.Nullable{Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration}
+    content.vb: ReadOnly Property CurrentCalibration As ClockCalibration?
+  overload: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.CurrentCalibration*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.TimingProvider
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.TimingProvider
+  id: TimingProvider
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration
+  langs:
+  - csharp
+  - vb
+  name: TimingProvider
+  nameWithType: ITemporalIntegration.TimingProvider
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.TimingProvider
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TimingProvider
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+    startLine: 59
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Gets the underlying timing provider.
+  example: []
+  syntax:
+    content: IGpuTimingProvider TimingProvider { get; }
+    parameters: []
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider
+    content.vb: ReadOnly Property TimingProvider As IGpuTimingProvider
+  overload: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.TimingProvider*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.IsGpuTimingAvailable
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.IsGpuTimingAvailable
+  id: IsGpuTimingAvailable
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration
+  langs:
+  - csharp
+  - vb
+  name: IsGpuTimingAvailable
+  nameWithType: ITemporalIntegration.IsGpuTimingAvailable
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.IsGpuTimingAvailable
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsGpuTimingAvailable
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+    startLine: 64
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Gets whether GPU timing is available.
+  example: []
+  syntax:
+    content: bool IsGpuTimingAvailable { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property IsGpuTimingAvailable As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.IsGpuTimingAvailable*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.AreBarriersSupported
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.AreBarriersSupported
+  id: AreBarriersSupported
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration
+  langs:
+  - csharp
+  - vb
+  name: AreBarriersSupported
+  nameWithType: ITemporalIntegration.AreBarriersSupported
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.AreBarriersSupported
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AreBarriersSupported
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+    startLine: 69
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Gets whether device-wide barriers are supported.
+  example: []
+  syntax:
+    content: bool AreBarriersSupported { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property AreBarriersSupported As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.AreBarriersSupported*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.IsMemoryOrderingSupported
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.IsMemoryOrderingSupported
+  id: IsMemoryOrderingSupported
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration
+  langs:
+  - csharp
+  - vb
+  name: IsMemoryOrderingSupported
+  nameWithType: ITemporalIntegration.IsMemoryOrderingSupported
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.IsMemoryOrderingSupported
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsMemoryOrderingSupported
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ITemporalIntegration.cs
+    startLine: 74
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Gets whether memory ordering primitives are supported.
+  example: []
+  syntax:
+    content: bool IsMemoryOrderingSupported { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property IsMemoryOrderingSupported As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.IsMemoryOrderingSupported*
+references:
+- uid: Orleans.GpuBridge.Abstractions.Temporal
+  commentId: N:Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Temporal
+  nameWithType: Orleans.GpuBridge.Abstractions.Temporal
+  fullName: Orleans.GpuBridge.Abstractions.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.ConfigureTemporalKernelAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.ConfigureTemporalKernelAsync
+  href: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.html#Orleans_GpuBridge_Abstractions_Temporal_ITemporalIntegration_ConfigureTemporalKernelAsync_Orleans_GpuBridge_Abstractions_Temporal_TemporalKernelOptions_System_Threading_CancellationToken_
+  name: ConfigureTemporalKernelAsync
+  nameWithType: ITemporalIntegration.ConfigureTemporalKernelAsync
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.ConfigureTemporalKernelAsync
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalKernelOptions
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.TemporalKernelOptions
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.TemporalKernelOptions.html
+  name: TemporalKernelOptions
+  nameWithType: TemporalKernelOptions
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalKernelOptions
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.CalibrateGpuClockAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.CalibrateGpuClockAsync
+  href: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.html#Orleans_GpuBridge_Abstractions_Temporal_ITemporalIntegration_CalibrateGpuClockAsync_System_Int32_System_Threading_CancellationToken_
+  name: CalibrateGpuClockAsync
+  nameWithType: ITemporalIntegration.CalibrateGpuClockAsync
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.CalibrateGpuClockAsync
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ClockCalibration>
+  nameWithType: Task<ClockCalibration>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration>
+  nameWithType.vb: Task(Of ClockCalibration)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration)
+  name.vb: Task(Of ClockCalibration)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration
+    name: ClockCalibration
+    href: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration
+    name: ClockCalibration
+    href: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.html
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.GetGpuTimestampAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.GetGpuTimestampAsync
+  href: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.html#Orleans_GpuBridge_Abstractions_Temporal_ITemporalIntegration_GetGpuTimestampAsync_System_Threading_CancellationToken_
+  name: GetGpuTimestampAsync
+  nameWithType: ITemporalIntegration.GetGpuTimestampAsync
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.GetGpuTimestampAsync
+- uid: System.Threading.Tasks.Task{System.Int64}
+  commentId: T:System.Threading.Tasks.Task{System.Int64}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<long>
+  nameWithType: Task<long>
+  fullName: System.Threading.Tasks.Task<long>
+  nameWithType.vb: Task(Of Long)
+  fullName.vb: System.Threading.Tasks.Task(Of Long)
+  name.vb: Task(Of Long)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.CurrentCalibration*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.CurrentCalibration
+  href: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.html#Orleans_GpuBridge_Abstractions_Temporal_ITemporalIntegration_CurrentCalibration
+  name: CurrentCalibration
+  nameWithType: ITemporalIntegration.CurrentCalibration
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.CurrentCalibration
+- uid: System.Nullable{Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration}
+  commentId: T:System.Nullable{Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration}
+  parent: System
+  definition: System.Nullable`1
+  href: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.html
+  name: ClockCalibration?
+  nameWithType: ClockCalibration?
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration?
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration
+    name: ClockCalibration
+    href: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.html
+  - name: '?'
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration
+    name: ClockCalibration
+    href: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.html
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.TimingProvider*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.TimingProvider
+  href: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.html#Orleans_GpuBridge_Abstractions_Temporal_ITemporalIntegration_TimingProvider
+  name: TimingProvider
+  nameWithType: ITemporalIntegration.TimingProvider
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.TimingProvider
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.html
+  name: IGpuTimingProvider
+  nameWithType: IGpuTimingProvider
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.IsGpuTimingAvailable*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.IsGpuTimingAvailable
+  href: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.html#Orleans_GpuBridge_Abstractions_Temporal_ITemporalIntegration_IsGpuTimingAvailable
+  name: IsGpuTimingAvailable
+  nameWithType: ITemporalIntegration.IsGpuTimingAvailable
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.IsGpuTimingAvailable
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.AreBarriersSupported*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.AreBarriersSupported
+  href: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.html#Orleans_GpuBridge_Abstractions_Temporal_ITemporalIntegration_AreBarriersSupported
+  name: AreBarriersSupported
+  nameWithType: ITemporalIntegration.AreBarriersSupported
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.AreBarriersSupported
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.IsMemoryOrderingSupported*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.IsMemoryOrderingSupported
+  href: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.html#Orleans_GpuBridge_Abstractions_Temporal_ITemporalIntegration_IsMemoryOrderingSupported
+  name: IsMemoryOrderingSupported
+  nameWithType: ITemporalIntegration.IsMemoryOrderingSupported
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ITemporalIntegration.IsMemoryOrderingSupported

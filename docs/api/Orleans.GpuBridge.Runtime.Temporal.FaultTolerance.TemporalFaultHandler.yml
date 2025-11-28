@@ -1,0 +1,1316 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler
+  id: TemporalFaultHandler
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  children:
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler},Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultOptions,Orleans.GpuBridge.Runtime.Temporal.Clock.ClockSourceSelector)
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.ClockJumpDetected
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.ClockSourceFailed
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.CurrentFaultState
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.DetectClockJump(System.Int64)
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.Dispose
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.FaultStateChanged
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.GetStatistics
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.HandleClockJump(Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockJumpInfo,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.IsHealthy
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.RecoveryAttempted
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.SuccessfulRecoveries
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TotalJumpsDetected
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TotalRecoveryAttempts
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TryRecoverClockSource
+  langs:
+  - csharp
+  - vb
+  name: TemporalFaultHandler
+  nameWithType: TemporalFaultHandler
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TemporalFaultHandler
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+    startLine: 36
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Detects and handles temporal faults in distributed clock systems.
+  remarks: >-
+    <p>
+
+    <b>Fault Types Detected:</b>
+
+    </p>
+
+    <ul><li>Clock jumps (forward or backward)</li><li>Clock source failures</li><li>Excessive clock drift</li><li>Synchronization failures</li></ul>
+
+    <p>
+
+    <b>Recovery Mechanisms:</b>
+
+    </p>
+
+    <ul><li>Automatic clock source failover</li><li>Logical counter advancement for backward jumps</li><li>Gradual clock adjustment for forward jumps</li><li>Alert notifications via events</li></ul>
+  example: []
+  syntax:
+    content: 'public sealed class TemporalFaultHandler : IDisposable'
+    content.vb: Public NotInheritable Class TemporalFaultHandler Implements IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.IsHealthy
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.IsHealthy
+  id: IsHealthy
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler
+  langs:
+  - csharp
+  - vb
+  name: IsHealthy
+  nameWithType: TemporalFaultHandler.IsHealthy
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.IsHealthy
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsHealthy
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+    startLine: 57
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Gets whether the temporal system is currently healthy.
+  example: []
+  syntax:
+    content: public bool IsHealthy { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsHealthy As Boolean
+  overload: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.IsHealthy*
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.CurrentFaultState
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.CurrentFaultState
+  id: CurrentFaultState
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler
+  langs:
+  - csharp
+  - vb
+  name: CurrentFaultState
+  nameWithType: TemporalFaultHandler.CurrentFaultState
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.CurrentFaultState
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CurrentFaultState
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+    startLine: 71
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Gets the current fault state.
+  example: []
+  syntax:
+    content: public ClockFaultState CurrentFaultState { get; }
+    parameters: []
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockFaultState
+    content.vb: Public ReadOnly Property CurrentFaultState As ClockFaultState
+  overload: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.CurrentFaultState*
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TotalJumpsDetected
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TotalJumpsDetected
+  id: TotalJumpsDetected
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler
+  langs:
+  - csharp
+  - vb
+  name: TotalJumpsDetected
+  nameWithType: TemporalFaultHandler.TotalJumpsDetected
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TotalJumpsDetected
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TotalJumpsDetected
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+    startLine: 85
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Gets the total number of clock jumps detected since handler creation.
+  example: []
+  syntax:
+    content: public long TotalJumpsDetected { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public ReadOnly Property TotalJumpsDetected As Long
+  overload: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TotalJumpsDetected*
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TotalRecoveryAttempts
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TotalRecoveryAttempts
+  id: TotalRecoveryAttempts
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler
+  langs:
+  - csharp
+  - vb
+  name: TotalRecoveryAttempts
+  nameWithType: TemporalFaultHandler.TotalRecoveryAttempts
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TotalRecoveryAttempts
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TotalRecoveryAttempts
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+    startLine: 90
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Gets the total number of recovery attempts made.
+  example: []
+  syntax:
+    content: public long TotalRecoveryAttempts { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public ReadOnly Property TotalRecoveryAttempts As Long
+  overload: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TotalRecoveryAttempts*
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.SuccessfulRecoveries
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.SuccessfulRecoveries
+  id: SuccessfulRecoveries
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler
+  langs:
+  - csharp
+  - vb
+  name: SuccessfulRecoveries
+  nameWithType: TemporalFaultHandler.SuccessfulRecoveries
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.SuccessfulRecoveries
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: SuccessfulRecoveries
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+    startLine: 95
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Gets the number of successful recovery operations.
+  example: []
+  syntax:
+    content: public long SuccessfulRecoveries { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public ReadOnly Property SuccessfulRecoveries As Long
+  overload: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.SuccessfulRecoveries*
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.ClockJumpDetected
+  commentId: E:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.ClockJumpDetected
+  id: ClockJumpDetected
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler
+  langs:
+  - csharp
+  - vb
+  name: ClockJumpDetected
+  nameWithType: TemporalFaultHandler.ClockJumpDetected
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.ClockJumpDetected
+  type: Event
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ClockJumpDetected
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+    startLine: 100
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Occurs when a clock jump is detected.
+  example: []
+  syntax:
+    content: public event EventHandler<ClockJumpEventArgs>? ClockJumpDetected
+    return:
+      type: System.EventHandler{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockJumpEventArgs}
+    content.vb: Public Event ClockJumpDetected As EventHandler(Of ClockJumpEventArgs)
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.ClockSourceFailed
+  commentId: E:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.ClockSourceFailed
+  id: ClockSourceFailed
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler
+  langs:
+  - csharp
+  - vb
+  name: ClockSourceFailed
+  nameWithType: TemporalFaultHandler.ClockSourceFailed
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.ClockSourceFailed
+  type: Event
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ClockSourceFailed
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+    startLine: 105
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Occurs when a clock source failure is detected.
+  example: []
+  syntax:
+    content: public event EventHandler<ClockSourceFailureEventArgs>? ClockSourceFailed
+    return:
+      type: System.EventHandler{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockSourceFailureEventArgs}
+    content.vb: Public Event ClockSourceFailed As EventHandler(Of ClockSourceFailureEventArgs)
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.RecoveryAttempted
+  commentId: E:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.RecoveryAttempted
+  id: RecoveryAttempted
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler
+  langs:
+  - csharp
+  - vb
+  name: RecoveryAttempted
+  nameWithType: TemporalFaultHandler.RecoveryAttempted
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.RecoveryAttempted
+  type: Event
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RecoveryAttempted
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+    startLine: 110
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Occurs when recovery is attempted.
+  example: []
+  syntax:
+    content: public event EventHandler<RecoveryEventArgs>? RecoveryAttempted
+    return:
+      type: System.EventHandler{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RecoveryEventArgs}
+    content.vb: Public Event RecoveryAttempted As EventHandler(Of RecoveryEventArgs)
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.FaultStateChanged
+  commentId: E:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.FaultStateChanged
+  id: FaultStateChanged
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler
+  langs:
+  - csharp
+  - vb
+  name: FaultStateChanged
+  nameWithType: TemporalFaultHandler.FaultStateChanged
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.FaultStateChanged
+  type: Event
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: FaultStateChanged
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+    startLine: 115
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Occurs when the fault state changes.
+  example: []
+  syntax:
+    content: public event EventHandler<FaultStateChangedEventArgs>? FaultStateChanged
+    return:
+      type: System.EventHandler{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.FaultStateChangedEventArgs}
+    content.vb: Public Event FaultStateChanged As EventHandler(Of FaultStateChangedEventArgs)
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler},Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultOptions,Orleans.GpuBridge.Runtime.Temporal.Clock.ClockSourceSelector)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler},Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultOptions,Orleans.GpuBridge.Runtime.Temporal.Clock.ClockSourceSelector)
+  id: '#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler},Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultOptions,Orleans.GpuBridge.Runtime.Temporal.Clock.ClockSourceSelector)'
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler
+  langs:
+  - csharp
+  - vb
+  name: TemporalFaultHandler(ILogger<TemporalFaultHandler>, TemporalFaultOptions?, ClockSourceSelector?)
+  nameWithType: TemporalFaultHandler.TemporalFaultHandler(ILogger<TemporalFaultHandler>, TemporalFaultOptions?, ClockSourceSelector?)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TemporalFaultHandler(Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler>, Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultOptions?, Orleans.GpuBridge.Runtime.Temporal.Clock.ClockSourceSelector?)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+    startLine: 123
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Initializes a new temporal fault handler.
+  example: []
+  syntax:
+    content: public TemporalFaultHandler(ILogger<TemporalFaultHandler> logger, TemporalFaultOptions? options = null, ClockSourceSelector? clockSourceSelector = null)
+    parameters:
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler}
+      description: Logger for diagnostic messages.
+    - id: options
+      type: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultOptions
+      description: Fault handling configuration options.
+    - id: clockSourceSelector
+      type: Orleans.GpuBridge.Runtime.Temporal.Clock.ClockSourceSelector
+      description: Optional clock source selector for failover.
+    content.vb: Public Sub New(logger As ILogger(Of TemporalFaultHandler), options As TemporalFaultOptions = Nothing, clockSourceSelector As ClockSourceSelector = Nothing)
+  overload: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.#ctor*
+  nameWithType.vb: TemporalFaultHandler.New(ILogger(Of TemporalFaultHandler), TemporalFaultOptions, ClockSourceSelector)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.New(Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler), Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultOptions, Orleans.GpuBridge.Runtime.Temporal.Clock.ClockSourceSelector)
+  name.vb: New(ILogger(Of TemporalFaultHandler), TemporalFaultOptions, ClockSourceSelector)
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.DetectClockJump(System.Int64)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.DetectClockJump(System.Int64)
+  id: DetectClockJump(System.Int64)
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler
+  langs:
+  - csharp
+  - vb
+  name: DetectClockJump(long)
+  nameWithType: TemporalFaultHandler.DetectClockJump(long)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.DetectClockJump(long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DetectClockJump
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+    startLine: 153
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Detects clock jumps by comparing current time against last known time.
+  example: []
+  syntax:
+    content: public ClockJumpInfo? DetectClockJump(long currentTimeNanos)
+    parameters:
+    - id: currentTimeNanos
+      type: System.Int64
+      description: Current physical time in nanoseconds.
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockJumpInfo
+      description: Information about detected jump, or null if no jump detected.
+    content.vb: Public Function DetectClockJump(currentTimeNanos As Long) As ClockJumpInfo
+  overload: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.DetectClockJump*
+  nameWithType.vb: TemporalFaultHandler.DetectClockJump(Long)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.DetectClockJump(Long)
+  name.vb: DetectClockJump(Long)
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.HandleClockJump(Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockJumpInfo,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.HandleClockJump(Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockJumpInfo,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  id: HandleClockJump(Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockJumpInfo,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler
+  langs:
+  - csharp
+  - vb
+  name: HandleClockJump(ClockJumpInfo, HybridTimestamp)
+  nameWithType: TemporalFaultHandler.HandleClockJump(ClockJumpInfo, HybridTimestamp)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.HandleClockJump(Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockJumpInfo, Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: HandleClockJump
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+    startLine: 230
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Handles a detected clock jump with appropriate recovery action.
+  example: []
+  syntax:
+    content: public HybridTimestamp HandleClockJump(ClockJumpInfo jumpInfo, HybridTimestamp currentTimestamp)
+    parameters:
+    - id: jumpInfo
+      type: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockJumpInfo
+      description: Information about the detected jump.
+    - id: currentTimestamp
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+      description: Current HLC timestamp to potentially adjust.
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+      description: Recovered HLC timestamp.
+    content.vb: Public Function HandleClockJump(jumpInfo As ClockJumpInfo, currentTimestamp As HybridTimestamp) As HybridTimestamp
+  overload: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.HandleClockJump*
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TryRecoverClockSource
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TryRecoverClockSource
+  id: TryRecoverClockSource
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler
+  langs:
+  - csharp
+  - vb
+  name: TryRecoverClockSource()
+  nameWithType: TemporalFaultHandler.TryRecoverClockSource()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TryRecoverClockSource()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TryRecoverClockSource
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+    startLine: 286
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Attempts to recover from a clock source failure by switching to backup source.
+  example: []
+  syntax:
+    content: public bool TryRecoverClockSource()
+    return:
+      type: System.Boolean
+      description: True if recovery was successful; otherwise, false.
+    content.vb: Public Function TryRecoverClockSource() As Boolean
+  overload: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TryRecoverClockSource*
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.GetStatistics
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.GetStatistics
+  id: GetStatistics
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler
+  langs:
+  - csharp
+  - vb
+  name: GetStatistics()
+  nameWithType: TemporalFaultHandler.GetStatistics()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.GetStatistics()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetStatistics
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+    startLine: 330
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Gets current fault statistics.
+  example: []
+  syntax:
+    content: public TemporalFaultStatistics GetStatistics()
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultStatistics
+    content.vb: Public Function GetStatistics() As TemporalFaultStatistics
+  overload: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.GetStatistics*
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.Dispose
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.Dispose
+  id: Dispose
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: TemporalFaultHandler.Dispose()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.Dispose()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Dispose
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/TemporalFaultHandler.cs
+    startLine: 531
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Disposes resources used by the fault handler.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+references:
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  commentId: N:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  nameWithType: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+    name: FaultTolerance
+    href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+    name: FaultTolerance
+    href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.IsHealthy*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.IsHealthy
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.html#Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_TemporalFaultHandler_IsHealthy
+  name: IsHealthy
+  nameWithType: TemporalFaultHandler.IsHealthy
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.IsHealthy
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.CurrentFaultState*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.CurrentFaultState
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.html#Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_TemporalFaultHandler_CurrentFaultState
+  name: CurrentFaultState
+  nameWithType: TemporalFaultHandler.CurrentFaultState
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.CurrentFaultState
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockFaultState
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockFaultState
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockFaultState.html
+  name: ClockFaultState
+  nameWithType: ClockFaultState
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockFaultState
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TotalJumpsDetected*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TotalJumpsDetected
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.html#Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_TemporalFaultHandler_TotalJumpsDetected
+  name: TotalJumpsDetected
+  nameWithType: TemporalFaultHandler.TotalJumpsDetected
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TotalJumpsDetected
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TotalRecoveryAttempts*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TotalRecoveryAttempts
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.html#Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_TemporalFaultHandler_TotalRecoveryAttempts
+  name: TotalRecoveryAttempts
+  nameWithType: TemporalFaultHandler.TotalRecoveryAttempts
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TotalRecoveryAttempts
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.SuccessfulRecoveries*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.SuccessfulRecoveries
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.html#Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_TemporalFaultHandler_SuccessfulRecoveries
+  name: SuccessfulRecoveries
+  nameWithType: TemporalFaultHandler.SuccessfulRecoveries
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.SuccessfulRecoveries
+- uid: System.EventHandler{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockJumpEventArgs}
+  commentId: T:System.EventHandler{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockJumpEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<ClockJumpEventArgs>
+  nameWithType: EventHandler<ClockJumpEventArgs>
+  fullName: System.EventHandler<Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockJumpEventArgs>
+  nameWithType.vb: EventHandler(Of ClockJumpEventArgs)
+  fullName.vb: System.EventHandler(Of Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockJumpEventArgs)
+  name.vb: EventHandler(Of ClockJumpEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockJumpEventArgs
+    name: ClockJumpEventArgs
+    href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockJumpEventArgs.html
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockJumpEventArgs
+    name: ClockJumpEventArgs
+    href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockJumpEventArgs.html
+  - name: )
+- uid: System.EventHandler`1
+  commentId: T:System.EventHandler`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<TEventArgs>
+  nameWithType: EventHandler<TEventArgs>
+  fullName: System.EventHandler<TEventArgs>
+  nameWithType.vb: EventHandler(Of TEventArgs)
+  fullName.vb: System.EventHandler(Of TEventArgs)
+  name.vb: EventHandler(Of TEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - name: TEventArgs
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEventArgs
+  - name: )
+- uid: System.EventHandler{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockSourceFailureEventArgs}
+  commentId: T:System.EventHandler{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockSourceFailureEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<ClockSourceFailureEventArgs>
+  nameWithType: EventHandler<ClockSourceFailureEventArgs>
+  fullName: System.EventHandler<Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockSourceFailureEventArgs>
+  nameWithType.vb: EventHandler(Of ClockSourceFailureEventArgs)
+  fullName.vb: System.EventHandler(Of Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockSourceFailureEventArgs)
+  name.vb: EventHandler(Of ClockSourceFailureEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockSourceFailureEventArgs
+    name: ClockSourceFailureEventArgs
+    href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockSourceFailureEventArgs.html
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockSourceFailureEventArgs
+    name: ClockSourceFailureEventArgs
+    href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockSourceFailureEventArgs.html
+  - name: )
+- uid: System.EventHandler{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RecoveryEventArgs}
+  commentId: T:System.EventHandler{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RecoveryEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<RecoveryEventArgs>
+  nameWithType: EventHandler<RecoveryEventArgs>
+  fullName: System.EventHandler<Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RecoveryEventArgs>
+  nameWithType.vb: EventHandler(Of RecoveryEventArgs)
+  fullName.vb: System.EventHandler(Of Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RecoveryEventArgs)
+  name.vb: EventHandler(Of RecoveryEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RecoveryEventArgs
+    name: RecoveryEventArgs
+    href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RecoveryEventArgs.html
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RecoveryEventArgs
+    name: RecoveryEventArgs
+    href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RecoveryEventArgs.html
+  - name: )
+- uid: System.EventHandler{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.FaultStateChangedEventArgs}
+  commentId: T:System.EventHandler{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.FaultStateChangedEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<FaultStateChangedEventArgs>
+  nameWithType: EventHandler<FaultStateChangedEventArgs>
+  fullName: System.EventHandler<Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.FaultStateChangedEventArgs>
+  nameWithType.vb: EventHandler(Of FaultStateChangedEventArgs)
+  fullName.vb: System.EventHandler(Of Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.FaultStateChangedEventArgs)
+  name.vb: EventHandler(Of FaultStateChangedEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.FaultStateChangedEventArgs
+    name: FaultStateChangedEventArgs
+    href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.FaultStateChangedEventArgs.html
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.FaultStateChangedEventArgs
+    name: FaultStateChangedEventArgs
+    href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.FaultStateChangedEventArgs.html
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.#ctor
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.html#Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_TemporalFaultHandler__ctor_Microsoft_Extensions_Logging_ILogger_Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_TemporalFaultHandler__Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_TemporalFaultOptions_Orleans_GpuBridge_Runtime_Temporal_Clock_ClockSourceSelector_
+  name: TemporalFaultHandler
+  nameWithType: TemporalFaultHandler.TemporalFaultHandler
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TemporalFaultHandler
+  nameWithType.vb: TemporalFaultHandler.New
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.New
+  name.vb: New
+- uid: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TemporalFaultHandler>
+  nameWithType: ILogger<TemporalFaultHandler>
+  fullName: Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler>
+  nameWithType.vb: ILogger(Of TemporalFaultHandler)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler)
+  name.vb: ILogger(Of TemporalFaultHandler)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler
+    name: TemporalFaultHandler
+    href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler
+    name: TemporalFaultHandler
+    href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.html
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultOptions
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultOptions
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultOptions.html
+  name: TemporalFaultOptions
+  nameWithType: TemporalFaultOptions
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultOptions
+- uid: Orleans.GpuBridge.Runtime.Temporal.Clock.ClockSourceSelector
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.Clock.ClockSourceSelector
+  parent: Orleans.GpuBridge.Runtime.Temporal.Clock
+  href: Orleans.GpuBridge.Runtime.Temporal.Clock.ClockSourceSelector.html
+  name: ClockSourceSelector
+  nameWithType: ClockSourceSelector
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Clock.ClockSourceSelector
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: Orleans.GpuBridge.Runtime.Temporal.Clock
+  commentId: N:Orleans.GpuBridge.Runtime.Temporal.Clock
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Temporal.Clock
+  nameWithType: Orleans.GpuBridge.Runtime.Temporal.Clock
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Clock
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Clock
+    name: Clock
+    href: Orleans.GpuBridge.Runtime.Temporal.Clock.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Clock
+    name: Clock
+    href: Orleans.GpuBridge.Runtime.Temporal.Clock.html
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.DetectClockJump*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.DetectClockJump
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.html#Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_TemporalFaultHandler_DetectClockJump_System_Int64_
+  name: DetectClockJump
+  nameWithType: TemporalFaultHandler.DetectClockJump
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.DetectClockJump
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockJumpInfo
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockJumpInfo
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockJumpInfo.html
+  name: ClockJumpInfo
+  nameWithType: ClockJumpInfo
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.ClockJumpInfo
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.HandleClockJump*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.HandleClockJump
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.html#Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_TemporalFaultHandler_HandleClockJump_Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_ClockJumpInfo_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_
+  name: HandleClockJump
+  nameWithType: TemporalFaultHandler.HandleClockJump
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.HandleClockJump
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html
+  name: HybridTimestamp
+  nameWithType: HybridTimestamp
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+- uid: Orleans.GpuBridge.Abstractions.Temporal
+  commentId: N:Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Temporal
+  nameWithType: Orleans.GpuBridge.Abstractions.Temporal
+  fullName: Orleans.GpuBridge.Abstractions.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TryRecoverClockSource*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TryRecoverClockSource
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.html#Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_TemporalFaultHandler_TryRecoverClockSource
+  name: TryRecoverClockSource
+  nameWithType: TemporalFaultHandler.TryRecoverClockSource
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.TryRecoverClockSource
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.GetStatistics*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.GetStatistics
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.html#Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_TemporalFaultHandler_GetStatistics
+  name: GetStatistics
+  nameWithType: TemporalFaultHandler.GetStatistics
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.GetStatistics
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultStatistics
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultStatistics
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultStatistics.html
+  name: TemporalFaultStatistics
+  nameWithType: TemporalFaultStatistics
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultStatistics
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.Dispose*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.Dispose
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.html#Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_TemporalFaultHandler_Dispose
+  name: Dispose
+  nameWithType: TemporalFaultHandler.Dispose
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.TemporalFaultHandler.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )

@@ -190,8 +190,17 @@ Console.WriteLine($"GPU Result: [{string.Join(", ", output)}]");
 - IUnifiedMemoryBuffer: `DotCompute.Abstractions/Interfaces/IUnifiedMemoryBuffer.cs`
 - Integration Tests: `DotCompute.Core.IntegrationTests/PipelineExecutionTests.cs`
 
+## See Also
+
+- [Ring Kernel Integration](../architecture/RING-KERNEL-INTEGRATION.md) - Persistent kernel architecture
+- [Hybrid Layered Architecture](../architecture/HYBRID-LAYERED-ARCHITECTURE.md) - Layer design patterns
+- [GPU-Native Actors Developer Guide](../developer-guide/GPU-NATIVE-ACTORS.md) - Complete development workflow
+- [Kernel Attributes Guide](../articles/temporal/KERNEL-ATTRIBUTES-GUIDE.md) - Memory ordering and attributes
+- [GPU Acceleration Benchmarks](../benchmarks/GPU-ACCELERATION-IMPLEMENTATION.md) - Performance measurements
+
 ---
 
-**Implementation Date**: January 12, 2025
-**Author**: Claude (Anthropic)
-**Status**: ✅ Complete - Build Verified
+*GPU Memory Operations: Efficient data transfer and management.*
+
+**Version**: 0.1.0
+**Last Updated**: 2025-11-28

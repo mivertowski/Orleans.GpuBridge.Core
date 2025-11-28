@@ -1,0 +1,513 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Grains.Generated.ICalculatorActor
+  commentId: T:Orleans.GpuBridge.Grains.Generated.ICalculatorActor
+  id: ICalculatorActor
+  parent: Orleans.GpuBridge.Grains.Generated
+  children:
+  - Orleans.GpuBridge.Grains.Generated.ICalculatorActor.AddAsync(System.Int32,System.Int32)
+  - Orleans.GpuBridge.Grains.Generated.ICalculatorActor.FactorialAsync(System.Int32)
+  - Orleans.GpuBridge.Grains.Generated.ICalculatorActor.GetAccumulatorAsync
+  - Orleans.GpuBridge.Grains.Generated.ICalculatorActor.MultiplyAsync(System.Int32,System.Int32)
+  - Orleans.GpuBridge.Grains.Generated.ICalculatorActor.ResetAsync
+  - Orleans.GpuBridge.Grains.Generated.ICalculatorActor.SubtractAsync(System.Int32,System.Int32)
+  langs:
+  - csharp
+  - vb
+  name: ICalculatorActor
+  nameWithType: ICalculatorActor
+  fullName: Orleans.GpuBridge.Grains.Generated.ICalculatorActor
+  type: Interface
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Generated/ICalculatorActor.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ICalculatorActor
+    path: ../src/Orleans.GpuBridge.Grains/Generated/ICalculatorActor.cs
+    startLine: 78
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Generated
+  summary: GPU-native calculator actor demonstrating source-generated ring kernel integration.
+  remarks: >-
+    <p>
+
+    This interface is decorated with GpuNativeActorAttribute to trigger
+
+    the GpuNativeActorGenerator source generator, which produces:
+
+    </p>
+
+    <ul><li>CalculatorActorMessages.g.cs - Blittable message structs</li><li>CalculatorActorGrain.g.cs - Orleans grain implementation</li><li>CalculatorActorKernels.g.cs - DotCompute ring kernel code</li></ul>
+
+    <p>
+
+    <strong>Generated Message Flow:</strong>
+
+
+    <pre><code class="lang-csharp">AddAsync(3, 5) → AddRequest{A=3, B=5} → GPU Kernel → AddResponse{Result=8} → 8</code></pre>
+
+    </p>
+  example: []
+  syntax:
+    content: 'public interface ICalculatorActor : IGrainWithIntegerKey, IGrain, IAddressable'
+    content.vb: Public Interface ICalculatorActor Inherits IGrainWithIntegerKey, IGrain, IAddressable
+- uid: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.AddAsync(System.Int32,System.Int32)
+  commentId: M:Orleans.GpuBridge.Grains.Generated.ICalculatorActor.AddAsync(System.Int32,System.Int32)
+  id: AddAsync(System.Int32,System.Int32)
+  parent: Orleans.GpuBridge.Grains.Generated.ICalculatorActor
+  langs:
+  - csharp
+  - vb
+  name: AddAsync(int, int)
+  nameWithType: ICalculatorActor.AddAsync(int, int)
+  fullName: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.AddAsync(int, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Generated/ICalculatorActor.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AddAsync
+    path: ../src/Orleans.GpuBridge.Grains/Generated/ICalculatorActor.cs
+    startLine: 86
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Generated
+  summary: Adds two integers on the GPU.
+  example: []
+  syntax:
+    content: Task<int> AddAsync(int a, int b)
+    parameters:
+    - id: a
+      type: System.Int32
+      description: First operand
+    - id: b
+      type: System.Int32
+      description: Second operand
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+      description: Sum of a and b
+    content.vb: Function AddAsync(a As Integer, b As Integer) As Task(Of Integer)
+  overload: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.AddAsync*
+  nameWithType.vb: ICalculatorActor.AddAsync(Integer, Integer)
+  fullName.vb: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.AddAsync(Integer, Integer)
+  name.vb: AddAsync(Integer, Integer)
+- uid: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.SubtractAsync(System.Int32,System.Int32)
+  commentId: M:Orleans.GpuBridge.Grains.Generated.ICalculatorActor.SubtractAsync(System.Int32,System.Int32)
+  id: SubtractAsync(System.Int32,System.Int32)
+  parent: Orleans.GpuBridge.Grains.Generated.ICalculatorActor
+  langs:
+  - csharp
+  - vb
+  name: SubtractAsync(int, int)
+  nameWithType: ICalculatorActor.SubtractAsync(int, int)
+  fullName: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.SubtractAsync(int, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Generated/ICalculatorActor.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: SubtractAsync
+    path: ../src/Orleans.GpuBridge.Grains/Generated/ICalculatorActor.cs
+    startLine: 95
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Generated
+  summary: Subtracts b from a on the GPU.
+  example: []
+  syntax:
+    content: Task<int> SubtractAsync(int a, int b)
+    parameters:
+    - id: a
+      type: System.Int32
+      description: First operand
+    - id: b
+      type: System.Int32
+      description: Second operand
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+      description: Difference (a - b)
+    content.vb: Function SubtractAsync(a As Integer, b As Integer) As Task(Of Integer)
+  overload: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.SubtractAsync*
+  nameWithType.vb: ICalculatorActor.SubtractAsync(Integer, Integer)
+  fullName.vb: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.SubtractAsync(Integer, Integer)
+  name.vb: SubtractAsync(Integer, Integer)
+- uid: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.MultiplyAsync(System.Int32,System.Int32)
+  commentId: M:Orleans.GpuBridge.Grains.Generated.ICalculatorActor.MultiplyAsync(System.Int32,System.Int32)
+  id: MultiplyAsync(System.Int32,System.Int32)
+  parent: Orleans.GpuBridge.Grains.Generated.ICalculatorActor
+  langs:
+  - csharp
+  - vb
+  name: MultiplyAsync(int, int)
+  nameWithType: ICalculatorActor.MultiplyAsync(int, int)
+  fullName: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.MultiplyAsync(int, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Generated/ICalculatorActor.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MultiplyAsync
+    path: ../src/Orleans.GpuBridge.Grains/Generated/ICalculatorActor.cs
+    startLine: 104
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Generated
+  summary: Multiplies two integers on the GPU.
+  example: []
+  syntax:
+    content: Task MultiplyAsync(int a, int b)
+    parameters:
+    - id: a
+      type: System.Int32
+      description: First operand
+    - id: b
+      type: System.Int32
+      description: Second operand
+    return:
+      type: System.Threading.Tasks.Task
+      description: Product of a and b
+    content.vb: Function MultiplyAsync(a As Integer, b As Integer) As Task
+  overload: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.MultiplyAsync*
+  nameWithType.vb: ICalculatorActor.MultiplyAsync(Integer, Integer)
+  fullName.vb: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.MultiplyAsync(Integer, Integer)
+  name.vb: MultiplyAsync(Integer, Integer)
+- uid: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.FactorialAsync(System.Int32)
+  commentId: M:Orleans.GpuBridge.Grains.Generated.ICalculatorActor.FactorialAsync(System.Int32)
+  id: FactorialAsync(System.Int32)
+  parent: Orleans.GpuBridge.Grains.Generated.ICalculatorActor
+  langs:
+  - csharp
+  - vb
+  name: FactorialAsync(int)
+  nameWithType: ICalculatorActor.FactorialAsync(int)
+  fullName: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.FactorialAsync(int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Generated/ICalculatorActor.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: FactorialAsync
+    path: ../src/Orleans.GpuBridge.Grains/Generated/ICalculatorActor.cs
+    startLine: 112
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Generated
+  summary: Computes factorial of n on the GPU.
+  example: []
+  syntax:
+    content: Task<long> FactorialAsync(int n)
+    parameters:
+    - id: n
+      type: System.Int32
+      description: Input value (must be non-negative)
+    return:
+      type: System.Threading.Tasks.Task{System.Int64}
+      description: Factorial of n (n!)
+    content.vb: Function FactorialAsync(n As Integer) As Task(Of Long)
+  overload: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.FactorialAsync*
+  nameWithType.vb: ICalculatorActor.FactorialAsync(Integer)
+  fullName.vb: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.FactorialAsync(Integer)
+  name.vb: FactorialAsync(Integer)
+- uid: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.GetAccumulatorAsync
+  commentId: M:Orleans.GpuBridge.Grains.Generated.ICalculatorActor.GetAccumulatorAsync
+  id: GetAccumulatorAsync
+  parent: Orleans.GpuBridge.Grains.Generated.ICalculatorActor
+  langs:
+  - csharp
+  - vb
+  name: GetAccumulatorAsync()
+  nameWithType: ICalculatorActor.GetAccumulatorAsync()
+  fullName: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.GetAccumulatorAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Generated/ICalculatorActor.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetAccumulatorAsync
+    path: ../src/Orleans.GpuBridge.Grains/Generated/ICalculatorActor.cs
+    startLine: 119
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Generated
+  summary: Gets the current accumulated value.
+  example: []
+  syntax:
+    content: Task<long> GetAccumulatorAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Int64}
+      description: Current accumulator value
+    content.vb: Function GetAccumulatorAsync() As Task(Of Long)
+  overload: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.GetAccumulatorAsync*
+- uid: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.ResetAsync
+  commentId: M:Orleans.GpuBridge.Grains.Generated.ICalculatorActor.ResetAsync
+  id: ResetAsync
+  parent: Orleans.GpuBridge.Grains.Generated.ICalculatorActor
+  langs:
+  - csharp
+  - vb
+  name: ResetAsync()
+  nameWithType: ICalculatorActor.ResetAsync()
+  fullName: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.ResetAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Generated/ICalculatorActor.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ResetAsync
+    path: ../src/Orleans.GpuBridge.Grains/Generated/ICalculatorActor.cs
+    startLine: 125
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Generated
+  summary: Resets the accumulator to zero.
+  example: []
+  syntax:
+    content: Task ResetAsync()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function ResetAsync() As Task
+  overload: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.ResetAsync*
+references:
+- uid: Orleans.GpuBridge.Grains.Generated
+  commentId: N:Orleans.GpuBridge.Grains.Generated
+  href: Orleans.html
+  name: Orleans.GpuBridge.Grains.Generated
+  nameWithType: Orleans.GpuBridge.Grains.Generated
+  fullName: Orleans.GpuBridge.Grains.Generated
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.Generated
+    name: Generated
+    href: Orleans.GpuBridge.Grains.Generated.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.Generated
+    name: Generated
+    href: Orleans.GpuBridge.Grains.Generated.html
+- uid: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.AddAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Generated.ICalculatorActor.AddAsync
+  href: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.html#Orleans_GpuBridge_Grains_Generated_ICalculatorActor_AddAsync_System_Int32_System_Int32_
+  name: AddAsync
+  nameWithType: ICalculatorActor.AddAsync
+  fullName: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.AddAsync
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Threading.Tasks.Task{System.Int32}
+  commentId: T:System.Threading.Tasks.Task{System.Int32}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<int>
+  nameWithType: Task<int>
+  fullName: System.Threading.Tasks.Task<int>
+  nameWithType.vb: Task(Of Integer)
+  fullName.vb: System.Threading.Tasks.Task(Of Integer)
+  name.vb: Task(Of Integer)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.SubtractAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Generated.ICalculatorActor.SubtractAsync
+  href: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.html#Orleans_GpuBridge_Grains_Generated_ICalculatorActor_SubtractAsync_System_Int32_System_Int32_
+  name: SubtractAsync
+  nameWithType: ICalculatorActor.SubtractAsync
+  fullName: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.SubtractAsync
+- uid: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.MultiplyAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Generated.ICalculatorActor.MultiplyAsync
+  href: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.html#Orleans_GpuBridge_Grains_Generated_ICalculatorActor_MultiplyAsync_System_Int32_System_Int32_
+  name: MultiplyAsync
+  nameWithType: ICalculatorActor.MultiplyAsync
+  fullName: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.MultiplyAsync
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.FactorialAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Generated.ICalculatorActor.FactorialAsync
+  href: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.html#Orleans_GpuBridge_Grains_Generated_ICalculatorActor_FactorialAsync_System_Int32_
+  name: FactorialAsync
+  nameWithType: ICalculatorActor.FactorialAsync
+  fullName: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.FactorialAsync
+- uid: System.Threading.Tasks.Task{System.Int64}
+  commentId: T:System.Threading.Tasks.Task{System.Int64}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<long>
+  nameWithType: Task<long>
+  fullName: System.Threading.Tasks.Task<long>
+  nameWithType.vb: Task(Of Long)
+  fullName.vb: System.Threading.Tasks.Task(Of Long)
+  name.vb: Task(Of Long)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+- uid: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.GetAccumulatorAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Generated.ICalculatorActor.GetAccumulatorAsync
+  href: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.html#Orleans_GpuBridge_Grains_Generated_ICalculatorActor_GetAccumulatorAsync
+  name: GetAccumulatorAsync
+  nameWithType: ICalculatorActor.GetAccumulatorAsync
+  fullName: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.GetAccumulatorAsync
+- uid: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.ResetAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Generated.ICalculatorActor.ResetAsync
+  href: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.html#Orleans_GpuBridge_Grains_Generated_ICalculatorActor_ResetAsync
+  name: ResetAsync
+  nameWithType: ICalculatorActor.ResetAsync
+  fullName: Orleans.GpuBridge.Grains.Generated.ICalculatorActor.ResetAsync

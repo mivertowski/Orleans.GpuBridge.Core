@@ -1,0 +1,634 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions
+  commentId: T:Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions
+  id: GpuMetricsOptions
+  parent: Orleans.GpuBridge.Diagnostics.Configuration
+  children:
+  - Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.CollectionInterval
+  - Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.EnableDetailedLogging
+  - Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.EnableGpuMetrics
+  - Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.EnableSystemMetrics
+  - Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.MaxDevices
+  langs:
+  - csharp
+  - vb
+  name: GpuMetricsOptions
+  nameWithType: GpuMetricsOptions
+  fullName: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/Configuration/GpuMetricsOptions.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GpuMetricsOptions
+    path: ../src/Orleans.GpuBridge.Diagnostics/Configuration/GpuMetricsOptions.cs
+    startLine: 10
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics.Configuration
+  summary: Configuration options for GPU metrics collection and monitoring.
+  remarks: >-
+    These options control the behavior of the GPU metrics collector, including
+
+    collection intervals, feature enablement, and device limits. The configuration
+
+    can be customized based on monitoring requirements and system resources.
+  example: []
+  syntax:
+    content: public class GpuMetricsOptions
+    content.vb: Public Class GpuMetricsOptions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.CollectionInterval
+  commentId: P:Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.CollectionInterval
+  id: CollectionInterval
+  parent: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions
+  langs:
+  - csharp
+  - vb
+  name: CollectionInterval
+  nameWithType: GpuMetricsOptions.CollectionInterval
+  fullName: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.CollectionInterval
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/Configuration/GpuMetricsOptions.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CollectionInterval
+    path: ../src/Orleans.GpuBridge.Diagnostics/Configuration/GpuMetricsOptions.cs
+    startLine: 30
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics.Configuration
+  summary: Gets or sets the interval between automatic metrics collection cycles.
+  remarks: >-
+    <p>
+
+    Shorter intervals provide more frequent metrics updates but increase system overhead.
+
+    Longer intervals reduce overhead but may miss transient performance issues.
+
+    </p>
+
+    <p>
+
+    Recommended values:
+
+    - High-frequency monitoring: 1-5 seconds
+
+    - Standard monitoring: 10-30 seconds  
+
+    - Low-overhead monitoring: 60+ seconds
+
+    </p>
+  example: []
+  syntax:
+    content: public TimeSpan CollectionInterval { get; set; }
+    parameters: []
+    return:
+      type: System.TimeSpan
+      description: The time interval between collections. Default is 10 seconds.
+    content.vb: Public Property CollectionInterval As TimeSpan
+  overload: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.CollectionInterval*
+- uid: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.EnableSystemMetrics
+  commentId: P:Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.EnableSystemMetrics
+  id: EnableSystemMetrics
+  parent: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions
+  langs:
+  - csharp
+  - vb
+  name: EnableSystemMetrics
+  nameWithType: GpuMetricsOptions.EnableSystemMetrics
+  fullName: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.EnableSystemMetrics
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/Configuration/GpuMetricsOptions.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: EnableSystemMetrics
+    path: ../src/Orleans.GpuBridge.Diagnostics/Configuration/GpuMetricsOptions.cs
+    startLine: 44
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics.Configuration
+  summary: Gets or sets a value indicating whether system-level metrics collection is enabled.
+  remarks: >-
+    System metrics include process-level resource consumption data that can be useful
+
+    for capacity planning and troubleshooting. Disabling this option can reduce overhead
+
+    when only GPU metrics are needed.
+  example: []
+  syntax:
+    content: public bool EnableSystemMetrics { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+      description: >-
+        <code>true</code> to collect system metrics (CPU, memory, threads, handles); otherwise, <code>false</code>.
+
+        Default is <code>true</code>.
+    content.vb: Public Property EnableSystemMetrics As Boolean
+  overload: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.EnableSystemMetrics*
+- uid: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.EnableGpuMetrics
+  commentId: P:Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.EnableGpuMetrics
+  id: EnableGpuMetrics
+  parent: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions
+  langs:
+  - csharp
+  - vb
+  name: EnableGpuMetrics
+  nameWithType: GpuMetricsOptions.EnableGpuMetrics
+  fullName: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.EnableGpuMetrics
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/Configuration/GpuMetricsOptions.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: EnableGpuMetrics
+    path: ../src/Orleans.GpuBridge.Diagnostics/Configuration/GpuMetricsOptions.cs
+    startLine: 58
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics.Configuration
+  summary: Gets or sets a value indicating whether GPU device metrics collection is enabled.
+  remarks: >-
+    GPU metrics require platform-specific tools (nvidia-smi, rocm-smi) to be available.
+
+    If these tools are not installed, GPU metrics collection will fail gracefully.
+
+    Disabling this option prevents GPU monitoring attempts entirely.
+  example: []
+  syntax:
+    content: public bool EnableGpuMetrics { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+      description: >-
+        <code>true</code> to collect GPU metrics (utilization, memory, temperature, power); otherwise, <code>false</code>.
+
+        Default is <code>true</code>.
+    content.vb: Public Property EnableGpuMetrics As Boolean
+  overload: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.EnableGpuMetrics*
+- uid: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.EnableDetailedLogging
+  commentId: P:Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.EnableDetailedLogging
+  id: EnableDetailedLogging
+  parent: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions
+  langs:
+  - csharp
+  - vb
+  name: EnableDetailedLogging
+  nameWithType: GpuMetricsOptions.EnableDetailedLogging
+  fullName: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.EnableDetailedLogging
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/Configuration/GpuMetricsOptions.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: EnableDetailedLogging
+    path: ../src/Orleans.GpuBridge.Diagnostics/Configuration/GpuMetricsOptions.cs
+    startLine: 79
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics.Configuration
+  summary: Gets or sets a value indicating whether detailed diagnostic logging is enabled.
+  remarks: >-
+    <p>
+
+    When enabled, the metrics collector will log detailed information about:
+
+    - Individual device query attempts and failures
+
+    - System metrics values
+
+    - Collection timing and performance
+
+    </p>
+
+    <p>
+
+    This option should typically be disabled in production to avoid log volume issues,
+
+    but can be useful for troubleshooting metrics collection problems.
+
+    </p>
+  example: []
+  syntax:
+    content: public bool EnableDetailedLogging { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+      description: >-
+        <code>true</code> to enable verbose logging of metrics collection activities; otherwise, <code>false</code>.
+
+        Default is <code>false</code>.
+    content.vb: Public Property EnableDetailedLogging As Boolean
+  overload: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.EnableDetailedLogging*
+- uid: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.MaxDevices
+  commentId: P:Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.MaxDevices
+  id: MaxDevices
+  parent: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions
+  langs:
+  - csharp
+  - vb
+  name: MaxDevices
+  nameWithType: GpuMetricsOptions.MaxDevices
+  fullName: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.MaxDevices
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/Configuration/GpuMetricsOptions.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MaxDevices
+    path: ../src/Orleans.GpuBridge.Diagnostics/Configuration/GpuMetricsOptions.cs
+    startLine: 102
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics.Configuration
+  summary: Gets or sets the maximum number of GPU devices to monitor.
+  remarks: >-
+    <p>
+
+    This limit prevents excessive overhead when systems have many GPU devices.
+
+    The collector will attempt to query devices from index 0 up to (MaxDevices - 1).
+
+    </p>
+
+    <p>
+
+    Recommended values:
+
+    - Single-GPU systems: 1-2
+
+    - Multi-GPU workstations: 4-8
+
+    - GPU clusters: 16+ (adjust based on monitoring requirements)
+
+    </p>
+
+    <p>
+
+    Note: Devices that don't exist or can't be queried will be skipped without error.
+
+    </p>
+  example: []
+  syntax:
+    content: public int MaxDevices { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+      description: The maximum device index to query (0-based). Default is 8 devices (indices 0-7).
+    content.vb: Public Property MaxDevices As Integer
+  overload: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.MaxDevices*
+references:
+- uid: Orleans.GpuBridge.Diagnostics.Configuration
+  commentId: N:Orleans.GpuBridge.Diagnostics.Configuration
+  href: Orleans.html
+  name: Orleans.GpuBridge.Diagnostics.Configuration
+  nameWithType: Orleans.GpuBridge.Diagnostics.Configuration
+  fullName: Orleans.GpuBridge.Diagnostics.Configuration
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Diagnostics
+    name: Diagnostics
+    href: Orleans.GpuBridge.Diagnostics.html
+  - name: .
+  - uid: Orleans.GpuBridge.Diagnostics.Configuration
+    name: Configuration
+    href: Orleans.GpuBridge.Diagnostics.Configuration.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Diagnostics
+    name: Diagnostics
+    href: Orleans.GpuBridge.Diagnostics.html
+  - name: .
+  - uid: Orleans.GpuBridge.Diagnostics.Configuration
+    name: Configuration
+    href: Orleans.GpuBridge.Diagnostics.Configuration.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.CollectionInterval*
+  commentId: Overload:Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.CollectionInterval
+  href: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.html#Orleans_GpuBridge_Diagnostics_Configuration_GpuMetricsOptions_CollectionInterval
+  name: CollectionInterval
+  nameWithType: GpuMetricsOptions.CollectionInterval
+  fullName: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.CollectionInterval
+- uid: System.TimeSpan
+  commentId: T:System.TimeSpan
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan
+  nameWithType: TimeSpan
+  fullName: System.TimeSpan
+- uid: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.EnableSystemMetrics*
+  commentId: Overload:Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.EnableSystemMetrics
+  href: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.html#Orleans_GpuBridge_Diagnostics_Configuration_GpuMetricsOptions_EnableSystemMetrics
+  name: EnableSystemMetrics
+  nameWithType: GpuMetricsOptions.EnableSystemMetrics
+  fullName: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.EnableSystemMetrics
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.EnableGpuMetrics*
+  commentId: Overload:Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.EnableGpuMetrics
+  href: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.html#Orleans_GpuBridge_Diagnostics_Configuration_GpuMetricsOptions_EnableGpuMetrics
+  name: EnableGpuMetrics
+  nameWithType: GpuMetricsOptions.EnableGpuMetrics
+  fullName: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.EnableGpuMetrics
+- uid: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.EnableDetailedLogging*
+  commentId: Overload:Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.EnableDetailedLogging
+  href: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.html#Orleans_GpuBridge_Diagnostics_Configuration_GpuMetricsOptions_EnableDetailedLogging
+  name: EnableDetailedLogging
+  nameWithType: GpuMetricsOptions.EnableDetailedLogging
+  fullName: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.EnableDetailedLogging
+- uid: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.MaxDevices*
+  commentId: Overload:Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.MaxDevices
+  href: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.html#Orleans_GpuBridge_Diagnostics_Configuration_GpuMetricsOptions_MaxDevices
+  name: MaxDevices
+  nameWithType: GpuMetricsOptions.MaxDevices
+  fullName: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.MaxDevices
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer

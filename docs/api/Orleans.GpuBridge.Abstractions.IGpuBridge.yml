@@ -1,0 +1,544 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.IGpuBridge
+  commentId: T:Orleans.GpuBridge.Abstractions.IGpuBridge
+  id: IGpuBridge
+  parent: Orleans.GpuBridge.Abstractions
+  children:
+  - Orleans.GpuBridge.Abstractions.IGpuBridge.ExecuteKernelAsync(System.String,System.Object,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.IGpuBridge.GetDevicesAsync(System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.IGpuBridge.GetInfoAsync(System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.IGpuBridge.GetKernelAsync``2(Orleans.GpuBridge.Abstractions.KernelId,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: IGpuBridge
+  nameWithType: IGpuBridge
+  fullName: Orleans.GpuBridge.Abstractions.IGpuBridge
+  type: Interface
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/IGpuBridge.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IGpuBridge
+    path: ../src/Orleans.GpuBridge.Abstractions/IGpuBridge.cs
+    startLine: 9
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions
+  summary: Main interface for GPU bridge operations
+  example: []
+  syntax:
+    content: public interface IGpuBridge
+    content.vb: Public Interface IGpuBridge
+- uid: Orleans.GpuBridge.Abstractions.IGpuBridge.GetInfoAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.IGpuBridge.GetInfoAsync(System.Threading.CancellationToken)
+  id: GetInfoAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.IGpuBridge
+  langs:
+  - csharp
+  - vb
+  name: GetInfoAsync(CancellationToken)
+  nameWithType: IGpuBridge.GetInfoAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.IGpuBridge.GetInfoAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/IGpuBridge.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetInfoAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/IGpuBridge.cs
+    startLine: 14
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions
+  summary: Gets information about the GPU bridge and available resources
+  example: []
+  syntax:
+    content: ValueTask<GpuBridgeInfo> GetInfoAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.ValueTask{Orleans.GpuBridge.Abstractions.GpuBridgeInfo}
+    content.vb: Function GetInfoAsync(ct As CancellationToken = Nothing) As ValueTask(Of GpuBridgeInfo)
+  overload: Orleans.GpuBridge.Abstractions.IGpuBridge.GetInfoAsync*
+- uid: Orleans.GpuBridge.Abstractions.IGpuBridge.GetKernelAsync``2(Orleans.GpuBridge.Abstractions.KernelId,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.IGpuBridge.GetKernelAsync``2(Orleans.GpuBridge.Abstractions.KernelId,System.Threading.CancellationToken)
+  id: GetKernelAsync``2(Orleans.GpuBridge.Abstractions.KernelId,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.IGpuBridge
+  langs:
+  - csharp
+  - vb
+  name: GetKernelAsync<TIn, TOut>(KernelId, CancellationToken)
+  nameWithType: IGpuBridge.GetKernelAsync<TIn, TOut>(KernelId, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.IGpuBridge.GetKernelAsync<TIn, TOut>(Orleans.GpuBridge.Abstractions.KernelId, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/IGpuBridge.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetKernelAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/IGpuBridge.cs
+    startLine: 19
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions
+  summary: Gets a kernel executor for the specified kernel ID
+  example: []
+  syntax:
+    content: 'ValueTask<IGpuKernel<TIn, TOut>> GetKernelAsync<TIn, TOut>(KernelId kernelId, CancellationToken ct = default) where TIn : notnull where TOut : notnull'
+    parameters:
+    - id: kernelId
+      type: Orleans.GpuBridge.Abstractions.KernelId
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: TIn
+    - id: TOut
+    return:
+      type: System.Threading.Tasks.ValueTask{Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}}
+    content.vb: Function GetKernelAsync(Of TIn, TOut)(kernelId As KernelId, ct As CancellationToken = Nothing) As ValueTask(Of IGpuKernel(Of TIn, TOut))
+  overload: Orleans.GpuBridge.Abstractions.IGpuBridge.GetKernelAsync*
+  nameWithType.vb: IGpuBridge.GetKernelAsync(Of TIn, TOut)(KernelId, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.IGpuBridge.GetKernelAsync(Of TIn, TOut)(Orleans.GpuBridge.Abstractions.KernelId, System.Threading.CancellationToken)
+  name.vb: GetKernelAsync(Of TIn, TOut)(KernelId, CancellationToken)
+- uid: Orleans.GpuBridge.Abstractions.IGpuBridge.GetDevicesAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.IGpuBridge.GetDevicesAsync(System.Threading.CancellationToken)
+  id: GetDevicesAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.IGpuBridge
+  langs:
+  - csharp
+  - vb
+  name: GetDevicesAsync(CancellationToken)
+  nameWithType: IGpuBridge.GetDevicesAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.IGpuBridge.GetDevicesAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/IGpuBridge.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetDevicesAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/IGpuBridge.cs
+    startLine: 28
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions
+  summary: Gets the list of available GPU devices
+  example: []
+  syntax:
+    content: ValueTask<IReadOnlyList<GpuDevice>> GetDevicesAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.ValueTask{System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.GpuDevice}}
+    content.vb: Function GetDevicesAsync(ct As CancellationToken = Nothing) As ValueTask(Of IReadOnlyList(Of GpuDevice))
+  overload: Orleans.GpuBridge.Abstractions.IGpuBridge.GetDevicesAsync*
+- uid: Orleans.GpuBridge.Abstractions.IGpuBridge.ExecuteKernelAsync(System.String,System.Object,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.IGpuBridge.ExecuteKernelAsync(System.String,System.Object,System.Threading.CancellationToken)
+  id: ExecuteKernelAsync(System.String,System.Object,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.IGpuBridge
+  langs:
+  - csharp
+  - vb
+  name: ExecuteKernelAsync(string, object, CancellationToken)
+  nameWithType: IGpuBridge.ExecuteKernelAsync(string, object, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.IGpuBridge.ExecuteKernelAsync(string, object, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/IGpuBridge.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ExecuteKernelAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/IGpuBridge.cs
+    startLine: 42
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions
+  summary: Executes a kernel with dynamic input/output types
+  remarks: >-
+    This method provides dynamic kernel execution for scenarios where
+
+    compile-time type information is not available. Use with caution.
+
+    TODO: Implement full dynamic kernel execution support
+  example: []
+  syntax:
+    content: ValueTask<object> ExecuteKernelAsync(string kernelId, object input, CancellationToken ct = default)
+    parameters:
+    - id: kernelId
+      type: System.String
+      description: The kernel identifier
+    - id: input
+      type: System.Object
+      description: The input data (dynamic typed)
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token
+    return:
+      type: System.Threading.Tasks.ValueTask{System.Object}
+      description: The kernel execution result
+    content.vb: Function ExecuteKernelAsync(kernelId As String, input As Object, ct As CancellationToken = Nothing) As ValueTask(Of Object)
+  overload: Orleans.GpuBridge.Abstractions.IGpuBridge.ExecuteKernelAsync*
+  nameWithType.vb: IGpuBridge.ExecuteKernelAsync(String, Object, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.IGpuBridge.ExecuteKernelAsync(String, Object, System.Threading.CancellationToken)
+  name.vb: ExecuteKernelAsync(String, Object, CancellationToken)
+references:
+- uid: Orleans.GpuBridge.Abstractions
+  commentId: N:Orleans.GpuBridge.Abstractions
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions
+  nameWithType: Orleans.GpuBridge.Abstractions
+  fullName: Orleans.GpuBridge.Abstractions
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+- uid: Orleans.GpuBridge.Abstractions.IGpuBridge.GetInfoAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.IGpuBridge.GetInfoAsync
+  href: Orleans.GpuBridge.Abstractions.IGpuBridge.html#Orleans_GpuBridge_Abstractions_IGpuBridge_GetInfoAsync_System_Threading_CancellationToken_
+  name: GetInfoAsync
+  nameWithType: IGpuBridge.GetInfoAsync
+  fullName: Orleans.GpuBridge.Abstractions.IGpuBridge.GetInfoAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.ValueTask{Orleans.GpuBridge.Abstractions.GpuBridgeInfo}
+  commentId: T:System.Threading.Tasks.ValueTask{Orleans.GpuBridge.Abstractions.GpuBridgeInfo}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.ValueTask`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  name: ValueTask<GpuBridgeInfo>
+  nameWithType: ValueTask<GpuBridgeInfo>
+  fullName: System.Threading.Tasks.ValueTask<Orleans.GpuBridge.Abstractions.GpuBridgeInfo>
+  nameWithType.vb: ValueTask(Of GpuBridgeInfo)
+  fullName.vb: System.Threading.Tasks.ValueTask(Of Orleans.GpuBridge.Abstractions.GpuBridgeInfo)
+  name.vb: ValueTask(Of GpuBridgeInfo)
+  spec.csharp:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.GpuBridgeInfo
+    name: GpuBridgeInfo
+    href: Orleans.GpuBridge.Abstractions.GpuBridgeInfo.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.GpuBridgeInfo
+    name: GpuBridgeInfo
+    href: Orleans.GpuBridge.Abstractions.GpuBridgeInfo.html
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.ValueTask`1
+  commentId: T:System.Threading.Tasks.ValueTask`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  name: ValueTask<TResult>
+  nameWithType: ValueTask<TResult>
+  fullName: System.Threading.Tasks.ValueTask<TResult>
+  nameWithType.vb: ValueTask(Of TResult)
+  fullName.vb: System.Threading.Tasks.ValueTask(Of TResult)
+  name.vb: ValueTask(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Orleans.GpuBridge.Abstractions.IGpuBridge.GetKernelAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.IGpuBridge.GetKernelAsync
+  href: Orleans.GpuBridge.Abstractions.IGpuBridge.html#Orleans_GpuBridge_Abstractions_IGpuBridge_GetKernelAsync__2_Orleans_GpuBridge_Abstractions_KernelId_System_Threading_CancellationToken_
+  name: GetKernelAsync
+  nameWithType: IGpuBridge.GetKernelAsync
+  fullName: Orleans.GpuBridge.Abstractions.IGpuBridge.GetKernelAsync
+- uid: Orleans.GpuBridge.Abstractions.KernelId
+  commentId: T:Orleans.GpuBridge.Abstractions.KernelId
+  parent: Orleans.GpuBridge.Abstractions
+  href: Orleans.GpuBridge.Abstractions.KernelId.html
+  name: KernelId
+  nameWithType: KernelId
+  fullName: Orleans.GpuBridge.Abstractions.KernelId
+- uid: System.Threading.Tasks.ValueTask{Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}}
+  commentId: T:System.Threading.Tasks.ValueTask{Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{``0,``1}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.ValueTask`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  name: ValueTask<IGpuKernel<TIn, TOut>>
+  nameWithType: ValueTask<IGpuKernel<TIn, TOut>>
+  fullName: System.Threading.Tasks.ValueTask<Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>>
+  nameWithType.vb: ValueTask(Of IGpuKernel(Of TIn, TOut))
+  fullName.vb: System.Threading.Tasks.ValueTask(Of Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut))
+  name.vb: ValueTask(Of IGpuKernel(Of TIn, TOut))
+  spec.csharp:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2
+    name: IGpuKernel
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html
+  - name: <
+  - name: TIn
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2
+    name: IGpuKernel
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TIn
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: )
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.IGpuBridge.GetDevicesAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.IGpuBridge.GetDevicesAsync
+  href: Orleans.GpuBridge.Abstractions.IGpuBridge.html#Orleans_GpuBridge_Abstractions_IGpuBridge_GetDevicesAsync_System_Threading_CancellationToken_
+  name: GetDevicesAsync
+  nameWithType: IGpuBridge.GetDevicesAsync
+  fullName: Orleans.GpuBridge.Abstractions.IGpuBridge.GetDevicesAsync
+- uid: System.Threading.Tasks.ValueTask{System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.GpuDevice}}
+  commentId: T:System.Threading.Tasks.ValueTask{System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.GpuDevice}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.ValueTask`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  name: ValueTask<IReadOnlyList<GpuDevice>>
+  nameWithType: ValueTask<IReadOnlyList<GpuDevice>>
+  fullName: System.Threading.Tasks.ValueTask<System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Abstractions.GpuDevice>>
+  nameWithType.vb: ValueTask(Of IReadOnlyList(Of GpuDevice))
+  fullName.vb: System.Threading.Tasks.ValueTask(Of System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Abstractions.GpuDevice))
+  name.vb: ValueTask(Of IReadOnlyList(Of GpuDevice))
+  spec.csharp:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: <
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.GpuDevice
+    name: GpuDevice
+    href: Orleans.GpuBridge.Abstractions.GpuDevice.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.GpuDevice
+    name: GpuDevice
+    href: Orleans.GpuBridge.Abstractions.GpuDevice.html
+  - name: )
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.IGpuBridge.ExecuteKernelAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.IGpuBridge.ExecuteKernelAsync
+  href: Orleans.GpuBridge.Abstractions.IGpuBridge.html#Orleans_GpuBridge_Abstractions_IGpuBridge_ExecuteKernelAsync_System_String_System_Object_System_Threading_CancellationToken_
+  name: ExecuteKernelAsync
+  nameWithType: IGpuBridge.ExecuteKernelAsync
+  fullName: Orleans.GpuBridge.Abstractions.IGpuBridge.ExecuteKernelAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Threading.Tasks.ValueTask{System.Object}
+  commentId: T:System.Threading.Tasks.ValueTask{System.Object}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.ValueTask`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  name: ValueTask<object>
+  nameWithType: ValueTask<object>
+  fullName: System.Threading.Tasks.ValueTask<object>
+  nameWithType.vb: ValueTask(Of Object)
+  fullName.vb: System.Threading.Tasks.ValueTask(Of Object)
+  name.vb: ValueTask(Of Object)
+  spec.csharp:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

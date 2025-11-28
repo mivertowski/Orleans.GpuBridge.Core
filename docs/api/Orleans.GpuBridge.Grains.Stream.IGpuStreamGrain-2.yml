@@ -1,0 +1,800 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2
+  commentId: T:Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2
+  id: IGpuStreamGrain`2
+  parent: Orleans.GpuBridge.Grains.Stream
+  children:
+  - Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.FlushStreamAsync
+  - Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.GetStatsAsync
+  - Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.GetStatusAsync
+  - Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.ProcessItemAsync(`0)
+  - Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.StartProcessingAsync(Orleans.Runtime.StreamId,Orleans.Runtime.StreamId,Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  - Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.StartStreamAsync(System.String,Orleans.GpuBridge.Grains.Batch.IGpuResultObserver{`1},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  - Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.StopProcessingAsync
+  langs:
+  - csharp
+  - vb
+  name: IGpuStreamGrain<TIn, TOut>
+  nameWithType: IGpuStreamGrain<TIn, TOut>
+  fullName: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain<TIn, TOut>
+  type: Interface
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Stream/IGpuStreamGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IGpuStreamGrain
+    path: ../src/Orleans.GpuBridge.Grains/Stream/IGpuStreamGrain.cs
+    startLine: 12
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Stream
+  summary: >-
+    Interface for stream processing grain that provides real-time GPU-accelerated stream processing.
+
+    This grain enables continuous processing of streaming data through GPU kernels with batching and buffering.
+  example: []
+  syntax:
+    content: 'public interface IGpuStreamGrain<TIn, TOut> : IGrainWithStringKey, IGrain, IAddressable where TIn : notnull where TOut : notnull'
+    typeParameters:
+    - id: TIn
+    - id: TOut
+    content.vb: Public Interface IGpuStreamGrain(Of TIn, TOut) Inherits IGrainWithStringKey, IGrain, IAddressable
+  nameWithType.vb: IGpuStreamGrain(Of TIn, TOut)
+  fullName.vb: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain(Of TIn, TOut)
+  name.vb: IGpuStreamGrain(Of TIn, TOut)
+- uid: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.StartProcessingAsync(Orleans.Runtime.StreamId,Orleans.Runtime.StreamId,Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  commentId: M:Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.StartProcessingAsync(Orleans.Runtime.StreamId,Orleans.Runtime.StreamId,Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  id: StartProcessingAsync(Orleans.Runtime.StreamId,Orleans.Runtime.StreamId,Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  parent: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2
+  langs:
+  - csharp
+  - vb
+  name: StartProcessingAsync(StreamId, StreamId, GpuExecutionHints?)
+  nameWithType: IGpuStreamGrain<TIn, TOut>.StartProcessingAsync(StreamId, StreamId, GpuExecutionHints?)
+  fullName: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain<TIn, TOut>.StartProcessingAsync(Orleans.Runtime.StreamId, Orleans.Runtime.StreamId, Orleans.GpuBridge.Abstractions.GpuExecutionHints?)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Stream/IGpuStreamGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: StartProcessingAsync
+    path: ../src/Orleans.GpuBridge.Grains/Stream/IGpuStreamGrain.cs
+    startLine: 25
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Stream
+  summary: >-
+    Starts processing from input stream to output stream using Orleans Streams infrastructure.
+
+    This method subscribes to the input stream and publishes processed results to the output stream.
+  example: []
+  syntax:
+    content: Task StartProcessingAsync(StreamId inputStream, StreamId outputStream, GpuExecutionHints? hints = null)
+    parameters:
+    - id: inputStream
+      type: Orleans.Runtime.StreamId
+      description: The Orleans StreamId to consume input data from.
+    - id: outputStream
+      type: Orleans.Runtime.StreamId
+      description: The Orleans StreamId to publish processed results to.
+    - id: hints
+      type: Orleans.GpuBridge.Abstractions.GpuExecutionHints
+      description: Optional execution hints for GPU kernel optimization (batch size, device preferences, etc.).
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task representing the asynchronous start operation.
+    content.vb: Function StartProcessingAsync(inputStream As StreamId, outputStream As StreamId, hints As GpuExecutionHints = Nothing) As Task
+  overload: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.StartProcessingAsync*
+  exceptions:
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: Thrown when stream processing is already running.
+  nameWithType.vb: IGpuStreamGrain(Of TIn, TOut).StartProcessingAsync(StreamId, StreamId, GpuExecutionHints)
+  fullName.vb: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain(Of TIn, TOut).StartProcessingAsync(Orleans.Runtime.StreamId, Orleans.Runtime.StreamId, Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  name.vb: StartProcessingAsync(StreamId, StreamId, GpuExecutionHints)
+- uid: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.StartStreamAsync(System.String,Orleans.GpuBridge.Grains.Batch.IGpuResultObserver{`1},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  commentId: M:Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.StartStreamAsync(System.String,Orleans.GpuBridge.Grains.Batch.IGpuResultObserver{`1},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  id: StartStreamAsync(System.String,Orleans.GpuBridge.Grains.Batch.IGpuResultObserver{`1},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  parent: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2
+  langs:
+  - csharp
+  - vb
+  name: StartStreamAsync(string, IGpuResultObserver<TOut>, GpuExecutionHints?)
+  nameWithType: IGpuStreamGrain<TIn, TOut>.StartStreamAsync(string, IGpuResultObserver<TOut>, GpuExecutionHints?)
+  fullName: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain<TIn, TOut>.StartStreamAsync(string, Orleans.GpuBridge.Grains.Batch.IGpuResultObserver<TOut>, Orleans.GpuBridge.Abstractions.GpuExecutionHints?)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Stream/IGpuStreamGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: StartStreamAsync
+    path: ../src/Orleans.GpuBridge.Grains/Stream/IGpuStreamGrain.cs
+    startLine: 40
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Stream
+  summary: >-
+    Starts a custom stream processing pipeline with observer pattern for result delivery.
+
+    This method provides more direct control over result handling compared to Orleans Streams.
+  example: []
+  syntax:
+    content: Task StartStreamAsync(string streamId, IGpuResultObserver<TOut> observer, GpuExecutionHints? hints = null)
+    parameters:
+    - id: streamId
+      type: System.String
+      description: The identifier for this stream processing session.
+    - id: observer
+      type: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver{{TOut}}
+      description: The observer that will receive processed results via callback.
+    - id: hints
+      type: Orleans.GpuBridge.Abstractions.GpuExecutionHints
+      description: Optional execution hints for GPU kernel optimization.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task representing the asynchronous start operation.
+    content.vb: Function StartStreamAsync(streamId As String, observer As IGpuResultObserver(Of TOut), hints As GpuExecutionHints = Nothing) As Task
+  overload: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.StartStreamAsync*
+  exceptions:
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: Thrown when stream processing is already running.
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown when observer is null.
+  nameWithType.vb: IGpuStreamGrain(Of TIn, TOut).StartStreamAsync(String, IGpuResultObserver(Of TOut), GpuExecutionHints)
+  fullName.vb: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain(Of TIn, TOut).StartStreamAsync(String, Orleans.GpuBridge.Grains.Batch.IGpuResultObserver(Of TOut), Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  name.vb: StartStreamAsync(String, IGpuResultObserver(Of TOut), GpuExecutionHints)
+- uid: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.ProcessItemAsync(`0)
+  commentId: M:Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.ProcessItemAsync(`0)
+  id: ProcessItemAsync(`0)
+  parent: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2
+  langs:
+  - csharp
+  - vb
+  name: ProcessItemAsync(TIn)
+  nameWithType: IGpuStreamGrain<TIn, TOut>.ProcessItemAsync(TIn)
+  fullName: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain<TIn, TOut>.ProcessItemAsync(TIn)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Stream/IGpuStreamGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ProcessItemAsync
+    path: ../src/Orleans.GpuBridge.Grains/Stream/IGpuStreamGrain.cs
+    startLine: 53
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Stream
+  summary: >-
+    Processes a single item through the GPU kernel asynchronously.
+
+    Items are buffered and batched internally for efficient GPU execution.
+
+    Results are delivered via the observer registered in StartStreamAsync.
+  example: []
+  syntax:
+    content: Task ProcessItemAsync(TIn item)
+    parameters:
+    - id: item
+      type: '{TIn}'
+      description: The input item to process through the GPU kernel.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task representing the asynchronous processing operation.
+    content.vb: Function ProcessItemAsync(item As TIn) As Task
+  overload: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.ProcessItemAsync*
+  exceptions:
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: Thrown when stream processing is not started.
+  nameWithType.vb: IGpuStreamGrain(Of TIn, TOut).ProcessItemAsync(TIn)
+  fullName.vb: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain(Of TIn, TOut).ProcessItemAsync(TIn)
+- uid: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.FlushStreamAsync
+  commentId: M:Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.FlushStreamAsync
+  id: FlushStreamAsync
+  parent: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2
+  langs:
+  - csharp
+  - vb
+  name: FlushStreamAsync()
+  nameWithType: IGpuStreamGrain<TIn, TOut>.FlushStreamAsync()
+  fullName: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain<TIn, TOut>.FlushStreamAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Stream/IGpuStreamGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: FlushStreamAsync
+    path: ../src/Orleans.GpuBridge.Grains/Stream/IGpuStreamGrain.cs
+    startLine: 61
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Stream
+  summary: >-
+    Flushes any buffered items and ensures all pending processing is completed.
+
+    This method blocks until all items in the internal buffer are processed and results delivered.
+  example: []
+  syntax:
+    content: Task FlushStreamAsync()
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task representing the asynchronous flush operation.
+    content.vb: Function FlushStreamAsync() As Task
+  overload: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.FlushStreamAsync*
+  exceptions:
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: Thrown when stream processing is not started.
+  nameWithType.vb: IGpuStreamGrain(Of TIn, TOut).FlushStreamAsync()
+  fullName.vb: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain(Of TIn, TOut).FlushStreamAsync()
+- uid: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.StopProcessingAsync
+  commentId: M:Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.StopProcessingAsync
+  id: StopProcessingAsync
+  parent: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2
+  langs:
+  - csharp
+  - vb
+  name: StopProcessingAsync()
+  nameWithType: IGpuStreamGrain<TIn, TOut>.StopProcessingAsync()
+  fullName: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain<TIn, TOut>.StopProcessingAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Stream/IGpuStreamGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: StopProcessingAsync
+    path: ../src/Orleans.GpuBridge.Grains/Stream/IGpuStreamGrain.cs
+    startLine: 68
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Stream
+  summary: >-
+    Stops stream processing and cleans up resources.
+
+    Any buffered items will be flushed before stopping.
+  example: []
+  syntax:
+    content: Task StopProcessingAsync()
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task representing the asynchronous stop operation.
+    content.vb: Function StopProcessingAsync() As Task
+  overload: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.StopProcessingAsync*
+  nameWithType.vb: IGpuStreamGrain(Of TIn, TOut).StopProcessingAsync()
+  fullName.vb: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain(Of TIn, TOut).StopProcessingAsync()
+- uid: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.GetStatusAsync
+  commentId: M:Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.GetStatusAsync
+  id: GetStatusAsync
+  parent: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2
+  langs:
+  - csharp
+  - vb
+  name: GetStatusAsync()
+  nameWithType: IGpuStreamGrain<TIn, TOut>.GetStatusAsync()
+  fullName: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain<TIn, TOut>.GetStatusAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Stream/IGpuStreamGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetStatusAsync
+    path: ../src/Orleans.GpuBridge.Grains/Stream/IGpuStreamGrain.cs
+    startLine: 77
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Stream
+  summary: Gets the current processing status of the stream grain.
+  example: []
+  syntax:
+    content: Task<StreamProcessingStatus> GetStatusAsync()
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Grains.Stream.StreamProcessingStatus}
+      description: >-
+        A task that resolves to the current <xref href="Orleans.GpuBridge.Grains.Stream.StreamProcessingStatus" data-throw-if-not-resolved="false"></xref>
+
+        (Idle, Starting, Processing, Stopping, Stopped, or Failed).
+    content.vb: Function GetStatusAsync() As Task(Of StreamProcessingStatus)
+  overload: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.GetStatusAsync*
+  nameWithType.vb: IGpuStreamGrain(Of TIn, TOut).GetStatusAsync()
+  fullName.vb: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain(Of TIn, TOut).GetStatusAsync()
+- uid: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.GetStatsAsync
+  commentId: M:Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.GetStatsAsync
+  id: GetStatsAsync
+  parent: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2
+  langs:
+  - csharp
+  - vb
+  name: GetStatsAsync()
+  nameWithType: IGpuStreamGrain<TIn, TOut>.GetStatsAsync()
+  fullName: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain<TIn, TOut>.GetStatsAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Stream/IGpuStreamGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetStatsAsync
+    path: ../src/Orleans.GpuBridge.Grains/Stream/IGpuStreamGrain.cs
+    startLine: 88
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Stream
+  summary: Gets comprehensive processing statistics including throughput, latency, and error counts.
+  example: []
+  syntax:
+    content: Task<StreamProcessingStats> GetStatsAsync()
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Grains.Stream.StreamProcessingStats}
+      description: >-
+        A task that resolves to <xref href="Orleans.GpuBridge.Grains.Stream.StreamProcessingStats" data-throw-if-not-resolved="false"></xref> containing:
+
+        - Items processed and failed counts
+
+        - Total processing time and average latency
+
+        - Start time and last processed timestamp
+    content.vb: Function GetStatsAsync() As Task(Of StreamProcessingStats)
+  overload: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.GetStatsAsync*
+  nameWithType.vb: IGpuStreamGrain(Of TIn, TOut).GetStatsAsync()
+  fullName.vb: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain(Of TIn, TOut).GetStatsAsync()
+references:
+- uid: Orleans.GpuBridge.Grains.Stream
+  commentId: N:Orleans.GpuBridge.Grains.Stream
+  href: Orleans.html
+  name: Orleans.GpuBridge.Grains.Stream
+  nameWithType: Orleans.GpuBridge.Grains.Stream
+  fullName: Orleans.GpuBridge.Grains.Stream
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.Stream
+    name: Stream
+    href: Orleans.GpuBridge.Grains.Stream.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.Stream
+    name: Stream
+    href: Orleans.GpuBridge.Grains.Stream.html
+- uid: System.InvalidOperationException
+  commentId: T:System.InvalidOperationException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
+  name: InvalidOperationException
+  nameWithType: InvalidOperationException
+  fullName: System.InvalidOperationException
+- uid: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.StartProcessingAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.StartProcessingAsync
+  href: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain-2.html#Orleans_GpuBridge_Grains_Stream_IGpuStreamGrain_2_StartProcessingAsync_Orleans_Runtime_StreamId_Orleans_Runtime_StreamId_Orleans_GpuBridge_Abstractions_GpuExecutionHints_
+  name: StartProcessingAsync
+  nameWithType: IGpuStreamGrain<TIn, TOut>.StartProcessingAsync
+  fullName: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain<TIn, TOut>.StartProcessingAsync
+  nameWithType.vb: IGpuStreamGrain(Of TIn, TOut).StartProcessingAsync
+  fullName.vb: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain(Of TIn, TOut).StartProcessingAsync
+- uid: Orleans.Runtime.StreamId
+  commentId: T:Orleans.Runtime.StreamId
+  parent: Orleans.Runtime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.runtime.streamid
+  name: StreamId
+  nameWithType: StreamId
+  fullName: Orleans.Runtime.StreamId
+- uid: Orleans.GpuBridge.Abstractions.GpuExecutionHints
+  commentId: T:Orleans.GpuBridge.Abstractions.GpuExecutionHints
+  parent: Orleans.GpuBridge.Abstractions
+  href: Orleans.GpuBridge.Abstractions.GpuExecutionHints.html
+  name: GpuExecutionHints
+  nameWithType: GpuExecutionHints
+  fullName: Orleans.GpuBridge.Abstractions.GpuExecutionHints
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: Orleans.Runtime
+  commentId: N:Orleans.Runtime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans
+  name: Orleans.Runtime
+  nameWithType: Orleans.Runtime
+  fullName: Orleans.Runtime
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans
+  - name: .
+  - uid: Orleans.Runtime
+    name: Runtime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans
+  - name: .
+  - uid: Orleans.Runtime
+    name: Runtime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime
+- uid: Orleans.GpuBridge.Abstractions
+  commentId: N:Orleans.GpuBridge.Abstractions
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions
+  nameWithType: Orleans.GpuBridge.Abstractions
+  fullName: Orleans.GpuBridge.Abstractions
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+  name: ArgumentNullException
+  nameWithType: ArgumentNullException
+  fullName: System.ArgumentNullException
+- uid: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.StartStreamAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.StartStreamAsync
+  href: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain-2.html#Orleans_GpuBridge_Grains_Stream_IGpuStreamGrain_2_StartStreamAsync_System_String_Orleans_GpuBridge_Grains_Batch_IGpuResultObserver__1__Orleans_GpuBridge_Abstractions_GpuExecutionHints_
+  name: StartStreamAsync
+  nameWithType: IGpuStreamGrain<TIn, TOut>.StartStreamAsync
+  fullName: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain<TIn, TOut>.StartStreamAsync
+  nameWithType.vb: IGpuStreamGrain(Of TIn, TOut).StartStreamAsync
+  fullName.vb: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain(Of TIn, TOut).StartStreamAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver{{TOut}}
+  commentId: T:Orleans.GpuBridge.Grains.Batch.IGpuResultObserver{`1}
+  parent: Orleans.GpuBridge.Grains.Batch
+  definition: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver`1
+  href: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver-1.html
+  name: IGpuResultObserver<TOut>
+  nameWithType: IGpuResultObserver<TOut>
+  fullName: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver<TOut>
+  nameWithType.vb: IGpuResultObserver(Of TOut)
+  fullName.vb: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver(Of TOut)
+  name.vb: IGpuResultObserver(Of TOut)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver`1
+    name: IGpuResultObserver
+    href: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver-1.html
+  - name: <
+  - name: TOut
+  - name: '>'
+  spec.vb:
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver`1
+    name: IGpuResultObserver
+    href: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOut
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver`1
+  commentId: T:Orleans.GpuBridge.Grains.Batch.IGpuResultObserver`1
+  href: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver-1.html
+  name: IGpuResultObserver<T>
+  nameWithType: IGpuResultObserver<T>
+  fullName: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver<T>
+  nameWithType.vb: IGpuResultObserver(Of T)
+  fullName.vb: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver(Of T)
+  name.vb: IGpuResultObserver(Of T)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver`1
+    name: IGpuResultObserver
+    href: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver`1
+    name: IGpuResultObserver
+    href: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Orleans.GpuBridge.Grains.Batch
+  commentId: N:Orleans.GpuBridge.Grains.Batch
+  href: Orleans.html
+  name: Orleans.GpuBridge.Grains.Batch
+  nameWithType: Orleans.GpuBridge.Grains.Batch
+  fullName: Orleans.GpuBridge.Grains.Batch
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.Batch
+    name: Batch
+    href: Orleans.GpuBridge.Grains.Batch.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.Batch
+    name: Batch
+    href: Orleans.GpuBridge.Grains.Batch.html
+- uid: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.ProcessItemAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.ProcessItemAsync
+  href: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain-2.html#Orleans_GpuBridge_Grains_Stream_IGpuStreamGrain_2_ProcessItemAsync__0_
+  name: ProcessItemAsync
+  nameWithType: IGpuStreamGrain<TIn, TOut>.ProcessItemAsync
+  fullName: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain<TIn, TOut>.ProcessItemAsync
+  nameWithType.vb: IGpuStreamGrain(Of TIn, TOut).ProcessItemAsync
+  fullName.vb: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain(Of TIn, TOut).ProcessItemAsync
+- uid: '{TIn}'
+  commentId: '!:TIn'
+  definition: TIn
+  name: TIn
+  nameWithType: TIn
+  fullName: TIn
+- uid: TIn
+  name: TIn
+  nameWithType: TIn
+  fullName: TIn
+- uid: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.FlushStreamAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.FlushStreamAsync
+  href: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain-2.html#Orleans_GpuBridge_Grains_Stream_IGpuStreamGrain_2_FlushStreamAsync
+  name: FlushStreamAsync
+  nameWithType: IGpuStreamGrain<TIn, TOut>.FlushStreamAsync
+  fullName: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain<TIn, TOut>.FlushStreamAsync
+  nameWithType.vb: IGpuStreamGrain(Of TIn, TOut).FlushStreamAsync
+  fullName.vb: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain(Of TIn, TOut).FlushStreamAsync
+- uid: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.StopProcessingAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.StopProcessingAsync
+  href: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain-2.html#Orleans_GpuBridge_Grains_Stream_IGpuStreamGrain_2_StopProcessingAsync
+  name: StopProcessingAsync
+  nameWithType: IGpuStreamGrain<TIn, TOut>.StopProcessingAsync
+  fullName: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain<TIn, TOut>.StopProcessingAsync
+  nameWithType.vb: IGpuStreamGrain(Of TIn, TOut).StopProcessingAsync
+  fullName.vb: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain(Of TIn, TOut).StopProcessingAsync
+- uid: Orleans.GpuBridge.Grains.Stream.StreamProcessingStatus
+  commentId: T:Orleans.GpuBridge.Grains.Stream.StreamProcessingStatus
+  parent: Orleans.GpuBridge.Grains.Stream
+  href: Orleans.GpuBridge.Grains.Stream.StreamProcessingStatus.html
+  name: StreamProcessingStatus
+  nameWithType: StreamProcessingStatus
+  fullName: Orleans.GpuBridge.Grains.Stream.StreamProcessingStatus
+- uid: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.GetStatusAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.GetStatusAsync
+  href: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain-2.html#Orleans_GpuBridge_Grains_Stream_IGpuStreamGrain_2_GetStatusAsync
+  name: GetStatusAsync
+  nameWithType: IGpuStreamGrain<TIn, TOut>.GetStatusAsync
+  fullName: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain<TIn, TOut>.GetStatusAsync
+  nameWithType.vb: IGpuStreamGrain(Of TIn, TOut).GetStatusAsync
+  fullName.vb: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain(Of TIn, TOut).GetStatusAsync
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Grains.Stream.StreamProcessingStatus}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Grains.Stream.StreamProcessingStatus}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<StreamProcessingStatus>
+  nameWithType: Task<StreamProcessingStatus>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Grains.Stream.StreamProcessingStatus>
+  nameWithType.vb: Task(Of StreamProcessingStatus)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Grains.Stream.StreamProcessingStatus)
+  name.vb: Task(Of StreamProcessingStatus)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Grains.Stream.StreamProcessingStatus
+    name: StreamProcessingStatus
+    href: Orleans.GpuBridge.Grains.Stream.StreamProcessingStatus.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Grains.Stream.StreamProcessingStatus
+    name: StreamProcessingStatus
+    href: Orleans.GpuBridge.Grains.Stream.StreamProcessingStatus.html
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: Orleans.GpuBridge.Grains.Stream.StreamProcessingStats
+  commentId: T:Orleans.GpuBridge.Grains.Stream.StreamProcessingStats
+  href: Orleans.GpuBridge.Grains.Stream.StreamProcessingStats.html
+  name: StreamProcessingStats
+  nameWithType: StreamProcessingStats
+  fullName: Orleans.GpuBridge.Grains.Stream.StreamProcessingStats
+- uid: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.GetStatsAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain`2.GetStatsAsync
+  href: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain-2.html#Orleans_GpuBridge_Grains_Stream_IGpuStreamGrain_2_GetStatsAsync
+  name: GetStatsAsync
+  nameWithType: IGpuStreamGrain<TIn, TOut>.GetStatsAsync
+  fullName: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain<TIn, TOut>.GetStatsAsync
+  nameWithType.vb: IGpuStreamGrain(Of TIn, TOut).GetStatsAsync
+  fullName.vb: Orleans.GpuBridge.Grains.Stream.IGpuStreamGrain(Of TIn, TOut).GetStatsAsync
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Grains.Stream.StreamProcessingStats}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Grains.Stream.StreamProcessingStats}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<StreamProcessingStats>
+  nameWithType: Task<StreamProcessingStats>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Grains.Stream.StreamProcessingStats>
+  nameWithType.vb: Task(Of StreamProcessingStats)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Grains.Stream.StreamProcessingStats)
+  name.vb: Task(Of StreamProcessingStats)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Grains.Stream.StreamProcessingStats
+    name: StreamProcessingStats
+    href: Orleans.GpuBridge.Grains.Stream.StreamProcessingStats.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Grains.Stream.StreamProcessingStats
+    name: StreamProcessingStats
+    href: Orleans.GpuBridge.Grains.Stream.StreamProcessingStats.html
+  - name: )

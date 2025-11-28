@@ -1,0 +1,712 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant
+  commentId: T:Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant
+  id: GpuSiloLifecycleParticipant
+  parent: Orleans.GpuBridge.Runtime.Infrastructure
+  children:
+  - Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant},Orleans.IGrainFactory,Orleans.Runtime.ILocalSiloDetails,Orleans.GpuBridge.Runtime.DeviceBroker)
+  - Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant.Participate(Orleans.Runtime.ISiloLifecycle)
+  langs:
+  - csharp
+  - vb
+  name: GpuSiloLifecycleParticipant
+  nameWithType: GpuSiloLifecycleParticipant
+  fullName: Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Infrastructure/GpuSiloLifecycleParticipant.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GpuSiloLifecycleParticipant
+    path: ../src/Orleans.GpuBridge.Runtime/Infrastructure/GpuSiloLifecycleParticipant.cs
+    startLine: 26
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Infrastructure
+  summary: >-
+    Orleans lifecycle participant that registers GPU capacity with the cluster
+
+    and maintains periodic capacity updates
+  remarks: >-
+    This participant integrates with Orleans silo lifecycle to:
+
+    - Register GPU capacity on silo startup
+
+    - Update capacity every 30 seconds
+
+    - Unregister GPU capacity on graceful shutdown
+
+
+    The participant queries DeviceBroker for actual GPU metrics and reports
+
+    them to the centralized IGpuCapacityGrain for intelligent placement decisions.
+  example: []
+  syntax:
+    content: 'public sealed class GpuSiloLifecycleParticipant : ILifecycleParticipant<ISiloLifecycle>'
+    content.vb: Public NotInheritable Class GpuSiloLifecycleParticipant Implements ILifecycleParticipant(Of ISiloLifecycle)
+  inheritance:
+  - System.Object
+  implements:
+  - Orleans.ILifecycleParticipant{Orleans.Runtime.ISiloLifecycle}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant},Orleans.IGrainFactory,Orleans.Runtime.ILocalSiloDetails,Orleans.GpuBridge.Runtime.DeviceBroker)
+  commentId: M:Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant},Orleans.IGrainFactory,Orleans.Runtime.ILocalSiloDetails,Orleans.GpuBridge.Runtime.DeviceBroker)
+  id: '#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant},Orleans.IGrainFactory,Orleans.Runtime.ILocalSiloDetails,Orleans.GpuBridge.Runtime.DeviceBroker)'
+  parent: Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant
+  langs:
+  - csharp
+  - vb
+  name: GpuSiloLifecycleParticipant(ILogger<GpuSiloLifecycleParticipant>, IGrainFactory, ILocalSiloDetails, DeviceBroker)
+  nameWithType: GpuSiloLifecycleParticipant.GpuSiloLifecycleParticipant(ILogger<GpuSiloLifecycleParticipant>, IGrainFactory, ILocalSiloDetails, DeviceBroker)
+  fullName: Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant.GpuSiloLifecycleParticipant(Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant>, Orleans.IGrainFactory, Orleans.Runtime.ILocalSiloDetails, Orleans.GpuBridge.Runtime.DeviceBroker)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Infrastructure/GpuSiloLifecycleParticipant.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Runtime/Infrastructure/GpuSiloLifecycleParticipant.cs
+    startLine: 43
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Infrastructure
+  summary: Initializes a new instance of the GPU silo lifecycle participant
+  example: []
+  syntax:
+    content: public GpuSiloLifecycleParticipant(ILogger<GpuSiloLifecycleParticipant> logger, IGrainFactory grainFactory, ILocalSiloDetails siloDetails, DeviceBroker deviceBroker)
+    parameters:
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant}
+    - id: grainFactory
+      type: Orleans.IGrainFactory
+    - id: siloDetails
+      type: Orleans.Runtime.ILocalSiloDetails
+    - id: deviceBroker
+      type: Orleans.GpuBridge.Runtime.DeviceBroker
+    content.vb: Public Sub New(logger As ILogger(Of GpuSiloLifecycleParticipant), grainFactory As IGrainFactory, siloDetails As ILocalSiloDetails, deviceBroker As DeviceBroker)
+  overload: Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant.#ctor*
+  nameWithType.vb: GpuSiloLifecycleParticipant.New(ILogger(Of GpuSiloLifecycleParticipant), IGrainFactory, ILocalSiloDetails, DeviceBroker)
+  fullName.vb: Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant.New(Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant), Orleans.IGrainFactory, Orleans.Runtime.ILocalSiloDetails, Orleans.GpuBridge.Runtime.DeviceBroker)
+  name.vb: New(ILogger(Of GpuSiloLifecycleParticipant), IGrainFactory, ILocalSiloDetails, DeviceBroker)
+- uid: Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant.Participate(Orleans.Runtime.ISiloLifecycle)
+  commentId: M:Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant.Participate(Orleans.Runtime.ISiloLifecycle)
+  id: Participate(Orleans.Runtime.ISiloLifecycle)
+  parent: Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant
+  langs:
+  - csharp
+  - vb
+  name: Participate(ISiloLifecycle)
+  nameWithType: GpuSiloLifecycleParticipant.Participate(ISiloLifecycle)
+  fullName: Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant.Participate(Orleans.Runtime.ISiloLifecycle)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Infrastructure/GpuSiloLifecycleParticipant.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Participate
+    path: ../src/Orleans.GpuBridge.Runtime/Infrastructure/GpuSiloLifecycleParticipant.cs
+    startLine: 58
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Infrastructure
+  summary: Participates in the Orleans silo lifecycle
+  example: []
+  syntax:
+    content: public void Participate(ISiloLifecycle lifecycle)
+    parameters:
+    - id: lifecycle
+      type: Orleans.Runtime.ISiloLifecycle
+    content.vb: Public Sub Participate(lifecycle As ISiloLifecycle)
+  overload: Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant.Participate*
+  implements:
+  - Orleans.ILifecycleParticipant{Orleans.Runtime.ISiloLifecycle}.Participate(Orleans.Runtime.ISiloLifecycle)
+references:
+- uid: Orleans.GpuBridge.Runtime.Infrastructure
+  commentId: N:Orleans.GpuBridge.Runtime.Infrastructure
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Infrastructure
+  nameWithType: Orleans.GpuBridge.Runtime.Infrastructure
+  fullName: Orleans.GpuBridge.Runtime.Infrastructure
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Infrastructure
+    name: Infrastructure
+    href: Orleans.GpuBridge.Runtime.Infrastructure.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Infrastructure
+    name: Infrastructure
+    href: Orleans.GpuBridge.Runtime.Infrastructure.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Orleans.ILifecycleParticipant{Orleans.Runtime.ISiloLifecycle}
+  commentId: T:Orleans.ILifecycleParticipant{Orleans.Runtime.ISiloLifecycle}
+  parent: Orleans
+  definition: Orleans.ILifecycleParticipant`1
+  href: https://learn.microsoft.com/dotnet/api/orleans.ilifecycleparticipant-1
+  name: ILifecycleParticipant<ISiloLifecycle>
+  nameWithType: ILifecycleParticipant<ISiloLifecycle>
+  fullName: Orleans.ILifecycleParticipant<Orleans.Runtime.ISiloLifecycle>
+  nameWithType.vb: ILifecycleParticipant(Of ISiloLifecycle)
+  fullName.vb: Orleans.ILifecycleParticipant(Of Orleans.Runtime.ISiloLifecycle)
+  name.vb: ILifecycleParticipant(Of ISiloLifecycle)
+  spec.csharp:
+  - uid: Orleans.ILifecycleParticipant`1
+    name: ILifecycleParticipant
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.ilifecycleparticipant-1
+  - name: <
+  - uid: Orleans.Runtime.ISiloLifecycle
+    name: ISiloLifecycle
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.isilolifecycle
+  - name: '>'
+  spec.vb:
+  - uid: Orleans.ILifecycleParticipant`1
+    name: ILifecycleParticipant
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.ilifecycleparticipant-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.Runtime.ISiloLifecycle
+    name: ISiloLifecycle
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.isilolifecycle
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.ILifecycleParticipant`1
+  commentId: T:Orleans.ILifecycleParticipant`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.ilifecycleparticipant-1
+  name: ILifecycleParticipant<TLifecycleObservable>
+  nameWithType: ILifecycleParticipant<TLifecycleObservable>
+  fullName: Orleans.ILifecycleParticipant<TLifecycleObservable>
+  nameWithType.vb: ILifecycleParticipant(Of TLifecycleObservable)
+  fullName.vb: Orleans.ILifecycleParticipant(Of TLifecycleObservable)
+  name.vb: ILifecycleParticipant(Of TLifecycleObservable)
+  spec.csharp:
+  - uid: Orleans.ILifecycleParticipant`1
+    name: ILifecycleParticipant
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.ilifecycleparticipant-1
+  - name: <
+  - name: TLifecycleObservable
+  - name: '>'
+  spec.vb:
+  - uid: Orleans.ILifecycleParticipant`1
+    name: ILifecycleParticipant
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.ilifecycleparticipant-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TLifecycleObservable
+  - name: )
+- uid: Orleans
+  commentId: N:Orleans
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans
+  name: Orleans
+  nameWithType: Orleans
+  fullName: Orleans
+- uid: Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant.#ctor
+  href: Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant.html#Orleans_GpuBridge_Runtime_Infrastructure_GpuSiloLifecycleParticipant__ctor_Microsoft_Extensions_Logging_ILogger_Orleans_GpuBridge_Runtime_Infrastructure_GpuSiloLifecycleParticipant__Orleans_IGrainFactory_Orleans_Runtime_ILocalSiloDetails_Orleans_GpuBridge_Runtime_DeviceBroker_
+  name: GpuSiloLifecycleParticipant
+  nameWithType: GpuSiloLifecycleParticipant.GpuSiloLifecycleParticipant
+  fullName: Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant.GpuSiloLifecycleParticipant
+  nameWithType.vb: GpuSiloLifecycleParticipant.New
+  fullName.vb: Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant.New
+  name.vb: New
+- uid: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<GpuSiloLifecycleParticipant>
+  nameWithType: ILogger<GpuSiloLifecycleParticipant>
+  fullName: Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant>
+  nameWithType.vb: ILogger(Of GpuSiloLifecycleParticipant)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant)
+  name.vb: ILogger(Of GpuSiloLifecycleParticipant)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant
+    name: GpuSiloLifecycleParticipant
+    href: Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant
+    name: GpuSiloLifecycleParticipant
+    href: Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant.html
+  - name: )
+- uid: Orleans.IGrainFactory
+  commentId: T:Orleans.IGrainFactory
+  parent: Orleans
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.igrainfactory
+  name: IGrainFactory
+  nameWithType: IGrainFactory
+  fullName: Orleans.IGrainFactory
+- uid: Orleans.Runtime.ILocalSiloDetails
+  commentId: T:Orleans.Runtime.ILocalSiloDetails
+  parent: Orleans.Runtime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.runtime.ilocalsilodetails
+  name: ILocalSiloDetails
+  nameWithType: ILocalSiloDetails
+  fullName: Orleans.Runtime.ILocalSiloDetails
+- uid: Orleans.GpuBridge.Runtime.DeviceBroker
+  commentId: T:Orleans.GpuBridge.Runtime.DeviceBroker
+  parent: Orleans.GpuBridge.Runtime
+  href: Orleans.GpuBridge.Runtime.DeviceBroker.html
+  name: DeviceBroker
+  nameWithType: DeviceBroker
+  fullName: Orleans.GpuBridge.Runtime.DeviceBroker
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: Orleans.Runtime
+  commentId: N:Orleans.Runtime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans
+  name: Orleans.Runtime
+  nameWithType: Orleans.Runtime
+  fullName: Orleans.Runtime
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans
+  - name: .
+  - uid: Orleans.Runtime
+    name: Runtime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans
+  - name: .
+  - uid: Orleans.Runtime
+    name: Runtime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime
+- uid: Orleans.GpuBridge.Runtime
+  commentId: N:Orleans.GpuBridge.Runtime
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime
+  nameWithType: Orleans.GpuBridge.Runtime
+  fullName: Orleans.GpuBridge.Runtime
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+- uid: Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant.Participate*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant.Participate
+  href: Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant.html#Orleans_GpuBridge_Runtime_Infrastructure_GpuSiloLifecycleParticipant_Participate_Orleans_Runtime_ISiloLifecycle_
+  name: Participate
+  nameWithType: GpuSiloLifecycleParticipant.Participate
+  fullName: Orleans.GpuBridge.Runtime.Infrastructure.GpuSiloLifecycleParticipant.Participate
+- uid: Orleans.ILifecycleParticipant{Orleans.Runtime.ISiloLifecycle}.Participate(Orleans.Runtime.ISiloLifecycle)
+  commentId: M:Orleans.ILifecycleParticipant{Orleans.Runtime.ISiloLifecycle}.Participate(Orleans.Runtime.ISiloLifecycle)
+  parent: Orleans.ILifecycleParticipant{Orleans.Runtime.ISiloLifecycle}
+  definition: Orleans.ILifecycleParticipant`1.Participate(`0)
+  href: https://learn.microsoft.com/dotnet/api/orleans.ilifecycleparticipant-1.participate
+  name: Participate(ISiloLifecycle)
+  nameWithType: ILifecycleParticipant<ISiloLifecycle>.Participate(ISiloLifecycle)
+  fullName: Orleans.ILifecycleParticipant<Orleans.Runtime.ISiloLifecycle>.Participate(Orleans.Runtime.ISiloLifecycle)
+  nameWithType.vb: ILifecycleParticipant(Of ISiloLifecycle).Participate(ISiloLifecycle)
+  fullName.vb: Orleans.ILifecycleParticipant(Of Orleans.Runtime.ISiloLifecycle).Participate(Orleans.Runtime.ISiloLifecycle)
+  spec.csharp:
+  - uid: Orleans.ILifecycleParticipant{Orleans.Runtime.ISiloLifecycle}.Participate(Orleans.Runtime.ISiloLifecycle)
+    name: Participate
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.ilifecycleparticipant-1.participate
+  - name: (
+  - uid: Orleans.Runtime.ISiloLifecycle
+    name: ISiloLifecycle
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.isilolifecycle
+  - name: )
+  spec.vb:
+  - uid: Orleans.ILifecycleParticipant{Orleans.Runtime.ISiloLifecycle}.Participate(Orleans.Runtime.ISiloLifecycle)
+    name: Participate
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.ilifecycleparticipant-1.participate
+  - name: (
+  - uid: Orleans.Runtime.ISiloLifecycle
+    name: ISiloLifecycle
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.isilolifecycle
+  - name: )
+- uid: Orleans.Runtime.ISiloLifecycle
+  commentId: T:Orleans.Runtime.ISiloLifecycle
+  parent: Orleans.Runtime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.runtime.isilolifecycle
+  name: ISiloLifecycle
+  nameWithType: ISiloLifecycle
+  fullName: Orleans.Runtime.ISiloLifecycle
+- uid: Orleans.ILifecycleParticipant`1.Participate(`0)
+  commentId: M:Orleans.ILifecycleParticipant`1.Participate(`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.ilifecycleparticipant-1.participate
+  name: Participate(TLifecycleObservable)
+  nameWithType: ILifecycleParticipant<TLifecycleObservable>.Participate(TLifecycleObservable)
+  fullName: Orleans.ILifecycleParticipant<TLifecycleObservable>.Participate(TLifecycleObservable)
+  nameWithType.vb: ILifecycleParticipant(Of TLifecycleObservable).Participate(TLifecycleObservable)
+  fullName.vb: Orleans.ILifecycleParticipant(Of TLifecycleObservable).Participate(TLifecycleObservable)
+  spec.csharp:
+  - uid: Orleans.ILifecycleParticipant`1.Participate(`0)
+    name: Participate
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.ilifecycleparticipant-1.participate
+  - name: (
+  - name: TLifecycleObservable
+  - name: )
+  spec.vb:
+  - uid: Orleans.ILifecycleParticipant`1.Participate(`0)
+    name: Participate
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.ilifecycleparticipant-1.participate
+  - name: (
+  - name: TLifecycleObservable
+  - name: )

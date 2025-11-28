@@ -309,10 +309,16 @@ public sealed record TemporalOrderingInfo
 /// </summary>
 public enum GrainKeyType
 {
+    /// <summary>Integer (long) grain key.</summary>
     Integer,
+    /// <summary>String grain key.</summary>
     String,
+    /// <summary>GUID grain key.</summary>
     Guid,
+    /// <summary>Compound key with integer and string extension.</summary>
     IntegerCompound,
+    /// <summary>Compound key with GUID and string extension.</summary>
     GuidCompound,
+    /// <summary>Unknown key type.</summary>
     Unknown
 }

@@ -1,0 +1,857 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2
+  id: IntervalTree`2
+  parent: Orleans.GpuBridge.Runtime.Temporal.Graph
+  children:
+  - Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.Add(`0,`0,`1)
+  - Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.Clear
+  - Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.Count
+  - Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.GetAll
+  - Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.Query(`0,`0)
+  - Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.QueryPoint(`0)
+  - Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.ToString
+  langs:
+  - csharp
+  - vb
+  name: IntervalTree<TKey, TValue>
+  nameWithType: IntervalTree<TKey, TValue>
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree<TKey, TValue>
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Graph/IntervalTree.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IntervalTree
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Graph/IntervalTree.cs
+    startLine: 29
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Graph
+  summary: Interval tree for efficient temporal range queries.
+  remarks: >-
+    <p>
+
+    An interval tree stores intervals [start, end] and efficiently answers queries like:
+
+    "Find all intervals that overlap with [query_start, query_end]"
+
+    </p>
+
+    <p>
+
+    Performance:
+
+    - Construction: O(N log N) where N is the number of intervals
+
+    - Query: O(log N + M) where M is the number of matching intervals
+
+    - Space: O(N)
+
+    </p>
+
+    <p>
+
+    Use cases:
+
+    - Find all temporal edges active during a time range
+
+    - Find all events that occurred in a time window
+
+    - Detect overlapping time intervals
+
+    </p>
+  example: []
+  syntax:
+    content: 'public sealed class IntervalTree<TKey, TValue> where TKey : IComparable<TKey>'
+    typeParameters:
+    - id: TKey
+      description: The interval boundary type (typically long for nanosecond timestamps)
+    - id: TValue
+      description: The value type stored in intervals
+    content.vb: Public NotInheritable Class IntervalTree(Of TKey As IComparable(Of TKey), TValue)
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  nameWithType.vb: IntervalTree(Of TKey, TValue)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree(Of TKey, TValue)
+  name.vb: IntervalTree(Of TKey, TValue)
+- uid: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.Count
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.Count
+  id: Count
+  parent: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2
+  langs:
+  - csharp
+  - vb
+  name: Count
+  nameWithType: IntervalTree<TKey, TValue>.Count
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree<TKey, TValue>.Count
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Graph/IntervalTree.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Count
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Graph/IntervalTree.cs
+    startLine: 38
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Graph
+  summary: Gets the number of intervals in the tree.
+  example: []
+  syntax:
+    content: public int Count { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property Count As Integer
+  overload: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.Count*
+  nameWithType.vb: IntervalTree(Of TKey, TValue).Count
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree(Of TKey, TValue).Count
+- uid: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.Add(`0,`0,`1)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.Add(`0,`0,`1)
+  id: Add(`0,`0,`1)
+  parent: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2
+  langs:
+  - csharp
+  - vb
+  name: Add(TKey, TKey, TValue)
+  nameWithType: IntervalTree<TKey, TValue>.Add(TKey, TKey, TValue)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree<TKey, TValue>.Add(TKey, TKey, TValue)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Graph/IntervalTree.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Add
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Graph/IntervalTree.cs
+    startLine: 46
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Graph
+  summary: Adds an interval to the tree.
+  example: []
+  syntax:
+    content: public void Add(TKey start, TKey end, TValue value)
+    parameters:
+    - id: start
+      type: '{TKey}'
+      description: Start of the interval (inclusive)
+    - id: end
+      type: '{TKey}'
+      description: End of the interval (inclusive)
+    - id: value
+      type: '{TValue}'
+      description: Value associated with the interval
+    content.vb: Public Sub Add(start As TKey, [end] As TKey, value As TValue)
+  overload: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.Add*
+  nameWithType.vb: IntervalTree(Of TKey, TValue).Add(TKey, TKey, TValue)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree(Of TKey, TValue).Add(TKey, TKey, TValue)
+- uid: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.Query(`0,`0)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.Query(`0,`0)
+  id: Query(`0,`0)
+  parent: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2
+  langs:
+  - csharp
+  - vb
+  name: Query(TKey, TKey)
+  nameWithType: IntervalTree<TKey, TValue>.Query(TKey, TKey)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree<TKey, TValue>.Query(TKey, TKey)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Graph/IntervalTree.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Query
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Graph/IntervalTree.cs
+    startLine: 63
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Graph
+  summary: Queries all intervals that overlap with the specified range.
+  example: []
+  syntax:
+    content: public IEnumerable<TValue> Query(TKey start, TKey end)
+    parameters:
+    - id: start
+      type: '{TKey}'
+      description: Start of the query range
+    - id: end
+      type: '{TKey}'
+      description: End of the query range
+    return:
+      type: System.Collections.Generic.IEnumerable{{TValue}}
+      description: Values of all overlapping intervals
+    content.vb: Public Function Query(start As TKey, [end] As TKey) As IEnumerable(Of TValue)
+  overload: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.Query*
+  nameWithType.vb: IntervalTree(Of TKey, TValue).Query(TKey, TKey)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree(Of TKey, TValue).Query(TKey, TKey)
+- uid: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.QueryPoint(`0)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.QueryPoint(`0)
+  id: QueryPoint(`0)
+  parent: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2
+  langs:
+  - csharp
+  - vb
+  name: QueryPoint(TKey)
+  nameWithType: IntervalTree<TKey, TValue>.QueryPoint(TKey)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree<TKey, TValue>.QueryPoint(TKey)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Graph/IntervalTree.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: QueryPoint
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Graph/IntervalTree.cs
+    startLine: 76
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Graph
+  summary: Queries all intervals that contain the specified point.
+  example: []
+  syntax:
+    content: public IEnumerable<TValue> QueryPoint(TKey point)
+    parameters:
+    - id: point
+      type: '{TKey}'
+    return:
+      type: System.Collections.Generic.IEnumerable{{TValue}}
+    content.vb: Public Function QueryPoint(point As TKey) As IEnumerable(Of TValue)
+  overload: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.QueryPoint*
+  nameWithType.vb: IntervalTree(Of TKey, TValue).QueryPoint(TKey)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree(Of TKey, TValue).QueryPoint(TKey)
+- uid: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.Clear
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.Clear
+  id: Clear
+  parent: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2
+  langs:
+  - csharp
+  - vb
+  name: Clear()
+  nameWithType: IntervalTree<TKey, TValue>.Clear()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree<TKey, TValue>.Clear()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Graph/IntervalTree.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Clear
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Graph/IntervalTree.cs
+    startLine: 84
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Graph
+  summary: Clears all intervals from the tree.
+  example: []
+  syntax:
+    content: public void Clear()
+    content.vb: Public Sub Clear()
+  overload: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.Clear*
+  nameWithType.vb: IntervalTree(Of TKey, TValue).Clear()
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree(Of TKey, TValue).Clear()
+- uid: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.GetAll
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.GetAll
+  id: GetAll
+  parent: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2
+  langs:
+  - csharp
+  - vb
+  name: GetAll()
+  nameWithType: IntervalTree<TKey, TValue>.GetAll()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree<TKey, TValue>.GetAll()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Graph/IntervalTree.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetAll
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Graph/IntervalTree.cs
+    startLine: 93
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Graph
+  summary: Gets all intervals in the tree (in no particular order).
+  example: []
+  syntax:
+    content: public IEnumerable<(TKey start, TKey end, TValue value)> GetAll()
+    return:
+      type: System.Collections.Generic.IEnumerable{System.ValueTuple{{TKey},{TKey},{TValue}}}
+    content.vb: Public Function GetAll() As IEnumerable(Of (start As TKey, [end] As TKey, value As TValue))
+  overload: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.GetAll*
+  nameWithType.vb: IntervalTree(Of TKey, TValue).GetAll()
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree(Of TKey, TValue).GetAll()
+- uid: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.ToString
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.ToString
+  id: ToString
+  parent: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: IntervalTree<TKey, TValue>.ToString()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree<TKey, TValue>.ToString()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Graph/IntervalTree.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ToString
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Graph/IntervalTree.cs
+    startLine: 371
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Graph
+  summary: Returns a string that represents the current object.
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+      description: A string that represents the current object.
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.Object.ToString
+  overload: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.ToString*
+  nameWithType.vb: IntervalTree(Of TKey, TValue).ToString()
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree(Of TKey, TValue).ToString()
+references:
+- uid: Orleans.GpuBridge.Runtime.Temporal.Graph
+  commentId: N:Orleans.GpuBridge.Runtime.Temporal.Graph
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Temporal.Graph
+  nameWithType: Orleans.GpuBridge.Runtime.Temporal.Graph
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Graph
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Graph
+    name: Graph
+    href: Orleans.GpuBridge.Runtime.Temporal.Graph.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Graph
+    name: Graph
+    href: Orleans.GpuBridge.Runtime.Temporal.Graph.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.Count*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.Count
+  href: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree-2.html#Orleans_GpuBridge_Runtime_Temporal_Graph_IntervalTree_2_Count
+  name: Count
+  nameWithType: IntervalTree<TKey, TValue>.Count
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree<TKey, TValue>.Count
+  nameWithType.vb: IntervalTree(Of TKey, TValue).Count
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree(Of TKey, TValue).Count
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.Add*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.Add
+  href: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree-2.html#Orleans_GpuBridge_Runtime_Temporal_Graph_IntervalTree_2_Add__0__0__1_
+  name: Add
+  nameWithType: IntervalTree<TKey, TValue>.Add
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree<TKey, TValue>.Add
+  nameWithType.vb: IntervalTree(Of TKey, TValue).Add
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree(Of TKey, TValue).Add
+- uid: '{TKey}'
+  commentId: '!:TKey'
+  definition: TKey
+  name: TKey
+  nameWithType: TKey
+  fullName: TKey
+- uid: '{TValue}'
+  commentId: '!:TValue'
+  definition: TValue
+  name: TValue
+  nameWithType: TValue
+  fullName: TValue
+- uid: TKey
+  name: TKey
+  nameWithType: TKey
+  fullName: TKey
+- uid: TValue
+  commentId: '!:TValue'
+  name: TValue
+  nameWithType: TValue
+  fullName: TValue
+- uid: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.Query*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.Query
+  href: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree-2.html#Orleans_GpuBridge_Runtime_Temporal_Graph_IntervalTree_2_Query__0__0_
+  name: Query
+  nameWithType: IntervalTree<TKey, TValue>.Query
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree<TKey, TValue>.Query
+  nameWithType.vb: IntervalTree(Of TKey, TValue).Query
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree(Of TKey, TValue).Query
+- uid: System.Collections.Generic.IEnumerable{{TValue}}
+  commentId: T:System.Collections.Generic.IEnumerable{`1}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<TValue>
+  nameWithType: IEnumerable<TValue>
+  fullName: System.Collections.Generic.IEnumerable<TValue>
+  nameWithType.vb: IEnumerable(Of TValue)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of TValue)
+  name.vb: IEnumerable(Of TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.QueryPoint*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.QueryPoint
+  href: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree-2.html#Orleans_GpuBridge_Runtime_Temporal_Graph_IntervalTree_2_QueryPoint__0_
+  name: QueryPoint
+  nameWithType: IntervalTree<TKey, TValue>.QueryPoint
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree<TKey, TValue>.QueryPoint
+  nameWithType.vb: IntervalTree(Of TKey, TValue).QueryPoint
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree(Of TKey, TValue).QueryPoint
+- uid: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.Clear*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.Clear
+  href: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree-2.html#Orleans_GpuBridge_Runtime_Temporal_Graph_IntervalTree_2_Clear
+  name: Clear
+  nameWithType: IntervalTree<TKey, TValue>.Clear
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree<TKey, TValue>.Clear
+  nameWithType.vb: IntervalTree(Of TKey, TValue).Clear
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree(Of TKey, TValue).Clear
+- uid: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.GetAll*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.GetAll
+  href: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree-2.html#Orleans_GpuBridge_Runtime_Temporal_Graph_IntervalTree_2_GetAll
+  name: GetAll
+  nameWithType: IntervalTree<TKey, TValue>.GetAll
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree<TKey, TValue>.GetAll
+  nameWithType.vb: IntervalTree(Of TKey, TValue).GetAll
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree(Of TKey, TValue).GetAll
+- uid: System.Collections.Generic.IEnumerable{System.ValueTuple{{TKey},{TKey},{TValue}}}
+  commentId: T:System.Collections.Generic.IEnumerable{System.ValueTuple{`0,`0,`1}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<(TKey start, TKey end, TValue value)>
+  nameWithType: IEnumerable<(TKey start, TKey end, TValue value)>
+  fullName: System.Collections.Generic.IEnumerable<(TKey start, TKey end, TValue value)>
+  nameWithType.vb: IEnumerable(Of (start As TKey, end As TKey, value As TValue))
+  fullName.vb: System.Collections.Generic.IEnumerable(Of (start As TKey, end As TKey, value As TValue))
+  name.vb: IEnumerable(Of (start As TKey, end As TKey, value As TValue))
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: (
+  - name: TKey
+  - name: " "
+  - uid: System.ValueTuple{`0,`0,`1}.start
+    name: start
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple--0,-0,-1-.start
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: " "
+  - uid: System.ValueTuple{`0,`0,`1}.end
+    name: end
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple--0,-0,-1-.end
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: " "
+  - uid: System.ValueTuple{`0,`0,`1}.value
+    name: value
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple--0,-0,-1-.value
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{`0,`0,`1}.start
+    name: start
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple--0,-0,-1-.start
+  - name: " "
+  - name: As
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{`0,`0,`1}.end
+    name: end
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple--0,-0,-1-.end
+  - name: " "
+  - name: As
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{`0,`0,`1}.value
+    name: value
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple--0,-0,-1-.value
+  - name: " "
+  - name: As
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.ToString*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree`2.ToString
+  href: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree-2.html#Orleans_GpuBridge_Runtime_Temporal_Graph_IntervalTree_2_ToString
+  name: ToString
+  nameWithType: IntervalTree<TKey, TValue>.ToString
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree<TKey, TValue>.ToString
+  nameWithType.vb: IntervalTree(Of TKey, TValue).ToString
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Graph.IntervalTree(Of TKey, TValue).ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

@@ -1,0 +1,568 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue
+  commentId: T:Orleans.GpuBridge.Abstractions.Providers.ICommandQueue
+  id: ICommandQueue
+  parent: Orleans.GpuBridge.Abstractions.Providers
+  children:
+  - Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.Context
+  - Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueBarrier
+  - Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueCopyAsync(System.IntPtr,System.IntPtr,System.Int64,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueKernelAsync(Orleans.GpuBridge.Abstractions.Models.CompiledKernel,Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.FlushAsync(System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.QueueId
+  langs:
+  - csharp
+  - vb
+  name: ICommandQueue
+  nameWithType: ICommandQueue
+  fullName: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue
+  type: Interface
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/ICommandQueue.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ICommandQueue
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/ICommandQueue.cs
+    startLine: 12
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: >-
+    Represents a command queue (also known as a stream) for submitting work to a compute device.
+
+    Command queues provide asynchronous execution of kernels and memory operations,
+
+    allowing for efficient overlapping of computation and data transfer operations.
+  example: []
+  syntax:
+    content: 'public interface ICommandQueue : IDisposable'
+    content.vb: Public Interface ICommandQueue Inherits IDisposable
+  inheritedMembers:
+  - System.IDisposable.Dispose
+- uid: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.QueueId
+  commentId: P:Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.QueueId
+  id: QueueId
+  parent: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue
+  langs:
+  - csharp
+  - vb
+  name: QueueId
+  nameWithType: ICommandQueue.QueueId
+  fullName: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.QueueId
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/ICommandQueue.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: QueueId
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/ICommandQueue.cs
+    startLine: 18
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: >-
+    Gets the unique identifier for this command queue.
+
+    This ID can be used for debugging, profiling, and queue management operations.
+  example: []
+  syntax:
+    content: string QueueId { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property QueueId As String
+  overload: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.QueueId*
+- uid: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.Context
+  commentId: P:Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.Context
+  id: Context
+  parent: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue
+  langs:
+  - csharp
+  - vb
+  name: Context
+  nameWithType: ICommandQueue.Context
+  fullName: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.Context
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/ICommandQueue.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Context
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/ICommandQueue.cs
+    startLine: 24
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: >-
+    Gets the associated compute context that owns this command queue.
+
+    All operations submitted to this queue will execute within the scope of this context.
+  example: []
+  syntax:
+    content: IComputeContext Context { get; }
+    parameters: []
+    return:
+      type: Orleans.GpuBridge.Abstractions.Providers.IComputeContext
+    content.vb: ReadOnly Property Context As IComputeContext
+  overload: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.Context*
+- uid: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueKernelAsync(Orleans.GpuBridge.Abstractions.Models.CompiledKernel,Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueKernelAsync(Orleans.GpuBridge.Abstractions.Models.CompiledKernel,Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters,System.Threading.CancellationToken)
+  id: EnqueueKernelAsync(Orleans.GpuBridge.Abstractions.Models.CompiledKernel,Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue
+  langs:
+  - csharp
+  - vb
+  name: EnqueueKernelAsync(CompiledKernel, KernelLaunchParameters, CancellationToken)
+  nameWithType: ICommandQueue.EnqueueKernelAsync(CompiledKernel, KernelLaunchParameters, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueKernelAsync(Orleans.GpuBridge.Abstractions.Models.CompiledKernel, Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/ICommandQueue.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: EnqueueKernelAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/ICommandQueue.cs
+    startLine: 35
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: >-
+    Enqueues a compiled kernel for asynchronous execution on the device.
+
+    The kernel will be executed with the specified launch parameters,
+
+    and execution may begin immediately or be scheduled based on device availability.
+  example: []
+  syntax:
+    content: Task EnqueueKernelAsync(CompiledKernel kernel, KernelLaunchParameters parameters, CancellationToken cancellationToken = default)
+    parameters:
+    - id: kernel
+      type: Orleans.GpuBridge.Abstractions.Models.CompiledKernel
+      description: The compiled kernel to execute.
+    - id: parameters
+      type: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters
+      description: Launch parameters including work sizes, memory configuration, and kernel arguments.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Token to cancel the kernel enqueue operation.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task that completes when the kernel has been successfully enqueued (not necessarily executed).
+    content.vb: Function EnqueueKernelAsync(kernel As CompiledKernel, parameters As KernelLaunchParameters, cancellationToken As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueKernelAsync*
+- uid: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueCopyAsync(System.IntPtr,System.IntPtr,System.Int64,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueCopyAsync(System.IntPtr,System.IntPtr,System.Int64,System.Threading.CancellationToken)
+  id: EnqueueCopyAsync(System.IntPtr,System.IntPtr,System.Int64,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue
+  langs:
+  - csharp
+  - vb
+  name: EnqueueCopyAsync(nint, nint, long, CancellationToken)
+  nameWithType: ICommandQueue.EnqueueCopyAsync(nint, nint, long, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueCopyAsync(nint, nint, long, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/ICommandQueue.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: EnqueueCopyAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/ICommandQueue.cs
+    startLine: 50
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: >-
+    Enqueues a memory copy operation for asynchronous execution.
+
+    This allows for efficient data transfer between host and device memory,
+
+    or between different memory locations on the device.
+  example: []
+  syntax:
+    content: Task EnqueueCopyAsync(nint source, nint destination, long sizeBytes, CancellationToken cancellationToken = default)
+    parameters:
+    - id: source
+      type: System.IntPtr
+      description: Pointer to the source memory location.
+    - id: destination
+      type: System.IntPtr
+      description: Pointer to the destination memory location.
+    - id: sizeBytes
+      type: System.Int64
+      description: Number of bytes to copy.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Token to cancel the memory copy operation.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task that completes when the memory copy has been successfully enqueued.
+    content.vb: Function EnqueueCopyAsync(source As IntPtr, destination As IntPtr, sizeBytes As Long, cancellationToken As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueCopyAsync*
+  nameWithType.vb: ICommandQueue.EnqueueCopyAsync(IntPtr, IntPtr, Long, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueCopyAsync(System.IntPtr, System.IntPtr, Long, System.Threading.CancellationToken)
+  name.vb: EnqueueCopyAsync(IntPtr, IntPtr, Long, CancellationToken)
+- uid: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.FlushAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.FlushAsync(System.Threading.CancellationToken)
+  id: FlushAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue
+  langs:
+  - csharp
+  - vb
+  name: FlushAsync(CancellationToken)
+  nameWithType: ICommandQueue.FlushAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.FlushAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/ICommandQueue.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: FlushAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/ICommandQueue.cs
+    startLine: 63
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: >-
+    Waits for all previously enqueued operations in this queue to complete.
+
+    This method blocks until all kernels, memory operations, and other commands
+
+    that were submitted to this queue have finished execution.
+  example: []
+  syntax:
+    content: Task FlushAsync(CancellationToken cancellationToken = default)
+    parameters:
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Token to cancel the flush operation.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task that completes when all enqueued operations have finished.
+    content.vb: Function FlushAsync(cancellationToken As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.FlushAsync*
+- uid: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueBarrier
+  commentId: M:Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueBarrier
+  id: EnqueueBarrier
+  parent: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue
+  langs:
+  - csharp
+  - vb
+  name: EnqueueBarrier()
+  nameWithType: ICommandQueue.EnqueueBarrier()
+  fullName: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueBarrier()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/ICommandQueue.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: EnqueueBarrier
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/ICommandQueue.cs
+    startLine: 71
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: >-
+    Inserts a synchronization barrier in the command queue.
+
+    This ensures that all operations enqueued before this barrier complete
+
+    before any operations enqueued after the barrier begin execution.
+
+    This is useful for enforcing ordering constraints between operations.
+  example: []
+  syntax:
+    content: void EnqueueBarrier()
+    content.vb: Sub EnqueueBarrier()
+  overload: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueBarrier*
+references:
+- uid: Orleans.GpuBridge.Abstractions.Providers
+  commentId: N:Orleans.GpuBridge.Abstractions.Providers
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Providers
+  nameWithType: Orleans.GpuBridge.Abstractions.Providers
+  fullName: Orleans.GpuBridge.Abstractions.Providers
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Providers
+    name: Providers
+    href: Orleans.GpuBridge.Abstractions.Providers.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Providers
+    name: Providers
+    href: Orleans.GpuBridge.Abstractions.Providers.html
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.QueueId*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.QueueId
+  href: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.html#Orleans_GpuBridge_Abstractions_Providers_ICommandQueue_QueueId
+  name: QueueId
+  nameWithType: ICommandQueue.QueueId
+  fullName: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.QueueId
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.Context*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.Context
+  href: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.html#Orleans_GpuBridge_Abstractions_Providers_ICommandQueue_Context
+  name: Context
+  nameWithType: ICommandQueue.Context
+  fullName: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.Context
+- uid: Orleans.GpuBridge.Abstractions.Providers.IComputeContext
+  commentId: T:Orleans.GpuBridge.Abstractions.Providers.IComputeContext
+  parent: Orleans.GpuBridge.Abstractions.Providers
+  href: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.html
+  name: IComputeContext
+  nameWithType: IComputeContext
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IComputeContext
+- uid: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueKernelAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueKernelAsync
+  href: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.html#Orleans_GpuBridge_Abstractions_Providers_ICommandQueue_EnqueueKernelAsync_Orleans_GpuBridge_Abstractions_Models_CompiledKernel_Orleans_GpuBridge_Abstractions_Models_KernelLaunchParameters_System_Threading_CancellationToken_
+  name: EnqueueKernelAsync
+  nameWithType: ICommandQueue.EnqueueKernelAsync
+  fullName: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueKernelAsync
+- uid: Orleans.GpuBridge.Abstractions.Models.CompiledKernel
+  commentId: T:Orleans.GpuBridge.Abstractions.Models.CompiledKernel
+  parent: Orleans.GpuBridge.Abstractions.Models
+  href: Orleans.GpuBridge.Abstractions.Models.CompiledKernel.html
+  name: CompiledKernel
+  nameWithType: CompiledKernel
+  fullName: Orleans.GpuBridge.Abstractions.Models.CompiledKernel
+- uid: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters
+  commentId: T:Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters
+  parent: Orleans.GpuBridge.Abstractions.Models
+  href: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters.html
+  name: KernelLaunchParameters
+  nameWithType: KernelLaunchParameters
+  fullName: Orleans.GpuBridge.Abstractions.Models.KernelLaunchParameters
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: Orleans.GpuBridge.Abstractions.Models
+  commentId: N:Orleans.GpuBridge.Abstractions.Models
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Models
+  nameWithType: Orleans.GpuBridge.Abstractions.Models
+  fullName: Orleans.GpuBridge.Abstractions.Models
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Models
+    name: Models
+    href: Orleans.GpuBridge.Abstractions.Models.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Models
+    name: Models
+    href: Orleans.GpuBridge.Abstractions.Models.html
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueCopyAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueCopyAsync
+  href: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.html#Orleans_GpuBridge_Abstractions_Providers_ICommandQueue_EnqueueCopyAsync_System_IntPtr_System_IntPtr_System_Int64_System_Threading_CancellationToken_
+  name: EnqueueCopyAsync
+  nameWithType: ICommandQueue.EnqueueCopyAsync
+  fullName: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueCopyAsync
+- uid: System.IntPtr
+  commentId: T:System.IntPtr
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.intptr
+  name: nint
+  nameWithType: nint
+  fullName: nint
+  nameWithType.vb: IntPtr
+  fullName.vb: System.IntPtr
+  name.vb: IntPtr
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.FlushAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.FlushAsync
+  href: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.html#Orleans_GpuBridge_Abstractions_Providers_ICommandQueue_FlushAsync_System_Threading_CancellationToken_
+  name: FlushAsync
+  nameWithType: ICommandQueue.FlushAsync
+  fullName: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.FlushAsync
+- uid: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueBarrier*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueBarrier
+  href: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.html#Orleans_GpuBridge_Abstractions_Providers_ICommandQueue_EnqueueBarrier
+  name: EnqueueBarrier
+  nameWithType: ICommandQueue.EnqueueBarrier
+  fullName: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.EnqueueBarrier

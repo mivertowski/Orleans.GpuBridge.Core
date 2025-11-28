@@ -1,0 +1,839 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager
+  commentId: T:Orleans.GpuBridge.Abstractions.Providers.IDeviceManager
+  id: IDeviceManager
+  parent: Orleans.GpuBridge.Abstractions.Providers
+  children:
+  - Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.CreateContextAsync(Orleans.GpuBridge.Abstractions.Providers.IComputeDevice,Orleans.GpuBridge.Abstractions.Models.ContextOptions,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDefaultDevice
+  - Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDevice(System.Int32)
+  - Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDeviceMetricsAsync(Orleans.GpuBridge.Abstractions.Providers.IComputeDevice,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDevices
+  - Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.InitializeAsync(System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.ResetDeviceAsync(Orleans.GpuBridge.Abstractions.Providers.IComputeDevice,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.SelectDevice(Orleans.GpuBridge.Abstractions.Models.DeviceSelectionCriteria)
+  langs:
+  - csharp
+  - vb
+  name: IDeviceManager
+  nameWithType: IDeviceManager
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager
+  type: Interface
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/IDeviceManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IDeviceManager
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/IDeviceManager.cs
+    startLine: 14
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: >-
+    Interface for managing compute devices in GPU backends.
+
+    The device manager is responsible for discovering, enumerating, and managing
+
+    compute devices available to the application, as well as creating execution contexts
+
+    and providing device metrics for monitoring and optimization purposes.
+  example: []
+  syntax:
+    content: 'public interface IDeviceManager : IDisposable'
+    content.vb: Public Interface IDeviceManager Inherits IDisposable
+  inheritedMembers:
+  - System.IDisposable.Dispose
+- uid: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.InitializeAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.InitializeAsync(System.Threading.CancellationToken)
+  id: InitializeAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager
+  langs:
+  - csharp
+  - vb
+  name: InitializeAsync(CancellationToken)
+  nameWithType: IDeviceManager.InitializeAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.InitializeAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/IDeviceManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: InitializeAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/IDeviceManager.cs
+    startLine: 24
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: >-
+    Initializes the device manager and discovers available devices.
+
+    This method performs the initial device enumeration and setup required
+
+    before other operations can be performed. It should be called once
+
+    during application startup.
+  example: []
+  syntax:
+    content: Task InitializeAsync(CancellationToken cancellationToken = default)
+    parameters:
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Token to cancel the initialization operation.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task that completes when initialization is finished.
+    content.vb: Function InitializeAsync(cancellationToken As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.InitializeAsync*
+- uid: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDevices
+  commentId: M:Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDevices
+  id: GetDevices
+  parent: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager
+  langs:
+  - csharp
+  - vb
+  name: GetDevices()
+  nameWithType: IDeviceManager.GetDevices()
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDevices()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/IDeviceManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetDevices
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/IDeviceManager.cs
+    startLine: 32
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: >-
+    Gets all available compute devices discovered by the device manager.
+
+    This list represents all devices that are currently available for use,
+
+    regardless of their current status or utilization.
+  example: []
+  syntax:
+    content: IReadOnlyList<IComputeDevice> GetDevices()
+    return:
+      type: System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Providers.IComputeDevice}
+      description: A read-only list of all discovered compute devices.
+    content.vb: Function GetDevices() As IReadOnlyList(Of IComputeDevice)
+  overload: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDevices*
+- uid: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDevice(System.Int32)
+  commentId: M:Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDevice(System.Int32)
+  id: GetDevice(System.Int32)
+  parent: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager
+  langs:
+  - csharp
+  - vb
+  name: GetDevice(int)
+  nameWithType: IDeviceManager.GetDevice(int)
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDevice(int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/IDeviceManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetDevice
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/IDeviceManager.cs
+    startLine: 39
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: Gets a specific device by its index in the device enumeration.
+  example: []
+  syntax:
+    content: IComputeDevice? GetDevice(int deviceIndex)
+    parameters:
+    - id: deviceIndex
+      type: System.Int32
+      description: The zero-based index of the device to retrieve.
+    return:
+      type: Orleans.GpuBridge.Abstractions.Providers.IComputeDevice
+      description: The device at the specified index, or null if the index is invalid.
+    content.vb: Function GetDevice(deviceIndex As Integer) As IComputeDevice
+  overload: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDevice*
+  nameWithType.vb: IDeviceManager.GetDevice(Integer)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDevice(Integer)
+  name.vb: GetDevice(Integer)
+- uid: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDefaultDevice
+  commentId: M:Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDefaultDevice
+  id: GetDefaultDevice
+  parent: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager
+  langs:
+  - csharp
+  - vb
+  name: GetDefaultDevice()
+  nameWithType: IDeviceManager.GetDefaultDevice()
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDefaultDevice()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/IDeviceManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetDefaultDevice
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/IDeviceManager.cs
+    startLine: 47
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: >-
+    Gets the default device for computation.
+
+    This is typically the most capable device available, or the device
+
+    designated as the primary compute device by the system or backend provider.
+  example: []
+  syntax:
+    content: IComputeDevice GetDefaultDevice()
+    return:
+      type: Orleans.GpuBridge.Abstractions.Providers.IComputeDevice
+      description: The default compute device for the system.
+    content.vb: Function GetDefaultDevice() As IComputeDevice
+  overload: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDefaultDevice*
+- uid: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.SelectDevice(Orleans.GpuBridge.Abstractions.Models.DeviceSelectionCriteria)
+  commentId: M:Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.SelectDevice(Orleans.GpuBridge.Abstractions.Models.DeviceSelectionCriteria)
+  id: SelectDevice(Orleans.GpuBridge.Abstractions.Models.DeviceSelectionCriteria)
+  parent: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager
+  langs:
+  - csharp
+  - vb
+  name: SelectDevice(DeviceSelectionCriteria)
+  nameWithType: IDeviceManager.SelectDevice(DeviceSelectionCriteria)
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.SelectDevice(Orleans.GpuBridge.Abstractions.Models.DeviceSelectionCriteria)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/IDeviceManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: SelectDevice
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/IDeviceManager.cs
+    startLine: 56
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: >-
+    Selects the best device based on the specified requirements and preferences.
+
+    This method evaluates all available devices against the provided criteria
+
+    and returns the device that best matches the requirements.
+  example: []
+  syntax:
+    content: IComputeDevice SelectDevice(DeviceSelectionCriteria criteria)
+    parameters:
+    - id: criteria
+      type: Orleans.GpuBridge.Abstractions.Models.DeviceSelectionCriteria
+      description: The selection criteria and preferences for device selection.
+    return:
+      type: Orleans.GpuBridge.Abstractions.Providers.IComputeDevice
+      description: The device that best matches the specified criteria.
+    content.vb: Function SelectDevice(criteria As DeviceSelectionCriteria) As IComputeDevice
+  overload: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.SelectDevice*
+- uid: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.CreateContextAsync(Orleans.GpuBridge.Abstractions.Providers.IComputeDevice,Orleans.GpuBridge.Abstractions.Models.ContextOptions,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.CreateContextAsync(Orleans.GpuBridge.Abstractions.Providers.IComputeDevice,Orleans.GpuBridge.Abstractions.Models.ContextOptions,System.Threading.CancellationToken)
+  id: CreateContextAsync(Orleans.GpuBridge.Abstractions.Providers.IComputeDevice,Orleans.GpuBridge.Abstractions.Models.ContextOptions,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager
+  langs:
+  - csharp
+  - vb
+  name: CreateContextAsync(IComputeDevice, ContextOptions, CancellationToken)
+  nameWithType: IDeviceManager.CreateContextAsync(IComputeDevice, ContextOptions, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.CreateContextAsync(Orleans.GpuBridge.Abstractions.Providers.IComputeDevice, Orleans.GpuBridge.Abstractions.Models.ContextOptions, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/IDeviceManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CreateContextAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/IDeviceManager.cs
+    startLine: 67
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: >-
+    Creates a compute context on the specified device.
+
+    A compute context represents an execution environment where kernels can be
+
+    compiled, loaded, and executed. Multiple contexts can exist on the same device.
+  example: []
+  syntax:
+    content: Task<IComputeContext> CreateContextAsync(IComputeDevice device, ContextOptions options, CancellationToken cancellationToken = default)
+    parameters:
+    - id: device
+      type: Orleans.GpuBridge.Abstractions.Providers.IComputeDevice
+      description: The device on which to create the context.
+    - id: options
+      type: Orleans.GpuBridge.Abstractions.Models.ContextOptions
+      description: Configuration options for the context creation.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Token to cancel the context creation operation.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Providers.IComputeContext}
+      description: A task that completes with the created compute context.
+    content.vb: Function CreateContextAsync(device As IComputeDevice, options As ContextOptions, cancellationToken As CancellationToken = Nothing) As Task(Of IComputeContext)
+  overload: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.CreateContextAsync*
+- uid: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDeviceMetricsAsync(Orleans.GpuBridge.Abstractions.Providers.IComputeDevice,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDeviceMetricsAsync(Orleans.GpuBridge.Abstractions.Providers.IComputeDevice,System.Threading.CancellationToken)
+  id: GetDeviceMetricsAsync(Orleans.GpuBridge.Abstractions.Providers.IComputeDevice,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager
+  langs:
+  - csharp
+  - vb
+  name: GetDeviceMetricsAsync(IComputeDevice, CancellationToken)
+  nameWithType: IDeviceManager.GetDeviceMetricsAsync(IComputeDevice, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDeviceMetricsAsync(Orleans.GpuBridge.Abstractions.Providers.IComputeDevice, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/IDeviceManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetDeviceMetricsAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/IDeviceManager.cs
+    startLine: 80
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: >-
+    Gets current utilization and performance metrics for the specified device.
+
+    This information can be used for monitoring, load balancing, and performance
+
+    optimization decisions.
+  example: []
+  syntax:
+    content: Task<DeviceMetrics> GetDeviceMetricsAsync(IComputeDevice device, CancellationToken cancellationToken = default)
+    parameters:
+    - id: device
+      type: Orleans.GpuBridge.Abstractions.Providers.IComputeDevice
+      description: The device for which to retrieve metrics.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Token to cancel the metrics retrieval operation.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Models.DeviceMetrics}
+      description: A task that completes with the current device metrics.
+    content.vb: Function GetDeviceMetricsAsync(device As IComputeDevice, cancellationToken As CancellationToken = Nothing) As Task(Of DeviceMetrics)
+  overload: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDeviceMetricsAsync*
+- uid: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.ResetDeviceAsync(Orleans.GpuBridge.Abstractions.Providers.IComputeDevice,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.ResetDeviceAsync(Orleans.GpuBridge.Abstractions.Providers.IComputeDevice,System.Threading.CancellationToken)
+  id: ResetDeviceAsync(Orleans.GpuBridge.Abstractions.Providers.IComputeDevice,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager
+  langs:
+  - csharp
+  - vb
+  name: ResetDeviceAsync(IComputeDevice, CancellationToken)
+  nameWithType: IDeviceManager.ResetDeviceAsync(IComputeDevice, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.ResetDeviceAsync(Orleans.GpuBridge.Abstractions.Providers.IComputeDevice, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/IDeviceManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ResetDeviceAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/IDeviceManager.cs
+    startLine: 93
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: >-
+    Resets the specified device, clearing its memory and resetting its state.
+
+    This operation will invalidate all existing contexts and resources associated
+
+    with the device. Use this method to recover from error conditions or to
+
+    ensure a clean state for new operations.
+  example: []
+  syntax:
+    content: Task ResetDeviceAsync(IComputeDevice device, CancellationToken cancellationToken = default)
+    parameters:
+    - id: device
+      type: Orleans.GpuBridge.Abstractions.Providers.IComputeDevice
+      description: The device to reset.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Token to cancel the reset operation.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task that completes when the device has been reset.
+    content.vb: Function ResetDeviceAsync(device As IComputeDevice, cancellationToken As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.ResetDeviceAsync*
+references:
+- uid: Orleans.GpuBridge.Abstractions.Providers
+  commentId: N:Orleans.GpuBridge.Abstractions.Providers
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Providers
+  nameWithType: Orleans.GpuBridge.Abstractions.Providers
+  fullName: Orleans.GpuBridge.Abstractions.Providers
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Providers
+    name: Providers
+    href: Orleans.GpuBridge.Abstractions.Providers.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Providers
+    name: Providers
+    href: Orleans.GpuBridge.Abstractions.Providers.html
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.InitializeAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.InitializeAsync
+  href: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.html#Orleans_GpuBridge_Abstractions_Providers_IDeviceManager_InitializeAsync_System_Threading_CancellationToken_
+  name: InitializeAsync
+  nameWithType: IDeviceManager.InitializeAsync
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.InitializeAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDevices*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDevices
+  href: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.html#Orleans_GpuBridge_Abstractions_Providers_IDeviceManager_GetDevices
+  name: GetDevices
+  nameWithType: IDeviceManager.GetDevices
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDevices
+- uid: System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Providers.IComputeDevice}
+  commentId: T:System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Providers.IComputeDevice}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<IComputeDevice>
+  nameWithType: IReadOnlyList<IComputeDevice>
+  fullName: System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Abstractions.Providers.IComputeDevice>
+  nameWithType.vb: IReadOnlyList(Of IComputeDevice)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Abstractions.Providers.IComputeDevice)
+  name.vb: IReadOnlyList(Of IComputeDevice)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Providers.IComputeDevice
+    name: IComputeDevice
+    href: Orleans.GpuBridge.Abstractions.Providers.IComputeDevice.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Providers.IComputeDevice
+    name: IComputeDevice
+    href: Orleans.GpuBridge.Abstractions.Providers.IComputeDevice.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDevice*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDevice
+  href: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.html#Orleans_GpuBridge_Abstractions_Providers_IDeviceManager_GetDevice_System_Int32_
+  name: GetDevice
+  nameWithType: IDeviceManager.GetDevice
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDevice
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Abstractions.Providers.IComputeDevice
+  commentId: T:Orleans.GpuBridge.Abstractions.Providers.IComputeDevice
+  parent: Orleans.GpuBridge.Abstractions.Providers
+  href: Orleans.GpuBridge.Abstractions.Providers.IComputeDevice.html
+  name: IComputeDevice
+  nameWithType: IComputeDevice
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IComputeDevice
+- uid: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDefaultDevice*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDefaultDevice
+  href: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.html#Orleans_GpuBridge_Abstractions_Providers_IDeviceManager_GetDefaultDevice
+  name: GetDefaultDevice
+  nameWithType: IDeviceManager.GetDefaultDevice
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDefaultDevice
+- uid: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.SelectDevice*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.SelectDevice
+  href: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.html#Orleans_GpuBridge_Abstractions_Providers_IDeviceManager_SelectDevice_Orleans_GpuBridge_Abstractions_Models_DeviceSelectionCriteria_
+  name: SelectDevice
+  nameWithType: IDeviceManager.SelectDevice
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.SelectDevice
+- uid: Orleans.GpuBridge.Abstractions.Models.DeviceSelectionCriteria
+  commentId: T:Orleans.GpuBridge.Abstractions.Models.DeviceSelectionCriteria
+  parent: Orleans.GpuBridge.Abstractions.Models
+  href: Orleans.GpuBridge.Abstractions.Models.DeviceSelectionCriteria.html
+  name: DeviceSelectionCriteria
+  nameWithType: DeviceSelectionCriteria
+  fullName: Orleans.GpuBridge.Abstractions.Models.DeviceSelectionCriteria
+- uid: Orleans.GpuBridge.Abstractions.Models
+  commentId: N:Orleans.GpuBridge.Abstractions.Models
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Models
+  nameWithType: Orleans.GpuBridge.Abstractions.Models
+  fullName: Orleans.GpuBridge.Abstractions.Models
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Models
+    name: Models
+    href: Orleans.GpuBridge.Abstractions.Models.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Models
+    name: Models
+    href: Orleans.GpuBridge.Abstractions.Models.html
+- uid: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.CreateContextAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.CreateContextAsync
+  href: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.html#Orleans_GpuBridge_Abstractions_Providers_IDeviceManager_CreateContextAsync_Orleans_GpuBridge_Abstractions_Providers_IComputeDevice_Orleans_GpuBridge_Abstractions_Models_ContextOptions_System_Threading_CancellationToken_
+  name: CreateContextAsync
+  nameWithType: IDeviceManager.CreateContextAsync
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.CreateContextAsync
+- uid: Orleans.GpuBridge.Abstractions.Models.ContextOptions
+  commentId: T:Orleans.GpuBridge.Abstractions.Models.ContextOptions
+  parent: Orleans.GpuBridge.Abstractions.Models
+  href: Orleans.GpuBridge.Abstractions.Models.ContextOptions.html
+  name: ContextOptions
+  nameWithType: ContextOptions
+  fullName: Orleans.GpuBridge.Abstractions.Models.ContextOptions
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Providers.IComputeContext}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Providers.IComputeContext}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IComputeContext>
+  nameWithType: Task<IComputeContext>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Providers.IComputeContext>
+  nameWithType.vb: Task(Of IComputeContext)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Providers.IComputeContext)
+  name.vb: Task(Of IComputeContext)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Providers.IComputeContext
+    name: IComputeContext
+    href: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Providers.IComputeContext
+    name: IComputeContext
+    href: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.html
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDeviceMetricsAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDeviceMetricsAsync
+  href: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.html#Orleans_GpuBridge_Abstractions_Providers_IDeviceManager_GetDeviceMetricsAsync_Orleans_GpuBridge_Abstractions_Providers_IComputeDevice_System_Threading_CancellationToken_
+  name: GetDeviceMetricsAsync
+  nameWithType: IDeviceManager.GetDeviceMetricsAsync
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.GetDeviceMetricsAsync
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Models.DeviceMetrics}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Models.DeviceMetrics}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<DeviceMetrics>
+  nameWithType: Task<DeviceMetrics>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Models.DeviceMetrics>
+  nameWithType.vb: Task(Of DeviceMetrics)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Models.DeviceMetrics)
+  name.vb: Task(Of DeviceMetrics)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Models.DeviceMetrics
+    name: DeviceMetrics
+    href: Orleans.GpuBridge.Abstractions.Models.DeviceMetrics.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Models.DeviceMetrics
+    name: DeviceMetrics
+    href: Orleans.GpuBridge.Abstractions.Models.DeviceMetrics.html
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.ResetDeviceAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.ResetDeviceAsync
+  href: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.html#Orleans_GpuBridge_Abstractions_Providers_IDeviceManager_ResetDeviceAsync_Orleans_GpuBridge_Abstractions_Providers_IComputeDevice_System_Threading_CancellationToken_
+  name: ResetDeviceAsync
+  nameWithType: IDeviceManager.ResetDeviceAsync
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IDeviceManager.ResetDeviceAsync

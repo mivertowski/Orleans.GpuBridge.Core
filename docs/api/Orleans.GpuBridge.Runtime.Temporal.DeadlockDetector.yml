@@ -1,0 +1,1071 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector
+  id: DeadlockDetector
+  parent: Orleans.GpuBridge.Runtime.Temporal
+  children:
+  - Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.#ctor(System.Nullable{System.TimeSpan},Microsoft.Extensions.Logging.ILogger)
+  - Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.DetectDeadlock(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage})
+  - Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.FindDeadlockCycles(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage})
+  - Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.GetStatistics
+  - Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.ResetStatistics
+  - Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.ResolveDeadlock(Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle,Orleans.GpuBridge.Abstractions.Temporal.DeadlockResolutionStrategy)
+  - Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.ToString
+  langs:
+  - csharp
+  - vb
+  name: DeadlockDetector
+  nameWithType: DeadlockDetector
+  fullName: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/DeadlockDetector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DeadlockDetector
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/DeadlockDetector.cs
+    startLine: 36
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Detects and resolves deadlocks in causal message ordering.
+  remarks: >-
+    <p>
+
+    Deadlocks occur when there are circular dependencies in the causal ordering.
+
+    This can happen when:
+
+    - Messages have explicit dependencies that form a cycle
+
+    - Vector clock inconsistencies create impossible orderings
+
+    - Network partitions cause conflicting causal histories
+
+    </p>
+
+    <p>
+
+    Detection algorithm:
+
+    1. Build a wait-for graph from pending messages
+
+    2. Use DFS to find cycles in the wait-for graph
+
+    3. Report all cycles as potential deadlocks
+
+    </p>
+
+    <p>
+
+    Resolution strategies:
+
+    - DropOldest: Drop the message that has waited longest
+
+    - DropNewest: Drop the most recent message in the cycle
+
+    - ForceDelivery: Deliver messages ignoring causal ordering
+
+    - DeterministicVictim: Use message ID for consistent victim selection
+
+    </p>
+  example: []
+  syntax:
+    content: 'public sealed class DeadlockDetector : IDeadlockDetector'
+    content.vb: Public NotInheritable Class DeadlockDetector Implements IDeadlockDetector
+  inheritance:
+  - System.Object
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.#ctor(System.Nullable{System.TimeSpan},Microsoft.Extensions.Logging.ILogger)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.#ctor(System.Nullable{System.TimeSpan},Microsoft.Extensions.Logging.ILogger)
+  id: '#ctor(System.Nullable{System.TimeSpan},Microsoft.Extensions.Logging.ILogger)'
+  parent: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector
+  langs:
+  - csharp
+  - vb
+  name: DeadlockDetector(TimeSpan?, ILogger?)
+  nameWithType: DeadlockDetector.DeadlockDetector(TimeSpan?, ILogger?)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.DeadlockDetector(System.TimeSpan?, Microsoft.Extensions.Logging.ILogger?)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/DeadlockDetector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/DeadlockDetector.cs
+    startLine: 56
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Creates a new deadlock detector.
+  example: []
+  syntax:
+    content: public DeadlockDetector(TimeSpan? messageAgeThreshold = null, ILogger? logger = null)
+    parameters:
+    - id: messageAgeThreshold
+      type: System.Nullable{System.TimeSpan}
+      description: Age threshold for severity calculation
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger
+      description: Optional logger
+    content.vb: Public Sub New(messageAgeThreshold As TimeSpan? = Nothing, logger As ILogger = Nothing)
+  overload: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.#ctor*
+  nameWithType.vb: DeadlockDetector.New(TimeSpan?, ILogger)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.New(System.TimeSpan?, Microsoft.Extensions.Logging.ILogger)
+  name.vb: New(TimeSpan?, ILogger)
+- uid: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.DetectDeadlock(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage})
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.DetectDeadlock(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage})
+  id: DetectDeadlock(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage})
+  parent: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector
+  langs:
+  - csharp
+  - vb
+  name: DetectDeadlock(IReadOnlyList<IPendingMessage>)
+  nameWithType: DeadlockDetector.DetectDeadlock(IReadOnlyList<IPendingMessage>)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.DetectDeadlock(System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage>)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/DeadlockDetector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DetectDeadlock
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/DeadlockDetector.cs
+    startLine: 63
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Detects if a deadlock exists in the given message queue.
+  example: []
+  syntax:
+    content: public DeadlockResult DetectDeadlock(IReadOnlyList<IPendingMessage> pendingMessages)
+    parameters:
+    - id: pendingMessages
+      type: System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage}
+      description: Messages awaiting delivery
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.DeadlockResult
+      description: Deadlock detection result
+    content.vb: Public Function DetectDeadlock(pendingMessages As IReadOnlyList(Of IPendingMessage)) As DeadlockResult
+  overload: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.DetectDeadlock*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.DetectDeadlock(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage})
+  nameWithType.vb: DeadlockDetector.DetectDeadlock(IReadOnlyList(Of IPendingMessage))
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.DetectDeadlock(System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage))
+  name.vb: DetectDeadlock(IReadOnlyList(Of IPendingMessage))
+- uid: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.FindDeadlockCycles(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage})
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.FindDeadlockCycles(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage})
+  id: FindDeadlockCycles(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage})
+  parent: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector
+  langs:
+  - csharp
+  - vb
+  name: FindDeadlockCycles(IReadOnlyList<IPendingMessage>)
+  nameWithType: DeadlockDetector.FindDeadlockCycles(IReadOnlyList<IPendingMessage>)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.FindDeadlockCycles(System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage>)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/DeadlockDetector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: FindDeadlockCycles
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/DeadlockDetector.cs
+    startLine: 100
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Finds all messages involved in a deadlock cycle.
+  example: []
+  syntax:
+    content: public IReadOnlyList<DeadlockCycle> FindDeadlockCycles(IReadOnlyList<IPendingMessage> pendingMessages)
+    parameters:
+    - id: pendingMessages
+      type: System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage}
+      description: Messages awaiting delivery
+    return:
+      type: System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle}
+      description: Messages involved in deadlock cycles
+    content.vb: Public Function FindDeadlockCycles(pendingMessages As IReadOnlyList(Of IPendingMessage)) As IReadOnlyList(Of DeadlockCycle)
+  overload: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.FindDeadlockCycles*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.FindDeadlockCycles(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage})
+  nameWithType.vb: DeadlockDetector.FindDeadlockCycles(IReadOnlyList(Of IPendingMessage))
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.FindDeadlockCycles(System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage))
+  name.vb: FindDeadlockCycles(IReadOnlyList(Of IPendingMessage))
+- uid: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.ResolveDeadlock(Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle,Orleans.GpuBridge.Abstractions.Temporal.DeadlockResolutionStrategy)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.ResolveDeadlock(Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle,Orleans.GpuBridge.Abstractions.Temporal.DeadlockResolutionStrategy)
+  id: ResolveDeadlock(Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle,Orleans.GpuBridge.Abstractions.Temporal.DeadlockResolutionStrategy)
+  parent: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector
+  langs:
+  - csharp
+  - vb
+  name: ResolveDeadlock(DeadlockCycle, DeadlockResolutionStrategy)
+  nameWithType: DeadlockDetector.ResolveDeadlock(DeadlockCycle, DeadlockResolutionStrategy)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.ResolveDeadlock(Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle, Orleans.GpuBridge.Abstractions.Temporal.DeadlockResolutionStrategy)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/DeadlockDetector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ResolveDeadlock
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/DeadlockDetector.cs
+    startLine: 112
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Resolves a deadlock using the specified strategy.
+  example: []
+  syntax:
+    content: public DeadlockResolution ResolveDeadlock(DeadlockCycle cycle, DeadlockResolutionStrategy strategy)
+    parameters:
+    - id: cycle
+      type: Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle
+      description: Deadlock cycle to resolve
+    - id: strategy
+      type: Orleans.GpuBridge.Abstractions.Temporal.DeadlockResolutionStrategy
+      description: Resolution strategy
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.DeadlockResolution
+      description: Resolution result
+    content.vb: Public Function ResolveDeadlock(cycle As DeadlockCycle, strategy As DeadlockResolutionStrategy) As DeadlockResolution
+  overload: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.ResolveDeadlock*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.ResolveDeadlock(Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle,Orleans.GpuBridge.Abstractions.Temporal.DeadlockResolutionStrategy)
+- uid: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.GetStatistics
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.GetStatistics
+  id: GetStatistics
+  parent: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector
+  langs:
+  - csharp
+  - vb
+  name: GetStatistics()
+  nameWithType: DeadlockDetector.GetStatistics()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.GetStatistics()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/DeadlockDetector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetStatistics
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/DeadlockDetector.cs
+    startLine: 188
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Gets deadlock statistics.
+  example: []
+  syntax:
+    content: public DeadlockStatistics GetStatistics()
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.DeadlockStatistics
+    content.vb: Public Function GetStatistics() As DeadlockStatistics
+  overload: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.GetStatistics*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.GetStatistics
+- uid: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.ResetStatistics
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.ResetStatistics
+  id: ResetStatistics
+  parent: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector
+  langs:
+  - csharp
+  - vb
+  name: ResetStatistics()
+  nameWithType: DeadlockDetector.ResetStatistics()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.ResetStatistics()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/DeadlockDetector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ResetStatistics
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/DeadlockDetector.cs
+    startLine: 490
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Resets statistics.
+  example: []
+  syntax:
+    content: public void ResetStatistics()
+    content.vb: Public Sub ResetStatistics()
+  overload: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.ResetStatistics*
+- uid: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.ToString
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.ToString
+  id: ToString
+  parent: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: DeadlockDetector.ToString()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.ToString()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/DeadlockDetector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ToString
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/DeadlockDetector.cs
+    startLine: 503
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Returns a string that represents the current object.
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+      description: A string that represents the current object.
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.Object.ToString
+  overload: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.ToString*
+references:
+- uid: Orleans.GpuBridge.Runtime.Temporal
+  commentId: N:Orleans.GpuBridge.Runtime.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Temporal
+  nameWithType: Orleans.GpuBridge.Runtime.Temporal
+  fullName: Orleans.GpuBridge.Runtime.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.html
+  name: IDeadlockDetector
+  nameWithType: IDeadlockDetector
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Abstractions.Temporal
+  commentId: N:Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Temporal
+  nameWithType: Orleans.GpuBridge.Abstractions.Temporal
+  fullName: Orleans.GpuBridge.Abstractions.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+- uid: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.#ctor
+  href: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.html#Orleans_GpuBridge_Runtime_Temporal_DeadlockDetector__ctor_System_Nullable_System_TimeSpan__Microsoft_Extensions_Logging_ILogger_
+  name: DeadlockDetector
+  nameWithType: DeadlockDetector.DeadlockDetector
+  fullName: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.DeadlockDetector
+  nameWithType.vb: DeadlockDetector.New
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.New
+  name.vb: New
+- uid: System.Nullable{System.TimeSpan}
+  commentId: T:System.Nullable{System.TimeSpan}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan?
+  nameWithType: TimeSpan?
+  fullName: System.TimeSpan?
+  spec.csharp:
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+  spec.vb:
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+- uid: Microsoft.Extensions.Logging.ILogger
+  commentId: T:Microsoft.Extensions.Logging.ILogger
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  name: ILogger
+  nameWithType: ILogger
+  fullName: Microsoft.Extensions.Logging.ILogger
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.DetectDeadlock*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.DetectDeadlock
+  href: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.html#Orleans_GpuBridge_Runtime_Temporal_DeadlockDetector_DetectDeadlock_System_Collections_Generic_IReadOnlyList_Orleans_GpuBridge_Abstractions_Temporal_IPendingMessage__
+  name: DetectDeadlock
+  nameWithType: DeadlockDetector.DetectDeadlock
+  fullName: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.DetectDeadlock
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.DetectDeadlock(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage})
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.DetectDeadlock(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage})
+  parent: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: DetectDeadlock(IReadOnlyList<IPendingMessage>)
+  nameWithType: IDeadlockDetector.DetectDeadlock(IReadOnlyList<IPendingMessage>)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.DetectDeadlock(System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage>)
+  nameWithType.vb: IDeadlockDetector.DetectDeadlock(IReadOnlyList(Of IPendingMessage))
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.DetectDeadlock(System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage))
+  name.vb: DetectDeadlock(IReadOnlyList(Of IPendingMessage))
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.DetectDeadlock(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage})
+    name: DetectDeadlock
+  - name: (
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage
+    name: IPendingMessage
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.DetectDeadlock(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage})
+    name: DetectDeadlock
+  - name: (
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage
+    name: IPendingMessage
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage}
+  commentId: T:System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<IPendingMessage>
+  nameWithType: IReadOnlyList<IPendingMessage>
+  fullName: System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage>
+  nameWithType.vb: IReadOnlyList(Of IPendingMessage)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage)
+  name.vb: IReadOnlyList(Of IPendingMessage)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage
+    name: IPendingMessage
+    href: Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage
+    name: IPendingMessage
+    href: Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage.html
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.DeadlockResult
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.DeadlockResult
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.DeadlockResult.html
+  name: DeadlockResult
+  nameWithType: DeadlockResult
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.DeadlockResult
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.FindDeadlockCycles*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.FindDeadlockCycles
+  href: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.html#Orleans_GpuBridge_Runtime_Temporal_DeadlockDetector_FindDeadlockCycles_System_Collections_Generic_IReadOnlyList_Orleans_GpuBridge_Abstractions_Temporal_IPendingMessage__
+  name: FindDeadlockCycles
+  nameWithType: DeadlockDetector.FindDeadlockCycles
+  fullName: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.FindDeadlockCycles
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.FindDeadlockCycles(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage})
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.FindDeadlockCycles(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage})
+  parent: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: FindDeadlockCycles(IReadOnlyList<IPendingMessage>)
+  nameWithType: IDeadlockDetector.FindDeadlockCycles(IReadOnlyList<IPendingMessage>)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.FindDeadlockCycles(System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage>)
+  nameWithType.vb: IDeadlockDetector.FindDeadlockCycles(IReadOnlyList(Of IPendingMessage))
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.FindDeadlockCycles(System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage))
+  name.vb: FindDeadlockCycles(IReadOnlyList(Of IPendingMessage))
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.FindDeadlockCycles(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage})
+    name: FindDeadlockCycles
+  - name: (
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage
+    name: IPendingMessage
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.FindDeadlockCycles(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage})
+    name: FindDeadlockCycles
+  - name: (
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IPendingMessage
+    name: IPendingMessage
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle}
+  commentId: T:System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<DeadlockCycle>
+  nameWithType: IReadOnlyList<DeadlockCycle>
+  fullName: System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle>
+  nameWithType.vb: IReadOnlyList(Of DeadlockCycle)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle)
+  name.vb: IReadOnlyList(Of DeadlockCycle)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle
+    name: DeadlockCycle
+    href: Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle
+    name: DeadlockCycle
+    href: Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle.html
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.ResolveDeadlock*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.ResolveDeadlock
+  href: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.html#Orleans_GpuBridge_Runtime_Temporal_DeadlockDetector_ResolveDeadlock_Orleans_GpuBridge_Abstractions_Temporal_DeadlockCycle_Orleans_GpuBridge_Abstractions_Temporal_DeadlockResolutionStrategy_
+  name: ResolveDeadlock
+  nameWithType: DeadlockDetector.ResolveDeadlock
+  fullName: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.ResolveDeadlock
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.ResolveDeadlock(Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle,Orleans.GpuBridge.Abstractions.Temporal.DeadlockResolutionStrategy)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.ResolveDeadlock(Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle,Orleans.GpuBridge.Abstractions.Temporal.DeadlockResolutionStrategy)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector
+  name: ResolveDeadlock(DeadlockCycle, DeadlockResolutionStrategy)
+  nameWithType: IDeadlockDetector.ResolveDeadlock(DeadlockCycle, DeadlockResolutionStrategy)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.ResolveDeadlock(Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle, Orleans.GpuBridge.Abstractions.Temporal.DeadlockResolutionStrategy)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.ResolveDeadlock(Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle,Orleans.GpuBridge.Abstractions.Temporal.DeadlockResolutionStrategy)
+    name: ResolveDeadlock
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle
+    name: DeadlockCycle
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.DeadlockResolutionStrategy
+    name: DeadlockResolutionStrategy
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.ResolveDeadlock(Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle,Orleans.GpuBridge.Abstractions.Temporal.DeadlockResolutionStrategy)
+    name: ResolveDeadlock
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle
+    name: DeadlockCycle
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.DeadlockResolutionStrategy
+    name: DeadlockResolutionStrategy
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle.html
+  name: DeadlockCycle
+  nameWithType: DeadlockCycle
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.DeadlockCycle
+- uid: Orleans.GpuBridge.Abstractions.Temporal.DeadlockResolutionStrategy
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.DeadlockResolutionStrategy
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.DeadlockResolutionStrategy.html
+  name: DeadlockResolutionStrategy
+  nameWithType: DeadlockResolutionStrategy
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.DeadlockResolutionStrategy
+- uid: Orleans.GpuBridge.Abstractions.Temporal.DeadlockResolution
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.DeadlockResolution
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.DeadlockResolution.html
+  name: DeadlockResolution
+  nameWithType: DeadlockResolution
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.DeadlockResolution
+- uid: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.GetStatistics*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.GetStatistics
+  href: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.html#Orleans_GpuBridge_Runtime_Temporal_DeadlockDetector_GetStatistics
+  name: GetStatistics
+  nameWithType: DeadlockDetector.GetStatistics
+  fullName: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.GetStatistics
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.GetStatistics
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.GetStatistics
+  parent: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector
+  name: GetStatistics()
+  nameWithType: IDeadlockDetector.GetStatistics()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.GetStatistics()
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.GetStatistics
+    name: GetStatistics
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IDeadlockDetector.GetStatistics
+    name: GetStatistics
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.DeadlockStatistics
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.DeadlockStatistics
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.DeadlockStatistics.html
+  name: DeadlockStatistics
+  nameWithType: DeadlockStatistics
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.DeadlockStatistics
+- uid: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.ResetStatistics*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.ResetStatistics
+  href: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.html#Orleans_GpuBridge_Runtime_Temporal_DeadlockDetector_ResetStatistics
+  name: ResetStatistics
+  nameWithType: DeadlockDetector.ResetStatistics
+  fullName: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.ResetStatistics
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.ToString*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.ToString
+  href: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.html#Orleans_GpuBridge_Runtime_Temporal_DeadlockDetector_ToString
+  name: ToString
+  nameWithType: DeadlockDetector.ToString
+  fullName: Orleans.GpuBridge.Runtime.Temporal.DeadlockDetector.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

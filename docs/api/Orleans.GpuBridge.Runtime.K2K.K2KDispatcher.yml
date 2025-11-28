@@ -1,0 +1,1990 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher
+  commentId: T:Orleans.GpuBridge.Runtime.K2K.K2KDispatcher
+  id: K2KDispatcher
+  parent: Orleans.GpuBridge.Runtime.K2K
+  children:
+  - Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.K2K.K2KDispatcher})
+  - Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.BroadcastAsync``1(System.Int64,System.String,System.String,System.ReadOnlySpan{System.Int64},``0,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.DispatchAsync``1(System.Int64,System.String,System.String,System.Int64,``0,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.DispatchWithResponseAsync``2(System.Int64,System.String,System.String,System.Int64,``0,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.Dispose
+  - Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetActorIdsByType(System.String)
+  - Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetHashRoutedTarget(System.String,System.Int32)
+  - Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetNextInRing(System.String,System.Int64)
+  - Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetTargetQueuePointer(System.String,System.Int64)
+  - Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.RegisterQueue(System.String,System.Int64,System.IntPtr)
+  - Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.UnregisterQueue(System.String,System.Int64)
+  langs:
+  - csharp
+  - vb
+  name: K2KDispatcher
+  nameWithType: K2KDispatcher
+  fullName: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/K2KDispatcher.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: K2KDispatcher
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/K2KDispatcher.cs
+    startLine: 18
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: >-
+    Implementation of K2K dispatcher for GPU-to-GPU message passing.
+
+    This enables sub-microsecond latency communication between GPU-resident actors.
+  example: []
+  syntax:
+    content: 'public sealed class K2KDispatcher : IK2KDispatcher, IDisposable'
+    content.vb: Public NotInheritable Class K2KDispatcher Implements IK2KDispatcher, IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.K2K.K2KDispatcher})
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.K2K.K2KDispatcher})
+  id: '#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.K2K.K2KDispatcher})'
+  parent: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher
+  langs:
+  - csharp
+  - vb
+  name: K2KDispatcher(ILogger<K2KDispatcher>)
+  nameWithType: K2KDispatcher.K2KDispatcher(ILogger<K2KDispatcher>)
+  fullName: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.K2KDispatcher(Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.K2K.K2KDispatcher>)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/K2KDispatcher.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/K2KDispatcher.cs
+    startLine: 29
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Initializes a new instance of the K2K dispatcher.
+  example: []
+  syntax:
+    content: public K2KDispatcher(ILogger<K2KDispatcher> logger)
+    parameters:
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.K2K.K2KDispatcher}
+    content.vb: Public Sub New(logger As ILogger(Of K2KDispatcher))
+  overload: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.#ctor*
+  nameWithType.vb: K2KDispatcher.New(ILogger(Of K2KDispatcher))
+  fullName.vb: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.New(Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.K2K.K2KDispatcher))
+  name.vb: New(ILogger(Of K2KDispatcher))
+- uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.DispatchAsync``1(System.Int64,System.String,System.String,System.Int64,``0,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.DispatchAsync``1(System.Int64,System.String,System.String,System.Int64,``0,System.Threading.CancellationToken)
+  id: DispatchAsync``1(System.Int64,System.String,System.String,System.Int64,``0,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher
+  langs:
+  - csharp
+  - vb
+  name: DispatchAsync<TMessage>(long, string, string, long, TMessage, CancellationToken)
+  nameWithType: K2KDispatcher.DispatchAsync<TMessage>(long, string, string, long, TMessage, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.DispatchAsync<TMessage>(long, string, string, long, TMessage, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/K2KDispatcher.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DispatchAsync
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/K2KDispatcher.cs
+    startLine: 38
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Dispatches a message from one kernel to another using GPU-native messaging.
+  example: []
+  syntax:
+    content: 'public ValueTask DispatchAsync<TMessage>(long sourceActorId, string targetActorType, string targetMethod, long targetActorId, TMessage message, CancellationToken cancellationToken = default) where TMessage : unmanaged'
+    parameters:
+    - id: sourceActorId
+      type: System.Int64
+      description: The source actor identifier.
+    - id: targetActorType
+      type: System.String
+      description: The target actor type name.
+    - id: targetMethod
+      type: System.String
+      description: The target method name.
+    - id: targetActorId
+      type: System.Int64
+      description: The target actor identifier.
+    - id: message
+      type: '{TMessage}'
+      description: The message to dispatch.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    typeParameters:
+    - id: TMessage
+      description: The blittable message type.
+    return:
+      type: System.Threading.Tasks.ValueTask
+      description: A task representing the dispatch operation.
+    content.vb: Public Function DispatchAsync(Of TMessage As Structure)(sourceActorId As Long, targetActorType As String, targetMethod As String, targetActorId As Long, message As TMessage, cancellationToken As CancellationToken = Nothing) As ValueTask
+  overload: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.DispatchAsync*
+  implements:
+  - Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchAsync``1(System.Int64,System.String,System.String,System.Int64,{TMessage},System.Threading.CancellationToken)
+  nameWithType.vb: K2KDispatcher.DispatchAsync(Of TMessage)(Long, String, String, Long, TMessage, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.DispatchAsync(Of TMessage)(Long, String, String, Long, TMessage, System.Threading.CancellationToken)
+  name.vb: DispatchAsync(Of TMessage)(Long, String, String, Long, TMessage, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.DispatchWithResponseAsync``2(System.Int64,System.String,System.String,System.Int64,``0,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.DispatchWithResponseAsync``2(System.Int64,System.String,System.String,System.Int64,``0,System.Threading.CancellationToken)
+  id: DispatchWithResponseAsync``2(System.Int64,System.String,System.String,System.Int64,``0,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher
+  langs:
+  - csharp
+  - vb
+  name: DispatchWithResponseAsync<TRequest, TResponse>(long, string, string, long, TRequest, CancellationToken)
+  nameWithType: K2KDispatcher.DispatchWithResponseAsync<TRequest, TResponse>(long, string, string, long, TRequest, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.DispatchWithResponseAsync<TRequest, TResponse>(long, string, string, long, TRequest, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/K2KDispatcher.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DispatchWithResponseAsync
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/K2KDispatcher.cs
+    startLine: 69
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Dispatches a message and awaits a response (request-response pattern).
+  example: []
+  syntax:
+    content: 'public ValueTask<TResponse> DispatchWithResponseAsync<TRequest, TResponse>(long sourceActorId, string targetActorType, string targetMethod, long targetActorId, TRequest request, CancellationToken cancellationToken = default) where TRequest : unmanaged where TResponse : unmanaged'
+    parameters:
+    - id: sourceActorId
+      type: System.Int64
+      description: The source actor identifier.
+    - id: targetActorType
+      type: System.String
+      description: The target actor type name.
+    - id: targetMethod
+      type: System.String
+      description: The target method name.
+    - id: targetActorId
+      type: System.Int64
+      description: The target actor identifier.
+    - id: request
+      type: '{TRequest}'
+      description: The request message.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    typeParameters:
+    - id: TRequest
+      description: The blittable request type.
+    - id: TResponse
+      description: The blittable response type.
+    return:
+      type: System.Threading.Tasks.ValueTask{{TResponse}}
+      description: The response from the target kernel.
+    content.vb: Public Function DispatchWithResponseAsync(Of TRequest As Structure, TResponse As Structure)(sourceActorId As Long, targetActorType As String, targetMethod As String, targetActorId As Long, request As TRequest, cancellationToken As CancellationToken = Nothing) As ValueTask(Of TResponse)
+  overload: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.DispatchWithResponseAsync*
+  implements:
+  - Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchWithResponseAsync``2(System.Int64,System.String,System.String,System.Int64,{TRequest},System.Threading.CancellationToken)
+  nameWithType.vb: K2KDispatcher.DispatchWithResponseAsync(Of TRequest, TResponse)(Long, String, String, Long, TRequest, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.DispatchWithResponseAsync(Of TRequest, TResponse)(Long, String, String, Long, TRequest, System.Threading.CancellationToken)
+  name.vb: DispatchWithResponseAsync(Of TRequest, TResponse)(Long, String, String, Long, TRequest, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.BroadcastAsync``1(System.Int64,System.String,System.String,System.ReadOnlySpan{System.Int64},``0,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.BroadcastAsync``1(System.Int64,System.String,System.String,System.ReadOnlySpan{System.Int64},``0,System.Threading.CancellationToken)
+  id: BroadcastAsync``1(System.Int64,System.String,System.String,System.ReadOnlySpan{System.Int64},``0,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher
+  langs:
+  - csharp
+  - vb
+  name: BroadcastAsync<TMessage>(long, string, string, ReadOnlySpan<long>, TMessage, CancellationToken)
+  nameWithType: K2KDispatcher.BroadcastAsync<TMessage>(long, string, string, ReadOnlySpan<long>, TMessage, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.BroadcastAsync<TMessage>(long, string, string, System.ReadOnlySpan<long>, TMessage, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/K2KDispatcher.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: BroadcastAsync
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/K2KDispatcher.cs
+    startLine: 136
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Broadcasts a message to multiple target actors.
+  example: []
+  syntax:
+    content: 'public ValueTask BroadcastAsync<TMessage>(long sourceActorId, string targetActorType, string targetMethod, ReadOnlySpan<long> targetActorIds, TMessage message, CancellationToken cancellationToken = default) where TMessage : unmanaged'
+    parameters:
+    - id: sourceActorId
+      type: System.Int64
+      description: The source actor identifier.
+    - id: targetActorType
+      type: System.String
+      description: The target actor type name.
+    - id: targetMethod
+      type: System.String
+      description: The target method name.
+    - id: targetActorIds
+      type: System.ReadOnlySpan{System.Int64}
+      description: The target actor identifiers.
+    - id: message
+      type: '{TMessage}'
+      description: The message to broadcast.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    typeParameters:
+    - id: TMessage
+      description: The blittable message type.
+    return:
+      type: System.Threading.Tasks.ValueTask
+      description: A task representing the broadcast operation.
+    content.vb: Public Function BroadcastAsync(Of TMessage As Structure)(sourceActorId As Long, targetActorType As String, targetMethod As String, targetActorIds As ReadOnlySpan(Of Long), message As TMessage, cancellationToken As CancellationToken = Nothing) As ValueTask
+  overload: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.BroadcastAsync*
+  implements:
+  - Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.BroadcastAsync``1(System.Int64,System.String,System.String,System.ReadOnlySpan{System.Int64},{TMessage},System.Threading.CancellationToken)
+  nameWithType.vb: K2KDispatcher.BroadcastAsync(Of TMessage)(Long, String, String, ReadOnlySpan(Of Long), TMessage, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.BroadcastAsync(Of TMessage)(Long, String, String, System.ReadOnlySpan(Of Long), TMessage, System.Threading.CancellationToken)
+  name.vb: BroadcastAsync(Of TMessage)(Long, String, String, ReadOnlySpan(Of Long), TMessage, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetTargetQueuePointer(System.String,System.Int64)
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetTargetQueuePointer(System.String,System.Int64)
+  id: GetTargetQueuePointer(System.String,System.Int64)
+  parent: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher
+  langs:
+  - csharp
+  - vb
+  name: GetTargetQueuePointer(string, long)
+  nameWithType: K2KDispatcher.GetTargetQueuePointer(string, long)
+  fullName: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetTargetQueuePointer(string, long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/K2KDispatcher.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetTargetQueuePointer
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/K2KDispatcher.cs
+    startLine: 167
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Gets the queue pointer for a target actor for direct GPU-level dispatch.
+  example: []
+  syntax:
+    content: public nint GetTargetQueuePointer(string targetActorType, long targetActorId)
+    parameters:
+    - id: targetActorType
+      type: System.String
+      description: The target actor type name.
+    - id: targetActorId
+      type: System.Int64
+      description: The target actor identifier.
+    return:
+      type: System.IntPtr
+      description: The GPU memory pointer to the target's message queue, or IntPtr.Zero if not found.
+    content.vb: Public Function GetTargetQueuePointer(targetActorType As String, targetActorId As Long) As IntPtr
+  overload: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetTargetQueuePointer*
+  implements:
+  - Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.GetTargetQueuePointer(System.String,System.Int64)
+  nameWithType.vb: K2KDispatcher.GetTargetQueuePointer(String, Long)
+  fullName.vb: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetTargetQueuePointer(String, Long)
+  name.vb: GetTargetQueuePointer(String, Long)
+- uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.RegisterQueue(System.String,System.Int64,System.IntPtr)
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.RegisterQueue(System.String,System.Int64,System.IntPtr)
+  id: RegisterQueue(System.String,System.Int64,System.IntPtr)
+  parent: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher
+  langs:
+  - csharp
+  - vb
+  name: RegisterQueue(string, long, nint)
+  nameWithType: K2KDispatcher.RegisterQueue(string, long, nint)
+  fullName: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.RegisterQueue(string, long, nint)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/K2KDispatcher.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RegisterQueue
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/K2KDispatcher.cs
+    startLine: 174
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Registers a local actor's queue for K2K messaging.
+  example: []
+  syntax:
+    content: public void RegisterQueue(string actorType, long actorId, nint queuePointer)
+    parameters:
+    - id: actorType
+      type: System.String
+      description: The actor type name.
+    - id: actorId
+      type: System.Int64
+      description: The actor identifier.
+    - id: queuePointer
+      type: System.IntPtr
+      description: The GPU memory pointer to the actor's message queue.
+    content.vb: Public Sub RegisterQueue(actorType As String, actorId As Long, queuePointer As IntPtr)
+  overload: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.RegisterQueue*
+  implements:
+  - Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.RegisterQueue(System.String,System.Int64,System.IntPtr)
+  nameWithType.vb: K2KDispatcher.RegisterQueue(String, Long, IntPtr)
+  fullName.vb: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.RegisterQueue(String, Long, System.IntPtr)
+  name.vb: RegisterQueue(String, Long, IntPtr)
+- uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.UnregisterQueue(System.String,System.Int64)
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.UnregisterQueue(System.String,System.Int64)
+  id: UnregisterQueue(System.String,System.Int64)
+  parent: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher
+  langs:
+  - csharp
+  - vb
+  name: UnregisterQueue(string, long)
+  nameWithType: K2KDispatcher.UnregisterQueue(string, long)
+  fullName: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.UnregisterQueue(string, long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/K2KDispatcher.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: UnregisterQueue
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/K2KDispatcher.cs
+    startLine: 209
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Unregisters an actor's queue when the actor is deactivated.
+  example: []
+  syntax:
+    content: public void UnregisterQueue(string actorType, long actorId)
+    parameters:
+    - id: actorType
+      type: System.String
+      description: The actor type name.
+    - id: actorId
+      type: System.Int64
+      description: The actor identifier.
+    content.vb: Public Sub UnregisterQueue(actorType As String, actorId As Long)
+  overload: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.UnregisterQueue*
+  implements:
+  - Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.UnregisterQueue(System.String,System.Int64)
+  nameWithType.vb: K2KDispatcher.UnregisterQueue(String, Long)
+  fullName.vb: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.UnregisterQueue(String, Long)
+  name.vb: UnregisterQueue(String, Long)
+- uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetActorIdsByType(System.String)
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetActorIdsByType(System.String)
+  id: GetActorIdsByType(System.String)
+  parent: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher
+  langs:
+  - csharp
+  - vb
+  name: GetActorIdsByType(string)
+  nameWithType: K2KDispatcher.GetActorIdsByType(string)
+  fullName: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetActorIdsByType(string)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/K2KDispatcher.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetActorIdsByType
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/K2KDispatcher.cs
+    startLine: 237
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Gets all registered actor IDs for a given type (for broadcast/ring routing).
+  example: []
+  syntax:
+    content: public ReadOnlySpan<long> GetActorIdsByType(string actorType)
+    parameters:
+    - id: actorType
+      type: System.String
+    return:
+      type: System.ReadOnlySpan{System.Int64}
+    content.vb: Public Function GetActorIdsByType(actorType As String) As ReadOnlySpan(Of Long)
+  overload: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetActorIdsByType*
+  nameWithType.vb: K2KDispatcher.GetActorIdsByType(String)
+  fullName.vb: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetActorIdsByType(String)
+  name.vb: GetActorIdsByType(String)
+- uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetNextInRing(System.String,System.Int64)
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetNextInRing(System.String,System.Int64)
+  id: GetNextInRing(System.String,System.Int64)
+  parent: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher
+  langs:
+  - csharp
+  - vb
+  name: GetNextInRing(string, long)
+  nameWithType: K2KDispatcher.GetNextInRing(string, long)
+  fullName: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetNextInRing(string, long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/K2KDispatcher.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetNextInRing
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/K2KDispatcher.cs
+    startLine: 253
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Gets the next actor ID in ring order.
+  example: []
+  syntax:
+    content: public long GetNextInRing(string actorType, long currentActorId)
+    parameters:
+    - id: actorType
+      type: System.String
+    - id: currentActorId
+      type: System.Int64
+    return:
+      type: System.Int64
+    content.vb: Public Function GetNextInRing(actorType As String, currentActorId As Long) As Long
+  overload: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetNextInRing*
+  nameWithType.vb: K2KDispatcher.GetNextInRing(String, Long)
+  fullName.vb: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetNextInRing(String, Long)
+  name.vb: GetNextInRing(String, Long)
+- uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetHashRoutedTarget(System.String,System.Int32)
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetHashRoutedTarget(System.String,System.Int32)
+  id: GetHashRoutedTarget(System.String,System.Int32)
+  parent: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher
+  langs:
+  - csharp
+  - vb
+  name: GetHashRoutedTarget(string, int)
+  nameWithType: K2KDispatcher.GetHashRoutedTarget(string, int)
+  fullName: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetHashRoutedTarget(string, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/K2KDispatcher.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetHashRoutedTarget
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/K2KDispatcher.cs
+    startLine: 280
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Computes hash-routed target actor ID.
+  example: []
+  syntax:
+    content: public long GetHashRoutedTarget(string actorType, int messageHash)
+    parameters:
+    - id: actorType
+      type: System.String
+    - id: messageHash
+      type: System.Int32
+    return:
+      type: System.Int64
+    content.vb: Public Function GetHashRoutedTarget(actorType As String, messageHash As Integer) As Long
+  overload: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetHashRoutedTarget*
+  nameWithType.vb: K2KDispatcher.GetHashRoutedTarget(String, Integer)
+  fullName.vb: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetHashRoutedTarget(String, Integer)
+  name.vb: GetHashRoutedTarget(String, Integer)
+- uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.Dispose
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.Dispose
+  id: Dispose
+  parent: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: K2KDispatcher.Dispose()
+  fullName: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.Dispose()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/K2K/K2KDispatcher.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Dispose
+    path: ../src/Orleans.GpuBridge.Runtime/K2K/K2KDispatcher.cs
+    startLine: 353
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.K2K
+  summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+references:
+- uid: Orleans.GpuBridge.Runtime.K2K
+  commentId: N:Orleans.GpuBridge.Runtime.K2K
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.K2K
+  nameWithType: Orleans.GpuBridge.Runtime.K2K
+  fullName: Orleans.GpuBridge.Runtime.K2K
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.K2K
+    name: K2K
+    href: Orleans.GpuBridge.Runtime.K2K.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.K2K
+    name: K2K
+    href: Orleans.GpuBridge.Runtime.K2K.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher
+  commentId: T:Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher
+  parent: Orleans.GpuBridge.Runtime.K2K
+  href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html
+  name: IK2KDispatcher
+  nameWithType: IK2KDispatcher
+  fullName: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.#ctor
+  href: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_K2KDispatcher__ctor_Microsoft_Extensions_Logging_ILogger_Orleans_GpuBridge_Runtime_K2K_K2KDispatcher__
+  name: K2KDispatcher
+  nameWithType: K2KDispatcher.K2KDispatcher
+  fullName: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.K2KDispatcher
+  nameWithType.vb: K2KDispatcher.New
+  fullName.vb: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.New
+  name.vb: New
+- uid: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.K2K.K2KDispatcher}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.K2K.K2KDispatcher}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<K2KDispatcher>
+  nameWithType: ILogger<K2KDispatcher>
+  fullName: Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.K2K.K2KDispatcher>
+  nameWithType.vb: ILogger(Of K2KDispatcher)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.K2K.K2KDispatcher)
+  name.vb: ILogger(Of K2KDispatcher)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher
+    name: K2KDispatcher
+    href: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher
+    name: K2KDispatcher
+    href: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.html
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.DispatchAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.DispatchAsync
+  href: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_K2KDispatcher_DispatchAsync__1_System_Int64_System_String_System_String_System_Int64___0_System_Threading_CancellationToken_
+  name: DispatchAsync
+  nameWithType: K2KDispatcher.DispatchAsync
+  fullName: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.DispatchAsync
+- uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchAsync``1(System.Int64,System.String,System.String,System.Int64,{TMessage},System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchAsync``1(System.Int64,System.String,System.String,System.Int64,``0,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher
+  definition: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchAsync``1(System.Int64,System.String,System.String,System.Int64,``0,System.Threading.CancellationToken)
+  href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_DispatchAsync__1_System_Int64_System_String_System_String_System_Int64___0_System_Threading_CancellationToken_
+  name: DispatchAsync<TMessage>(long, string, string, long, TMessage, CancellationToken)
+  nameWithType: IK2KDispatcher.DispatchAsync<TMessage>(long, string, string, long, TMessage, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchAsync<TMessage>(long, string, string, long, TMessage, System.Threading.CancellationToken)
+  nameWithType.vb: IK2KDispatcher.DispatchAsync(Of TMessage)(Long, String, String, Long, TMessage, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchAsync(Of TMessage)(Long, String, String, Long, TMessage, System.Threading.CancellationToken)
+  name.vb: DispatchAsync(Of TMessage)(Long, String, String, Long, TMessage, CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchAsync``1(System.Int64,System.String,System.String,System.Int64,``0,System.Threading.CancellationToken)
+    name: DispatchAsync
+    href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_DispatchAsync__1_System_Int64_System_String_System_String_System_Int64___0_System_Threading_CancellationToken_
+  - name: <
+  - name: TMessage
+  - name: '>'
+  - name: (
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - name: TMessage
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchAsync``1(System.Int64,System.String,System.String,System.Int64,``0,System.Threading.CancellationToken)
+    name: DispatchAsync
+    href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_DispatchAsync__1_System_Int64_System_String_System_String_System_Int64___0_System_Threading_CancellationToken_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMessage
+  - name: )
+  - name: (
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - name: TMessage
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: '{TMessage}'
+  commentId: '!:TMessage'
+  definition: TMessage
+  name: TMessage
+  nameWithType: TMessage
+  fullName: TMessage
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.ValueTask
+  commentId: T:System.Threading.Tasks.ValueTask
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask
+  name: ValueTask
+  nameWithType: ValueTask
+  fullName: System.Threading.Tasks.ValueTask
+- uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchAsync``1(System.Int64,System.String,System.String,System.Int64,``0,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchAsync``1(System.Int64,System.String,System.String,System.Int64,``0,System.Threading.CancellationToken)
+  isExternal: true
+  href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_DispatchAsync__1_System_Int64_System_String_System_String_System_Int64___0_System_Threading_CancellationToken_
+  name: DispatchAsync<TMessage>(long, string, string, long, TMessage, CancellationToken)
+  nameWithType: IK2KDispatcher.DispatchAsync<TMessage>(long, string, string, long, TMessage, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchAsync<TMessage>(long, string, string, long, TMessage, System.Threading.CancellationToken)
+  nameWithType.vb: IK2KDispatcher.DispatchAsync(Of TMessage)(Long, String, String, Long, TMessage, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchAsync(Of TMessage)(Long, String, String, Long, TMessage, System.Threading.CancellationToken)
+  name.vb: DispatchAsync(Of TMessage)(Long, String, String, Long, TMessage, CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchAsync``1(System.Int64,System.String,System.String,System.Int64,``0,System.Threading.CancellationToken)
+    name: DispatchAsync
+    href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_DispatchAsync__1_System_Int64_System_String_System_String_System_Int64___0_System_Threading_CancellationToken_
+  - name: <
+  - name: TMessage
+  - name: '>'
+  - name: (
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - name: TMessage
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchAsync``1(System.Int64,System.String,System.String,System.Int64,``0,System.Threading.CancellationToken)
+    name: DispatchAsync
+    href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_DispatchAsync__1_System_Int64_System_String_System_String_System_Int64___0_System_Threading_CancellationToken_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMessage
+  - name: )
+  - name: (
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - name: TMessage
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: TMessage
+  name: TMessage
+  nameWithType: TMessage
+  fullName: TMessage
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.DispatchWithResponseAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.DispatchWithResponseAsync
+  href: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_K2KDispatcher_DispatchWithResponseAsync__2_System_Int64_System_String_System_String_System_Int64___0_System_Threading_CancellationToken_
+  name: DispatchWithResponseAsync
+  nameWithType: K2KDispatcher.DispatchWithResponseAsync
+  fullName: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.DispatchWithResponseAsync
+- uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchWithResponseAsync``2(System.Int64,System.String,System.String,System.Int64,{TRequest},System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchWithResponseAsync``2(System.Int64,System.String,System.String,System.Int64,``0,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher
+  definition: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchWithResponseAsync``2(System.Int64,System.String,System.String,System.Int64,``0,System.Threading.CancellationToken)
+  href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_DispatchWithResponseAsync__2_System_Int64_System_String_System_String_System_Int64___0_System_Threading_CancellationToken_
+  name: DispatchWithResponseAsync<TRequest, TResponse>(long, string, string, long, TRequest, CancellationToken)
+  nameWithType: IK2KDispatcher.DispatchWithResponseAsync<TRequest, TResponse>(long, string, string, long, TRequest, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchWithResponseAsync<TRequest, TResponse>(long, string, string, long, TRequest, System.Threading.CancellationToken)
+  nameWithType.vb: IK2KDispatcher.DispatchWithResponseAsync(Of TRequest, TResponse)(Long, String, String, Long, TRequest, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchWithResponseAsync(Of TRequest, TResponse)(Long, String, String, Long, TRequest, System.Threading.CancellationToken)
+  name.vb: DispatchWithResponseAsync(Of TRequest, TResponse)(Long, String, String, Long, TRequest, CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchWithResponseAsync``2(System.Int64,System.String,System.String,System.Int64,``0,System.Threading.CancellationToken)
+    name: DispatchWithResponseAsync
+    href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_DispatchWithResponseAsync__2_System_Int64_System_String_System_String_System_Int64___0_System_Threading_CancellationToken_
+  - name: <
+  - name: TRequest
+  - name: ','
+  - name: " "
+  - name: TResponse
+  - name: '>'
+  - name: (
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - name: TRequest
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchWithResponseAsync``2(System.Int64,System.String,System.String,System.Int64,``0,System.Threading.CancellationToken)
+    name: DispatchWithResponseAsync
+    href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_DispatchWithResponseAsync__2_System_Int64_System_String_System_String_System_Int64___0_System_Threading_CancellationToken_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TRequest
+  - name: ','
+  - name: " "
+  - name: TResponse
+  - name: )
+  - name: (
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - name: TRequest
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: '{TRequest}'
+  commentId: '!:TRequest'
+  definition: TRequest
+  name: TRequest
+  nameWithType: TRequest
+  fullName: TRequest
+- uid: System.Threading.Tasks.ValueTask{{TResponse}}
+  commentId: T:System.Threading.Tasks.ValueTask{``1}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.ValueTask`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  name: ValueTask<TResponse>
+  nameWithType: ValueTask<TResponse>
+  fullName: System.Threading.Tasks.ValueTask<TResponse>
+  nameWithType.vb: ValueTask(Of TResponse)
+  fullName.vb: System.Threading.Tasks.ValueTask(Of TResponse)
+  name.vb: ValueTask(Of TResponse)
+  spec.csharp:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: <
+  - name: TResponse
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResponse
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchWithResponseAsync``2(System.Int64,System.String,System.String,System.Int64,``0,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchWithResponseAsync``2(System.Int64,System.String,System.String,System.Int64,``0,System.Threading.CancellationToken)
+  isExternal: true
+  href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_DispatchWithResponseAsync__2_System_Int64_System_String_System_String_System_Int64___0_System_Threading_CancellationToken_
+  name: DispatchWithResponseAsync<TRequest, TResponse>(long, string, string, long, TRequest, CancellationToken)
+  nameWithType: IK2KDispatcher.DispatchWithResponseAsync<TRequest, TResponse>(long, string, string, long, TRequest, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchWithResponseAsync<TRequest, TResponse>(long, string, string, long, TRequest, System.Threading.CancellationToken)
+  nameWithType.vb: IK2KDispatcher.DispatchWithResponseAsync(Of TRequest, TResponse)(Long, String, String, Long, TRequest, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchWithResponseAsync(Of TRequest, TResponse)(Long, String, String, Long, TRequest, System.Threading.CancellationToken)
+  name.vb: DispatchWithResponseAsync(Of TRequest, TResponse)(Long, String, String, Long, TRequest, CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchWithResponseAsync``2(System.Int64,System.String,System.String,System.Int64,``0,System.Threading.CancellationToken)
+    name: DispatchWithResponseAsync
+    href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_DispatchWithResponseAsync__2_System_Int64_System_String_System_String_System_Int64___0_System_Threading_CancellationToken_
+  - name: <
+  - name: TRequest
+  - name: ','
+  - name: " "
+  - name: TResponse
+  - name: '>'
+  - name: (
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - name: TRequest
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.DispatchWithResponseAsync``2(System.Int64,System.String,System.String,System.Int64,``0,System.Threading.CancellationToken)
+    name: DispatchWithResponseAsync
+    href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_DispatchWithResponseAsync__2_System_Int64_System_String_System_String_System_Int64___0_System_Threading_CancellationToken_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TRequest
+  - name: ','
+  - name: " "
+  - name: TResponse
+  - name: )
+  - name: (
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - name: TRequest
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: TRequest
+  name: TRequest
+  nameWithType: TRequest
+  fullName: TRequest
+- uid: System.Threading.Tasks.ValueTask`1
+  commentId: T:System.Threading.Tasks.ValueTask`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  name: ValueTask<TResult>
+  nameWithType: ValueTask<TResult>
+  fullName: System.Threading.Tasks.ValueTask<TResult>
+  nameWithType.vb: ValueTask(Of TResult)
+  fullName.vb: System.Threading.Tasks.ValueTask(Of TResult)
+  name.vb: ValueTask(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.BroadcastAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.BroadcastAsync
+  href: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_K2KDispatcher_BroadcastAsync__1_System_Int64_System_String_System_String_System_ReadOnlySpan_System_Int64____0_System_Threading_CancellationToken_
+  name: BroadcastAsync
+  nameWithType: K2KDispatcher.BroadcastAsync
+  fullName: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.BroadcastAsync
+- uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.BroadcastAsync``1(System.Int64,System.String,System.String,System.ReadOnlySpan{System.Int64},{TMessage},System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.BroadcastAsync``1(System.Int64,System.String,System.String,System.ReadOnlySpan{System.Int64},``0,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher
+  definition: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.BroadcastAsync``1(System.Int64,System.String,System.String,System.ReadOnlySpan{System.Int64},``0,System.Threading.CancellationToken)
+  href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_BroadcastAsync__1_System_Int64_System_String_System_String_System_ReadOnlySpan_System_Int64____0_System_Threading_CancellationToken_
+  name: BroadcastAsync<TMessage>(long, string, string, ReadOnlySpan<long>, TMessage, CancellationToken)
+  nameWithType: IK2KDispatcher.BroadcastAsync<TMessage>(long, string, string, ReadOnlySpan<long>, TMessage, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.BroadcastAsync<TMessage>(long, string, string, System.ReadOnlySpan<long>, TMessage, System.Threading.CancellationToken)
+  nameWithType.vb: IK2KDispatcher.BroadcastAsync(Of TMessage)(Long, String, String, ReadOnlySpan(Of Long), TMessage, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.BroadcastAsync(Of TMessage)(Long, String, String, System.ReadOnlySpan(Of Long), TMessage, System.Threading.CancellationToken)
+  name.vb: BroadcastAsync(Of TMessage)(Long, String, String, ReadOnlySpan(Of Long), TMessage, CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.BroadcastAsync``1(System.Int64,System.String,System.String,System.ReadOnlySpan{System.Int64},``0,System.Threading.CancellationToken)
+    name: BroadcastAsync
+    href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_BroadcastAsync__1_System_Int64_System_String_System_String_System_ReadOnlySpan_System_Int64____0_System_Threading_CancellationToken_
+  - name: <
+  - name: TMessage
+  - name: '>'
+  - name: (
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TMessage
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.BroadcastAsync``1(System.Int64,System.String,System.String,System.ReadOnlySpan{System.Int64},``0,System.Threading.CancellationToken)
+    name: BroadcastAsync
+    href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_BroadcastAsync__1_System_Int64_System_String_System_String_System_ReadOnlySpan_System_Int64____0_System_Threading_CancellationToken_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMessage
+  - name: )
+  - name: (
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TMessage
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.ReadOnlySpan{System.Int64}
+  commentId: T:System.ReadOnlySpan{System.Int64}
+  parent: System
+  definition: System.ReadOnlySpan`1
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<long>
+  nameWithType: ReadOnlySpan<long>
+  fullName: System.ReadOnlySpan<long>
+  nameWithType.vb: ReadOnlySpan(Of Long)
+  fullName.vb: System.ReadOnlySpan(Of Long)
+  name.vb: ReadOnlySpan(Of Long)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.BroadcastAsync``1(System.Int64,System.String,System.String,System.ReadOnlySpan{System.Int64},``0,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.BroadcastAsync``1(System.Int64,System.String,System.String,System.ReadOnlySpan{System.Int64},``0,System.Threading.CancellationToken)
+  isExternal: true
+  href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_BroadcastAsync__1_System_Int64_System_String_System_String_System_ReadOnlySpan_System_Int64____0_System_Threading_CancellationToken_
+  name: BroadcastAsync<TMessage>(long, string, string, ReadOnlySpan<long>, TMessage, CancellationToken)
+  nameWithType: IK2KDispatcher.BroadcastAsync<TMessage>(long, string, string, ReadOnlySpan<long>, TMessage, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.BroadcastAsync<TMessage>(long, string, string, System.ReadOnlySpan<long>, TMessage, System.Threading.CancellationToken)
+  nameWithType.vb: IK2KDispatcher.BroadcastAsync(Of TMessage)(Long, String, String, ReadOnlySpan(Of Long), TMessage, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.BroadcastAsync(Of TMessage)(Long, String, String, System.ReadOnlySpan(Of Long), TMessage, System.Threading.CancellationToken)
+  name.vb: BroadcastAsync(Of TMessage)(Long, String, String, ReadOnlySpan(Of Long), TMessage, CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.BroadcastAsync``1(System.Int64,System.String,System.String,System.ReadOnlySpan{System.Int64},``0,System.Threading.CancellationToken)
+    name: BroadcastAsync
+    href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_BroadcastAsync__1_System_Int64_System_String_System_String_System_ReadOnlySpan_System_Int64____0_System_Threading_CancellationToken_
+  - name: <
+  - name: TMessage
+  - name: '>'
+  - name: (
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TMessage
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.BroadcastAsync``1(System.Int64,System.String,System.String,System.ReadOnlySpan{System.Int64},``0,System.Threading.CancellationToken)
+    name: BroadcastAsync
+    href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_BroadcastAsync__1_System_Int64_System_String_System_String_System_ReadOnlySpan_System_Int64____0_System_Threading_CancellationToken_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMessage
+  - name: )
+  - name: (
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TMessage
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.ReadOnlySpan`1
+  commentId: T:System.ReadOnlySpan`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<T>
+  nameWithType: ReadOnlySpan<T>
+  fullName: System.ReadOnlySpan<T>
+  nameWithType.vb: ReadOnlySpan(Of T)
+  fullName.vb: System.ReadOnlySpan(Of T)
+  name.vb: ReadOnlySpan(Of T)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetTargetQueuePointer*
+  commentId: Overload:Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetTargetQueuePointer
+  href: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_K2KDispatcher_GetTargetQueuePointer_System_String_System_Int64_
+  name: GetTargetQueuePointer
+  nameWithType: K2KDispatcher.GetTargetQueuePointer
+  fullName: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetTargetQueuePointer
+- uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.GetTargetQueuePointer(System.String,System.Int64)
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.GetTargetQueuePointer(System.String,System.Int64)
+  parent: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher
+  isExternal: true
+  href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_GetTargetQueuePointer_System_String_System_Int64_
+  name: GetTargetQueuePointer(string, long)
+  nameWithType: IK2KDispatcher.GetTargetQueuePointer(string, long)
+  fullName: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.GetTargetQueuePointer(string, long)
+  nameWithType.vb: IK2KDispatcher.GetTargetQueuePointer(String, Long)
+  fullName.vb: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.GetTargetQueuePointer(String, Long)
+  name.vb: GetTargetQueuePointer(String, Long)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.GetTargetQueuePointer(System.String,System.Int64)
+    name: GetTargetQueuePointer
+    href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_GetTargetQueuePointer_System_String_System_Int64_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.GetTargetQueuePointer(System.String,System.Int64)
+    name: GetTargetQueuePointer
+    href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_GetTargetQueuePointer_System_String_System_Int64_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+- uid: System.IntPtr
+  commentId: T:System.IntPtr
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.intptr
+  name: nint
+  nameWithType: nint
+  fullName: nint
+  nameWithType.vb: IntPtr
+  fullName.vb: System.IntPtr
+  name.vb: IntPtr
+- uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.RegisterQueue*
+  commentId: Overload:Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.RegisterQueue
+  href: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_K2KDispatcher_RegisterQueue_System_String_System_Int64_System_IntPtr_
+  name: RegisterQueue
+  nameWithType: K2KDispatcher.RegisterQueue
+  fullName: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.RegisterQueue
+- uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.RegisterQueue(System.String,System.Int64,System.IntPtr)
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.RegisterQueue(System.String,System.Int64,System.IntPtr)
+  parent: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher
+  isExternal: true
+  href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_RegisterQueue_System_String_System_Int64_System_IntPtr_
+  name: RegisterQueue(string, long, nint)
+  nameWithType: IK2KDispatcher.RegisterQueue(string, long, nint)
+  fullName: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.RegisterQueue(string, long, nint)
+  nameWithType.vb: IK2KDispatcher.RegisterQueue(String, Long, IntPtr)
+  fullName.vb: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.RegisterQueue(String, Long, System.IntPtr)
+  name.vb: RegisterQueue(String, Long, IntPtr)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.RegisterQueue(System.String,System.Int64,System.IntPtr)
+    name: RegisterQueue
+    href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_RegisterQueue_System_String_System_Int64_System_IntPtr_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - uid: System.IntPtr
+    name: nint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.intptr
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.RegisterQueue(System.String,System.Int64,System.IntPtr)
+    name: RegisterQueue
+    href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_RegisterQueue_System_String_System_Int64_System_IntPtr_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - uid: System.IntPtr
+    name: IntPtr
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.intptr
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.UnregisterQueue*
+  commentId: Overload:Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.UnregisterQueue
+  href: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_K2KDispatcher_UnregisterQueue_System_String_System_Int64_
+  name: UnregisterQueue
+  nameWithType: K2KDispatcher.UnregisterQueue
+  fullName: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.UnregisterQueue
+- uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.UnregisterQueue(System.String,System.Int64)
+  commentId: M:Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.UnregisterQueue(System.String,System.Int64)
+  parent: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher
+  isExternal: true
+  href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_UnregisterQueue_System_String_System_Int64_
+  name: UnregisterQueue(string, long)
+  nameWithType: IK2KDispatcher.UnregisterQueue(string, long)
+  fullName: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.UnregisterQueue(string, long)
+  nameWithType.vb: IK2KDispatcher.UnregisterQueue(String, Long)
+  fullName.vb: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.UnregisterQueue(String, Long)
+  name.vb: UnregisterQueue(String, Long)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.UnregisterQueue(System.String,System.Int64)
+    name: UnregisterQueue
+    href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_UnregisterQueue_System_String_System_Int64_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.UnregisterQueue(System.String,System.Int64)
+    name: UnregisterQueue
+    href: Orleans.GpuBridge.Runtime.K2K.IK2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_IK2KDispatcher_UnregisterQueue_System_String_System_Int64_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetActorIdsByType*
+  commentId: Overload:Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetActorIdsByType
+  href: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_K2KDispatcher_GetActorIdsByType_System_String_
+  name: GetActorIdsByType
+  nameWithType: K2KDispatcher.GetActorIdsByType
+  fullName: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetActorIdsByType
+- uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetNextInRing*
+  commentId: Overload:Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetNextInRing
+  href: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_K2KDispatcher_GetNextInRing_System_String_System_Int64_
+  name: GetNextInRing
+  nameWithType: K2KDispatcher.GetNextInRing
+  fullName: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetNextInRing
+- uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetHashRoutedTarget*
+  commentId: Overload:Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetHashRoutedTarget
+  href: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_K2KDispatcher_GetHashRoutedTarget_System_String_System_Int32_
+  name: GetHashRoutedTarget
+  nameWithType: K2KDispatcher.GetHashRoutedTarget
+  fullName: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.GetHashRoutedTarget
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.Dispose*
+  commentId: Overload:Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.Dispose
+  href: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.html#Orleans_GpuBridge_Runtime_K2K_K2KDispatcher_Dispose
+  name: Dispose
+  nameWithType: K2KDispatcher.Dispose
+  fullName: Orleans.GpuBridge.Runtime.K2K.K2KDispatcher.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )

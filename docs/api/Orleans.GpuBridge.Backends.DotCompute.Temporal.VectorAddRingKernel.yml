@@ -1,0 +1,485 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.VectorAddRingKernel
+  commentId: T:Orleans.GpuBridge.Backends.DotCompute.Temporal.VectorAddRingKernel
+  id: VectorAddRingKernel
+  parent: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  children:
+  - Orleans.GpuBridge.Backends.DotCompute.Temporal.VectorAddRingKernel.ProcessVectorOperation(DotCompute.Abstractions.RingKernels.RingKernelContext,Orleans.GpuBridge.Backends.DotCompute.Temporal.VectorAddProcessorRingRequest)
+  langs:
+  - csharp
+  - vb
+  name: VectorAddRingKernel
+  nameWithType: VectorAddRingKernel
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.VectorAddRingKernel
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Temporal/VectorAddRingKernel.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: VectorAddRingKernel
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Temporal/VectorAddRingKernel.cs
+    startLine: 23
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  summary: Ring kernel for GPU-native vector operations (add, subtract, multiply, divide).
+  remarks: >-
+    <p>
+
+    This kernel implements the GPU-native actor paradigm using the DotCompute unified
+
+    ring kernel system. The handler logic is defined inline and automatically translated
+
+    to CUDA code.
+
+    </p>
+
+    <p>
+
+    Performance characteristics:
+
+    - Message processing: 100-500ns (GPU memory path)
+
+    - Up to 4 elements processed inline
+
+    </p>
+  example: []
+  syntax:
+    content: public static class VectorAddRingKernel
+    content.vb: Public Module VectorAddRingKernel
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.VectorAddRingKernel.ProcessVectorOperation(DotCompute.Abstractions.RingKernels.RingKernelContext,Orleans.GpuBridge.Backends.DotCompute.Temporal.VectorAddProcessorRingRequest)
+  commentId: M:Orleans.GpuBridge.Backends.DotCompute.Temporal.VectorAddRingKernel.ProcessVectorOperation(DotCompute.Abstractions.RingKernels.RingKernelContext,Orleans.GpuBridge.Backends.DotCompute.Temporal.VectorAddProcessorRingRequest)
+  id: ProcessVectorOperation(DotCompute.Abstractions.RingKernels.RingKernelContext,Orleans.GpuBridge.Backends.DotCompute.Temporal.VectorAddProcessorRingRequest)
+  parent: Orleans.GpuBridge.Backends.DotCompute.Temporal.VectorAddRingKernel
+  langs:
+  - csharp
+  - vb
+  name: ProcessVectorOperation(RingKernelContext, VectorAddProcessorRingRequest)
+  nameWithType: VectorAddRingKernel.ProcessVectorOperation(RingKernelContext, VectorAddProcessorRingRequest)
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.VectorAddRingKernel.ProcessVectorOperation(DotCompute.Abstractions.RingKernels.RingKernelContext, Orleans.GpuBridge.Backends.DotCompute.Temporal.VectorAddProcessorRingRequest)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Temporal/VectorAddRingKernel.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ProcessVectorOperation
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Temporal/VectorAddRingKernel.cs
+    startLine: 41
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  summary: Processes vector operation requests and produces responses.
+  remarks: >-
+    <p>
+
+    <b>Supported Operations:</b>
+
+    <ul><li>0 = Add: result = a + b</li><li>1 = Subtract: result = a - b</li><li>2 = Multiply: result = a * b</li><li>3 = Divide: result = a / b (with zero-division protection)</li></ul>
+
+    </p>
+  example: []
+  syntax:
+    content: >-
+      [RingKernel(KernelId = "vectoradd_processor", Capacity = 4096, InputQueueSize = 1024, OutputQueueSize = 1024, MaxInputMessageSizeBytes = 1024, MaxOutputMessageSizeBytes = 1024, ProcessingMode = RingProcessingMode.Continuous, EnableTimestamps = true, Domain = RingKernelDomain.ActorModel, MessagingStrategy = MessagePassingStrategy.SharedMemory, Backends = KernelBackends.CUDA, OutputMessageType = typeof(VectorAddProcessorRingResponse))]
+
+      public static void ProcessVectorOperation(RingKernelContext ctx, VectorAddProcessorRingRequest request)
+    parameters:
+    - id: ctx
+      type: DotCompute.Abstractions.RingKernels.RingKernelContext
+      description: The ring kernel context for GPU operations.
+    - id: request
+      type: Orleans.GpuBridge.Backends.DotCompute.Temporal.VectorAddProcessorRingRequest
+      description: The input request containing vectors and operation type.
+    content.vb: >-
+      <RingKernel(KernelId:="vectoradd_processor", Capacity:=4096, InputQueueSize:=1024, OutputQueueSize:=1024, MaxInputMessageSizeBytes:=1024, MaxOutputMessageSizeBytes:=1024, ProcessingMode:=RingProcessingMode.Continuous, EnableTimestamps:=True, Domain:=RingKernelDomain.ActorModel, MessagingStrategy:=MessagePassingStrategy.SharedMemory, Backends:=KernelBackends.CUDA, OutputMessageType:=GetType(VectorAddProcessorRingResponse))>
+
+      Public Shared Sub ProcessVectorOperation(ctx As RingKernelContext, request As VectorAddProcessorRingRequest)
+  overload: Orleans.GpuBridge.Backends.DotCompute.Temporal.VectorAddRingKernel.ProcessVectorOperation*
+  attributes:
+  - type: DotCompute.Abstractions.Attributes.RingKernelAttribute
+    ctor: DotCompute.Abstractions.Attributes.RingKernelAttribute.#ctor
+    arguments: []
+    namedArguments:
+    - name: KernelId
+      type: System.String
+      value: vectoradd_processor
+    - name: Capacity
+      type: System.Int32
+      value: 4096
+    - name: InputQueueSize
+      type: System.Int32
+      value: 1024
+    - name: OutputQueueSize
+      type: System.Int32
+      value: 1024
+    - name: MaxInputMessageSizeBytes
+      type: System.Int32
+      value: 1024
+    - name: MaxOutputMessageSizeBytes
+      type: System.Int32
+      value: 1024
+    - name: ProcessingMode
+      type: DotCompute.Abstractions.RingKernels.RingProcessingMode
+      value: 0
+    - name: EnableTimestamps
+      type: System.Boolean
+      value: true
+    - name: Domain
+      type: DotCompute.Abstractions.RingKernels.RingKernelDomain
+      value: 3
+    - name: MessagingStrategy
+      type: DotCompute.Abstractions.RingKernels.MessagePassingStrategy
+      value: 0
+    - name: Backends
+      type: DotCompute.Abstractions.RingKernels.KernelBackends
+      value: 2
+    - name: OutputMessageType
+      type: System.Type
+      value: Orleans.GpuBridge.Backends.DotCompute.Temporal.VectorAddProcessorRingResponse
+references:
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  commentId: N:Orleans.GpuBridge.Backends.DotCompute.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  nameWithType: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends
+    name: Backends
+    href: Orleans.GpuBridge.Backends.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute
+    name: DotCompute
+    href: Orleans.GpuBridge.Backends.DotCompute.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Backends.DotCompute.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends
+    name: Backends
+    href: Orleans.GpuBridge.Backends.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute
+    name: DotCompute
+    href: Orleans.GpuBridge.Backends.DotCompute.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Backends.DotCompute.Temporal.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.VectorAddRingKernel.ProcessVectorOperation*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Temporal.VectorAddRingKernel.ProcessVectorOperation
+  href: Orleans.GpuBridge.Backends.DotCompute.Temporal.VectorAddRingKernel.html#Orleans_GpuBridge_Backends_DotCompute_Temporal_VectorAddRingKernel_ProcessVectorOperation_DotCompute_Abstractions_RingKernels_RingKernelContext_Orleans_GpuBridge_Backends_DotCompute_Temporal_VectorAddProcessorRingRequest_
+  name: ProcessVectorOperation
+  nameWithType: VectorAddRingKernel.ProcessVectorOperation
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.VectorAddRingKernel.ProcessVectorOperation
+- uid: DotCompute.Abstractions.RingKernels.RingKernelContext
+  commentId: T:DotCompute.Abstractions.RingKernels.RingKernelContext
+  parent: DotCompute.Abstractions.RingKernels
+  isExternal: true
+  name: RingKernelContext
+  nameWithType: RingKernelContext
+  fullName: DotCompute.Abstractions.RingKernels.RingKernelContext
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.VectorAddProcessorRingRequest
+  commentId: T:Orleans.GpuBridge.Backends.DotCompute.Temporal.VectorAddProcessorRingRequest
+  parent: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  href: Orleans.GpuBridge.Backends.DotCompute.Temporal.VectorAddProcessorRingRequest.html
+  name: VectorAddProcessorRingRequest
+  nameWithType: VectorAddProcessorRingRequest
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.VectorAddProcessorRingRequest
+- uid: DotCompute.Abstractions.RingKernels
+  commentId: N:DotCompute.Abstractions.RingKernels
+  isExternal: true
+  name: DotCompute.Abstractions.RingKernels
+  nameWithType: DotCompute.Abstractions.RingKernels
+  fullName: DotCompute.Abstractions.RingKernels
+  spec.csharp:
+  - uid: DotCompute
+    name: DotCompute
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions
+    name: Abstractions
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions.RingKernels
+    name: RingKernels
+    isExternal: true
+  spec.vb:
+  - uid: DotCompute
+    name: DotCompute
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions
+    name: Abstractions
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions.RingKernels
+    name: RingKernels
+    isExternal: true

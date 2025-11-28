@@ -1,0 +1,1049 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+  commentId: T:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+  id: GpuMemoryHandle
+  parent: Orleans.GpuBridge.Runtime.Memory
+  children:
+  - Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.AddReference
+  - Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.DevicePointer
+  - Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Dispose
+  - Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Equals(Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle)
+  - Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Equals(System.Object)
+  - Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Finalize
+  - Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.GetHashCode
+  - Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.HandleId
+  - Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.IsPooled
+  - Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.ReferenceCount
+  - Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.RemoveReference
+  - Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.SizeBytes
+  - Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.ToString
+  langs:
+  - csharp
+  - vb
+  name: GpuMemoryHandle
+  nameWithType: GpuMemoryHandle
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GpuMemoryHandle
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+    startLine: 23
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Handle to GPU-allocated memory with automatic reference counting and cleanup.
+  remarks: >-
+    <p>
+
+    GpuMemoryHandle provides a safe wrapper around raw GPU memory pointers.
+
+    It tracks allocation size, usage, and automatically releases memory when
+
+    the last reference is disposed.
+
+    </p>
+
+    <p>
+
+    This class is thread-safe and uses atomic reference counting for
+
+    multi-threaded access scenarios.
+
+    </p>
+  example: []
+  syntax:
+    content: 'public sealed class GpuMemoryHandle : IDisposable, IEquatable<GpuMemoryHandle>'
+    content.vb: Public NotInheritable Class GpuMemoryHandle Implements IDisposable, IEquatable(Of GpuMemoryHandle)
+  inheritance:
+  - System.Object
+  implements:
+  - System.IDisposable
+  - System.IEquatable{Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle}
+  inheritedMembers:
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.DevicePointer
+  commentId: P:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.DevicePointer
+  id: DevicePointer
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+  langs:
+  - csharp
+  - vb
+  name: DevicePointer
+  nameWithType: GpuMemoryHandle.DevicePointer
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.DevicePointer
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DevicePointer
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+    startLine: 52
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Gets the GPU device pointer.
+  example: []
+  syntax:
+    content: public nint DevicePointer { get; }
+    parameters: []
+    return:
+      type: System.IntPtr
+    content.vb: Public ReadOnly Property DevicePointer As IntPtr
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.DevicePointer*
+  exceptions:
+  - type: System.ObjectDisposedException
+    commentId: T:System.ObjectDisposedException
+    description: Handle has been disposed.
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.SizeBytes
+  commentId: P:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.SizeBytes
+  id: SizeBytes
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+  langs:
+  - csharp
+  - vb
+  name: SizeBytes
+  nameWithType: GpuMemoryHandle.SizeBytes
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.SizeBytes
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: SizeBytes
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+    startLine: 64
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Gets the size of the allocation in bytes.
+  example: []
+  syntax:
+    content: public long SizeBytes { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public ReadOnly Property SizeBytes As Long
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.SizeBytes*
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.HandleId
+  commentId: P:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.HandleId
+  id: HandleId
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+  langs:
+  - csharp
+  - vb
+  name: HandleId
+  nameWithType: GpuMemoryHandle.HandleId
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.HandleId
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: HandleId
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+    startLine: 69
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Gets the unique handle ID (derived from device pointer).
+  example: []
+  syntax:
+    content: public ulong HandleId { get; }
+    parameters: []
+    return:
+      type: System.UInt64
+    content.vb: Public ReadOnly Property HandleId As ULong
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.HandleId*
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.IsPooled
+  commentId: P:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.IsPooled
+  id: IsPooled
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+  langs:
+  - csharp
+  - vb
+  name: IsPooled
+  nameWithType: GpuMemoryHandle.IsPooled
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.IsPooled
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsPooled
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+    startLine: 74
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Gets whether this handle is from a buffer pool (recyclable).
+  example: []
+  syntax:
+    content: public bool IsPooled { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsPooled As Boolean
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.IsPooled*
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.ReferenceCount
+  commentId: P:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.ReferenceCount
+  id: ReferenceCount
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+  langs:
+  - csharp
+  - vb
+  name: ReferenceCount
+  nameWithType: GpuMemoryHandle.ReferenceCount
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.ReferenceCount
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ReferenceCount
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+    startLine: 84
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Gets current reference count (for diagnostics).
+  example: []
+  syntax:
+    content: public int ReferenceCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property ReferenceCount As Integer
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.ReferenceCount*
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.AddReference
+  commentId: M:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.AddReference
+  id: AddReference
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+  langs:
+  - csharp
+  - vb
+  name: AddReference()
+  nameWithType: GpuMemoryHandle.AddReference()
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.AddReference()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AddReference
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+    startLine: 91
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Adds a reference to this handle.
+  example: []
+  syntax:
+    content: public GpuMemoryHandle AddReference()
+    return:
+      type: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+      description: This handle for fluent API.
+    content.vb: Public Function AddReference() As GpuMemoryHandle
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.AddReference*
+  exceptions:
+  - type: System.ObjectDisposedException
+    commentId: T:System.ObjectDisposedException
+    description: Handle has been disposed.
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.RemoveReference
+  commentId: M:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.RemoveReference
+  id: RemoveReference
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+  langs:
+  - csharp
+  - vb
+  name: RemoveReference()
+  nameWithType: GpuMemoryHandle.RemoveReference()
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.RemoveReference()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RemoveReference
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+    startLine: 104
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Removes a reference. When reference count reaches zero, memory is released.
+  example: []
+  syntax:
+    content: public void RemoveReference()
+    content.vb: Public Sub RemoveReference()
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.RemoveReference*
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Dispose
+  commentId: M:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Dispose
+  id: Dispose
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: GpuMemoryHandle.Dispose()
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Dispose()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Dispose
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+    startLine: 120
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Disposes the GPU memory handle and releases memory.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Equals(Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle)
+  commentId: M:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Equals(Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle)
+  id: Equals(Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle)
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+  langs:
+  - csharp
+  - vb
+  name: Equals(GpuMemoryHandle?)
+  nameWithType: GpuMemoryHandle.Equals(GpuMemoryHandle?)
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Equals(Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle?)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Equals
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+    startLine: 155
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Checks equality based on device pointer.
+  example: []
+  syntax:
+    content: public bool Equals(GpuMemoryHandle? other)
+    parameters:
+    - id: other
+      type: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+    return:
+      type: System.Boolean
+    content.vb: Public Function Equals(other As GpuMemoryHandle) As Boolean
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Equals*
+  implements:
+  - System.IEquatable{Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle}.Equals(Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle)
+  nameWithType.vb: GpuMemoryHandle.Equals(GpuMemoryHandle)
+  fullName.vb: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Equals(Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle)
+  name.vb: Equals(GpuMemoryHandle)
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Equals(System.Object)
+  commentId: M:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Equals(System.Object)
+  id: Equals(System.Object)
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+  langs:
+  - csharp
+  - vb
+  name: Equals(object?)
+  nameWithType: GpuMemoryHandle.Equals(object?)
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Equals(object?)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Equals
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+    startLine: 164
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Checks equality based on device pointer.
+  example: []
+  syntax:
+    content: public override bool Equals(object? obj)
+    parameters:
+    - id: obj
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Overrides Function Equals(obj As Object) As Boolean
+  overridden: System.Object.Equals(System.Object)
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Equals*
+  nameWithType.vb: GpuMemoryHandle.Equals(Object)
+  fullName.vb: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Equals(Object)
+  name.vb: Equals(Object)
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.GetHashCode
+  commentId: M:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.GetHashCode
+  id: GetHashCode
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+  langs:
+  - csharp
+  - vb
+  name: GetHashCode()
+  nameWithType: GpuMemoryHandle.GetHashCode()
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.GetHashCode()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetHashCode
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+    startLine: 169
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Gets hash code based on device pointer.
+  example: []
+  syntax:
+    content: public override int GetHashCode()
+    return:
+      type: System.Int32
+    content.vb: Public Overrides Function GetHashCode() As Integer
+  overridden: System.Object.GetHashCode
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.GetHashCode*
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.ToString
+  commentId: M:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.ToString
+  id: ToString
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: GpuMemoryHandle.ToString()
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.ToString()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ToString
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+    startLine: 174
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Returns string representation of handle.
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.Object.ToString
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.ToString*
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Finalize
+  commentId: M:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Finalize
+  id: Finalize
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+  langs:
+  - csharp
+  - vb
+  name: ~GpuMemoryHandle()
+  nameWithType: GpuMemoryHandle.~GpuMemoryHandle()
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.~GpuMemoryHandle()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Finalize
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryHandle.cs
+    startLine: 207
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Finalizer to ensure GPU memory is released even if Dispose() is not called.
+  remarks: >-
+    Finalizer does NOT return buffers to pool (pool may be disposed).
+
+    It only frees actual GPU memory directly.
+  example: []
+  syntax:
+    content: protected ~GpuMemoryHandle()
+    content.vb: 'Protected '
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Finalize*
+  nameWithType.vb: ''
+  fullName.vb: ''
+  name.vb: ''
+references:
+- uid: Orleans.GpuBridge.Runtime.Memory
+  commentId: N:Orleans.GpuBridge.Runtime.Memory
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Memory
+  nameWithType: Orleans.GpuBridge.Runtime.Memory
+  fullName: Orleans.GpuBridge.Runtime.Memory
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Memory
+    name: Memory
+    href: Orleans.GpuBridge.Runtime.Memory.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Memory
+    name: Memory
+    href: Orleans.GpuBridge.Runtime.Memory.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.IEquatable{Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle}
+  commentId: T:System.IEquatable{Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<GpuMemoryHandle>
+  nameWithType: IEquatable<GpuMemoryHandle>
+  fullName: System.IEquatable<Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle>
+  nameWithType.vb: IEquatable(Of GpuMemoryHandle)
+  fullName.vb: System.IEquatable(Of Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle)
+  name.vb: IEquatable(Of GpuMemoryHandle)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+    name: GpuMemoryHandle
+    href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+    name: GpuMemoryHandle
+    href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.html
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.ObjectDisposedException
+  commentId: T:System.ObjectDisposedException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.objectdisposedexception
+  name: ObjectDisposedException
+  nameWithType: ObjectDisposedException
+  fullName: System.ObjectDisposedException
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.DevicePointer*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.DevicePointer
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.html#Orleans_GpuBridge_Runtime_Memory_GpuMemoryHandle_DevicePointer
+  name: DevicePointer
+  nameWithType: GpuMemoryHandle.DevicePointer
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.DevicePointer
+- uid: System.IntPtr
+  commentId: T:System.IntPtr
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.intptr
+  name: nint
+  nameWithType: nint
+  fullName: nint
+  nameWithType.vb: IntPtr
+  fullName.vb: System.IntPtr
+  name.vb: IntPtr
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.SizeBytes*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.SizeBytes
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.html#Orleans_GpuBridge_Runtime_Memory_GpuMemoryHandle_SizeBytes
+  name: SizeBytes
+  nameWithType: GpuMemoryHandle.SizeBytes
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.SizeBytes
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.HandleId*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.HandleId
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.html#Orleans_GpuBridge_Runtime_Memory_GpuMemoryHandle_HandleId
+  name: HandleId
+  nameWithType: GpuMemoryHandle.HandleId
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.HandleId
+- uid: System.UInt64
+  commentId: T:System.UInt64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uint64
+  name: ulong
+  nameWithType: ulong
+  fullName: ulong
+  nameWithType.vb: ULong
+  fullName.vb: ULong
+  name.vb: ULong
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.IsPooled*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.IsPooled
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.html#Orleans_GpuBridge_Runtime_Memory_GpuMemoryHandle_IsPooled
+  name: IsPooled
+  nameWithType: GpuMemoryHandle.IsPooled
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.IsPooled
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.ReferenceCount*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.ReferenceCount
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.html#Orleans_GpuBridge_Runtime_Memory_GpuMemoryHandle_ReferenceCount
+  name: ReferenceCount
+  nameWithType: GpuMemoryHandle.ReferenceCount
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.ReferenceCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.AddReference*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.AddReference
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.html#Orleans_GpuBridge_Runtime_Memory_GpuMemoryHandle_AddReference
+  name: AddReference
+  nameWithType: GpuMemoryHandle.AddReference
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.AddReference
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+  commentId: T:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+  parent: Orleans.GpuBridge.Runtime.Memory
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.html
+  name: GpuMemoryHandle
+  nameWithType: GpuMemoryHandle
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.RemoveReference*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.RemoveReference
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.html#Orleans_GpuBridge_Runtime_Memory_GpuMemoryHandle_RemoveReference
+  name: RemoveReference
+  nameWithType: GpuMemoryHandle.RemoveReference
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.RemoveReference
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Dispose*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Dispose
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.html#Orleans_GpuBridge_Runtime_Memory_GpuMemoryHandle_Dispose
+  name: Dispose
+  nameWithType: GpuMemoryHandle.Dispose
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Equals*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Equals
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.html#Orleans_GpuBridge_Runtime_Memory_GpuMemoryHandle_Equals_Orleans_GpuBridge_Runtime_Memory_GpuMemoryHandle_
+  name: Equals
+  nameWithType: GpuMemoryHandle.Equals
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Equals
+- uid: System.IEquatable{Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle}.Equals(Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle)
+  commentId: M:System.IEquatable{Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle}.Equals(Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle)
+  parent: System.IEquatable{Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle}
+  definition: System.IEquatable`1.Equals(`0)
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  name: Equals(GpuMemoryHandle)
+  nameWithType: IEquatable<GpuMemoryHandle>.Equals(GpuMemoryHandle)
+  fullName: System.IEquatable<Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle>.Equals(Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle)
+  nameWithType.vb: IEquatable(Of GpuMemoryHandle).Equals(GpuMemoryHandle)
+  fullName.vb: System.IEquatable(Of Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle).Equals(Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle)
+  spec.csharp:
+  - uid: System.IEquatable{Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle}.Equals(Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+    name: GpuMemoryHandle
+    href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.html
+  - name: )
+  spec.vb:
+  - uid: System.IEquatable{Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle}.Equals(Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+    name: GpuMemoryHandle
+    href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.html
+  - name: )
+- uid: System.IEquatable`1.Equals(`0)
+  commentId: M:System.IEquatable`1.Equals(`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  name: Equals(T)
+  nameWithType: IEquatable<T>.Equals(T)
+  fullName: System.IEquatable<T>.Equals(T)
+  nameWithType.vb: IEquatable(Of T).Equals(T)
+  fullName.vb: System.IEquatable(Of T).Equals(T)
+  spec.csharp:
+  - uid: System.IEquatable`1.Equals(`0)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: System.IEquatable`1.Equals(`0)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - name: T
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.GetHashCode*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.GetHashCode
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.html#Orleans_GpuBridge_Runtime_Memory_GpuMemoryHandle_GetHashCode
+  name: GetHashCode
+  nameWithType: GpuMemoryHandle.GetHashCode
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.GetHashCode
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.ToString*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.ToString
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.html#Orleans_GpuBridge_Runtime_Memory_GpuMemoryHandle_ToString
+  name: ToString
+  nameWithType: GpuMemoryHandle.ToString
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Finalize*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Finalize
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.html#Orleans_GpuBridge_Runtime_Memory_GpuMemoryHandle_Finalize
+  name: ~GpuMemoryHandle
+  nameWithType: GpuMemoryHandle.~GpuMemoryHandle
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.~GpuMemoryHandle
+  spec.csharp:
+  - name: "~"
+  - uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.Finalize*
+    name: GpuMemoryHandle
+    href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.html#Orleans_GpuBridge_Runtime_Memory_GpuMemoryHandle_Finalize

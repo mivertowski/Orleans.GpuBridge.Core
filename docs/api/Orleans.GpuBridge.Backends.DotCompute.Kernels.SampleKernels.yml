@@ -1,0 +1,999 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels
+  commentId: T:Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels
+  id: SampleKernels
+  parent: Orleans.GpuBridge.Backends.DotCompute.Kernels
+  children:
+  - Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.BatchNormalization(System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32,System.Int32,System.Int32,System.Single)
+  - Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.Convolution2D(System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)
+  - Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.MatrixMultiply(System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32,System.Int32,System.Int32)
+  - Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.ReLU(System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32)
+  - Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.ReduceSum(System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32)
+  - Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.Softmax(System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32)
+  - Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.VectorAdd(System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32)
+  - Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.VectorMultiply(System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32)
+  langs:
+  - csharp
+  - vb
+  name: SampleKernels
+  nameWithType: SampleKernels
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Kernels/SampleKernels.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: SampleKernels
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Kernels/SampleKernels.cs
+    startLine: 10
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Kernels
+  summary: Sample GPU kernels for common operations
+  example: []
+  syntax:
+    content: public static class SampleKernels
+    content.vb: Public Module SampleKernels
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.VectorAdd(System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32)
+  commentId: M:Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.VectorAdd(System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32)
+  id: VectorAdd(System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32)
+  parent: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels
+  langs:
+  - csharp
+  - vb
+  name: VectorAdd(ReadOnlySpan<float>, ReadOnlySpan<float>, Span<float>, int)
+  nameWithType: SampleKernels.VectorAdd(ReadOnlySpan<float>, ReadOnlySpan<float>, Span<float>, int)
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.VectorAdd(System.ReadOnlySpan<float>, System.ReadOnlySpan<float>, System.Span<float>, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Kernels/SampleKernels.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: VectorAdd
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Kernels/SampleKernels.cs
+    startLine: 15
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Kernels
+  summary: Vector addition kernel
+  example: []
+  syntax:
+    content: >-
+      [Kernel("vector/add", PreferredWorkGroupSize = 256)]
+
+      public static void VectorAdd(ReadOnlySpan<float> a, ReadOnlySpan<float> b, Span<float> result, int size)
+    parameters:
+    - id: a
+      type: System.ReadOnlySpan{System.Single}
+    - id: b
+      type: System.ReadOnlySpan{System.Single}
+    - id: result
+      type: System.Span{System.Single}
+    - id: size
+      type: System.Int32
+    content.vb: >-
+      <Kernel("vector/add", PreferredWorkGroupSize:=256)>
+
+      Public Shared Sub VectorAdd(a As ReadOnlySpan(Of Single), b As ReadOnlySpan(Of Single), result As Span(Of Single), size As Integer)
+  overload: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.VectorAdd*
+  attributes:
+  - type: Orleans.GpuBridge.Backends.DotCompute.Attributes.KernelAttribute
+    ctor: Orleans.GpuBridge.Backends.DotCompute.Attributes.KernelAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: vector/add
+    namedArguments:
+    - name: PreferredWorkGroupSize
+      type: System.Int32
+      value: 256
+  nameWithType.vb: SampleKernels.VectorAdd(ReadOnlySpan(Of Single), ReadOnlySpan(Of Single), Span(Of Single), Integer)
+  fullName.vb: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.VectorAdd(System.ReadOnlySpan(Of Single), System.ReadOnlySpan(Of Single), System.Span(Of Single), Integer)
+  name.vb: VectorAdd(ReadOnlySpan(Of Single), ReadOnlySpan(Of Single), Span(Of Single), Integer)
+- uid: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.VectorMultiply(System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32)
+  commentId: M:Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.VectorMultiply(System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32)
+  id: VectorMultiply(System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32)
+  parent: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels
+  langs:
+  - csharp
+  - vb
+  name: VectorMultiply(ReadOnlySpan<float>, ReadOnlySpan<float>, Span<float>, int)
+  nameWithType: SampleKernels.VectorMultiply(ReadOnlySpan<float>, ReadOnlySpan<float>, Span<float>, int)
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.VectorMultiply(System.ReadOnlySpan<float>, System.ReadOnlySpan<float>, System.Span<float>, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Kernels/SampleKernels.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: VectorMultiply
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Kernels/SampleKernels.cs
+    startLine: 33
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Kernels
+  summary: Vector multiplication kernel
+  example: []
+  syntax:
+    content: >-
+      [Kernel("vector/multiply", PreferredWorkGroupSize = 256)]
+
+      public static void VectorMultiply(ReadOnlySpan<float> a, ReadOnlySpan<float> b, Span<float> result, int size)
+    parameters:
+    - id: a
+      type: System.ReadOnlySpan{System.Single}
+    - id: b
+      type: System.ReadOnlySpan{System.Single}
+    - id: result
+      type: System.Span{System.Single}
+    - id: size
+      type: System.Int32
+    content.vb: >-
+      <Kernel("vector/multiply", PreferredWorkGroupSize:=256)>
+
+      Public Shared Sub VectorMultiply(a As ReadOnlySpan(Of Single), b As ReadOnlySpan(Of Single), result As Span(Of Single), size As Integer)
+  overload: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.VectorMultiply*
+  attributes:
+  - type: Orleans.GpuBridge.Backends.DotCompute.Attributes.KernelAttribute
+    ctor: Orleans.GpuBridge.Backends.DotCompute.Attributes.KernelAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: vector/multiply
+    namedArguments:
+    - name: PreferredWorkGroupSize
+      type: System.Int32
+      value: 256
+  nameWithType.vb: SampleKernels.VectorMultiply(ReadOnlySpan(Of Single), ReadOnlySpan(Of Single), Span(Of Single), Integer)
+  fullName.vb: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.VectorMultiply(System.ReadOnlySpan(Of Single), System.ReadOnlySpan(Of Single), System.Span(Of Single), Integer)
+  name.vb: VectorMultiply(ReadOnlySpan(Of Single), ReadOnlySpan(Of Single), Span(Of Single), Integer)
+- uid: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.MatrixMultiply(System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32,System.Int32,System.Int32)
+  commentId: M:Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.MatrixMultiply(System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32,System.Int32,System.Int32)
+  id: MatrixMultiply(System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32,System.Int32,System.Int32)
+  parent: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels
+  langs:
+  - csharp
+  - vb
+  name: MatrixMultiply(ReadOnlySpan<float>, ReadOnlySpan<float>, Span<float>, int, int, int)
+  nameWithType: SampleKernels.MatrixMultiply(ReadOnlySpan<float>, ReadOnlySpan<float>, Span<float>, int, int, int)
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.MatrixMultiply(System.ReadOnlySpan<float>, System.ReadOnlySpan<float>, System.Span<float>, int, int, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Kernels/SampleKernels.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MatrixMultiply
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Kernels/SampleKernels.cs
+    startLine: 49
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Kernels
+  summary: Matrix multiplication kernel
+  example: []
+  syntax:
+    content: >-
+      [Kernel("matrix/multiply", PreferredWorkGroupSize = 16, RequiresSharedMemory = true)]
+
+      public static void MatrixMultiply(ReadOnlySpan<float> a, ReadOnlySpan<float> b, Span<float> c, int m, int n, int k)
+    parameters:
+    - id: a
+      type: System.ReadOnlySpan{System.Single}
+    - id: b
+      type: System.ReadOnlySpan{System.Single}
+    - id: c
+      type: System.Span{System.Single}
+    - id: m
+      type: System.Int32
+    - id: n
+      type: System.Int32
+    - id: k
+      type: System.Int32
+    content.vb: >-
+      <Kernel("matrix/multiply", PreferredWorkGroupSize:=16, RequiresSharedMemory:=True)>
+
+      Public Shared Sub MatrixMultiply(a As ReadOnlySpan(Of Single), b As ReadOnlySpan(Of Single), c As Span(Of Single), m As Integer, n As Integer, k As Integer)
+  overload: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.MatrixMultiply*
+  attributes:
+  - type: Orleans.GpuBridge.Backends.DotCompute.Attributes.KernelAttribute
+    ctor: Orleans.GpuBridge.Backends.DotCompute.Attributes.KernelAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: matrix/multiply
+    namedArguments:
+    - name: PreferredWorkGroupSize
+      type: System.Int32
+      value: 16
+    - name: RequiresSharedMemory
+      type: System.Boolean
+      value: true
+  nameWithType.vb: SampleKernels.MatrixMultiply(ReadOnlySpan(Of Single), ReadOnlySpan(Of Single), Span(Of Single), Integer, Integer, Integer)
+  fullName.vb: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.MatrixMultiply(System.ReadOnlySpan(Of Single), System.ReadOnlySpan(Of Single), System.Span(Of Single), Integer, Integer, Integer)
+  name.vb: MatrixMultiply(ReadOnlySpan(Of Single), ReadOnlySpan(Of Single), Span(Of Single), Integer, Integer, Integer)
+- uid: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.ReduceSum(System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32)
+  commentId: M:Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.ReduceSum(System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32)
+  id: ReduceSum(System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32)
+  parent: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels
+  langs:
+  - csharp
+  - vb
+  name: ReduceSum(ReadOnlySpan<float>, Span<float>, int)
+  nameWithType: SampleKernels.ReduceSum(ReadOnlySpan<float>, Span<float>, int)
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.ReduceSum(System.ReadOnlySpan<float>, System.Span<float>, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Kernels/SampleKernels.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ReduceSum
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Kernels/SampleKernels.cs
+    startLine: 77
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Kernels
+  summary: Reduction kernel (sum)
+  example: []
+  syntax:
+    content: >-
+      [Kernel("reduce/sum", PreferredWorkGroupSize = 128)]
+
+      public static void ReduceSum(ReadOnlySpan<float> input, Span<float> output, int size)
+    parameters:
+    - id: input
+      type: System.ReadOnlySpan{System.Single}
+    - id: output
+      type: System.Span{System.Single}
+    - id: size
+      type: System.Int32
+    content.vb: >-
+      <Kernel("reduce/sum", PreferredWorkGroupSize:=128)>
+
+      Public Shared Sub ReduceSum(input As ReadOnlySpan(Of Single), output As Span(Of Single), size As Integer)
+  overload: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.ReduceSum*
+  attributes:
+  - type: Orleans.GpuBridge.Backends.DotCompute.Attributes.KernelAttribute
+    ctor: Orleans.GpuBridge.Backends.DotCompute.Attributes.KernelAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: reduce/sum
+    namedArguments:
+    - name: PreferredWorkGroupSize
+      type: System.Int32
+      value: 128
+  nameWithType.vb: SampleKernels.ReduceSum(ReadOnlySpan(Of Single), Span(Of Single), Integer)
+  fullName.vb: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.ReduceSum(System.ReadOnlySpan(Of Single), System.Span(Of Single), Integer)
+  name.vb: ReduceSum(ReadOnlySpan(Of Single), Span(Of Single), Integer)
+- uid: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.Convolution2D(System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)
+  commentId: M:Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.Convolution2D(System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)
+  id: Convolution2D(System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)
+  parent: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels
+  langs:
+  - csharp
+  - vb
+  name: Convolution2D(ReadOnlySpan<float>, ReadOnlySpan<float>, Span<float>, int, int, int, int, int, int)
+  nameWithType: SampleKernels.Convolution2D(ReadOnlySpan<float>, ReadOnlySpan<float>, Span<float>, int, int, int, int, int, int)
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.Convolution2D(System.ReadOnlySpan<float>, System.ReadOnlySpan<float>, System.Span<float>, int, int, int, int, int, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Kernels/SampleKernels.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Convolution2D
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Kernels/SampleKernels.cs
+    startLine: 94
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Kernels
+  summary: Convolution kernel
+  example: []
+  syntax:
+    content: >-
+      [Kernel("conv/2d", PreferredWorkGroupSize = 32)]
+
+      public static void Convolution2D(ReadOnlySpan<float> input, ReadOnlySpan<float> kernel, Span<float> output, int inputWidth, int inputHeight, int kernelWidth, int kernelHeight, int outputWidth, int outputHeight)
+    parameters:
+    - id: input
+      type: System.ReadOnlySpan{System.Single}
+    - id: kernel
+      type: System.ReadOnlySpan{System.Single}
+    - id: output
+      type: System.Span{System.Single}
+    - id: inputWidth
+      type: System.Int32
+    - id: inputHeight
+      type: System.Int32
+    - id: kernelWidth
+      type: System.Int32
+    - id: kernelHeight
+      type: System.Int32
+    - id: outputWidth
+      type: System.Int32
+    - id: outputHeight
+      type: System.Int32
+    content.vb: >-
+      <Kernel("conv/2d", PreferredWorkGroupSize:=32)>
+
+      Public Shared Sub Convolution2D(input As ReadOnlySpan(Of Single), kernel As ReadOnlySpan(Of Single), output As Span(Of Single), inputWidth As Integer, inputHeight As Integer, kernelWidth As Integer, kernelHeight As Integer, outputWidth As Integer, outputHeight As Integer)
+  overload: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.Convolution2D*
+  attributes:
+  - type: Orleans.GpuBridge.Backends.DotCompute.Attributes.KernelAttribute
+    ctor: Orleans.GpuBridge.Backends.DotCompute.Attributes.KernelAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: conv/2d
+    namedArguments:
+    - name: PreferredWorkGroupSize
+      type: System.Int32
+      value: 32
+  nameWithType.vb: SampleKernels.Convolution2D(ReadOnlySpan(Of Single), ReadOnlySpan(Of Single), Span(Of Single), Integer, Integer, Integer, Integer, Integer, Integer)
+  fullName.vb: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.Convolution2D(System.ReadOnlySpan(Of Single), System.ReadOnlySpan(Of Single), System.Span(Of Single), Integer, Integer, Integer, Integer, Integer, Integer)
+  name.vb: Convolution2D(ReadOnlySpan(Of Single), ReadOnlySpan(Of Single), Span(Of Single), Integer, Integer, Integer, Integer, Integer, Integer)
+- uid: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.Softmax(System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32)
+  commentId: M:Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.Softmax(System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32)
+  id: Softmax(System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32)
+  parent: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels
+  langs:
+  - csharp
+  - vb
+  name: Softmax(ReadOnlySpan<float>, Span<float>, int)
+  nameWithType: SampleKernels.Softmax(ReadOnlySpan<float>, Span<float>, int)
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.Softmax(System.ReadOnlySpan<float>, System.Span<float>, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Kernels/SampleKernels.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Softmax
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Kernels/SampleKernels.cs
+    startLine: 136
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Kernels
+  summary: Softmax kernel
+  example: []
+  syntax:
+    content: >-
+      [Kernel("activation/softmax", PreferredWorkGroupSize = 256)]
+
+      public static void Softmax(ReadOnlySpan<float> input, Span<float> output, int size)
+    parameters:
+    - id: input
+      type: System.ReadOnlySpan{System.Single}
+    - id: output
+      type: System.Span{System.Single}
+    - id: size
+      type: System.Int32
+    content.vb: >-
+      <Kernel("activation/softmax", PreferredWorkGroupSize:=256)>
+
+      Public Shared Sub Softmax(input As ReadOnlySpan(Of Single), output As Span(Of Single), size As Integer)
+  overload: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.Softmax*
+  attributes:
+  - type: Orleans.GpuBridge.Backends.DotCompute.Attributes.KernelAttribute
+    ctor: Orleans.GpuBridge.Backends.DotCompute.Attributes.KernelAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: activation/softmax
+    namedArguments:
+    - name: PreferredWorkGroupSize
+      type: System.Int32
+      value: 256
+  nameWithType.vb: SampleKernels.Softmax(ReadOnlySpan(Of Single), Span(Of Single), Integer)
+  fullName.vb: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.Softmax(System.ReadOnlySpan(Of Single), System.Span(Of Single), Integer)
+  name.vb: Softmax(ReadOnlySpan(Of Single), Span(Of Single), Integer)
+- uid: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.ReLU(System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32)
+  commentId: M:Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.ReLU(System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32)
+  id: ReLU(System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32)
+  parent: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels
+  langs:
+  - csharp
+  - vb
+  name: ReLU(ReadOnlySpan<float>, Span<float>, int)
+  nameWithType: SampleKernels.ReLU(ReadOnlySpan<float>, Span<float>, int)
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.ReLU(System.ReadOnlySpan<float>, System.Span<float>, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Kernels/SampleKernels.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ReLU
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Kernels/SampleKernels.cs
+    startLine: 167
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Kernels
+  summary: ReLU activation kernel
+  example: []
+  syntax:
+    content: >-
+      [Kernel("activation/relu", PreferredWorkGroupSize = 512)]
+
+      public static void ReLU(ReadOnlySpan<float> input, Span<float> output, int size)
+    parameters:
+    - id: input
+      type: System.ReadOnlySpan{System.Single}
+    - id: output
+      type: System.Span{System.Single}
+    - id: size
+      type: System.Int32
+    content.vb: >-
+      <Kernel("activation/relu", PreferredWorkGroupSize:=512)>
+
+      Public Shared Sub ReLU(input As ReadOnlySpan(Of Single), output As Span(Of Single), size As Integer)
+  overload: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.ReLU*
+  attributes:
+  - type: Orleans.GpuBridge.Backends.DotCompute.Attributes.KernelAttribute
+    ctor: Orleans.GpuBridge.Backends.DotCompute.Attributes.KernelAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: activation/relu
+    namedArguments:
+    - name: PreferredWorkGroupSize
+      type: System.Int32
+      value: 512
+  nameWithType.vb: SampleKernels.ReLU(ReadOnlySpan(Of Single), Span(Of Single), Integer)
+  fullName.vb: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.ReLU(System.ReadOnlySpan(Of Single), System.Span(Of Single), Integer)
+  name.vb: ReLU(ReadOnlySpan(Of Single), Span(Of Single), Integer)
+- uid: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.BatchNormalization(System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32,System.Int32,System.Int32,System.Single)
+  commentId: M:Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.BatchNormalization(System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32,System.Int32,System.Int32,System.Single)
+  id: BatchNormalization(System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.ReadOnlySpan{System.Single},System.Span{System.Single},System.Int32,System.Int32,System.Int32,System.Single)
+  parent: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels
+  langs:
+  - csharp
+  - vb
+  name: BatchNormalization(ReadOnlySpan<float>, ReadOnlySpan<float>, ReadOnlySpan<float>, ReadOnlySpan<float>, ReadOnlySpan<float>, Span<float>, int, int, int, float)
+  nameWithType: SampleKernels.BatchNormalization(ReadOnlySpan<float>, ReadOnlySpan<float>, ReadOnlySpan<float>, ReadOnlySpan<float>, ReadOnlySpan<float>, Span<float>, int, int, int, float)
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.BatchNormalization(System.ReadOnlySpan<float>, System.ReadOnlySpan<float>, System.ReadOnlySpan<float>, System.ReadOnlySpan<float>, System.ReadOnlySpan<float>, System.Span<float>, int, int, int, float)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Kernels/SampleKernels.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: BatchNormalization
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Kernels/SampleKernels.cs
+    startLine: 183
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Kernels
+  summary: Batch normalization kernel
+  example: []
+  syntax:
+    content: >-
+      [Kernel("norm/batch", PreferredWorkGroupSize = 128)]
+
+      public static void BatchNormalization(ReadOnlySpan<float> input, ReadOnlySpan<float> mean, ReadOnlySpan<float> variance, ReadOnlySpan<float> gamma, ReadOnlySpan<float> beta, Span<float> output, int batchSize, int channels, int spatialSize, float epsilon = 1E-05)
+    parameters:
+    - id: input
+      type: System.ReadOnlySpan{System.Single}
+    - id: mean
+      type: System.ReadOnlySpan{System.Single}
+    - id: variance
+      type: System.ReadOnlySpan{System.Single}
+    - id: gamma
+      type: System.ReadOnlySpan{System.Single}
+    - id: beta
+      type: System.ReadOnlySpan{System.Single}
+    - id: output
+      type: System.Span{System.Single}
+    - id: batchSize
+      type: System.Int32
+    - id: channels
+      type: System.Int32
+    - id: spatialSize
+      type: System.Int32
+    - id: epsilon
+      type: System.Single
+    content.vb: >-
+      <Kernel("norm/batch", PreferredWorkGroupSize:=128)>
+
+      Public Shared Sub BatchNormalization(input As ReadOnlySpan(Of Single), mean As ReadOnlySpan(Of Single), variance As ReadOnlySpan(Of Single), gamma As ReadOnlySpan(Of Single), beta As ReadOnlySpan(Of Single), output As Span(Of Single), batchSize As Integer, channels As Integer, spatialSize As Integer, epsilon As Single = 1E-05)
+  overload: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.BatchNormalization*
+  attributes:
+  - type: Orleans.GpuBridge.Backends.DotCompute.Attributes.KernelAttribute
+    ctor: Orleans.GpuBridge.Backends.DotCompute.Attributes.KernelAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: norm/batch
+    namedArguments:
+    - name: PreferredWorkGroupSize
+      type: System.Int32
+      value: 128
+  nameWithType.vb: SampleKernels.BatchNormalization(ReadOnlySpan(Of Single), ReadOnlySpan(Of Single), ReadOnlySpan(Of Single), ReadOnlySpan(Of Single), ReadOnlySpan(Of Single), Span(Of Single), Integer, Integer, Integer, Single)
+  fullName.vb: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.BatchNormalization(System.ReadOnlySpan(Of Single), System.ReadOnlySpan(Of Single), System.ReadOnlySpan(Of Single), System.ReadOnlySpan(Of Single), System.ReadOnlySpan(Of Single), System.Span(Of Single), Integer, Integer, Integer, Single)
+  name.vb: BatchNormalization(ReadOnlySpan(Of Single), ReadOnlySpan(Of Single), ReadOnlySpan(Of Single), ReadOnlySpan(Of Single), ReadOnlySpan(Of Single), Span(Of Single), Integer, Integer, Integer, Single)
+references:
+- uid: Orleans.GpuBridge.Backends.DotCompute.Kernels
+  commentId: N:Orleans.GpuBridge.Backends.DotCompute.Kernels
+  href: Orleans.html
+  name: Orleans.GpuBridge.Backends.DotCompute.Kernels
+  nameWithType: Orleans.GpuBridge.Backends.DotCompute.Kernels
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Kernels
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends
+    name: Backends
+    href: Orleans.GpuBridge.Backends.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute
+    name: DotCompute
+    href: Orleans.GpuBridge.Backends.DotCompute.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Kernels
+    name: Kernels
+    href: Orleans.GpuBridge.Backends.DotCompute.Kernels.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends
+    name: Backends
+    href: Orleans.GpuBridge.Backends.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute
+    name: DotCompute
+    href: Orleans.GpuBridge.Backends.DotCompute.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Kernels
+    name: Kernels
+    href: Orleans.GpuBridge.Backends.DotCompute.Kernels.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.VectorAdd*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.VectorAdd
+  href: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.html#Orleans_GpuBridge_Backends_DotCompute_Kernels_SampleKernels_VectorAdd_System_ReadOnlySpan_System_Single__System_ReadOnlySpan_System_Single__System_Span_System_Single__System_Int32_
+  name: VectorAdd
+  nameWithType: SampleKernels.VectorAdd
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.VectorAdd
+- uid: System.ReadOnlySpan{System.Single}
+  commentId: T:System.ReadOnlySpan{System.Single}
+  parent: System
+  definition: System.ReadOnlySpan`1
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<float>
+  nameWithType: ReadOnlySpan<float>
+  fullName: System.ReadOnlySpan<float>
+  nameWithType.vb: ReadOnlySpan(Of Single)
+  fullName.vb: System.ReadOnlySpan(Of Single)
+  name.vb: ReadOnlySpan(Of Single)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: System.Span{System.Single}
+  commentId: T:System.Span{System.Single}
+  parent: System
+  definition: System.Span`1
+  href: https://learn.microsoft.com/dotnet/api/system.span-1
+  name: Span<float>
+  nameWithType: Span<float>
+  fullName: System.Span<float>
+  nameWithType.vb: Span(Of Single)
+  fullName.vb: System.Span(Of Single)
+  name.vb: Span(Of Single)
+  spec.csharp:
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: <
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '>'
+  spec.vb:
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.ReadOnlySpan`1
+  commentId: T:System.ReadOnlySpan`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<T>
+  nameWithType: ReadOnlySpan<T>
+  fullName: System.ReadOnlySpan<T>
+  nameWithType.vb: ReadOnlySpan(Of T)
+  fullName.vb: System.ReadOnlySpan(Of T)
+  name.vb: ReadOnlySpan(Of T)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Span`1
+  commentId: T:System.Span`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.span-1
+  name: Span<T>
+  nameWithType: Span<T>
+  fullName: System.Span<T>
+  nameWithType.vb: Span(Of T)
+  fullName.vb: System.Span(Of T)
+  name.vb: Span(Of T)
+  spec.csharp:
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.VectorMultiply*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.VectorMultiply
+  href: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.html#Orleans_GpuBridge_Backends_DotCompute_Kernels_SampleKernels_VectorMultiply_System_ReadOnlySpan_System_Single__System_ReadOnlySpan_System_Single__System_Span_System_Single__System_Int32_
+  name: VectorMultiply
+  nameWithType: SampleKernels.VectorMultiply
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.VectorMultiply
+- uid: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.MatrixMultiply*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.MatrixMultiply
+  href: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.html#Orleans_GpuBridge_Backends_DotCompute_Kernels_SampleKernels_MatrixMultiply_System_ReadOnlySpan_System_Single__System_ReadOnlySpan_System_Single__System_Span_System_Single__System_Int32_System_Int32_System_Int32_
+  name: MatrixMultiply
+  nameWithType: SampleKernels.MatrixMultiply
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.MatrixMultiply
+- uid: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.ReduceSum*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.ReduceSum
+  href: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.html#Orleans_GpuBridge_Backends_DotCompute_Kernels_SampleKernels_ReduceSum_System_ReadOnlySpan_System_Single__System_Span_System_Single__System_Int32_
+  name: ReduceSum
+  nameWithType: SampleKernels.ReduceSum
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.ReduceSum
+- uid: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.Convolution2D*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.Convolution2D
+  href: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.html#Orleans_GpuBridge_Backends_DotCompute_Kernels_SampleKernels_Convolution2D_System_ReadOnlySpan_System_Single__System_ReadOnlySpan_System_Single__System_Span_System_Single__System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_
+  name: Convolution2D
+  nameWithType: SampleKernels.Convolution2D
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.Convolution2D
+- uid: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.Softmax*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.Softmax
+  href: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.html#Orleans_GpuBridge_Backends_DotCompute_Kernels_SampleKernels_Softmax_System_ReadOnlySpan_System_Single__System_Span_System_Single__System_Int32_
+  name: Softmax
+  nameWithType: SampleKernels.Softmax
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.Softmax
+- uid: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.ReLU*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.ReLU
+  href: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.html#Orleans_GpuBridge_Backends_DotCompute_Kernels_SampleKernels_ReLU_System_ReadOnlySpan_System_Single__System_Span_System_Single__System_Int32_
+  name: ReLU
+  nameWithType: SampleKernels.ReLU
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.ReLU
+- uid: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.BatchNormalization*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.BatchNormalization
+  href: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.html#Orleans_GpuBridge_Backends_DotCompute_Kernels_SampleKernels_BatchNormalization_System_ReadOnlySpan_System_Single__System_ReadOnlySpan_System_Single__System_ReadOnlySpan_System_Single__System_ReadOnlySpan_System_Single__System_ReadOnlySpan_System_Single__System_Span_System_Single__System_Int32_System_Int32_System_Int32_System_Single_
+  name: BatchNormalization
+  nameWithType: SampleKernels.BatchNormalization
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Kernels.SampleKernels.BatchNormalization
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single

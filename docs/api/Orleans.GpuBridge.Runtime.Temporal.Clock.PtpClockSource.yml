@@ -1,0 +1,1122 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource
+  id: PtpClockSource
+  parent: Orleans.GpuBridge.Runtime.Temporal.Clock
+  children:
+  - Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource},System.String)
+  - Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.ClockId
+  - Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.ClockPath
+  - Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.Dispose
+  - Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.GetClockDrift
+  - Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.GetCurrentTimeNanos
+  - Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.GetErrorBound
+  - Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.InitializeAsync(System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.IsSynchronized
+  langs:
+  - csharp
+  - vb
+  name: PtpClockSource
+  nameWithType: PtpClockSource
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Clock/PtpClockSource.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: PtpClockSource
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Clock/PtpClockSource.cs
+    startLine: 26
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Clock
+  summary: >-
+    PTP (Precision Time Protocol) hardware clock source for sub-microsecond timing.
+
+    Accesses /dev/ptp* devices on Linux via POSIX clock_gettime().
+
+    Provides ±100ns-1μs accuracy depending on hardware.
+  remarks: >-
+    Hardware requirements:
+
+    - Linux: PTP-capable NIC with /dev/ptp0 device
+
+    - Windows: PTP-capable NIC with IOCTL_PTP_GET_TIME support
+
+
+    Supported NICs:
+
+    - Intel i210/i211 (consumer, ±100ns)
+
+    - Intel X540/X550 (enterprise, ±100ns)
+
+    - Mellanox ConnectX-3/4/5 (high-end, ±50ns)
+
+    - Hyper-V synthetic NIC (virtual, ±1-5μs)
+
+
+    Fallback: If PTP hardware unavailable, use SoftwarePtpClient or NtpClockSource.
+  example: []
+  syntax:
+    content: 'public sealed class PtpClockSource : IPhysicalClockSource, IDisposable'
+    content.vb: Public NotInheritable Class PtpClockSource Implements IPhysicalClockSource, IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.IsSynchronized
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.IsSynchronized
+  id: IsSynchronized
+  parent: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource
+  langs:
+  - csharp
+  - vb
+  name: IsSynchronized
+  nameWithType: PtpClockSource.IsSynchronized
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.IsSynchronized
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Clock/PtpClockSource.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsSynchronized
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Clock/PtpClockSource.cs
+    startLine: 39
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Clock
+  summary: Gets whether PTP clock is synchronized and available.
+  example: []
+  syntax:
+    content: public bool IsSynchronized { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsSynchronized As Boolean
+  overload: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.IsSynchronized*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.IsSynchronized
+- uid: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.ClockPath
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.ClockPath
+  id: ClockPath
+  parent: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource
+  langs:
+  - csharp
+  - vb
+  name: ClockPath
+  nameWithType: PtpClockSource.ClockPath
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.ClockPath
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Clock/PtpClockSource.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ClockPath
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Clock/PtpClockSource.cs
+    startLine: 44
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Clock
+  summary: Gets the PTP device path (e.g., "/dev/ptp0").
+  example: []
+  syntax:
+    content: public string ClockPath { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property ClockPath As String
+  overload: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.ClockPath*
+- uid: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.ClockId
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.ClockId
+  id: ClockId
+  parent: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource
+  langs:
+  - csharp
+  - vb
+  name: ClockId
+  nameWithType: PtpClockSource.ClockId
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.ClockId
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Clock/PtpClockSource.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ClockId
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Clock/PtpClockSource.cs
+    startLine: 49
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Clock
+  summary: Gets the PTP clock ID used for clock_gettime().
+  example: []
+  syntax:
+    content: public int ClockId { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property ClockId As Integer
+  overload: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.ClockId*
+- uid: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource},System.String)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource},System.String)
+  id: '#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource},System.String)'
+  parent: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource
+  langs:
+  - csharp
+  - vb
+  name: PtpClockSource(ILogger<PtpClockSource>, string)
+  nameWithType: PtpClockSource.PtpClockSource(ILogger<PtpClockSource>, string)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.PtpClockSource(Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource>, string)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Clock/PtpClockSource.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Clock/PtpClockSource.cs
+    startLine: 56
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Clock
+  summary: Initializes a new PTP clock source.
+  example: []
+  syntax:
+    content: public PtpClockSource(ILogger<PtpClockSource> logger, string ptpDevicePath = "/dev/ptp0")
+    parameters:
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource}
+      description: Logger for diagnostic messages.
+    - id: ptpDevicePath
+      type: System.String
+      description: 'Path to PTP device (default: /dev/ptp0).'
+    content.vb: Public Sub New(logger As ILogger(Of PtpClockSource), ptpDevicePath As String = "/dev/ptp0")
+  overload: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.#ctor*
+  nameWithType.vb: PtpClockSource.New(ILogger(Of PtpClockSource), String)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.New(Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource), String)
+  name.vb: New(ILogger(Of PtpClockSource), String)
+- uid: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.InitializeAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.InitializeAsync(System.Threading.CancellationToken)
+  id: InitializeAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource
+  langs:
+  - csharp
+  - vb
+  name: InitializeAsync(CancellationToken)
+  nameWithType: PtpClockSource.InitializeAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.InitializeAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Clock/PtpClockSource.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: InitializeAsync
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Clock/PtpClockSource.cs
+    startLine: 67
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Clock
+  summary: >-
+    Initializes PTP clock access.
+
+    Detects available PTP hardware and configures clock ID.
+  example: []
+  syntax:
+    content: public Task<bool> InitializeAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: True if PTP hardware initialized successfully; false otherwise.
+    content.vb: Public Function InitializeAsync(ct As CancellationToken = Nothing) As Task(Of Boolean)
+  overload: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.InitializeAsync*
+- uid: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.GetCurrentTimeNanos
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.GetCurrentTimeNanos
+  id: GetCurrentTimeNanos
+  parent: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource
+  langs:
+  - csharp
+  - vb
+  name: GetCurrentTimeNanos()
+  nameWithType: PtpClockSource.GetCurrentTimeNanos()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.GetCurrentTimeNanos()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Clock/PtpClockSource.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetCurrentTimeNanos
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Clock/PtpClockSource.cs
+    startLine: 99
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Clock
+  summary: Gets current PTP time in nanoseconds since Unix epoch.
+  example: []
+  syntax:
+    content: public long GetCurrentTimeNanos()
+    return:
+      type: System.Int64
+      description: Current time in nanoseconds.
+    content.vb: Public Function GetCurrentTimeNanos() As Long
+  overload: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.GetCurrentTimeNanos*
+  exceptions:
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: PTP clock not initialized.
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetCurrentTimeNanos
+- uid: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.GetErrorBound
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.GetErrorBound
+  id: GetErrorBound
+  parent: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource
+  langs:
+  - csharp
+  - vb
+  name: GetErrorBound()
+  nameWithType: PtpClockSource.GetErrorBound()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.GetErrorBound()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Clock/PtpClockSource.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetErrorBound
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Clock/PtpClockSource.cs
+    startLine: 123
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Clock
+  summary: Gets PTP clock uncertainty (error bound) in nanoseconds.
+  example: []
+  syntax:
+    content: public long GetErrorBound()
+    return:
+      type: System.Int64
+      description: Error bound in nanoseconds.
+    content.vb: Public Function GetErrorBound() As Long
+  overload: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.GetErrorBound*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetErrorBound
+- uid: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.GetClockDrift
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.GetClockDrift
+  id: GetClockDrift
+  parent: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource
+  langs:
+  - csharp
+  - vb
+  name: GetClockDrift()
+  nameWithType: PtpClockSource.GetClockDrift()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.GetClockDrift()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Clock/PtpClockSource.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetClockDrift
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Clock/PtpClockSource.cs
+    startLine: 138
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Clock
+  summary: >-
+    Gets clock drift rate in parts per million (PPM).
+
+    Returns 0 for PTP clocks (drift handled by PTP synchronization).
+  example: []
+  syntax:
+    content: public double GetClockDrift()
+    return:
+      type: System.Double
+    content.vb: Public Function GetClockDrift() As Double
+  overload: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.GetClockDrift*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetClockDrift
+- uid: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.Dispose
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.Dispose
+  id: Dispose
+  parent: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: PtpClockSource.Dispose()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.Dispose()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Clock/PtpClockSource.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Dispose
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Clock/PtpClockSource.cs
+    startLine: 273
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Clock
+  summary: Releases PTP device resources.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+references:
+- uid: Orleans.GpuBridge.Runtime.Temporal.Clock
+  commentId: N:Orleans.GpuBridge.Runtime.Temporal.Clock
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Temporal.Clock
+  nameWithType: Orleans.GpuBridge.Runtime.Temporal.Clock
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Clock
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Clock
+    name: Clock
+    href: Orleans.GpuBridge.Runtime.Temporal.Clock.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Clock
+    name: Clock
+    href: Orleans.GpuBridge.Runtime.Temporal.Clock.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.html
+  name: IPhysicalClockSource
+  nameWithType: IPhysicalClockSource
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Abstractions.Temporal
+  commentId: N:Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Temporal
+  nameWithType: Orleans.GpuBridge.Abstractions.Temporal
+  fullName: Orleans.GpuBridge.Abstractions.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+- uid: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.IsSynchronized*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.IsSynchronized
+  href: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.html#Orleans_GpuBridge_Runtime_Temporal_Clock_PtpClockSource_IsSynchronized
+  name: IsSynchronized
+  nameWithType: PtpClockSource.IsSynchronized
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.IsSynchronized
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.IsSynchronized
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.IsSynchronized
+  parent: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource
+  name: IsSynchronized
+  nameWithType: IPhysicalClockSource.IsSynchronized
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.IsSynchronized
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.ClockPath*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.ClockPath
+  href: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.html#Orleans_GpuBridge_Runtime_Temporal_Clock_PtpClockSource_ClockPath
+  name: ClockPath
+  nameWithType: PtpClockSource.ClockPath
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.ClockPath
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.ClockId*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.ClockId
+  href: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.html#Orleans_GpuBridge_Runtime_Temporal_Clock_PtpClockSource_ClockId
+  name: ClockId
+  nameWithType: PtpClockSource.ClockId
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.ClockId
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.#ctor
+  href: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.html#Orleans_GpuBridge_Runtime_Temporal_Clock_PtpClockSource__ctor_Microsoft_Extensions_Logging_ILogger_Orleans_GpuBridge_Runtime_Temporal_Clock_PtpClockSource__System_String_
+  name: PtpClockSource
+  nameWithType: PtpClockSource.PtpClockSource
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.PtpClockSource
+  nameWithType.vb: PtpClockSource.New
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.New
+  name.vb: New
+- uid: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<PtpClockSource>
+  nameWithType: ILogger<PtpClockSource>
+  fullName: Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource>
+  nameWithType.vb: ILogger(Of PtpClockSource)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource)
+  name.vb: ILogger(Of PtpClockSource)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource
+    name: PtpClockSource
+    href: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource
+    name: PtpClockSource
+    href: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.html
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.InitializeAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.InitializeAsync
+  href: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.html#Orleans_GpuBridge_Runtime_Temporal_Clock_PtpClockSource_InitializeAsync_System_Threading_CancellationToken_
+  name: InitializeAsync
+  nameWithType: PtpClockSource.InitializeAsync
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.InitializeAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: System.InvalidOperationException
+  commentId: T:System.InvalidOperationException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
+  name: InvalidOperationException
+  nameWithType: InvalidOperationException
+  fullName: System.InvalidOperationException
+- uid: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.GetCurrentTimeNanos*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.GetCurrentTimeNanos
+  href: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.html#Orleans_GpuBridge_Runtime_Temporal_Clock_PtpClockSource_GetCurrentTimeNanos
+  name: GetCurrentTimeNanos
+  nameWithType: PtpClockSource.GetCurrentTimeNanos
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.GetCurrentTimeNanos
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetCurrentTimeNanos
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetCurrentTimeNanos
+  parent: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource
+  name: GetCurrentTimeNanos()
+  nameWithType: IPhysicalClockSource.GetCurrentTimeNanos()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetCurrentTimeNanos()
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetCurrentTimeNanos
+    name: GetCurrentTimeNanos
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetCurrentTimeNanos
+    name: GetCurrentTimeNanos
+  - name: (
+  - name: )
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.GetErrorBound*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.GetErrorBound
+  href: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.html#Orleans_GpuBridge_Runtime_Temporal_Clock_PtpClockSource_GetErrorBound
+  name: GetErrorBound
+  nameWithType: PtpClockSource.GetErrorBound
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.GetErrorBound
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetErrorBound
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetErrorBound
+  parent: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource
+  name: GetErrorBound()
+  nameWithType: IPhysicalClockSource.GetErrorBound()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetErrorBound()
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetErrorBound
+    name: GetErrorBound
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetErrorBound
+    name: GetErrorBound
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.GetClockDrift*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.GetClockDrift
+  href: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.html#Orleans_GpuBridge_Runtime_Temporal_Clock_PtpClockSource_GetClockDrift
+  name: GetClockDrift
+  nameWithType: PtpClockSource.GetClockDrift
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.GetClockDrift
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetClockDrift
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetClockDrift
+  parent: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource
+  name: GetClockDrift()
+  nameWithType: IPhysicalClockSource.GetClockDrift()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetClockDrift()
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetClockDrift
+    name: GetClockDrift
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetClockDrift
+    name: GetClockDrift
+  - name: (
+  - name: )
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.Dispose*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.Dispose
+  href: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.html#Orleans_GpuBridge_Runtime_Temporal_Clock_PtpClockSource_Dispose
+  name: Dispose
+  nameWithType: PtpClockSource.Dispose
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Clock.PtpClockSource.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )

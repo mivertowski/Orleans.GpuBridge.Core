@@ -1,0 +1,1576 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider
+  commentId: T:Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider
+  id: DotComputeTimingProvider
+  parent: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  children:
+  - Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.#ctor(DotCompute.Abstractions.Timing.ITimingProvider,Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider})
+  - Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.CalibrateAsync(System.Int32,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.Dispose
+  - Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.EnableTimestampInjection(System.Boolean)
+  - Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuClockFrequency
+  - Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuTimestampAsync(System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuTimestampsBatchAsync(System.Int32,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetTimerResolutionNanos
+  - Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.IsGpuBacked
+  - Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.IsTimestampInjectionEnabled
+  - Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.ProviderTypeName
+  langs:
+  - csharp
+  - vb
+  name: DotComputeTimingProvider
+  nameWithType: DotComputeTimingProvider
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Temporal/DotComputeTimingProvider.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DotComputeTimingProvider
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Temporal/DotComputeTimingProvider.cs
+    startLine: 32
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  summary: >-
+    GPU timing provider implementation that wraps DotCompute's <xref href="DotCompute.Abstractions.Timing.ITimingProvider" data-throw-if-not-resolved="false"></xref>.
+
+    Provides real GPU timestamps using CUDA globaltimer or event-based timing.
+  remarks: >-
+    <p>
+
+    This provider delegates to DotCompute's timing infrastructure which provides:
+
+    <ul><li>CUDA (CC 6.0+): 1ns resolution via %%globaltimer register</li><li>CUDA (CC &lt; 6.0): 1μs resolution via CUDA events</li><li>Automatic fallback to CPU timing when GPU unavailable</li></ul>
+
+    </p>
+
+    <p>
+
+    <strong>Usage:</strong>
+
+
+    <pre><code class="lang-csharp">services.AddSingleton&lt;IGpuTimingProvider, DotComputeTimingProvider&gt;();</code></pre>
+
+    </p>
+  example: []
+  syntax:
+    content: 'public sealed class DotComputeTimingProvider : IGpuTimingProvider, IDisposable'
+    content.vb: Public NotInheritable Class DotComputeTimingProvider Implements IGpuTimingProvider, IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.#ctor(DotCompute.Abstractions.Timing.ITimingProvider,Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider})
+  commentId: M:Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.#ctor(DotCompute.Abstractions.Timing.ITimingProvider,Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider})
+  id: '#ctor(DotCompute.Abstractions.Timing.ITimingProvider,Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider})'
+  parent: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider
+  langs:
+  - csharp
+  - vb
+  name: DotComputeTimingProvider(ITimingProvider, ILogger<DotComputeTimingProvider>)
+  nameWithType: DotComputeTimingProvider.DotComputeTimingProvider(ITimingProvider, ILogger<DotComputeTimingProvider>)
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.DotComputeTimingProvider(DotCompute.Abstractions.Timing.ITimingProvider, Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider>)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Temporal/DotComputeTimingProvider.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Temporal/DotComputeTimingProvider.cs
+    startLine: 48
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  summary: >-
+    Initializes a new instance of the <xref href="Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider" data-throw-if-not-resolved="false"></xref> class
+
+    wrapping an existing DotCompute <xref href="DotCompute.Abstractions.Timing.ITimingProvider" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public DotComputeTimingProvider(ITimingProvider dotComputeProvider, ILogger<DotComputeTimingProvider> logger)
+    parameters:
+    - id: dotComputeProvider
+      type: DotCompute.Abstractions.Timing.ITimingProvider
+      description: The underlying DotCompute timing provider.
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider}
+      description: Logger for diagnostic output.
+    content.vb: Public Sub New(dotComputeProvider As ITimingProvider, logger As ILogger(Of DotComputeTimingProvider))
+  overload: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.#ctor*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown when <code class="paramref">dotComputeProvider</code> is null.
+  nameWithType.vb: DotComputeTimingProvider.New(ITimingProvider, ILogger(Of DotComputeTimingProvider))
+  fullName.vb: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.New(DotCompute.Abstractions.Timing.ITimingProvider, Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider))
+  name.vb: New(ITimingProvider, ILogger(Of DotComputeTimingProvider))
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuTimestampAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuTimestampAsync(System.Threading.CancellationToken)
+  id: GetGpuTimestampAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider
+  langs:
+  - csharp
+  - vb
+  name: GetGpuTimestampAsync(CancellationToken)
+  nameWithType: DotComputeTimingProvider.GetGpuTimestampAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuTimestampAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Temporal/DotComputeTimingProvider.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetGpuTimestampAsync
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Temporal/DotComputeTimingProvider.cs
+    startLine: 69
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  summary: Gets the current GPU timestamp in nanoseconds since device initialization.
+  remarks: >-
+    <p>
+
+    This method launches a minimal kernel to read the GPU hardware timer. The overhead
+
+    is typically &lt;10ns on CUDA (CC 6.0+) and &lt;100ns on other platforms.
+
+    </p>
+
+    <p>
+
+    <strong>Performance Targets:</strong>
+
+    <ul><li>CUDA (CC 6.0+): &lt;10ns per query</li><li>CUDA Events: &lt;100ns per query</li><li>OpenCL/CPU: &lt;1μs per query</li></ul>
+
+    </p>
+  example: []
+  syntax:
+    content: public Task<long> GetGpuTimestampAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token to cancel the async operation.
+    return:
+      type: System.Threading.Tasks.Task{System.Int64}
+      description: >-
+        A task representing the async operation, containing the GPU timestamp in nanoseconds.
+
+        The timestamp is monotonically increasing and has device-specific resolution.
+    content.vb: Public Function GetGpuTimestampAsync(ct As CancellationToken = Nothing) As Task(Of Long)
+  overload: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuTimestampAsync*
+  exceptions:
+  - type: System.OperationCanceledException
+    commentId: T:System.OperationCanceledException
+    description: Thrown when the cancellation token is triggered.
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetGpuTimestampAsync(System.Threading.CancellationToken)
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuTimestampsBatchAsync(System.Int32,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuTimestampsBatchAsync(System.Int32,System.Threading.CancellationToken)
+  id: GetGpuTimestampsBatchAsync(System.Int32,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider
+  langs:
+  - csharp
+  - vb
+  name: GetGpuTimestampsBatchAsync(int, CancellationToken)
+  nameWithType: DotComputeTimingProvider.GetGpuTimestampsBatchAsync(int, CancellationToken)
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuTimestampsBatchAsync(int, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Temporal/DotComputeTimingProvider.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetGpuTimestampsBatchAsync
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Temporal/DotComputeTimingProvider.cs
+    startLine: 76
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  summary: Gets multiple GPU timestamps in a single batch operation for improved efficiency.
+  remarks: >-
+    <p>
+
+    Batch queries amortize kernel launch overhead across multiple timestamps, achieving
+
+    &lt;1μs per timestamp when <code class="paramref">count</code> ≥ 1000.
+
+    </p>
+  example: []
+  syntax:
+    content: public Task<long[]> GetGpuTimestampsBatchAsync(int count, CancellationToken ct = default)
+    parameters:
+    - id: count
+      type: System.Int32
+      description: Number of timestamps to retrieve (must be positive).
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token to cancel the async operation.
+    return:
+      type: System.Threading.Tasks.Task{System.Int64[]}
+      description: >-
+        A task representing the async operation, containing an array of GPU timestamps in nanoseconds.
+
+        All timestamps are captured within a single kernel launch for minimal skew.
+    content.vb: Public Function GetGpuTimestampsBatchAsync(count As Integer, ct As CancellationToken = Nothing) As Task(Of Long())
+  overload: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuTimestampsBatchAsync*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Thrown when <code class="paramref">count</code> is less than or equal to zero.
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetGpuTimestampsBatchAsync(System.Int32,System.Threading.CancellationToken)
+  nameWithType.vb: DotComputeTimingProvider.GetGpuTimestampsBatchAsync(Integer, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuTimestampsBatchAsync(Integer, System.Threading.CancellationToken)
+  name.vb: GetGpuTimestampsBatchAsync(Integer, CancellationToken)
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.CalibrateAsync(System.Int32,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.CalibrateAsync(System.Int32,System.Threading.CancellationToken)
+  id: CalibrateAsync(System.Int32,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider
+  langs:
+  - csharp
+  - vb
+  name: CalibrateAsync(int, CancellationToken)
+  nameWithType: DotComputeTimingProvider.CalibrateAsync(int, CancellationToken)
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.CalibrateAsync(int, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Temporal/DotComputeTimingProvider.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CalibrateAsync
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Temporal/DotComputeTimingProvider.cs
+    startLine: 84
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  summary: Calibrates the GPU clock against the CPU clock to enable accurate time conversions.
+  remarks: >-
+    <p>
+
+    Clock calibration performs linear regression on <code class="paramref">sampleCount</code> paired
+
+    CPU-GPU timestamps to compute:
+
+    <ul><li><strong>Offset</strong>: GPU_time = CPU_time + offset</li><li><strong>Drift</strong>: Clock frequency difference (parts per million)</li><li><strong>Error Bounds</strong>: ±uncertainty range from regression residuals</li></ul>
+
+    </p>
+
+    <p>
+
+    <strong>Performance:</strong>
+
+    <ul><li>100 samples: ~10ms calibration time</li><li>Typical drift: 50-200 PPM (180-720μs/hour)</li><li>Recommended recalibration interval: 5-10 minutes</li></ul>
+
+    </p>
+  example: []
+  syntax:
+    content: public Task<ClockCalibration> CalibrateAsync(int sampleCount = 100, CancellationToken ct = default)
+    parameters:
+    - id: sampleCount
+      type: System.Int32
+      description: >-
+        Number of CPU-GPU timestamp pairs to collect for calibration (default: 100).
+
+        Higher values improve accuracy but increase calibration time.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token to cancel the async operation.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration}
+      description: >-
+        A task representing the async operation, containing calibration data including
+
+        offset, drift rate, and error bounds for converting between CPU and GPU time domains.
+    content.vb: Public Function CalibrateAsync(sampleCount As Integer = 100, ct As CancellationToken = Nothing) As Task(Of ClockCalibration)
+  overload: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.CalibrateAsync*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Thrown when <code class="paramref">sampleCount</code> is less than 10 (insufficient for calibration).
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.CalibrateAsync(System.Int32,System.Threading.CancellationToken)
+  nameWithType.vb: DotComputeTimingProvider.CalibrateAsync(Integer, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.CalibrateAsync(Integer, System.Threading.CancellationToken)
+  name.vb: CalibrateAsync(Integer, CancellationToken)
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.EnableTimestampInjection(System.Boolean)
+  commentId: M:Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.EnableTimestampInjection(System.Boolean)
+  id: EnableTimestampInjection(System.Boolean)
+  parent: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider
+  langs:
+  - csharp
+  - vb
+  name: EnableTimestampInjection(bool)
+  nameWithType: DotComputeTimingProvider.EnableTimestampInjection(bool)
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.EnableTimestampInjection(bool)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Temporal/DotComputeTimingProvider.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: EnableTimestampInjection
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Temporal/DotComputeTimingProvider.cs
+    startLine: 117
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  summary: Enables automatic timestamp injection at kernel entry points.
+  remarks: >-
+    <p>
+
+    When enabled, kernels automatically record a timestamp in parameter slot 0 before
+
+    executing user code. This eliminates manual timestamp management in kernel code.
+
+    </p>
+
+    <p>
+
+    <strong>Overhead:</strong> &lt;20ns per kernel launch (timestamp write by thread 0).
+
+    </p>
+
+    <p>
+
+    <strong>Note:</strong> Timestamp injection requires kernel recompilation. Existing
+
+    compiled kernels will not be affected until next compilation.
+
+    </p>
+  example: []
+  syntax:
+    content: public void EnableTimestampInjection(bool enable = true)
+    parameters:
+    - id: enable
+      type: System.Boolean
+      description: True to enable injection, false to disable.
+    content.vb: Public Sub EnableTimestampInjection(enable As Boolean = True)
+  overload: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.EnableTimestampInjection*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.EnableTimestampInjection(System.Boolean)
+  nameWithType.vb: DotComputeTimingProvider.EnableTimestampInjection(Boolean)
+  fullName.vb: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.EnableTimestampInjection(Boolean)
+  name.vb: EnableTimestampInjection(Boolean)
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.IsTimestampInjectionEnabled
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.IsTimestampInjectionEnabled
+  id: IsTimestampInjectionEnabled
+  parent: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider
+  langs:
+  - csharp
+  - vb
+  name: IsTimestampInjectionEnabled
+  nameWithType: DotComputeTimingProvider.IsTimestampInjectionEnabled
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.IsTimestampInjectionEnabled
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Temporal/DotComputeTimingProvider.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsTimestampInjectionEnabled
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Temporal/DotComputeTimingProvider.cs
+    startLine: 125
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  summary: Gets whether timestamp injection is currently enabled.
+  example: []
+  syntax:
+    content: public bool IsTimestampInjectionEnabled { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsTimestampInjectionEnabled As Boolean
+  overload: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.IsTimestampInjectionEnabled*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.IsTimestampInjectionEnabled
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuClockFrequency
+  commentId: M:Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuClockFrequency
+  id: GetGpuClockFrequency
+  parent: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider
+  langs:
+  - csharp
+  - vb
+  name: GetGpuClockFrequency()
+  nameWithType: DotComputeTimingProvider.GetGpuClockFrequency()
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuClockFrequency()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Temporal/DotComputeTimingProvider.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetGpuClockFrequency
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Temporal/DotComputeTimingProvider.cs
+    startLine: 138
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  summary: Gets the GPU clock frequency in Hertz (cycles per second).
+  example: []
+  syntax:
+    content: public long GetGpuClockFrequency()
+    return:
+      type: System.Int64
+      description: >-
+        The GPU clock frequency in Hz. Typical values:
+
+        <ul><li>CUDA: 1,000,000,000 Hz (1 GHz) for nanosecond timers</li><li>CUDA Events: 1,000,000 Hz (1 MHz) for microsecond precision</li><li>OpenCL: Platform-dependent</li></ul>
+    content.vb: Public Function GetGpuClockFrequency() As Long
+  overload: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuClockFrequency*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetGpuClockFrequency
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetTimerResolutionNanos
+  commentId: M:Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetTimerResolutionNanos
+  id: GetTimerResolutionNanos
+  parent: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider
+  langs:
+  - csharp
+  - vb
+  name: GetTimerResolutionNanos()
+  nameWithType: DotComputeTimingProvider.GetTimerResolutionNanos()
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetTimerResolutionNanos()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Temporal/DotComputeTimingProvider.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetTimerResolutionNanos
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Temporal/DotComputeTimingProvider.cs
+    startLine: 145
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  summary: Gets the timer resolution in nanoseconds (minimum measurable time interval).
+  example: []
+  syntax:
+    content: public long GetTimerResolutionNanos()
+    return:
+      type: System.Int64
+      description: >-
+        The timer resolution in nanoseconds. Typical values:
+
+        <ul><li>CUDA (CC 6.0+): 1 ns (%%globaltimer)</li><li>CUDA (CC &lt; 6.0): 1,000 ns (CUDA events)</li><li>OpenCL: 1,000 ns (clock() built-in)</li><li>CPU: ~100 ns (Stopwatch)</li></ul>
+    content.vb: Public Function GetTimerResolutionNanos() As Long
+  overload: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetTimerResolutionNanos*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetTimerResolutionNanos
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.IsGpuBacked
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.IsGpuBacked
+  id: IsGpuBacked
+  parent: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider
+  langs:
+  - csharp
+  - vb
+  name: IsGpuBacked
+  nameWithType: DotComputeTimingProvider.IsGpuBacked
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.IsGpuBacked
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Temporal/DotComputeTimingProvider.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsGpuBacked
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Temporal/DotComputeTimingProvider.cs
+    startLine: 152
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  summary: Gets whether this provider is backed by GPU hardware.
+  remarks: >-
+    Returns false for CPU fallback providers, allowing applications to detect
+
+    when real GPU timing is unavailable.
+  example: []
+  syntax:
+    content: public bool IsGpuBacked { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsGpuBacked As Boolean
+  overload: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.IsGpuBacked*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.IsGpuBacked
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.ProviderTypeName
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.ProviderTypeName
+  id: ProviderTypeName
+  parent: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider
+  langs:
+  - csharp
+  - vb
+  name: ProviderTypeName
+  nameWithType: DotComputeTimingProvider.ProviderTypeName
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.ProviderTypeName
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Temporal/DotComputeTimingProvider.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ProviderTypeName
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Temporal/DotComputeTimingProvider.cs
+    startLine: 155
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  summary: Gets the provider type name for diagnostics.
+  remarks: 'Examples: "CUDA (CC 8.6)", "OpenCL", "CPU Fallback"'
+  example: []
+  syntax:
+    content: public string ProviderTypeName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property ProviderTypeName As String
+  overload: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.ProviderTypeName*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.ProviderTypeName
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.Dispose
+  commentId: M:Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.Dispose
+  id: Dispose
+  parent: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: DotComputeTimingProvider.Dispose()
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.Dispose()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Temporal/DotComputeTimingProvider.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Dispose
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Temporal/DotComputeTimingProvider.cs
+    startLine: 160
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  summary: Releases resources used by the timing provider.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+references:
+- uid: DotCompute.Abstractions.Timing.ITimingProvider
+  commentId: T:DotCompute.Abstractions.Timing.ITimingProvider
+  parent: DotCompute.Abstractions.Timing
+  isExternal: true
+  name: ITimingProvider
+  nameWithType: ITimingProvider
+  fullName: DotCompute.Abstractions.Timing.ITimingProvider
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  commentId: N:Orleans.GpuBridge.Backends.DotCompute.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  nameWithType: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends
+    name: Backends
+    href: Orleans.GpuBridge.Backends.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute
+    name: DotCompute
+    href: Orleans.GpuBridge.Backends.DotCompute.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Backends.DotCompute.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends
+    name: Backends
+    href: Orleans.GpuBridge.Backends.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute
+    name: DotCompute
+    href: Orleans.GpuBridge.Backends.DotCompute.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Backends.DotCompute.Temporal.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.html
+  name: IGpuTimingProvider
+  nameWithType: IGpuTimingProvider
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: DotCompute.Abstractions.Timing
+  commentId: N:DotCompute.Abstractions.Timing
+  isExternal: true
+  name: DotCompute.Abstractions.Timing
+  nameWithType: DotCompute.Abstractions.Timing
+  fullName: DotCompute.Abstractions.Timing
+  spec.csharp:
+  - uid: DotCompute
+    name: DotCompute
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions
+    name: Abstractions
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions.Timing
+    name: Timing
+    isExternal: true
+  spec.vb:
+  - uid: DotCompute
+    name: DotCompute
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions
+    name: Abstractions
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions.Timing
+    name: Timing
+    isExternal: true
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Abstractions.Temporal
+  commentId: N:Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Temporal
+  nameWithType: Orleans.GpuBridge.Abstractions.Temporal
+  fullName: Orleans.GpuBridge.Abstractions.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider
+  commentId: T:Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider
+  href: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.html
+  name: DotComputeTimingProvider
+  nameWithType: DotComputeTimingProvider
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+  name: ArgumentNullException
+  nameWithType: ArgumentNullException
+  fullName: System.ArgumentNullException
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.#ctor
+  href: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.html#Orleans_GpuBridge_Backends_DotCompute_Temporal_DotComputeTimingProvider__ctor_DotCompute_Abstractions_Timing_ITimingProvider_Microsoft_Extensions_Logging_ILogger_Orleans_GpuBridge_Backends_DotCompute_Temporal_DotComputeTimingProvider__
+  name: DotComputeTimingProvider
+  nameWithType: DotComputeTimingProvider.DotComputeTimingProvider
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.DotComputeTimingProvider
+  nameWithType.vb: DotComputeTimingProvider.New
+  fullName.vb: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.New
+  name.vb: New
+- uid: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<DotComputeTimingProvider>
+  nameWithType: ILogger<DotComputeTimingProvider>
+  fullName: Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider>
+  nameWithType.vb: ILogger(Of DotComputeTimingProvider)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider)
+  name.vb: ILogger(Of DotComputeTimingProvider)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider
+    name: DotComputeTimingProvider
+    href: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider
+    name: DotComputeTimingProvider
+    href: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.html
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: System.OperationCanceledException
+  commentId: T:System.OperationCanceledException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.operationcanceledexception
+  name: OperationCanceledException
+  nameWithType: OperationCanceledException
+  fullName: System.OperationCanceledException
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuTimestampAsync*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuTimestampAsync
+  href: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.html#Orleans_GpuBridge_Backends_DotCompute_Temporal_DotComputeTimingProvider_GetGpuTimestampAsync_System_Threading_CancellationToken_
+  name: GetGpuTimestampAsync
+  nameWithType: DotComputeTimingProvider.GetGpuTimestampAsync
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuTimestampAsync
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetGpuTimestampAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetGpuTimestampAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: GetGpuTimestampAsync(CancellationToken)
+  nameWithType: IGpuTimingProvider.GetGpuTimestampAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetGpuTimestampAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetGpuTimestampAsync(System.Threading.CancellationToken)
+    name: GetGpuTimestampAsync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetGpuTimestampAsync(System.Threading.CancellationToken)
+    name: GetGpuTimestampAsync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.Int64}
+  commentId: T:System.Threading.Tasks.Task{System.Int64}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<long>
+  nameWithType: Task<long>
+  fullName: System.Threading.Tasks.Task<long>
+  nameWithType.vb: Task(Of Long)
+  fullName.vb: System.Threading.Tasks.Task(Of Long)
+  name.vb: Task(Of Long)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: System.ArgumentOutOfRangeException
+  commentId: T:System.ArgumentOutOfRangeException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception
+  name: ArgumentOutOfRangeException
+  nameWithType: ArgumentOutOfRangeException
+  fullName: System.ArgumentOutOfRangeException
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuTimestampsBatchAsync*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuTimestampsBatchAsync
+  href: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.html#Orleans_GpuBridge_Backends_DotCompute_Temporal_DotComputeTimingProvider_GetGpuTimestampsBatchAsync_System_Int32_System_Threading_CancellationToken_
+  name: GetGpuTimestampsBatchAsync
+  nameWithType: DotComputeTimingProvider.GetGpuTimestampsBatchAsync
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuTimestampsBatchAsync
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetGpuTimestampsBatchAsync(System.Int32,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetGpuTimestampsBatchAsync(System.Int32,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: GetGpuTimestampsBatchAsync(int, CancellationToken)
+  nameWithType: IGpuTimingProvider.GetGpuTimestampsBatchAsync(int, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetGpuTimestampsBatchAsync(int, System.Threading.CancellationToken)
+  nameWithType.vb: IGpuTimingProvider.GetGpuTimestampsBatchAsync(Integer, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetGpuTimestampsBatchAsync(Integer, System.Threading.CancellationToken)
+  name.vb: GetGpuTimestampsBatchAsync(Integer, CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetGpuTimestampsBatchAsync(System.Int32,System.Threading.CancellationToken)
+    name: GetGpuTimestampsBatchAsync
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetGpuTimestampsBatchAsync(System.Int32,System.Threading.CancellationToken)
+    name: GetGpuTimestampsBatchAsync
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Threading.Tasks.Task{System.Int64[]}
+  commentId: T:System.Threading.Tasks.Task{System.Int64[]}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<long[]>
+  nameWithType: Task<long[]>
+  fullName: System.Threading.Tasks.Task<long[]>
+  nameWithType.vb: Task(Of Long())
+  fullName.vb: System.Threading.Tasks.Task(Of Long())
+  name.vb: Task(Of Long())
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '['
+  - name: ']'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: (
+  - name: )
+  - name: )
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.CalibrateAsync*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.CalibrateAsync
+  href: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.html#Orleans_GpuBridge_Backends_DotCompute_Temporal_DotComputeTimingProvider_CalibrateAsync_System_Int32_System_Threading_CancellationToken_
+  name: CalibrateAsync
+  nameWithType: DotComputeTimingProvider.CalibrateAsync
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.CalibrateAsync
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.CalibrateAsync(System.Int32,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.CalibrateAsync(System.Int32,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: CalibrateAsync(int, CancellationToken)
+  nameWithType: IGpuTimingProvider.CalibrateAsync(int, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.CalibrateAsync(int, System.Threading.CancellationToken)
+  nameWithType.vb: IGpuTimingProvider.CalibrateAsync(Integer, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.CalibrateAsync(Integer, System.Threading.CancellationToken)
+  name.vb: CalibrateAsync(Integer, CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.CalibrateAsync(System.Int32,System.Threading.CancellationToken)
+    name: CalibrateAsync
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.CalibrateAsync(System.Int32,System.Threading.CancellationToken)
+    name: CalibrateAsync
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ClockCalibration>
+  nameWithType: Task<ClockCalibration>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration>
+  nameWithType.vb: Task(Of ClockCalibration)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration)
+  name.vb: Task(Of ClockCalibration)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration
+    name: ClockCalibration
+    href: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration
+    name: ClockCalibration
+    href: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.html
+  - name: )
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.EnableTimestampInjection*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.EnableTimestampInjection
+  href: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.html#Orleans_GpuBridge_Backends_DotCompute_Temporal_DotComputeTimingProvider_EnableTimestampInjection_System_Boolean_
+  name: EnableTimestampInjection
+  nameWithType: DotComputeTimingProvider.EnableTimestampInjection
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.EnableTimestampInjection
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.EnableTimestampInjection(System.Boolean)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.EnableTimestampInjection(System.Boolean)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: EnableTimestampInjection(bool)
+  nameWithType: IGpuTimingProvider.EnableTimestampInjection(bool)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.EnableTimestampInjection(bool)
+  nameWithType.vb: IGpuTimingProvider.EnableTimestampInjection(Boolean)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.EnableTimestampInjection(Boolean)
+  name.vb: EnableTimestampInjection(Boolean)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.EnableTimestampInjection(System.Boolean)
+    name: EnableTimestampInjection
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.EnableTimestampInjection(System.Boolean)
+    name: EnableTimestampInjection
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.IsTimestampInjectionEnabled*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.IsTimestampInjectionEnabled
+  href: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.html#Orleans_GpuBridge_Backends_DotCompute_Temporal_DotComputeTimingProvider_IsTimestampInjectionEnabled
+  name: IsTimestampInjectionEnabled
+  nameWithType: DotComputeTimingProvider.IsTimestampInjectionEnabled
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.IsTimestampInjectionEnabled
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.IsTimestampInjectionEnabled
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.IsTimestampInjectionEnabled
+  parent: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider
+  name: IsTimestampInjectionEnabled
+  nameWithType: IGpuTimingProvider.IsTimestampInjectionEnabled
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.IsTimestampInjectionEnabled
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuClockFrequency*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuClockFrequency
+  href: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.html#Orleans_GpuBridge_Backends_DotCompute_Temporal_DotComputeTimingProvider_GetGpuClockFrequency
+  name: GetGpuClockFrequency
+  nameWithType: DotComputeTimingProvider.GetGpuClockFrequency
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetGpuClockFrequency
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetGpuClockFrequency
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetGpuClockFrequency
+  parent: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider
+  name: GetGpuClockFrequency()
+  nameWithType: IGpuTimingProvider.GetGpuClockFrequency()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetGpuClockFrequency()
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetGpuClockFrequency
+    name: GetGpuClockFrequency
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetGpuClockFrequency
+    name: GetGpuClockFrequency
+  - name: (
+  - name: )
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetTimerResolutionNanos*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetTimerResolutionNanos
+  href: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.html#Orleans_GpuBridge_Backends_DotCompute_Temporal_DotComputeTimingProvider_GetTimerResolutionNanos
+  name: GetTimerResolutionNanos
+  nameWithType: DotComputeTimingProvider.GetTimerResolutionNanos
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.GetTimerResolutionNanos
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetTimerResolutionNanos
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetTimerResolutionNanos
+  parent: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider
+  name: GetTimerResolutionNanos()
+  nameWithType: IGpuTimingProvider.GetTimerResolutionNanos()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetTimerResolutionNanos()
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetTimerResolutionNanos
+    name: GetTimerResolutionNanos
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.GetTimerResolutionNanos
+    name: GetTimerResolutionNanos
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.IsGpuBacked*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.IsGpuBacked
+  href: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.html#Orleans_GpuBridge_Backends_DotCompute_Temporal_DotComputeTimingProvider_IsGpuBacked
+  name: IsGpuBacked
+  nameWithType: DotComputeTimingProvider.IsGpuBacked
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.IsGpuBacked
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.IsGpuBacked
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.IsGpuBacked
+  parent: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider
+  name: IsGpuBacked
+  nameWithType: IGpuTimingProvider.IsGpuBacked
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.IsGpuBacked
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.ProviderTypeName*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.ProviderTypeName
+  href: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.html#Orleans_GpuBridge_Backends_DotCompute_Temporal_DotComputeTimingProvider_ProviderTypeName
+  name: ProviderTypeName
+  nameWithType: DotComputeTimingProvider.ProviderTypeName
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.ProviderTypeName
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.ProviderTypeName
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.ProviderTypeName
+  parent: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider
+  name: ProviderTypeName
+  nameWithType: IGpuTimingProvider.ProviderTypeName
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IGpuTimingProvider.ProviderTypeName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.Dispose*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.Dispose
+  href: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.html#Orleans_GpuBridge_Backends_DotCompute_Temporal_DotComputeTimingProvider_Dispose
+  name: Dispose
+  nameWithType: DotComputeTimingProvider.Dispose
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Temporal.DotComputeTimingProvider.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )

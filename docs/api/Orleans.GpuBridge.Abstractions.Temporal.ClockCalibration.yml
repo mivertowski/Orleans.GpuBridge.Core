@@ -1,0 +1,913 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration
+  id: ClockCalibration
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  children:
+  - Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.#ctor(System.Int64,System.Double,System.Int64,System.Int32,System.Int64)
+  - Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.CalibrationTimestampNanos
+  - Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.CpuToGpuTime(System.Int64)
+  - Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.DriftPPM
+  - Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.ErrorBoundNanos
+  - Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.GetUncertaintyRange(System.Int64)
+  - Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.GpuToCpuTime(System.Int64)
+  - Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.IsStale(System.Int64,System.Int64)
+  - Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.OffsetNanos
+  - Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.SampleCount
+  - Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.ToString
+  langs:
+  - csharp
+  - vb
+  name: ClockCalibration
+  nameWithType: ClockCalibration
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration
+  type: Struct
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ClockCalibration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ClockCalibration
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ClockCalibration.cs
+    startLine: 14
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: >-
+    Results of GPU-CPU clock calibration.
+
+    Used to convert between GPU timestamps and CPU time.
+  remarks: >-
+    Clock calibration accounts for:
+
+    1. Offset: Constant difference between GPU and CPU time bases
+
+    2. Drift: Rate at which GPU and CPU clocks diverge (PPM)
+
+    3. Error bound: Uncertainty in offset measurement (±ns)
+  example: []
+  syntax:
+    content: public readonly struct ClockCalibration
+    content.vb: Public Structure ClockCalibration
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.OffsetNanos
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.OffsetNanos
+  id: OffsetNanos
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration
+  langs:
+  - csharp
+  - vb
+  name: OffsetNanos
+  nameWithType: ClockCalibration.OffsetNanos
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.OffsetNanos
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ClockCalibration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: OffsetNanos
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ClockCalibration.cs
+    startLine: 19
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Clock offset in nanoseconds (GPU_time - CPU_time).
+  example: []
+  syntax:
+    content: public long OffsetNanos { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property OffsetNanos As Long
+  overload: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.OffsetNanos*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.DriftPPM
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.DriftPPM
+  id: DriftPPM
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration
+  langs:
+  - csharp
+  - vb
+  name: DriftPPM
+  nameWithType: ClockCalibration.DriftPPM
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.DriftPPM
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ClockCalibration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DriftPPM
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ClockCalibration.cs
+    startLine: 25
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: >-
+    Clock drift rate in parts per million (PPM).
+
+    Positive values indicate GPU clock runs faster than CPU clock.
+  example: []
+  syntax:
+    content: public double DriftPPM { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property DriftPPM As Double
+  overload: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.DriftPPM*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.ErrorBoundNanos
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.ErrorBoundNanos
+  id: ErrorBoundNanos
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration
+  langs:
+  - csharp
+  - vb
+  name: ErrorBoundNanos
+  nameWithType: ClockCalibration.ErrorBoundNanos
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.ErrorBoundNanos
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ClockCalibration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ErrorBoundNanos
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ClockCalibration.cs
+    startLine: 31
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: >-
+    Error bound in nanoseconds (±).
+
+    Actual offset is within [OffsetNanos - ErrorBoundNanos, OffsetNanos + ErrorBoundNanos].
+  example: []
+  syntax:
+    content: public long ErrorBoundNanos { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property ErrorBoundNanos As Long
+  overload: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.ErrorBoundNanos*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.SampleCount
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.SampleCount
+  id: SampleCount
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration
+  langs:
+  - csharp
+  - vb
+  name: SampleCount
+  nameWithType: ClockCalibration.SampleCount
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.SampleCount
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ClockCalibration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: SampleCount
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ClockCalibration.cs
+    startLine: 37
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: >-
+    Number of samples used for calibration.
+
+    More samples = lower error bound but slower calibration.
+  example: []
+  syntax:
+    content: public int SampleCount { get; init; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property SampleCount As Integer
+  overload: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.SampleCount*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.CalibrationTimestampNanos
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.CalibrationTimestampNanos
+  id: CalibrationTimestampNanos
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration
+  langs:
+  - csharp
+  - vb
+  name: CalibrationTimestampNanos
+  nameWithType: ClockCalibration.CalibrationTimestampNanos
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.CalibrationTimestampNanos
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ClockCalibration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CalibrationTimestampNanos
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ClockCalibration.cs
+    startLine: 43
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: >-
+    Calibration timestamp (CPU time in nanoseconds since Unix epoch).
+
+    Used for drift correction over time.
+  example: []
+  syntax:
+    content: public long CalibrationTimestampNanos { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property CalibrationTimestampNanos As Long
+  overload: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.CalibrationTimestampNanos*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.#ctor(System.Int64,System.Double,System.Int64,System.Int32,System.Int64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.#ctor(System.Int64,System.Double,System.Int64,System.Int32,System.Int64)
+  id: '#ctor(System.Int64,System.Double,System.Int64,System.Int32,System.Int64)'
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration
+  langs:
+  - csharp
+  - vb
+  name: ClockCalibration(long, double, long, int, long)
+  nameWithType: ClockCalibration.ClockCalibration(long, double, long, int, long)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.ClockCalibration(long, double, long, int, long)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ClockCalibration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ClockCalibration.cs
+    startLine: 48
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Creates a new clock calibration result.
+  example: []
+  syntax:
+    content: public ClockCalibration(long offsetNanos, double driftPPM, long errorBoundNanos, int sampleCount, long calibrationTimestampNanos)
+    parameters:
+    - id: offsetNanos
+      type: System.Int64
+    - id: driftPPM
+      type: System.Double
+    - id: errorBoundNanos
+      type: System.Int64
+    - id: sampleCount
+      type: System.Int32
+    - id: calibrationTimestampNanos
+      type: System.Int64
+    content.vb: Public Sub New(offsetNanos As Long, driftPPM As Double, errorBoundNanos As Long, sampleCount As Integer, calibrationTimestampNanos As Long)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.#ctor*
+  nameWithType.vb: ClockCalibration.New(Long, Double, Long, Integer, Long)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.New(Long, Double, Long, Integer, Long)
+  name.vb: New(Long, Double, Long, Integer, Long)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.GpuToCpuTime(System.Int64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.GpuToCpuTime(System.Int64)
+  id: GpuToCpuTime(System.Int64)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration
+  langs:
+  - csharp
+  - vb
+  name: GpuToCpuTime(long)
+  nameWithType: ClockCalibration.GpuToCpuTime(long)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.GpuToCpuTime(long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ClockCalibration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GpuToCpuTime
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ClockCalibration.cs
+    startLine: 68
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: >-
+    Converts GPU timestamp to CPU time using calibration data.
+
+    Accounts for both offset and drift since calibration.
+  example: []
+  syntax:
+    content: public long GpuToCpuTime(long gpuTimeNanos)
+    parameters:
+    - id: gpuTimeNanos
+      type: System.Int64
+      description: GPU timestamp in nanoseconds.
+    return:
+      type: System.Int64
+      description: Equivalent CPU time in nanoseconds.
+    content.vb: Public Function GpuToCpuTime(gpuTimeNanos As Long) As Long
+  overload: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.GpuToCpuTime*
+  nameWithType.vb: ClockCalibration.GpuToCpuTime(Long)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.GpuToCpuTime(Long)
+  name.vb: GpuToCpuTime(Long)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.CpuToGpuTime(System.Int64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.CpuToGpuTime(System.Int64)
+  id: CpuToGpuTime(System.Int64)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration
+  langs:
+  - csharp
+  - vb
+  name: CpuToGpuTime(long)
+  nameWithType: ClockCalibration.CpuToGpuTime(long)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.CpuToGpuTime(long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ClockCalibration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CpuToGpuTime
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ClockCalibration.cs
+    startLine: 83
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Converts CPU timestamp to GPU time using calibration data.
+  example: []
+  syntax:
+    content: public long CpuToGpuTime(long cpuTimeNanos)
+    parameters:
+    - id: cpuTimeNanos
+      type: System.Int64
+      description: CPU timestamp in nanoseconds.
+    return:
+      type: System.Int64
+      description: Equivalent GPU time in nanoseconds.
+    content.vb: Public Function CpuToGpuTime(cpuTimeNanos As Long) As Long
+  overload: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.CpuToGpuTime*
+  nameWithType.vb: ClockCalibration.CpuToGpuTime(Long)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.CpuToGpuTime(Long)
+  name.vb: CpuToGpuTime(Long)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.GetUncertaintyRange(System.Int64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.GetUncertaintyRange(System.Int64)
+  id: GetUncertaintyRange(System.Int64)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration
+  langs:
+  - csharp
+  - vb
+  name: GetUncertaintyRange(long)
+  nameWithType: ClockCalibration.GetUncertaintyRange(long)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.GetUncertaintyRange(long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ClockCalibration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetUncertaintyRange
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ClockCalibration.cs
+    startLine: 97
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Gets uncertainty range for timestamp conversion.
+  example: []
+  syntax:
+    content: public (long min, long max) GetUncertaintyRange(long gpuTimeNanos)
+    parameters:
+    - id: gpuTimeNanos
+      type: System.Int64
+      description: GPU timestamp to convert.
+    return:
+      type: System.ValueTuple{System.Int64,System.Int64}
+      description: Min and max possible CPU times accounting for error bound.
+    content.vb: Public Function GetUncertaintyRange(gpuTimeNanos As Long) As (min As Long, max As Long)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.GetUncertaintyRange*
+  nameWithType.vb: ClockCalibration.GetUncertaintyRange(Long)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.GetUncertaintyRange(Long)
+  name.vb: GetUncertaintyRange(Long)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.IsStale(System.Int64,System.Int64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.IsStale(System.Int64,System.Int64)
+  id: IsStale(System.Int64,System.Int64)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration
+  langs:
+  - csharp
+  - vb
+  name: IsStale(long, long)
+  nameWithType: ClockCalibration.IsStale(long, long)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.IsStale(long, long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ClockCalibration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsStale
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ClockCalibration.cs
+    startLine: 109
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Checks if calibration is stale and needs refresh.
+  example: []
+  syntax:
+    content: public bool IsStale(long currentTimeNanos, long maxAgeNanos = 300000000000)
+    parameters:
+    - id: currentTimeNanos
+      type: System.Int64
+      description: Current CPU time in nanoseconds.
+    - id: maxAgeNanos
+      type: System.Int64
+      description: 'Maximum calibration age before refresh (default: 5 minutes).'
+    return:
+      type: System.Boolean
+      description: True if calibration needs refresh.
+    content.vb: Public Function IsStale(currentTimeNanos As Long, maxAgeNanos As Long = 300000000000) As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.IsStale*
+  nameWithType.vb: ClockCalibration.IsStale(Long, Long)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.IsStale(Long, Long)
+  name.vb: IsStale(Long, Long)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.ToString
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.ToString
+  id: ToString
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: ClockCalibration.ToString()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.ToString()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/ClockCalibration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ToString
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/ClockCalibration.cs
+    startLine: 115
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Returns the fully qualified type name of this instance.
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+      description: The fully qualified type name.
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.ValueType.ToString
+  overload: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.ToString*
+references:
+- uid: Orleans.GpuBridge.Abstractions.Temporal
+  commentId: N:Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Temporal
+  nameWithType: Orleans.GpuBridge.Abstractions.Temporal
+  fullName: Orleans.GpuBridge.Abstractions.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.OffsetNanos*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.OffsetNanos
+  href: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.html#Orleans_GpuBridge_Abstractions_Temporal_ClockCalibration_OffsetNanos
+  name: OffsetNanos
+  nameWithType: ClockCalibration.OffsetNanos
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.OffsetNanos
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.DriftPPM*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.DriftPPM
+  href: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.html#Orleans_GpuBridge_Abstractions_Temporal_ClockCalibration_DriftPPM
+  name: DriftPPM
+  nameWithType: ClockCalibration.DriftPPM
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.DriftPPM
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.ErrorBoundNanos*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.ErrorBoundNanos
+  href: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.html#Orleans_GpuBridge_Abstractions_Temporal_ClockCalibration_ErrorBoundNanos
+  name: ErrorBoundNanos
+  nameWithType: ClockCalibration.ErrorBoundNanos
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.ErrorBoundNanos
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.SampleCount*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.SampleCount
+  href: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.html#Orleans_GpuBridge_Abstractions_Temporal_ClockCalibration_SampleCount
+  name: SampleCount
+  nameWithType: ClockCalibration.SampleCount
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.SampleCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.CalibrationTimestampNanos*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.CalibrationTimestampNanos
+  href: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.html#Orleans_GpuBridge_Abstractions_Temporal_ClockCalibration_CalibrationTimestampNanos
+  name: CalibrationTimestampNanos
+  nameWithType: ClockCalibration.CalibrationTimestampNanos
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.CalibrationTimestampNanos
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.#ctor
+  href: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.html#Orleans_GpuBridge_Abstractions_Temporal_ClockCalibration__ctor_System_Int64_System_Double_System_Int64_System_Int32_System_Int64_
+  name: ClockCalibration
+  nameWithType: ClockCalibration.ClockCalibration
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.ClockCalibration
+  nameWithType.vb: ClockCalibration.New
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.New
+  name.vb: New
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.GpuToCpuTime*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.GpuToCpuTime
+  href: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.html#Orleans_GpuBridge_Abstractions_Temporal_ClockCalibration_GpuToCpuTime_System_Int64_
+  name: GpuToCpuTime
+  nameWithType: ClockCalibration.GpuToCpuTime
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.GpuToCpuTime
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.CpuToGpuTime*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.CpuToGpuTime
+  href: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.html#Orleans_GpuBridge_Abstractions_Temporal_ClockCalibration_CpuToGpuTime_System_Int64_
+  name: CpuToGpuTime
+  nameWithType: ClockCalibration.CpuToGpuTime
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.CpuToGpuTime
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.GetUncertaintyRange*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.GetUncertaintyRange
+  href: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.html#Orleans_GpuBridge_Abstractions_Temporal_ClockCalibration_GetUncertaintyRange_System_Int64_
+  name: GetUncertaintyRange
+  nameWithType: ClockCalibration.GetUncertaintyRange
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.GetUncertaintyRange
+- uid: System.ValueTuple{System.Int64,System.Int64}
+  commentId: T:System.ValueTuple{System.Int64,System.Int64}
+  parent: System
+  definition: System.ValueTuple`2
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: (long min, long max)
+  nameWithType: (long min, long max)
+  fullName: (long min, long max)
+  nameWithType.vb: (min As Long, max As Long)
+  fullName.vb: (min As Long, max As Long)
+  name.vb: (min As Long, max As Long)
+  spec.csharp:
+  - name: (
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: " "
+  - uid: System.ValueTuple{System.Int64,System.Int64}.min
+    name: min
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int64,system.int64-.min
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: " "
+  - uid: System.ValueTuple{System.Int64,System.Int64}.max
+    name: max
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int64,system.int64-.max
+  - name: )
+  spec.vb:
+  - name: (
+  - uid: System.ValueTuple{System.Int64,System.Int64}.min
+    name: min
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int64,system.int64-.min
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Int64,System.Int64}.max
+    name: max
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int64,system.int64-.max
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+- uid: System.ValueTuple`2
+  commentId: T:System.ValueTuple`2
+  name: (T1, T2)
+  nameWithType: (T1, T2)
+  fullName: (T1, T2)
+  spec.csharp:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+  spec.vb:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.IsStale*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.IsStale
+  href: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.html#Orleans_GpuBridge_Abstractions_Temporal_ClockCalibration_IsStale_System_Int64_System_Int64_
+  name: IsStale
+  nameWithType: ClockCalibration.IsStale
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.IsStale
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.ToString*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.ToString
+  href: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.html#Orleans_GpuBridge_Abstractions_Temporal_ClockCalibration_ToString
+  name: ToString
+  nameWithType: ClockCalibration.ToString
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ClockCalibration.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

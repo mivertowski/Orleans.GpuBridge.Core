@@ -389,7 +389,17 @@ The **Hybrid Layered Architecture** provides the best of both worlds:
 2. Implement DotComputeKernel adapter
 3. Create comprehensive API documentation and migration guide
 
+## See Also
+
+- [Ring Kernel Integration](RING-KERNEL-INTEGRATION.md) - Persistent kernel architecture
+- [GPU Memory Operations](../implementation/GPU-MEMORY-OPERATIONS.md) - Memory management patterns
+- [GPU-Native Actors Developer Guide](../developer-guide/GPU-NATIVE-ACTORS.md) - Complete development workflow
+- [Implementation Roadmap](../articles/temporal/IMPLEMENTATION-ROADMAP.md) - Development phases and timeline
+- [API Reference](../api/index.md) - Complete API documentation
+
 ---
 
-*Orleans.GpuBridge.Core - GPU-Native Distributed Computing*
-*Copyright © 2025. All rights reserved.*
+*Hybrid Layered Architecture: Best of both worlds for GPU computing.*
+
+**Version**: 0.1.0
+**Last Updated**: 2025-11-28

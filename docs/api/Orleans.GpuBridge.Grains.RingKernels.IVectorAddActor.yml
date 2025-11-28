@@ -1,0 +1,460 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor
+  commentId: T:Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor
+  id: IVectorAddActor
+  parent: Orleans.GpuBridge.Grains.RingKernels
+  children:
+  - Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.AddVectorsAsync(System.Single[],System.Single[])
+  - Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.AddVectorsScalarAsync(System.Single[],System.Single[])
+  - Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.GetMetricsAsync
+  langs:
+  - csharp
+  - vb
+  name: IVectorAddActor
+  nameWithType: IVectorAddActor
+  fullName: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor
+  type: Interface
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/RingKernels/IVectorAddActor.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IVectorAddActor
+    path: ../src/Orleans.GpuBridge.Grains/RingKernels/IVectorAddActor.cs
+    startLine: 24
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.RingKernels
+  summary: GPU-native actor for vector addition operations using persistent ring kernels.
+  remarks: >-
+    <p>
+
+    This is the first proof-of-concept GPU-native actor demonstrating:
+
+    - Ring kernel lifecycle management
+
+    - GPU-to-GPU messaging with sub-microsecond latency
+
+    - Zero kernel launch overhead after initial activation
+
+    </p>
+
+    <p>
+
+    Performance targets:
+
+    - First call: ~10-50ms (kernel compilation + launch)
+
+    - Subsequent calls: 100-500ns (GPU queue operations)
+
+    - Throughput: 2M operations/second
+
+    </p>
+  example: []
+  syntax:
+    content: 'public interface IVectorAddActor : IGpuNativeGrain, IGrainWithIntegerKey, IGrain, IAddressable'
+    content.vb: Public Interface IVectorAddActor Inherits IGpuNativeGrain, IGrainWithIntegerKey, IGrain, IAddressable
+- uid: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.AddVectorsAsync(System.Single[],System.Single[])
+  commentId: M:Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.AddVectorsAsync(System.Single[],System.Single[])
+  id: AddVectorsAsync(System.Single[],System.Single[])
+  parent: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor
+  langs:
+  - csharp
+  - vb
+  name: AddVectorsAsync(float[], float[])
+  nameWithType: IVectorAddActor.AddVectorsAsync(float[], float[])
+  fullName: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.AddVectorsAsync(float[], float[])
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/RingKernels/IVectorAddActor.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AddVectorsAsync
+    path: ../src/Orleans.GpuBridge.Grains/RingKernels/IVectorAddActor.cs
+    startLine: 46
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.RingKernels
+  summary: Adds two vectors element-wise on GPU using persistent ring kernel.
+  remarks: >-
+    <p>
+
+    This method demonstrates GPU-native message passing:
+
+    1. CPU serializes vectors to GPU message
+
+    2. Message enqueued to GPU ring buffer (~100-500ns)
+
+    3. GPU kernel dequeues and processes
+
+    4. GPU kernel enqueues result
+
+    5. CPU dequeues result (~100-500ns)
+
+    </p>
+
+    <p>
+
+    For large vectors (&gt; 200 elements), vector data is stored in GPU memory
+
+    and only pointers are passed in the 228-byte message payload.
+
+    </p>
+  example: []
+  syntax:
+    content: Task<float[]> AddVectorsAsync(float[] a, float[] b)
+    parameters:
+    - id: a
+      type: System.Single[]
+      description: First vector.
+    - id: b
+      type: System.Single[]
+      description: Second vector.
+    return:
+      type: System.Threading.Tasks.Task{System.Single[]}
+      description: Result vector where result[i] = a[i] + b[i].
+    content.vb: Function AddVectorsAsync(a As Single(), b As Single()) As Task(Of Single())
+  overload: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.AddVectorsAsync*
+  nameWithType.vb: IVectorAddActor.AddVectorsAsync(Single(), Single())
+  fullName.vb: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.AddVectorsAsync(Single(), Single())
+  name.vb: AddVectorsAsync(Single(), Single())
+- uid: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.AddVectorsScalarAsync(System.Single[],System.Single[])
+  commentId: M:Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.AddVectorsScalarAsync(System.Single[],System.Single[])
+  id: AddVectorsScalarAsync(System.Single[],System.Single[])
+  parent: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor
+  langs:
+  - csharp
+  - vb
+  name: AddVectorsScalarAsync(float[], float[])
+  nameWithType: IVectorAddActor.AddVectorsScalarAsync(float[], float[])
+  fullName: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.AddVectorsScalarAsync(float[], float[])
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/RingKernels/IVectorAddActor.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AddVectorsScalarAsync
+    path: ../src/Orleans.GpuBridge.Grains/RingKernels/IVectorAddActor.cs
+    startLine: 58
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.RingKernels
+  summary: Adds two vectors and returns their sum as a scalar.
+  remarks: >-
+    This variant demonstrates scalar reduction on GPU.
+
+    Useful for benchmarking pure messaging latency.
+  example: []
+  syntax:
+    content: Task<float> AddVectorsScalarAsync(float[] a, float[] b)
+    parameters:
+    - id: a
+      type: System.Single[]
+      description: First vector.
+    - id: b
+      type: System.Single[]
+      description: Second vector.
+    return:
+      type: System.Threading.Tasks.Task{System.Single}
+      description: Sum of all elements in result vector.
+    content.vb: Function AddVectorsScalarAsync(a As Single(), b As Single()) As Task(Of Single)
+  overload: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.AddVectorsScalarAsync*
+  nameWithType.vb: IVectorAddActor.AddVectorsScalarAsync(Single(), Single())
+  fullName.vb: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.AddVectorsScalarAsync(Single(), Single())
+  name.vb: AddVectorsScalarAsync(Single(), Single())
+- uid: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.GetMetricsAsync
+  commentId: M:Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.GetMetricsAsync
+  id: GetMetricsAsync
+  parent: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor
+  langs:
+  - csharp
+  - vb
+  name: GetMetricsAsync()
+  nameWithType: IVectorAddActor.GetMetricsAsync()
+  fullName: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.GetMetricsAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/RingKernels/IVectorAddActor.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetMetricsAsync
+    path: ../src/Orleans.GpuBridge.Grains/RingKernels/IVectorAddActor.cs
+    startLine: 71
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.RingKernels
+  summary: Gets current performance metrics from the GPU ring kernel.
+  remarks: >-
+    Useful for monitoring:
+
+    - Messages processed per second
+
+    - Average processing time
+
+    - Queue utilization
+
+    - GPU memory usage
+  example: []
+  syntax:
+    content: Task<VectorAddMetrics> GetMetricsAsync()
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Grains.RingKernels.VectorAddMetrics}
+      description: Ring kernel performance metrics.
+    content.vb: Function GetMetricsAsync() As Task(Of VectorAddMetrics)
+  overload: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.GetMetricsAsync*
+references:
+- uid: Orleans.GpuBridge.Grains.RingKernels
+  commentId: N:Orleans.GpuBridge.Grains.RingKernels
+  href: Orleans.html
+  name: Orleans.GpuBridge.Grains.RingKernels
+  nameWithType: Orleans.GpuBridge.Grains.RingKernels
+  fullName: Orleans.GpuBridge.Grains.RingKernels
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.RingKernels
+    name: RingKernels
+    href: Orleans.GpuBridge.Grains.RingKernels.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.RingKernels
+    name: RingKernels
+    href: Orleans.GpuBridge.Grains.RingKernels.html
+- uid: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.AddVectorsAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.AddVectorsAsync
+  href: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.html#Orleans_GpuBridge_Grains_RingKernels_IVectorAddActor_AddVectorsAsync_System_Single___System_Single___
+  name: AddVectorsAsync
+  nameWithType: IVectorAddActor.AddVectorsAsync
+  fullName: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.AddVectorsAsync
+- uid: System.Single[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float[]
+  nameWithType: float[]
+  fullName: float[]
+  nameWithType.vb: Single()
+  fullName.vb: Single()
+  name.vb: Single()
+  spec.csharp:
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: (
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Single[]}
+  commentId: T:System.Threading.Tasks.Task{System.Single[]}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<float[]>
+  nameWithType: Task<float[]>
+  fullName: System.Threading.Tasks.Task<float[]>
+  nameWithType.vb: Task(Of Single())
+  fullName.vb: System.Threading.Tasks.Task(Of Single())
+  name.vb: Task(Of Single())
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '['
+  - name: ']'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: (
+  - name: )
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.AddVectorsScalarAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.AddVectorsScalarAsync
+  href: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.html#Orleans_GpuBridge_Grains_RingKernels_IVectorAddActor_AddVectorsScalarAsync_System_Single___System_Single___
+  name: AddVectorsScalarAsync
+  nameWithType: IVectorAddActor.AddVectorsScalarAsync
+  fullName: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.AddVectorsScalarAsync
+- uid: System.Threading.Tasks.Task{System.Single}
+  commentId: T:System.Threading.Tasks.Task{System.Single}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<float>
+  nameWithType: Task<float>
+  fullName: System.Threading.Tasks.Task<float>
+  nameWithType.vb: Task(Of Single)
+  fullName.vb: System.Threading.Tasks.Task(Of Single)
+  name.vb: Task(Of Single)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.GetMetricsAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.GetMetricsAsync
+  href: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.html#Orleans_GpuBridge_Grains_RingKernels_IVectorAddActor_GetMetricsAsync
+  name: GetMetricsAsync
+  nameWithType: IVectorAddActor.GetMetricsAsync
+  fullName: Orleans.GpuBridge.Grains.RingKernels.IVectorAddActor.GetMetricsAsync
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Grains.RingKernels.VectorAddMetrics}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Grains.RingKernels.VectorAddMetrics}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<VectorAddMetrics>
+  nameWithType: Task<VectorAddMetrics>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Grains.RingKernels.VectorAddMetrics>
+  nameWithType.vb: Task(Of VectorAddMetrics)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Grains.RingKernels.VectorAddMetrics)
+  name.vb: Task(Of VectorAddMetrics)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Grains.RingKernels.VectorAddMetrics
+    name: VectorAddMetrics
+    href: Orleans.GpuBridge.Grains.RingKernels.VectorAddMetrics.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Grains.RingKernels.VectorAddMetrics
+    name: VectorAddMetrics
+    href: Orleans.GpuBridge.Grains.RingKernels.VectorAddMetrics.html
+  - name: )

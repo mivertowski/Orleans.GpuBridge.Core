@@ -1,0 +1,1273 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex
+  commentId: T:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex
+  id: IHypergraphVertex
+  parent: Orleans.GpuBridge.Abstractions.Hypergraph
+  children:
+  - Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.AggregateAsync(Orleans.GpuBridge.Abstractions.Hypergraph.VertexAggregation)
+  - Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.BroadcastToHyperedgeAsync(System.String,Orleans.GpuBridge.Abstractions.Hypergraph.VertexMessage)
+  - Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.GetHyperedgesAsync
+  - Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.GetMetricsAsync
+  - Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.GetStateAsync
+  - Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.InitializeAsync(Orleans.GpuBridge.Abstractions.Hypergraph.VertexInitRequest)
+  - Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.JoinHyperedgeAsync(System.String,System.String)
+  - Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.LeaveHyperedgeAsync(System.String)
+  - Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.MatchPatternAsync(Orleans.GpuBridge.Abstractions.Hypergraph.HypergraphPattern,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.QueryNeighborsAsync(System.Int32,Orleans.GpuBridge.Abstractions.Hypergraph.NeighborFilter)
+  - Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.ReceiveMessageAsync(Orleans.GpuBridge.Abstractions.Hypergraph.VertexMessage)
+  - Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.UpdatePropertiesAsync(System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
+  langs:
+  - csharp
+  - vb
+  name: IHypergraphVertex
+  nameWithType: IHypergraphVertex
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex
+  type: Interface
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IHypergraphVertex
+    path: ../src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+    startLine: 35
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Hypergraph
+  summary: GPU-native hypergraph vertex actor interface for multi-way relationship graphs.
+  remarks: >-
+    <p>
+
+    Hypergraph vertices represent entities that can participate in multiple hyperedges.
+
+    Unlike standard graphs where edges connect exactly two vertices, hyperedges can
+
+    connect any number of vertices, enabling modeling of complex multi-way relationships.
+
+    </p>
+
+    <p>
+
+    <strong>GPU-Native Features:</strong>
+
+    <ul><li>CSR (Compressed Sparse Row) format for efficient GPU memory layout</li><li>Sub-microsecond message passing between connected vertices</li><li>GPU-accelerated pattern matching across hyperedges</li><li>Temporal ordering with HLC timestamps for causal correctness</li></ul>
+
+    </p>
+
+    <p>
+
+    <strong>Use Cases:</strong>
+
+    <ul><li>Knowledge graphs with complex entity relationships</li><li>Social networks with group interactions</li><li>Chemical compound modeling (atoms in molecules)</li><li>Database query optimization (join hypergraphs)</li></ul>
+
+    </p>
+  example: []
+  syntax:
+    content: 'public interface IHypergraphVertex : IGrainWithStringKey, IGrain, IAddressable'
+    content.vb: Public Interface IHypergraphVertex Inherits IGrainWithStringKey, IGrain, IAddressable
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.InitializeAsync(Orleans.GpuBridge.Abstractions.Hypergraph.VertexInitRequest)
+  commentId: M:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.InitializeAsync(Orleans.GpuBridge.Abstractions.Hypergraph.VertexInitRequest)
+  id: InitializeAsync(Orleans.GpuBridge.Abstractions.Hypergraph.VertexInitRequest)
+  parent: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex
+  langs:
+  - csharp
+  - vb
+  name: InitializeAsync(VertexInitRequest)
+  nameWithType: IHypergraphVertex.InitializeAsync(VertexInitRequest)
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.InitializeAsync(Orleans.GpuBridge.Abstractions.Hypergraph.VertexInitRequest)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: InitializeAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+    startLine: 42
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Hypergraph
+  summary: Initializes the vertex with properties.
+  example: []
+  syntax:
+    content: Task<VertexInitResult> InitializeAsync(VertexInitRequest request)
+    parameters:
+    - id: request
+      type: Orleans.GpuBridge.Abstractions.Hypergraph.VertexInitRequest
+      description: Initialization request with vertex properties.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.VertexInitResult}
+      description: Result of initialization.
+    content.vb: Function InitializeAsync(request As VertexInitRequest) As Task(Of VertexInitResult)
+  overload: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.InitializeAsync*
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.GetStateAsync
+  commentId: M:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.GetStateAsync
+  id: GetStateAsync
+  parent: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex
+  langs:
+  - csharp
+  - vb
+  name: GetStateAsync()
+  nameWithType: IHypergraphVertex.GetStateAsync()
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.GetStateAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetStateAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+    startLine: 48
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Hypergraph
+  summary: Gets vertex state including all properties and hyperedge memberships.
+  example: []
+  syntax:
+    content: Task<VertexState> GetStateAsync()
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.VertexState}
+      description: Current vertex state.
+    content.vb: Function GetStateAsync() As Task(Of VertexState)
+  overload: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.GetStateAsync*
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.UpdatePropertiesAsync(System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
+  commentId: M:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.UpdatePropertiesAsync(System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
+  id: UpdatePropertiesAsync(System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
+  parent: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex
+  langs:
+  - csharp
+  - vb
+  name: UpdatePropertiesAsync(IReadOnlyDictionary<string, object>)
+  nameWithType: IHypergraphVertex.UpdatePropertiesAsync(IReadOnlyDictionary<string, object>)
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.UpdatePropertiesAsync(System.Collections.Generic.IReadOnlyDictionary<string, object>)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: UpdatePropertiesAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+    startLine: 55
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Hypergraph
+  summary: Updates vertex properties.
+  example: []
+  syntax:
+    content: Task<VertexUpdateResult> UpdatePropertiesAsync(IReadOnlyDictionary<string, object> properties)
+    parameters:
+    - id: properties
+      type: System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object}
+      description: Properties to update.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.VertexUpdateResult}
+      description: Update result with new version.
+    content.vb: Function UpdatePropertiesAsync(properties As IReadOnlyDictionary(Of String, Object)) As Task(Of VertexUpdateResult)
+  overload: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.UpdatePropertiesAsync*
+  nameWithType.vb: IHypergraphVertex.UpdatePropertiesAsync(IReadOnlyDictionary(Of String, Object))
+  fullName.vb: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.UpdatePropertiesAsync(System.Collections.Generic.IReadOnlyDictionary(Of String, Object))
+  name.vb: UpdatePropertiesAsync(IReadOnlyDictionary(Of String, Object))
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.JoinHyperedgeAsync(System.String,System.String)
+  commentId: M:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.JoinHyperedgeAsync(System.String,System.String)
+  id: JoinHyperedgeAsync(System.String,System.String)
+  parent: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex
+  langs:
+  - csharp
+  - vb
+  name: JoinHyperedgeAsync(string, string?)
+  nameWithType: IHypergraphVertex.JoinHyperedgeAsync(string, string?)
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.JoinHyperedgeAsync(string, string?)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: JoinHyperedgeAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+    startLine: 63
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Hypergraph
+  summary: Joins a hyperedge (adds vertex to hyperedge membership).
+  example: []
+  syntax:
+    content: Task<HyperedgeMembershipResult> JoinHyperedgeAsync(string hyperedgeId, string? role = null)
+    parameters:
+    - id: hyperedgeId
+      type: System.String
+      description: Hyperedge identifier to join.
+    - id: role
+      type: System.String
+      description: Role within the hyperedge (optional).
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.HyperedgeMembershipResult}
+      description: Result of joining.
+    content.vb: Function JoinHyperedgeAsync(hyperedgeId As String, role As String = Nothing) As Task(Of HyperedgeMembershipResult)
+  overload: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.JoinHyperedgeAsync*
+  nameWithType.vb: IHypergraphVertex.JoinHyperedgeAsync(String, String)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.JoinHyperedgeAsync(String, String)
+  name.vb: JoinHyperedgeAsync(String, String)
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.LeaveHyperedgeAsync(System.String)
+  commentId: M:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.LeaveHyperedgeAsync(System.String)
+  id: LeaveHyperedgeAsync(System.String)
+  parent: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex
+  langs:
+  - csharp
+  - vb
+  name: LeaveHyperedgeAsync(string)
+  nameWithType: IHypergraphVertex.LeaveHyperedgeAsync(string)
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.LeaveHyperedgeAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: LeaveHyperedgeAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+    startLine: 70
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Hypergraph
+  summary: Leaves a hyperedge (removes vertex from hyperedge membership).
+  example: []
+  syntax:
+    content: Task<HyperedgeMembershipResult> LeaveHyperedgeAsync(string hyperedgeId)
+    parameters:
+    - id: hyperedgeId
+      type: System.String
+      description: Hyperedge identifier to leave.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.HyperedgeMembershipResult}
+      description: Result of leaving.
+    content.vb: Function LeaveHyperedgeAsync(hyperedgeId As String) As Task(Of HyperedgeMembershipResult)
+  overload: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.LeaveHyperedgeAsync*
+  nameWithType.vb: IHypergraphVertex.LeaveHyperedgeAsync(String)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.LeaveHyperedgeAsync(String)
+  name.vb: LeaveHyperedgeAsync(String)
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.GetHyperedgesAsync
+  commentId: M:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.GetHyperedgesAsync
+  id: GetHyperedgesAsync
+  parent: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex
+  langs:
+  - csharp
+  - vb
+  name: GetHyperedgesAsync()
+  nameWithType: IHypergraphVertex.GetHyperedgesAsync()
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.GetHyperedgesAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetHyperedgesAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+    startLine: 76
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Hypergraph
+  summary: Gets all hyperedges this vertex participates in.
+  example: []
+  syntax:
+    content: Task<IReadOnlyList<HyperedgeMembership>> GetHyperedgesAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Hypergraph.HyperedgeMembership}}
+      description: List of hyperedge memberships.
+    content.vb: Function GetHyperedgesAsync() As Task(Of IReadOnlyList(Of HyperedgeMembership))
+  overload: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.GetHyperedgesAsync*
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.BroadcastToHyperedgeAsync(System.String,Orleans.GpuBridge.Abstractions.Hypergraph.VertexMessage)
+  commentId: M:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.BroadcastToHyperedgeAsync(System.String,Orleans.GpuBridge.Abstractions.Hypergraph.VertexMessage)
+  id: BroadcastToHyperedgeAsync(System.String,Orleans.GpuBridge.Abstractions.Hypergraph.VertexMessage)
+  parent: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex
+  langs:
+  - csharp
+  - vb
+  name: BroadcastToHyperedgeAsync(string, VertexMessage)
+  nameWithType: IHypergraphVertex.BroadcastToHyperedgeAsync(string, VertexMessage)
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.BroadcastToHyperedgeAsync(string, Orleans.GpuBridge.Abstractions.Hypergraph.VertexMessage)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: BroadcastToHyperedgeAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+    startLine: 84
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Hypergraph
+  summary: Sends a message to all vertices in a shared hyperedge.
+  example: []
+  syntax:
+    content: Task<BroadcastResult> BroadcastToHyperedgeAsync(string hyperedgeId, VertexMessage message)
+    parameters:
+    - id: hyperedgeId
+      type: System.String
+      description: Hyperedge to broadcast within.
+    - id: message
+      type: Orleans.GpuBridge.Abstractions.Hypergraph.VertexMessage
+      description: Message to broadcast.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.BroadcastResult}
+      description: Broadcast result with delivery status.
+    content.vb: Function BroadcastToHyperedgeAsync(hyperedgeId As String, message As VertexMessage) As Task(Of BroadcastResult)
+  overload: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.BroadcastToHyperedgeAsync*
+  nameWithType.vb: IHypergraphVertex.BroadcastToHyperedgeAsync(String, VertexMessage)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.BroadcastToHyperedgeAsync(String, Orleans.GpuBridge.Abstractions.Hypergraph.VertexMessage)
+  name.vb: BroadcastToHyperedgeAsync(String, VertexMessage)
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.ReceiveMessageAsync(Orleans.GpuBridge.Abstractions.Hypergraph.VertexMessage)
+  commentId: M:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.ReceiveMessageAsync(Orleans.GpuBridge.Abstractions.Hypergraph.VertexMessage)
+  id: ReceiveMessageAsync(Orleans.GpuBridge.Abstractions.Hypergraph.VertexMessage)
+  parent: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex
+  langs:
+  - csharp
+  - vb
+  name: ReceiveMessageAsync(VertexMessage)
+  nameWithType: IHypergraphVertex.ReceiveMessageAsync(VertexMessage)
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.ReceiveMessageAsync(Orleans.GpuBridge.Abstractions.Hypergraph.VertexMessage)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ReceiveMessageAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+    startLine: 91
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Hypergraph
+  summary: Receives a message from another vertex.
+  example: []
+  syntax:
+    content: Task<MessageResult> ReceiveMessageAsync(VertexMessage message)
+    parameters:
+    - id: message
+      type: Orleans.GpuBridge.Abstractions.Hypergraph.VertexMessage
+      description: Incoming message.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.MessageResult}
+      description: Message processing result.
+    content.vb: Function ReceiveMessageAsync(message As VertexMessage) As Task(Of MessageResult)
+  overload: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.ReceiveMessageAsync*
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.QueryNeighborsAsync(System.Int32,Orleans.GpuBridge.Abstractions.Hypergraph.NeighborFilter)
+  commentId: M:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.QueryNeighborsAsync(System.Int32,Orleans.GpuBridge.Abstractions.Hypergraph.NeighborFilter)
+  id: QueryNeighborsAsync(System.Int32,Orleans.GpuBridge.Abstractions.Hypergraph.NeighborFilter)
+  parent: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex
+  langs:
+  - csharp
+  - vb
+  name: QueryNeighborsAsync(int, NeighborFilter?)
+  nameWithType: IHypergraphVertex.QueryNeighborsAsync(int, NeighborFilter?)
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.QueryNeighborsAsync(int, Orleans.GpuBridge.Abstractions.Hypergraph.NeighborFilter?)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: QueryNeighborsAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+    startLine: 99
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Hypergraph
+  summary: Queries neighbors reachable through hyperedges within specified hops.
+  example: []
+  syntax:
+    content: Task<NeighborQueryResult> QueryNeighborsAsync(int maxHops = 1, NeighborFilter? filter = null)
+    parameters:
+    - id: maxHops
+      type: System.Int32
+      description: Maximum number of hyperedge traversals.
+    - id: filter
+      type: Orleans.GpuBridge.Abstractions.Hypergraph.NeighborFilter
+      description: Optional filter for neighbors.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.NeighborQueryResult}
+      description: Neighbor query result.
+    content.vb: Function QueryNeighborsAsync(maxHops As Integer = 1, filter As NeighborFilter = Nothing) As Task(Of NeighborQueryResult)
+  overload: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.QueryNeighborsAsync*
+  nameWithType.vb: IHypergraphVertex.QueryNeighborsAsync(Integer, NeighborFilter)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.QueryNeighborsAsync(Integer, Orleans.GpuBridge.Abstractions.Hypergraph.NeighborFilter)
+  name.vb: QueryNeighborsAsync(Integer, NeighborFilter)
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.MatchPatternAsync(Orleans.GpuBridge.Abstractions.Hypergraph.HypergraphPattern,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.MatchPatternAsync(Orleans.GpuBridge.Abstractions.Hypergraph.HypergraphPattern,System.Threading.CancellationToken)
+  id: MatchPatternAsync(Orleans.GpuBridge.Abstractions.Hypergraph.HypergraphPattern,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex
+  langs:
+  - csharp
+  - vb
+  name: MatchPatternAsync(HypergraphPattern, CancellationToken)
+  nameWithType: IHypergraphVertex.MatchPatternAsync(HypergraphPattern, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.MatchPatternAsync(Orleans.GpuBridge.Abstractions.Hypergraph.HypergraphPattern, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MatchPatternAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+    startLine: 107
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Hypergraph
+  summary: Executes a pattern match starting from this vertex.
+  example: []
+  syntax:
+    content: Task<PatternMatchResult> MatchPatternAsync(HypergraphPattern pattern, CancellationToken ct = default)
+    parameters:
+    - id: pattern
+      type: Orleans.GpuBridge.Abstractions.Hypergraph.HypergraphPattern
+      description: Pattern to match.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.PatternMatchResult}
+      description: Pattern match results.
+    content.vb: Function MatchPatternAsync(pattern As HypergraphPattern, ct As CancellationToken = Nothing) As Task(Of PatternMatchResult)
+  overload: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.MatchPatternAsync*
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.AggregateAsync(Orleans.GpuBridge.Abstractions.Hypergraph.VertexAggregation)
+  commentId: M:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.AggregateAsync(Orleans.GpuBridge.Abstractions.Hypergraph.VertexAggregation)
+  id: AggregateAsync(Orleans.GpuBridge.Abstractions.Hypergraph.VertexAggregation)
+  parent: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex
+  langs:
+  - csharp
+  - vb
+  name: AggregateAsync(VertexAggregation)
+  nameWithType: IHypergraphVertex.AggregateAsync(VertexAggregation)
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.AggregateAsync(Orleans.GpuBridge.Abstractions.Hypergraph.VertexAggregation)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AggregateAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+    startLine: 114
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Hypergraph
+  summary: Computes aggregate values across connected vertices via hyperedges.
+  example: []
+  syntax:
+    content: Task<AggregationResult> AggregateAsync(VertexAggregation aggregation)
+    parameters:
+    - id: aggregation
+      type: Orleans.GpuBridge.Abstractions.Hypergraph.VertexAggregation
+      description: Aggregation specification.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.AggregationResult}
+      description: Aggregation result.
+    content.vb: Function AggregateAsync(aggregation As VertexAggregation) As Task(Of AggregationResult)
+  overload: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.AggregateAsync*
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.GetMetricsAsync
+  commentId: M:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.GetMetricsAsync
+  id: GetMetricsAsync
+  parent: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex
+  langs:
+  - csharp
+  - vb
+  name: GetMetricsAsync()
+  nameWithType: IHypergraphVertex.GetMetricsAsync()
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.GetMetricsAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetMetricsAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Hypergraph/IHypergraphVertex.cs
+    startLine: 120
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Hypergraph
+  summary: Gets performance metrics for this vertex.
+  example: []
+  syntax:
+    content: Task<VertexMetrics> GetMetricsAsync()
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.VertexMetrics}
+      description: Vertex performance metrics.
+    content.vb: Function GetMetricsAsync() As Task(Of VertexMetrics)
+  overload: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.GetMetricsAsync*
+references:
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph
+  commentId: N:Orleans.GpuBridge.Abstractions.Hypergraph
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Hypergraph
+  nameWithType: Orleans.GpuBridge.Abstractions.Hypergraph
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Hypergraph
+    name: Hypergraph
+    href: Orleans.GpuBridge.Abstractions.Hypergraph.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Hypergraph
+    name: Hypergraph
+    href: Orleans.GpuBridge.Abstractions.Hypergraph.html
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.InitializeAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.InitializeAsync
+  href: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.html#Orleans_GpuBridge_Abstractions_Hypergraph_IHypergraphVertex_InitializeAsync_Orleans_GpuBridge_Abstractions_Hypergraph_VertexInitRequest_
+  name: InitializeAsync
+  nameWithType: IHypergraphVertex.InitializeAsync
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.InitializeAsync
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.VertexInitRequest
+  commentId: T:Orleans.GpuBridge.Abstractions.Hypergraph.VertexInitRequest
+  parent: Orleans.GpuBridge.Abstractions.Hypergraph
+  href: Orleans.GpuBridge.Abstractions.Hypergraph.VertexInitRequest.html
+  name: VertexInitRequest
+  nameWithType: VertexInitRequest
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.VertexInitRequest
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.VertexInitResult}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.VertexInitResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<VertexInitResult>
+  nameWithType: Task<VertexInitResult>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Hypergraph.VertexInitResult>
+  nameWithType.vb: Task(Of VertexInitResult)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Hypergraph.VertexInitResult)
+  name.vb: Task(Of VertexInitResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Hypergraph.VertexInitResult
+    name: VertexInitResult
+    href: Orleans.GpuBridge.Abstractions.Hypergraph.VertexInitResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Hypergraph.VertexInitResult
+    name: VertexInitResult
+    href: Orleans.GpuBridge.Abstractions.Hypergraph.VertexInitResult.html
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.GetStateAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.GetStateAsync
+  href: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.html#Orleans_GpuBridge_Abstractions_Hypergraph_IHypergraphVertex_GetStateAsync
+  name: GetStateAsync
+  nameWithType: IHypergraphVertex.GetStateAsync
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.GetStateAsync
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.VertexState}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.VertexState}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<VertexState>
+  nameWithType: Task<VertexState>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Hypergraph.VertexState>
+  nameWithType.vb: Task(Of VertexState)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Hypergraph.VertexState)
+  name.vb: Task(Of VertexState)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Hypergraph.VertexState
+    name: VertexState
+    href: Orleans.GpuBridge.Abstractions.Hypergraph.VertexState.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Hypergraph.VertexState
+    name: VertexState
+    href: Orleans.GpuBridge.Abstractions.Hypergraph.VertexState.html
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.UpdatePropertiesAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.UpdatePropertiesAsync
+  href: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.html#Orleans_GpuBridge_Abstractions_Hypergraph_IHypergraphVertex_UpdatePropertiesAsync_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__
+  name: UpdatePropertiesAsync
+  nameWithType: IHypergraphVertex.UpdatePropertiesAsync
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.UpdatePropertiesAsync
+- uid: System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object}
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<string, object>
+  nameWithType: IReadOnlyDictionary<string, object>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<string, object>
+  nameWithType.vb: IReadOnlyDictionary(Of String, Object)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of String, Object)
+  name.vb: IReadOnlyDictionary(Of String, Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.VertexUpdateResult}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.VertexUpdateResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<VertexUpdateResult>
+  nameWithType: Task<VertexUpdateResult>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Hypergraph.VertexUpdateResult>
+  nameWithType.vb: Task(Of VertexUpdateResult)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Hypergraph.VertexUpdateResult)
+  name.vb: Task(Of VertexUpdateResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Hypergraph.VertexUpdateResult
+    name: VertexUpdateResult
+    href: Orleans.GpuBridge.Abstractions.Hypergraph.VertexUpdateResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Hypergraph.VertexUpdateResult
+    name: VertexUpdateResult
+    href: Orleans.GpuBridge.Abstractions.Hypergraph.VertexUpdateResult.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyDictionary`2
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<TKey, TValue>
+  nameWithType: IReadOnlyDictionary<TKey, TValue>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>
+  nameWithType.vb: IReadOnlyDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of TKey, TValue)
+  name.vb: IReadOnlyDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.JoinHyperedgeAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.JoinHyperedgeAsync
+  href: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.html#Orleans_GpuBridge_Abstractions_Hypergraph_IHypergraphVertex_JoinHyperedgeAsync_System_String_System_String_
+  name: JoinHyperedgeAsync
+  nameWithType: IHypergraphVertex.JoinHyperedgeAsync
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.JoinHyperedgeAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.HyperedgeMembershipResult}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.HyperedgeMembershipResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<HyperedgeMembershipResult>
+  nameWithType: Task<HyperedgeMembershipResult>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Hypergraph.HyperedgeMembershipResult>
+  nameWithType.vb: Task(Of HyperedgeMembershipResult)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Hypergraph.HyperedgeMembershipResult)
+  name.vb: Task(Of HyperedgeMembershipResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Hypergraph.HyperedgeMembershipResult
+    name: HyperedgeMembershipResult
+    href: Orleans.GpuBridge.Abstractions.Hypergraph.HyperedgeMembershipResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Hypergraph.HyperedgeMembershipResult
+    name: HyperedgeMembershipResult
+    href: Orleans.GpuBridge.Abstractions.Hypergraph.HyperedgeMembershipResult.html
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.LeaveHyperedgeAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.LeaveHyperedgeAsync
+  href: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.html#Orleans_GpuBridge_Abstractions_Hypergraph_IHypergraphVertex_LeaveHyperedgeAsync_System_String_
+  name: LeaveHyperedgeAsync
+  nameWithType: IHypergraphVertex.LeaveHyperedgeAsync
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.LeaveHyperedgeAsync
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.GetHyperedgesAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.GetHyperedgesAsync
+  href: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.html#Orleans_GpuBridge_Abstractions_Hypergraph_IHypergraphVertex_GetHyperedgesAsync
+  name: GetHyperedgesAsync
+  nameWithType: IHypergraphVertex.GetHyperedgesAsync
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.GetHyperedgesAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Hypergraph.HyperedgeMembership}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Hypergraph.HyperedgeMembership}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IReadOnlyList<HyperedgeMembership>>
+  nameWithType: Task<IReadOnlyList<HyperedgeMembership>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Abstractions.Hypergraph.HyperedgeMembership>>
+  nameWithType.vb: Task(Of IReadOnlyList(Of HyperedgeMembership))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Abstractions.Hypergraph.HyperedgeMembership))
+  name.vb: Task(Of IReadOnlyList(Of HyperedgeMembership))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Hypergraph.HyperedgeMembership
+    name: HyperedgeMembership
+    href: Orleans.GpuBridge.Abstractions.Hypergraph.HyperedgeMembership.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Hypergraph.HyperedgeMembership
+    name: HyperedgeMembership
+    href: Orleans.GpuBridge.Abstractions.Hypergraph.HyperedgeMembership.html
+  - name: )
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.BroadcastToHyperedgeAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.BroadcastToHyperedgeAsync
+  href: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.html#Orleans_GpuBridge_Abstractions_Hypergraph_IHypergraphVertex_BroadcastToHyperedgeAsync_System_String_Orleans_GpuBridge_Abstractions_Hypergraph_VertexMessage_
+  name: BroadcastToHyperedgeAsync
+  nameWithType: IHypergraphVertex.BroadcastToHyperedgeAsync
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.BroadcastToHyperedgeAsync
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.VertexMessage
+  commentId: T:Orleans.GpuBridge.Abstractions.Hypergraph.VertexMessage
+  parent: Orleans.GpuBridge.Abstractions.Hypergraph
+  href: Orleans.GpuBridge.Abstractions.Hypergraph.VertexMessage.html
+  name: VertexMessage
+  nameWithType: VertexMessage
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.VertexMessage
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.BroadcastResult}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.BroadcastResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<BroadcastResult>
+  nameWithType: Task<BroadcastResult>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Hypergraph.BroadcastResult>
+  nameWithType.vb: Task(Of BroadcastResult)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Hypergraph.BroadcastResult)
+  name.vb: Task(Of BroadcastResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Hypergraph.BroadcastResult
+    name: BroadcastResult
+    href: Orleans.GpuBridge.Abstractions.Hypergraph.BroadcastResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Hypergraph.BroadcastResult
+    name: BroadcastResult
+    href: Orleans.GpuBridge.Abstractions.Hypergraph.BroadcastResult.html
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.ReceiveMessageAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.ReceiveMessageAsync
+  href: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.html#Orleans_GpuBridge_Abstractions_Hypergraph_IHypergraphVertex_ReceiveMessageAsync_Orleans_GpuBridge_Abstractions_Hypergraph_VertexMessage_
+  name: ReceiveMessageAsync
+  nameWithType: IHypergraphVertex.ReceiveMessageAsync
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.ReceiveMessageAsync
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.MessageResult}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.MessageResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<MessageResult>
+  nameWithType: Task<MessageResult>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Hypergraph.MessageResult>
+  nameWithType.vb: Task(Of MessageResult)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Hypergraph.MessageResult)
+  name.vb: Task(Of MessageResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Hypergraph.MessageResult
+    name: MessageResult
+    href: Orleans.GpuBridge.Abstractions.Hypergraph.MessageResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Hypergraph.MessageResult
+    name: MessageResult
+    href: Orleans.GpuBridge.Abstractions.Hypergraph.MessageResult.html
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.QueryNeighborsAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.QueryNeighborsAsync
+  href: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.html#Orleans_GpuBridge_Abstractions_Hypergraph_IHypergraphVertex_QueryNeighborsAsync_System_Int32_Orleans_GpuBridge_Abstractions_Hypergraph_NeighborFilter_
+  name: QueryNeighborsAsync
+  nameWithType: IHypergraphVertex.QueryNeighborsAsync
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.QueryNeighborsAsync
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.NeighborFilter
+  commentId: T:Orleans.GpuBridge.Abstractions.Hypergraph.NeighborFilter
+  parent: Orleans.GpuBridge.Abstractions.Hypergraph
+  href: Orleans.GpuBridge.Abstractions.Hypergraph.NeighborFilter.html
+  name: NeighborFilter
+  nameWithType: NeighborFilter
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.NeighborFilter
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.NeighborQueryResult}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.NeighborQueryResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<NeighborQueryResult>
+  nameWithType: Task<NeighborQueryResult>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Hypergraph.NeighborQueryResult>
+  nameWithType.vb: Task(Of NeighborQueryResult)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Hypergraph.NeighborQueryResult)
+  name.vb: Task(Of NeighborQueryResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Hypergraph.NeighborQueryResult
+    name: NeighborQueryResult
+    href: Orleans.GpuBridge.Abstractions.Hypergraph.NeighborQueryResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Hypergraph.NeighborQueryResult
+    name: NeighborQueryResult
+    href: Orleans.GpuBridge.Abstractions.Hypergraph.NeighborQueryResult.html
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.MatchPatternAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.MatchPatternAsync
+  href: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.html#Orleans_GpuBridge_Abstractions_Hypergraph_IHypergraphVertex_MatchPatternAsync_Orleans_GpuBridge_Abstractions_Hypergraph_HypergraphPattern_System_Threading_CancellationToken_
+  name: MatchPatternAsync
+  nameWithType: IHypergraphVertex.MatchPatternAsync
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.MatchPatternAsync
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.HypergraphPattern
+  commentId: T:Orleans.GpuBridge.Abstractions.Hypergraph.HypergraphPattern
+  parent: Orleans.GpuBridge.Abstractions.Hypergraph
+  href: Orleans.GpuBridge.Abstractions.Hypergraph.HypergraphPattern.html
+  name: HypergraphPattern
+  nameWithType: HypergraphPattern
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.HypergraphPattern
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.PatternMatchResult}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.PatternMatchResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<PatternMatchResult>
+  nameWithType: Task<PatternMatchResult>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Hypergraph.PatternMatchResult>
+  nameWithType.vb: Task(Of PatternMatchResult)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Hypergraph.PatternMatchResult)
+  name.vb: Task(Of PatternMatchResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Hypergraph.PatternMatchResult
+    name: PatternMatchResult
+    href: Orleans.GpuBridge.Abstractions.Hypergraph.PatternMatchResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Hypergraph.PatternMatchResult
+    name: PatternMatchResult
+    href: Orleans.GpuBridge.Abstractions.Hypergraph.PatternMatchResult.html
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.AggregateAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.AggregateAsync
+  href: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.html#Orleans_GpuBridge_Abstractions_Hypergraph_IHypergraphVertex_AggregateAsync_Orleans_GpuBridge_Abstractions_Hypergraph_VertexAggregation_
+  name: AggregateAsync
+  nameWithType: IHypergraphVertex.AggregateAsync
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.AggregateAsync
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.VertexAggregation
+  commentId: T:Orleans.GpuBridge.Abstractions.Hypergraph.VertexAggregation
+  parent: Orleans.GpuBridge.Abstractions.Hypergraph
+  href: Orleans.GpuBridge.Abstractions.Hypergraph.VertexAggregation.html
+  name: VertexAggregation
+  nameWithType: VertexAggregation
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.VertexAggregation
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.AggregationResult}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.AggregationResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<AggregationResult>
+  nameWithType: Task<AggregationResult>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Hypergraph.AggregationResult>
+  nameWithType.vb: Task(Of AggregationResult)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Hypergraph.AggregationResult)
+  name.vb: Task(Of AggregationResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Hypergraph.AggregationResult
+    name: AggregationResult
+    href: Orleans.GpuBridge.Abstractions.Hypergraph.AggregationResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Hypergraph.AggregationResult
+    name: AggregationResult
+    href: Orleans.GpuBridge.Abstractions.Hypergraph.AggregationResult.html
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.GetMetricsAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.GetMetricsAsync
+  href: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.html#Orleans_GpuBridge_Abstractions_Hypergraph_IHypergraphVertex_GetMetricsAsync
+  name: GetMetricsAsync
+  nameWithType: IHypergraphVertex.GetMetricsAsync
+  fullName: Orleans.GpuBridge.Abstractions.Hypergraph.IHypergraphVertex.GetMetricsAsync
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.VertexMetrics}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Hypergraph.VertexMetrics}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<VertexMetrics>
+  nameWithType: Task<VertexMetrics>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Hypergraph.VertexMetrics>
+  nameWithType.vb: Task(Of VertexMetrics)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Hypergraph.VertexMetrics)
+  name.vb: Task(Of VertexMetrics)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Hypergraph.VertexMetrics
+    name: VertexMetrics
+    href: Orleans.GpuBridge.Abstractions.Hypergraph.VertexMetrics.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Hypergraph.VertexMetrics
+    name: VertexMetrics
+    href: Orleans.GpuBridge.Abstractions.Hypergraph.VertexMetrics.html
+  - name: )

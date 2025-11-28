@@ -1,0 +1,1547 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler
+  id: NetworkRetryHandler
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  children:
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler},Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryOptions)
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CalculateDelay(System.Int32)
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CircuitBreakerTrips
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CircuitStateChanged
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CurrentCircuitState
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.Dispose
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.ExecuteAsync(System.Func{System.Threading.CancellationToken,System.Threading.Tasks.Task},System.String,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.ExecuteAsync``1(System.Func{System.Threading.CancellationToken,System.Threading.Tasks.Task{``0}},System.String,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.GetStatistics
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.IsAllowingRequests
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.ResetCircuitBreaker
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.RetryAttempted
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.RetryExhausted
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.TotalAttempts
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.TotalFailures
+  - Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.TotalSuccesses
+  langs:
+  - csharp
+  - vb
+  name: NetworkRetryHandler
+  nameWithType: NetworkRetryHandler
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: NetworkRetryHandler
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+    startLine: 33
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Handles network failures with configurable exponential backoff and jitter.
+  remarks: >-
+    <p>
+
+    <b>Features:</b>
+
+    </p>
+
+    <ul><li>Exponential backoff with configurable base and max delay</li><li>Random jitter to prevent thundering herd</li><li>Circuit breaker pattern for persistent failures</li><li>Retry statistics and telemetry</li><li>Cancellation support</li></ul>
+
+    <p>
+
+    <b>Retry Formula:</b>
+
+
+    <pre><code class="lang-csharp">delay = min(maxDelay, baseDelay * 2^attempt) * (1 + random(-jitter, +jitter))</code></pre>
+
+    </p>
+  example: []
+  syntax:
+    content: 'public sealed class NetworkRetryHandler : IDisposable'
+    content.vb: Public NotInheritable Class NetworkRetryHandler Implements IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CurrentCircuitState
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CurrentCircuitState
+  id: CurrentCircuitState
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler
+  langs:
+  - csharp
+  - vb
+  name: CurrentCircuitState
+  nameWithType: NetworkRetryHandler.CurrentCircuitState
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CurrentCircuitState
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CurrentCircuitState
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+    startLine: 53
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Gets the current circuit breaker state.
+  example: []
+  syntax:
+    content: public CircuitState CurrentCircuitState { get; }
+    parameters: []
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.CircuitState
+    content.vb: Public ReadOnly Property CurrentCircuitState As CircuitState
+  overload: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CurrentCircuitState*
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.IsAllowingRequests
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.IsAllowingRequests
+  id: IsAllowingRequests
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler
+  langs:
+  - csharp
+  - vb
+  name: IsAllowingRequests
+  nameWithType: NetworkRetryHandler.IsAllowingRequests
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.IsAllowingRequests
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsAllowingRequests
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+    startLine: 67
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Gets whether the circuit is allowing requests.
+  example: []
+  syntax:
+    content: public bool IsAllowingRequests { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsAllowingRequests As Boolean
+  overload: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.IsAllowingRequests*
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.TotalAttempts
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.TotalAttempts
+  id: TotalAttempts
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler
+  langs:
+  - csharp
+  - vb
+  name: TotalAttempts
+  nameWithType: NetworkRetryHandler.TotalAttempts
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.TotalAttempts
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TotalAttempts
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+    startLine: 82
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Gets total retry attempts made.
+  example: []
+  syntax:
+    content: public long TotalAttempts { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public ReadOnly Property TotalAttempts As Long
+  overload: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.TotalAttempts*
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.TotalSuccesses
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.TotalSuccesses
+  id: TotalSuccesses
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler
+  langs:
+  - csharp
+  - vb
+  name: TotalSuccesses
+  nameWithType: NetworkRetryHandler.TotalSuccesses
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.TotalSuccesses
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TotalSuccesses
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+    startLine: 87
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Gets total successful operations.
+  example: []
+  syntax:
+    content: public long TotalSuccesses { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public ReadOnly Property TotalSuccesses As Long
+  overload: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.TotalSuccesses*
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.TotalFailures
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.TotalFailures
+  id: TotalFailures
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler
+  langs:
+  - csharp
+  - vb
+  name: TotalFailures
+  nameWithType: NetworkRetryHandler.TotalFailures
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.TotalFailures
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TotalFailures
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+    startLine: 92
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Gets total failed operations (after all retries exhausted).
+  example: []
+  syntax:
+    content: public long TotalFailures { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public ReadOnly Property TotalFailures As Long
+  overload: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.TotalFailures*
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CircuitBreakerTrips
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CircuitBreakerTrips
+  id: CircuitBreakerTrips
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler
+  langs:
+  - csharp
+  - vb
+  name: CircuitBreakerTrips
+  nameWithType: NetworkRetryHandler.CircuitBreakerTrips
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CircuitBreakerTrips
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CircuitBreakerTrips
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+    startLine: 97
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Gets number of times circuit breaker was tripped.
+  example: []
+  syntax:
+    content: public long CircuitBreakerTrips { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public ReadOnly Property CircuitBreakerTrips As Long
+  overload: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CircuitBreakerTrips*
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.RetryAttempted
+  commentId: E:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.RetryAttempted
+  id: RetryAttempted
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler
+  langs:
+  - csharp
+  - vb
+  name: RetryAttempted
+  nameWithType: NetworkRetryHandler.RetryAttempted
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.RetryAttempted
+  type: Event
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RetryAttempted
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+    startLine: 102
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Occurs when a retry is attempted.
+  example: []
+  syntax:
+    content: public event EventHandler<RetryAttemptEventArgs>? RetryAttempted
+    return:
+      type: System.EventHandler{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RetryAttemptEventArgs}
+    content.vb: Public Event RetryAttempted As EventHandler(Of RetryAttemptEventArgs)
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.RetryExhausted
+  commentId: E:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.RetryExhausted
+  id: RetryExhausted
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler
+  langs:
+  - csharp
+  - vb
+  name: RetryExhausted
+  nameWithType: NetworkRetryHandler.RetryExhausted
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.RetryExhausted
+  type: Event
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RetryExhausted
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+    startLine: 107
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Occurs when all retries are exhausted.
+  example: []
+  syntax:
+    content: public event EventHandler<RetryExhaustedEventArgs>? RetryExhausted
+    return:
+      type: System.EventHandler{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RetryExhaustedEventArgs}
+    content.vb: Public Event RetryExhausted As EventHandler(Of RetryExhaustedEventArgs)
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CircuitStateChanged
+  commentId: E:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CircuitStateChanged
+  id: CircuitStateChanged
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler
+  langs:
+  - csharp
+  - vb
+  name: CircuitStateChanged
+  nameWithType: NetworkRetryHandler.CircuitStateChanged
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CircuitStateChanged
+  type: Event
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CircuitStateChanged
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+    startLine: 112
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Occurs when the circuit breaker state changes.
+  example: []
+  syntax:
+    content: public event EventHandler<CircuitStateChangedEventArgs>? CircuitStateChanged
+    return:
+      type: System.EventHandler{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.CircuitStateChangedEventArgs}
+    content.vb: Public Event CircuitStateChanged As EventHandler(Of CircuitStateChangedEventArgs)
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler},Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryOptions)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler},Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryOptions)
+  id: '#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler},Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryOptions)'
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler
+  langs:
+  - csharp
+  - vb
+  name: NetworkRetryHandler(ILogger<NetworkRetryHandler>, NetworkRetryOptions?)
+  nameWithType: NetworkRetryHandler.NetworkRetryHandler(ILogger<NetworkRetryHandler>, NetworkRetryOptions?)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.NetworkRetryHandler(Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler>, Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryOptions?)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+    startLine: 119
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Initializes a new network retry handler.
+  example: []
+  syntax:
+    content: public NetworkRetryHandler(ILogger<NetworkRetryHandler> logger, NetworkRetryOptions? options = null)
+    parameters:
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler}
+      description: Logger for diagnostic messages.
+    - id: options
+      type: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryOptions
+      description: Retry configuration options.
+    content.vb: Public Sub New(logger As ILogger(Of NetworkRetryHandler), options As NetworkRetryOptions = Nothing)
+  overload: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.#ctor*
+  nameWithType.vb: NetworkRetryHandler.New(ILogger(Of NetworkRetryHandler), NetworkRetryOptions)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.New(Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler), Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryOptions)
+  name.vb: New(ILogger(Of NetworkRetryHandler), NetworkRetryOptions)
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.ExecuteAsync``1(System.Func{System.Threading.CancellationToken,System.Threading.Tasks.Task{``0}},System.String,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.ExecuteAsync``1(System.Func{System.Threading.CancellationToken,System.Threading.Tasks.Task{``0}},System.String,System.Threading.CancellationToken)
+  id: ExecuteAsync``1(System.Func{System.Threading.CancellationToken,System.Threading.Tasks.Task{``0}},System.String,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler
+  langs:
+  - csharp
+  - vb
+  name: ExecuteAsync<T>(Func<CancellationToken, Task<T>>, string, CancellationToken)
+  nameWithType: NetworkRetryHandler.ExecuteAsync<T>(Func<CancellationToken, Task<T>>, string, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.ExecuteAsync<T>(System.Func<System.Threading.CancellationToken, System.Threading.Tasks.Task<T>>, string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ExecuteAsync
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+    startLine: 142
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Executes an async operation with retry logic.
+  example: []
+  syntax:
+    content: public Task<T> ExecuteAsync<T>(Func<CancellationToken, Task<T>> operation, string operationName, CancellationToken cancellationToken = default)
+    parameters:
+    - id: operation
+      type: System.Func{System.Threading.CancellationToken,System.Threading.Tasks.Task{{T}}}
+      description: The operation to execute.
+    - id: operationName
+      type: System.String
+      description: Name for logging purposes.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    typeParameters:
+    - id: T
+      description: Return type of the operation.
+    return:
+      type: System.Threading.Tasks.Task{{T}}
+      description: The operation result.
+    content.vb: Public Function ExecuteAsync(Of T)(operation As Func(Of CancellationToken, Task(Of T)), operationName As String, cancellationToken As CancellationToken = Nothing) As Task(Of T)
+  overload: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.ExecuteAsync*
+  exceptions:
+  - type: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RetryExhaustedException
+    commentId: T:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RetryExhaustedException
+    description: Thrown when all retries are exhausted.
+  nameWithType.vb: NetworkRetryHandler.ExecuteAsync(Of T)(Func(Of CancellationToken, Task(Of T)), String, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.ExecuteAsync(Of T)(System.Func(Of System.Threading.CancellationToken, System.Threading.Tasks.Task(Of T)), String, System.Threading.CancellationToken)
+  name.vb: ExecuteAsync(Of T)(Func(Of CancellationToken, Task(Of T)), String, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.ExecuteAsync(System.Func{System.Threading.CancellationToken,System.Threading.Tasks.Task},System.String,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.ExecuteAsync(System.Func{System.Threading.CancellationToken,System.Threading.Tasks.Task},System.String,System.Threading.CancellationToken)
+  id: ExecuteAsync(System.Func{System.Threading.CancellationToken,System.Threading.Tasks.Task},System.String,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler
+  langs:
+  - csharp
+  - vb
+  name: ExecuteAsync(Func<CancellationToken, Task>, string, CancellationToken)
+  nameWithType: NetworkRetryHandler.ExecuteAsync(Func<CancellationToken, Task>, string, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.ExecuteAsync(System.Func<System.Threading.CancellationToken, System.Threading.Tasks.Task>, string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ExecuteAsync
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+    startLine: 256
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Executes an async operation with retry logic (no return value).
+  example: []
+  syntax:
+    content: public Task ExecuteAsync(Func<CancellationToken, Task> operation, string operationName, CancellationToken cancellationToken = default)
+    parameters:
+    - id: operation
+      type: System.Func{System.Threading.CancellationToken,System.Threading.Tasks.Task}
+      description: The operation to execute.
+    - id: operationName
+      type: System.String
+      description: Name for logging purposes.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function ExecuteAsync(operation As Func(Of CancellationToken, Task), operationName As String, cancellationToken As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.ExecuteAsync*
+  nameWithType.vb: NetworkRetryHandler.ExecuteAsync(Func(Of CancellationToken, Task), String, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.ExecuteAsync(System.Func(Of System.Threading.CancellationToken, System.Threading.Tasks.Task), String, System.Threading.CancellationToken)
+  name.vb: ExecuteAsync(Func(Of CancellationToken, Task), String, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CalculateDelay(System.Int32)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CalculateDelay(System.Int32)
+  id: CalculateDelay(System.Int32)
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler
+  langs:
+  - csharp
+  - vb
+  name: CalculateDelay(int)
+  nameWithType: NetworkRetryHandler.CalculateDelay(int)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CalculateDelay(int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CalculateDelay
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+    startLine: 276
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Calculates the delay for a retry attempt with exponential backoff and jitter.
+  example: []
+  syntax:
+    content: public TimeSpan CalculateDelay(int attempt)
+    parameters:
+    - id: attempt
+      type: System.Int32
+      description: Zero-based attempt number.
+    return:
+      type: System.TimeSpan
+      description: Delay duration.
+    content.vb: Public Function CalculateDelay(attempt As Integer) As TimeSpan
+  overload: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CalculateDelay*
+  nameWithType.vb: NetworkRetryHandler.CalculateDelay(Integer)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CalculateDelay(Integer)
+  name.vb: CalculateDelay(Integer)
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.ResetCircuitBreaker
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.ResetCircuitBreaker
+  id: ResetCircuitBreaker
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler
+  langs:
+  - csharp
+  - vb
+  name: ResetCircuitBreaker()
+  nameWithType: NetworkRetryHandler.ResetCircuitBreaker()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.ResetCircuitBreaker()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ResetCircuitBreaker
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+    startLine: 299
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Manually resets the circuit breaker to closed state.
+  example: []
+  syntax:
+    content: public void ResetCircuitBreaker()
+    content.vb: Public Sub ResetCircuitBreaker()
+  overload: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.ResetCircuitBreaker*
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.GetStatistics
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.GetStatistics
+  id: GetStatistics
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler
+  langs:
+  - csharp
+  - vb
+  name: GetStatistics()
+  nameWithType: NetworkRetryHandler.GetStatistics()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.GetStatistics()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetStatistics
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+    startLine: 319
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Gets current retry statistics.
+  example: []
+  syntax:
+    content: public NetworkRetryStatistics GetStatistics()
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryStatistics
+    content.vb: Public Function GetStatistics() As NetworkRetryStatistics
+  overload: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.GetStatistics*
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.Dispose
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.Dispose
+  id: Dispose
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: NetworkRetryHandler.Dispose()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.Dispose()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Dispose
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/FaultTolerance/NetworkRetryHandler.cs
+    startLine: 505
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  summary: Disposes resources used by the retry handler.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+references:
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  commentId: N:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  nameWithType: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+    name: FaultTolerance
+    href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+    name: FaultTolerance
+    href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CurrentCircuitState*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CurrentCircuitState
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.html#Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_NetworkRetryHandler_CurrentCircuitState
+  name: CurrentCircuitState
+  nameWithType: NetworkRetryHandler.CurrentCircuitState
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CurrentCircuitState
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.CircuitState
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.CircuitState
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.CircuitState.html
+  name: CircuitState
+  nameWithType: CircuitState
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.CircuitState
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.IsAllowingRequests*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.IsAllowingRequests
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.html#Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_NetworkRetryHandler_IsAllowingRequests
+  name: IsAllowingRequests
+  nameWithType: NetworkRetryHandler.IsAllowingRequests
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.IsAllowingRequests
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.TotalAttempts*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.TotalAttempts
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.html#Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_NetworkRetryHandler_TotalAttempts
+  name: TotalAttempts
+  nameWithType: NetworkRetryHandler.TotalAttempts
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.TotalAttempts
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.TotalSuccesses*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.TotalSuccesses
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.html#Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_NetworkRetryHandler_TotalSuccesses
+  name: TotalSuccesses
+  nameWithType: NetworkRetryHandler.TotalSuccesses
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.TotalSuccesses
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.TotalFailures*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.TotalFailures
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.html#Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_NetworkRetryHandler_TotalFailures
+  name: TotalFailures
+  nameWithType: NetworkRetryHandler.TotalFailures
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.TotalFailures
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CircuitBreakerTrips*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CircuitBreakerTrips
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.html#Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_NetworkRetryHandler_CircuitBreakerTrips
+  name: CircuitBreakerTrips
+  nameWithType: NetworkRetryHandler.CircuitBreakerTrips
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CircuitBreakerTrips
+- uid: System.EventHandler{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RetryAttemptEventArgs}
+  commentId: T:System.EventHandler{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RetryAttemptEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<RetryAttemptEventArgs>
+  nameWithType: EventHandler<RetryAttemptEventArgs>
+  fullName: System.EventHandler<Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RetryAttemptEventArgs>
+  nameWithType.vb: EventHandler(Of RetryAttemptEventArgs)
+  fullName.vb: System.EventHandler(Of Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RetryAttemptEventArgs)
+  name.vb: EventHandler(Of RetryAttemptEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RetryAttemptEventArgs
+    name: RetryAttemptEventArgs
+    href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RetryAttemptEventArgs.html
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RetryAttemptEventArgs
+    name: RetryAttemptEventArgs
+    href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RetryAttemptEventArgs.html
+  - name: )
+- uid: System.EventHandler`1
+  commentId: T:System.EventHandler`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<TEventArgs>
+  nameWithType: EventHandler<TEventArgs>
+  fullName: System.EventHandler<TEventArgs>
+  nameWithType.vb: EventHandler(Of TEventArgs)
+  fullName.vb: System.EventHandler(Of TEventArgs)
+  name.vb: EventHandler(Of TEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - name: TEventArgs
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEventArgs
+  - name: )
+- uid: System.EventHandler{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RetryExhaustedEventArgs}
+  commentId: T:System.EventHandler{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RetryExhaustedEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<RetryExhaustedEventArgs>
+  nameWithType: EventHandler<RetryExhaustedEventArgs>
+  fullName: System.EventHandler<Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RetryExhaustedEventArgs>
+  nameWithType.vb: EventHandler(Of RetryExhaustedEventArgs)
+  fullName.vb: System.EventHandler(Of Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RetryExhaustedEventArgs)
+  name.vb: EventHandler(Of RetryExhaustedEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RetryExhaustedEventArgs
+    name: RetryExhaustedEventArgs
+    href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RetryExhaustedEventArgs.html
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RetryExhaustedEventArgs
+    name: RetryExhaustedEventArgs
+    href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RetryExhaustedEventArgs.html
+  - name: )
+- uid: System.EventHandler{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.CircuitStateChangedEventArgs}
+  commentId: T:System.EventHandler{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.CircuitStateChangedEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<CircuitStateChangedEventArgs>
+  nameWithType: EventHandler<CircuitStateChangedEventArgs>
+  fullName: System.EventHandler<Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.CircuitStateChangedEventArgs>
+  nameWithType.vb: EventHandler(Of CircuitStateChangedEventArgs)
+  fullName.vb: System.EventHandler(Of Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.CircuitStateChangedEventArgs)
+  name.vb: EventHandler(Of CircuitStateChangedEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.CircuitStateChangedEventArgs
+    name: CircuitStateChangedEventArgs
+    href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.CircuitStateChangedEventArgs.html
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.CircuitStateChangedEventArgs
+    name: CircuitStateChangedEventArgs
+    href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.CircuitStateChangedEventArgs.html
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.#ctor
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.html#Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_NetworkRetryHandler__ctor_Microsoft_Extensions_Logging_ILogger_Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_NetworkRetryHandler__Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_NetworkRetryOptions_
+  name: NetworkRetryHandler
+  nameWithType: NetworkRetryHandler.NetworkRetryHandler
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.NetworkRetryHandler
+  nameWithType.vb: NetworkRetryHandler.New
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.New
+  name.vb: New
+- uid: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<NetworkRetryHandler>
+  nameWithType: ILogger<NetworkRetryHandler>
+  fullName: Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler>
+  nameWithType.vb: ILogger(Of NetworkRetryHandler)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler)
+  name.vb: ILogger(Of NetworkRetryHandler)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler
+    name: NetworkRetryHandler
+    href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler
+    name: NetworkRetryHandler
+    href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.html
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryOptions
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryOptions
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryOptions.html
+  name: NetworkRetryOptions
+  nameWithType: NetworkRetryOptions
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryOptions
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RetryExhaustedException
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RetryExhaustedException
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RetryExhaustedException.html
+  name: RetryExhaustedException
+  nameWithType: RetryExhaustedException
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.RetryExhaustedException
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.ExecuteAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.ExecuteAsync
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.html#Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_NetworkRetryHandler_ExecuteAsync__1_System_Func_System_Threading_CancellationToken_System_Threading_Tasks_Task___0___System_String_System_Threading_CancellationToken_
+  name: ExecuteAsync
+  nameWithType: NetworkRetryHandler.ExecuteAsync
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.ExecuteAsync
+- uid: System.Func{System.Threading.CancellationToken,System.Threading.Tasks.Task{{T}}}
+  commentId: T:System.Func{System.Threading.CancellationToken,System.Threading.Tasks.Task{``0}}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<CancellationToken, Task<T>>
+  nameWithType: Func<CancellationToken, Task<T>>
+  fullName: System.Func<System.Threading.CancellationToken, System.Threading.Tasks.Task<T>>
+  nameWithType.vb: Func(Of CancellationToken, Task(Of T))
+  fullName.vb: System.Func(Of System.Threading.CancellationToken, System.Threading.Tasks.Task(Of T))
+  name.vb: Func(Of CancellationToken, Task(Of T))
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{{T}}
+  commentId: T:System.Threading.Tasks.Task{``0}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<T>
+  nameWithType: Task<T>
+  fullName: System.Threading.Tasks.Task<T>
+  nameWithType.vb: Task(Of T)
+  fullName.vb: System.Threading.Tasks.Task(Of T)
+  name.vb: Task(Of T)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: System.Func{System.Threading.CancellationToken,System.Threading.Tasks.Task}
+  commentId: T:System.Func{System.Threading.CancellationToken,System.Threading.Tasks.Task}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<CancellationToken, Task>
+  nameWithType: Func<CancellationToken, Task>
+  fullName: System.Func<System.Threading.CancellationToken, System.Threading.Tasks.Task>
+  nameWithType.vb: Func(Of CancellationToken, Task)
+  fullName.vb: System.Func(Of System.Threading.CancellationToken, System.Threading.Tasks.Task)
+  name.vb: Func(Of CancellationToken, Task)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  - name: )
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CalculateDelay*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CalculateDelay
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.html#Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_NetworkRetryHandler_CalculateDelay_System_Int32_
+  name: CalculateDelay
+  nameWithType: NetworkRetryHandler.CalculateDelay
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.CalculateDelay
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.TimeSpan
+  commentId: T:System.TimeSpan
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan
+  nameWithType: TimeSpan
+  fullName: System.TimeSpan
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.ResetCircuitBreaker*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.ResetCircuitBreaker
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.html#Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_NetworkRetryHandler_ResetCircuitBreaker
+  name: ResetCircuitBreaker
+  nameWithType: NetworkRetryHandler.ResetCircuitBreaker
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.ResetCircuitBreaker
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.GetStatistics*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.GetStatistics
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.html#Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_NetworkRetryHandler_GetStatistics
+  name: GetStatistics
+  nameWithType: NetworkRetryHandler.GetStatistics
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.GetStatistics
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryStatistics
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryStatistics
+  parent: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryStatistics.html
+  name: NetworkRetryStatistics
+  nameWithType: NetworkRetryStatistics
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryStatistics
+- uid: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.Dispose*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.Dispose
+  href: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.html#Orleans_GpuBridge_Runtime_Temporal_FaultTolerance_NetworkRetryHandler_Dispose
+  name: Dispose
+  nameWithType: NetworkRetryHandler.Dispose
+  fullName: Orleans.GpuBridge.Runtime.Temporal.FaultTolerance.NetworkRetryHandler.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )

@@ -1,0 +1,1169 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage
+  id: ITemporalGraphStorage
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  children:
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.AddEdge(Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData)
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.AddEdge(System.UInt64,System.UInt64,System.Int64,System.Int64,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,System.Double,System.String)
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.Clear
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.ContainsNode(System.UInt64)
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.EdgeCount
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindFastestTemporalPath(System.UInt64,System.UInt64,System.Int64)
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindShortestTemporalPath(System.UInt64,System.UInt64,System.Int64)
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindTemporalPaths(System.UInt64,System.UInt64,System.Int64,System.Int32)
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllEdges(System.UInt64)
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllEdgesInTimeRange(System.Int64,System.Int64)
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllNodes
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetEdgesInTimeRange(System.UInt64,System.Int64,System.Int64)
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetNeighborsAtTime(System.UInt64,System.Int64)
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetReachableNodes(System.UInt64,System.Int64,System.Int64)
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetSnapshotAtTime(System.Int64)
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetStatistics
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.NodeCount
+  langs:
+  - csharp
+  - vb
+  name: ITemporalGraphStorage
+  nameWithType: ITemporalGraphStorage
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage
+  type: Interface
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ITemporalGraphStorage
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+    startLine: 32
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Interface for temporal graph storage with efficient time-range queries.
+  remarks: >-
+    <p>
+
+    A temporal graph is a graph where edges exist only during specific time ranges.
+
+    This enables queries like:
+
+    <ul><li>"What was the graph topology at time T?"</li><li>"Find paths that occurred within a 5-second window"</li><li>"Which nodes were connected between T₁ and T₂?"</li></ul>
+
+    </p>
+
+    <p>
+
+    Performance targets:
+
+    <ul><li>Add edge: O(log N) for interval tree + O(log M) for adjacency list</li><li>Query edges: O(log N + K) where K is result count</li><li>Find paths: O(E + V) BFS/DFS where E, V are in time window</li></ul>
+
+    </p>
+  example: []
+  syntax:
+    content: public interface ITemporalGraphStorage
+    content.vb: Public Interface ITemporalGraphStorage
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.EdgeCount
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.EdgeCount
+  id: EdgeCount
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage
+  langs:
+  - csharp
+  - vb
+  name: EdgeCount
+  nameWithType: ITemporalGraphStorage.EdgeCount
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.EdgeCount
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: EdgeCount
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+    startLine: 37
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Gets the total number of edges in the graph.
+  example: []
+  syntax:
+    content: long EdgeCount { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: ReadOnly Property EdgeCount As Long
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.EdgeCount*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.NodeCount
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.NodeCount
+  id: NodeCount
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage
+  langs:
+  - csharp
+  - vb
+  name: NodeCount
+  nameWithType: ITemporalGraphStorage.NodeCount
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.NodeCount
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: NodeCount
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+    startLine: 42
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Gets the total number of nodes in the graph.
+  example: []
+  syntax:
+    content: int NodeCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: ReadOnly Property NodeCount As Integer
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.NodeCount*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.AddEdge(Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.AddEdge(Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData)
+  id: AddEdge(Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage
+  langs:
+  - csharp
+  - vb
+  name: AddEdge(TemporalEdgeData)
+  nameWithType: ITemporalGraphStorage.AddEdge(TemporalEdgeData)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.AddEdge(Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AddEdge
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+    startLine: 48
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Adds an edge to the graph.
+  example: []
+  syntax:
+    content: void AddEdge(TemporalEdgeData edge)
+    parameters:
+    - id: edge
+      type: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData
+      description: The temporal edge to add.
+    content.vb: Sub AddEdge(edge As TemporalEdgeData)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.AddEdge*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.AddEdge(System.UInt64,System.UInt64,System.Int64,System.Int64,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,System.Double,System.String)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.AddEdge(System.UInt64,System.UInt64,System.Int64,System.Int64,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,System.Double,System.String)
+  id: AddEdge(System.UInt64,System.UInt64,System.Int64,System.Int64,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,System.Double,System.String)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage
+  langs:
+  - csharp
+  - vb
+  name: AddEdge(ulong, ulong, long, long, HybridTimestamp, double, string?)
+  nameWithType: ITemporalGraphStorage.AddEdge(ulong, ulong, long, long, HybridTimestamp, double, string?)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.AddEdge(ulong, ulong, long, long, Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp, double, string?)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AddEdge
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+    startLine: 60
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Adds an edge with simplified parameters.
+  example: []
+  syntax:
+    content: void AddEdge(ulong sourceId, ulong targetId, long validFrom, long validTo, HybridTimestamp hlc, double weight = 1, string? edgeType = null)
+    parameters:
+    - id: sourceId
+      type: System.UInt64
+      description: Source node identifier.
+    - id: targetId
+      type: System.UInt64
+      description: Target node identifier.
+    - id: validFrom
+      type: System.Int64
+      description: Start of validity period (nanoseconds).
+    - id: validTo
+      type: System.Int64
+      description: End of validity period (nanoseconds).
+    - id: hlc
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+      description: Hybrid logical clock timestamp.
+    - id: weight
+      type: System.Double
+      description: Edge weight (default 1.0).
+    - id: edgeType
+      type: System.String
+      description: Edge type identifier.
+    content.vb: Sub AddEdge(sourceId As ULong, targetId As ULong, validFrom As Long, validTo As Long, hlc As HybridTimestamp, weight As Double = 1, edgeType As String = Nothing)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.AddEdge*
+  nameWithType.vb: ITemporalGraphStorage.AddEdge(ULong, ULong, Long, Long, HybridTimestamp, Double, String)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.AddEdge(ULong, ULong, Long, Long, Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp, Double, String)
+  name.vb: AddEdge(ULong, ULong, Long, Long, HybridTimestamp, Double, String)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetEdgesInTimeRange(System.UInt64,System.Int64,System.Int64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetEdgesInTimeRange(System.UInt64,System.Int64,System.Int64)
+  id: GetEdgesInTimeRange(System.UInt64,System.Int64,System.Int64)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage
+  langs:
+  - csharp
+  - vb
+  name: GetEdgesInTimeRange(ulong, long, long)
+  nameWithType: ITemporalGraphStorage.GetEdgesInTimeRange(ulong, long, long)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetEdgesInTimeRange(ulong, long, long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetEdgesInTimeRange
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+    startLine: 76
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Gets all edges from a source node that overlap with the time range.
+  example: []
+  syntax:
+    content: IEnumerable<TemporalEdgeData> GetEdgesInTimeRange(ulong sourceId, long startTimeNanos, long endTimeNanos)
+    parameters:
+    - id: sourceId
+      type: System.UInt64
+      description: Source node identifier.
+    - id: startTimeNanos
+      type: System.Int64
+      description: Start of query range (nanoseconds).
+    - id: endTimeNanos
+      type: System.Int64
+      description: End of query range (nanoseconds).
+    return:
+      type: System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData}
+      description: Edges that overlap with the specified time range.
+    content.vb: Function GetEdgesInTimeRange(sourceId As ULong, startTimeNanos As Long, endTimeNanos As Long) As IEnumerable(Of TemporalEdgeData)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetEdgesInTimeRange*
+  nameWithType.vb: ITemporalGraphStorage.GetEdgesInTimeRange(ULong, Long, Long)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetEdgesInTimeRange(ULong, Long, Long)
+  name.vb: GetEdgesInTimeRange(ULong, Long, Long)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllEdgesInTimeRange(System.Int64,System.Int64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllEdgesInTimeRange(System.Int64,System.Int64)
+  id: GetAllEdgesInTimeRange(System.Int64,System.Int64)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage
+  langs:
+  - csharp
+  - vb
+  name: GetAllEdgesInTimeRange(long, long)
+  nameWithType: ITemporalGraphStorage.GetAllEdgesInTimeRange(long, long)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllEdgesInTimeRange(long, long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetAllEdgesInTimeRange
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+    startLine: 87
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Gets all edges in the graph that overlap with the time range.
+  example: []
+  syntax:
+    content: IEnumerable<TemporalEdgeData> GetAllEdgesInTimeRange(long startTimeNanos, long endTimeNanos)
+    parameters:
+    - id: startTimeNanos
+      type: System.Int64
+      description: Start of query range (nanoseconds).
+    - id: endTimeNanos
+      type: System.Int64
+      description: End of query range (nanoseconds).
+    return:
+      type: System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData}
+      description: All edges that overlap with the specified time range.
+    content.vb: Function GetAllEdgesInTimeRange(startTimeNanos As Long, endTimeNanos As Long) As IEnumerable(Of TemporalEdgeData)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllEdgesInTimeRange*
+  nameWithType.vb: ITemporalGraphStorage.GetAllEdgesInTimeRange(Long, Long)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllEdgesInTimeRange(Long, Long)
+  name.vb: GetAllEdgesInTimeRange(Long, Long)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllEdges(System.UInt64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllEdges(System.UInt64)
+  id: GetAllEdges(System.UInt64)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage
+  langs:
+  - csharp
+  - vb
+  name: GetAllEdges(ulong)
+  nameWithType: ITemporalGraphStorage.GetAllEdges(ulong)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllEdges(ulong)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetAllEdges
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+    startLine: 96
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Gets all edges from a source node (entire history).
+  example: []
+  syntax:
+    content: IEnumerable<TemporalEdgeData> GetAllEdges(ulong sourceId)
+    parameters:
+    - id: sourceId
+      type: System.UInt64
+      description: Source node identifier.
+    return:
+      type: System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData}
+      description: All edges from the source node.
+    content.vb: Function GetAllEdges(sourceId As ULong) As IEnumerable(Of TemporalEdgeData)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllEdges*
+  nameWithType.vb: ITemporalGraphStorage.GetAllEdges(ULong)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllEdges(ULong)
+  name.vb: GetAllEdges(ULong)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.ContainsNode(System.UInt64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.ContainsNode(System.UInt64)
+  id: ContainsNode(System.UInt64)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage
+  langs:
+  - csharp
+  - vb
+  name: ContainsNode(ulong)
+  nameWithType: ITemporalGraphStorage.ContainsNode(ulong)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.ContainsNode(ulong)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ContainsNode
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+    startLine: 103
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Checks if a node exists in the graph.
+  example: []
+  syntax:
+    content: bool ContainsNode(ulong nodeId)
+    parameters:
+    - id: nodeId
+      type: System.UInt64
+      description: Node identifier to check.
+    return:
+      type: System.Boolean
+      description: True if the node exists in the graph.
+    content.vb: Function ContainsNode(nodeId As ULong) As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.ContainsNode*
+  nameWithType.vb: ITemporalGraphStorage.ContainsNode(ULong)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.ContainsNode(ULong)
+  name.vb: ContainsNode(ULong)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllNodes
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllNodes
+  id: GetAllNodes
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage
+  langs:
+  - csharp
+  - vb
+  name: GetAllNodes()
+  nameWithType: ITemporalGraphStorage.GetAllNodes()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllNodes()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetAllNodes
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+    startLine: 109
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Gets all nodes in the graph.
+  example: []
+  syntax:
+    content: IEnumerable<ulong> GetAllNodes()
+    return:
+      type: System.Collections.Generic.IEnumerable{System.UInt64}
+      description: All node identifiers in the graph.
+    content.vb: Function GetAllNodes() As IEnumerable(Of ULong)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllNodes*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindTemporalPaths(System.UInt64,System.UInt64,System.Int64,System.Int32)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindTemporalPaths(System.UInt64,System.UInt64,System.Int64,System.Int32)
+  id: FindTemporalPaths(System.UInt64,System.UInt64,System.Int64,System.Int32)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage
+  langs:
+  - csharp
+  - vb
+  name: FindTemporalPaths(ulong, ulong, long, int)
+  nameWithType: ITemporalGraphStorage.FindTemporalPaths(ulong, ulong, long, int)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindTemporalPaths(ulong, ulong, long, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: FindTemporalPaths
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+    startLine: 119
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Finds all temporal paths from start to end node within a time window.
+  example: []
+  syntax:
+    content: IEnumerable<TemporalPathData> FindTemporalPaths(ulong startNode, ulong endNode, long maxTimeSpanNanos, int maxPathLength = 10)
+    parameters:
+    - id: startNode
+      type: System.UInt64
+      description: Starting node identifier.
+    - id: endNode
+      type: System.UInt64
+      description: Target node identifier.
+    - id: maxTimeSpanNanos
+      type: System.Int64
+      description: Maximum duration of the path in nanoseconds.
+    - id: maxPathLength
+      type: System.Int32
+      description: Maximum number of edges in path (prevents infinite loops).
+    return:
+      type: System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalPathData}
+      description: All paths that fit within the time window.
+    content.vb: Function FindTemporalPaths(startNode As ULong, endNode As ULong, maxTimeSpanNanos As Long, maxPathLength As Integer = 10) As IEnumerable(Of TemporalPathData)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindTemporalPaths*
+  nameWithType.vb: ITemporalGraphStorage.FindTemporalPaths(ULong, ULong, Long, Integer)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindTemporalPaths(ULong, ULong, Long, Integer)
+  name.vb: FindTemporalPaths(ULong, ULong, Long, Integer)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindShortestTemporalPath(System.UInt64,System.UInt64,System.Int64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindShortestTemporalPath(System.UInt64,System.UInt64,System.Int64)
+  id: FindShortestTemporalPath(System.UInt64,System.UInt64,System.Int64)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage
+  langs:
+  - csharp
+  - vb
+  name: FindShortestTemporalPath(ulong, ulong, long)
+  nameWithType: ITemporalGraphStorage.FindShortestTemporalPath(ulong, ulong, long)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindShortestTemporalPath(ulong, ulong, long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: FindShortestTemporalPath
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+    startLine: 132
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Finds the shortest temporal path from start to end (by number of edges).
+  example: []
+  syntax:
+    content: TemporalPathData? FindShortestTemporalPath(ulong startNode, ulong endNode, long maxTimeSpanNanos)
+    parameters:
+    - id: startNode
+      type: System.UInt64
+      description: Starting node identifier.
+    - id: endNode
+      type: System.UInt64
+      description: Target node identifier.
+    - id: maxTimeSpanNanos
+      type: System.Int64
+      description: Maximum duration of the path in nanoseconds.
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalPathData
+      description: The shortest path, or null if no path exists.
+    content.vb: Function FindShortestTemporalPath(startNode As ULong, endNode As ULong, maxTimeSpanNanos As Long) As TemporalPathData
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindShortestTemporalPath*
+  nameWithType.vb: ITemporalGraphStorage.FindShortestTemporalPath(ULong, ULong, Long)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindShortestTemporalPath(ULong, ULong, Long)
+  name.vb: FindShortestTemporalPath(ULong, ULong, Long)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindFastestTemporalPath(System.UInt64,System.UInt64,System.Int64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindFastestTemporalPath(System.UInt64,System.UInt64,System.Int64)
+  id: FindFastestTemporalPath(System.UInt64,System.UInt64,System.Int64)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage
+  langs:
+  - csharp
+  - vb
+  name: FindFastestTemporalPath(ulong, ulong, long)
+  nameWithType: ITemporalGraphStorage.FindFastestTemporalPath(ulong, ulong, long)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindFastestTemporalPath(ulong, ulong, long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: FindFastestTemporalPath
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+    startLine: 144
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Finds the fastest temporal path from start to end (by duration).
+  example: []
+  syntax:
+    content: TemporalPathData? FindFastestTemporalPath(ulong startNode, ulong endNode, long maxTimeSpanNanos)
+    parameters:
+    - id: startNode
+      type: System.UInt64
+      description: Starting node identifier.
+    - id: endNode
+      type: System.UInt64
+      description: Target node identifier.
+    - id: maxTimeSpanNanos
+      type: System.Int64
+      description: Maximum duration of the path in nanoseconds.
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalPathData
+      description: The fastest path, or null if no path exists.
+    content.vb: Function FindFastestTemporalPath(startNode As ULong, endNode As ULong, maxTimeSpanNanos As Long) As TemporalPathData
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindFastestTemporalPath*
+  nameWithType.vb: ITemporalGraphStorage.FindFastestTemporalPath(ULong, ULong, Long)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindFastestTemporalPath(ULong, ULong, Long)
+  name.vb: FindFastestTemporalPath(ULong, ULong, Long)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetSnapshotAtTime(System.Int64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetSnapshotAtTime(System.Int64)
+  id: GetSnapshotAtTime(System.Int64)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage
+  langs:
+  - csharp
+  - vb
+  name: GetSnapshotAtTime(long)
+  nameWithType: ITemporalGraphStorage.GetSnapshotAtTime(long)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetSnapshotAtTime(long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetSnapshotAtTime
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+    startLine: 154
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Gets the graph snapshot at a specific point in time.
+  example: []
+  syntax:
+    content: IEnumerable<TemporalEdgeData> GetSnapshotAtTime(long timeNanos)
+    parameters:
+    - id: timeNanos
+      type: System.Int64
+      description: Point in time (nanoseconds).
+    return:
+      type: System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData}
+      description: All edges that were valid at the specified time.
+    content.vb: Function GetSnapshotAtTime(timeNanos As Long) As IEnumerable(Of TemporalEdgeData)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetSnapshotAtTime*
+  nameWithType.vb: ITemporalGraphStorage.GetSnapshotAtTime(Long)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetSnapshotAtTime(Long)
+  name.vb: GetSnapshotAtTime(Long)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetNeighborsAtTime(System.UInt64,System.Int64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetNeighborsAtTime(System.UInt64,System.Int64)
+  id: GetNeighborsAtTime(System.UInt64,System.Int64)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage
+  langs:
+  - csharp
+  - vb
+  name: GetNeighborsAtTime(ulong, long)
+  nameWithType: ITemporalGraphStorage.GetNeighborsAtTime(ulong, long)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetNeighborsAtTime(ulong, long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetNeighborsAtTime
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+    startLine: 162
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Finds all neighbors of a node at a specific time.
+  example: []
+  syntax:
+    content: IEnumerable<ulong> GetNeighborsAtTime(ulong nodeId, long timeNanos)
+    parameters:
+    - id: nodeId
+      type: System.UInt64
+      description: Node identifier.
+    - id: timeNanos
+      type: System.Int64
+      description: Point in time (nanoseconds).
+    return:
+      type: System.Collections.Generic.IEnumerable{System.UInt64}
+      description: Neighbor node identifiers.
+    content.vb: Function GetNeighborsAtTime(nodeId As ULong, timeNanos As Long) As IEnumerable(Of ULong)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetNeighborsAtTime*
+  nameWithType.vb: ITemporalGraphStorage.GetNeighborsAtTime(ULong, Long)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetNeighborsAtTime(ULong, Long)
+  name.vb: GetNeighborsAtTime(ULong, Long)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetReachableNodes(System.UInt64,System.Int64,System.Int64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetReachableNodes(System.UInt64,System.Int64,System.Int64)
+  id: GetReachableNodes(System.UInt64,System.Int64,System.Int64)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage
+  langs:
+  - csharp
+  - vb
+  name: GetReachableNodes(ulong, long, long)
+  nameWithType: ITemporalGraphStorage.GetReachableNodes(ulong, long, long)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetReachableNodes(ulong, long, long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetReachableNodes
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+    startLine: 171
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: 'Computes temporal reachability: all nodes reachable from start within time window.'
+  example: []
+  syntax:
+    content: IEnumerable<ulong> GetReachableNodes(ulong startNode, long startTimeNanos, long maxTimeSpanNanos)
+    parameters:
+    - id: startNode
+      type: System.UInt64
+      description: Starting node identifier.
+    - id: startTimeNanos
+      type: System.Int64
+      description: Start time in nanoseconds.
+    - id: maxTimeSpanNanos
+      type: System.Int64
+      description: Maximum time span in nanoseconds.
+    return:
+      type: System.Collections.Generic.IEnumerable{System.UInt64}
+      description: All reachable node identifiers.
+    content.vb: Function GetReachableNodes(startNode As ULong, startTimeNanos As Long, maxTimeSpanNanos As Long) As IEnumerable(Of ULong)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetReachableNodes*
+  nameWithType.vb: ITemporalGraphStorage.GetReachableNodes(ULong, Long, Long)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetReachableNodes(ULong, Long, Long)
+  name.vb: GetReachableNodes(ULong, Long, Long)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetStatistics
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetStatistics
+  id: GetStatistics
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage
+  langs:
+  - csharp
+  - vb
+  name: GetStatistics()
+  nameWithType: ITemporalGraphStorage.GetStatistics()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetStatistics()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetStatistics
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+    startLine: 180
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Gets statistics about the temporal graph.
+  example: []
+  syntax:
+    content: TemporalGraphStatistics GetStatistics()
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalGraphStatistics
+      description: Graph statistics including node/edge counts, time span, etc.
+    content.vb: Function GetStatistics() As TemporalGraphStatistics
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetStatistics*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.Clear
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.Clear
+  id: Clear
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage
+  langs:
+  - csharp
+  - vb
+  name: Clear()
+  nameWithType: ITemporalGraphStorage.Clear()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.Clear()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Clear
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphStorage.cs
+    startLine: 185
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Clears all data from the graph.
+  example: []
+  syntax:
+    content: void Clear()
+    content.vb: Sub Clear()
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.Clear*
+references:
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  commentId: N:Orleans.GpuBridge.Abstractions.Temporal.Graph
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  nameWithType: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph
+    name: Graph
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph
+    name: Graph
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.html
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.EdgeCount*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.EdgeCount
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphStorage_EdgeCount
+  name: EdgeCount
+  nameWithType: ITemporalGraphStorage.EdgeCount
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.EdgeCount
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.NodeCount*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.NodeCount
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphStorage_NodeCount
+  name: NodeCount
+  nameWithType: ITemporalGraphStorage.NodeCount
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.NodeCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.AddEdge*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.AddEdge
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphStorage_AddEdge_Orleans_GpuBridge_Abstractions_Temporal_Graph_TemporalEdgeData_
+  name: AddEdge
+  nameWithType: ITemporalGraphStorage.AddEdge
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.AddEdge
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData.html
+  name: TemporalEdgeData
+  nameWithType: TemporalEdgeData
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData
+- uid: System.UInt64
+  commentId: T:System.UInt64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uint64
+  name: ulong
+  nameWithType: ulong
+  fullName: ulong
+  nameWithType.vb: ULong
+  fullName.vb: ULong
+  name.vb: ULong
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html
+  name: HybridTimestamp
+  nameWithType: HybridTimestamp
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Orleans.GpuBridge.Abstractions.Temporal
+  commentId: N:Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Temporal
+  nameWithType: Orleans.GpuBridge.Abstractions.Temporal
+  fullName: Orleans.GpuBridge.Abstractions.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetEdgesInTimeRange*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetEdgesInTimeRange
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphStorage_GetEdgesInTimeRange_System_UInt64_System_Int64_System_Int64_
+  name: GetEdgesInTimeRange
+  nameWithType: ITemporalGraphStorage.GetEdgesInTimeRange
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetEdgesInTimeRange
+- uid: System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData}
+  commentId: T:System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<TemporalEdgeData>
+  nameWithType: IEnumerable<TemporalEdgeData>
+  fullName: System.Collections.Generic.IEnumerable<Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData>
+  nameWithType.vb: IEnumerable(Of TemporalEdgeData)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData)
+  name.vb: IEnumerable(Of TemporalEdgeData)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData
+    name: TemporalEdgeData
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData
+    name: TemporalEdgeData
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllEdgesInTimeRange*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllEdgesInTimeRange
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphStorage_GetAllEdgesInTimeRange_System_Int64_System_Int64_
+  name: GetAllEdgesInTimeRange
+  nameWithType: ITemporalGraphStorage.GetAllEdgesInTimeRange
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllEdgesInTimeRange
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllEdges*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllEdges
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphStorage_GetAllEdges_System_UInt64_
+  name: GetAllEdges
+  nameWithType: ITemporalGraphStorage.GetAllEdges
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllEdges
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.ContainsNode*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.ContainsNode
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphStorage_ContainsNode_System_UInt64_
+  name: ContainsNode
+  nameWithType: ITemporalGraphStorage.ContainsNode
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.ContainsNode
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllNodes*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllNodes
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphStorage_GetAllNodes
+  name: GetAllNodes
+  nameWithType: ITemporalGraphStorage.GetAllNodes
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetAllNodes
+- uid: System.Collections.Generic.IEnumerable{System.UInt64}
+  commentId: T:System.Collections.Generic.IEnumerable{System.UInt64}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<ulong>
+  nameWithType: IEnumerable<ulong>
+  fullName: System.Collections.Generic.IEnumerable<ulong>
+  nameWithType.vb: IEnumerable(Of ULong)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of ULong)
+  name.vb: IEnumerable(Of ULong)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.UInt64
+    name: ulong
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint64
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.UInt64
+    name: ULong
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint64
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindTemporalPaths*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindTemporalPaths
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphStorage_FindTemporalPaths_System_UInt64_System_UInt64_System_Int64_System_Int32_
+  name: FindTemporalPaths
+  nameWithType: ITemporalGraphStorage.FindTemporalPaths
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindTemporalPaths
+- uid: System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalPathData}
+  commentId: T:System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalPathData}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<TemporalPathData>
+  nameWithType: IEnumerable<TemporalPathData>
+  fullName: System.Collections.Generic.IEnumerable<Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalPathData>
+  nameWithType.vb: IEnumerable(Of TemporalPathData)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalPathData)
+  name.vb: IEnumerable(Of TemporalPathData)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalPathData
+    name: TemporalPathData
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalPathData.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalPathData
+    name: TemporalPathData
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalPathData.html
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindShortestTemporalPath*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindShortestTemporalPath
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphStorage_FindShortestTemporalPath_System_UInt64_System_UInt64_System_Int64_
+  name: FindShortestTemporalPath
+  nameWithType: ITemporalGraphStorage.FindShortestTemporalPath
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindShortestTemporalPath
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalPathData
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalPathData
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalPathData.html
+  name: TemporalPathData
+  nameWithType: TemporalPathData
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalPathData
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindFastestTemporalPath*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindFastestTemporalPath
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphStorage_FindFastestTemporalPath_System_UInt64_System_UInt64_System_Int64_
+  name: FindFastestTemporalPath
+  nameWithType: ITemporalGraphStorage.FindFastestTemporalPath
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.FindFastestTemporalPath
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetSnapshotAtTime*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetSnapshotAtTime
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphStorage_GetSnapshotAtTime_System_Int64_
+  name: GetSnapshotAtTime
+  nameWithType: ITemporalGraphStorage.GetSnapshotAtTime
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetSnapshotAtTime
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetNeighborsAtTime*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetNeighborsAtTime
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphStorage_GetNeighborsAtTime_System_UInt64_System_Int64_
+  name: GetNeighborsAtTime
+  nameWithType: ITemporalGraphStorage.GetNeighborsAtTime
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetNeighborsAtTime
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetReachableNodes*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetReachableNodes
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphStorage_GetReachableNodes_System_UInt64_System_Int64_System_Int64_
+  name: GetReachableNodes
+  nameWithType: ITemporalGraphStorage.GetReachableNodes
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetReachableNodes
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetStatistics*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetStatistics
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphStorage_GetStatistics
+  name: GetStatistics
+  nameWithType: ITemporalGraphStorage.GetStatistics
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.GetStatistics
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalGraphStatistics
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalGraphStatistics
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalGraphStatistics.html
+  name: TemporalGraphStatistics
+  nameWithType: TemporalGraphStatistics
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalGraphStatistics
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.Clear*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.Clear
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphStorage_Clear
+  name: Clear
+  nameWithType: ITemporalGraphStorage.Clear
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphStorage.Clear

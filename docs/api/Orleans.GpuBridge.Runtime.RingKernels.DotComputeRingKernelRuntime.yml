@@ -1,0 +1,3591 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  commentId: T:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  id: DotComputeRingKernelRuntime
+  parent: Orleans.GpuBridge.Runtime.RingKernels
+  children:
+  - Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.#ctor(DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime,Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime})
+  - Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ActivateAsync(System.String,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.CreateMessageQueueAsync``1(System.Int32,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.CreateNamedMessageQueueAsync``1(System.String,DotCompute.Abstractions.Messaging.MessageQueueOptions,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DeactivateAsync(System.String,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DestroyNamedMessageQueueAsync(System.String,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DisposeAsync
+  - Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetMetricsAsync(System.String,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetNamedMessageQueueAsync``1(System.String,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetStatusAsync(System.String,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetTelemetryAsync(System.String,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.LaunchAsync(System.String,System.Int32,System.Int32,DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ListKernelsAsync
+  - Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ListNamedMessageQueuesAsync(System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ReceiveFromNamedQueueAsync``1(System.String,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ReceiveMessageAsync``1(System.String,System.TimeSpan,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ResetTelemetryAsync(System.String,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SendMessageAsync``1(System.String,DotCompute.Abstractions.RingKernels.KernelMessage{``0},System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SendToNamedQueueAsync``1(System.String,``0,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SetTelemetryEnabledAsync(System.String,System.Boolean,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.TerminateAsync(System.String,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: DotComputeRingKernelRuntime
+  nameWithType: DotComputeRingKernelRuntime
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DotComputeRingKernelRuntime
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+    startLine: 34
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Orleans integration wrapper for DotCompute ring kernel runtime.
+  remarks: >-
+    <p>
+
+    This wrapper bridges Orleans.GpuBridge.Core with DotCompute's CUDA ring kernel runtime.
+
+    It handles message mapping between Orleans ActorMessage and DotCompute KernelMessage formats.
+
+    </p>
+
+    <p>
+
+    Architecture:
+
+    - Orleans GpuNativeGrain → InvokeKernelAsync() → DotComputeRingKernelRuntime
+
+    - DotComputeRingKernelRuntime → ActorMessage ↔ KernelMessage → CudaRingKernelRuntime
+
+    - CudaRingKernelRuntime → GPU Queue → VectorAddRingKernel (persistent GPU thread)
+
+    </p>
+
+    <p>
+
+    Performance characteristics:
+
+    - Message latency: 100-500ns (GPU queue operations only)
+
+    - Zero kernel launch overhead (persistent threads)
+
+    - Lock-free atomic queue operations
+
+    - Sub-microsecond round-trip for small payloads
+
+    </p>
+  example: []
+  syntax:
+    content: 'public sealed class DotComputeRingKernelRuntime : IRingKernelRuntime, IAsyncDisposable'
+    content.vb: Public NotInheritable Class DotComputeRingKernelRuntime Implements IRingKernelRuntime, IAsyncDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  - System.IAsyncDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.#ctor(DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime,Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime})
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.#ctor(DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime,Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime})
+  id: '#ctor(DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime,Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime})'
+  parent: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  langs:
+  - csharp
+  - vb
+  name: DotComputeRingKernelRuntime(CudaRingKernelRuntime, ILogger<DotComputeRingKernelRuntime>)
+  nameWithType: DotComputeRingKernelRuntime.DotComputeRingKernelRuntime(CudaRingKernelRuntime, ILogger<DotComputeRingKernelRuntime>)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DotComputeRingKernelRuntime(DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime, Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime>)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+    startLine: 45
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Initializes a new instance of the <xref href="Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public DotComputeRingKernelRuntime(CudaRingKernelRuntime cudaRuntime, ILogger<DotComputeRingKernelRuntime> logger)
+    parameters:
+    - id: cudaRuntime
+      type: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime
+      description: CUDA ring kernel runtime.
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime}
+      description: Logger instance.
+    content.vb: Public Sub New(cudaRuntime As CudaRingKernelRuntime, logger As ILogger(Of DotComputeRingKernelRuntime))
+  overload: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.#ctor*
+  nameWithType.vb: DotComputeRingKernelRuntime.New(CudaRingKernelRuntime, ILogger(Of DotComputeRingKernelRuntime))
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.New(DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime, Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime))
+  name.vb: New(CudaRingKernelRuntime, ILogger(Of DotComputeRingKernelRuntime))
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.LaunchAsync(System.String,System.Int32,System.Int32,DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.LaunchAsync(System.String,System.Int32,System.Int32,DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions,System.Threading.CancellationToken)
+  id: LaunchAsync(System.String,System.Int32,System.Int32,DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  langs:
+  - csharp
+  - vb
+  name: LaunchAsync(string, int, int, RingKernelLaunchOptions?, CancellationToken)
+  nameWithType: DotComputeRingKernelRuntime.LaunchAsync(string, int, int, RingKernelLaunchOptions?, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.LaunchAsync(string, int, int, DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions?, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: LaunchAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+    startLine: 56
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Launches a ring kernel with specified grid and block dimensions and configuration options.
+  remarks: >-
+    <p>
+
+    Launch starts the kernel on the GPU but does not activate it.
+
+    The kernel remains idle until ActivateAsync is called.
+
+    This two-phase launch allows message queues and state to be
+
+    initialized before the kernel begins processing.
+
+    </p>
+
+    <p><b>Launch Options</b></p>
+
+    <ul><li><b>null</b>: Uses <xref href="DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions.ProductionDefaults" data-throw-if-not-resolved="false"></xref></li><li><b>Custom</b>: Configure queue capacity, deduplication, backpressure</li></ul>
+
+    <p><b>Example: Custom Queue Configuration</b></p>
+
+
+    <pre><code class="lang-csharp">var options = new RingKernelLaunchOptions
+
+    {
+        QueueCapacity = 16384,
+        DeduplicationWindowSize = 1024,
+        BackpressureStrategy = BackpressureStrategy.Block
+    };
+
+    await runtime.LaunchAsync("MyKernel", gridSize: 1, blockSize: 256, options, ct);</code></pre>
+  example: []
+  syntax:
+    content: public Task LaunchAsync(string kernelId, int gridSize, int blockSize, RingKernelLaunchOptions? options = null, CancellationToken cancellationToken = default)
+    parameters:
+    - id: kernelId
+      type: System.String
+      description: Unique kernel identifier.
+    - id: gridSize
+      type: System.Int32
+      description: Number of thread blocks in the grid.
+    - id: blockSize
+      type: System.Int32
+      description: Number of threads per block.
+    - id: options
+      type: DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions
+      description: Launch options for queue configuration, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to use production defaults.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task representing the launch operation.
+    content.vb: Public Function LaunchAsync(kernelId As String, gridSize As Integer, blockSize As Integer, options As RingKernelLaunchOptions = Nothing, cancellationToken As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.LaunchAsync*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Thrown if kernel ID is not found or grid/block sizes are invalid.
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Thrown if options validation fails (e.g., invalid queue capacity or deduplication window).
+  implements:
+  - DotCompute.Abstractions.RingKernels.IRingKernelRuntime.LaunchAsync(System.String,System.Int32,System.Int32,DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions,System.Threading.CancellationToken)
+  nameWithType.vb: DotComputeRingKernelRuntime.LaunchAsync(String, Integer, Integer, RingKernelLaunchOptions, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.LaunchAsync(String, Integer, Integer, DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions, System.Threading.CancellationToken)
+  name.vb: LaunchAsync(String, Integer, Integer, RingKernelLaunchOptions, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ActivateAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ActivateAsync(System.String,System.Threading.CancellationToken)
+  id: ActivateAsync(System.String,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  langs:
+  - csharp
+  - vb
+  name: ActivateAsync(string, CancellationToken)
+  nameWithType: DotComputeRingKernelRuntime.ActivateAsync(string, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ActivateAsync(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ActivateAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+    startLine: 95
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Activates a launched ring kernel to begin processing.
+  remarks: >-
+    For persistent kernels, activation causes the kernel to begin its
+
+    main processing loop. For event-driven kernels, it enables event
+
+    handling. The kernel continues running until deactivated or terminated.
+  example: []
+  syntax:
+    content: public Task ActivateAsync(string kernelId, CancellationToken cancellationToken = default)
+    parameters:
+    - id: kernelId
+      type: System.String
+      description: Kernel identifier.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task representing the activation operation.
+    content.vb: Public Function ActivateAsync(kernelId As String, cancellationToken As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ActivateAsync*
+  exceptions:
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: Thrown if the kernel has not been launched or is already active.
+  implements:
+  - DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ActivateAsync(System.String,System.Threading.CancellationToken)
+  nameWithType.vb: DotComputeRingKernelRuntime.ActivateAsync(String, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ActivateAsync(String, System.Threading.CancellationToken)
+  name.vb: ActivateAsync(String, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DeactivateAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DeactivateAsync(System.String,System.Threading.CancellationToken)
+  id: DeactivateAsync(System.String,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  langs:
+  - csharp
+  - vb
+  name: DeactivateAsync(string, CancellationToken)
+  nameWithType: DotComputeRingKernelRuntime.DeactivateAsync(string, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DeactivateAsync(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DeactivateAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+    startLine: 118
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Deactivates a ring kernel (pause without termination).
+  remarks: >-
+    Deactivation pauses the kernel's processing loop but keeps it
+
+    resident on the GPU. State is preserved and the kernel can be
+
+    reactivated without relaunching. Useful for dynamic load balancing
+
+    or power management.
+  example: []
+  syntax:
+    content: public Task DeactivateAsync(string kernelId, CancellationToken cancellationToken = default)
+    parameters:
+    - id: kernelId
+      type: System.String
+      description: Kernel identifier.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task representing the deactivation operation.
+    content.vb: Public Function DeactivateAsync(kernelId As String, cancellationToken As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DeactivateAsync*
+  exceptions:
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: Thrown if the kernel is not currently active.
+  implements:
+  - DotCompute.Abstractions.RingKernels.IRingKernelRuntime.DeactivateAsync(System.String,System.Threading.CancellationToken)
+  nameWithType.vb: DotComputeRingKernelRuntime.DeactivateAsync(String, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DeactivateAsync(String, System.Threading.CancellationToken)
+  name.vb: DeactivateAsync(String, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.TerminateAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.TerminateAsync(System.String,System.Threading.CancellationToken)
+  id: TerminateAsync(System.String,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  langs:
+  - csharp
+  - vb
+  name: TerminateAsync(string, CancellationToken)
+  nameWithType: DotComputeRingKernelRuntime.TerminateAsync(string, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.TerminateAsync(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TerminateAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+    startLine: 141
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Terminates a ring kernel and cleans up resources.
+  remarks: >-
+    Termination sends a terminate message to the kernel, waits for
+
+    graceful shutdown, and frees all associated resources (message queues,
+
+    state buffers, etc.). The kernel must be relaunched to execute again.
+  example: []
+  syntax:
+    content: public Task TerminateAsync(string kernelId, CancellationToken cancellationToken = default)
+    parameters:
+    - id: kernelId
+      type: System.String
+      description: Kernel identifier.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task representing the termination operation.
+    content.vb: Public Function TerminateAsync(kernelId As String, cancellationToken As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.TerminateAsync*
+  implements:
+  - DotCompute.Abstractions.RingKernels.IRingKernelRuntime.TerminateAsync(System.String,System.Threading.CancellationToken)
+  nameWithType.vb: DotComputeRingKernelRuntime.TerminateAsync(String, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.TerminateAsync(String, System.Threading.CancellationToken)
+  name.vb: TerminateAsync(String, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SendMessageAsync``1(System.String,DotCompute.Abstractions.RingKernels.KernelMessage{``0},System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SendMessageAsync``1(System.String,DotCompute.Abstractions.RingKernels.KernelMessage{``0},System.Threading.CancellationToken)
+  id: SendMessageAsync``1(System.String,DotCompute.Abstractions.RingKernels.KernelMessage{``0},System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  langs:
+  - csharp
+  - vb
+  name: SendMessageAsync<T>(string, KernelMessage<T>, CancellationToken)
+  nameWithType: DotComputeRingKernelRuntime.SendMessageAsync<T>(string, KernelMessage<T>, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SendMessageAsync<T>(string, DotCompute.Abstractions.RingKernels.KernelMessage<T>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: SendMessageAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+    startLine: 164
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Sends a message to a ring kernel's input queue.
+  remarks: >-
+    Messages are enqueued in the kernel's input queue and processed
+
+    asynchronously. If the queue is full, this method blocks until
+
+    space is available or the operation is canceled.
+  example: []
+  syntax:
+    content: 'public Task SendMessageAsync<T>(string kernelId, KernelMessage<T> message, CancellationToken cancellationToken = default) where T : unmanaged'
+    parameters:
+    - id: kernelId
+      type: System.String
+      description: Target kernel identifier.
+    - id: message
+      type: DotCompute.Abstractions.RingKernels.KernelMessage{{T}}
+      description: Message to send.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    typeParameters:
+    - id: T
+      description: Message payload type (must be unmanaged).
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task that completes when the message is enqueued.
+    content.vb: Public Function SendMessageAsync(Of T As Structure)(kernelId As String, message As KernelMessage(Of T), cancellationToken As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SendMessageAsync*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Thrown if the kernel ID is not found.
+  implements:
+  - DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendMessageAsync``1(System.String,DotCompute.Abstractions.RingKernels.KernelMessage{{T}},System.Threading.CancellationToken)
+  nameWithType.vb: DotComputeRingKernelRuntime.SendMessageAsync(Of T)(String, KernelMessage(Of T), CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SendMessageAsync(Of T)(String, DotCompute.Abstractions.RingKernels.KernelMessage(Of T), System.Threading.CancellationToken)
+  name.vb: SendMessageAsync(Of T)(String, KernelMessage(Of T), CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ReceiveMessageAsync``1(System.String,System.TimeSpan,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ReceiveMessageAsync``1(System.String,System.TimeSpan,System.Threading.CancellationToken)
+  id: ReceiveMessageAsync``1(System.String,System.TimeSpan,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  langs:
+  - csharp
+  - vb
+  name: ReceiveMessageAsync<T>(string, TimeSpan, CancellationToken)
+  nameWithType: DotComputeRingKernelRuntime.ReceiveMessageAsync<T>(string, TimeSpan, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ReceiveMessageAsync<T>(string, System.TimeSpan, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ReceiveMessageAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+    startLine: 200
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Receives a message from a ring kernel's output queue.
+  remarks: >-
+    This method blocks until a message is available in the kernel's
+
+    output queue or the timeout expires. Use for host-side monitoring
+
+    or result collection.
+  example: []
+  syntax:
+    content: 'public Task<KernelMessage<T>?> ReceiveMessageAsync<T>(string kernelId, TimeSpan timeout = default, CancellationToken cancellationToken = default) where T : unmanaged'
+    parameters:
+    - id: kernelId
+      type: System.String
+      description: Source kernel identifier.
+    - id: timeout
+      type: System.TimeSpan
+      description: Maximum wait time for a message.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    typeParameters:
+    - id: T
+      description: Message payload type (must be unmanaged).
+    return:
+      type: System.Threading.Tasks.Task{System.Nullable{DotCompute.Abstractions.RingKernels.KernelMessage{{T}}}}
+      description: The received message, or null if the timeout expires.
+    content.vb: Public Function ReceiveMessageAsync(Of T As Structure)(kernelId As String, timeout As TimeSpan = Nothing, cancellationToken As CancellationToken = Nothing) As Task(Of KernelMessage(Of T)?)
+  overload: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ReceiveMessageAsync*
+  implements:
+  - DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ReceiveMessageAsync``1(System.String,System.TimeSpan,System.Threading.CancellationToken)
+  nameWithType.vb: DotComputeRingKernelRuntime.ReceiveMessageAsync(Of T)(String, TimeSpan, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ReceiveMessageAsync(Of T)(String, System.TimeSpan, System.Threading.CancellationToken)
+  name.vb: ReceiveMessageAsync(Of T)(String, TimeSpan, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetStatusAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetStatusAsync(System.String,System.Threading.CancellationToken)
+  id: GetStatusAsync(System.String,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  langs:
+  - csharp
+  - vb
+  name: GetStatusAsync(string, CancellationToken)
+  nameWithType: DotComputeRingKernelRuntime.GetStatusAsync(string, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetStatusAsync(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetStatusAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+    startLine: 254
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Gets the current status of a ring kernel.
+  example: []
+  syntax:
+    content: public Task<RingKernelStatus> GetStatusAsync(string kernelId, CancellationToken cancellationToken = default)
+    parameters:
+    - id: kernelId
+      type: System.String
+      description: Kernel identifier.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{DotCompute.Abstractions.RingKernels.RingKernelStatus}
+      description: The kernel's current status.
+    content.vb: Public Function GetStatusAsync(kernelId As String, cancellationToken As CancellationToken = Nothing) As Task(Of RingKernelStatus)
+  overload: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetStatusAsync*
+  implements:
+  - DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetStatusAsync(System.String,System.Threading.CancellationToken)
+  nameWithType.vb: DotComputeRingKernelRuntime.GetStatusAsync(String, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetStatusAsync(String, System.Threading.CancellationToken)
+  name.vb: GetStatusAsync(String, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetMetricsAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetMetricsAsync(System.String,System.Threading.CancellationToken)
+  id: GetMetricsAsync(System.String,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  langs:
+  - csharp
+  - vb
+  name: GetMetricsAsync(string, CancellationToken)
+  nameWithType: DotComputeRingKernelRuntime.GetMetricsAsync(string, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetMetricsAsync(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetMetricsAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+    startLine: 284
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Gets performance metrics for a ring kernel.
+  example: []
+  syntax:
+    content: public Task<RingKernelMetrics> GetMetricsAsync(string kernelId, CancellationToken cancellationToken = default)
+    parameters:
+    - id: kernelId
+      type: System.String
+      description: Kernel identifier.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{DotCompute.Abstractions.RingKernels.RingKernelMetrics}
+      description: Performance metrics including throughput and latency.
+    content.vb: Public Function GetMetricsAsync(kernelId As String, cancellationToken As CancellationToken = Nothing) As Task(Of RingKernelMetrics)
+  overload: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetMetricsAsync*
+  implements:
+  - DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetMetricsAsync(System.String,System.Threading.CancellationToken)
+  nameWithType.vb: DotComputeRingKernelRuntime.GetMetricsAsync(String, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetMetricsAsync(String, System.Threading.CancellationToken)
+  name.vb: GetMetricsAsync(String, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ListKernelsAsync
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ListKernelsAsync
+  id: ListKernelsAsync
+  parent: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  langs:
+  - csharp
+  - vb
+  name: ListKernelsAsync()
+  nameWithType: DotComputeRingKernelRuntime.ListKernelsAsync()
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ListKernelsAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ListKernelsAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+    startLine: 313
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Lists all ring kernels managed by this runtime.
+  example: []
+  syntax:
+    content: public Task<IReadOnlyCollection<string>> ListKernelsAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyCollection{System.String}}
+      description: Collection of kernel IDs.
+    content.vb: Public Function ListKernelsAsync() As Task(Of IReadOnlyCollection(Of String))
+  overload: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ListKernelsAsync*
+  implements:
+  - DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ListKernelsAsync
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.CreateMessageQueueAsync``1(System.Int32,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.CreateMessageQueueAsync``1(System.Int32,System.Threading.CancellationToken)
+  id: CreateMessageQueueAsync``1(System.Int32,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  langs:
+  - csharp
+  - vb
+  name: CreateMessageQueueAsync<T>(int, CancellationToken)
+  nameWithType: DotComputeRingKernelRuntime.CreateMessageQueueAsync<T>(int, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.CreateMessageQueueAsync<T>(int, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CreateMessageQueueAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+    startLine: 331
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Creates a message queue for inter-kernel communication.
+  example: []
+  syntax:
+    content: 'public Task<IMessageQueue<T>> CreateMessageQueueAsync<T>(int capacity, CancellationToken cancellationToken = default) where T : unmanaged'
+    parameters:
+    - id: capacity
+      type: System.Int32
+      description: Queue capacity (must be power of 2).
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    typeParameters:
+    - id: T
+      description: Message payload type.
+    return:
+      type: System.Threading.Tasks.Task{DotCompute.Abstractions.RingKernels.IMessageQueue{{T}}}
+      description: An initialized message queue.
+    content.vb: Public Function CreateMessageQueueAsync(Of T As Structure)(capacity As Integer, cancellationToken As CancellationToken = Nothing) As Task(Of IMessageQueue(Of T))
+  overload: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.CreateMessageQueueAsync*
+  implements:
+  - DotCompute.Abstractions.RingKernels.IRingKernelRuntime.CreateMessageQueueAsync``1(System.Int32,System.Threading.CancellationToken)
+  nameWithType.vb: DotComputeRingKernelRuntime.CreateMessageQueueAsync(Of T)(Integer, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.CreateMessageQueueAsync(Of T)(Integer, System.Threading.CancellationToken)
+  name.vb: CreateMessageQueueAsync(Of T)(Integer, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.CreateNamedMessageQueueAsync``1(System.String,DotCompute.Abstractions.Messaging.MessageQueueOptions,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.CreateNamedMessageQueueAsync``1(System.String,DotCompute.Abstractions.Messaging.MessageQueueOptions,System.Threading.CancellationToken)
+  id: CreateNamedMessageQueueAsync``1(System.String,DotCompute.Abstractions.Messaging.MessageQueueOptions,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  langs:
+  - csharp
+  - vb
+  name: CreateNamedMessageQueueAsync<T>(string, MessageQueueOptions, CancellationToken)
+  nameWithType: DotComputeRingKernelRuntime.CreateNamedMessageQueueAsync<T>(string, MessageQueueOptions, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.CreateNamedMessageQueueAsync<T>(string, DotCompute.Abstractions.Messaging.MessageQueueOptions, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CreateNamedMessageQueueAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+    startLine: 358
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Creates a named message queue with advanced configuration options.
+  remarks: >-
+    Named queues support:
+
+    - Priority-based ordering
+
+    - Message deduplication
+
+    - Multiple backpressure strategies
+
+    - Timeout-based message expiration
+
+    - Lock-free concurrent access
+
+
+    Queue names must be unique within the runtime. Attempting to create
+
+    a queue with an existing name throws <xref href="System.InvalidOperationException" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: 'public Task<IMessageQueue<T>> CreateNamedMessageQueueAsync<T>(string queueName, MessageQueueOptions options, CancellationToken cancellationToken = default) where T : IRingKernelMessage'
+    parameters:
+    - id: queueName
+      type: System.String
+      description: Unique queue identifier.
+    - id: options
+      type: DotCompute.Abstractions.Messaging.MessageQueueOptions
+      description: Queue configuration options.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    typeParameters:
+    - id: T
+      description: Message type implementing <xref href="DotCompute.Abstractions.Messaging.IRingKernelMessage" data-throw-if-not-resolved="false"></xref>.
+    return:
+      type: System.Threading.Tasks.Task{DotCompute.Abstractions.Messaging.IMessageQueue{{T}}}
+      description: An initialized message queue.
+    content.vb: Public Function CreateNamedMessageQueueAsync(Of T As IRingKernelMessage)(queueName As String, options As MessageQueueOptions, cancellationToken As CancellationToken = Nothing) As Task(Of IMessageQueue(Of T))
+  overload: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.CreateNamedMessageQueueAsync*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Thrown if queueName is null or empty.
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: Thrown if a queue with the specified name already exists.
+  implements:
+  - DotCompute.Abstractions.RingKernels.IRingKernelRuntime.CreateNamedMessageQueueAsync``1(System.String,DotCompute.Abstractions.Messaging.MessageQueueOptions,System.Threading.CancellationToken)
+  nameWithType.vb: DotComputeRingKernelRuntime.CreateNamedMessageQueueAsync(Of T)(String, MessageQueueOptions, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.CreateNamedMessageQueueAsync(Of T)(String, DotCompute.Abstractions.Messaging.MessageQueueOptions, System.Threading.CancellationToken)
+  name.vb: CreateNamedMessageQueueAsync(Of T)(String, MessageQueueOptions, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetNamedMessageQueueAsync``1(System.String,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetNamedMessageQueueAsync``1(System.String,System.Threading.CancellationToken)
+  id: GetNamedMessageQueueAsync``1(System.String,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  langs:
+  - csharp
+  - vb
+  name: GetNamedMessageQueueAsync<T>(string, CancellationToken)
+  nameWithType: DotComputeRingKernelRuntime.GetNamedMessageQueueAsync<T>(string, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetNamedMessageQueueAsync<T>(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetNamedMessageQueueAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+    startLine: 389
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Gets an existing named message queue.
+  remarks: >-
+    Use this method to retrieve queues created by other components or
+
+    to check queue existence before creation.
+  example: []
+  syntax:
+    content: 'public Task<IMessageQueue<T>?> GetNamedMessageQueueAsync<T>(string queueName, CancellationToken cancellationToken = default) where T : IRingKernelMessage'
+    parameters:
+    - id: queueName
+      type: System.String
+      description: Queue identifier.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    typeParameters:
+    - id: T
+      description: Message type implementing <xref href="DotCompute.Abstractions.Messaging.IRingKernelMessage" data-throw-if-not-resolved="false"></xref>.
+    return:
+      type: System.Threading.Tasks.Task{DotCompute.Abstractions.Messaging.IMessageQueue{{T}}}
+      description: The message queue if found; otherwise, null.
+    content.vb: Public Function GetNamedMessageQueueAsync(Of T As IRingKernelMessage)(queueName As String, cancellationToken As CancellationToken = Nothing) As Task(Of IMessageQueue(Of T))
+  overload: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetNamedMessageQueueAsync*
+  implements:
+  - DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetNamedMessageQueueAsync``1(System.String,System.Threading.CancellationToken)
+  nameWithType.vb: DotComputeRingKernelRuntime.GetNamedMessageQueueAsync(Of T)(String, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetNamedMessageQueueAsync(Of T)(String, System.Threading.CancellationToken)
+  name.vb: GetNamedMessageQueueAsync(Of T)(String, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SendToNamedQueueAsync``1(System.String,``0,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SendToNamedQueueAsync``1(System.String,``0,System.Threading.CancellationToken)
+  id: SendToNamedQueueAsync``1(System.String,``0,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  langs:
+  - csharp
+  - vb
+  name: SendToNamedQueueAsync<T>(string, T, CancellationToken)
+  nameWithType: DotComputeRingKernelRuntime.SendToNamedQueueAsync<T>(string, T, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SendToNamedQueueAsync<T>(string, T, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: SendToNamedQueueAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+    startLine: 414
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Sends a message to a named queue.
+  remarks: >-
+    Behavior depends on the queue's backpressure strategy:
+
+    - Block: Waits for space to become available
+
+    - Reject: Returns false immediately if full
+
+    - DropOldest: Removes oldest message to make space
+
+    - DropNew: Silently discards the new message
+
+
+    This method is a convenience wrapper around GetNamedMessageQueueAsync
+
+    followed by TryEnqueue. For high-throughput scenarios, cache the queue
+
+    reference and enqueue directly.
+  example: []
+  syntax:
+    content: 'public Task<bool> SendToNamedQueueAsync<T>(string queueName, T message, CancellationToken cancellationToken = default) where T : IRingKernelMessage'
+    parameters:
+    - id: queueName
+      type: System.String
+      description: Target queue identifier.
+    - id: message
+      type: '{T}'
+      description: Message to send.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    typeParameters:
+    - id: T
+      description: Message type implementing <xref href="DotCompute.Abstractions.Messaging.IRingKernelMessage" data-throw-if-not-resolved="false"></xref>.
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: true if the message was successfully enqueued; otherwise, false.
+    content.vb: Public Function SendToNamedQueueAsync(Of T As IRingKernelMessage)(queueName As String, message As T, cancellationToken As CancellationToken = Nothing) As Task(Of Boolean)
+  overload: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SendToNamedQueueAsync*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Thrown if queueName is not found.
+  implements:
+  - DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendToNamedQueueAsync``1(System.String,{T},System.Threading.CancellationToken)
+  nameWithType.vb: DotComputeRingKernelRuntime.SendToNamedQueueAsync(Of T)(String, T, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SendToNamedQueueAsync(Of T)(String, T, System.Threading.CancellationToken)
+  name.vb: SendToNamedQueueAsync(Of T)(String, T, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ReceiveFromNamedQueueAsync``1(System.String,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ReceiveFromNamedQueueAsync``1(System.String,System.Threading.CancellationToken)
+  id: ReceiveFromNamedQueueAsync``1(System.String,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  langs:
+  - csharp
+  - vb
+  name: ReceiveFromNamedQueueAsync<T>(string, CancellationToken)
+  nameWithType: DotComputeRingKernelRuntime.ReceiveFromNamedQueueAsync<T>(string, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ReceiveFromNamedQueueAsync<T>(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ReceiveFromNamedQueueAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+    startLine: 440
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Receives a message from a named queue.
+  remarks: >-
+    This is a non-blocking operation. For blocking waits, use
+
+    GetNamedMessageQueueAsync and poll the queue directly.
+  example: []
+  syntax:
+    content: 'public Task<T?> ReceiveFromNamedQueueAsync<T>(string queueName, CancellationToken cancellationToken = default) where T : IRingKernelMessage'
+    parameters:
+    - id: queueName
+      type: System.String
+      description: Source queue identifier.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    typeParameters:
+    - id: T
+      description: Message type implementing <xref href="DotCompute.Abstractions.Messaging.IRingKernelMessage" data-throw-if-not-resolved="false"></xref>.
+    return:
+      type: System.Threading.Tasks.Task{{T}}
+      description: The next message in the queue, or null if the queue is empty.
+    content.vb: Public Function ReceiveFromNamedQueueAsync(Of T As IRingKernelMessage)(queueName As String, cancellationToken As CancellationToken = Nothing) As Task(Of T)
+  overload: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ReceiveFromNamedQueueAsync*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Thrown if queueName is not found.
+  implements:
+  - DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ReceiveFromNamedQueueAsync``1(System.String,System.Threading.CancellationToken)
+  nameWithType.vb: DotComputeRingKernelRuntime.ReceiveFromNamedQueueAsync(Of T)(String, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ReceiveFromNamedQueueAsync(Of T)(String, System.Threading.CancellationToken)
+  name.vb: ReceiveFromNamedQueueAsync(Of T)(String, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DestroyNamedMessageQueueAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DestroyNamedMessageQueueAsync(System.String,System.Threading.CancellationToken)
+  id: DestroyNamedMessageQueueAsync(System.String,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  langs:
+  - csharp
+  - vb
+  name: DestroyNamedMessageQueueAsync(string, CancellationToken)
+  nameWithType: DotComputeRingKernelRuntime.DestroyNamedMessageQueueAsync(string, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DestroyNamedMessageQueueAsync(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DestroyNamedMessageQueueAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+    startLine: 468
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Destroys a named message queue and releases resources.
+  remarks: >-
+    Destroying a queue:
+
+    - Discards all pending messages
+
+    - Releases memory resources
+
+    - Removes the queue from the registry
+
+
+    Any subsequent operations on the queue will fail. Ensure all
+
+    producers and consumers have finished before destroying.
+  example: []
+  syntax:
+    content: public Task<bool> DestroyNamedMessageQueueAsync(string queueName, CancellationToken cancellationToken = default)
+    parameters:
+    - id: queueName
+      type: System.String
+      description: Queue identifier to destroy.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: true if the queue was found and destroyed; otherwise, false.
+    content.vb: Public Function DestroyNamedMessageQueueAsync(queueName As String, cancellationToken As CancellationToken = Nothing) As Task(Of Boolean)
+  overload: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DestroyNamedMessageQueueAsync*
+  implements:
+  - DotCompute.Abstractions.RingKernels.IRingKernelRuntime.DestroyNamedMessageQueueAsync(System.String,System.Threading.CancellationToken)
+  nameWithType.vb: DotComputeRingKernelRuntime.DestroyNamedMessageQueueAsync(String, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DestroyNamedMessageQueueAsync(String, System.Threading.CancellationToken)
+  name.vb: DestroyNamedMessageQueueAsync(String, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ListNamedMessageQueuesAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ListNamedMessageQueuesAsync(System.Threading.CancellationToken)
+  id: ListNamedMessageQueuesAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  langs:
+  - csharp
+  - vb
+  name: ListNamedMessageQueuesAsync(CancellationToken)
+  nameWithType: DotComputeRingKernelRuntime.ListNamedMessageQueuesAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ListNamedMessageQueuesAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ListNamedMessageQueuesAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+    startLine: 492
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Lists all named message queues in the runtime.
+  example: []
+  syntax:
+    content: public Task<IReadOnlyCollection<string>> ListNamedMessageQueuesAsync(CancellationToken cancellationToken = default)
+    parameters:
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyCollection{System.String}}
+      description: A read-only collection of queue names.
+    content.vb: Public Function ListNamedMessageQueuesAsync(cancellationToken As CancellationToken = Nothing) As Task(Of IReadOnlyCollection(Of String))
+  overload: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ListNamedMessageQueuesAsync*
+  implements:
+  - DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ListNamedMessageQueuesAsync(System.Threading.CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetTelemetryAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetTelemetryAsync(System.String,System.Threading.CancellationToken)
+  id: GetTelemetryAsync(System.String,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  langs:
+  - csharp
+  - vb
+  name: GetTelemetryAsync(string, CancellationToken)
+  nameWithType: DotComputeRingKernelRuntime.GetTelemetryAsync(string, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetTelemetryAsync(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetTelemetryAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+    startLine: 511
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Gets the current real-time telemetry snapshot for a running ring kernel.
+  remarks: >-
+    <p>
+
+    This is a zero-copy operation that reads telemetry directly from
+
+    GPU-accessible memory (&lt;1μs latency). The telemetry struct is
+
+    updated atomically by the GPU kernel and polled by the CPU.
+
+    </p>
+
+    <p>
+
+    Unlike GetMetricsAsync which provides aggregated historical metrics,
+
+    GetTelemetryAsync provides real-time counters for:
+
+    - Messages processed/dropped
+
+    - Current queue depth
+
+    - Processing latency (min/max/avg)
+
+    - Last error code
+
+    - GPU timestamp of last processed message
+
+    </p>
+
+    <p>
+
+    Use this for:
+
+    - Real-time health monitoring
+
+    - Stuck kernel detection (via LastProcessedTimestamp)
+
+    - Backpressure monitoring (via QueueDepth)
+
+    - Performance profiling (via latency metrics)
+
+    </p>
+  example: []
+  syntax:
+    content: public Task<RingKernelTelemetry> GetTelemetryAsync(string kernelId, CancellationToken cancellationToken = default)
+    parameters:
+    - id: kernelId
+      type: System.String
+      description: Kernel identifier.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{DotCompute.Abstractions.RingKernels.RingKernelTelemetry}
+      description: A snapshot of the kernel's current telemetry data.
+    content.vb: Public Function GetTelemetryAsync(kernelId As String, cancellationToken As CancellationToken = Nothing) As Task(Of RingKernelTelemetry)
+  overload: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetTelemetryAsync*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Thrown if the kernel ID is not found.
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: Thrown if telemetry is not enabled for the kernel.
+  implements:
+  - DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetTelemetryAsync(System.String,System.Threading.CancellationToken)
+  nameWithType.vb: DotComputeRingKernelRuntime.GetTelemetryAsync(String, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetTelemetryAsync(String, System.Threading.CancellationToken)
+  name.vb: GetTelemetryAsync(String, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SetTelemetryEnabledAsync(System.String,System.Boolean,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SetTelemetryEnabledAsync(System.String,System.Boolean,System.Threading.CancellationToken)
+  id: SetTelemetryEnabledAsync(System.String,System.Boolean,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  langs:
+  - csharp
+  - vb
+  name: SetTelemetryEnabledAsync(string, bool, CancellationToken)
+  nameWithType: DotComputeRingKernelRuntime.SetTelemetryEnabledAsync(string, bool, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SetTelemetryEnabledAsync(string, bool, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: SetTelemetryEnabledAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+    startLine: 538
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Enables or disables real-time telemetry collection for a ring kernel.
+  remarks: >-
+    <p>
+
+    Telemetry has minimal performance overhead (&lt;50ns per message)
+
+    but can be disabled for maximum performance in production scenarios
+
+    where monitoring is not required.
+
+    </p>
+
+    <p>
+
+    When enabling telemetry on a running kernel:
+
+    - Telemetry buffer is allocated if not already present
+
+    - Counters are initialized to zero
+
+    - Kernel begins updating telemetry on next message
+
+    </p>
+
+    <p>
+
+    When disabling telemetry:
+
+    - Kernel stops updating telemetry counters
+
+    - Telemetry buffer remains allocated (can be re-enabled)
+
+    - Last telemetry snapshot remains readable
+
+    </p>
+  example: []
+  syntax:
+    content: public Task SetTelemetryEnabledAsync(string kernelId, bool enabled, CancellationToken cancellationToken = default)
+    parameters:
+    - id: kernelId
+      type: System.String
+      description: Kernel identifier.
+    - id: enabled
+      type: System.Boolean
+      description: True to enable telemetry; false to disable.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task that completes when telemetry state is updated.
+    content.vb: Public Function SetTelemetryEnabledAsync(kernelId As String, enabled As Boolean, cancellationToken As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SetTelemetryEnabledAsync*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Thrown if the kernel ID is not found.
+  implements:
+  - DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SetTelemetryEnabledAsync(System.String,System.Boolean,System.Threading.CancellationToken)
+  nameWithType.vb: DotComputeRingKernelRuntime.SetTelemetryEnabledAsync(String, Boolean, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SetTelemetryEnabledAsync(String, Boolean, System.Threading.CancellationToken)
+  name.vb: SetTelemetryEnabledAsync(String, Boolean, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ResetTelemetryAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ResetTelemetryAsync(System.String,System.Threading.CancellationToken)
+  id: ResetTelemetryAsync(System.String,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  langs:
+  - csharp
+  - vb
+  name: ResetTelemetryAsync(string, CancellationToken)
+  nameWithType: DotComputeRingKernelRuntime.ResetTelemetryAsync(string, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ResetTelemetryAsync(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ResetTelemetryAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+    startLine: 565
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Resets all telemetry counters for a ring kernel to initial values.
+  remarks: >-
+    <p>
+
+    This operation resets:
+
+    - MessagesProcessed to 0
+
+    - MessagesDropped to 0
+
+    - LastProcessedTimestamp to 0
+
+    - TotalLatencyNanos to 0
+
+    - MaxLatencyNanos to 0
+
+    - MinLatencyNanos to ulong.MaxValue
+
+    - ErrorCode to 0
+
+    </p>
+
+    <p>
+
+    QueueDepth is not reset as it reflects current state, not cumulative metrics.
+
+    </p>
+
+    <p>
+
+    Use this for:
+
+    - Restarting measurements after configuration changes
+
+    - Clearing telemetry between test runs
+
+    - Benchmarking specific workload phases
+
+    </p>
+  example: []
+  syntax:
+    content: public Task ResetTelemetryAsync(string kernelId, CancellationToken cancellationToken = default)
+    parameters:
+    - id: kernelId
+      type: System.String
+      description: Kernel identifier.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task that completes when telemetry is reset.
+    content.vb: Public Function ResetTelemetryAsync(kernelId As String, cancellationToken As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ResetTelemetryAsync*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Thrown if the kernel ID is not found.
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: Thrown if telemetry is not enabled for the kernel.
+  implements:
+  - DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ResetTelemetryAsync(System.String,System.Threading.CancellationToken)
+  nameWithType.vb: DotComputeRingKernelRuntime.ResetTelemetryAsync(String, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ResetTelemetryAsync(String, System.Threading.CancellationToken)
+  name.vb: ResetTelemetryAsync(String, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DisposeAsync
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DisposeAsync
+  id: DisposeAsync
+  parent: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  langs:
+  - csharp
+  - vb
+  name: DisposeAsync()
+  nameWithType: DotComputeRingKernelRuntime.DisposeAsync()
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DisposeAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DisposeAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/DotComputeRingKernelRuntime.cs
+    startLine: 589
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: >-
+    Performs application-defined tasks associated with freeing, releasing, or
+
+    resetting unmanaged resources asynchronously.
+  example: []
+  syntax:
+    content: public ValueTask DisposeAsync()
+    return:
+      type: System.Threading.Tasks.ValueTask
+      description: A task that represents the asynchronous dispose operation.
+    content.vb: Public Function DisposeAsync() As ValueTask
+  overload: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DisposeAsync*
+  implements:
+  - System.IAsyncDisposable.DisposeAsync
+references:
+- uid: Orleans.GpuBridge.Runtime.RingKernels
+  commentId: N:Orleans.GpuBridge.Runtime.RingKernels
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.RingKernels
+  nameWithType: Orleans.GpuBridge.Runtime.RingKernels
+  fullName: Orleans.GpuBridge.Runtime.RingKernels
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.RingKernels
+    name: RingKernels
+    href: Orleans.GpuBridge.Runtime.RingKernels.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.RingKernels
+    name: RingKernels
+    href: Orleans.GpuBridge.Runtime.RingKernels.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  commentId: T:DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  parent: DotCompute.Abstractions.RingKernels
+  isExternal: true
+  name: IRingKernelRuntime
+  nameWithType: IRingKernelRuntime
+  fullName: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+- uid: System.IAsyncDisposable
+  commentId: T:System.IAsyncDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable
+  name: IAsyncDisposable
+  nameWithType: IAsyncDisposable
+  fullName: System.IAsyncDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: DotCompute.Abstractions.RingKernels
+  commentId: N:DotCompute.Abstractions.RingKernels
+  isExternal: true
+  name: DotCompute.Abstractions.RingKernels
+  nameWithType: DotCompute.Abstractions.RingKernels
+  fullName: DotCompute.Abstractions.RingKernels
+  spec.csharp:
+  - uid: DotCompute
+    name: DotCompute
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions
+    name: Abstractions
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions.RingKernels
+    name: RingKernels
+    isExternal: true
+  spec.vb:
+  - uid: DotCompute
+    name: DotCompute
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions
+    name: Abstractions
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions.RingKernels
+    name: RingKernels
+    isExternal: true
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  commentId: T:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+  href: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.html
+  name: DotComputeRingKernelRuntime
+  nameWithType: DotComputeRingKernelRuntime
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.#ctor
+  href: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.html#Orleans_GpuBridge_Runtime_RingKernels_DotComputeRingKernelRuntime__ctor_DotCompute_Backends_CUDA_RingKernels_CudaRingKernelRuntime_Microsoft_Extensions_Logging_ILogger_Orleans_GpuBridge_Runtime_RingKernels_DotComputeRingKernelRuntime__
+  name: DotComputeRingKernelRuntime
+  nameWithType: DotComputeRingKernelRuntime.DotComputeRingKernelRuntime
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DotComputeRingKernelRuntime
+  nameWithType.vb: DotComputeRingKernelRuntime.New
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.New
+  name.vb: New
+- uid: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime
+  commentId: T:DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime
+  parent: DotCompute.Backends.CUDA.RingKernels
+  isExternal: true
+  name: CudaRingKernelRuntime
+  nameWithType: CudaRingKernelRuntime
+  fullName: DotCompute.Backends.CUDA.RingKernels.CudaRingKernelRuntime
+- uid: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<DotComputeRingKernelRuntime>
+  nameWithType: ILogger<DotComputeRingKernelRuntime>
+  fullName: Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime>
+  nameWithType.vb: ILogger(Of DotComputeRingKernelRuntime)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime)
+  name.vb: ILogger(Of DotComputeRingKernelRuntime)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+    name: DotComputeRingKernelRuntime
+    href: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime
+    name: DotComputeRingKernelRuntime
+    href: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.html
+  - name: )
+- uid: DotCompute.Backends.CUDA.RingKernels
+  commentId: N:DotCompute.Backends.CUDA.RingKernels
+  isExternal: true
+  name: DotCompute.Backends.CUDA.RingKernels
+  nameWithType: DotCompute.Backends.CUDA.RingKernels
+  fullName: DotCompute.Backends.CUDA.RingKernels
+  spec.csharp:
+  - uid: DotCompute
+    name: DotCompute
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Backends
+    name: Backends
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Backends.CUDA
+    name: CUDA
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Backends.CUDA.RingKernels
+    name: RingKernels
+    isExternal: true
+  spec.vb:
+  - uid: DotCompute
+    name: DotCompute
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Backends
+    name: Backends
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Backends.CUDA
+    name: CUDA
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Backends.CUDA.RingKernels
+    name: RingKernels
+    isExternal: true
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions.ProductionDefaults
+  commentId: M:DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions.ProductionDefaults
+  isExternal: true
+  name: ProductionDefaults()
+  nameWithType: RingKernelLaunchOptions.ProductionDefaults()
+  fullName: DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions.ProductionDefaults()
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions.ProductionDefaults
+    name: ProductionDefaults
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions.ProductionDefaults
+    name: ProductionDefaults
+    isExternal: true
+  - name: (
+  - name: )
+- uid: System.ArgumentException
+  commentId: T:System.ArgumentException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentexception
+  name: ArgumentException
+  nameWithType: ArgumentException
+  fullName: System.ArgumentException
+- uid: System.ArgumentOutOfRangeException
+  commentId: T:System.ArgumentOutOfRangeException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception
+  name: ArgumentOutOfRangeException
+  nameWithType: ArgumentOutOfRangeException
+  fullName: System.ArgumentOutOfRangeException
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.LaunchAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.LaunchAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.html#Orleans_GpuBridge_Runtime_RingKernels_DotComputeRingKernelRuntime_LaunchAsync_System_String_System_Int32_System_Int32_DotCompute_Abstractions_RingKernels_RingKernelLaunchOptions_System_Threading_CancellationToken_
+  name: LaunchAsync
+  nameWithType: DotComputeRingKernelRuntime.LaunchAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.LaunchAsync
+- uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.LaunchAsync(System.String,System.Int32,System.Int32,DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions,System.Threading.CancellationToken)
+  commentId: M:DotCompute.Abstractions.RingKernels.IRingKernelRuntime.LaunchAsync(System.String,System.Int32,System.Int32,DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions,System.Threading.CancellationToken)
+  parent: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: LaunchAsync(string, int, int, RingKernelLaunchOptions, CancellationToken)
+  nameWithType: IRingKernelRuntime.LaunchAsync(string, int, int, RingKernelLaunchOptions, CancellationToken)
+  fullName: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.LaunchAsync(string, int, int, DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelRuntime.LaunchAsync(String, Integer, Integer, RingKernelLaunchOptions, CancellationToken)
+  fullName.vb: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.LaunchAsync(String, Integer, Integer, DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions, System.Threading.CancellationToken)
+  name.vb: LaunchAsync(String, Integer, Integer, RingKernelLaunchOptions, CancellationToken)
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.LaunchAsync(System.String,System.Int32,System.Int32,DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions,System.Threading.CancellationToken)
+    name: LaunchAsync
+    isExternal: true
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions
+    name: RingKernelLaunchOptions
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.LaunchAsync(System.String,System.Int32,System.Int32,DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions,System.Threading.CancellationToken)
+    name: LaunchAsync
+    isExternal: true
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions
+    name: RingKernelLaunchOptions
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions
+  commentId: T:DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions
+  parent: DotCompute.Abstractions.RingKernels
+  isExternal: true
+  name: RingKernelLaunchOptions
+  nameWithType: RingKernelLaunchOptions
+  fullName: DotCompute.Abstractions.RingKernels.RingKernelLaunchOptions
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: System.InvalidOperationException
+  commentId: T:System.InvalidOperationException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
+  name: InvalidOperationException
+  nameWithType: InvalidOperationException
+  fullName: System.InvalidOperationException
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ActivateAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ActivateAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.html#Orleans_GpuBridge_Runtime_RingKernels_DotComputeRingKernelRuntime_ActivateAsync_System_String_System_Threading_CancellationToken_
+  name: ActivateAsync
+  nameWithType: DotComputeRingKernelRuntime.ActivateAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ActivateAsync
+- uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ActivateAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ActivateAsync(System.String,System.Threading.CancellationToken)
+  parent: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: ActivateAsync(string, CancellationToken)
+  nameWithType: IRingKernelRuntime.ActivateAsync(string, CancellationToken)
+  fullName: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ActivateAsync(string, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelRuntime.ActivateAsync(String, CancellationToken)
+  fullName.vb: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ActivateAsync(String, System.Threading.CancellationToken)
+  name.vb: ActivateAsync(String, CancellationToken)
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ActivateAsync(System.String,System.Threading.CancellationToken)
+    name: ActivateAsync
+    isExternal: true
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ActivateAsync(System.String,System.Threading.CancellationToken)
+    name: ActivateAsync
+    isExternal: true
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DeactivateAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DeactivateAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.html#Orleans_GpuBridge_Runtime_RingKernels_DotComputeRingKernelRuntime_DeactivateAsync_System_String_System_Threading_CancellationToken_
+  name: DeactivateAsync
+  nameWithType: DotComputeRingKernelRuntime.DeactivateAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DeactivateAsync
+- uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.DeactivateAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:DotCompute.Abstractions.RingKernels.IRingKernelRuntime.DeactivateAsync(System.String,System.Threading.CancellationToken)
+  parent: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: DeactivateAsync(string, CancellationToken)
+  nameWithType: IRingKernelRuntime.DeactivateAsync(string, CancellationToken)
+  fullName: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.DeactivateAsync(string, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelRuntime.DeactivateAsync(String, CancellationToken)
+  fullName.vb: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.DeactivateAsync(String, System.Threading.CancellationToken)
+  name.vb: DeactivateAsync(String, CancellationToken)
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.DeactivateAsync(System.String,System.Threading.CancellationToken)
+    name: DeactivateAsync
+    isExternal: true
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.DeactivateAsync(System.String,System.Threading.CancellationToken)
+    name: DeactivateAsync
+    isExternal: true
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.TerminateAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.TerminateAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.html#Orleans_GpuBridge_Runtime_RingKernels_DotComputeRingKernelRuntime_TerminateAsync_System_String_System_Threading_CancellationToken_
+  name: TerminateAsync
+  nameWithType: DotComputeRingKernelRuntime.TerminateAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.TerminateAsync
+- uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.TerminateAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:DotCompute.Abstractions.RingKernels.IRingKernelRuntime.TerminateAsync(System.String,System.Threading.CancellationToken)
+  parent: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: TerminateAsync(string, CancellationToken)
+  nameWithType: IRingKernelRuntime.TerminateAsync(string, CancellationToken)
+  fullName: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.TerminateAsync(string, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelRuntime.TerminateAsync(String, CancellationToken)
+  fullName.vb: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.TerminateAsync(String, System.Threading.CancellationToken)
+  name.vb: TerminateAsync(String, CancellationToken)
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.TerminateAsync(System.String,System.Threading.CancellationToken)
+    name: TerminateAsync
+    isExternal: true
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.TerminateAsync(System.String,System.Threading.CancellationToken)
+    name: TerminateAsync
+    isExternal: true
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SendMessageAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SendMessageAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.html#Orleans_GpuBridge_Runtime_RingKernels_DotComputeRingKernelRuntime_SendMessageAsync__1_System_String_DotCompute_Abstractions_RingKernels_KernelMessage___0__System_Threading_CancellationToken_
+  name: SendMessageAsync
+  nameWithType: DotComputeRingKernelRuntime.SendMessageAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SendMessageAsync
+- uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendMessageAsync``1(System.String,DotCompute.Abstractions.RingKernels.KernelMessage{{T}},System.Threading.CancellationToken)
+  commentId: M:DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendMessageAsync``1(System.String,DotCompute.Abstractions.RingKernels.KernelMessage{``0},System.Threading.CancellationToken)
+  parent: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  definition: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendMessageAsync``1(System.String,DotCompute.Abstractions.RingKernels.KernelMessage{``0},System.Threading.CancellationToken)
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: SendMessageAsync<T>(string, KernelMessage<T>, CancellationToken)
+  nameWithType: IRingKernelRuntime.SendMessageAsync<T>(string, KernelMessage<T>, CancellationToken)
+  fullName: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendMessageAsync<T>(string, DotCompute.Abstractions.RingKernels.KernelMessage<T>, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelRuntime.SendMessageAsync(Of T)(String, KernelMessage(Of T), CancellationToken)
+  fullName.vb: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendMessageAsync(Of T)(String, DotCompute.Abstractions.RingKernels.KernelMessage(Of T), System.Threading.CancellationToken)
+  name.vb: SendMessageAsync(Of T)(String, KernelMessage(Of T), CancellationToken)
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendMessageAsync``1(System.String,DotCompute.Abstractions.RingKernels.KernelMessage{``0},System.Threading.CancellationToken)
+    name: SendMessageAsync
+    isExternal: true
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: DotCompute.Abstractions.RingKernels.KernelMessage`1
+    name: KernelMessage
+    isExternal: true
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendMessageAsync``1(System.String,DotCompute.Abstractions.RingKernels.KernelMessage{``0},System.Threading.CancellationToken)
+    name: SendMessageAsync
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: DotCompute.Abstractions.RingKernels.KernelMessage`1
+    name: KernelMessage
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: DotCompute.Abstractions.RingKernels.KernelMessage{{T}}
+  commentId: T:DotCompute.Abstractions.RingKernels.KernelMessage{``0}
+  parent: DotCompute.Abstractions.RingKernels
+  definition: DotCompute.Abstractions.RingKernels.KernelMessage`1
+  name: KernelMessage<T>
+  nameWithType: KernelMessage<T>
+  fullName: DotCompute.Abstractions.RingKernels.KernelMessage<T>
+  nameWithType.vb: KernelMessage(Of T)
+  fullName.vb: DotCompute.Abstractions.RingKernels.KernelMessage(Of T)
+  name.vb: KernelMessage(Of T)
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.KernelMessage`1
+    name: KernelMessage
+    isExternal: true
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.KernelMessage`1
+    name: KernelMessage
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendMessageAsync``1(System.String,DotCompute.Abstractions.RingKernels.KernelMessage{``0},System.Threading.CancellationToken)
+  commentId: M:DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendMessageAsync``1(System.String,DotCompute.Abstractions.RingKernels.KernelMessage{``0},System.Threading.CancellationToken)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: SendMessageAsync<T>(string, KernelMessage<T>, CancellationToken)
+  nameWithType: IRingKernelRuntime.SendMessageAsync<T>(string, KernelMessage<T>, CancellationToken)
+  fullName: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendMessageAsync<T>(string, DotCompute.Abstractions.RingKernels.KernelMessage<T>, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelRuntime.SendMessageAsync(Of T)(String, KernelMessage(Of T), CancellationToken)
+  fullName.vb: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendMessageAsync(Of T)(String, DotCompute.Abstractions.RingKernels.KernelMessage(Of T), System.Threading.CancellationToken)
+  name.vb: SendMessageAsync(Of T)(String, KernelMessage(Of T), CancellationToken)
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendMessageAsync``1(System.String,DotCompute.Abstractions.RingKernels.KernelMessage{``0},System.Threading.CancellationToken)
+    name: SendMessageAsync
+    isExternal: true
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: DotCompute.Abstractions.RingKernels.KernelMessage`1
+    name: KernelMessage
+    isExternal: true
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendMessageAsync``1(System.String,DotCompute.Abstractions.RingKernels.KernelMessage{``0},System.Threading.CancellationToken)
+    name: SendMessageAsync
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: DotCompute.Abstractions.RingKernels.KernelMessage`1
+    name: KernelMessage
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: DotCompute.Abstractions.RingKernels.KernelMessage`1
+  commentId: T:DotCompute.Abstractions.RingKernels.KernelMessage`1
+  isExternal: true
+  name: KernelMessage<T>
+  nameWithType: KernelMessage<T>
+  fullName: DotCompute.Abstractions.RingKernels.KernelMessage<T>
+  nameWithType.vb: KernelMessage(Of T)
+  fullName.vb: DotCompute.Abstractions.RingKernels.KernelMessage(Of T)
+  name.vb: KernelMessage(Of T)
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.KernelMessage`1
+    name: KernelMessage
+    isExternal: true
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.KernelMessage`1
+    name: KernelMessage
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ReceiveMessageAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ReceiveMessageAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.html#Orleans_GpuBridge_Runtime_RingKernels_DotComputeRingKernelRuntime_ReceiveMessageAsync__1_System_String_System_TimeSpan_System_Threading_CancellationToken_
+  name: ReceiveMessageAsync
+  nameWithType: DotComputeRingKernelRuntime.ReceiveMessageAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ReceiveMessageAsync
+- uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ReceiveMessageAsync``1(System.String,System.TimeSpan,System.Threading.CancellationToken)
+  commentId: M:DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ReceiveMessageAsync``1(System.String,System.TimeSpan,System.Threading.CancellationToken)
+  parent: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: ReceiveMessageAsync<T>(string, TimeSpan, CancellationToken)
+  nameWithType: IRingKernelRuntime.ReceiveMessageAsync<T>(string, TimeSpan, CancellationToken)
+  fullName: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ReceiveMessageAsync<T>(string, System.TimeSpan, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelRuntime.ReceiveMessageAsync(Of T)(String, TimeSpan, CancellationToken)
+  fullName.vb: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ReceiveMessageAsync(Of T)(String, System.TimeSpan, System.Threading.CancellationToken)
+  name.vb: ReceiveMessageAsync(Of T)(String, TimeSpan, CancellationToken)
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ReceiveMessageAsync``1(System.String,System.TimeSpan,System.Threading.CancellationToken)
+    name: ReceiveMessageAsync
+    isExternal: true
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ReceiveMessageAsync``1(System.String,System.TimeSpan,System.Threading.CancellationToken)
+    name: ReceiveMessageAsync
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.TimeSpan
+  commentId: T:System.TimeSpan
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan
+  nameWithType: TimeSpan
+  fullName: System.TimeSpan
+- uid: System.Threading.Tasks.Task{System.Nullable{DotCompute.Abstractions.RingKernels.KernelMessage{{T}}}}
+  commentId: T:System.Threading.Tasks.Task{System.Nullable{DotCompute.Abstractions.RingKernels.KernelMessage{``0}}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<KernelMessage<T>?>
+  nameWithType: Task<KernelMessage<T>?>
+  fullName: System.Threading.Tasks.Task<DotCompute.Abstractions.RingKernels.KernelMessage<T>?>
+  nameWithType.vb: Task(Of KernelMessage(Of T)?)
+  fullName.vb: System.Threading.Tasks.Task(Of DotCompute.Abstractions.RingKernels.KernelMessage(Of T)?)
+  name.vb: Task(Of KernelMessage(Of T)?)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: DotCompute.Abstractions.RingKernels.KernelMessage`1
+    name: KernelMessage
+    isExternal: true
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '?'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DotCompute.Abstractions.RingKernels.KernelMessage`1
+    name: KernelMessage
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: '?'
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetStatusAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetStatusAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.html#Orleans_GpuBridge_Runtime_RingKernels_DotComputeRingKernelRuntime_GetStatusAsync_System_String_System_Threading_CancellationToken_
+  name: GetStatusAsync
+  nameWithType: DotComputeRingKernelRuntime.GetStatusAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetStatusAsync
+- uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetStatusAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetStatusAsync(System.String,System.Threading.CancellationToken)
+  parent: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: GetStatusAsync(string, CancellationToken)
+  nameWithType: IRingKernelRuntime.GetStatusAsync(string, CancellationToken)
+  fullName: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetStatusAsync(string, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelRuntime.GetStatusAsync(String, CancellationToken)
+  fullName.vb: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetStatusAsync(String, System.Threading.CancellationToken)
+  name.vb: GetStatusAsync(String, CancellationToken)
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetStatusAsync(System.String,System.Threading.CancellationToken)
+    name: GetStatusAsync
+    isExternal: true
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetStatusAsync(System.String,System.Threading.CancellationToken)
+    name: GetStatusAsync
+    isExternal: true
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading.Tasks.Task{DotCompute.Abstractions.RingKernels.RingKernelStatus}
+  commentId: T:System.Threading.Tasks.Task{DotCompute.Abstractions.RingKernels.RingKernelStatus}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<RingKernelStatus>
+  nameWithType: Task<RingKernelStatus>
+  fullName: System.Threading.Tasks.Task<DotCompute.Abstractions.RingKernels.RingKernelStatus>
+  nameWithType.vb: Task(Of RingKernelStatus)
+  fullName.vb: System.Threading.Tasks.Task(Of DotCompute.Abstractions.RingKernels.RingKernelStatus)
+  name.vb: Task(Of RingKernelStatus)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: DotCompute.Abstractions.RingKernels.RingKernelStatus
+    name: RingKernelStatus
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DotCompute.Abstractions.RingKernels.RingKernelStatus
+    name: RingKernelStatus
+    isExternal: true
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetMetricsAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetMetricsAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.html#Orleans_GpuBridge_Runtime_RingKernels_DotComputeRingKernelRuntime_GetMetricsAsync_System_String_System_Threading_CancellationToken_
+  name: GetMetricsAsync
+  nameWithType: DotComputeRingKernelRuntime.GetMetricsAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetMetricsAsync
+- uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetMetricsAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetMetricsAsync(System.String,System.Threading.CancellationToken)
+  parent: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: GetMetricsAsync(string, CancellationToken)
+  nameWithType: IRingKernelRuntime.GetMetricsAsync(string, CancellationToken)
+  fullName: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetMetricsAsync(string, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelRuntime.GetMetricsAsync(String, CancellationToken)
+  fullName.vb: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetMetricsAsync(String, System.Threading.CancellationToken)
+  name.vb: GetMetricsAsync(String, CancellationToken)
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetMetricsAsync(System.String,System.Threading.CancellationToken)
+    name: GetMetricsAsync
+    isExternal: true
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetMetricsAsync(System.String,System.Threading.CancellationToken)
+    name: GetMetricsAsync
+    isExternal: true
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading.Tasks.Task{DotCompute.Abstractions.RingKernels.RingKernelMetrics}
+  commentId: T:System.Threading.Tasks.Task{DotCompute.Abstractions.RingKernels.RingKernelMetrics}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<RingKernelMetrics>
+  nameWithType: Task<RingKernelMetrics>
+  fullName: System.Threading.Tasks.Task<DotCompute.Abstractions.RingKernels.RingKernelMetrics>
+  nameWithType.vb: Task(Of RingKernelMetrics)
+  fullName.vb: System.Threading.Tasks.Task(Of DotCompute.Abstractions.RingKernels.RingKernelMetrics)
+  name.vb: Task(Of RingKernelMetrics)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: DotCompute.Abstractions.RingKernels.RingKernelMetrics
+    name: RingKernelMetrics
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DotCompute.Abstractions.RingKernels.RingKernelMetrics
+    name: RingKernelMetrics
+    isExternal: true
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ListKernelsAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ListKernelsAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.html#Orleans_GpuBridge_Runtime_RingKernels_DotComputeRingKernelRuntime_ListKernelsAsync
+  name: ListKernelsAsync
+  nameWithType: DotComputeRingKernelRuntime.ListKernelsAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ListKernelsAsync
+- uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ListKernelsAsync
+  commentId: M:DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ListKernelsAsync
+  parent: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  isExternal: true
+  name: ListKernelsAsync()
+  nameWithType: IRingKernelRuntime.ListKernelsAsync()
+  fullName: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ListKernelsAsync()
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ListKernelsAsync
+    name: ListKernelsAsync
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ListKernelsAsync
+    name: ListKernelsAsync
+    isExternal: true
+  - name: (
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyCollection{System.String}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyCollection{System.String}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IReadOnlyCollection<string>>
+  nameWithType: Task<IReadOnlyCollection<string>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyCollection<string>>
+  nameWithType.vb: Task(Of IReadOnlyCollection(Of String))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IReadOnlyCollection(Of String))
+  name.vb: Task(Of IReadOnlyCollection(Of String))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.CreateMessageQueueAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.CreateMessageQueueAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.html#Orleans_GpuBridge_Runtime_RingKernels_DotComputeRingKernelRuntime_CreateMessageQueueAsync__1_System_Int32_System_Threading_CancellationToken_
+  name: CreateMessageQueueAsync
+  nameWithType: DotComputeRingKernelRuntime.CreateMessageQueueAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.CreateMessageQueueAsync
+- uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.CreateMessageQueueAsync``1(System.Int32,System.Threading.CancellationToken)
+  commentId: M:DotCompute.Abstractions.RingKernels.IRingKernelRuntime.CreateMessageQueueAsync``1(System.Int32,System.Threading.CancellationToken)
+  parent: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: CreateMessageQueueAsync<T>(int, CancellationToken)
+  nameWithType: IRingKernelRuntime.CreateMessageQueueAsync<T>(int, CancellationToken)
+  fullName: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.CreateMessageQueueAsync<T>(int, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelRuntime.CreateMessageQueueAsync(Of T)(Integer, CancellationToken)
+  fullName.vb: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.CreateMessageQueueAsync(Of T)(Integer, System.Threading.CancellationToken)
+  name.vb: CreateMessageQueueAsync(Of T)(Integer, CancellationToken)
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.CreateMessageQueueAsync``1(System.Int32,System.Threading.CancellationToken)
+    name: CreateMessageQueueAsync
+    isExternal: true
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.CreateMessageQueueAsync``1(System.Int32,System.Threading.CancellationToken)
+    name: CreateMessageQueueAsync
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading.Tasks.Task{DotCompute.Abstractions.RingKernels.IMessageQueue{{T}}}
+  commentId: T:System.Threading.Tasks.Task{DotCompute.Abstractions.RingKernels.IMessageQueue{``0}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IMessageQueue<T>>
+  nameWithType: Task<IMessageQueue<T>>
+  fullName: System.Threading.Tasks.Task<DotCompute.Abstractions.RingKernels.IMessageQueue<T>>
+  nameWithType.vb: Task(Of IMessageQueue(Of T))
+  fullName.vb: System.Threading.Tasks.Task(Of DotCompute.Abstractions.RingKernels.IMessageQueue(Of T))
+  name.vb: Task(Of IMessageQueue(Of T))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: DotCompute.Abstractions.RingKernels.IMessageQueue`1
+    name: IMessageQueue
+    isExternal: true
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DotCompute.Abstractions.RingKernels.IMessageQueue`1
+    name: IMessageQueue
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: DotCompute.Abstractions.Messaging.IRingKernelMessage
+  commentId: T:DotCompute.Abstractions.Messaging.IRingKernelMessage
+  parent: DotCompute.Abstractions.Messaging
+  isExternal: true
+  name: IRingKernelMessage
+  nameWithType: IRingKernelMessage
+  fullName: DotCompute.Abstractions.Messaging.IRingKernelMessage
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.CreateNamedMessageQueueAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.CreateNamedMessageQueueAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.html#Orleans_GpuBridge_Runtime_RingKernels_DotComputeRingKernelRuntime_CreateNamedMessageQueueAsync__1_System_String_DotCompute_Abstractions_Messaging_MessageQueueOptions_System_Threading_CancellationToken_
+  name: CreateNamedMessageQueueAsync
+  nameWithType: DotComputeRingKernelRuntime.CreateNamedMessageQueueAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.CreateNamedMessageQueueAsync
+- uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.CreateNamedMessageQueueAsync``1(System.String,DotCompute.Abstractions.Messaging.MessageQueueOptions,System.Threading.CancellationToken)
+  commentId: M:DotCompute.Abstractions.RingKernels.IRingKernelRuntime.CreateNamedMessageQueueAsync``1(System.String,DotCompute.Abstractions.Messaging.MessageQueueOptions,System.Threading.CancellationToken)
+  parent: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: CreateNamedMessageQueueAsync<T>(string, MessageQueueOptions, CancellationToken)
+  nameWithType: IRingKernelRuntime.CreateNamedMessageQueueAsync<T>(string, MessageQueueOptions, CancellationToken)
+  fullName: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.CreateNamedMessageQueueAsync<T>(string, DotCompute.Abstractions.Messaging.MessageQueueOptions, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelRuntime.CreateNamedMessageQueueAsync(Of T)(String, MessageQueueOptions, CancellationToken)
+  fullName.vb: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.CreateNamedMessageQueueAsync(Of T)(String, DotCompute.Abstractions.Messaging.MessageQueueOptions, System.Threading.CancellationToken)
+  name.vb: CreateNamedMessageQueueAsync(Of T)(String, MessageQueueOptions, CancellationToken)
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.CreateNamedMessageQueueAsync``1(System.String,DotCompute.Abstractions.Messaging.MessageQueueOptions,System.Threading.CancellationToken)
+    name: CreateNamedMessageQueueAsync
+    isExternal: true
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: DotCompute.Abstractions.Messaging.MessageQueueOptions
+    name: MessageQueueOptions
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.CreateNamedMessageQueueAsync``1(System.String,DotCompute.Abstractions.Messaging.MessageQueueOptions,System.Threading.CancellationToken)
+    name: CreateNamedMessageQueueAsync
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: DotCompute.Abstractions.Messaging.MessageQueueOptions
+    name: MessageQueueOptions
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: DotCompute.Abstractions.Messaging.MessageQueueOptions
+  commentId: T:DotCompute.Abstractions.Messaging.MessageQueueOptions
+  parent: DotCompute.Abstractions.Messaging
+  isExternal: true
+  name: MessageQueueOptions
+  nameWithType: MessageQueueOptions
+  fullName: DotCompute.Abstractions.Messaging.MessageQueueOptions
+- uid: System.Threading.Tasks.Task{DotCompute.Abstractions.Messaging.IMessageQueue{{T}}}
+  commentId: T:System.Threading.Tasks.Task{DotCompute.Abstractions.Messaging.IMessageQueue{``0}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IMessageQueue<T>>
+  nameWithType: Task<IMessageQueue<T>>
+  fullName: System.Threading.Tasks.Task<DotCompute.Abstractions.Messaging.IMessageQueue<T>>
+  nameWithType.vb: Task(Of IMessageQueue(Of T))
+  fullName.vb: System.Threading.Tasks.Task(Of DotCompute.Abstractions.Messaging.IMessageQueue(Of T))
+  name.vb: Task(Of IMessageQueue(Of T))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: DotCompute.Abstractions.Messaging.IMessageQueue`1
+    name: IMessageQueue
+    isExternal: true
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DotCompute.Abstractions.Messaging.IMessageQueue`1
+    name: IMessageQueue
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: DotCompute.Abstractions.Messaging
+  commentId: N:DotCompute.Abstractions.Messaging
+  isExternal: true
+  name: DotCompute.Abstractions.Messaging
+  nameWithType: DotCompute.Abstractions.Messaging
+  fullName: DotCompute.Abstractions.Messaging
+  spec.csharp:
+  - uid: DotCompute
+    name: DotCompute
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions
+    name: Abstractions
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions.Messaging
+    name: Messaging
+    isExternal: true
+  spec.vb:
+  - uid: DotCompute
+    name: DotCompute
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions
+    name: Abstractions
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions.Messaging
+    name: Messaging
+    isExternal: true
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetNamedMessageQueueAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetNamedMessageQueueAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.html#Orleans_GpuBridge_Runtime_RingKernels_DotComputeRingKernelRuntime_GetNamedMessageQueueAsync__1_System_String_System_Threading_CancellationToken_
+  name: GetNamedMessageQueueAsync
+  nameWithType: DotComputeRingKernelRuntime.GetNamedMessageQueueAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetNamedMessageQueueAsync
+- uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetNamedMessageQueueAsync``1(System.String,System.Threading.CancellationToken)
+  commentId: M:DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetNamedMessageQueueAsync``1(System.String,System.Threading.CancellationToken)
+  parent: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: GetNamedMessageQueueAsync<T>(string, CancellationToken)
+  nameWithType: IRingKernelRuntime.GetNamedMessageQueueAsync<T>(string, CancellationToken)
+  fullName: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetNamedMessageQueueAsync<T>(string, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelRuntime.GetNamedMessageQueueAsync(Of T)(String, CancellationToken)
+  fullName.vb: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetNamedMessageQueueAsync(Of T)(String, System.Threading.CancellationToken)
+  name.vb: GetNamedMessageQueueAsync(Of T)(String, CancellationToken)
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetNamedMessageQueueAsync``1(System.String,System.Threading.CancellationToken)
+    name: GetNamedMessageQueueAsync
+    isExternal: true
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetNamedMessageQueueAsync``1(System.String,System.Threading.CancellationToken)
+    name: GetNamedMessageQueueAsync
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SendToNamedQueueAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SendToNamedQueueAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.html#Orleans_GpuBridge_Runtime_RingKernels_DotComputeRingKernelRuntime_SendToNamedQueueAsync__1_System_String___0_System_Threading_CancellationToken_
+  name: SendToNamedQueueAsync
+  nameWithType: DotComputeRingKernelRuntime.SendToNamedQueueAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SendToNamedQueueAsync
+- uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendToNamedQueueAsync``1(System.String,{T},System.Threading.CancellationToken)
+  commentId: M:DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendToNamedQueueAsync``1(System.String,``0,System.Threading.CancellationToken)
+  parent: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  definition: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendToNamedQueueAsync``1(System.String,``0,System.Threading.CancellationToken)
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: SendToNamedQueueAsync<T>(string, T, CancellationToken)
+  nameWithType: IRingKernelRuntime.SendToNamedQueueAsync<T>(string, T, CancellationToken)
+  fullName: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendToNamedQueueAsync<T>(string, T, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelRuntime.SendToNamedQueueAsync(Of T)(String, T, CancellationToken)
+  fullName.vb: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendToNamedQueueAsync(Of T)(String, T, System.Threading.CancellationToken)
+  name.vb: SendToNamedQueueAsync(Of T)(String, T, CancellationToken)
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendToNamedQueueAsync``1(System.String,``0,System.Threading.CancellationToken)
+    name: SendToNamedQueueAsync
+    isExternal: true
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendToNamedQueueAsync``1(System.String,``0,System.Threading.CancellationToken)
+    name: SendToNamedQueueAsync
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendToNamedQueueAsync``1(System.String,``0,System.Threading.CancellationToken)
+  commentId: M:DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendToNamedQueueAsync``1(System.String,``0,System.Threading.CancellationToken)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: SendToNamedQueueAsync<T>(string, T, CancellationToken)
+  nameWithType: IRingKernelRuntime.SendToNamedQueueAsync<T>(string, T, CancellationToken)
+  fullName: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendToNamedQueueAsync<T>(string, T, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelRuntime.SendToNamedQueueAsync(Of T)(String, T, CancellationToken)
+  fullName.vb: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendToNamedQueueAsync(Of T)(String, T, System.Threading.CancellationToken)
+  name.vb: SendToNamedQueueAsync(Of T)(String, T, CancellationToken)
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendToNamedQueueAsync``1(System.String,``0,System.Threading.CancellationToken)
+    name: SendToNamedQueueAsync
+    isExternal: true
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SendToNamedQueueAsync``1(System.String,``0,System.Threading.CancellationToken)
+    name: SendToNamedQueueAsync
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ReceiveFromNamedQueueAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ReceiveFromNamedQueueAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.html#Orleans_GpuBridge_Runtime_RingKernels_DotComputeRingKernelRuntime_ReceiveFromNamedQueueAsync__1_System_String_System_Threading_CancellationToken_
+  name: ReceiveFromNamedQueueAsync
+  nameWithType: DotComputeRingKernelRuntime.ReceiveFromNamedQueueAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ReceiveFromNamedQueueAsync
+- uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ReceiveFromNamedQueueAsync``1(System.String,System.Threading.CancellationToken)
+  commentId: M:DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ReceiveFromNamedQueueAsync``1(System.String,System.Threading.CancellationToken)
+  parent: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: ReceiveFromNamedQueueAsync<T>(string, CancellationToken)
+  nameWithType: IRingKernelRuntime.ReceiveFromNamedQueueAsync<T>(string, CancellationToken)
+  fullName: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ReceiveFromNamedQueueAsync<T>(string, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelRuntime.ReceiveFromNamedQueueAsync(Of T)(String, CancellationToken)
+  fullName.vb: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ReceiveFromNamedQueueAsync(Of T)(String, System.Threading.CancellationToken)
+  name.vb: ReceiveFromNamedQueueAsync(Of T)(String, CancellationToken)
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ReceiveFromNamedQueueAsync``1(System.String,System.Threading.CancellationToken)
+    name: ReceiveFromNamedQueueAsync
+    isExternal: true
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ReceiveFromNamedQueueAsync``1(System.String,System.Threading.CancellationToken)
+    name: ReceiveFromNamedQueueAsync
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading.Tasks.Task{{T}}
+  commentId: T:System.Threading.Tasks.Task{``0}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<T>
+  nameWithType: Task<T>
+  fullName: System.Threading.Tasks.Task<T>
+  nameWithType.vb: Task(Of T)
+  fullName.vb: System.Threading.Tasks.Task(Of T)
+  name.vb: Task(Of T)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DestroyNamedMessageQueueAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DestroyNamedMessageQueueAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.html#Orleans_GpuBridge_Runtime_RingKernels_DotComputeRingKernelRuntime_DestroyNamedMessageQueueAsync_System_String_System_Threading_CancellationToken_
+  name: DestroyNamedMessageQueueAsync
+  nameWithType: DotComputeRingKernelRuntime.DestroyNamedMessageQueueAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DestroyNamedMessageQueueAsync
+- uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.DestroyNamedMessageQueueAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:DotCompute.Abstractions.RingKernels.IRingKernelRuntime.DestroyNamedMessageQueueAsync(System.String,System.Threading.CancellationToken)
+  parent: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: DestroyNamedMessageQueueAsync(string, CancellationToken)
+  nameWithType: IRingKernelRuntime.DestroyNamedMessageQueueAsync(string, CancellationToken)
+  fullName: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.DestroyNamedMessageQueueAsync(string, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelRuntime.DestroyNamedMessageQueueAsync(String, CancellationToken)
+  fullName.vb: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.DestroyNamedMessageQueueAsync(String, System.Threading.CancellationToken)
+  name.vb: DestroyNamedMessageQueueAsync(String, CancellationToken)
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.DestroyNamedMessageQueueAsync(System.String,System.Threading.CancellationToken)
+    name: DestroyNamedMessageQueueAsync
+    isExternal: true
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.DestroyNamedMessageQueueAsync(System.String,System.Threading.CancellationToken)
+    name: DestroyNamedMessageQueueAsync
+    isExternal: true
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ListNamedMessageQueuesAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ListNamedMessageQueuesAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.html#Orleans_GpuBridge_Runtime_RingKernels_DotComputeRingKernelRuntime_ListNamedMessageQueuesAsync_System_Threading_CancellationToken_
+  name: ListNamedMessageQueuesAsync
+  nameWithType: DotComputeRingKernelRuntime.ListNamedMessageQueuesAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ListNamedMessageQueuesAsync
+- uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ListNamedMessageQueuesAsync(System.Threading.CancellationToken)
+  commentId: M:DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ListNamedMessageQueuesAsync(System.Threading.CancellationToken)
+  parent: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: ListNamedMessageQueuesAsync(CancellationToken)
+  nameWithType: IRingKernelRuntime.ListNamedMessageQueuesAsync(CancellationToken)
+  fullName: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ListNamedMessageQueuesAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ListNamedMessageQueuesAsync(System.Threading.CancellationToken)
+    name: ListNamedMessageQueuesAsync
+    isExternal: true
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ListNamedMessageQueuesAsync(System.Threading.CancellationToken)
+    name: ListNamedMessageQueuesAsync
+    isExternal: true
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetTelemetryAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetTelemetryAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.html#Orleans_GpuBridge_Runtime_RingKernels_DotComputeRingKernelRuntime_GetTelemetryAsync_System_String_System_Threading_CancellationToken_
+  name: GetTelemetryAsync
+  nameWithType: DotComputeRingKernelRuntime.GetTelemetryAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.GetTelemetryAsync
+- uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetTelemetryAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetTelemetryAsync(System.String,System.Threading.CancellationToken)
+  parent: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: GetTelemetryAsync(string, CancellationToken)
+  nameWithType: IRingKernelRuntime.GetTelemetryAsync(string, CancellationToken)
+  fullName: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetTelemetryAsync(string, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelRuntime.GetTelemetryAsync(String, CancellationToken)
+  fullName.vb: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetTelemetryAsync(String, System.Threading.CancellationToken)
+  name.vb: GetTelemetryAsync(String, CancellationToken)
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetTelemetryAsync(System.String,System.Threading.CancellationToken)
+    name: GetTelemetryAsync
+    isExternal: true
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.GetTelemetryAsync(System.String,System.Threading.CancellationToken)
+    name: GetTelemetryAsync
+    isExternal: true
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading.Tasks.Task{DotCompute.Abstractions.RingKernels.RingKernelTelemetry}
+  commentId: T:System.Threading.Tasks.Task{DotCompute.Abstractions.RingKernels.RingKernelTelemetry}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<RingKernelTelemetry>
+  nameWithType: Task<RingKernelTelemetry>
+  fullName: System.Threading.Tasks.Task<DotCompute.Abstractions.RingKernels.RingKernelTelemetry>
+  nameWithType.vb: Task(Of RingKernelTelemetry)
+  fullName.vb: System.Threading.Tasks.Task(Of DotCompute.Abstractions.RingKernels.RingKernelTelemetry)
+  name.vb: Task(Of RingKernelTelemetry)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: DotCompute.Abstractions.RingKernels.RingKernelTelemetry
+    name: RingKernelTelemetry
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DotCompute.Abstractions.RingKernels.RingKernelTelemetry
+    name: RingKernelTelemetry
+    isExternal: true
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SetTelemetryEnabledAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SetTelemetryEnabledAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.html#Orleans_GpuBridge_Runtime_RingKernels_DotComputeRingKernelRuntime_SetTelemetryEnabledAsync_System_String_System_Boolean_System_Threading_CancellationToken_
+  name: SetTelemetryEnabledAsync
+  nameWithType: DotComputeRingKernelRuntime.SetTelemetryEnabledAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.SetTelemetryEnabledAsync
+- uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SetTelemetryEnabledAsync(System.String,System.Boolean,System.Threading.CancellationToken)
+  commentId: M:DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SetTelemetryEnabledAsync(System.String,System.Boolean,System.Threading.CancellationToken)
+  parent: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: SetTelemetryEnabledAsync(string, bool, CancellationToken)
+  nameWithType: IRingKernelRuntime.SetTelemetryEnabledAsync(string, bool, CancellationToken)
+  fullName: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SetTelemetryEnabledAsync(string, bool, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelRuntime.SetTelemetryEnabledAsync(String, Boolean, CancellationToken)
+  fullName.vb: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SetTelemetryEnabledAsync(String, Boolean, System.Threading.CancellationToken)
+  name.vb: SetTelemetryEnabledAsync(String, Boolean, CancellationToken)
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SetTelemetryEnabledAsync(System.String,System.Boolean,System.Threading.CancellationToken)
+    name: SetTelemetryEnabledAsync
+    isExternal: true
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.SetTelemetryEnabledAsync(System.String,System.Boolean,System.Threading.CancellationToken)
+    name: SetTelemetryEnabledAsync
+    isExternal: true
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ResetTelemetryAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ResetTelemetryAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.html#Orleans_GpuBridge_Runtime_RingKernels_DotComputeRingKernelRuntime_ResetTelemetryAsync_System_String_System_Threading_CancellationToken_
+  name: ResetTelemetryAsync
+  nameWithType: DotComputeRingKernelRuntime.ResetTelemetryAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.ResetTelemetryAsync
+- uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ResetTelemetryAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ResetTelemetryAsync(System.String,System.Threading.CancellationToken)
+  parent: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: ResetTelemetryAsync(string, CancellationToken)
+  nameWithType: IRingKernelRuntime.ResetTelemetryAsync(string, CancellationToken)
+  fullName: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ResetTelemetryAsync(string, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelRuntime.ResetTelemetryAsync(String, CancellationToken)
+  fullName.vb: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ResetTelemetryAsync(String, System.Threading.CancellationToken)
+  name.vb: ResetTelemetryAsync(String, CancellationToken)
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ResetTelemetryAsync(System.String,System.Threading.CancellationToken)
+    name: ResetTelemetryAsync
+    isExternal: true
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime.ResetTelemetryAsync(System.String,System.Threading.CancellationToken)
+    name: ResetTelemetryAsync
+    isExternal: true
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DisposeAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DisposeAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.html#Orleans_GpuBridge_Runtime_RingKernels_DotComputeRingKernelRuntime_DisposeAsync
+  name: DisposeAsync
+  nameWithType: DotComputeRingKernelRuntime.DisposeAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.DotComputeRingKernelRuntime.DisposeAsync
+- uid: System.IAsyncDisposable.DisposeAsync
+  commentId: M:System.IAsyncDisposable.DisposeAsync
+  parent: System.IAsyncDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  name: DisposeAsync()
+  nameWithType: IAsyncDisposable.DisposeAsync()
+  fullName: System.IAsyncDisposable.DisposeAsync()
+  spec.csharp:
+  - uid: System.IAsyncDisposable.DisposeAsync
+    name: DisposeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IAsyncDisposable.DisposeAsync
+    name: DisposeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  - name: (
+  - name: )
+- uid: System.Threading.Tasks.ValueTask
+  commentId: T:System.Threading.Tasks.ValueTask
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask
+  name: ValueTask
+  nameWithType: ValueTask
+  fullName: System.Threading.Tasks.ValueTask

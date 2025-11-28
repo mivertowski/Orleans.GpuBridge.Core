@@ -1,0 +1,1876 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2
+  commentId: T:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2
+  id: GpuKernelBase`2
+  parent: Orleans.GpuBridge.Abstractions.Kernels
+  children:
+  - Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.BackendProvider
+  - Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.DisplayName
+  - Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.Dispose
+  - Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.EnsureInitialized
+  - Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.EnsureNotDisposed
+  - Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.ExecuteAsync(`0,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.ExecuteBatchAsync(`0[],System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.GetEstimatedExecutionTimeMicroseconds(System.Int32)
+  - Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.GetMemoryRequirements
+  - Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.InitializeAsync(System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.IsGpuAccelerated
+  - Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.IsInitialized
+  - Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.KernelId
+  - Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.ValidateInput(`0)
+  - Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.WarmupAsync(System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: GpuKernelBase<TIn, TOut>
+  nameWithType: GpuKernelBase<TIn, TOut>
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GpuKernelBase
+    path: ../src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+    startLine: 10
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Kernels
+  summary: >-
+    Base implementation of IGpuKernel providing common boilerplate.
+
+    Derive from this class to implement custom kernels.
+  example: []
+  syntax:
+    content: 'public abstract class GpuKernelBase<TIn, TOut> : IGpuKernel<TIn, TOut>, IDisposable'
+    typeParameters:
+    - id: TIn
+    - id: TOut
+    content.vb: Public MustInherit Class GpuKernelBase(Of TIn, TOut) Implements IGpuKernel(Of TIn, TOut), IDisposable
+  inheritance:
+  - System.Object
+  derivedClasses:
+  - Orleans.GpuBridge.Backends.DotCompute.DotComputeKernel`2
+  - Orleans.GpuBridge.Runtime.CpuVectorAddKernel
+  implements:
+  - Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut)
+  name.vb: GpuKernelBase(Of TIn, TOut)
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.KernelId
+  commentId: P:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.KernelId
+  id: KernelId
+  parent: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2
+  langs:
+  - csharp
+  - vb
+  name: KernelId
+  nameWithType: GpuKernelBase<TIn, TOut>.KernelId
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.KernelId
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: KernelId
+    path: ../src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+    startLine: 18
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Kernels
+  summary: Kernel unique identifier
+  example: []
+  syntax:
+    content: public abstract string KernelId { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public MustOverride ReadOnly Property KernelId As String
+  overload: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.KernelId*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}.KernelId
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).KernelId
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).KernelId
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.DisplayName
+  commentId: P:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.DisplayName
+  id: DisplayName
+  parent: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2
+  langs:
+  - csharp
+  - vb
+  name: DisplayName
+  nameWithType: GpuKernelBase<TIn, TOut>.DisplayName
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.DisplayName
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DisplayName
+    path: ../src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+    startLine: 23
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Kernels
+  summary: Kernel display name for diagnostics
+  example: []
+  syntax:
+    content: public virtual string DisplayName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Overridable ReadOnly Property DisplayName As String
+  overload: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.DisplayName*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}.DisplayName
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).DisplayName
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).DisplayName
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.BackendProvider
+  commentId: P:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.BackendProvider
+  id: BackendProvider
+  parent: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2
+  langs:
+  - csharp
+  - vb
+  name: BackendProvider
+  nameWithType: GpuKernelBase<TIn, TOut>.BackendProvider
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.BackendProvider
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: BackendProvider
+    path: ../src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+    startLine: 28
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Kernels
+  summary: Backend provider name ("CPU", "DotCompute", "CUDA", etc.)
+  example: []
+  syntax:
+    content: public abstract string BackendProvider { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public MustOverride ReadOnly Property BackendProvider As String
+  overload: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.BackendProvider*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}.BackendProvider
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).BackendProvider
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).BackendProvider
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.IsInitialized
+  commentId: P:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.IsInitialized
+  id: IsInitialized
+  parent: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2
+  langs:
+  - csharp
+  - vb
+  name: IsInitialized
+  nameWithType: GpuKernelBase<TIn, TOut>.IsInitialized
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.IsInitialized
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsInitialized
+    path: ../src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+    startLine: 33
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Kernels
+  summary: Whether kernel is initialized
+  example: []
+  syntax:
+    content: public bool IsInitialized { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsInitialized As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.IsInitialized*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}.IsInitialized
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).IsInitialized
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).IsInitialized
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.IsGpuAccelerated
+  commentId: P:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.IsGpuAccelerated
+  id: IsGpuAccelerated
+  parent: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2
+  langs:
+  - csharp
+  - vb
+  name: IsGpuAccelerated
+  nameWithType: GpuKernelBase<TIn, TOut>.IsGpuAccelerated
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.IsGpuAccelerated
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsGpuAccelerated
+    path: ../src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+    startLine: 38
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Kernels
+  summary: Whether kernel uses GPU acceleration (false for CPU fallback)
+  example: []
+  syntax:
+    content: public abstract bool IsGpuAccelerated { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public MustOverride ReadOnly Property IsGpuAccelerated As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.IsGpuAccelerated*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}.IsGpuAccelerated
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).IsGpuAccelerated
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).IsGpuAccelerated
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.InitializeAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.InitializeAsync(System.Threading.CancellationToken)
+  id: InitializeAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2
+  langs:
+  - csharp
+  - vb
+  name: InitializeAsync(CancellationToken)
+  nameWithType: GpuKernelBase<TIn, TOut>.InitializeAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.InitializeAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: InitializeAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+    startLine: 44
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Kernels
+  summary: >-
+    Initialize kernel resources.
+
+    Override to perform custom initialization (e.g., compile GPU code).
+  example: []
+  syntax:
+    content: public virtual Task InitializeAsync(CancellationToken cancellationToken = default)
+    parameters:
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Overridable Function InitializeAsync(cancellationToken As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.InitializeAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}.InitializeAsync(System.Threading.CancellationToken)
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).InitializeAsync(CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).InitializeAsync(System.Threading.CancellationToken)
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.ExecuteAsync(`0,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.ExecuteAsync(`0,System.Threading.CancellationToken)
+  id: ExecuteAsync(`0,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2
+  langs:
+  - csharp
+  - vb
+  name: ExecuteAsync(TIn, CancellationToken)
+  nameWithType: GpuKernelBase<TIn, TOut>.ExecuteAsync(TIn, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.ExecuteAsync(TIn, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ExecuteAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+    startLine: 54
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Kernels
+  summary: >-
+    Execute kernel with single input.
+
+    Must be implemented by derived classes.
+  example: []
+  syntax:
+    content: public abstract Task<TOut> ExecuteAsync(TIn input, CancellationToken cancellationToken = default)
+    parameters:
+    - id: input
+      type: '{TIn}'
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{{TOut}}
+    content.vb: Public MustOverride Function ExecuteAsync(input As TIn, cancellationToken As CancellationToken = Nothing) As Task(Of TOut)
+  overload: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.ExecuteAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}.ExecuteAsync({TIn},System.Threading.CancellationToken)
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).ExecuteAsync(TIn, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).ExecuteAsync(TIn, System.Threading.CancellationToken)
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.ExecuteBatchAsync(`0[],System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.ExecuteBatchAsync(`0[],System.Threading.CancellationToken)
+  id: ExecuteBatchAsync(`0[],System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2
+  langs:
+  - csharp
+  - vb
+  name: ExecuteBatchAsync(TIn[], CancellationToken)
+  nameWithType: GpuKernelBase<TIn, TOut>.ExecuteBatchAsync(TIn[], CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.ExecuteBatchAsync(TIn[], System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ExecuteBatchAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+    startLine: 60
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Kernels
+  summary: >-
+    Execute kernel with batch input.
+
+    Default implementation calls ExecuteAsync for each item (override for batch optimization).
+  example: []
+  syntax:
+    content: public virtual Task<TOut[]> ExecuteBatchAsync(TIn[] inputs, CancellationToken cancellationToken = default)
+    parameters:
+    - id: inputs
+      type: '{TIn}[]'
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{{TOut}[]}
+    content.vb: Public Overridable Function ExecuteBatchAsync(inputs As TIn(), cancellationToken As CancellationToken = Nothing) As Task(Of TOut())
+  overload: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.ExecuteBatchAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}.ExecuteBatchAsync({TIn}[],System.Threading.CancellationToken)
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).ExecuteBatchAsync(TIn(), CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).ExecuteBatchAsync(TIn(), System.Threading.CancellationToken)
+  name.vb: ExecuteBatchAsync(TIn(), CancellationToken)
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.GetEstimatedExecutionTimeMicroseconds(System.Int32)
+  commentId: M:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.GetEstimatedExecutionTimeMicroseconds(System.Int32)
+  id: GetEstimatedExecutionTimeMicroseconds(System.Int32)
+  parent: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2
+  langs:
+  - csharp
+  - vb
+  name: GetEstimatedExecutionTimeMicroseconds(int)
+  nameWithType: GpuKernelBase<TIn, TOut>.GetEstimatedExecutionTimeMicroseconds(int)
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.GetEstimatedExecutionTimeMicroseconds(int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetEstimatedExecutionTimeMicroseconds
+    path: ../src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+    startLine: 74
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Kernels
+  summary: >-
+    Get estimated execution time for input size.
+
+    Override for more accurate estimates based on kernel complexity.
+  example: []
+  syntax:
+    content: public virtual long GetEstimatedExecutionTimeMicroseconds(int inputSize)
+    parameters:
+    - id: inputSize
+      type: System.Int32
+    return:
+      type: System.Int64
+    content.vb: Public Overridable Function GetEstimatedExecutionTimeMicroseconds(inputSize As Integer) As Long
+  overload: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.GetEstimatedExecutionTimeMicroseconds*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}.GetEstimatedExecutionTimeMicroseconds(System.Int32)
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).GetEstimatedExecutionTimeMicroseconds(Integer)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).GetEstimatedExecutionTimeMicroseconds(Integer)
+  name.vb: GetEstimatedExecutionTimeMicroseconds(Integer)
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.GetMemoryRequirements
+  commentId: M:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.GetMemoryRequirements
+  id: GetMemoryRequirements
+  parent: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2
+  langs:
+  - csharp
+  - vb
+  name: GetMemoryRequirements()
+  nameWithType: GpuKernelBase<TIn, TOut>.GetMemoryRequirements()
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.GetMemoryRequirements()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetMemoryRequirements
+    path: ../src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+    startLine: 84
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Kernels
+  summary: >-
+    Get memory requirements for kernel execution.
+
+    Override to provide accurate memory estimates.
+  example: []
+  syntax:
+    content: public virtual KernelMemoryRequirements GetMemoryRequirements()
+    return:
+      type: Orleans.GpuBridge.Abstractions.Kernels.KernelMemoryRequirements
+    content.vb: Public Overridable Function GetMemoryRequirements() As KernelMemoryRequirements
+  overload: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.GetMemoryRequirements*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}.GetMemoryRequirements
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).GetMemoryRequirements()
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).GetMemoryRequirements()
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.ValidateInput(`0)
+  commentId: M:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.ValidateInput(`0)
+  id: ValidateInput(`0)
+  parent: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2
+  langs:
+  - csharp
+  - vb
+  name: ValidateInput(TIn)
+  nameWithType: GpuKernelBase<TIn, TOut>.ValidateInput(TIn)
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.ValidateInput(TIn)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ValidateInput
+    path: ../src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+    startLine: 98
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Kernels
+  summary: >-
+    Validate input data.
+
+    Override for custom validation logic.
+  example: []
+  syntax:
+    content: public virtual KernelValidationResult ValidateInput(TIn input)
+    parameters:
+    - id: input
+      type: '{TIn}'
+    return:
+      type: Orleans.GpuBridge.Abstractions.Kernels.KernelValidationResult
+    content.vb: Public Overridable Function ValidateInput(input As TIn) As KernelValidationResult
+  overload: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.ValidateInput*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}.ValidateInput({TIn})
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).ValidateInput(TIn)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).ValidateInput(TIn)
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.WarmupAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.WarmupAsync(System.Threading.CancellationToken)
+  id: WarmupAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2
+  langs:
+  - csharp
+  - vb
+  name: WarmupAsync(CancellationToken)
+  nameWithType: GpuKernelBase<TIn, TOut>.WarmupAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.WarmupAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: WarmupAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+    startLine: 110
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Kernels
+  summary: >-
+    Warmup kernel for optimal performance.
+
+    Override to perform custom warmup (e.g., JIT compilation, cache warming).
+  example: []
+  syntax:
+    content: public virtual Task WarmupAsync(CancellationToken cancellationToken = default)
+    parameters:
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Overridable Function WarmupAsync(cancellationToken As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.WarmupAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}.WarmupAsync(System.Threading.CancellationToken)
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).WarmupAsync(CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).WarmupAsync(System.Threading.CancellationToken)
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.Dispose
+  commentId: M:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.Dispose
+  id: Dispose
+  parent: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: GpuKernelBase<TIn, TOut>.Dispose()
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.Dispose()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Dispose
+    path: ../src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+    startLine: 120
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Kernels
+  summary: >-
+    Dispose kernel resources.
+
+    Override to cleanup GPU memory, handles, etc.
+  example: []
+  syntax:
+    content: public virtual void Dispose()
+    content.vb: Public Overridable Sub Dispose()
+  overload: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).Dispose()
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).Dispose()
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.EnsureInitialized
+  commentId: M:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.EnsureInitialized
+  id: EnsureInitialized
+  parent: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2
+  langs:
+  - csharp
+  - vb
+  name: EnsureInitialized()
+  nameWithType: GpuKernelBase<TIn, TOut>.EnsureInitialized()
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.EnsureInitialized()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: EnsureInitialized
+    path: ../src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+    startLine: 134
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Kernels
+  summary: Ensures kernel is initialized before execution
+  example: []
+  syntax:
+    content: protected void EnsureInitialized()
+    content.vb: Protected Sub EnsureInitialized()
+  overload: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.EnsureInitialized*
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).EnsureInitialized()
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).EnsureInitialized()
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.EnsureNotDisposed
+  commentId: M:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.EnsureNotDisposed
+  id: EnsureNotDisposed
+  parent: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2
+  langs:
+  - csharp
+  - vb
+  name: EnsureNotDisposed()
+  nameWithType: GpuKernelBase<TIn, TOut>.EnsureNotDisposed()
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.EnsureNotDisposed()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: EnsureNotDisposed
+    path: ../src/Orleans.GpuBridge.Abstractions/Kernels/GpuKernelBase.cs
+    startLine: 144
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Kernels
+  summary: Ensures kernel is not disposed
+  example: []
+  syntax:
+    content: protected void EnsureNotDisposed()
+    content.vb: Protected Sub EnsureNotDisposed()
+  overload: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.EnsureNotDisposed*
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).EnsureNotDisposed()
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).EnsureNotDisposed()
+references:
+- uid: Orleans.GpuBridge.Abstractions.Kernels
+  commentId: N:Orleans.GpuBridge.Abstractions.Kernels
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Kernels
+  nameWithType: Orleans.GpuBridge.Abstractions.Kernels
+  fullName: Orleans.GpuBridge.Abstractions.Kernels
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Kernels
+    name: Kernels
+    href: Orleans.GpuBridge.Abstractions.Kernels.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Kernels
+    name: Kernels
+    href: Orleans.GpuBridge.Abstractions.Kernels.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}
+  commentId: T:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}
+  parent: Orleans.GpuBridge.Abstractions.Kernels
+  definition: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html
+  name: IGpuKernel<TIn, TOut>
+  nameWithType: IGpuKernel<TIn, TOut>
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>
+  nameWithType.vb: IGpuKernel(Of TIn, TOut)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut)
+  name.vb: IGpuKernel(Of TIn, TOut)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2
+    name: IGpuKernel
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html
+  - name: <
+  - name: TIn
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: '>'
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2
+    name: IGpuKernel
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TIn
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: )
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2
+  commentId: T:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html
+  name: IGpuKernel<TIn, TOut>
+  nameWithType: IGpuKernel<TIn, TOut>
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>
+  nameWithType.vb: IGpuKernel(Of TIn, TOut)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut)
+  name.vb: IGpuKernel(Of TIn, TOut)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2
+    name: IGpuKernel
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html
+  - name: <
+  - name: TIn
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: '>'
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2
+    name: IGpuKernel
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TIn
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.KernelId*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.KernelId
+  href: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase-2.html#Orleans_GpuBridge_Abstractions_Kernels_GpuKernelBase_2_KernelId
+  name: KernelId
+  nameWithType: GpuKernelBase<TIn, TOut>.KernelId
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.KernelId
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).KernelId
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).KernelId
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}.KernelId
+  commentId: P:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.KernelId
+  parent: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}
+  definition: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.KernelId
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_KernelId
+  name: KernelId
+  nameWithType: IGpuKernel<TIn, TOut>.KernelId
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>.KernelId
+  nameWithType.vb: IGpuKernel(Of TIn, TOut).KernelId
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut).KernelId
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.KernelId
+  commentId: P:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.KernelId
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_KernelId
+  name: KernelId
+  nameWithType: IGpuKernel<TIn, TOut>.KernelId
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>.KernelId
+  nameWithType.vb: IGpuKernel(Of TIn, TOut).KernelId
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut).KernelId
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.DisplayName*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.DisplayName
+  href: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase-2.html#Orleans_GpuBridge_Abstractions_Kernels_GpuKernelBase_2_DisplayName
+  name: DisplayName
+  nameWithType: GpuKernelBase<TIn, TOut>.DisplayName
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.DisplayName
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).DisplayName
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).DisplayName
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}.DisplayName
+  commentId: P:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.DisplayName
+  parent: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}
+  definition: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.DisplayName
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_DisplayName
+  name: DisplayName
+  nameWithType: IGpuKernel<TIn, TOut>.DisplayName
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>.DisplayName
+  nameWithType.vb: IGpuKernel(Of TIn, TOut).DisplayName
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut).DisplayName
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.DisplayName
+  commentId: P:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.DisplayName
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_DisplayName
+  name: DisplayName
+  nameWithType: IGpuKernel<TIn, TOut>.DisplayName
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>.DisplayName
+  nameWithType.vb: IGpuKernel(Of TIn, TOut).DisplayName
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut).DisplayName
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.BackendProvider*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.BackendProvider
+  href: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase-2.html#Orleans_GpuBridge_Abstractions_Kernels_GpuKernelBase_2_BackendProvider
+  name: BackendProvider
+  nameWithType: GpuKernelBase<TIn, TOut>.BackendProvider
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.BackendProvider
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).BackendProvider
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).BackendProvider
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}.BackendProvider
+  commentId: P:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.BackendProvider
+  parent: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}
+  definition: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.BackendProvider
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_BackendProvider
+  name: BackendProvider
+  nameWithType: IGpuKernel<TIn, TOut>.BackendProvider
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>.BackendProvider
+  nameWithType.vb: IGpuKernel(Of TIn, TOut).BackendProvider
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut).BackendProvider
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.BackendProvider
+  commentId: P:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.BackendProvider
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_BackendProvider
+  name: BackendProvider
+  nameWithType: IGpuKernel<TIn, TOut>.BackendProvider
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>.BackendProvider
+  nameWithType.vb: IGpuKernel(Of TIn, TOut).BackendProvider
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut).BackendProvider
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.IsInitialized*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.IsInitialized
+  href: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase-2.html#Orleans_GpuBridge_Abstractions_Kernels_GpuKernelBase_2_IsInitialized
+  name: IsInitialized
+  nameWithType: GpuKernelBase<TIn, TOut>.IsInitialized
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.IsInitialized
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).IsInitialized
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).IsInitialized
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}.IsInitialized
+  commentId: P:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.IsInitialized
+  parent: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}
+  definition: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.IsInitialized
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_IsInitialized
+  name: IsInitialized
+  nameWithType: IGpuKernel<TIn, TOut>.IsInitialized
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>.IsInitialized
+  nameWithType.vb: IGpuKernel(Of TIn, TOut).IsInitialized
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut).IsInitialized
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.IsInitialized
+  commentId: P:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.IsInitialized
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_IsInitialized
+  name: IsInitialized
+  nameWithType: IGpuKernel<TIn, TOut>.IsInitialized
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>.IsInitialized
+  nameWithType.vb: IGpuKernel(Of TIn, TOut).IsInitialized
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut).IsInitialized
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.IsGpuAccelerated*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.IsGpuAccelerated
+  href: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase-2.html#Orleans_GpuBridge_Abstractions_Kernels_GpuKernelBase_2_IsGpuAccelerated
+  name: IsGpuAccelerated
+  nameWithType: GpuKernelBase<TIn, TOut>.IsGpuAccelerated
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.IsGpuAccelerated
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).IsGpuAccelerated
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).IsGpuAccelerated
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}.IsGpuAccelerated
+  commentId: P:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.IsGpuAccelerated
+  parent: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}
+  definition: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.IsGpuAccelerated
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_IsGpuAccelerated
+  name: IsGpuAccelerated
+  nameWithType: IGpuKernel<TIn, TOut>.IsGpuAccelerated
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>.IsGpuAccelerated
+  nameWithType.vb: IGpuKernel(Of TIn, TOut).IsGpuAccelerated
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut).IsGpuAccelerated
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.IsGpuAccelerated
+  commentId: P:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.IsGpuAccelerated
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_IsGpuAccelerated
+  name: IsGpuAccelerated
+  nameWithType: IGpuKernel<TIn, TOut>.IsGpuAccelerated
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>.IsGpuAccelerated
+  nameWithType.vb: IGpuKernel(Of TIn, TOut).IsGpuAccelerated
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut).IsGpuAccelerated
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.InitializeAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.InitializeAsync
+  href: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase-2.html#Orleans_GpuBridge_Abstractions_Kernels_GpuKernelBase_2_InitializeAsync_System_Threading_CancellationToken_
+  name: InitializeAsync
+  nameWithType: GpuKernelBase<TIn, TOut>.InitializeAsync
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.InitializeAsync
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).InitializeAsync
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).InitializeAsync
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}.InitializeAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.InitializeAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}
+  definition: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.InitializeAsync(System.Threading.CancellationToken)
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_InitializeAsync_System_Threading_CancellationToken_
+  name: InitializeAsync(CancellationToken)
+  nameWithType: IGpuKernel<TIn, TOut>.InitializeAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>.InitializeAsync(System.Threading.CancellationToken)
+  nameWithType.vb: IGpuKernel(Of TIn, TOut).InitializeAsync(CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut).InitializeAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.InitializeAsync(System.Threading.CancellationToken)
+    name: InitializeAsync
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_InitializeAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.InitializeAsync(System.Threading.CancellationToken)
+    name: InitializeAsync
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_InitializeAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.InitializeAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.InitializeAsync(System.Threading.CancellationToken)
+  isExternal: true
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_InitializeAsync_System_Threading_CancellationToken_
+  name: InitializeAsync(CancellationToken)
+  nameWithType: IGpuKernel<TIn, TOut>.InitializeAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>.InitializeAsync(System.Threading.CancellationToken)
+  nameWithType.vb: IGpuKernel(Of TIn, TOut).InitializeAsync(CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut).InitializeAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.InitializeAsync(System.Threading.CancellationToken)
+    name: InitializeAsync
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_InitializeAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.InitializeAsync(System.Threading.CancellationToken)
+    name: InitializeAsync
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_InitializeAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.ExecuteAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.ExecuteAsync
+  href: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase-2.html#Orleans_GpuBridge_Abstractions_Kernels_GpuKernelBase_2_ExecuteAsync__0_System_Threading_CancellationToken_
+  name: ExecuteAsync
+  nameWithType: GpuKernelBase<TIn, TOut>.ExecuteAsync
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.ExecuteAsync
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).ExecuteAsync
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).ExecuteAsync
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}.ExecuteAsync({TIn},System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.ExecuteAsync(`0,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}
+  definition: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.ExecuteAsync(`0,System.Threading.CancellationToken)
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_ExecuteAsync__0_System_Threading_CancellationToken_
+  name: ExecuteAsync(TIn, CancellationToken)
+  nameWithType: IGpuKernel<TIn, TOut>.ExecuteAsync(TIn, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>.ExecuteAsync(TIn, System.Threading.CancellationToken)
+  nameWithType.vb: IGpuKernel(Of TIn, TOut).ExecuteAsync(TIn, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut).ExecuteAsync(TIn, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.ExecuteAsync(`0,System.Threading.CancellationToken)
+    name: ExecuteAsync
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_ExecuteAsync__0_System_Threading_CancellationToken_
+  - name: (
+  - name: TIn
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.ExecuteAsync(`0,System.Threading.CancellationToken)
+    name: ExecuteAsync
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_ExecuteAsync__0_System_Threading_CancellationToken_
+  - name: (
+  - name: TIn
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: '{TIn}'
+  commentId: '!:TIn'
+  definition: TIn
+  name: TIn
+  nameWithType: TIn
+  fullName: TIn
+- uid: System.Threading.Tasks.Task{{TOut}}
+  commentId: T:System.Threading.Tasks.Task{`1}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TOut>
+  nameWithType: Task<TOut>
+  fullName: System.Threading.Tasks.Task<TOut>
+  nameWithType.vb: Task(Of TOut)
+  fullName.vb: System.Threading.Tasks.Task(Of TOut)
+  name.vb: Task(Of TOut)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TOut
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOut
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.ExecuteAsync(`0,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.ExecuteAsync(`0,System.Threading.CancellationToken)
+  isExternal: true
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_ExecuteAsync__0_System_Threading_CancellationToken_
+  name: ExecuteAsync(TIn, CancellationToken)
+  nameWithType: IGpuKernel<TIn, TOut>.ExecuteAsync(TIn, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>.ExecuteAsync(TIn, System.Threading.CancellationToken)
+  nameWithType.vb: IGpuKernel(Of TIn, TOut).ExecuteAsync(TIn, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut).ExecuteAsync(TIn, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.ExecuteAsync(`0,System.Threading.CancellationToken)
+    name: ExecuteAsync
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_ExecuteAsync__0_System_Threading_CancellationToken_
+  - name: (
+  - name: TIn
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.ExecuteAsync(`0,System.Threading.CancellationToken)
+    name: ExecuteAsync
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_ExecuteAsync__0_System_Threading_CancellationToken_
+  - name: (
+  - name: TIn
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: TIn
+  name: TIn
+  nameWithType: TIn
+  fullName: TIn
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.ExecuteBatchAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.ExecuteBatchAsync
+  href: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase-2.html#Orleans_GpuBridge_Abstractions_Kernels_GpuKernelBase_2_ExecuteBatchAsync__0___System_Threading_CancellationToken_
+  name: ExecuteBatchAsync
+  nameWithType: GpuKernelBase<TIn, TOut>.ExecuteBatchAsync
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.ExecuteBatchAsync
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).ExecuteBatchAsync
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).ExecuteBatchAsync
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}.ExecuteBatchAsync({TIn}[],System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.ExecuteBatchAsync(`0[],System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}
+  definition: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.ExecuteBatchAsync(`0[],System.Threading.CancellationToken)
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_ExecuteBatchAsync__0___System_Threading_CancellationToken_
+  name: ExecuteBatchAsync(TIn[], CancellationToken)
+  nameWithType: IGpuKernel<TIn, TOut>.ExecuteBatchAsync(TIn[], CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>.ExecuteBatchAsync(TIn[], System.Threading.CancellationToken)
+  nameWithType.vb: IGpuKernel(Of TIn, TOut).ExecuteBatchAsync(TIn(), CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut).ExecuteBatchAsync(TIn(), System.Threading.CancellationToken)
+  name.vb: ExecuteBatchAsync(TIn(), CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.ExecuteBatchAsync(`0[],System.Threading.CancellationToken)
+    name: ExecuteBatchAsync
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_ExecuteBatchAsync__0___System_Threading_CancellationToken_
+  - name: (
+  - name: TIn
+  - name: '['
+  - name: ']'
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.ExecuteBatchAsync(`0[],System.Threading.CancellationToken)
+    name: ExecuteBatchAsync
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_ExecuteBatchAsync__0___System_Threading_CancellationToken_
+  - name: (
+  - name: TIn
+  - name: (
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: '{TIn}[]'
+  isExternal: true
+  name: TIn[]
+  nameWithType: TIn[]
+  fullName: TIn[]
+  nameWithType.vb: TIn()
+  fullName.vb: TIn()
+  name.vb: TIn()
+  spec.csharp:
+  - name: TIn
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - name: TIn
+  - name: (
+  - name: )
+- uid: System.Threading.Tasks.Task{{TOut}[]}
+  commentId: T:System.Threading.Tasks.Task{`1[]}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TOut[]>
+  nameWithType: Task<TOut[]>
+  fullName: System.Threading.Tasks.Task<TOut[]>
+  nameWithType.vb: Task(Of TOut())
+  fullName.vb: System.Threading.Tasks.Task(Of TOut())
+  name.vb: Task(Of TOut())
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TOut
+  - name: '['
+  - name: ']'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOut
+  - name: (
+  - name: )
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.ExecuteBatchAsync(`0[],System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.ExecuteBatchAsync(`0[],System.Threading.CancellationToken)
+  isExternal: true
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_ExecuteBatchAsync__0___System_Threading_CancellationToken_
+  name: ExecuteBatchAsync(TIn[], CancellationToken)
+  nameWithType: IGpuKernel<TIn, TOut>.ExecuteBatchAsync(TIn[], CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>.ExecuteBatchAsync(TIn[], System.Threading.CancellationToken)
+  nameWithType.vb: IGpuKernel(Of TIn, TOut).ExecuteBatchAsync(TIn(), CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut).ExecuteBatchAsync(TIn(), System.Threading.CancellationToken)
+  name.vb: ExecuteBatchAsync(TIn(), CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.ExecuteBatchAsync(`0[],System.Threading.CancellationToken)
+    name: ExecuteBatchAsync
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_ExecuteBatchAsync__0___System_Threading_CancellationToken_
+  - name: (
+  - name: TIn
+  - name: '['
+  - name: ']'
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.ExecuteBatchAsync(`0[],System.Threading.CancellationToken)
+    name: ExecuteBatchAsync
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_ExecuteBatchAsync__0___System_Threading_CancellationToken_
+  - name: (
+  - name: TIn
+  - name: (
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.GetEstimatedExecutionTimeMicroseconds*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.GetEstimatedExecutionTimeMicroseconds
+  href: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase-2.html#Orleans_GpuBridge_Abstractions_Kernels_GpuKernelBase_2_GetEstimatedExecutionTimeMicroseconds_System_Int32_
+  name: GetEstimatedExecutionTimeMicroseconds
+  nameWithType: GpuKernelBase<TIn, TOut>.GetEstimatedExecutionTimeMicroseconds
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.GetEstimatedExecutionTimeMicroseconds
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).GetEstimatedExecutionTimeMicroseconds
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).GetEstimatedExecutionTimeMicroseconds
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}.GetEstimatedExecutionTimeMicroseconds(System.Int32)
+  commentId: M:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.GetEstimatedExecutionTimeMicroseconds(System.Int32)
+  parent: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}
+  definition: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.GetEstimatedExecutionTimeMicroseconds(System.Int32)
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_GetEstimatedExecutionTimeMicroseconds_System_Int32_
+  name: GetEstimatedExecutionTimeMicroseconds(int)
+  nameWithType: IGpuKernel<TIn, TOut>.GetEstimatedExecutionTimeMicroseconds(int)
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>.GetEstimatedExecutionTimeMicroseconds(int)
+  nameWithType.vb: IGpuKernel(Of TIn, TOut).GetEstimatedExecutionTimeMicroseconds(Integer)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut).GetEstimatedExecutionTimeMicroseconds(Integer)
+  name.vb: GetEstimatedExecutionTimeMicroseconds(Integer)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.GetEstimatedExecutionTimeMicroseconds(System.Int32)
+    name: GetEstimatedExecutionTimeMicroseconds
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_GetEstimatedExecutionTimeMicroseconds_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.GetEstimatedExecutionTimeMicroseconds(System.Int32)
+    name: GetEstimatedExecutionTimeMicroseconds
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_GetEstimatedExecutionTimeMicroseconds_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.GetEstimatedExecutionTimeMicroseconds(System.Int32)
+  commentId: M:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.GetEstimatedExecutionTimeMicroseconds(System.Int32)
+  isExternal: true
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_GetEstimatedExecutionTimeMicroseconds_System_Int32_
+  name: GetEstimatedExecutionTimeMicroseconds(int)
+  nameWithType: IGpuKernel<TIn, TOut>.GetEstimatedExecutionTimeMicroseconds(int)
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>.GetEstimatedExecutionTimeMicroseconds(int)
+  nameWithType.vb: IGpuKernel(Of TIn, TOut).GetEstimatedExecutionTimeMicroseconds(Integer)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut).GetEstimatedExecutionTimeMicroseconds(Integer)
+  name.vb: GetEstimatedExecutionTimeMicroseconds(Integer)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.GetEstimatedExecutionTimeMicroseconds(System.Int32)
+    name: GetEstimatedExecutionTimeMicroseconds
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_GetEstimatedExecutionTimeMicroseconds_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.GetEstimatedExecutionTimeMicroseconds(System.Int32)
+    name: GetEstimatedExecutionTimeMicroseconds
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_GetEstimatedExecutionTimeMicroseconds_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.GetMemoryRequirements*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.GetMemoryRequirements
+  href: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase-2.html#Orleans_GpuBridge_Abstractions_Kernels_GpuKernelBase_2_GetMemoryRequirements
+  name: GetMemoryRequirements
+  nameWithType: GpuKernelBase<TIn, TOut>.GetMemoryRequirements
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.GetMemoryRequirements
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).GetMemoryRequirements
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).GetMemoryRequirements
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}.GetMemoryRequirements
+  commentId: M:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.GetMemoryRequirements
+  parent: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}
+  definition: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.GetMemoryRequirements
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_GetMemoryRequirements
+  name: GetMemoryRequirements()
+  nameWithType: IGpuKernel<TIn, TOut>.GetMemoryRequirements()
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>.GetMemoryRequirements()
+  nameWithType.vb: IGpuKernel(Of TIn, TOut).GetMemoryRequirements()
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut).GetMemoryRequirements()
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.GetMemoryRequirements
+    name: GetMemoryRequirements
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_GetMemoryRequirements
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.GetMemoryRequirements
+    name: GetMemoryRequirements
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_GetMemoryRequirements
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Kernels.KernelMemoryRequirements
+  commentId: T:Orleans.GpuBridge.Abstractions.Kernels.KernelMemoryRequirements
+  parent: Orleans.GpuBridge.Abstractions.Kernels
+  href: Orleans.GpuBridge.Abstractions.Kernels.KernelMemoryRequirements.html
+  name: KernelMemoryRequirements
+  nameWithType: KernelMemoryRequirements
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.KernelMemoryRequirements
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.GetMemoryRequirements
+  commentId: M:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.GetMemoryRequirements
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_GetMemoryRequirements
+  name: GetMemoryRequirements()
+  nameWithType: IGpuKernel<TIn, TOut>.GetMemoryRequirements()
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>.GetMemoryRequirements()
+  nameWithType.vb: IGpuKernel(Of TIn, TOut).GetMemoryRequirements()
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut).GetMemoryRequirements()
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.GetMemoryRequirements
+    name: GetMemoryRequirements
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_GetMemoryRequirements
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.GetMemoryRequirements
+    name: GetMemoryRequirements
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_GetMemoryRequirements
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.ValidateInput*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.ValidateInput
+  href: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase-2.html#Orleans_GpuBridge_Abstractions_Kernels_GpuKernelBase_2_ValidateInput__0_
+  name: ValidateInput
+  nameWithType: GpuKernelBase<TIn, TOut>.ValidateInput
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.ValidateInput
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).ValidateInput
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).ValidateInput
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}.ValidateInput({TIn})
+  commentId: M:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.ValidateInput(`0)
+  parent: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}
+  definition: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.ValidateInput(`0)
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_ValidateInput__0_
+  name: ValidateInput(TIn)
+  nameWithType: IGpuKernel<TIn, TOut>.ValidateInput(TIn)
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>.ValidateInput(TIn)
+  nameWithType.vb: IGpuKernel(Of TIn, TOut).ValidateInput(TIn)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut).ValidateInput(TIn)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.ValidateInput(`0)
+    name: ValidateInput
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_ValidateInput__0_
+  - name: (
+  - name: TIn
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.ValidateInput(`0)
+    name: ValidateInput
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_ValidateInput__0_
+  - name: (
+  - name: TIn
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Kernels.KernelValidationResult
+  commentId: T:Orleans.GpuBridge.Abstractions.Kernels.KernelValidationResult
+  parent: Orleans.GpuBridge.Abstractions.Kernels
+  href: Orleans.GpuBridge.Abstractions.Kernels.KernelValidationResult.html
+  name: KernelValidationResult
+  nameWithType: KernelValidationResult
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.KernelValidationResult
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.ValidateInput(`0)
+  commentId: M:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.ValidateInput(`0)
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_ValidateInput__0_
+  name: ValidateInput(TIn)
+  nameWithType: IGpuKernel<TIn, TOut>.ValidateInput(TIn)
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>.ValidateInput(TIn)
+  nameWithType.vb: IGpuKernel(Of TIn, TOut).ValidateInput(TIn)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut).ValidateInput(TIn)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.ValidateInput(`0)
+    name: ValidateInput
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_ValidateInput__0_
+  - name: (
+  - name: TIn
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.ValidateInput(`0)
+    name: ValidateInput
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_ValidateInput__0_
+  - name: (
+  - name: TIn
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.WarmupAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.WarmupAsync
+  href: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase-2.html#Orleans_GpuBridge_Abstractions_Kernels_GpuKernelBase_2_WarmupAsync_System_Threading_CancellationToken_
+  name: WarmupAsync
+  nameWithType: GpuKernelBase<TIn, TOut>.WarmupAsync
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.WarmupAsync
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).WarmupAsync
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).WarmupAsync
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}.WarmupAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.WarmupAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{{TIn},{TOut}}
+  definition: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.WarmupAsync(System.Threading.CancellationToken)
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_WarmupAsync_System_Threading_CancellationToken_
+  name: WarmupAsync(CancellationToken)
+  nameWithType: IGpuKernel<TIn, TOut>.WarmupAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>.WarmupAsync(System.Threading.CancellationToken)
+  nameWithType.vb: IGpuKernel(Of TIn, TOut).WarmupAsync(CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut).WarmupAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.WarmupAsync(System.Threading.CancellationToken)
+    name: WarmupAsync
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_WarmupAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel{`0,`1}.WarmupAsync(System.Threading.CancellationToken)
+    name: WarmupAsync
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_WarmupAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.WarmupAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.WarmupAsync(System.Threading.CancellationToken)
+  isExternal: true
+  href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_WarmupAsync_System_Threading_CancellationToken_
+  name: WarmupAsync(CancellationToken)
+  nameWithType: IGpuKernel<TIn, TOut>.WarmupAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel<TIn, TOut>.WarmupAsync(System.Threading.CancellationToken)
+  nameWithType.vb: IGpuKernel(Of TIn, TOut).WarmupAsync(CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel(Of TIn, TOut).WarmupAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.WarmupAsync(System.Threading.CancellationToken)
+    name: WarmupAsync
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_WarmupAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel`2.WarmupAsync(System.Threading.CancellationToken)
+    name: WarmupAsync
+    href: Orleans.GpuBridge.Abstractions.Kernels.IGpuKernel-2.html#Orleans_GpuBridge_Abstractions_Kernels_IGpuKernel_2_WarmupAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.Dispose*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.Dispose
+  href: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase-2.html#Orleans_GpuBridge_Abstractions_Kernels_GpuKernelBase_2_Dispose
+  name: Dispose
+  nameWithType: GpuKernelBase<TIn, TOut>.Dispose
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.Dispose
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).Dispose
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.EnsureInitialized*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.EnsureInitialized
+  href: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase-2.html#Orleans_GpuBridge_Abstractions_Kernels_GpuKernelBase_2_EnsureInitialized
+  name: EnsureInitialized
+  nameWithType: GpuKernelBase<TIn, TOut>.EnsureInitialized
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.EnsureInitialized
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).EnsureInitialized
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).EnsureInitialized
+- uid: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.EnsureNotDisposed*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase`2.EnsureNotDisposed
+  href: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase-2.html#Orleans_GpuBridge_Abstractions_Kernels_GpuKernelBase_2_EnsureNotDisposed
+  name: EnsureNotDisposed
+  nameWithType: GpuKernelBase<TIn, TOut>.EnsureNotDisposed
+  fullName: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase<TIn, TOut>.EnsureNotDisposed
+  nameWithType.vb: GpuKernelBase(Of TIn, TOut).EnsureNotDisposed
+  fullName.vb: Orleans.GpuBridge.Abstractions.Kernels.GpuKernelBase(Of TIn, TOut).EnsureNotDisposed

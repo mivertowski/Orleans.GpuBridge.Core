@@ -1,0 +1,943 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool
+  commentId: T:Orleans.GpuBridge.Runtime.Memory.GpuBufferPool
+  id: GpuBufferPool
+  parent: Orleans.GpuBridge.Runtime.Memory
+  children:
+  - Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Memory.GpuBufferPool},DotCompute.Backends.CUDA.CudaContext,DotCompute.Backends.CUDA.Memory.CudaMemoryManager)
+  - Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.Clear
+  - Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.Dispose
+  - Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.GetHitRate
+  - Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.GetStatistics
+  - Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.MaxBufferSize
+  - Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.MaxBuffersPerBucket
+  - Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.MinBufferSize
+  - Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.RentBuffer(System.Int64)
+  langs:
+  - csharp
+  - vb
+  name: GpuBufferPool
+  nameWithType: GpuBufferPool
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuBufferPool.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GpuBufferPool
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuBufferPool.cs
+    startLine: 35
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Pool of reusable GPU memory buffers organized by size buckets.
+  remarks: >-
+    <p>
+
+    GpuBufferPool dramatically reduces GPU memory allocation overhead by reusing
+
+    previously allocated buffers. Buffers are organized into size buckets (powers of 2)
+
+    for efficient lookup and allocation.
+
+    </p>
+
+    <p>
+
+    Performance characteristics:
+
+    - Cold allocation: ~10-50μs (GPU cudaMalloc)
+
+    - Pool allocation: ~100-500ns (lock-free queue)
+
+    - **50-500× speedup** for repeated allocations
+
+    </p>
+
+    <p>
+
+    Thread-safe: Uses ConcurrentQueue for lock-free buffer management.
+
+    </p>
+  example: []
+  syntax:
+    content: 'public sealed class GpuBufferPool : IDisposable'
+    content.vb: Public NotInheritable Class GpuBufferPool Implements IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.MinBufferSize
+  commentId: F:Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.MinBufferSize
+  id: MinBufferSize
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool
+  langs:
+  - csharp
+  - vb
+  name: MinBufferSize
+  nameWithType: GpuBufferPool.MinBufferSize
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.MinBufferSize
+  type: Field
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuBufferPool.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MinBufferSize
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuBufferPool.cs
+    startLine: 55
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Minimum buffer size (1 KB).
+  example: []
+  syntax:
+    content: public const long MinBufferSize = 1024
+    return:
+      type: System.Int64
+    content.vb: Public Const MinBufferSize As Long = 1024
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.MaxBufferSize
+  commentId: F:Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.MaxBufferSize
+  id: MaxBufferSize
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool
+  langs:
+  - csharp
+  - vb
+  name: MaxBufferSize
+  nameWithType: GpuBufferPool.MaxBufferSize
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.MaxBufferSize
+  type: Field
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuBufferPool.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MaxBufferSize
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuBufferPool.cs
+    startLine: 60
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Maximum buffer size (1 GB).
+  example: []
+  syntax:
+    content: public const long MaxBufferSize = 1073741824
+    return:
+      type: System.Int64
+    content.vb: Public Const MaxBufferSize As Long = 1073741824
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.MaxBuffersPerBucket
+  commentId: P:Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.MaxBuffersPerBucket
+  id: MaxBuffersPerBucket
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool
+  langs:
+  - csharp
+  - vb
+  name: MaxBuffersPerBucket
+  nameWithType: GpuBufferPool.MaxBuffersPerBucket
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.MaxBuffersPerBucket
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuBufferPool.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MaxBuffersPerBucket
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuBufferPool.cs
+    startLine: 65
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Maximum number of buffers to keep in each size bucket.
+  example: []
+  syntax:
+    content: public int MaxBuffersPerBucket { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property MaxBuffersPerBucket As Integer
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.MaxBuffersPerBucket*
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Memory.GpuBufferPool},DotCompute.Backends.CUDA.CudaContext,DotCompute.Backends.CUDA.Memory.CudaMemoryManager)
+  commentId: M:Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Memory.GpuBufferPool},DotCompute.Backends.CUDA.CudaContext,DotCompute.Backends.CUDA.Memory.CudaMemoryManager)
+  id: '#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Memory.GpuBufferPool},DotCompute.Backends.CUDA.CudaContext,DotCompute.Backends.CUDA.Memory.CudaMemoryManager)'
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool
+  langs:
+  - csharp
+  - vb
+  name: GpuBufferPool(ILogger<GpuBufferPool>, CudaContext?, CudaMemoryManager?)
+  nameWithType: GpuBufferPool.GpuBufferPool(ILogger<GpuBufferPool>, CudaContext?, CudaMemoryManager?)
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.GpuBufferPool(Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.Memory.GpuBufferPool>, DotCompute.Backends.CUDA.CudaContext?, DotCompute.Backends.CUDA.Memory.CudaMemoryManager?)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuBufferPool.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuBufferPool.cs
+    startLine: 77
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Initializes a new GPU buffer pool.
+  remarks: >-
+    If cudaContext and memoryManager are provided, the pool will use actual GPU unified memory.
+
+    If not provided, the pool will use CPU memory with CPU-GPU transfer support via DotCompute.
+  example: []
+  syntax:
+    content: public GpuBufferPool(ILogger<GpuBufferPool> logger, CudaContext? cudaContext = null, CudaMemoryManager? memoryManager = null)
+    parameters:
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Memory.GpuBufferPool}
+      description: Logger instance.
+    - id: cudaContext
+      type: DotCompute.Backends.CUDA.CudaContext
+      description: Optional CUDA context for GPU memory allocation.
+    - id: memoryManager
+      type: DotCompute.Backends.CUDA.Memory.CudaMemoryManager
+      description: Optional CUDA memory manager for GPU memory allocation.
+    content.vb: Public Sub New(logger As ILogger(Of GpuBufferPool), cudaContext As CudaContext = Nothing, memoryManager As CudaMemoryManager = Nothing)
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.#ctor*
+  nameWithType.vb: GpuBufferPool.New(ILogger(Of GpuBufferPool), CudaContext, CudaMemoryManager)
+  fullName.vb: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.New(Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.Memory.GpuBufferPool), DotCompute.Backends.CUDA.CudaContext, DotCompute.Backends.CUDA.Memory.CudaMemoryManager)
+  name.vb: New(ILogger(Of GpuBufferPool), CudaContext, CudaMemoryManager)
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.RentBuffer(System.Int64)
+  commentId: M:Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.RentBuffer(System.Int64)
+  id: RentBuffer(System.Int64)
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool
+  langs:
+  - csharp
+  - vb
+  name: RentBuffer(long)
+  nameWithType: GpuBufferPool.RentBuffer(long)
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.RentBuffer(long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuBufferPool.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RentBuffer
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuBufferPool.cs
+    startLine: 102
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Rents a GPU buffer of at least the specified size.
+  example: []
+  syntax:
+    content: public GpuMemoryHandle RentBuffer(long sizeBytes)
+    parameters:
+    - id: sizeBytes
+      type: System.Int64
+      description: Required size in bytes.
+    return:
+      type: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+      description: GPU memory handle.
+    content.vb: Public Function RentBuffer(sizeBytes As Long) As GpuMemoryHandle
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.RentBuffer*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Size is out of valid range.
+  - type: System.ObjectDisposedException
+    commentId: T:System.ObjectDisposedException
+    description: Pool has been disposed.
+  nameWithType.vb: GpuBufferPool.RentBuffer(Long)
+  fullName.vb: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.RentBuffer(Long)
+  name.vb: RentBuffer(Long)
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.GetStatistics
+  commentId: M:Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.GetStatistics
+  id: GetStatistics
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool
+  langs:
+  - csharp
+  - vb
+  name: GetStatistics()
+  nameWithType: GpuBufferPool.GetStatistics()
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.GetStatistics()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuBufferPool.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetStatistics
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuBufferPool.cs
+    startLine: 208
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Gets current memory statistics.
+  example: []
+  syntax:
+    content: public GpuMemoryStats GetStatistics()
+    return:
+      type: Orleans.GpuBridge.Runtime.Memory.GpuMemoryStats
+    content.vb: Public Function GetStatistics() As GpuMemoryStats
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.GetStatistics*
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.GetHitRate
+  commentId: M:Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.GetHitRate
+  id: GetHitRate
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool
+  langs:
+  - csharp
+  - vb
+  name: GetHitRate()
+  nameWithType: GpuBufferPool.GetHitRate()
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.GetHitRate()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuBufferPool.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetHitRate
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuBufferPool.cs
+    startLine: 227
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Gets pool hit rate (0-1).
+  example: []
+  syntax:
+    content: public double GetHitRate()
+    return:
+      type: System.Double
+    content.vb: Public Function GetHitRate() As Double
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.GetHitRate*
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.Clear
+  commentId: M:Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.Clear
+  id: Clear
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool
+  langs:
+  - csharp
+  - vb
+  name: Clear()
+  nameWithType: GpuBufferPool.Clear()
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.Clear()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuBufferPool.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Clear
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuBufferPool.cs
+    startLine: 240
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Clears all buffers from the pool and releases GPU memory.
+  example: []
+  syntax:
+    content: public void Clear()
+    content.vb: Public Sub Clear()
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.Clear*
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.Dispose
+  commentId: M:Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.Dispose
+  id: Dispose
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: GpuBufferPool.Dispose()
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.Dispose()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuBufferPool.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Dispose
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuBufferPool.cs
+    startLine: 262
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Disposes the buffer pool and releases all GPU memory.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+references:
+- uid: Orleans.GpuBridge.Runtime.Memory
+  commentId: N:Orleans.GpuBridge.Runtime.Memory
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Memory
+  nameWithType: Orleans.GpuBridge.Runtime.Memory
+  fullName: Orleans.GpuBridge.Runtime.Memory
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Memory
+    name: Memory
+    href: Orleans.GpuBridge.Runtime.Memory.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Memory
+    name: Memory
+    href: Orleans.GpuBridge.Runtime.Memory.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.MaxBuffersPerBucket*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.MaxBuffersPerBucket
+  href: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.html#Orleans_GpuBridge_Runtime_Memory_GpuBufferPool_MaxBuffersPerBucket
+  name: MaxBuffersPerBucket
+  nameWithType: GpuBufferPool.MaxBuffersPerBucket
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.MaxBuffersPerBucket
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.#ctor
+  href: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.html#Orleans_GpuBridge_Runtime_Memory_GpuBufferPool__ctor_Microsoft_Extensions_Logging_ILogger_Orleans_GpuBridge_Runtime_Memory_GpuBufferPool__DotCompute_Backends_CUDA_CudaContext_DotCompute_Backends_CUDA_Memory_CudaMemoryManager_
+  name: GpuBufferPool
+  nameWithType: GpuBufferPool.GpuBufferPool
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.GpuBufferPool
+  nameWithType.vb: GpuBufferPool.New
+  fullName.vb: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.New
+  name.vb: New
+- uid: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Memory.GpuBufferPool}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Memory.GpuBufferPool}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<GpuBufferPool>
+  nameWithType: ILogger<GpuBufferPool>
+  fullName: Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.Memory.GpuBufferPool>
+  nameWithType.vb: ILogger(Of GpuBufferPool)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.Memory.GpuBufferPool)
+  name.vb: ILogger(Of GpuBufferPool)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool
+    name: GpuBufferPool
+    href: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool
+    name: GpuBufferPool
+    href: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.html
+  - name: )
+- uid: DotCompute.Backends.CUDA.CudaContext
+  commentId: T:DotCompute.Backends.CUDA.CudaContext
+  parent: DotCompute.Backends.CUDA
+  isExternal: true
+  name: CudaContext
+  nameWithType: CudaContext
+  fullName: DotCompute.Backends.CUDA.CudaContext
+- uid: DotCompute.Backends.CUDA.Memory.CudaMemoryManager
+  commentId: T:DotCompute.Backends.CUDA.Memory.CudaMemoryManager
+  parent: DotCompute.Backends.CUDA.Memory
+  isExternal: true
+  name: CudaMemoryManager
+  nameWithType: CudaMemoryManager
+  fullName: DotCompute.Backends.CUDA.Memory.CudaMemoryManager
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: DotCompute.Backends.CUDA
+  commentId: N:DotCompute.Backends.CUDA
+  isExternal: true
+  name: DotCompute.Backends.CUDA
+  nameWithType: DotCompute.Backends.CUDA
+  fullName: DotCompute.Backends.CUDA
+  spec.csharp:
+  - uid: DotCompute
+    name: DotCompute
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Backends
+    name: Backends
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Backends.CUDA
+    name: CUDA
+    isExternal: true
+  spec.vb:
+  - uid: DotCompute
+    name: DotCompute
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Backends
+    name: Backends
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Backends.CUDA
+    name: CUDA
+    isExternal: true
+- uid: DotCompute.Backends.CUDA.Memory
+  commentId: N:DotCompute.Backends.CUDA.Memory
+  isExternal: true
+  name: DotCompute.Backends.CUDA.Memory
+  nameWithType: DotCompute.Backends.CUDA.Memory
+  fullName: DotCompute.Backends.CUDA.Memory
+  spec.csharp:
+  - uid: DotCompute
+    name: DotCompute
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Backends
+    name: Backends
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Backends.CUDA
+    name: CUDA
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Backends.CUDA.Memory
+    name: Memory
+    isExternal: true
+  spec.vb:
+  - uid: DotCompute
+    name: DotCompute
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Backends
+    name: Backends
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Backends.CUDA
+    name: CUDA
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Backends.CUDA.Memory
+    name: Memory
+    isExternal: true
+- uid: System.ArgumentOutOfRangeException
+  commentId: T:System.ArgumentOutOfRangeException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception
+  name: ArgumentOutOfRangeException
+  nameWithType: ArgumentOutOfRangeException
+  fullName: System.ArgumentOutOfRangeException
+- uid: System.ObjectDisposedException
+  commentId: T:System.ObjectDisposedException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.objectdisposedexception
+  name: ObjectDisposedException
+  nameWithType: ObjectDisposedException
+  fullName: System.ObjectDisposedException
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.RentBuffer*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.RentBuffer
+  href: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.html#Orleans_GpuBridge_Runtime_Memory_GpuBufferPool_RentBuffer_System_Int64_
+  name: RentBuffer
+  nameWithType: GpuBufferPool.RentBuffer
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.RentBuffer
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+  commentId: T:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+  parent: Orleans.GpuBridge.Runtime.Memory
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.html
+  name: GpuMemoryHandle
+  nameWithType: GpuMemoryHandle
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.GetStatistics*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.GetStatistics
+  href: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.html#Orleans_GpuBridge_Runtime_Memory_GpuBufferPool_GetStatistics
+  name: GetStatistics
+  nameWithType: GpuBufferPool.GetStatistics
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.GetStatistics
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryStats
+  commentId: T:Orleans.GpuBridge.Runtime.Memory.GpuMemoryStats
+  parent: Orleans.GpuBridge.Runtime.Memory
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryStats.html
+  name: GpuMemoryStats
+  nameWithType: GpuMemoryStats
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryStats
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.GetHitRate*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.GetHitRate
+  href: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.html#Orleans_GpuBridge_Runtime_Memory_GpuBufferPool_GetHitRate
+  name: GetHitRate
+  nameWithType: GpuBufferPool.GetHitRate
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.GetHitRate
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.Clear*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.Clear
+  href: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.html#Orleans_GpuBridge_Runtime_Memory_GpuBufferPool_Clear
+  name: Clear
+  nameWithType: GpuBufferPool.Clear
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.Clear
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.Dispose*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.Dispose
+  href: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.html#Orleans_GpuBridge_Runtime_Memory_GpuBufferPool_Dispose
+  name: Dispose
+  nameWithType: GpuBufferPool.Dispose
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )

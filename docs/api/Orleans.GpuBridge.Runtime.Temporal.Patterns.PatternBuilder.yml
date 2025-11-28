@@ -1,0 +1,1863 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+  id: PatternBuilder
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  children:
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Build
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Create(System.String)
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.FilterEvents(System.Func{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent,System.Boolean})
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.ForEventType(System.String)
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupBy(System.Func{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent,System.Object})
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupBySource
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupByTarget
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.MatchWhen(System.Func{System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Boolean})
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.MatchWhen(System.Func{System.Linq.IGrouping{System.Object,Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Boolean})
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.MatchWhenCount(System.Int32)
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Named(System.String)
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithConfidence(System.Double)
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithConfidence(System.Func{System.Linq.IGrouping{System.Object,Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Double})
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithDescription(System.String)
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithMetadata(System.Func{System.Linq.IGrouping{System.Object,Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.Dictionary{System.String,System.Object}})
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithSeverity(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternSeverity)
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithWindowSize(System.TimeSpan)
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithWindowSizeNanos(System.Int64)
+  langs:
+  - csharp
+  - vb
+  name: PatternBuilder
+  nameWithType: PatternBuilder
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: PatternBuilder
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+    startLine: 35
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Fluent DSL for defining temporal patterns.
+  remarks: >-
+    <p>
+
+    Provides a builder pattern for creating custom temporal patterns without
+
+    implementing the full ITemporalPattern interface.
+
+    </p>
+
+    <p>
+
+    Example usage:
+
+    <pre><code class="lang-csharp">var pattern = PatternBuilder.Create("my-pattern")
+        .Named("My Custom Pattern")
+        .WithWindowSize(TimeSpan.FromSeconds(5))
+        .WithSeverity(PatternSeverity.High)
+        .FilterEvents(e =&gt; e.EventType == "transaction")
+        .GroupBy(e =&gt; e.SourceId)
+        .MatchWhen((group, events) =&gt; group.Count() &gt;= 3)
+        .WithConfidence((group, events) =&gt; 0.9)
+        .Build();</code></pre>
+    </p>
+  example: []
+  syntax:
+    content: public sealed class PatternBuilder
+    content.vb: Public NotInheritable Class PatternBuilder
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.ForHighFrequency(System.Int32,System.TimeSpan)
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.WithValueThreshold(System.Double)
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Create(System.String)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Create(System.String)
+  id: Create(System.String)
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+  langs:
+  - csharp
+  - vb
+  name: Create(string)
+  nameWithType: PatternBuilder.Create(string)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Create(string)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Create
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+    startLine: 53
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Creates a new pattern builder with the specified ID.
+  example: []
+  syntax:
+    content: public static PatternBuilder Create(string patternId)
+    parameters:
+    - id: patternId
+      type: System.String
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    content.vb: Public Shared Function Create(patternId As String) As PatternBuilder
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Create*
+  nameWithType.vb: PatternBuilder.Create(String)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Create(String)
+  name.vb: Create(String)
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Named(System.String)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Named(System.String)
+  id: Named(System.String)
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+  langs:
+  - csharp
+  - vb
+  name: Named(string)
+  nameWithType: PatternBuilder.Named(string)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Named(string)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Named
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+    startLine: 62
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Sets the pattern name.
+  example: []
+  syntax:
+    content: public PatternBuilder Named(string name)
+    parameters:
+    - id: name
+      type: System.String
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    content.vb: Public Function Named(name As String) As PatternBuilder
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Named*
+  nameWithType.vb: PatternBuilder.Named(String)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Named(String)
+  name.vb: Named(String)
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithDescription(System.String)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithDescription(System.String)
+  id: WithDescription(System.String)
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+  langs:
+  - csharp
+  - vb
+  name: WithDescription(string)
+  nameWithType: PatternBuilder.WithDescription(string)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithDescription(string)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: WithDescription
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+    startLine: 71
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Sets the pattern description.
+  example: []
+  syntax:
+    content: public PatternBuilder WithDescription(string description)
+    parameters:
+    - id: description
+      type: System.String
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    content.vb: Public Function WithDescription(description As String) As PatternBuilder
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithDescription*
+  nameWithType.vb: PatternBuilder.WithDescription(String)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithDescription(String)
+  name.vb: WithDescription(String)
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithWindowSize(System.TimeSpan)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithWindowSize(System.TimeSpan)
+  id: WithWindowSize(System.TimeSpan)
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+  langs:
+  - csharp
+  - vb
+  name: WithWindowSize(TimeSpan)
+  nameWithType: PatternBuilder.WithWindowSize(TimeSpan)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithWindowSize(System.TimeSpan)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: WithWindowSize
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+    startLine: 80
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Sets the time window size.
+  example: []
+  syntax:
+    content: public PatternBuilder WithWindowSize(TimeSpan window)
+    parameters:
+    - id: window
+      type: System.TimeSpan
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    content.vb: Public Function WithWindowSize(window As TimeSpan) As PatternBuilder
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithWindowSize*
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithWindowSizeNanos(System.Int64)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithWindowSizeNanos(System.Int64)
+  id: WithWindowSizeNanos(System.Int64)
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+  langs:
+  - csharp
+  - vb
+  name: WithWindowSizeNanos(long)
+  nameWithType: PatternBuilder.WithWindowSizeNanos(long)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithWindowSizeNanos(long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: WithWindowSizeNanos
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+    startLine: 91
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Sets the time window size in nanoseconds.
+  example: []
+  syntax:
+    content: public PatternBuilder WithWindowSizeNanos(long windowSizeNanos)
+    parameters:
+    - id: windowSizeNanos
+      type: System.Int64
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    content.vb: Public Function WithWindowSizeNanos(windowSizeNanos As Long) As PatternBuilder
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithWindowSizeNanos*
+  nameWithType.vb: PatternBuilder.WithWindowSizeNanos(Long)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithWindowSizeNanos(Long)
+  name.vb: WithWindowSizeNanos(Long)
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithSeverity(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternSeverity)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithSeverity(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternSeverity)
+  id: WithSeverity(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternSeverity)
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+  langs:
+  - csharp
+  - vb
+  name: WithSeverity(PatternSeverity)
+  nameWithType: PatternBuilder.WithSeverity(PatternSeverity)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithSeverity(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternSeverity)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: WithSeverity
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+    startLine: 102
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Sets the pattern severity.
+  example: []
+  syntax:
+    content: public PatternBuilder WithSeverity(PatternSeverity severity)
+    parameters:
+    - id: severity
+      type: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternSeverity
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    content.vb: Public Function WithSeverity(severity As PatternSeverity) As PatternBuilder
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithSeverity*
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.FilterEvents(System.Func{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent,System.Boolean})
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.FilterEvents(System.Func{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent,System.Boolean})
+  id: FilterEvents(System.Func{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent,System.Boolean})
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+  langs:
+  - csharp
+  - vb
+  name: FilterEvents(Func<TemporalEvent, bool>)
+  nameWithType: PatternBuilder.FilterEvents(Func<TemporalEvent, bool>)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.FilterEvents(System.Func<Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent, bool>)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: FilterEvents
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+    startLine: 111
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Filters events to consider.
+  example: []
+  syntax:
+    content: public PatternBuilder FilterEvents(Func<TemporalEvent, bool> filter)
+    parameters:
+    - id: filter
+      type: System.Func{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent,System.Boolean}
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    content.vb: Public Function FilterEvents(filter As Func(Of TemporalEvent, Boolean)) As PatternBuilder
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.FilterEvents*
+  nameWithType.vb: PatternBuilder.FilterEvents(Func(Of TemporalEvent, Boolean))
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.FilterEvents(System.Func(Of Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent, Boolean))
+  name.vb: FilterEvents(Func(Of TemporalEvent, Boolean))
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.ForEventType(System.String)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.ForEventType(System.String)
+  id: ForEventType(System.String)
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+  langs:
+  - csharp
+  - vb
+  name: ForEventType(string)
+  nameWithType: PatternBuilder.ForEventType(string)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.ForEventType(string)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ForEventType
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+    startLine: 120
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Filters events by type.
+  example: []
+  syntax:
+    content: public PatternBuilder ForEventType(string eventType)
+    parameters:
+    - id: eventType
+      type: System.String
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    content.vb: Public Function ForEventType(eventType As String) As PatternBuilder
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.ForEventType*
+  nameWithType.vb: PatternBuilder.ForEventType(String)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.ForEventType(String)
+  name.vb: ForEventType(String)
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupBy(System.Func{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent,System.Object})
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupBy(System.Func{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent,System.Object})
+  id: GroupBy(System.Func{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent,System.Object})
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+  langs:
+  - csharp
+  - vb
+  name: GroupBy(Func<TemporalEvent, object>)
+  nameWithType: PatternBuilder.GroupBy(Func<TemporalEvent, object>)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupBy(System.Func<Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent, object>)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GroupBy
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+    startLine: 129
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Groups events for pattern matching.
+  example: []
+  syntax:
+    content: public PatternBuilder GroupBy(Func<TemporalEvent, object> selector)
+    parameters:
+    - id: selector
+      type: System.Func{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent,System.Object}
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    content.vb: Public Function GroupBy(selector As Func(Of TemporalEvent, Object)) As PatternBuilder
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupBy*
+  nameWithType.vb: PatternBuilder.GroupBy(Func(Of TemporalEvent, Object))
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupBy(System.Func(Of Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent, Object))
+  name.vb: GroupBy(Func(Of TemporalEvent, Object))
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupBySource
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupBySource
+  id: GroupBySource
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+  langs:
+  - csharp
+  - vb
+  name: GroupBySource()
+  nameWithType: PatternBuilder.GroupBySource()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupBySource()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GroupBySource
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+    startLine: 138
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Groups events by source ID.
+  example: []
+  syntax:
+    content: public PatternBuilder GroupBySource()
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    content.vb: Public Function GroupBySource() As PatternBuilder
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupBySource*
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupByTarget
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupByTarget
+  id: GroupByTarget
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+  langs:
+  - csharp
+  - vb
+  name: GroupByTarget()
+  nameWithType: PatternBuilder.GroupByTarget()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupByTarget()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GroupByTarget
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+    startLine: 147
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Groups events by target ID.
+  example: []
+  syntax:
+    content: public PatternBuilder GroupByTarget()
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    content.vb: Public Function GroupByTarget() As PatternBuilder
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupByTarget*
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.MatchWhen(System.Func{System.Linq.IGrouping{System.Object,Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Boolean})
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.MatchWhen(System.Func{System.Linq.IGrouping{System.Object,Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Boolean})
+  id: MatchWhen(System.Func{System.Linq.IGrouping{System.Object,Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Boolean})
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+  langs:
+  - csharp
+  - vb
+  name: MatchWhen(Func<IGrouping<object, TemporalEvent>, IReadOnlyList<TemporalEvent>, bool>)
+  nameWithType: PatternBuilder.MatchWhen(Func<IGrouping<object, TemporalEvent>, IReadOnlyList<TemporalEvent>, bool>)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.MatchWhen(System.Func<System.Linq.IGrouping<object, Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent>, System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent>, bool>)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MatchWhen
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+    startLine: 156
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Sets the match condition.
+  example: []
+  syntax:
+    content: public PatternBuilder MatchWhen(Func<IGrouping<object, TemporalEvent>, IReadOnlyList<TemporalEvent>, bool> predicate)
+    parameters:
+    - id: predicate
+      type: System.Func{System.Linq.IGrouping{System.Object,Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Boolean}
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    content.vb: Public Function MatchWhen(predicate As Func(Of IGrouping(Of Object, TemporalEvent), IReadOnlyList(Of TemporalEvent), Boolean)) As PatternBuilder
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.MatchWhen*
+  nameWithType.vb: PatternBuilder.MatchWhen(Func(Of IGrouping(Of Object, TemporalEvent), IReadOnlyList(Of TemporalEvent), Boolean))
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.MatchWhen(System.Func(Of System.Linq.IGrouping(Of Object, Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent), System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent), Boolean))
+  name.vb: MatchWhen(Func(Of IGrouping(Of Object, TemporalEvent), IReadOnlyList(Of TemporalEvent), Boolean))
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.MatchWhen(System.Func{System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Boolean})
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.MatchWhen(System.Func{System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Boolean})
+  id: MatchWhen(System.Func{System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Boolean})
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+  langs:
+  - csharp
+  - vb
+  name: MatchWhen(Func<IEnumerable<TemporalEvent>, bool>)
+  nameWithType: PatternBuilder.MatchWhen(Func<IEnumerable<TemporalEvent>, bool>)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.MatchWhen(System.Func<System.Collections.Generic.IEnumerable<Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent>, bool>)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MatchWhen
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+    startLine: 166
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Sets the match condition (simplified version).
+  example: []
+  syntax:
+    content: public PatternBuilder MatchWhen(Func<IEnumerable<TemporalEvent>, bool> predicate)
+    parameters:
+    - id: predicate
+      type: System.Func{System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Boolean}
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    content.vb: Public Function MatchWhen(predicate As Func(Of IEnumerable(Of TemporalEvent), Boolean)) As PatternBuilder
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.MatchWhen*
+  nameWithType.vb: PatternBuilder.MatchWhen(Func(Of IEnumerable(Of TemporalEvent), Boolean))
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.MatchWhen(System.Func(Of System.Collections.Generic.IEnumerable(Of Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent), Boolean))
+  name.vb: MatchWhen(Func(Of IEnumerable(Of TemporalEvent), Boolean))
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.MatchWhenCount(System.Int32)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.MatchWhenCount(System.Int32)
+  id: MatchWhenCount(System.Int32)
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+  langs:
+  - csharp
+  - vb
+  name: MatchWhenCount(int)
+  nameWithType: PatternBuilder.MatchWhenCount(int)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.MatchWhenCount(int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MatchWhenCount
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+    startLine: 176
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Matches when group has at least the specified number of events.
+  example: []
+  syntax:
+    content: public PatternBuilder MatchWhenCount(int minimumCount)
+    parameters:
+    - id: minimumCount
+      type: System.Int32
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    content.vb: Public Function MatchWhenCount(minimumCount As Integer) As PatternBuilder
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.MatchWhenCount*
+  nameWithType.vb: PatternBuilder.MatchWhenCount(Integer)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.MatchWhenCount(Integer)
+  name.vb: MatchWhenCount(Integer)
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithConfidence(System.Func{System.Linq.IGrouping{System.Object,Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Double})
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithConfidence(System.Func{System.Linq.IGrouping{System.Object,Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Double})
+  id: WithConfidence(System.Func{System.Linq.IGrouping{System.Object,Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Double})
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+  langs:
+  - csharp
+  - vb
+  name: WithConfidence(Func<IGrouping<object, TemporalEvent>, IReadOnlyList<TemporalEvent>, double>)
+  nameWithType: PatternBuilder.WithConfidence(Func<IGrouping<object, TemporalEvent>, IReadOnlyList<TemporalEvent>, double>)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithConfidence(System.Func<System.Linq.IGrouping<object, Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent>, System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent>, double>)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: WithConfidence
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+    startLine: 187
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Sets the confidence calculator.
+  example: []
+  syntax:
+    content: public PatternBuilder WithConfidence(Func<IGrouping<object, TemporalEvent>, IReadOnlyList<TemporalEvent>, double> calculator)
+    parameters:
+    - id: calculator
+      type: System.Func{System.Linq.IGrouping{System.Object,Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Double}
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    content.vb: Public Function WithConfidence(calculator As Func(Of IGrouping(Of Object, TemporalEvent), IReadOnlyList(Of TemporalEvent), Double)) As PatternBuilder
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithConfidence*
+  nameWithType.vb: PatternBuilder.WithConfidence(Func(Of IGrouping(Of Object, TemporalEvent), IReadOnlyList(Of TemporalEvent), Double))
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithConfidence(System.Func(Of System.Linq.IGrouping(Of Object, Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent), System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent), Double))
+  name.vb: WithConfidence(Func(Of IGrouping(Of Object, TemporalEvent), IReadOnlyList(Of TemporalEvent), Double))
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithConfidence(System.Double)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithConfidence(System.Double)
+  id: WithConfidence(System.Double)
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+  langs:
+  - csharp
+  - vb
+  name: WithConfidence(double)
+  nameWithType: PatternBuilder.WithConfidence(double)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithConfidence(double)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: WithConfidence
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+    startLine: 197
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Sets a fixed confidence level.
+  example: []
+  syntax:
+    content: public PatternBuilder WithConfidence(double confidence)
+    parameters:
+    - id: confidence
+      type: System.Double
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    content.vb: Public Function WithConfidence(confidence As Double) As PatternBuilder
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithConfidence*
+  nameWithType.vb: PatternBuilder.WithConfidence(Double)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithConfidence(Double)
+  name.vb: WithConfidence(Double)
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithMetadata(System.Func{System.Linq.IGrouping{System.Object,Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.Dictionary{System.String,System.Object}})
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithMetadata(System.Func{System.Linq.IGrouping{System.Object,Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.Dictionary{System.String,System.Object}})
+  id: WithMetadata(System.Func{System.Linq.IGrouping{System.Object,Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.Dictionary{System.String,System.Object}})
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+  langs:
+  - csharp
+  - vb
+  name: WithMetadata(Func<IGrouping<object, TemporalEvent>, IReadOnlyList<TemporalEvent>, Dictionary<string, object>>)
+  nameWithType: PatternBuilder.WithMetadata(Func<IGrouping<object, TemporalEvent>, IReadOnlyList<TemporalEvent>, Dictionary<string, object>>)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithMetadata(System.Func<System.Linq.IGrouping<object, Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent>, System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent>, System.Collections.Generic.Dictionary<string, object>>)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: WithMetadata
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+    startLine: 208
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Sets the metadata builder.
+  example: []
+  syntax:
+    content: public PatternBuilder WithMetadata(Func<IGrouping<object, TemporalEvent>, IReadOnlyList<TemporalEvent>, Dictionary<string, object>> builder)
+    parameters:
+    - id: builder
+      type: System.Func{System.Linq.IGrouping{System.Object,Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.Dictionary{System.String,System.Object}}
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    content.vb: Public Function WithMetadata(builder As Func(Of IGrouping(Of Object, TemporalEvent), IReadOnlyList(Of TemporalEvent), Dictionary(Of String, Object))) As PatternBuilder
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithMetadata*
+  nameWithType.vb: PatternBuilder.WithMetadata(Func(Of IGrouping(Of Object, TemporalEvent), IReadOnlyList(Of TemporalEvent), Dictionary(Of String, Object)))
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithMetadata(System.Func(Of System.Linq.IGrouping(Of Object, Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent), System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent), System.Collections.Generic.Dictionary(Of String, Object)))
+  name.vb: WithMetadata(Func(Of IGrouping(Of Object, TemporalEvent), IReadOnlyList(Of TemporalEvent), Dictionary(Of String, Object)))
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Build
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Build
+  id: Build
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+  langs:
+  - csharp
+  - vb
+  name: Build()
+  nameWithType: PatternBuilder.Build()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Build()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Build
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/PatternDsl.cs
+    startLine: 218
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Builds the pattern.
+  example: []
+  syntax:
+    content: public ITemporalPattern Build()
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.Patterns.ITemporalPattern
+    content.vb: Public Function Build() As ITemporalPattern
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Build*
+references:
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  commentId: N:Orleans.GpuBridge.Runtime.Temporal.Patterns
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  nameWithType: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns
+    name: Patterns
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns
+    name: Patterns
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.ForHighFrequency(System.Int32,System.TimeSpan)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.ForHighFrequency(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder,System.Int32,System.TimeSpan)
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions
+  definition: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.ForHighFrequency(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder,System.Int32,System.TimeSpan)
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilderExtensions_ForHighFrequency_Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_System_Int32_System_TimeSpan_
+  name: ForHighFrequency(PatternBuilder, int, TimeSpan)
+  nameWithType: PatternBuilderExtensions.ForHighFrequency(PatternBuilder, int, TimeSpan)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.ForHighFrequency(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder, int, System.TimeSpan)
+  nameWithType.vb: PatternBuilderExtensions.ForHighFrequency(PatternBuilder, Integer, TimeSpan)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.ForHighFrequency(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder, Integer, System.TimeSpan)
+  name.vb: ForHighFrequency(PatternBuilder, Integer, TimeSpan)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.ForHighFrequency(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder,System.Int32,System.TimeSpan)
+    name: ForHighFrequency
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilderExtensions_ForHighFrequency_Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_System_Int32_System_TimeSpan_
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    name: PatternBuilder
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.ForHighFrequency(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder,System.Int32,System.TimeSpan)
+    name: ForHighFrequency
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilderExtensions_ForHighFrequency_Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_System_Int32_System_TimeSpan_
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    name: PatternBuilder
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.WithValueThreshold(System.Double)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.WithValueThreshold(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder,System.Double)
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions
+  definition: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.WithValueThreshold(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder,System.Double)
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilderExtensions_WithValueThreshold_Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_System_Double_
+  name: WithValueThreshold(PatternBuilder, double)
+  nameWithType: PatternBuilderExtensions.WithValueThreshold(PatternBuilder, double)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.WithValueThreshold(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder, double)
+  nameWithType.vb: PatternBuilderExtensions.WithValueThreshold(PatternBuilder, Double)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.WithValueThreshold(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder, Double)
+  name.vb: WithValueThreshold(PatternBuilder, Double)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.WithValueThreshold(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder,System.Double)
+    name: WithValueThreshold
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilderExtensions_WithValueThreshold_Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_System_Double_
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    name: PatternBuilder
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.WithValueThreshold(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder,System.Double)
+    name: WithValueThreshold
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilderExtensions_WithValueThreshold_Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_System_Double_
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    name: PatternBuilder
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.ForHighFrequency(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder,System.Int32,System.TimeSpan)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.ForHighFrequency(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder,System.Int32,System.TimeSpan)
+  isExternal: true
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilderExtensions_ForHighFrequency_Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_System_Int32_System_TimeSpan_
+  name: ForHighFrequency(PatternBuilder, int, TimeSpan)
+  nameWithType: PatternBuilderExtensions.ForHighFrequency(PatternBuilder, int, TimeSpan)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.ForHighFrequency(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder, int, System.TimeSpan)
+  nameWithType.vb: PatternBuilderExtensions.ForHighFrequency(PatternBuilder, Integer, TimeSpan)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.ForHighFrequency(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder, Integer, System.TimeSpan)
+  name.vb: ForHighFrequency(PatternBuilder, Integer, TimeSpan)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.ForHighFrequency(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder,System.Int32,System.TimeSpan)
+    name: ForHighFrequency
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilderExtensions_ForHighFrequency_Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_System_Int32_System_TimeSpan_
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    name: PatternBuilder
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.ForHighFrequency(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder,System.Int32,System.TimeSpan)
+    name: ForHighFrequency
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilderExtensions_ForHighFrequency_Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_System_Int32_System_TimeSpan_
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    name: PatternBuilder
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.html
+  name: PatternBuilderExtensions
+  nameWithType: PatternBuilderExtensions
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.WithValueThreshold(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder,System.Double)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.WithValueThreshold(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder,System.Double)
+  isExternal: true
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilderExtensions_WithValueThreshold_Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_System_Double_
+  name: WithValueThreshold(PatternBuilder, double)
+  nameWithType: PatternBuilderExtensions.WithValueThreshold(PatternBuilder, double)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.WithValueThreshold(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder, double)
+  nameWithType.vb: PatternBuilderExtensions.WithValueThreshold(PatternBuilder, Double)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.WithValueThreshold(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder, Double)
+  name.vb: WithValueThreshold(PatternBuilder, Double)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.WithValueThreshold(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder,System.Double)
+    name: WithValueThreshold
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilderExtensions_WithValueThreshold_Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_System_Double_
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    name: PatternBuilder
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.WithValueThreshold(Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder,System.Double)
+    name: WithValueThreshold
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilderExtensions.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilderExtensions_WithValueThreshold_Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_System_Double_
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+    name: PatternBuilder
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Create*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Create
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_Create_System_String_
+  name: Create
+  nameWithType: PatternBuilder.Create
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Create
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html
+  name: PatternBuilder
+  nameWithType: PatternBuilder
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Named*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Named
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_Named_System_String_
+  name: Named
+  nameWithType: PatternBuilder.Named
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Named
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithDescription*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithDescription
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_WithDescription_System_String_
+  name: WithDescription
+  nameWithType: PatternBuilder.WithDescription
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithDescription
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithWindowSize*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithWindowSize
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_WithWindowSize_System_TimeSpan_
+  name: WithWindowSize
+  nameWithType: PatternBuilder.WithWindowSize
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithWindowSize
+- uid: System.TimeSpan
+  commentId: T:System.TimeSpan
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan
+  nameWithType: TimeSpan
+  fullName: System.TimeSpan
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithWindowSizeNanos*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithWindowSizeNanos
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_WithWindowSizeNanos_System_Int64_
+  name: WithWindowSizeNanos
+  nameWithType: PatternBuilder.WithWindowSizeNanos
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithWindowSizeNanos
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithSeverity*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithSeverity
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_WithSeverity_Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternSeverity_
+  name: WithSeverity
+  nameWithType: PatternBuilder.WithSeverity
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithSeverity
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternSeverity
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternSeverity
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternSeverity.html
+  name: PatternSeverity
+  nameWithType: PatternSeverity
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternSeverity
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.FilterEvents*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.FilterEvents
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_FilterEvents_System_Func_Orleans_GpuBridge_Runtime_Temporal_Patterns_TemporalEvent_System_Boolean__
+  name: FilterEvents
+  nameWithType: PatternBuilder.FilterEvents
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.FilterEvents
+- uid: System.Func{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent,System.Boolean}
+  commentId: T:System.Func{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent,System.Boolean}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<TemporalEvent, bool>
+  nameWithType: Func<TemporalEvent, bool>
+  fullName: System.Func<Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent, bool>
+  nameWithType.vb: Func(Of TemporalEvent, Boolean)
+  fullName.vb: System.Func(Of Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent, Boolean)
+  name.vb: Func(Of TemporalEvent, Boolean)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent
+    name: TemporalEvent
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent
+    name: TemporalEvent
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.ForEventType*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.ForEventType
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_ForEventType_System_String_
+  name: ForEventType
+  nameWithType: PatternBuilder.ForEventType
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.ForEventType
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupBy*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupBy
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_GroupBy_System_Func_Orleans_GpuBridge_Runtime_Temporal_Patterns_TemporalEvent_System_Object__
+  name: GroupBy
+  nameWithType: PatternBuilder.GroupBy
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupBy
+- uid: System.Func{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent,System.Object}
+  commentId: T:System.Func{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent,System.Object}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<TemporalEvent, object>
+  nameWithType: Func<TemporalEvent, object>
+  fullName: System.Func<Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent, object>
+  nameWithType.vb: Func(Of TemporalEvent, Object)
+  fullName.vb: System.Func(Of Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent, Object)
+  name.vb: Func(Of TemporalEvent, Object)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent
+    name: TemporalEvent
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent.html
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent
+    name: TemporalEvent
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent.html
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupBySource*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupBySource
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_GroupBySource
+  name: GroupBySource
+  nameWithType: PatternBuilder.GroupBySource
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupBySource
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupByTarget*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupByTarget
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_GroupByTarget
+  name: GroupByTarget
+  nameWithType: PatternBuilder.GroupByTarget
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.GroupByTarget
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.MatchWhen*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.MatchWhen
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_MatchWhen_System_Func_System_Linq_IGrouping_System_Object_Orleans_GpuBridge_Runtime_Temporal_Patterns_TemporalEvent__System_Collections_Generic_IReadOnlyList_Orleans_GpuBridge_Runtime_Temporal_Patterns_TemporalEvent__System_Boolean__
+  name: MatchWhen
+  nameWithType: PatternBuilder.MatchWhen
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.MatchWhen
+- uid: System.Func{System.Linq.IGrouping{System.Object,Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Boolean}
+  commentId: T:System.Func{System.Linq.IGrouping{System.Object,Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Boolean}
+  parent: System
+  definition: System.Func`3
+  href: https://learn.microsoft.com/dotnet/api/system.func-3
+  name: Func<IGrouping<object, TemporalEvent>, IReadOnlyList<TemporalEvent>, bool>
+  nameWithType: Func<IGrouping<object, TemporalEvent>, IReadOnlyList<TemporalEvent>, bool>
+  fullName: System.Func<System.Linq.IGrouping<object, Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent>, System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent>, bool>
+  nameWithType.vb: Func(Of IGrouping(Of Object, TemporalEvent), IReadOnlyList(Of TemporalEvent), Boolean)
+  fullName.vb: System.Func(Of System.Linq.IGrouping(Of Object, Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent), System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent), Boolean)
+  name.vb: Func(Of IGrouping(Of Object, TemporalEvent), IReadOnlyList(Of TemporalEvent), Boolean)
+  spec.csharp:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - uid: System.Linq.IGrouping`2
+    name: IGrouping
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.igrouping-2
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent
+    name: TemporalEvent
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent
+    name: TemporalEvent
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Linq.IGrouping`2
+    name: IGrouping
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.igrouping-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent
+    name: TemporalEvent
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent
+    name: TemporalEvent
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Func`3
+  commentId: T:System.Func`3
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-3
+  name: Func<T1, T2, TResult>
+  nameWithType: Func<T1, T2, TResult>
+  fullName: System.Func<T1, T2, TResult>
+  nameWithType.vb: Func(Of T1, T2, TResult)
+  fullName.vb: System.Func(Of T1, T2, TResult)
+  name.vb: Func(Of T1, T2, TResult)
+  spec.csharp:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Func{System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Boolean}
+  commentId: T:System.Func{System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Boolean}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<IEnumerable<TemporalEvent>, bool>
+  nameWithType: Func<IEnumerable<TemporalEvent>, bool>
+  fullName: System.Func<System.Collections.Generic.IEnumerable<Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent>, bool>
+  nameWithType.vb: Func(Of IEnumerable(Of TemporalEvent), Boolean)
+  fullName.vb: System.Func(Of System.Collections.Generic.IEnumerable(Of Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent), Boolean)
+  name.vb: Func(Of IEnumerable(Of TemporalEvent), Boolean)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent
+    name: TemporalEvent
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent
+    name: TemporalEvent
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.MatchWhenCount*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.MatchWhenCount
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_MatchWhenCount_System_Int32_
+  name: MatchWhenCount
+  nameWithType: PatternBuilder.MatchWhenCount
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.MatchWhenCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithConfidence*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithConfidence
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_WithConfidence_System_Func_System_Linq_IGrouping_System_Object_Orleans_GpuBridge_Runtime_Temporal_Patterns_TemporalEvent__System_Collections_Generic_IReadOnlyList_Orleans_GpuBridge_Runtime_Temporal_Patterns_TemporalEvent__System_Double__
+  name: WithConfidence
+  nameWithType: PatternBuilder.WithConfidence
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithConfidence
+- uid: System.Func{System.Linq.IGrouping{System.Object,Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Double}
+  commentId: T:System.Func{System.Linq.IGrouping{System.Object,Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Double}
+  parent: System
+  definition: System.Func`3
+  href: https://learn.microsoft.com/dotnet/api/system.func-3
+  name: Func<IGrouping<object, TemporalEvent>, IReadOnlyList<TemporalEvent>, double>
+  nameWithType: Func<IGrouping<object, TemporalEvent>, IReadOnlyList<TemporalEvent>, double>
+  fullName: System.Func<System.Linq.IGrouping<object, Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent>, System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent>, double>
+  nameWithType.vb: Func(Of IGrouping(Of Object, TemporalEvent), IReadOnlyList(Of TemporalEvent), Double)
+  fullName.vb: System.Func(Of System.Linq.IGrouping(Of Object, Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent), System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent), Double)
+  name.vb: Func(Of IGrouping(Of Object, TemporalEvent), IReadOnlyList(Of TemporalEvent), Double)
+  spec.csharp:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - uid: System.Linq.IGrouping`2
+    name: IGrouping
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.igrouping-2
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent
+    name: TemporalEvent
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent
+    name: TemporalEvent
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Linq.IGrouping`2
+    name: IGrouping
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.igrouping-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent
+    name: TemporalEvent
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent
+    name: TemporalEvent
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithMetadata*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithMetadata
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_WithMetadata_System_Func_System_Linq_IGrouping_System_Object_Orleans_GpuBridge_Runtime_Temporal_Patterns_TemporalEvent__System_Collections_Generic_IReadOnlyList_Orleans_GpuBridge_Runtime_Temporal_Patterns_TemporalEvent__System_Collections_Generic_Dictionary_System_String_System_Object___
+  name: WithMetadata
+  nameWithType: PatternBuilder.WithMetadata
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.WithMetadata
+- uid: System.Func{System.Linq.IGrouping{System.Object,Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.Dictionary{System.String,System.Object}}
+  commentId: T:System.Func{System.Linq.IGrouping{System.Object,Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent},System.Collections.Generic.Dictionary{System.String,System.Object}}
+  parent: System
+  definition: System.Func`3
+  href: https://learn.microsoft.com/dotnet/api/system.func-3
+  name: Func<IGrouping<object, TemporalEvent>, IReadOnlyList<TemporalEvent>, Dictionary<string, object>>
+  nameWithType: Func<IGrouping<object, TemporalEvent>, IReadOnlyList<TemporalEvent>, Dictionary<string, object>>
+  fullName: System.Func<System.Linq.IGrouping<object, Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent>, System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent>, System.Collections.Generic.Dictionary<string, object>>
+  nameWithType.vb: Func(Of IGrouping(Of Object, TemporalEvent), IReadOnlyList(Of TemporalEvent), Dictionary(Of String, Object))
+  fullName.vb: System.Func(Of System.Linq.IGrouping(Of Object, Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent), System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent), System.Collections.Generic.Dictionary(Of String, Object))
+  name.vb: Func(Of IGrouping(Of Object, TemporalEvent), IReadOnlyList(Of TemporalEvent), Dictionary(Of String, Object))
+  spec.csharp:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - uid: System.Linq.IGrouping`2
+    name: IGrouping
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.igrouping-2
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent
+    name: TemporalEvent
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent
+    name: TemporalEvent
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Linq.IGrouping`2
+    name: IGrouping
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.igrouping-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent
+    name: TemporalEvent
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent
+    name: TemporalEvent
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Build*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Build
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_PatternBuilder_Build
+  name: Build
+  nameWithType: PatternBuilder.Build
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternBuilder.Build
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.ITemporalPattern
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.Patterns.ITemporalPattern
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.ITemporalPattern.html
+  name: ITemporalPattern
+  nameWithType: ITemporalPattern
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.ITemporalPattern

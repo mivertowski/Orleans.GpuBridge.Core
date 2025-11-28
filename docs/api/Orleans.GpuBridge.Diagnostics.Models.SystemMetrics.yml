@@ -1,0 +1,728 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics
+  commentId: T:Orleans.GpuBridge.Diagnostics.Models.SystemMetrics
+  id: SystemMetrics
+  parent: Orleans.GpuBridge.Diagnostics.Models
+  children:
+  - Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.HandleCount
+  - Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.ProcessCpuUsage
+  - Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.ProcessMemoryMB
+  - Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.ThreadCount
+  - Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.Timestamp
+  langs:
+  - csharp
+  - vb
+  name: SystemMetrics
+  nameWithType: SystemMetrics
+  fullName: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/Models/SystemMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: SystemMetrics
+    path: ../src/Orleans.GpuBridge.Diagnostics/Models/SystemMetrics.cs
+    startLine: 10
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics.Models
+  summary: Represents system-level performance metrics for the Orleans.GpuBridge host process.
+  remarks: >-
+    This class captures resource consumption metrics for the current process, providing
+
+    insights into CPU usage, memory consumption, and operating system resource utilization.
+
+    These metrics are useful for performance monitoring, capacity planning, and troubleshooting.
+  example: []
+  syntax:
+    content: public class SystemMetrics
+    content.vb: Public Class SystemMetrics
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.ProcessCpuUsage
+  commentId: P:Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.ProcessCpuUsage
+  id: ProcessCpuUsage
+  parent: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics
+  langs:
+  - csharp
+  - vb
+  name: ProcessCpuUsage
+  nameWithType: SystemMetrics.ProcessCpuUsage
+  fullName: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.ProcessCpuUsage
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/Models/SystemMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ProcessCpuUsage
+    path: ../src/Orleans.GpuBridge.Diagnostics/Models/SystemMetrics.cs
+    startLine: 40
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics.Models
+  summary: Gets or sets the CPU utilization percentage for the current process.
+  remarks: >-
+    <p>
+
+    CPU utilization represents the fraction of CPU time consumed by the Orleans.GpuBridge
+
+    process during the measurement period. This includes:
+
+    - GPU kernel preparation and scheduling
+
+    - Data marshalling and transfer operations  
+
+    - Orleans grain processing overhead
+
+    - Background metric collection activities
+
+    </p>
+
+    <p>
+
+    High CPU usage may indicate:
+
+    - CPU-intensive GPU kernel preparation
+
+    - Inefficient data serialization
+
+    - Excessive logging or telemetry overhead
+
+    - Orleans grain processing bottlenecks
+
+    </p>
+
+    <p>
+
+    Note: Current implementation returns 0 as a placeholder. Proper CPU usage
+
+    calculation requires tracking process CPU time over intervals.
+
+    </p>
+  example: []
+  syntax:
+    content: public double ProcessCpuUsage { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+      description: >-
+        Process CPU usage as a percentage (0.0 to 100.0 per CPU core). Values may exceed
+
+        100% on multi-core systems when the process uses multiple cores simultaneously.
+    content.vb: Public Property ProcessCpuUsage As Double
+  overload: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.ProcessCpuUsage*
+- uid: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.ProcessMemoryMB
+  commentId: P:Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.ProcessMemoryMB
+  id: ProcessMemoryMB
+  parent: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics
+  langs:
+  - csharp
+  - vb
+  name: ProcessMemoryMB
+  nameWithType: SystemMetrics.ProcessMemoryMB
+  fullName: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.ProcessMemoryMB
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/Models/SystemMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ProcessMemoryMB
+    path: ../src/Orleans.GpuBridge.Diagnostics/Models/SystemMetrics.cs
+    startLine: 70
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics.Models
+  summary: Gets or sets the working set memory usage for the current process.
+  remarks: >-
+    <p>
+
+    Working set memory includes:
+
+    - Orleans grain state and object instances
+
+    - GPU buffer allocations and staging memory
+
+    - Cached kernel compilation artifacts
+
+    - Framework and runtime overhead
+
+    - Managed heap and native memory allocations
+
+    </p>
+
+    <p>
+
+    Memory growth patterns can indicate:
+
+    - Memory leaks in GPU resource management
+
+    - Excessive grain state caching
+
+    - Large dataset processing without proper cleanup
+
+    - Kernel compilation artifact accumulation
+
+    </p>
+
+    <p>
+
+    This metric reflects actual physical memory usage and may differ from
+
+    virtual memory allocations reported by other tools.
+
+    </p>
+  example: []
+  syntax:
+    content: public long ProcessMemoryMB { get; set; }
+    parameters: []
+    return:
+      type: System.Int64
+      description: >-
+        Process memory usage in megabytes (MB). This represents the physical memory
+
+        currently allocated to the process by the operating system.
+    content.vb: Public Property ProcessMemoryMB As Long
+  overload: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.ProcessMemoryMB*
+- uid: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.ThreadCount
+  commentId: P:Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.ThreadCount
+  id: ThreadCount
+  parent: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics
+  langs:
+  - csharp
+  - vb
+  name: ThreadCount
+  nameWithType: SystemMetrics.ThreadCount
+  fullName: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.ThreadCount
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/Models/SystemMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ThreadCount
+    path: ../src/Orleans.GpuBridge.Diagnostics/Models/SystemMetrics.cs
+    startLine: 100
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics.Models
+  summary: Gets or sets the number of threads currently active in the process.
+  remarks: >-
+    <p>
+
+    Thread count includes:
+
+    - Orleans scheduler and grain activation threads
+
+    - GPU operation background threads
+
+    - Metrics collection and telemetry threads
+
+    - .NET runtime threads (GC, thread pool, finalizer)
+
+    - Platform-specific system threads
+
+    </p>
+
+    <p>
+
+    Thread count monitoring helps identify:
+
+    - Thread pool exhaustion or saturation
+
+    - Resource leaks in concurrent operations
+
+    - Scaling behavior under load
+
+    - Background task accumulation
+
+    </p>
+
+    <p>
+
+    Typical thread counts vary by workload but sudden increases may indicate
+
+    resource leaks or excessive concurrent operations.
+
+    </p>
+  example: []
+  syntax:
+    content: public int ThreadCount { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+      description: >-
+        The total count of threads including main application threads, background
+
+        worker threads, and framework-managed threads.
+    content.vb: Public Property ThreadCount As Integer
+  overload: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.ThreadCount*
+- uid: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.HandleCount
+  commentId: P:Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.HandleCount
+  id: HandleCount
+  parent: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics
+  langs:
+  - csharp
+  - vb
+  name: HandleCount
+  nameWithType: SystemMetrics.HandleCount
+  fullName: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.HandleCount
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/Models/SystemMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: HandleCount
+    path: ../src/Orleans.GpuBridge.Diagnostics/Models/SystemMetrics.cs
+    startLine: 130
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics.Models
+  summary: Gets or sets the number of operating system handles held by the process.
+  remarks: >-
+    <p>
+
+    Handle count includes:
+
+    - GPU device handles and driver resources
+
+    - File handles for logs, configuration, and temporary files
+
+    - Network connection handles
+
+    - Synchronization primitive handles (mutexes, events, semaphores)
+
+    - Registry and process handles
+
+    </p>
+
+    <p>
+
+    Handle monitoring is important for:
+
+    - Resource leak detection
+
+    - System resource limit management
+
+    - GPU driver resource tracking
+
+    - File descriptor exhaustion prevention
+
+    </p>
+
+    <p>
+
+    Windows systems typically limit handles to several thousand per process.
+
+    Gradual handle count increases often indicate resource cleanup issues.
+
+    </p>
+  example: []
+  syntax:
+    content: public int HandleCount { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+      description: >-
+        The total count of OS handles including files, synchronization objects,
+
+        registry keys, and other system resources.
+    content.vb: Public Property HandleCount As Integer
+  overload: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.HandleCount*
+- uid: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.Timestamp
+  commentId: P:Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.Timestamp
+  id: Timestamp
+  parent: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics
+  langs:
+  - csharp
+  - vb
+  name: Timestamp
+  nameWithType: SystemMetrics.Timestamp
+  fullName: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.Timestamp
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/Models/SystemMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Timestamp
+    path: ../src/Orleans.GpuBridge.Diagnostics/Models/SystemMetrics.cs
+    startLine: 143
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics.Models
+  summary: Gets or sets the timestamp when these system metrics were collected.
+  remarks: >-
+    This timestamp enables metric correlation with GPU device metrics and can be
+
+    used for trend analysis, rate calculations, and temporal synchronization of
+
+    monitoring data across different metric sources.
+  example: []
+  syntax:
+    content: public DateTimeOffset Timestamp { get; set; }
+    parameters: []
+    return:
+      type: System.DateTimeOffset
+      description: UTC timestamp indicating when the system metrics were captured.
+    content.vb: Public Property Timestamp As DateTimeOffset
+  overload: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.Timestamp*
+references:
+- uid: Orleans.GpuBridge.Diagnostics.Models
+  commentId: N:Orleans.GpuBridge.Diagnostics.Models
+  href: Orleans.html
+  name: Orleans.GpuBridge.Diagnostics.Models
+  nameWithType: Orleans.GpuBridge.Diagnostics.Models
+  fullName: Orleans.GpuBridge.Diagnostics.Models
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Diagnostics
+    name: Diagnostics
+    href: Orleans.GpuBridge.Diagnostics.html
+  - name: .
+  - uid: Orleans.GpuBridge.Diagnostics.Models
+    name: Models
+    href: Orleans.GpuBridge.Diagnostics.Models.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Diagnostics
+    name: Diagnostics
+    href: Orleans.GpuBridge.Diagnostics.html
+  - name: .
+  - uid: Orleans.GpuBridge.Diagnostics.Models
+    name: Models
+    href: Orleans.GpuBridge.Diagnostics.Models.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.ProcessCpuUsage*
+  commentId: Overload:Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.ProcessCpuUsage
+  href: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.html#Orleans_GpuBridge_Diagnostics_Models_SystemMetrics_ProcessCpuUsage
+  name: ProcessCpuUsage
+  nameWithType: SystemMetrics.ProcessCpuUsage
+  fullName: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.ProcessCpuUsage
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.ProcessMemoryMB*
+  commentId: Overload:Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.ProcessMemoryMB
+  href: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.html#Orleans_GpuBridge_Diagnostics_Models_SystemMetrics_ProcessMemoryMB
+  name: ProcessMemoryMB
+  nameWithType: SystemMetrics.ProcessMemoryMB
+  fullName: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.ProcessMemoryMB
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.ThreadCount*
+  commentId: Overload:Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.ThreadCount
+  href: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.html#Orleans_GpuBridge_Diagnostics_Models_SystemMetrics_ThreadCount
+  name: ThreadCount
+  nameWithType: SystemMetrics.ThreadCount
+  fullName: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.ThreadCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.HandleCount*
+  commentId: Overload:Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.HandleCount
+  href: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.html#Orleans_GpuBridge_Diagnostics_Models_SystemMetrics_HandleCount
+  name: HandleCount
+  nameWithType: SystemMetrics.HandleCount
+  fullName: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.HandleCount
+- uid: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.Timestamp*
+  commentId: Overload:Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.Timestamp
+  href: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.html#Orleans_GpuBridge_Diagnostics_Models_SystemMetrics_Timestamp
+  name: Timestamp
+  nameWithType: SystemMetrics.Timestamp
+  fullName: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.Timestamp
+- uid: System.DateTimeOffset
+  commentId: T:System.DateTimeOffset
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  name: DateTimeOffset
+  nameWithType: DateTimeOffset
+  fullName: System.DateTimeOffset

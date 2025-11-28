@@ -1,0 +1,645 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry
+  commentId: T:Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry
+  id: IGpuTelemetry
+  parent: Orleans.GpuBridge.Diagnostics.Interfaces
+  children:
+  - Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordAllocationFailure(System.Int32,System.Int64,System.String)
+  - Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordGrainActivation(System.String,System.TimeSpan)
+  - Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordKernelExecution(System.String,System.Int32,System.TimeSpan,System.Boolean)
+  - Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordMemoryAllocation(System.Int32,System.Int64,System.Boolean)
+  - Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordMemoryTransfer(Orleans.GpuBridge.Diagnostics.Enums.TransferDirection,System.Int64,System.TimeSpan)
+  - Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordPipelineStage(System.String,System.TimeSpan,System.Boolean)
+  - Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordQueueDepth(System.Int32,System.Int32)
+  - Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.StartKernelExecution(System.String,System.Int32)
+  langs:
+  - csharp
+  - vb
+  name: IGpuTelemetry
+  nameWithType: IGpuTelemetry
+  fullName: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry
+  type: Interface
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/Interfaces/IGpuTelemetry.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IGpuTelemetry
+    path: ../src/Orleans.GpuBridge.Diagnostics/Interfaces/IGpuTelemetry.cs
+    startLine: 10
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics.Interfaces
+  summary: >-
+    Interface for GPU telemetry collection and monitoring operations.
+
+    This service provides comprehensive tracking of GPU performance metrics, kernel execution statistics,
+
+    memory operations, and system-wide GPU utilization patterns for observability and performance optimization.
+  example: []
+  syntax:
+    content: public interface IGpuTelemetry
+    content.vb: Public Interface IGpuTelemetry
+- uid: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.StartKernelExecution(System.String,System.Int32)
+  commentId: M:Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.StartKernelExecution(System.String,System.Int32)
+  id: StartKernelExecution(System.String,System.Int32)
+  parent: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry
+  langs:
+  - csharp
+  - vb
+  name: StartKernelExecution(string, int)
+  nameWithType: IGpuTelemetry.StartKernelExecution(string, int)
+  fullName: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.StartKernelExecution(string, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/Interfaces/IGpuTelemetry.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: StartKernelExecution
+    path: ../src/Orleans.GpuBridge.Diagnostics/Interfaces/IGpuTelemetry.cs
+    startLine: 31
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics.Interfaces
+  summary: >-
+    Starts a distributed tracing activity for GPU kernel execution.
+
+    This creates a parent span that tracks the entire kernel execution lifecycle
+
+    including launch, execution, and completion phases.
+  example:
+  - >-
+    <pre><code class="lang-csharp">using var activity = telemetry.StartKernelExecution("VectorAdd", 0);
+
+    // Perform kernel execution...
+
+    telemetry.RecordKernelExecution("VectorAdd", 0, executionTime, success);</code></pre>
+  syntax:
+    content: Activity? StartKernelExecution(string kernelName, int deviceIndex)
+    parameters:
+    - id: kernelName
+      type: System.String
+      description: The name of the GPU kernel being executed.
+    - id: deviceIndex
+      type: System.Int32
+      description: The index of the GPU device where the kernel will execute.
+    return:
+      type: System.Diagnostics.Activity
+      description: >-
+        An <xref href="System.Diagnostics.Activity" data-throw-if-not-resolved="false"></xref> instance that represents the kernel execution span,
+
+        or <code>null</code> if distributed tracing is not enabled or available.
+
+        The returned activity should be disposed when kernel execution completes.
+    content.vb: Function StartKernelExecution(kernelName As String, deviceIndex As Integer) As Activity
+  overload: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.StartKernelExecution*
+  nameWithType.vb: IGpuTelemetry.StartKernelExecution(String, Integer)
+  fullName.vb: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.StartKernelExecution(String, Integer)
+  name.vb: StartKernelExecution(String, Integer)
+- uid: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordKernelExecution(System.String,System.Int32,System.TimeSpan,System.Boolean)
+  commentId: M:Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordKernelExecution(System.String,System.Int32,System.TimeSpan,System.Boolean)
+  id: RecordKernelExecution(System.String,System.Int32,System.TimeSpan,System.Boolean)
+  parent: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry
+  langs:
+  - csharp
+  - vb
+  name: RecordKernelExecution(string, int, TimeSpan, bool)
+  nameWithType: IGpuTelemetry.RecordKernelExecution(string, int, TimeSpan, bool)
+  fullName: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordKernelExecution(string, int, System.TimeSpan, bool)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/Interfaces/IGpuTelemetry.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RecordKernelExecution
+    path: ../src/Orleans.GpuBridge.Diagnostics/Interfaces/IGpuTelemetry.cs
+    startLine: 42
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics.Interfaces
+  summary: >-
+    Records the completion of a GPU kernel execution with timing and success information.
+
+    This method updates performance counters, histograms, and distributed tracing spans
+
+    to provide comprehensive execution monitoring.
+  example: []
+  syntax:
+    content: void RecordKernelExecution(string kernelName, int deviceIndex, TimeSpan duration, bool success)
+    parameters:
+    - id: kernelName
+      type: System.String
+      description: The name of the executed kernel.
+    - id: deviceIndex
+      type: System.Int32
+      description: The index of the GPU device that executed the kernel.
+    - id: duration
+      type: System.TimeSpan
+      description: The total execution time from kernel launch to completion.
+    - id: success
+      type: System.Boolean
+      description: Whether the kernel execution completed successfully without errors.
+    content.vb: Sub RecordKernelExecution(kernelName As String, deviceIndex As Integer, duration As TimeSpan, success As Boolean)
+  overload: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordKernelExecution*
+  nameWithType.vb: IGpuTelemetry.RecordKernelExecution(String, Integer, TimeSpan, Boolean)
+  fullName.vb: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordKernelExecution(String, Integer, System.TimeSpan, Boolean)
+  name.vb: RecordKernelExecution(String, Integer, TimeSpan, Boolean)
+- uid: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordMemoryTransfer(Orleans.GpuBridge.Diagnostics.Enums.TransferDirection,System.Int64,System.TimeSpan)
+  commentId: M:Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordMemoryTransfer(Orleans.GpuBridge.Diagnostics.Enums.TransferDirection,System.Int64,System.TimeSpan)
+  id: RecordMemoryTransfer(Orleans.GpuBridge.Diagnostics.Enums.TransferDirection,System.Int64,System.TimeSpan)
+  parent: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry
+  langs:
+  - csharp
+  - vb
+  name: RecordMemoryTransfer(TransferDirection, long, TimeSpan)
+  nameWithType: IGpuTelemetry.RecordMemoryTransfer(TransferDirection, long, TimeSpan)
+  fullName: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordMemoryTransfer(Orleans.GpuBridge.Diagnostics.Enums.TransferDirection, long, System.TimeSpan)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/Interfaces/IGpuTelemetry.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RecordMemoryTransfer
+    path: ../src/Orleans.GpuBridge.Diagnostics/Interfaces/IGpuTelemetry.cs
+    startLine: 52
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics.Interfaces
+  summary: >-
+    Records GPU memory transfer operations for bandwidth monitoring and optimization.
+
+    This tracks data movement between host and device memory, including transfer rates
+
+    and directional patterns for performance analysis.
+  example: []
+  syntax:
+    content: void RecordMemoryTransfer(TransferDirection direction, long bytes, TimeSpan duration)
+    parameters:
+    - id: direction
+      type: Orleans.GpuBridge.Diagnostics.Enums.TransferDirection
+      description: The direction of the memory transfer operation.
+    - id: bytes
+      type: System.Int64
+      description: The number of bytes transferred.
+    - id: duration
+      type: System.TimeSpan
+      description: The time taken to complete the transfer operation.
+    content.vb: Sub RecordMemoryTransfer(direction As TransferDirection, bytes As Long, duration As TimeSpan)
+  overload: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordMemoryTransfer*
+  nameWithType.vb: IGpuTelemetry.RecordMemoryTransfer(TransferDirection, Long, TimeSpan)
+  fullName.vb: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordMemoryTransfer(Orleans.GpuBridge.Diagnostics.Enums.TransferDirection, Long, System.TimeSpan)
+  name.vb: RecordMemoryTransfer(TransferDirection, Long, TimeSpan)
+- uid: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordMemoryAllocation(System.Int32,System.Int64,System.Boolean)
+  commentId: M:Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordMemoryAllocation(System.Int32,System.Int64,System.Boolean)
+  id: RecordMemoryAllocation(System.Int32,System.Int64,System.Boolean)
+  parent: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry
+  langs:
+  - csharp
+  - vb
+  name: RecordMemoryAllocation(int, long, bool)
+  nameWithType: IGpuTelemetry.RecordMemoryAllocation(int, long, bool)
+  fullName: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordMemoryAllocation(int, long, bool)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/Interfaces/IGpuTelemetry.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RecordMemoryAllocation
+    path: ../src/Orleans.GpuBridge.Diagnostics/Interfaces/IGpuTelemetry.cs
+    startLine: 62
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics.Interfaces
+  summary: >-
+    Records GPU memory allocation operations for memory usage tracking and leak detection.
+
+    This method tracks both successful allocations and failures to monitor memory health
+
+    and identify potential memory management issues.
+  example: []
+  syntax:
+    content: void RecordMemoryAllocation(int deviceIndex, long bytes, bool success)
+    parameters:
+    - id: deviceIndex
+      type: System.Int32
+      description: The index of the GPU device where allocation was attempted.
+    - id: bytes
+      type: System.Int64
+      description: The number of bytes requested for allocation.
+    - id: success
+      type: System.Boolean
+      description: Whether the allocation operation succeeded.
+    content.vb: Sub RecordMemoryAllocation(deviceIndex As Integer, bytes As Long, success As Boolean)
+  overload: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordMemoryAllocation*
+  nameWithType.vb: IGpuTelemetry.RecordMemoryAllocation(Integer, Long, Boolean)
+  fullName.vb: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordMemoryAllocation(Integer, Long, Boolean)
+  name.vb: RecordMemoryAllocation(Integer, Long, Boolean)
+- uid: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordAllocationFailure(System.Int32,System.Int64,System.String)
+  commentId: M:Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordAllocationFailure(System.Int32,System.Int64,System.String)
+  id: RecordAllocationFailure(System.Int32,System.Int64,System.String)
+  parent: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry
+  langs:
+  - csharp
+  - vb
+  name: RecordAllocationFailure(int, long, string)
+  nameWithType: IGpuTelemetry.RecordAllocationFailure(int, long, string)
+  fullName: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordAllocationFailure(int, long, string)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/Interfaces/IGpuTelemetry.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RecordAllocationFailure
+    path: ../src/Orleans.GpuBridge.Diagnostics/Interfaces/IGpuTelemetry.cs
+    startLine: 72
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics.Interfaces
+  summary: >-
+    Records detailed information about GPU memory allocation failures.
+
+    This provides diagnostic information for troubleshooting memory allocation issues
+
+    and understanding resource constraints.
+  example: []
+  syntax:
+    content: void RecordAllocationFailure(int deviceIndex, long requestedBytes, string reason)
+    parameters:
+    - id: deviceIndex
+      type: System.Int32
+      description: The index of the GPU device where allocation failed.
+    - id: requestedBytes
+      type: System.Int64
+      description: The number of bytes that were requested but could not be allocated.
+    - id: reason
+      type: System.String
+      description: A descriptive reason for the allocation failure (e.g., "Out of memory", "Fragmentation").
+    content.vb: Sub RecordAllocationFailure(deviceIndex As Integer, requestedBytes As Long, reason As String)
+  overload: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordAllocationFailure*
+  nameWithType.vb: IGpuTelemetry.RecordAllocationFailure(Integer, Long, String)
+  fullName.vb: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordAllocationFailure(Integer, Long, String)
+  name.vb: RecordAllocationFailure(Integer, Long, String)
+- uid: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordQueueDepth(System.Int32,System.Int32)
+  commentId: M:Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordQueueDepth(System.Int32,System.Int32)
+  id: RecordQueueDepth(System.Int32,System.Int32)
+  parent: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry
+  langs:
+  - csharp
+  - vb
+  name: RecordQueueDepth(int, int)
+  nameWithType: IGpuTelemetry.RecordQueueDepth(int, int)
+  fullName: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordQueueDepth(int, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/Interfaces/IGpuTelemetry.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RecordQueueDepth
+    path: ../src/Orleans.GpuBridge.Diagnostics/Interfaces/IGpuTelemetry.cs
+    startLine: 81
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics.Interfaces
+  summary: >-
+    Records the current depth of the GPU work queue for load monitoring.
+
+    This helps track work distribution and identify potential bottlenecks
+
+    or underutilization scenarios across GPU devices.
+  example: []
+  syntax:
+    content: void RecordQueueDepth(int deviceIndex, int depth)
+    parameters:
+    - id: deviceIndex
+      type: System.Int32
+      description: The index of the GPU device.
+    - id: depth
+      type: System.Int32
+      description: The number of queued work items waiting for execution.
+    content.vb: Sub RecordQueueDepth(deviceIndex As Integer, depth As Integer)
+  overload: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordQueueDepth*
+  nameWithType.vb: IGpuTelemetry.RecordQueueDepth(Integer, Integer)
+  fullName.vb: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordQueueDepth(Integer, Integer)
+  name.vb: RecordQueueDepth(Integer, Integer)
+- uid: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordGrainActivation(System.String,System.TimeSpan)
+  commentId: M:Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordGrainActivation(System.String,System.TimeSpan)
+  id: RecordGrainActivation(System.String,System.TimeSpan)
+  parent: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry
+  langs:
+  - csharp
+  - vb
+  name: RecordGrainActivation(string, TimeSpan)
+  nameWithType: IGpuTelemetry.RecordGrainActivation(string, TimeSpan)
+  fullName: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordGrainActivation(string, System.TimeSpan)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/Interfaces/IGpuTelemetry.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RecordGrainActivation
+    path: ../src/Orleans.GpuBridge.Diagnostics/Interfaces/IGpuTelemetry.cs
+    startLine: 90
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics.Interfaces
+  summary: >-
+    Records grain activation events for GPU-related grains.
+
+    This tracks the lifecycle of GPU-aware Orleans grains and their activation performance,
+
+    which is important for understanding grain placement and resource initialization overhead.
+  example: []
+  syntax:
+    content: void RecordGrainActivation(string grainType, TimeSpan duration)
+    parameters:
+    - id: grainType
+      type: System.String
+      description: The type name of the grain being activated (e.g., "GpuBatchGrain").
+    - id: duration
+      type: System.TimeSpan
+      description: The time taken to complete the grain activation process.
+    content.vb: Sub RecordGrainActivation(grainType As String, duration As TimeSpan)
+  overload: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordGrainActivation*
+  nameWithType.vb: IGpuTelemetry.RecordGrainActivation(String, TimeSpan)
+  fullName.vb: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordGrainActivation(String, System.TimeSpan)
+  name.vb: RecordGrainActivation(String, TimeSpan)
+- uid: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordPipelineStage(System.String,System.TimeSpan,System.Boolean)
+  commentId: M:Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordPipelineStage(System.String,System.TimeSpan,System.Boolean)
+  id: RecordPipelineStage(System.String,System.TimeSpan,System.Boolean)
+  parent: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry
+  langs:
+  - csharp
+  - vb
+  name: RecordPipelineStage(string, TimeSpan, bool)
+  nameWithType: IGpuTelemetry.RecordPipelineStage(string, TimeSpan, bool)
+  fullName: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordPipelineStage(string, System.TimeSpan, bool)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/Interfaces/IGpuTelemetry.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RecordPipelineStage
+    path: ../src/Orleans.GpuBridge.Diagnostics/Interfaces/IGpuTelemetry.cs
+    startLine: 100
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics.Interfaces
+  summary: >-
+    Records the execution of individual pipeline stages in GPU processing pipelines.
+
+    This provides detailed performance tracking for complex multi-stage GPU operations
+
+    and helps identify bottlenecks within processing pipelines.
+  example: []
+  syntax:
+    content: void RecordPipelineStage(string stageName, TimeSpan duration, bool success)
+    parameters:
+    - id: stageName
+      type: System.String
+      description: The name of the pipeline stage (e.g., "DataPreprocessing", "KernelExecution", "ResultAggregation").
+    - id: duration
+      type: System.TimeSpan
+      description: The time taken to complete the stage execution.
+    - id: success
+      type: System.Boolean
+      description: Whether the stage completed successfully without errors.
+    content.vb: Sub RecordPipelineStage(stageName As String, duration As TimeSpan, success As Boolean)
+  overload: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordPipelineStage*
+  nameWithType.vb: IGpuTelemetry.RecordPipelineStage(String, TimeSpan, Boolean)
+  fullName.vb: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordPipelineStage(String, System.TimeSpan, Boolean)
+  name.vb: RecordPipelineStage(String, TimeSpan, Boolean)
+references:
+- uid: Orleans.GpuBridge.Diagnostics.Interfaces
+  commentId: N:Orleans.GpuBridge.Diagnostics.Interfaces
+  href: Orleans.html
+  name: Orleans.GpuBridge.Diagnostics.Interfaces
+  nameWithType: Orleans.GpuBridge.Diagnostics.Interfaces
+  fullName: Orleans.GpuBridge.Diagnostics.Interfaces
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Diagnostics
+    name: Diagnostics
+    href: Orleans.GpuBridge.Diagnostics.html
+  - name: .
+  - uid: Orleans.GpuBridge.Diagnostics.Interfaces
+    name: Interfaces
+    href: Orleans.GpuBridge.Diagnostics.Interfaces.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Diagnostics
+    name: Diagnostics
+    href: Orleans.GpuBridge.Diagnostics.html
+  - name: .
+  - uid: Orleans.GpuBridge.Diagnostics.Interfaces
+    name: Interfaces
+    href: Orleans.GpuBridge.Diagnostics.Interfaces.html
+- uid: System.Diagnostics.Activity
+  commentId: T:System.Diagnostics.Activity
+  parent: System.Diagnostics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.diagnostics.activity
+  name: Activity
+  nameWithType: Activity
+  fullName: System.Diagnostics.Activity
+- uid: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.StartKernelExecution*
+  commentId: Overload:Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.StartKernelExecution
+  href: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.html#Orleans_GpuBridge_Diagnostics_Interfaces_IGpuTelemetry_StartKernelExecution_System_String_System_Int32_
+  name: StartKernelExecution
+  nameWithType: IGpuTelemetry.StartKernelExecution
+  fullName: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.StartKernelExecution
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Diagnostics
+  commentId: N:System.Diagnostics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Diagnostics
+  nameWithType: System.Diagnostics
+  fullName: System.Diagnostics
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Diagnostics
+    name: Diagnostics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Diagnostics
+    name: Diagnostics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordKernelExecution*
+  commentId: Overload:Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordKernelExecution
+  href: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.html#Orleans_GpuBridge_Diagnostics_Interfaces_IGpuTelemetry_RecordKernelExecution_System_String_System_Int32_System_TimeSpan_System_Boolean_
+  name: RecordKernelExecution
+  nameWithType: IGpuTelemetry.RecordKernelExecution
+  fullName: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordKernelExecution
+- uid: System.TimeSpan
+  commentId: T:System.TimeSpan
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan
+  nameWithType: TimeSpan
+  fullName: System.TimeSpan
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordMemoryTransfer*
+  commentId: Overload:Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordMemoryTransfer
+  href: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.html#Orleans_GpuBridge_Diagnostics_Interfaces_IGpuTelemetry_RecordMemoryTransfer_Orleans_GpuBridge_Diagnostics_Enums_TransferDirection_System_Int64_System_TimeSpan_
+  name: RecordMemoryTransfer
+  nameWithType: IGpuTelemetry.RecordMemoryTransfer
+  fullName: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordMemoryTransfer
+- uid: Orleans.GpuBridge.Diagnostics.Enums.TransferDirection
+  commentId: T:Orleans.GpuBridge.Diagnostics.Enums.TransferDirection
+  parent: Orleans.GpuBridge.Diagnostics.Enums
+  href: Orleans.GpuBridge.Diagnostics.Enums.TransferDirection.html
+  name: TransferDirection
+  nameWithType: TransferDirection
+  fullName: Orleans.GpuBridge.Diagnostics.Enums.TransferDirection
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Diagnostics.Enums
+  commentId: N:Orleans.GpuBridge.Diagnostics.Enums
+  href: Orleans.html
+  name: Orleans.GpuBridge.Diagnostics.Enums
+  nameWithType: Orleans.GpuBridge.Diagnostics.Enums
+  fullName: Orleans.GpuBridge.Diagnostics.Enums
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Diagnostics
+    name: Diagnostics
+    href: Orleans.GpuBridge.Diagnostics.html
+  - name: .
+  - uid: Orleans.GpuBridge.Diagnostics.Enums
+    name: Enums
+    href: Orleans.GpuBridge.Diagnostics.Enums.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Diagnostics
+    name: Diagnostics
+    href: Orleans.GpuBridge.Diagnostics.html
+  - name: .
+  - uid: Orleans.GpuBridge.Diagnostics.Enums
+    name: Enums
+    href: Orleans.GpuBridge.Diagnostics.Enums.html
+- uid: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordMemoryAllocation*
+  commentId: Overload:Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordMemoryAllocation
+  href: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.html#Orleans_GpuBridge_Diagnostics_Interfaces_IGpuTelemetry_RecordMemoryAllocation_System_Int32_System_Int64_System_Boolean_
+  name: RecordMemoryAllocation
+  nameWithType: IGpuTelemetry.RecordMemoryAllocation
+  fullName: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordMemoryAllocation
+- uid: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordAllocationFailure*
+  commentId: Overload:Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordAllocationFailure
+  href: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.html#Orleans_GpuBridge_Diagnostics_Interfaces_IGpuTelemetry_RecordAllocationFailure_System_Int32_System_Int64_System_String_
+  name: RecordAllocationFailure
+  nameWithType: IGpuTelemetry.RecordAllocationFailure
+  fullName: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordAllocationFailure
+- uid: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordQueueDepth*
+  commentId: Overload:Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordQueueDepth
+  href: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.html#Orleans_GpuBridge_Diagnostics_Interfaces_IGpuTelemetry_RecordQueueDepth_System_Int32_System_Int32_
+  name: RecordQueueDepth
+  nameWithType: IGpuTelemetry.RecordQueueDepth
+  fullName: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordQueueDepth
+- uid: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordGrainActivation*
+  commentId: Overload:Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordGrainActivation
+  href: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.html#Orleans_GpuBridge_Diagnostics_Interfaces_IGpuTelemetry_RecordGrainActivation_System_String_System_TimeSpan_
+  name: RecordGrainActivation
+  nameWithType: IGpuTelemetry.RecordGrainActivation
+  fullName: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordGrainActivation
+- uid: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordPipelineStage*
+  commentId: Overload:Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordPipelineStage
+  href: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.html#Orleans_GpuBridge_Diagnostics_Interfaces_IGpuTelemetry_RecordPipelineStage_System_String_System_TimeSpan_System_Boolean_
+  name: RecordPipelineStage
+  nameWithType: IGpuTelemetry.RecordPipelineStage
+  fullName: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.RecordPipelineStage

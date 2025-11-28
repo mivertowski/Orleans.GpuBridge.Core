@@ -1,0 +1,1110 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager
+  commentId: T:Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager
+  id: GpuMemoryManager
+  parent: Orleans.GpuBridge.Runtime.Memory
+  children:
+  - Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.#ctor(Orleans.GpuBridge.Runtime.Memory.GpuBufferPool,Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager})
+  - Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.AllocateAndCopyAsync``1(``0[],System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.AllocateBuffer``1(System.Int32)
+  - Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.ClearPool
+  - Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.CopyFromGpuAsync``1(Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle,``0[],System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.CopyToGpuAsync``1(``0[],Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.Dispose
+  - Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GetMemoryPressure
+  - Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GetPoolHitRate
+  - Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GetStatistics
+  langs:
+  - csharp
+  - vb
+  name: GpuMemoryManager
+  nameWithType: GpuMemoryManager
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GpuMemoryManager
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryManager.cs
+    startLine: 33
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: High-level GPU memory management with zero-copy transfers and automatic pooling.
+  remarks: >-
+    <p>
+
+    GpuMemoryManager provides a convenient API for GPU memory operations:
+
+    - Zero-copy transfers (CPU ↔ GPU)
+
+    - Automatic buffer pooling
+
+    - Memory pressure monitoring
+
+    - Async operations for non-blocking transfers
+
+    </p>
+
+    <p>
+
+    Performance characteristics:
+
+    - Pooled allocation: ~100-500ns (vs ~10-50μs for cold allocation)
+
+    - Copy to GPU: ~1-10μs/MB (PCIe Gen3: 12-16 GB/s)
+
+    - Copy from GPU: ~1-10μs/MB
+
+    - Zero-copy (pinned memory): ~0.5-5μs/MB (up to 2× faster)
+
+    </p>
+  example: []
+  syntax:
+    content: 'public sealed class GpuMemoryManager : IDisposable'
+    content.vb: Public NotInheritable Class GpuMemoryManager Implements IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.#ctor(Orleans.GpuBridge.Runtime.Memory.GpuBufferPool,Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager})
+  commentId: M:Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.#ctor(Orleans.GpuBridge.Runtime.Memory.GpuBufferPool,Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager})
+  id: '#ctor(Orleans.GpuBridge.Runtime.Memory.GpuBufferPool,Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager})'
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager
+  langs:
+  - csharp
+  - vb
+  name: GpuMemoryManager(GpuBufferPool, ILogger<GpuMemoryManager>)
+  nameWithType: GpuMemoryManager.GpuMemoryManager(GpuBufferPool, ILogger<GpuMemoryManager>)
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GpuMemoryManager(Orleans.GpuBridge.Runtime.Memory.GpuBufferPool, Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager>)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryManager.cs
+    startLine: 48
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Initializes a new GPU memory manager.
+  example: []
+  syntax:
+    content: public GpuMemoryManager(GpuBufferPool bufferPool, ILogger<GpuMemoryManager> logger)
+    parameters:
+    - id: bufferPool
+      type: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool
+      description: GPU buffer pool instance.
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager}
+      description: Logger instance.
+    content.vb: Public Sub New(bufferPool As GpuBufferPool, logger As ILogger(Of GpuMemoryManager))
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.#ctor*
+  nameWithType.vb: GpuMemoryManager.New(GpuBufferPool, ILogger(Of GpuMemoryManager))
+  fullName.vb: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.New(Orleans.GpuBridge.Runtime.Memory.GpuBufferPool, Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager))
+  name.vb: New(GpuBufferPool, ILogger(Of GpuMemoryManager))
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.AllocateBuffer``1(System.Int32)
+  commentId: M:Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.AllocateBuffer``1(System.Int32)
+  id: AllocateBuffer``1(System.Int32)
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager
+  langs:
+  - csharp
+  - vb
+  name: AllocateBuffer<T>(int)
+  nameWithType: GpuMemoryManager.AllocateBuffer<T>(int)
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.AllocateBuffer<T>(int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AllocateBuffer
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryManager.cs
+    startLine: 62
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Allocates GPU memory for an array of unmanaged elements.
+  example: []
+  syntax:
+    content: 'public GpuMemoryHandle AllocateBuffer<T>(int count) where T : unmanaged'
+    parameters:
+    - id: count
+      type: System.Int32
+      description: Number of elements.
+    typeParameters:
+    - id: T
+      description: Unmanaged element type.
+    return:
+      type: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+      description: GPU memory handle.
+    content.vb: Public Function AllocateBuffer(Of T As Structure)(count As Integer) As GpuMemoryHandle
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.AllocateBuffer*
+  nameWithType.vb: GpuMemoryManager.AllocateBuffer(Of T)(Integer)
+  fullName.vb: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.AllocateBuffer(Of T)(Integer)
+  name.vb: AllocateBuffer(Of T)(Integer)
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.CopyToGpuAsync``1(``0[],Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.CopyToGpuAsync``1(``0[],Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle,System.Threading.CancellationToken)
+  id: CopyToGpuAsync``1(``0[],Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager
+  langs:
+  - csharp
+  - vb
+  name: CopyToGpuAsync<T>(T[], GpuMemoryHandle, CancellationToken)
+  nameWithType: GpuMemoryManager.CopyToGpuAsync<T>(T[], GpuMemoryHandle, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.CopyToGpuAsync<T>(T[], Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CopyToGpuAsync
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryManager.cs
+    startLine: 81
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Copies data from CPU to GPU (zero-copy when possible).
+  example: []
+  syntax:
+    content: 'public Task CopyToGpuAsync<T>(T[] source, GpuMemoryHandle destination, CancellationToken cancellationToken = default) where T : unmanaged'
+    parameters:
+    - id: source
+      type: '{T}[]'
+      description: Source CPU array.
+    - id: destination
+      type: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+      description: Destination GPU memory handle.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    typeParameters:
+    - id: T
+      description: Unmanaged element type.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function CopyToGpuAsync(Of T As Structure)(source As T(), destination As GpuMemoryHandle, cancellationToken As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.CopyToGpuAsync*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Destination buffer is too small.
+  nameWithType.vb: GpuMemoryManager.CopyToGpuAsync(Of T)(T(), GpuMemoryHandle, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.CopyToGpuAsync(Of T)(T(), Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle, System.Threading.CancellationToken)
+  name.vb: CopyToGpuAsync(Of T)(T(), GpuMemoryHandle, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.CopyFromGpuAsync``1(Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle,``0[],System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.CopyFromGpuAsync``1(Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle,``0[],System.Threading.CancellationToken)
+  id: CopyFromGpuAsync``1(Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle,``0[],System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager
+  langs:
+  - csharp
+  - vb
+  name: CopyFromGpuAsync<T>(GpuMemoryHandle, T[], CancellationToken)
+  nameWithType: GpuMemoryManager.CopyFromGpuAsync<T>(GpuMemoryHandle, T[], CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.CopyFromGpuAsync<T>(Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle, T[], System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CopyFromGpuAsync
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryManager.cs
+    startLine: 161
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Copies data from GPU to CPU.
+  example: []
+  syntax:
+    content: 'public Task CopyFromGpuAsync<T>(GpuMemoryHandle source, T[] destination, CancellationToken cancellationToken = default) where T : unmanaged'
+    parameters:
+    - id: source
+      type: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+      description: Source GPU memory handle.
+    - id: destination
+      type: '{T}[]'
+      description: Destination CPU array.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    typeParameters:
+    - id: T
+      description: Unmanaged element type.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function CopyFromGpuAsync(Of T As Structure)(source As GpuMemoryHandle, destination As T(), cancellationToken As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.CopyFromGpuAsync*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Arrays are different sizes.
+  nameWithType.vb: GpuMemoryManager.CopyFromGpuAsync(Of T)(GpuMemoryHandle, T(), CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.CopyFromGpuAsync(Of T)(Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle, T(), System.Threading.CancellationToken)
+  name.vb: CopyFromGpuAsync(Of T)(GpuMemoryHandle, T(), CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.AllocateAndCopyAsync``1(``0[],System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.AllocateAndCopyAsync``1(``0[],System.Threading.CancellationToken)
+  id: AllocateAndCopyAsync``1(``0[],System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager
+  langs:
+  - csharp
+  - vb
+  name: AllocateAndCopyAsync<T>(T[], CancellationToken)
+  nameWithType: GpuMemoryManager.AllocateAndCopyAsync<T>(T[], CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.AllocateAndCopyAsync<T>(T[], System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AllocateAndCopyAsync
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryManager.cs
+    startLine: 240
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Allocates GPU memory and copies data in one operation.
+  example: []
+  syntax:
+    content: 'public Task<GpuMemoryHandle> AllocateAndCopyAsync<T>(T[] source, CancellationToken cancellationToken = default) where T : unmanaged'
+    parameters:
+    - id: source
+      type: '{T}[]'
+      description: Source CPU array.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    typeParameters:
+    - id: T
+      description: Unmanaged element type.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle}
+      description: GPU memory handle with copied data.
+    content.vb: Public Function AllocateAndCopyAsync(Of T As Structure)(source As T(), cancellationToken As CancellationToken = Nothing) As Task(Of GpuMemoryHandle)
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.AllocateAndCopyAsync*
+  nameWithType.vb: GpuMemoryManager.AllocateAndCopyAsync(Of T)(T(), CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.AllocateAndCopyAsync(Of T)(T(), System.Threading.CancellationToken)
+  name.vb: AllocateAndCopyAsync(Of T)(T(), CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GetMemoryPressure
+  commentId: M:Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GetMemoryPressure
+  id: GetMemoryPressure
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager
+  langs:
+  - csharp
+  - vb
+  name: GetMemoryPressure()
+  nameWithType: GpuMemoryManager.GetMemoryPressure()
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GetMemoryPressure()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetMemoryPressure
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryManager.cs
+    startLine: 265
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Checks current memory pressure level.
+  example: []
+  syntax:
+    content: public MemoryPressureLevel GetMemoryPressure()
+    return:
+      type: Orleans.GpuBridge.Runtime.Memory.MemoryPressureLevel
+      description: Memory pressure level.
+    content.vb: Public Function GetMemoryPressure() As MemoryPressureLevel
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GetMemoryPressure*
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GetStatistics
+  commentId: M:Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GetStatistics
+  id: GetStatistics
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager
+  langs:
+  - csharp
+  - vb
+  name: GetStatistics()
+  nameWithType: GpuMemoryManager.GetStatistics()
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GetStatistics()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetStatistics
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryManager.cs
+    startLine: 306
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Gets current GPU memory statistics.
+  example: []
+  syntax:
+    content: public GpuMemoryStats GetStatistics()
+    return:
+      type: Orleans.GpuBridge.Runtime.Memory.GpuMemoryStats
+      description: Memory statistics.
+    content.vb: Public Function GetStatistics() As GpuMemoryStats
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GetStatistics*
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GetPoolHitRate
+  commentId: M:Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GetPoolHitRate
+  id: GetPoolHitRate
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager
+  langs:
+  - csharp
+  - vb
+  name: GetPoolHitRate()
+  nameWithType: GpuMemoryManager.GetPoolHitRate()
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GetPoolHitRate()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetPoolHitRate
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryManager.cs
+    startLine: 312
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Gets buffer pool hit rate (0-1).
+  example: []
+  syntax:
+    content: public double GetPoolHitRate()
+    return:
+      type: System.Double
+      description: Hit rate percentage.
+    content.vb: Public Function GetPoolHitRate() As Double
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GetPoolHitRate*
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.ClearPool
+  commentId: M:Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.ClearPool
+  id: ClearPool
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager
+  langs:
+  - csharp
+  - vb
+  name: ClearPool()
+  nameWithType: GpuMemoryManager.ClearPool()
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.ClearPool()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ClearPool
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryManager.cs
+    startLine: 317
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Clears all pooled buffers (useful for reducing memory footprint).
+  example: []
+  syntax:
+    content: public void ClearPool()
+    content.vb: Public Sub ClearPool()
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.ClearPool*
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.Dispose
+  commentId: M:Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.Dispose
+  id: Dispose
+  parent: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: GpuMemoryManager.Dispose()
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.Dispose()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryManager.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Dispose
+    path: ../src/Orleans.GpuBridge.Runtime/Memory/GpuMemoryManager.cs
+    startLine: 326
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Memory
+  summary: Disposes the GPU memory manager and releases all memory.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+references:
+- uid: Orleans.GpuBridge.Runtime.Memory
+  commentId: N:Orleans.GpuBridge.Runtime.Memory
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Memory
+  nameWithType: Orleans.GpuBridge.Runtime.Memory
+  fullName: Orleans.GpuBridge.Runtime.Memory
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Memory
+    name: Memory
+    href: Orleans.GpuBridge.Runtime.Memory.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Memory
+    name: Memory
+    href: Orleans.GpuBridge.Runtime.Memory.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.#ctor
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.html#Orleans_GpuBridge_Runtime_Memory_GpuMemoryManager__ctor_Orleans_GpuBridge_Runtime_Memory_GpuBufferPool_Microsoft_Extensions_Logging_ILogger_Orleans_GpuBridge_Runtime_Memory_GpuMemoryManager__
+  name: GpuMemoryManager
+  nameWithType: GpuMemoryManager.GpuMemoryManager
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GpuMemoryManager
+  nameWithType.vb: GpuMemoryManager.New
+  fullName.vb: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.New
+  name.vb: New
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool
+  commentId: T:Orleans.GpuBridge.Runtime.Memory.GpuBufferPool
+  parent: Orleans.GpuBridge.Runtime.Memory
+  href: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool.html
+  name: GpuBufferPool
+  nameWithType: GpuBufferPool
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuBufferPool
+- uid: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<GpuMemoryManager>
+  nameWithType: ILogger<GpuMemoryManager>
+  fullName: Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager>
+  nameWithType.vb: ILogger(Of GpuMemoryManager)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager)
+  name.vb: ILogger(Of GpuMemoryManager)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager
+    name: GpuMemoryManager
+    href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager
+    name: GpuMemoryManager
+    href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.html
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.AllocateBuffer*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.AllocateBuffer
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.html#Orleans_GpuBridge_Runtime_Memory_GpuMemoryManager_AllocateBuffer__1_System_Int32_
+  name: AllocateBuffer
+  nameWithType: GpuMemoryManager.AllocateBuffer
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.AllocateBuffer
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+  commentId: T:Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+  parent: Orleans.GpuBridge.Runtime.Memory
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.html
+  name: GpuMemoryHandle
+  nameWithType: GpuMemoryHandle
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+- uid: System.ArgumentException
+  commentId: T:System.ArgumentException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentexception
+  name: ArgumentException
+  nameWithType: ArgumentException
+  fullName: System.ArgumentException
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.CopyToGpuAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.CopyToGpuAsync
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.html#Orleans_GpuBridge_Runtime_Memory_GpuMemoryManager_CopyToGpuAsync__1___0___Orleans_GpuBridge_Runtime_Memory_GpuMemoryHandle_System_Threading_CancellationToken_
+  name: CopyToGpuAsync
+  nameWithType: GpuMemoryManager.CopyToGpuAsync
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.CopyToGpuAsync
+- uid: '{T}[]'
+  isExternal: true
+  name: T[]
+  nameWithType: T[]
+  fullName: T[]
+  nameWithType.vb: T()
+  fullName.vb: T()
+  name.vb: T()
+  spec.csharp:
+  - name: T
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - name: T
+  - name: (
+  - name: )
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.CopyFromGpuAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.CopyFromGpuAsync
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.html#Orleans_GpuBridge_Runtime_Memory_GpuMemoryManager_CopyFromGpuAsync__1_Orleans_GpuBridge_Runtime_Memory_GpuMemoryHandle___0___System_Threading_CancellationToken_
+  name: CopyFromGpuAsync
+  nameWithType: GpuMemoryManager.CopyFromGpuAsync
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.CopyFromGpuAsync
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.AllocateAndCopyAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.AllocateAndCopyAsync
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.html#Orleans_GpuBridge_Runtime_Memory_GpuMemoryManager_AllocateAndCopyAsync__1___0___System_Threading_CancellationToken_
+  name: AllocateAndCopyAsync
+  nameWithType: GpuMemoryManager.AllocateAndCopyAsync
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.AllocateAndCopyAsync
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<GpuMemoryHandle>
+  nameWithType: Task<GpuMemoryHandle>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle>
+  nameWithType.vb: Task(Of GpuMemoryHandle)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle)
+  name.vb: Task(Of GpuMemoryHandle)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+    name: GpuMemoryHandle
+    href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle
+    name: GpuMemoryHandle
+    href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryHandle.html
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GetMemoryPressure*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GetMemoryPressure
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.html#Orleans_GpuBridge_Runtime_Memory_GpuMemoryManager_GetMemoryPressure
+  name: GetMemoryPressure
+  nameWithType: GpuMemoryManager.GetMemoryPressure
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GetMemoryPressure
+- uid: Orleans.GpuBridge.Runtime.Memory.MemoryPressureLevel
+  commentId: T:Orleans.GpuBridge.Runtime.Memory.MemoryPressureLevel
+  parent: Orleans.GpuBridge.Runtime.Memory
+  href: Orleans.GpuBridge.Runtime.Memory.MemoryPressureLevel.html
+  name: MemoryPressureLevel
+  nameWithType: MemoryPressureLevel
+  fullName: Orleans.GpuBridge.Runtime.Memory.MemoryPressureLevel
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GetStatistics*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GetStatistics
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.html#Orleans_GpuBridge_Runtime_Memory_GpuMemoryManager_GetStatistics
+  name: GetStatistics
+  nameWithType: GpuMemoryManager.GetStatistics
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GetStatistics
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryStats
+  commentId: T:Orleans.GpuBridge.Runtime.Memory.GpuMemoryStats
+  parent: Orleans.GpuBridge.Runtime.Memory
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryStats.html
+  name: GpuMemoryStats
+  nameWithType: GpuMemoryStats
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryStats
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GetPoolHitRate*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GetPoolHitRate
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.html#Orleans_GpuBridge_Runtime_Memory_GpuMemoryManager_GetPoolHitRate
+  name: GetPoolHitRate
+  nameWithType: GpuMemoryManager.GetPoolHitRate
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.GetPoolHitRate
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.ClearPool*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.ClearPool
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.html#Orleans_GpuBridge_Runtime_Memory_GpuMemoryManager_ClearPool
+  name: ClearPool
+  nameWithType: GpuMemoryManager.ClearPool
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.ClearPool
+- uid: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.Dispose*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.Dispose
+  href: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.html#Orleans_GpuBridge_Runtime_Memory_GpuMemoryManager_Dispose
+  name: Dispose
+  nameWithType: GpuMemoryManager.Dispose
+  fullName: Orleans.GpuBridge.Runtime.Memory.GpuMemoryManager.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )

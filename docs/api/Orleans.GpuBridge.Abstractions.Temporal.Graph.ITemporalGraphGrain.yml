@@ -1,0 +1,1168 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain
+  id: ITemporalGraphGrain
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  children:
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.AddEdgeAsync(Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData)
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.AddEdgesBatchAsync(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData})
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.ClearAsync
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.ContainsNodeAsync(System.UInt64)
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.FindPathsAsync(Orleans.GpuBridge.Abstractions.Temporal.Graph.PathFindingRequest)
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetAllEdgesInRangeAsync(System.Int64,System.Int64,System.Int32)
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetEdgesAsync(System.UInt64,System.Int64,System.Int64)
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetNodesAsync(System.Int32)
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetReachableNodesAsync(System.UInt64,System.Int64,System.Int64,System.Int32)
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetSnapshotAsync(System.Int64,System.Int32)
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetStatisticsAsync
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.PersistAsync
+  langs:
+  - csharp
+  - vb
+  name: ITemporalGraphGrain
+  nameWithType: ITemporalGraphGrain
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain
+  type: Interface
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ITemporalGraphGrain
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+    startLine: 29
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Orleans grain interface for distributed temporal graph storage.
+  remarks: >-
+    <p>
+
+    This grain provides distributed, persistent temporal graph storage with
+
+    Orleans-native replication and fault tolerance.
+
+    </p>
+
+    <p>
+
+    <strong>Use Cases:</strong>
+
+    <ul><li>Financial transaction graphs with time-windowed queries</li><li>Social network evolution over time</li><li>Communication pattern analysis</li><li>Causally-ordered event graphs</li></ul>
+
+    </p>
+  example: []
+  syntax:
+    content: 'public interface ITemporalGraphGrain : IGrainWithStringKey, IGrain, IAddressable'
+    content.vb: Public Interface ITemporalGraphGrain Inherits IGrainWithStringKey, IGrain, IAddressable
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.AddEdgeAsync(Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.AddEdgeAsync(Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData)
+  id: AddEdgeAsync(Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain
+  langs:
+  - csharp
+  - vb
+  name: AddEdgeAsync(TemporalEdgeData)
+  nameWithType: ITemporalGraphGrain.AddEdgeAsync(TemporalEdgeData)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.AddEdgeAsync(Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AddEdgeAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+    startLine: 36
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Adds a temporal edge to the graph.
+  example: []
+  syntax:
+    content: Task<EdgeAddResult> AddEdgeAsync(TemporalEdgeData edge)
+    parameters:
+    - id: edge
+      type: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData
+      description: The temporal edge to add.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Graph.EdgeAddResult}
+      description: Result of the add operation.
+    content.vb: Function AddEdgeAsync(edge As TemporalEdgeData) As Task(Of EdgeAddResult)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.AddEdgeAsync*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.AddEdgesBatchAsync(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData})
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.AddEdgesBatchAsync(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData})
+  id: AddEdgesBatchAsync(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData})
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain
+  langs:
+  - csharp
+  - vb
+  name: AddEdgesBatchAsync(IReadOnlyList<TemporalEdgeData>)
+  nameWithType: ITemporalGraphGrain.AddEdgesBatchAsync(IReadOnlyList<TemporalEdgeData>)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.AddEdgesBatchAsync(System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData>)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AddEdgesBatchAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+    startLine: 43
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Adds multiple edges in a batch operation.
+  example: []
+  syntax:
+    content: Task<BatchEdgeResult> AddEdgesBatchAsync(IReadOnlyList<TemporalEdgeData> edges)
+    parameters:
+    - id: edges
+      type: System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData}
+      description: Edges to add.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Graph.BatchEdgeResult}
+      description: Result of the batch operation.
+    content.vb: Function AddEdgesBatchAsync(edges As IReadOnlyList(Of TemporalEdgeData)) As Task(Of BatchEdgeResult)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.AddEdgesBatchAsync*
+  nameWithType.vb: ITemporalGraphGrain.AddEdgesBatchAsync(IReadOnlyList(Of TemporalEdgeData))
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.AddEdgesBatchAsync(System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData))
+  name.vb: AddEdgesBatchAsync(IReadOnlyList(Of TemporalEdgeData))
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetEdgesAsync(System.UInt64,System.Int64,System.Int64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetEdgesAsync(System.UInt64,System.Int64,System.Int64)
+  id: GetEdgesAsync(System.UInt64,System.Int64,System.Int64)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain
+  langs:
+  - csharp
+  - vb
+  name: GetEdgesAsync(ulong, long, long)
+  nameWithType: ITemporalGraphGrain.GetEdgesAsync(ulong, long, long)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetEdgesAsync(ulong, long, long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetEdgesAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+    startLine: 52
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Gets edges from a source node within a time range.
+  example: []
+  syntax:
+    content: Task<EdgeQueryResult> GetEdgesAsync(ulong sourceId, long startTimeNanos, long endTimeNanos)
+    parameters:
+    - id: sourceId
+      type: System.UInt64
+      description: Source node identifier.
+    - id: startTimeNanos
+      type: System.Int64
+      description: Start of query range (nanoseconds).
+    - id: endTimeNanos
+      type: System.Int64
+      description: End of query range (nanoseconds).
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Graph.EdgeQueryResult}
+      description: Query result with matching edges.
+    content.vb: Function GetEdgesAsync(sourceId As ULong, startTimeNanos As Long, endTimeNanos As Long) As Task(Of EdgeQueryResult)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetEdgesAsync*
+  nameWithType.vb: ITemporalGraphGrain.GetEdgesAsync(ULong, Long, Long)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetEdgesAsync(ULong, Long, Long)
+  name.vb: GetEdgesAsync(ULong, Long, Long)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetAllEdgesInRangeAsync(System.Int64,System.Int64,System.Int32)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetAllEdgesInRangeAsync(System.Int64,System.Int64,System.Int32)
+  id: GetAllEdgesInRangeAsync(System.Int64,System.Int64,System.Int32)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain
+  langs:
+  - csharp
+  - vb
+  name: GetAllEdgesInRangeAsync(long, long, int)
+  nameWithType: ITemporalGraphGrain.GetAllEdgesInRangeAsync(long, long, int)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetAllEdgesInRangeAsync(long, long, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetAllEdgesInRangeAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+    startLine: 64
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Gets all edges in a time range across all nodes.
+  example: []
+  syntax:
+    content: Task<EdgeQueryResult> GetAllEdgesInRangeAsync(long startTimeNanos, long endTimeNanos, int maxResults = 1000)
+    parameters:
+    - id: startTimeNanos
+      type: System.Int64
+      description: Start of query range (nanoseconds).
+    - id: endTimeNanos
+      type: System.Int64
+      description: End of query range (nanoseconds).
+    - id: maxResults
+      type: System.Int32
+      description: Maximum results to return.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Graph.EdgeQueryResult}
+      description: Query result with matching edges.
+    content.vb: Function GetAllEdgesInRangeAsync(startTimeNanos As Long, endTimeNanos As Long, maxResults As Integer = 1000) As Task(Of EdgeQueryResult)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetAllEdgesInRangeAsync*
+  nameWithType.vb: ITemporalGraphGrain.GetAllEdgesInRangeAsync(Long, Long, Integer)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetAllEdgesInRangeAsync(Long, Long, Integer)
+  name.vb: GetAllEdgesInRangeAsync(Long, Long, Integer)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.FindPathsAsync(Orleans.GpuBridge.Abstractions.Temporal.Graph.PathFindingRequest)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.FindPathsAsync(Orleans.GpuBridge.Abstractions.Temporal.Graph.PathFindingRequest)
+  id: FindPathsAsync(Orleans.GpuBridge.Abstractions.Temporal.Graph.PathFindingRequest)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain
+  langs:
+  - csharp
+  - vb
+  name: FindPathsAsync(PathFindingRequest)
+  nameWithType: ITemporalGraphGrain.FindPathsAsync(PathFindingRequest)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.FindPathsAsync(Orleans.GpuBridge.Abstractions.Temporal.Graph.PathFindingRequest)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: FindPathsAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+    startLine: 74
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Finds temporal paths between two nodes.
+  example: []
+  syntax:
+    content: Task<PathFindingResult> FindPathsAsync(PathFindingRequest request)
+    parameters:
+    - id: request
+      type: Orleans.GpuBridge.Abstractions.Temporal.Graph.PathFindingRequest
+      description: Path finding request with constraints.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Graph.PathFindingResult}
+      description: Result containing found paths.
+    content.vb: Function FindPathsAsync(request As PathFindingRequest) As Task(Of PathFindingResult)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.FindPathsAsync*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetSnapshotAsync(System.Int64,System.Int32)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetSnapshotAsync(System.Int64,System.Int32)
+  id: GetSnapshotAsync(System.Int64,System.Int32)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain
+  langs:
+  - csharp
+  - vb
+  name: GetSnapshotAsync(long, int)
+  nameWithType: ITemporalGraphGrain.GetSnapshotAsync(long, int)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetSnapshotAsync(long, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetSnapshotAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+    startLine: 82
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Gets the graph snapshot at a specific time.
+  example: []
+  syntax:
+    content: Task<SnapshotResult> GetSnapshotAsync(long timeNanos, int maxEdges = 10000)
+    parameters:
+    - id: timeNanos
+      type: System.Int64
+      description: Point in time (nanoseconds).
+    - id: maxEdges
+      type: System.Int32
+      description: Maximum edges to return.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Graph.SnapshotResult}
+      description: Snapshot result with active edges.
+    content.vb: Function GetSnapshotAsync(timeNanos As Long, maxEdges As Integer = 10000) As Task(Of SnapshotResult)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetSnapshotAsync*
+  nameWithType.vb: ITemporalGraphGrain.GetSnapshotAsync(Long, Integer)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetSnapshotAsync(Long, Integer)
+  name.vb: GetSnapshotAsync(Long, Integer)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetReachableNodesAsync(System.UInt64,System.Int64,System.Int64,System.Int32)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetReachableNodesAsync(System.UInt64,System.Int64,System.Int64,System.Int32)
+  id: GetReachableNodesAsync(System.UInt64,System.Int64,System.Int64,System.Int32)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain
+  langs:
+  - csharp
+  - vb
+  name: GetReachableNodesAsync(ulong, long, long, int)
+  nameWithType: ITemporalGraphGrain.GetReachableNodesAsync(ulong, long, long, int)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetReachableNodesAsync(ulong, long, long, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetReachableNodesAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+    startLine: 92
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Computes reachable nodes from a starting point.
+  example: []
+  syntax:
+    content: Task<ReachabilityResult> GetReachableNodesAsync(ulong startNode, long startTimeNanos, long maxTimeSpanNanos, int maxNodes = 10000)
+    parameters:
+    - id: startNode
+      type: System.UInt64
+      description: Starting node identifier.
+    - id: startTimeNanos
+      type: System.Int64
+      description: Start time in nanoseconds.
+    - id: maxTimeSpanNanos
+      type: System.Int64
+      description: Maximum time span in nanoseconds.
+    - id: maxNodes
+      type: System.Int32
+      description: Maximum nodes to return.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Graph.ReachabilityResult}
+      description: Reachability result.
+    content.vb: Function GetReachableNodesAsync(startNode As ULong, startTimeNanos As Long, maxTimeSpanNanos As Long, maxNodes As Integer = 10000) As Task(Of ReachabilityResult)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetReachableNodesAsync*
+  nameWithType.vb: ITemporalGraphGrain.GetReachableNodesAsync(ULong, Long, Long, Integer)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetReachableNodesAsync(ULong, Long, Long, Integer)
+  name.vb: GetReachableNodesAsync(ULong, Long, Long, Integer)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetStatisticsAsync
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetStatisticsAsync
+  id: GetStatisticsAsync
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain
+  langs:
+  - csharp
+  - vb
+  name: GetStatisticsAsync()
+  nameWithType: ITemporalGraphGrain.GetStatisticsAsync()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetStatisticsAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetStatisticsAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+    startLine: 102
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Gets graph statistics.
+  example: []
+  syntax:
+    content: Task<TemporalGraphStatistics> GetStatisticsAsync()
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalGraphStatistics}
+      description: Current graph statistics.
+    content.vb: Function GetStatisticsAsync() As Task(Of TemporalGraphStatistics)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetStatisticsAsync*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.ContainsNodeAsync(System.UInt64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.ContainsNodeAsync(System.UInt64)
+  id: ContainsNodeAsync(System.UInt64)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain
+  langs:
+  - csharp
+  - vb
+  name: ContainsNodeAsync(ulong)
+  nameWithType: ITemporalGraphGrain.ContainsNodeAsync(ulong)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.ContainsNodeAsync(ulong)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ContainsNodeAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+    startLine: 109
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Checks if a node exists in the graph.
+  example: []
+  syntax:
+    content: Task<bool> ContainsNodeAsync(ulong nodeId)
+    parameters:
+    - id: nodeId
+      type: System.UInt64
+      description: Node identifier.
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: True if the node exists.
+    content.vb: Function ContainsNodeAsync(nodeId As ULong) As Task(Of Boolean)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.ContainsNodeAsync*
+  nameWithType.vb: ITemporalGraphGrain.ContainsNodeAsync(ULong)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.ContainsNodeAsync(ULong)
+  name.vb: ContainsNodeAsync(ULong)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetNodesAsync(System.Int32)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetNodesAsync(System.Int32)
+  id: GetNodesAsync(System.Int32)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain
+  langs:
+  - csharp
+  - vb
+  name: GetNodesAsync(int)
+  nameWithType: ITemporalGraphGrain.GetNodesAsync(int)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetNodesAsync(int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetNodesAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+    startLine: 116
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Gets all node identifiers in the graph.
+  example: []
+  syntax:
+    content: Task<IReadOnlyList<ulong>> GetNodesAsync(int maxNodes = 10000)
+    parameters:
+    - id: maxNodes
+      type: System.Int32
+      description: Maximum nodes to return.
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{System.UInt64}}
+      description: Node identifiers.
+    content.vb: Function GetNodesAsync(maxNodes As Integer = 10000) As Task(Of IReadOnlyList(Of ULong))
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetNodesAsync*
+  nameWithType.vb: ITemporalGraphGrain.GetNodesAsync(Integer)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetNodesAsync(Integer)
+  name.vb: GetNodesAsync(Integer)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.ClearAsync
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.ClearAsync
+  id: ClearAsync
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain
+  langs:
+  - csharp
+  - vb
+  name: ClearAsync()
+  nameWithType: ITemporalGraphGrain.ClearAsync()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.ClearAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ClearAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+    startLine: 121
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Clears all data from the graph.
+  example: []
+  syntax:
+    content: Task ClearAsync()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function ClearAsync() As Task
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.ClearAsync*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.PersistAsync
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.PersistAsync
+  id: PersistAsync
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain
+  langs:
+  - csharp
+  - vb
+  name: PersistAsync()
+  nameWithType: ITemporalGraphGrain.PersistAsync()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.PersistAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: PersistAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/ITemporalGraphGrain.cs
+    startLine: 126
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Forces persistence of in-memory data.
+  example: []
+  syntax:
+    content: Task PersistAsync()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function PersistAsync() As Task
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.PersistAsync*
+references:
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  commentId: N:Orleans.GpuBridge.Abstractions.Temporal.Graph
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  nameWithType: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph
+    name: Graph
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph
+    name: Graph
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.html
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.AddEdgeAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.AddEdgeAsync
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphGrain_AddEdgeAsync_Orleans_GpuBridge_Abstractions_Temporal_Graph_TemporalEdgeData_
+  name: AddEdgeAsync
+  nameWithType: ITemporalGraphGrain.AddEdgeAsync
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.AddEdgeAsync
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData.html
+  name: TemporalEdgeData
+  nameWithType: TemporalEdgeData
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Graph.EdgeAddResult}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Graph.EdgeAddResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<EdgeAddResult>
+  nameWithType: Task<EdgeAddResult>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Temporal.Graph.EdgeAddResult>
+  nameWithType.vb: Task(Of EdgeAddResult)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Temporal.Graph.EdgeAddResult)
+  name.vb: Task(Of EdgeAddResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.EdgeAddResult
+    name: EdgeAddResult
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.EdgeAddResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.EdgeAddResult
+    name: EdgeAddResult
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.EdgeAddResult.html
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.AddEdgesBatchAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.AddEdgesBatchAsync
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphGrain_AddEdgesBatchAsync_System_Collections_Generic_IReadOnlyList_Orleans_GpuBridge_Abstractions_Temporal_Graph_TemporalEdgeData__
+  name: AddEdgesBatchAsync
+  nameWithType: ITemporalGraphGrain.AddEdgesBatchAsync
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.AddEdgesBatchAsync
+- uid: System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData}
+  commentId: T:System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<TemporalEdgeData>
+  nameWithType: IReadOnlyList<TemporalEdgeData>
+  fullName: System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData>
+  nameWithType.vb: IReadOnlyList(Of TemporalEdgeData)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData)
+  name.vb: IReadOnlyList(Of TemporalEdgeData)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData
+    name: TemporalEdgeData
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData
+    name: TemporalEdgeData
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalEdgeData.html
+  - name: )
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Graph.BatchEdgeResult}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Graph.BatchEdgeResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<BatchEdgeResult>
+  nameWithType: Task<BatchEdgeResult>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Temporal.Graph.BatchEdgeResult>
+  nameWithType.vb: Task(Of BatchEdgeResult)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Temporal.Graph.BatchEdgeResult)
+  name.vb: Task(Of BatchEdgeResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.BatchEdgeResult
+    name: BatchEdgeResult
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.BatchEdgeResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.BatchEdgeResult
+    name: BatchEdgeResult
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.BatchEdgeResult.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetEdgesAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetEdgesAsync
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphGrain_GetEdgesAsync_System_UInt64_System_Int64_System_Int64_
+  name: GetEdgesAsync
+  nameWithType: ITemporalGraphGrain.GetEdgesAsync
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetEdgesAsync
+- uid: System.UInt64
+  commentId: T:System.UInt64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uint64
+  name: ulong
+  nameWithType: ulong
+  fullName: ulong
+  nameWithType.vb: ULong
+  fullName.vb: ULong
+  name.vb: ULong
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Graph.EdgeQueryResult}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Graph.EdgeQueryResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<EdgeQueryResult>
+  nameWithType: Task<EdgeQueryResult>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Temporal.Graph.EdgeQueryResult>
+  nameWithType.vb: Task(Of EdgeQueryResult)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Temporal.Graph.EdgeQueryResult)
+  name.vb: Task(Of EdgeQueryResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.EdgeQueryResult
+    name: EdgeQueryResult
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.EdgeQueryResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.EdgeQueryResult
+    name: EdgeQueryResult
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.EdgeQueryResult.html
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetAllEdgesInRangeAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetAllEdgesInRangeAsync
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphGrain_GetAllEdgesInRangeAsync_System_Int64_System_Int64_System_Int32_
+  name: GetAllEdgesInRangeAsync
+  nameWithType: ITemporalGraphGrain.GetAllEdgesInRangeAsync
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetAllEdgesInRangeAsync
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.FindPathsAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.FindPathsAsync
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphGrain_FindPathsAsync_Orleans_GpuBridge_Abstractions_Temporal_Graph_PathFindingRequest_
+  name: FindPathsAsync
+  nameWithType: ITemporalGraphGrain.FindPathsAsync
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.FindPathsAsync
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.PathFindingRequest
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.Graph.PathFindingRequest
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.PathFindingRequest.html
+  name: PathFindingRequest
+  nameWithType: PathFindingRequest
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.PathFindingRequest
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Graph.PathFindingResult}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Graph.PathFindingResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<PathFindingResult>
+  nameWithType: Task<PathFindingResult>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Temporal.Graph.PathFindingResult>
+  nameWithType.vb: Task(Of PathFindingResult)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Temporal.Graph.PathFindingResult)
+  name.vb: Task(Of PathFindingResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.PathFindingResult
+    name: PathFindingResult
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.PathFindingResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.PathFindingResult
+    name: PathFindingResult
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.PathFindingResult.html
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetSnapshotAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetSnapshotAsync
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphGrain_GetSnapshotAsync_System_Int64_System_Int32_
+  name: GetSnapshotAsync
+  nameWithType: ITemporalGraphGrain.GetSnapshotAsync
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetSnapshotAsync
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Graph.SnapshotResult}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Graph.SnapshotResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<SnapshotResult>
+  nameWithType: Task<SnapshotResult>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Temporal.Graph.SnapshotResult>
+  nameWithType.vb: Task(Of SnapshotResult)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Temporal.Graph.SnapshotResult)
+  name.vb: Task(Of SnapshotResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.SnapshotResult
+    name: SnapshotResult
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.SnapshotResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.SnapshotResult
+    name: SnapshotResult
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.SnapshotResult.html
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetReachableNodesAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetReachableNodesAsync
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphGrain_GetReachableNodesAsync_System_UInt64_System_Int64_System_Int64_System_Int32_
+  name: GetReachableNodesAsync
+  nameWithType: ITemporalGraphGrain.GetReachableNodesAsync
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetReachableNodesAsync
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Graph.ReachabilityResult}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Graph.ReachabilityResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ReachabilityResult>
+  nameWithType: Task<ReachabilityResult>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Temporal.Graph.ReachabilityResult>
+  nameWithType.vb: Task(Of ReachabilityResult)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Temporal.Graph.ReachabilityResult)
+  name.vb: Task(Of ReachabilityResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ReachabilityResult
+    name: ReachabilityResult
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ReachabilityResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ReachabilityResult
+    name: ReachabilityResult
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ReachabilityResult.html
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetStatisticsAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetStatisticsAsync
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphGrain_GetStatisticsAsync
+  name: GetStatisticsAsync
+  nameWithType: ITemporalGraphGrain.GetStatisticsAsync
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetStatisticsAsync
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalGraphStatistics}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalGraphStatistics}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TemporalGraphStatistics>
+  nameWithType: Task<TemporalGraphStatistics>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalGraphStatistics>
+  nameWithType.vb: Task(Of TemporalGraphStatistics)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalGraphStatistics)
+  name.vb: Task(Of TemporalGraphStatistics)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalGraphStatistics
+    name: TemporalGraphStatistics
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalGraphStatistics.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalGraphStatistics
+    name: TemporalGraphStatistics
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalGraphStatistics.html
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.ContainsNodeAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.ContainsNodeAsync
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphGrain_ContainsNodeAsync_System_UInt64_
+  name: ContainsNodeAsync
+  nameWithType: ITemporalGraphGrain.ContainsNodeAsync
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.ContainsNodeAsync
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetNodesAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetNodesAsync
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphGrain_GetNodesAsync_System_Int32_
+  name: GetNodesAsync
+  nameWithType: ITemporalGraphGrain.GetNodesAsync
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.GetNodesAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{System.UInt64}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{System.UInt64}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IReadOnlyList<ulong>>
+  nameWithType: Task<IReadOnlyList<ulong>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<ulong>>
+  nameWithType.vb: Task(Of IReadOnlyList(Of ULong))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IReadOnlyList(Of ULong))
+  name.vb: Task(Of IReadOnlyList(Of ULong))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: System.UInt64
+    name: ulong
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint64
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.UInt64
+    name: ULong
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint64
+  - name: )
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.ClearAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.ClearAsync
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphGrain_ClearAsync
+  name: ClearAsync
+  nameWithType: ITemporalGraphGrain.ClearAsync
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.ClearAsync
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.PersistAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.PersistAsync
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_ITemporalGraphGrain_PersistAsync
+  name: PersistAsync
+  nameWithType: ITemporalGraphGrain.PersistAsync
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.ITemporalGraphGrain.PersistAsync

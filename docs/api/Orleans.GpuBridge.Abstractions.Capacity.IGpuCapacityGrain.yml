@@ -1,0 +1,649 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain
+  commentId: T:Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain
+  id: IGpuCapacityGrain
+  parent: Orleans.GpuBridge.Abstractions.Capacity
+  children:
+  - Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetBestSiloForPlacementAsync(System.Int32)
+  - Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetClusterStatsAsync
+  - Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetGpuCapableSilosAsync
+  - Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetSiloCapacityAsync(Orleans.Runtime.SiloAddress)
+  - Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.RegisterSiloAsync(Orleans.Runtime.SiloAddress,Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity)
+  - Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.UnregisterSiloAsync(Orleans.Runtime.SiloAddress)
+  - Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.UpdateCapacityAsync(Orleans.Runtime.SiloAddress,Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity)
+  langs:
+  - csharp
+  - vb
+  name: IGpuCapacityGrain
+  nameWithType: IGpuCapacityGrain
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain
+  type: Interface
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Capacity/IGpuCapacityGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IGpuCapacityGrain
+    path: ../src/Orleans.GpuBridge.Abstractions/Capacity/IGpuCapacityGrain.cs
+    startLine: 15
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Capacity
+  summary: Grain interface for tracking GPU capacity across the Orleans cluster
+  remarks: >-
+    This grain acts as a centralized registry for GPU resources across all silos.
+
+    Silos register their GPU capacity on startup and periodically update it.
+
+    The grain is used by GpuPlacementDirector to make intelligent placement decisions.
+  example: []
+  syntax:
+    content: 'public interface IGpuCapacityGrain : IGrainWithIntegerKey, IGrain, IAddressable'
+    content.vb: Public Interface IGpuCapacityGrain Inherits IGrainWithIntegerKey, IGrain, IAddressable
+- uid: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.RegisterSiloAsync(Orleans.Runtime.SiloAddress,Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity)
+  commentId: M:Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.RegisterSiloAsync(Orleans.Runtime.SiloAddress,Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity)
+  id: RegisterSiloAsync(Orleans.Runtime.SiloAddress,Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity)
+  parent: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain
+  langs:
+  - csharp
+  - vb
+  name: RegisterSiloAsync(SiloAddress, GpuCapacity)
+  nameWithType: IGpuCapacityGrain.RegisterSiloAsync(SiloAddress, GpuCapacity)
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.RegisterSiloAsync(Orleans.Runtime.SiloAddress, Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Capacity/IGpuCapacityGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RegisterSiloAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Capacity/IGpuCapacityGrain.cs
+    startLine: 23
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Capacity
+  summary: Registers a silo with its GPU capacity
+  example: []
+  syntax:
+    content: Task RegisterSiloAsync(SiloAddress silo, GpuCapacity capacity)
+    parameters:
+    - id: silo
+      type: Orleans.Runtime.SiloAddress
+      description: The silo address to register
+    - id: capacity
+      type: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+      description: Initial GPU capacity information
+    return:
+      type: System.Threading.Tasks.Task
+      description: Task representing the registration operation
+    content.vb: Function RegisterSiloAsync(silo As SiloAddress, capacity As GpuCapacity) As Task
+  overload: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.RegisterSiloAsync*
+- uid: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.UnregisterSiloAsync(Orleans.Runtime.SiloAddress)
+  commentId: M:Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.UnregisterSiloAsync(Orleans.Runtime.SiloAddress)
+  id: UnregisterSiloAsync(Orleans.Runtime.SiloAddress)
+  parent: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain
+  langs:
+  - csharp
+  - vb
+  name: UnregisterSiloAsync(SiloAddress)
+  nameWithType: IGpuCapacityGrain.UnregisterSiloAsync(SiloAddress)
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.UnregisterSiloAsync(Orleans.Runtime.SiloAddress)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Capacity/IGpuCapacityGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: UnregisterSiloAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Capacity/IGpuCapacityGrain.cs
+    startLine: 30
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Capacity
+  summary: Unregisters a silo (called during graceful shutdown)
+  example: []
+  syntax:
+    content: Task UnregisterSiloAsync(SiloAddress silo)
+    parameters:
+    - id: silo
+      type: Orleans.Runtime.SiloAddress
+      description: The silo address to unregister
+    return:
+      type: System.Threading.Tasks.Task
+      description: Task representing the unregistration operation
+    content.vb: Function UnregisterSiloAsync(silo As SiloAddress) As Task
+  overload: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.UnregisterSiloAsync*
+- uid: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.UpdateCapacityAsync(Orleans.Runtime.SiloAddress,Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity)
+  commentId: M:Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.UpdateCapacityAsync(Orleans.Runtime.SiloAddress,Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity)
+  id: UpdateCapacityAsync(Orleans.Runtime.SiloAddress,Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity)
+  parent: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain
+  langs:
+  - csharp
+  - vb
+  name: UpdateCapacityAsync(SiloAddress, GpuCapacity)
+  nameWithType: IGpuCapacityGrain.UpdateCapacityAsync(SiloAddress, GpuCapacity)
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.UpdateCapacityAsync(Orleans.Runtime.SiloAddress, Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Capacity/IGpuCapacityGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: UpdateCapacityAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Capacity/IGpuCapacityGrain.cs
+    startLine: 38
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Capacity
+  summary: Updates the GPU capacity for a registered silo
+  example: []
+  syntax:
+    content: Task UpdateCapacityAsync(SiloAddress silo, GpuCapacity capacity)
+    parameters:
+    - id: silo
+      type: Orleans.Runtime.SiloAddress
+      description: The silo address to update
+    - id: capacity
+      type: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+      description: Updated GPU capacity information
+    return:
+      type: System.Threading.Tasks.Task
+      description: Task representing the update operation
+    content.vb: Function UpdateCapacityAsync(silo As SiloAddress, capacity As GpuCapacity) As Task
+  overload: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.UpdateCapacityAsync*
+- uid: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetGpuCapableSilosAsync
+  commentId: M:Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetGpuCapableSilosAsync
+  id: GetGpuCapableSilosAsync
+  parent: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain
+  langs:
+  - csharp
+  - vb
+  name: GetGpuCapableSilosAsync()
+  nameWithType: IGpuCapacityGrain.GetGpuCapableSilosAsync()
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetGpuCapableSilosAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Capacity/IGpuCapacityGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetGpuCapableSilosAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Capacity/IGpuCapacityGrain.cs
+    startLine: 44
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Capacity
+  summary: Gets all GPU-capable silos with their current capacity
+  example: []
+  syntax:
+    content: Task<List<SiloGpuCapacity>> GetGpuCapableSilosAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{Orleans.GpuBridge.Abstractions.Capacity.SiloGpuCapacity}}
+      description: List of silos with GPU capacity
+    content.vb: Function GetGpuCapableSilosAsync() As Task(Of List(Of SiloGpuCapacity))
+  overload: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetGpuCapableSilosAsync*
+- uid: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetSiloCapacityAsync(Orleans.Runtime.SiloAddress)
+  commentId: M:Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetSiloCapacityAsync(Orleans.Runtime.SiloAddress)
+  id: GetSiloCapacityAsync(Orleans.Runtime.SiloAddress)
+  parent: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain
+  langs:
+  - csharp
+  - vb
+  name: GetSiloCapacityAsync(SiloAddress)
+  nameWithType: IGpuCapacityGrain.GetSiloCapacityAsync(SiloAddress)
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetSiloCapacityAsync(Orleans.Runtime.SiloAddress)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Capacity/IGpuCapacityGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetSiloCapacityAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Capacity/IGpuCapacityGrain.cs
+    startLine: 51
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Capacity
+  summary: Gets the GPU capacity for a specific silo
+  example: []
+  syntax:
+    content: Task<GpuCapacity?> GetSiloCapacityAsync(SiloAddress silo)
+    parameters:
+    - id: silo
+      type: Orleans.Runtime.SiloAddress
+      description: The silo address to query
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity}
+      description: GPU capacity if registered, null otherwise
+    content.vb: Function GetSiloCapacityAsync(silo As SiloAddress) As Task(Of GpuCapacity)
+  overload: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetSiloCapacityAsync*
+- uid: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetBestSiloForPlacementAsync(System.Int32)
+  commentId: M:Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetBestSiloForPlacementAsync(System.Int32)
+  id: GetBestSiloForPlacementAsync(System.Int32)
+  parent: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain
+  langs:
+  - csharp
+  - vb
+  name: GetBestSiloForPlacementAsync(int)
+  nameWithType: IGpuCapacityGrain.GetBestSiloForPlacementAsync(int)
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetBestSiloForPlacementAsync(int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Capacity/IGpuCapacityGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetBestSiloForPlacementAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Capacity/IGpuCapacityGrain.cs
+    startLine: 58
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Capacity
+  summary: Gets the best available silo for GPU workload placement
+  example: []
+  syntax:
+    content: Task<SiloGpuCapacity?> GetBestSiloForPlacementAsync(int minimumMemoryMB = 0)
+    parameters:
+    - id: minimumMemoryMB
+      type: System.Int32
+      description: Minimum required GPU memory in MB
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Capacity.SiloGpuCapacity}
+      description: Best silo for placement, or null if no suitable silo found
+    content.vb: Function GetBestSiloForPlacementAsync(minimumMemoryMB As Integer = 0) As Task(Of SiloGpuCapacity)
+  overload: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetBestSiloForPlacementAsync*
+  nameWithType.vb: IGpuCapacityGrain.GetBestSiloForPlacementAsync(Integer)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetBestSiloForPlacementAsync(Integer)
+  name.vb: GetBestSiloForPlacementAsync(Integer)
+- uid: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetClusterStatsAsync
+  commentId: M:Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetClusterStatsAsync
+  id: GetClusterStatsAsync
+  parent: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain
+  langs:
+  - csharp
+  - vb
+  name: GetClusterStatsAsync()
+  nameWithType: IGpuCapacityGrain.GetClusterStatsAsync()
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetClusterStatsAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Capacity/IGpuCapacityGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetClusterStatsAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Capacity/IGpuCapacityGrain.cs
+    startLine: 64
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Capacity
+  summary: Gets cluster-wide GPU statistics
+  example: []
+  syntax:
+    content: Task<ClusterGpuStats> GetClusterStatsAsync()
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Capacity.ClusterGpuStats}
+      description: Aggregated GPU statistics for the cluster
+    content.vb: Function GetClusterStatsAsync() As Task(Of ClusterGpuStats)
+  overload: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetClusterStatsAsync*
+references:
+- uid: Orleans.GpuBridge.Abstractions.Capacity
+  commentId: N:Orleans.GpuBridge.Abstractions.Capacity
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Capacity
+  nameWithType: Orleans.GpuBridge.Abstractions.Capacity
+  fullName: Orleans.GpuBridge.Abstractions.Capacity
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Capacity
+    name: Capacity
+    href: Orleans.GpuBridge.Abstractions.Capacity.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Capacity
+    name: Capacity
+    href: Orleans.GpuBridge.Abstractions.Capacity.html
+- uid: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.RegisterSiloAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.RegisterSiloAsync
+  href: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.html#Orleans_GpuBridge_Abstractions_Capacity_IGpuCapacityGrain_RegisterSiloAsync_Orleans_Runtime_SiloAddress_Orleans_GpuBridge_Abstractions_Capacity_GpuCapacity_
+  name: RegisterSiloAsync
+  nameWithType: IGpuCapacityGrain.RegisterSiloAsync
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.RegisterSiloAsync
+- uid: Orleans.Runtime.SiloAddress
+  commentId: T:Orleans.Runtime.SiloAddress
+  parent: Orleans.Runtime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.runtime.siloaddress
+  name: SiloAddress
+  nameWithType: SiloAddress
+  fullName: Orleans.Runtime.SiloAddress
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+  commentId: T:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+  parent: Orleans.GpuBridge.Abstractions.Capacity
+  href: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.html
+  name: GpuCapacity
+  nameWithType: GpuCapacity
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: Orleans.Runtime
+  commentId: N:Orleans.Runtime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans
+  name: Orleans.Runtime
+  nameWithType: Orleans.Runtime
+  fullName: Orleans.Runtime
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans
+  - name: .
+  - uid: Orleans.Runtime
+    name: Runtime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans
+  - name: .
+  - uid: Orleans.Runtime
+    name: Runtime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.UnregisterSiloAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.UnregisterSiloAsync
+  href: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.html#Orleans_GpuBridge_Abstractions_Capacity_IGpuCapacityGrain_UnregisterSiloAsync_Orleans_Runtime_SiloAddress_
+  name: UnregisterSiloAsync
+  nameWithType: IGpuCapacityGrain.UnregisterSiloAsync
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.UnregisterSiloAsync
+- uid: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.UpdateCapacityAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.UpdateCapacityAsync
+  href: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.html#Orleans_GpuBridge_Abstractions_Capacity_IGpuCapacityGrain_UpdateCapacityAsync_Orleans_Runtime_SiloAddress_Orleans_GpuBridge_Abstractions_Capacity_GpuCapacity_
+  name: UpdateCapacityAsync
+  nameWithType: IGpuCapacityGrain.UpdateCapacityAsync
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.UpdateCapacityAsync
+- uid: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetGpuCapableSilosAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetGpuCapableSilosAsync
+  href: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.html#Orleans_GpuBridge_Abstractions_Capacity_IGpuCapacityGrain_GetGpuCapableSilosAsync
+  name: GetGpuCapableSilosAsync
+  nameWithType: IGpuCapacityGrain.GetGpuCapableSilosAsync
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetGpuCapableSilosAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{Orleans.GpuBridge.Abstractions.Capacity.SiloGpuCapacity}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{Orleans.GpuBridge.Abstractions.Capacity.SiloGpuCapacity}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<SiloGpuCapacity>>
+  nameWithType: Task<List<SiloGpuCapacity>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<Orleans.GpuBridge.Abstractions.Capacity.SiloGpuCapacity>>
+  nameWithType.vb: Task(Of List(Of SiloGpuCapacity))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of Orleans.GpuBridge.Abstractions.Capacity.SiloGpuCapacity))
+  name.vb: Task(Of List(Of SiloGpuCapacity))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Capacity.SiloGpuCapacity
+    name: SiloGpuCapacity
+    href: Orleans.GpuBridge.Abstractions.Capacity.SiloGpuCapacity.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Capacity.SiloGpuCapacity
+    name: SiloGpuCapacity
+    href: Orleans.GpuBridge.Abstractions.Capacity.SiloGpuCapacity.html
+  - name: )
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetSiloCapacityAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetSiloCapacityAsync
+  href: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.html#Orleans_GpuBridge_Abstractions_Capacity_IGpuCapacityGrain_GetSiloCapacityAsync_Orleans_Runtime_SiloAddress_
+  name: GetSiloCapacityAsync
+  nameWithType: IGpuCapacityGrain.GetSiloCapacityAsync
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetSiloCapacityAsync
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<GpuCapacity>
+  nameWithType: Task<GpuCapacity>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity>
+  nameWithType.vb: Task(Of GpuCapacity)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity)
+  name.vb: Task(Of GpuCapacity)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+    name: GpuCapacity
+    href: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+    name: GpuCapacity
+    href: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.html
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetBestSiloForPlacementAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetBestSiloForPlacementAsync
+  href: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.html#Orleans_GpuBridge_Abstractions_Capacity_IGpuCapacityGrain_GetBestSiloForPlacementAsync_System_Int32_
+  name: GetBestSiloForPlacementAsync
+  nameWithType: IGpuCapacityGrain.GetBestSiloForPlacementAsync
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetBestSiloForPlacementAsync
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Capacity.SiloGpuCapacity}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Capacity.SiloGpuCapacity}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<SiloGpuCapacity>
+  nameWithType: Task<SiloGpuCapacity>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Capacity.SiloGpuCapacity>
+  nameWithType.vb: Task(Of SiloGpuCapacity)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Capacity.SiloGpuCapacity)
+  name.vb: Task(Of SiloGpuCapacity)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Capacity.SiloGpuCapacity
+    name: SiloGpuCapacity
+    href: Orleans.GpuBridge.Abstractions.Capacity.SiloGpuCapacity.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Capacity.SiloGpuCapacity
+    name: SiloGpuCapacity
+    href: Orleans.GpuBridge.Abstractions.Capacity.SiloGpuCapacity.html
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetClusterStatsAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetClusterStatsAsync
+  href: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.html#Orleans_GpuBridge_Abstractions_Capacity_IGpuCapacityGrain_GetClusterStatsAsync
+  name: GetClusterStatsAsync
+  nameWithType: IGpuCapacityGrain.GetClusterStatsAsync
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.IGpuCapacityGrain.GetClusterStatsAsync
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Capacity.ClusterGpuStats}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Capacity.ClusterGpuStats}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ClusterGpuStats>
+  nameWithType: Task<ClusterGpuStats>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Capacity.ClusterGpuStats>
+  nameWithType.vb: Task(Of ClusterGpuStats)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Capacity.ClusterGpuStats)
+  name.vb: Task(Of ClusterGpuStats)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Capacity.ClusterGpuStats
+    name: ClusterGpuStats
+    href: Orleans.GpuBridge.Abstractions.Capacity.ClusterGpuStats.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Capacity.ClusterGpuStats
+    name: ClusterGpuStats
+    href: Orleans.GpuBridge.Abstractions.Capacity.ClusterGpuStats.html
+  - name: )

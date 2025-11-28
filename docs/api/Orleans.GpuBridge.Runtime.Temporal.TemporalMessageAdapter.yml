@@ -1,0 +1,766 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter
+  id: TemporalMessageAdapter
+  parent: Orleans.GpuBridge.Runtime.Temporal
+  children:
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.FromKernelMessage(DotCompute.Abstractions.RingKernels.KernelMessage{Orleans.GpuBridge.Abstractions.Temporal.ActorMessage})
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.ToKernelMessage(Orleans.GpuBridge.Abstractions.Temporal.ActorMessage)
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.UnwrapResponse``1(Orleans.GpuBridge.Abstractions.Temporal.ActorMessage)
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.UpdateTimestamp(Orleans.GpuBridge.Abstractions.Temporal.ActorMessage,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.WrapWithTimestamp``1(System.UInt64,System.UInt64,``0,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,System.UInt64)
+  langs:
+  - csharp
+  - vb
+  name: TemporalMessageAdapter
+  nameWithType: TemporalMessageAdapter
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageAdapter.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TemporalMessageAdapter
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageAdapter.cs
+    startLine: 27
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Adapts between DotCompute KernelMessage and temporal ActorMessage structures.
+  remarks: >-
+    <p>
+
+    This adapter enables HLC timestamp injection into GPU-bound messages without
+
+    modifying the DotCompute ring kernel infrastructure.
+
+    </p>
+
+    <p>
+
+    Message Flow:
+
+    1. GpuNativeGrain creates typed request with InvokeKernelAsync
+
+    2. HLC timestamp is generated
+
+    3. TemporalMessageAdapter wraps request + timestamp into ActorMessage
+
+    4. GPU temporal kernel processes ActorMessage and updates HLC
+
+    5. Response is unwrapped and returned to grain
+
+    </p>
+  example: []
+  syntax:
+    content: public static class TemporalMessageAdapter
+    content.vb: Public Module TemporalMessageAdapter
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.WrapWithTimestamp``1(System.UInt64,System.UInt64,``0,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,System.UInt64)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.WrapWithTimestamp``1(System.UInt64,System.UInt64,``0,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,System.UInt64)
+  id: WrapWithTimestamp``1(System.UInt64,System.UInt64,``0,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,System.UInt64)
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter
+  langs:
+  - csharp
+  - vb
+  name: WrapWithTimestamp<TRequest>(ulong, ulong, TRequest, HybridTimestamp, ulong)
+  nameWithType: TemporalMessageAdapter.WrapWithTimestamp<TRequest>(ulong, ulong, TRequest, HybridTimestamp, ulong)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.WrapWithTimestamp<TRequest>(ulong, ulong, TRequest, Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp, ulong)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageAdapter.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: WrapWithTimestamp
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageAdapter.cs
+    startLine: 50
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Wraps a typed request into an ActorMessage with HLC timestamp.
+  remarks: >-
+    <p>
+
+    For small payloads (&lt;= 8 bytes), the data is embedded directly in Payload field.
+
+    For larger payloads, Payload contains a reference/handle to GPU memory.
+
+    </p>
+
+    <p>
+
+    This method is used on the CPU side before sending to GPU.
+
+    The GPU temporal kernel (ProcessActorMessageWithTimestamp) will extract
+
+    the timestamp and update actor HLC state.
+
+    </p>
+  example: []
+  syntax:
+    content: 'public static ActorMessage WrapWithTimestamp<TRequest>(ulong senderId, ulong receiverId, TRequest request, HybridTimestamp timestamp, ulong sequenceNumber = 0) where TRequest : unmanaged'
+    parameters:
+    - id: senderId
+      type: System.UInt64
+      description: Sender actor ID.
+    - id: receiverId
+      type: System.UInt64
+      description: Receiver actor ID.
+    - id: request
+      type: '{TRequest}'
+      description: Request payload.
+    - id: timestamp
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+      description: HLC timestamp for causal ordering.
+    - id: sequenceNumber
+      type: System.UInt64
+      description: Optional sequence number.
+    typeParameters:
+    - id: TRequest
+      description: Request payload type.
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.ActorMessage
+      description: ActorMessage with embedded timestamp and payload reference.
+    content.vb: Public Shared Function WrapWithTimestamp(Of TRequest As Structure)(senderId As ULong, receiverId As ULong, request As TRequest, timestamp As HybridTimestamp, sequenceNumber As ULong = 0) As ActorMessage
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.WrapWithTimestamp*
+  nameWithType.vb: TemporalMessageAdapter.WrapWithTimestamp(Of TRequest)(ULong, ULong, TRequest, HybridTimestamp, ULong)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.WrapWithTimestamp(Of TRequest)(ULong, ULong, TRequest, Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp, ULong)
+  name.vb: WrapWithTimestamp(Of TRequest)(ULong, ULong, TRequest, HybridTimestamp, ULong)
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.UnwrapResponse``1(Orleans.GpuBridge.Abstractions.Temporal.ActorMessage)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.UnwrapResponse``1(Orleans.GpuBridge.Abstractions.Temporal.ActorMessage)
+  id: UnwrapResponse``1(Orleans.GpuBridge.Abstractions.Temporal.ActorMessage)
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter
+  langs:
+  - csharp
+  - vb
+  name: UnwrapResponse<TResponse>(ActorMessage)
+  nameWithType: TemporalMessageAdapter.UnwrapResponse<TResponse>(ActorMessage)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.UnwrapResponse<TResponse>(Orleans.GpuBridge.Abstractions.Temporal.ActorMessage)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageAdapter.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: UnwrapResponse
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageAdapter.cs
+    startLine: 107
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Unwraps an ActorMessage response into a typed response payload.
+  remarks: >-
+    Extracts the response data from ActorMessage.Payload field.
+
+    Must match the message type sent from GPU temporal kernel.
+  example: []
+  syntax:
+    content: 'public static TResponse UnwrapResponse<TResponse>(ActorMessage message) where TResponse : unmanaged'
+    parameters:
+    - id: message
+      type: Orleans.GpuBridge.Abstractions.Temporal.ActorMessage
+      description: ActorMessage from GPU kernel.
+    typeParameters:
+    - id: TResponse
+      description: Response payload type.
+    return:
+      type: '{TResponse}'
+      description: Typed response payload.
+    content.vb: Public Shared Function UnwrapResponse(Of TResponse As Structure)(message As ActorMessage) As TResponse
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.UnwrapResponse*
+  nameWithType.vb: TemporalMessageAdapter.UnwrapResponse(Of TResponse)(ActorMessage)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.UnwrapResponse(Of TResponse)(Orleans.GpuBridge.Abstractions.Temporal.ActorMessage)
+  name.vb: UnwrapResponse(Of TResponse)(ActorMessage)
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.ToKernelMessage(Orleans.GpuBridge.Abstractions.Temporal.ActorMessage)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.ToKernelMessage(Orleans.GpuBridge.Abstractions.Temporal.ActorMessage)
+  id: ToKernelMessage(Orleans.GpuBridge.Abstractions.Temporal.ActorMessage)
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter
+  langs:
+  - csharp
+  - vb
+  name: ToKernelMessage(ActorMessage)
+  nameWithType: TemporalMessageAdapter.ToKernelMessage(ActorMessage)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.ToKernelMessage(Orleans.GpuBridge.Abstractions.Temporal.ActorMessage)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageAdapter.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ToKernelMessage
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageAdapter.cs
+    startLine: 135
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Creates a KernelMessage from an ActorMessage for DotCompute compatibility.
+  remarks: >-
+    This allows us to use existing DotCompute ring kernel infrastructure
+
+    while embedding temporal information.
+  example: []
+  syntax:
+    content: public static KernelMessage<ActorMessage> ToKernelMessage(ActorMessage actorMessage)
+    parameters:
+    - id: actorMessage
+      type: Orleans.GpuBridge.Abstractions.Temporal.ActorMessage
+    return:
+      type: DotCompute.Abstractions.RingKernels.KernelMessage{Orleans.GpuBridge.Abstractions.Temporal.ActorMessage}
+    content.vb: Public Shared Function ToKernelMessage(actorMessage As ActorMessage) As KernelMessage(Of ActorMessage)
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.ToKernelMessage*
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.FromKernelMessage(DotCompute.Abstractions.RingKernels.KernelMessage{Orleans.GpuBridge.Abstractions.Temporal.ActorMessage})
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.FromKernelMessage(DotCompute.Abstractions.RingKernels.KernelMessage{Orleans.GpuBridge.Abstractions.Temporal.ActorMessage})
+  id: FromKernelMessage(DotCompute.Abstractions.RingKernels.KernelMessage{Orleans.GpuBridge.Abstractions.Temporal.ActorMessage})
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter
+  langs:
+  - csharp
+  - vb
+  name: FromKernelMessage(KernelMessage<ActorMessage>)
+  nameWithType: TemporalMessageAdapter.FromKernelMessage(KernelMessage<ActorMessage>)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.FromKernelMessage(DotCompute.Abstractions.RingKernels.KernelMessage<Orleans.GpuBridge.Abstractions.Temporal.ActorMessage>)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageAdapter.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: FromKernelMessage
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageAdapter.cs
+    startLine: 147
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Extracts ActorMessage from a DotCompute KernelMessage.
+  example: []
+  syntax:
+    content: public static ActorMessage FromKernelMessage(KernelMessage<ActorMessage> kernelMessage)
+    parameters:
+    - id: kernelMessage
+      type: DotCompute.Abstractions.RingKernels.KernelMessage{Orleans.GpuBridge.Abstractions.Temporal.ActorMessage}
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.ActorMessage
+    content.vb: Public Shared Function FromKernelMessage(kernelMessage As KernelMessage(Of ActorMessage)) As ActorMessage
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.FromKernelMessage*
+  nameWithType.vb: TemporalMessageAdapter.FromKernelMessage(KernelMessage(Of ActorMessage))
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.FromKernelMessage(DotCompute.Abstractions.RingKernels.KernelMessage(Of Orleans.GpuBridge.Abstractions.Temporal.ActorMessage))
+  name.vb: FromKernelMessage(KernelMessage(Of ActorMessage))
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.UpdateTimestamp(Orleans.GpuBridge.Abstractions.Temporal.ActorMessage,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.UpdateTimestamp(Orleans.GpuBridge.Abstractions.Temporal.ActorMessage,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  id: UpdateTimestamp(Orleans.GpuBridge.Abstractions.Temporal.ActorMessage,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter
+  langs:
+  - csharp
+  - vb
+  name: UpdateTimestamp(ActorMessage, HybridTimestamp)
+  nameWithType: TemporalMessageAdapter.UpdateTimestamp(ActorMessage, HybridTimestamp)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.UpdateTimestamp(Orleans.GpuBridge.Abstractions.Temporal.ActorMessage, Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageAdapter.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: UpdateTimestamp
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageAdapter.cs
+    startLine: 158
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Updates HLC timestamp in an existing ActorMessage.
+  remarks: Used when forwarding messages to update causality chain.
+  example: []
+  syntax:
+    content: public static ActorMessage UpdateTimestamp(ActorMessage message, HybridTimestamp newTimestamp)
+    parameters:
+    - id: message
+      type: Orleans.GpuBridge.Abstractions.Temporal.ActorMessage
+    - id: newTimestamp
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.ActorMessage
+    content.vb: Public Shared Function UpdateTimestamp(message As ActorMessage, newTimestamp As HybridTimestamp) As ActorMessage
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.UpdateTimestamp*
+references:
+- uid: Orleans.GpuBridge.Runtime.Temporal
+  commentId: N:Orleans.GpuBridge.Runtime.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Temporal
+  nameWithType: Orleans.GpuBridge.Runtime.Temporal
+  fullName: Orleans.GpuBridge.Runtime.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.WrapWithTimestamp*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.WrapWithTimestamp
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMessageAdapter_WrapWithTimestamp__1_System_UInt64_System_UInt64___0_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_System_UInt64_
+  name: WrapWithTimestamp
+  nameWithType: TemporalMessageAdapter.WrapWithTimestamp
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.WrapWithTimestamp
+- uid: System.UInt64
+  commentId: T:System.UInt64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uint64
+  name: ulong
+  nameWithType: ulong
+  fullName: ulong
+  nameWithType.vb: ULong
+  fullName.vb: ULong
+  name.vb: ULong
+- uid: '{TRequest}'
+  commentId: '!:TRequest'
+  definition: TRequest
+  name: TRequest
+  nameWithType: TRequest
+  fullName: TRequest
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html
+  name: HybridTimestamp
+  nameWithType: HybridTimestamp
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ActorMessage
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.ActorMessage
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.ActorMessage.html
+  name: ActorMessage
+  nameWithType: ActorMessage
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ActorMessage
+- uid: TRequest
+  name: TRequest
+  nameWithType: TRequest
+  fullName: TRequest
+- uid: Orleans.GpuBridge.Abstractions.Temporal
+  commentId: N:Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Temporal
+  nameWithType: Orleans.GpuBridge.Abstractions.Temporal
+  fullName: Orleans.GpuBridge.Abstractions.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.UnwrapResponse*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.UnwrapResponse
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMessageAdapter_UnwrapResponse__1_Orleans_GpuBridge_Abstractions_Temporal_ActorMessage_
+  name: UnwrapResponse
+  nameWithType: TemporalMessageAdapter.UnwrapResponse
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.UnwrapResponse
+- uid: '{TResponse}'
+  commentId: '!:TResponse'
+  definition: TResponse
+  name: TResponse
+  nameWithType: TResponse
+  fullName: TResponse
+- uid: TResponse
+  name: TResponse
+  nameWithType: TResponse
+  fullName: TResponse
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.ToKernelMessage*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.ToKernelMessage
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMessageAdapter_ToKernelMessage_Orleans_GpuBridge_Abstractions_Temporal_ActorMessage_
+  name: ToKernelMessage
+  nameWithType: TemporalMessageAdapter.ToKernelMessage
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.ToKernelMessage
+- uid: DotCompute.Abstractions.RingKernels.KernelMessage{Orleans.GpuBridge.Abstractions.Temporal.ActorMessage}
+  commentId: T:DotCompute.Abstractions.RingKernels.KernelMessage{Orleans.GpuBridge.Abstractions.Temporal.ActorMessage}
+  parent: DotCompute.Abstractions.RingKernels
+  definition: DotCompute.Abstractions.RingKernels.KernelMessage`1
+  name: KernelMessage<ActorMessage>
+  nameWithType: KernelMessage<ActorMessage>
+  fullName: DotCompute.Abstractions.RingKernels.KernelMessage<Orleans.GpuBridge.Abstractions.Temporal.ActorMessage>
+  nameWithType.vb: KernelMessage(Of ActorMessage)
+  fullName.vb: DotCompute.Abstractions.RingKernels.KernelMessage(Of Orleans.GpuBridge.Abstractions.Temporal.ActorMessage)
+  name.vb: KernelMessage(Of ActorMessage)
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.KernelMessage`1
+    name: KernelMessage
+    isExternal: true
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ActorMessage
+    name: ActorMessage
+  - name: '>'
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.KernelMessage`1
+    name: KernelMessage
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ActorMessage
+    name: ActorMessage
+  - name: )
+- uid: DotCompute.Abstractions.RingKernels.KernelMessage`1
+  commentId: T:DotCompute.Abstractions.RingKernels.KernelMessage`1
+  isExternal: true
+  name: KernelMessage<T>
+  nameWithType: KernelMessage<T>
+  fullName: DotCompute.Abstractions.RingKernels.KernelMessage<T>
+  nameWithType.vb: KernelMessage(Of T)
+  fullName.vb: DotCompute.Abstractions.RingKernels.KernelMessage(Of T)
+  name.vb: KernelMessage(Of T)
+  spec.csharp:
+  - uid: DotCompute.Abstractions.RingKernels.KernelMessage`1
+    name: KernelMessage
+    isExternal: true
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: DotCompute.Abstractions.RingKernels.KernelMessage`1
+    name: KernelMessage
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: DotCompute.Abstractions.RingKernels
+  commentId: N:DotCompute.Abstractions.RingKernels
+  isExternal: true
+  name: DotCompute.Abstractions.RingKernels
+  nameWithType: DotCompute.Abstractions.RingKernels
+  fullName: DotCompute.Abstractions.RingKernels
+  spec.csharp:
+  - uid: DotCompute
+    name: DotCompute
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions
+    name: Abstractions
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions.RingKernels
+    name: RingKernels
+    isExternal: true
+  spec.vb:
+  - uid: DotCompute
+    name: DotCompute
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions
+    name: Abstractions
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions.RingKernels
+    name: RingKernels
+    isExternal: true
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.FromKernelMessage*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.FromKernelMessage
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMessageAdapter_FromKernelMessage_DotCompute_Abstractions_RingKernels_KernelMessage_Orleans_GpuBridge_Abstractions_Temporal_ActorMessage__
+  name: FromKernelMessage
+  nameWithType: TemporalMessageAdapter.FromKernelMessage
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.FromKernelMessage
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.UpdateTimestamp*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.UpdateTimestamp
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMessageAdapter_UpdateTimestamp_Orleans_GpuBridge_Abstractions_Temporal_ActorMessage_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_
+  name: UpdateTimestamp
+  nameWithType: TemporalMessageAdapter.UpdateTimestamp
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageAdapter.UpdateTimestamp

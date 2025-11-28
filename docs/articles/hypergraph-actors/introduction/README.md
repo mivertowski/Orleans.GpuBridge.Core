@@ -1631,9 +1631,9 @@ The combination of hypergraph expressiveness, GPU performance, and actor concurr
 
 - [Temporal Correctness Introduction](../temporal/introduction/README.md) - Temporal ordering foundations
 - [GPU-Native Actors Introduction](../gpu-actors/introduction/README.md) - GPU acceleration basics
-- [Hypergraph Theory and Benefits](../hypergraph-actors/theory/README.md) - Mathematical foundations
-- [Real-Time Analytics with Hypergraphs](../hypergraph-actors/analytics/README.md) - Analytics techniques
-- [Industry Use Cases](../hypergraph-actors/use-cases/README.md) - Production applications
+- [Hypergraph Theory and Benefits](../theory/README.md) - Mathematical foundations
+- [Real-Time Analytics with Hypergraphs](../analytics/README.md) - Analytics techniques
+- [Industry Use Cases](../use-cases/README.md) - Production applications
 
 ---
 

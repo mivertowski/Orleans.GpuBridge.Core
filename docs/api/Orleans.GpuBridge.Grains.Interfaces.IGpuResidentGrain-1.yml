@@ -1,0 +1,1104 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1
+  commentId: T:Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1
+  id: IGpuResidentGrain`1
+  parent: Orleans.GpuBridge.Grains.Interfaces
+  children:
+  - Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.AllocateAsync(System.Int64,Orleans.GpuBridge.Grains.Enums.GpuMemoryType)
+  - Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.ClearAsync
+  - Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.ComputeAsync(Orleans.GpuBridge.Abstractions.KernelId,Orleans.GpuBridge.Grains.Models.GpuMemoryHandle,Orleans.GpuBridge.Grains.Models.GpuMemoryHandle,Orleans.GpuBridge.Grains.Models.GpuComputeParams)
+  - Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.GetDataAsync
+  - Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.GetMemoryInfoAsync
+  - Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.ReadAsync``1(Orleans.GpuBridge.Grains.Models.GpuMemoryHandle,System.Int32,System.Int32)
+  - Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.ReleaseAsync(Orleans.GpuBridge.Grains.Models.GpuMemoryHandle)
+  - Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.StoreDataAsync(`0[],Orleans.GpuBridge.Grains.Enums.GpuMemoryType)
+  - Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.WriteAsync``1(Orleans.GpuBridge.Grains.Models.GpuMemoryHandle,``0[],System.Int32)
+  langs:
+  - csharp
+  - vb
+  name: IGpuResidentGrain<T>
+  nameWithType: IGpuResidentGrain<T>
+  fullName: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain<T>
+  type: Interface
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Interfaces/IGpuResidentGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IGpuResidentGrain
+    path: ../src/Orleans.GpuBridge.Grains/Interfaces/IGpuResidentGrain.cs
+    startLine: 13
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Interfaces
+  summary: >-
+    Interface for a grain that manages resident GPU memory allocations.
+
+    This grain provides persistent storage for GPU memory buffers and enables
+
+    efficient kernel execution on pre-allocated memory without repeated transfers.
+  example: []
+  syntax:
+    content: 'public interface IGpuResidentGrain<T> : IGrainWithStringKey, IGrain, IAddressable where T : unmanaged'
+    typeParameters:
+    - id: T
+    content.vb: Public Interface IGpuResidentGrain(Of T As Structure) Inherits IGrainWithStringKey, IGrain, IAddressable
+  nameWithType.vb: IGpuResidentGrain(Of T)
+  fullName.vb: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain(Of T)
+  name.vb: IGpuResidentGrain(Of T)
+- uid: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.AllocateAsync(System.Int64,Orleans.GpuBridge.Grains.Enums.GpuMemoryType)
+  commentId: M:Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.AllocateAsync(System.Int64,Orleans.GpuBridge.Grains.Enums.GpuMemoryType)
+  id: AllocateAsync(System.Int64,Orleans.GpuBridge.Grains.Enums.GpuMemoryType)
+  parent: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1
+  langs:
+  - csharp
+  - vb
+  name: AllocateAsync(long, GpuMemoryType)
+  nameWithType: IGpuResidentGrain<T>.AllocateAsync(long, GpuMemoryType)
+  fullName: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain<T>.AllocateAsync(long, Orleans.GpuBridge.Grains.Enums.GpuMemoryType)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Interfaces/IGpuResidentGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AllocateAsync
+    path: ../src/Orleans.GpuBridge.Grains/Interfaces/IGpuResidentGrain.cs
+    startLine: 27
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Interfaces
+  summary: >-
+    Allocates memory on the GPU device and keeps it resident for subsequent operations.
+
+    The allocated memory persists across grain activations and deactivations.
+  example: []
+  syntax:
+    content: Task<GpuMemoryHandle> AllocateAsync(long sizeBytes, GpuMemoryType memoryType = GpuMemoryType.Default)
+    parameters:
+    - id: sizeBytes
+      type: System.Int64
+      description: The size of memory to allocate in bytes.
+    - id: memoryType
+      type: Orleans.GpuBridge.Grains.Enums.GpuMemoryType
+      description: The type of memory allocation (default, pinned, shared, etc.).
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Grains.Models.GpuMemoryHandle}
+      description: >-
+        A task that resolves to a <xref href="Orleans.GpuBridge.Grains.Models.GpuMemoryHandle" data-throw-if-not-resolved="false"></xref> representing the allocated memory.
+
+        This handle can be used for subsequent read/write operations and kernel executions.
+    content.vb: Function AllocateAsync(sizeBytes As Long, memoryType As GpuMemoryType = GpuMemoryType.Default) As Task(Of GpuMemoryHandle)
+  overload: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.AllocateAsync*
+  exceptions:
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: Thrown when no GPU devices are available for allocation.
+  - type: System.OutOfMemoryException
+    commentId: T:System.OutOfMemoryException
+    description: Thrown when insufficient GPU memory is available.
+  nameWithType.vb: IGpuResidentGrain(Of T).AllocateAsync(Long, GpuMemoryType)
+  fullName.vb: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain(Of T).AllocateAsync(Long, Orleans.GpuBridge.Grains.Enums.GpuMemoryType)
+  name.vb: AllocateAsync(Long, GpuMemoryType)
+- uid: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.WriteAsync``1(Orleans.GpuBridge.Grains.Models.GpuMemoryHandle,``0[],System.Int32)
+  commentId: M:Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.WriteAsync``1(Orleans.GpuBridge.Grains.Models.GpuMemoryHandle,``0[],System.Int32)
+  id: WriteAsync``1(Orleans.GpuBridge.Grains.Models.GpuMemoryHandle,``0[],System.Int32)
+  parent: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1
+  langs:
+  - csharp
+  - vb
+  name: WriteAsync<TData>(GpuMemoryHandle, TData[], int)
+  nameWithType: IGpuResidentGrain<T>.WriteAsync<TData>(GpuMemoryHandle, TData[], int)
+  fullName: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain<T>.WriteAsync<TData>(Orleans.GpuBridge.Grains.Models.GpuMemoryHandle, TData[], int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Interfaces/IGpuResidentGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: WriteAsync
+    path: ../src/Orleans.GpuBridge.Grains/Interfaces/IGpuResidentGrain.cs
+    startLine: 42
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Interfaces
+  summary: >-
+    Writes data to a previously allocated resident memory buffer.
+
+    The data is transferred to GPU memory and becomes available for kernel operations.
+  example: []
+  syntax:
+    content: 'Task WriteAsync<TData>(GpuMemoryHandle handle, TData[] data, int offset = 0) where TData : unmanaged'
+    parameters:
+    - id: handle
+      type: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+      description: The memory handle identifying the target allocation.
+    - id: data
+      type: '{TData}[]'
+      description: The array of data to write to GPU memory.
+    - id: offset
+      type: System.Int32
+      description: The byte offset within the allocation to start writing at.
+    typeParameters:
+    - id: TData
+      description: The unmanaged type of data elements to write.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task representing the asynchronous write operation.
+    content.vb: Function WriteAsync(Of TData As Structure)(handle As GpuMemoryHandle, data As TData(), offset As Integer = 0) As Task
+  overload: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.WriteAsync*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Thrown when the memory handle is not found.
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Thrown when the write would exceed allocated memory bounds.
+  nameWithType.vb: IGpuResidentGrain(Of T).WriteAsync(Of TData)(GpuMemoryHandle, TData(), Integer)
+  fullName.vb: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain(Of T).WriteAsync(Of TData)(Orleans.GpuBridge.Grains.Models.GpuMemoryHandle, TData(), Integer)
+  name.vb: WriteAsync(Of TData)(GpuMemoryHandle, TData(), Integer)
+- uid: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.ReadAsync``1(Orleans.GpuBridge.Grains.Models.GpuMemoryHandle,System.Int32,System.Int32)
+  commentId: M:Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.ReadAsync``1(Orleans.GpuBridge.Grains.Models.GpuMemoryHandle,System.Int32,System.Int32)
+  id: ReadAsync``1(Orleans.GpuBridge.Grains.Models.GpuMemoryHandle,System.Int32,System.Int32)
+  parent: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1
+  langs:
+  - csharp
+  - vb
+  name: ReadAsync<TData>(GpuMemoryHandle, int, int)
+  nameWithType: IGpuResidentGrain<T>.ReadAsync<TData>(GpuMemoryHandle, int, int)
+  fullName: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain<T>.ReadAsync<TData>(Orleans.GpuBridge.Grains.Models.GpuMemoryHandle, int, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Interfaces/IGpuResidentGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ReadAsync
+    path: ../src/Orleans.GpuBridge.Grains/Interfaces/IGpuResidentGrain.cs
+    startLine: 58
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Interfaces
+  summary: >-
+    Reads data from a resident memory buffer back to host memory.
+
+    This operation transfers data from GPU memory to a host-accessible array.
+  example: []
+  syntax:
+    content: 'Task<TData[]> ReadAsync<TData>(GpuMemoryHandle handle, int count, int offset = 0) where TData : unmanaged'
+    parameters:
+    - id: handle
+      type: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+      description: The memory handle identifying the source allocation.
+    - id: count
+      type: System.Int32
+      description: The number of elements to read.
+    - id: offset
+      type: System.Int32
+      description: The byte offset within the allocation to start reading from.
+    typeParameters:
+    - id: TData
+      description: The unmanaged type of data elements to read.
+    return:
+      type: System.Threading.Tasks.Task{{TData}[]}
+      description: A task that resolves to an array containing the read data.
+    content.vb: Function ReadAsync(Of TData As Structure)(handle As GpuMemoryHandle, count As Integer, offset As Integer = 0) As Task(Of TData())
+  overload: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.ReadAsync*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Thrown when the memory handle is not found.
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Thrown when the read would exceed allocated memory bounds.
+  nameWithType.vb: IGpuResidentGrain(Of T).ReadAsync(Of TData)(GpuMemoryHandle, Integer, Integer)
+  fullName.vb: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain(Of T).ReadAsync(Of TData)(Orleans.GpuBridge.Grains.Models.GpuMemoryHandle, Integer, Integer)
+  name.vb: ReadAsync(Of TData)(GpuMemoryHandle, Integer, Integer)
+- uid: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.ComputeAsync(Orleans.GpuBridge.Abstractions.KernelId,Orleans.GpuBridge.Grains.Models.GpuMemoryHandle,Orleans.GpuBridge.Grains.Models.GpuMemoryHandle,Orleans.GpuBridge.Grains.Models.GpuComputeParams)
+  commentId: M:Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.ComputeAsync(Orleans.GpuBridge.Abstractions.KernelId,Orleans.GpuBridge.Grains.Models.GpuMemoryHandle,Orleans.GpuBridge.Grains.Models.GpuMemoryHandle,Orleans.GpuBridge.Grains.Models.GpuComputeParams)
+  id: ComputeAsync(Orleans.GpuBridge.Abstractions.KernelId,Orleans.GpuBridge.Grains.Models.GpuMemoryHandle,Orleans.GpuBridge.Grains.Models.GpuMemoryHandle,Orleans.GpuBridge.Grains.Models.GpuComputeParams)
+  parent: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1
+  langs:
+  - csharp
+  - vb
+  name: ComputeAsync(KernelId, GpuMemoryHandle, GpuMemoryHandle, GpuComputeParams?)
+  nameWithType: IGpuResidentGrain<T>.ComputeAsync(KernelId, GpuMemoryHandle, GpuMemoryHandle, GpuComputeParams?)
+  fullName: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain<T>.ComputeAsync(Orleans.GpuBridge.Abstractions.KernelId, Orleans.GpuBridge.Grains.Models.GpuMemoryHandle, Orleans.GpuBridge.Grains.Models.GpuMemoryHandle, Orleans.GpuBridge.Grains.Models.GpuComputeParams?)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Interfaces/IGpuResidentGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ComputeAsync
+    path: ../src/Orleans.GpuBridge.Grains/Interfaces/IGpuResidentGrain.cs
+    startLine: 73
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Interfaces
+  summary: >-
+    Executes a GPU kernel using resident memory buffers as input and output.
+
+    This enables high-performance computation without memory transfer overhead.
+  example: []
+  syntax:
+    content: Task<GpuComputeResult> ComputeAsync(KernelId kernelId, GpuMemoryHandle input, GpuMemoryHandle output, GpuComputeParams? parameters = null)
+    parameters:
+    - id: kernelId
+      type: Orleans.GpuBridge.Abstractions.KernelId
+      description: The identifier of the kernel to execute.
+    - id: input
+      type: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+      description: The memory handle containing input data for the kernel.
+    - id: output
+      type: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+      description: The memory handle where kernel results will be written.
+    - id: parameters
+      type: Orleans.GpuBridge.Grains.Models.GpuComputeParams
+      description: Optional kernel execution parameters (work group size, constants, etc.).
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Grains.Models.GpuComputeResult}
+      description: A task that resolves to a <xref href="Orleans.GpuBridge.Grains.Models.GpuComputeResult" data-throw-if-not-resolved="false"></xref> containing execution status and timing information.
+    content.vb: Function ComputeAsync(kernelId As KernelId, input As GpuMemoryHandle, output As GpuMemoryHandle, parameters As GpuComputeParams = Nothing) As Task(Of GpuComputeResult)
+  overload: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.ComputeAsync*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Thrown when input or output handles are not found.
+  nameWithType.vb: IGpuResidentGrain(Of T).ComputeAsync(KernelId, GpuMemoryHandle, GpuMemoryHandle, GpuComputeParams)
+  fullName.vb: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain(Of T).ComputeAsync(Orleans.GpuBridge.Abstractions.KernelId, Orleans.GpuBridge.Grains.Models.GpuMemoryHandle, Orleans.GpuBridge.Grains.Models.GpuMemoryHandle, Orleans.GpuBridge.Grains.Models.GpuComputeParams)
+  name.vb: ComputeAsync(KernelId, GpuMemoryHandle, GpuMemoryHandle, GpuComputeParams)
+- uid: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.ReleaseAsync(Orleans.GpuBridge.Grains.Models.GpuMemoryHandle)
+  commentId: M:Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.ReleaseAsync(Orleans.GpuBridge.Grains.Models.GpuMemoryHandle)
+  id: ReleaseAsync(Orleans.GpuBridge.Grains.Models.GpuMemoryHandle)
+  parent: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1
+  langs:
+  - csharp
+  - vb
+  name: ReleaseAsync(GpuMemoryHandle)
+  nameWithType: IGpuResidentGrain<T>.ReleaseAsync(GpuMemoryHandle)
+  fullName: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain<T>.ReleaseAsync(Orleans.GpuBridge.Grains.Models.GpuMemoryHandle)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Interfaces/IGpuResidentGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ReleaseAsync
+    path: ../src/Orleans.GpuBridge.Grains/Interfaces/IGpuResidentGrain.cs
+    startLine: 85
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Interfaces
+  summary: >-
+    Releases a previously allocated memory buffer, freeing GPU memory resources.
+
+    After this operation, the memory handle becomes invalid and cannot be used.
+  example: []
+  syntax:
+    content: Task ReleaseAsync(GpuMemoryHandle handle)
+    parameters:
+    - id: handle
+      type: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+      description: The memory handle to release.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task representing the asynchronous release operation.
+    content.vb: Function ReleaseAsync(handle As GpuMemoryHandle) As Task
+  overload: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.ReleaseAsync*
+  nameWithType.vb: IGpuResidentGrain(Of T).ReleaseAsync(GpuMemoryHandle)
+  fullName.vb: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain(Of T).ReleaseAsync(Orleans.GpuBridge.Grains.Models.GpuMemoryHandle)
+- uid: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.GetMemoryInfoAsync
+  commentId: M:Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.GetMemoryInfoAsync
+  id: GetMemoryInfoAsync
+  parent: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1
+  langs:
+  - csharp
+  - vb
+  name: GetMemoryInfoAsync()
+  nameWithType: IGpuResidentGrain<T>.GetMemoryInfoAsync()
+  fullName: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain<T>.GetMemoryInfoAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Interfaces/IGpuResidentGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetMemoryInfoAsync
+    path: ../src/Orleans.GpuBridge.Grains/Interfaces/IGpuResidentGrain.cs
+    startLine: 94
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Interfaces
+  summary: >-
+    Retrieves information about all currently allocated memory buffers.
+
+    This includes total memory usage, allocation count, and individual allocation details.
+  example: []
+  syntax:
+    content: Task<GpuMemoryInfo> GetMemoryInfoAsync()
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Models.GpuMemoryInfo}
+      description: A task that resolves to a <xref href="Orleans.GpuBridge.Abstractions.Models.GpuMemoryInfo" data-throw-if-not-resolved="false"></xref> containing comprehensive memory usage information.
+    content.vb: Function GetMemoryInfoAsync() As Task(Of GpuMemoryInfo)
+  overload: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.GetMemoryInfoAsync*
+  nameWithType.vb: IGpuResidentGrain(Of T).GetMemoryInfoAsync()
+  fullName.vb: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain(Of T).GetMemoryInfoAsync()
+- uid: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.ClearAsync
+  commentId: M:Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.ClearAsync
+  id: ClearAsync
+  parent: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1
+  langs:
+  - csharp
+  - vb
+  name: ClearAsync()
+  nameWithType: IGpuResidentGrain<T>.ClearAsync()
+  fullName: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain<T>.ClearAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Interfaces/IGpuResidentGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ClearAsync
+    path: ../src/Orleans.GpuBridge.Grains/Interfaces/IGpuResidentGrain.cs
+    startLine: 101
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Interfaces
+  summary: >-
+    Releases all allocated memory buffers and clears the resident state.
+
+    This operation frees all GPU memory associated with this grain instance.
+  example: []
+  syntax:
+    content: Task ClearAsync()
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task representing the asynchronous clear operation.
+    content.vb: Function ClearAsync() As Task
+  overload: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.ClearAsync*
+  nameWithType.vb: IGpuResidentGrain(Of T).ClearAsync()
+  fullName.vb: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain(Of T).ClearAsync()
+- uid: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.StoreDataAsync(`0[],Orleans.GpuBridge.Grains.Enums.GpuMemoryType)
+  commentId: M:Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.StoreDataAsync(`0[],Orleans.GpuBridge.Grains.Enums.GpuMemoryType)
+  id: StoreDataAsync(`0[],Orleans.GpuBridge.Grains.Enums.GpuMemoryType)
+  parent: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1
+  langs:
+  - csharp
+  - vb
+  name: StoreDataAsync(T[], GpuMemoryType)
+  nameWithType: IGpuResidentGrain<T>.StoreDataAsync(T[], GpuMemoryType)
+  fullName: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain<T>.StoreDataAsync(T[], Orleans.GpuBridge.Grains.Enums.GpuMemoryType)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Interfaces/IGpuResidentGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: StoreDataAsync
+    path: ../src/Orleans.GpuBridge.Grains/Interfaces/IGpuResidentGrain.cs
+    startLine: 113
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Interfaces
+  summary: >-
+    Stores data in persistent grain state with automatic GPU memory allocation.
+
+    This is a high-level convenience method that combines memory allocation and data writing.
+
+    The data is persisted across grain activations and stored in GPU-accessible memory.
+  example: []
+  syntax:
+    content: Task StoreDataAsync(T[] data, GpuMemoryType memoryType = GpuMemoryType.Default)
+    parameters:
+    - id: data
+      type: '{T}[]'
+      description: The data array to store in GPU memory.
+    - id: memoryType
+      type: Orleans.GpuBridge.Grains.Enums.GpuMemoryType
+      description: The type of memory allocation to use (default, pinned, shared, etc.).
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task representing the asynchronous store operation.
+    content.vb: Function StoreDataAsync(data As T(), memoryType As GpuMemoryType = GpuMemoryType.Default) As Task
+  overload: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.StoreDataAsync*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown when data is null.
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: Thrown when GPU memory allocation fails.
+  nameWithType.vb: IGpuResidentGrain(Of T).StoreDataAsync(T(), GpuMemoryType)
+  fullName.vb: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain(Of T).StoreDataAsync(T(), Orleans.GpuBridge.Grains.Enums.GpuMemoryType)
+  name.vb: StoreDataAsync(T(), GpuMemoryType)
+- uid: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.GetDataAsync
+  commentId: M:Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.GetDataAsync
+  id: GetDataAsync
+  parent: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1
+  langs:
+  - csharp
+  - vb
+  name: GetDataAsync()
+  nameWithType: IGpuResidentGrain<T>.GetDataAsync()
+  fullName: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain<T>.GetDataAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Interfaces/IGpuResidentGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetDataAsync
+    path: ../src/Orleans.GpuBridge.Grains/Interfaces/IGpuResidentGrain.cs
+    startLine: 123
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Interfaces
+  summary: >-
+    Retrieves the stored data from persistent grain state.
+
+    This is a high-level convenience method that reads data from GPU memory back to host memory.
+
+    If no data has been stored, returns null.
+  example: []
+  syntax:
+    content: Task<T[]?> GetDataAsync()
+    return:
+      type: System.Threading.Tasks.Task{{T}[]}
+      description: A task that resolves to the stored data array, or null if no data has been stored.
+    content.vb: Function GetDataAsync() As Task(Of T())
+  overload: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.GetDataAsync*
+  nameWithType.vb: IGpuResidentGrain(Of T).GetDataAsync()
+  fullName.vb: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain(Of T).GetDataAsync()
+references:
+- uid: Orleans.GpuBridge.Grains.Interfaces
+  commentId: N:Orleans.GpuBridge.Grains.Interfaces
+  href: Orleans.html
+  name: Orleans.GpuBridge.Grains.Interfaces
+  nameWithType: Orleans.GpuBridge.Grains.Interfaces
+  fullName: Orleans.GpuBridge.Grains.Interfaces
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.Interfaces
+    name: Interfaces
+    href: Orleans.GpuBridge.Grains.Interfaces.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.Interfaces
+    name: Interfaces
+    href: Orleans.GpuBridge.Grains.Interfaces.html
+- uid: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+  commentId: T:Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+  parent: Orleans.GpuBridge.Grains.Models
+  href: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.html
+  name: GpuMemoryHandle
+  nameWithType: GpuMemoryHandle
+  fullName: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+- uid: System.InvalidOperationException
+  commentId: T:System.InvalidOperationException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
+  name: InvalidOperationException
+  nameWithType: InvalidOperationException
+  fullName: System.InvalidOperationException
+- uid: System.OutOfMemoryException
+  commentId: T:System.OutOfMemoryException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.outofmemoryexception
+  name: OutOfMemoryException
+  nameWithType: OutOfMemoryException
+  fullName: System.OutOfMemoryException
+- uid: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.AllocateAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.AllocateAsync
+  href: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain-1.html#Orleans_GpuBridge_Grains_Interfaces_IGpuResidentGrain_1_AllocateAsync_System_Int64_Orleans_GpuBridge_Grains_Enums_GpuMemoryType_
+  name: AllocateAsync
+  nameWithType: IGpuResidentGrain<T>.AllocateAsync
+  fullName: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain<T>.AllocateAsync
+  nameWithType.vb: IGpuResidentGrain(Of T).AllocateAsync
+  fullName.vb: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain(Of T).AllocateAsync
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Grains.Enums.GpuMemoryType
+  commentId: T:Orleans.GpuBridge.Grains.Enums.GpuMemoryType
+  parent: Orleans.GpuBridge.Grains.Enums
+  href: Orleans.GpuBridge.Grains.Enums.GpuMemoryType.html
+  name: GpuMemoryType
+  nameWithType: GpuMemoryType
+  fullName: Orleans.GpuBridge.Grains.Enums.GpuMemoryType
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Grains.Models.GpuMemoryHandle}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Grains.Models.GpuMemoryHandle}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<GpuMemoryHandle>
+  nameWithType: Task<GpuMemoryHandle>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Grains.Models.GpuMemoryHandle>
+  nameWithType.vb: Task(Of GpuMemoryHandle)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Grains.Models.GpuMemoryHandle)
+  name.vb: Task(Of GpuMemoryHandle)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+    name: GpuMemoryHandle
+    href: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+    name: GpuMemoryHandle
+    href: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.html
+  - name: )
+- uid: Orleans.GpuBridge.Grains.Models
+  commentId: N:Orleans.GpuBridge.Grains.Models
+  href: Orleans.html
+  name: Orleans.GpuBridge.Grains.Models
+  nameWithType: Orleans.GpuBridge.Grains.Models
+  fullName: Orleans.GpuBridge.Grains.Models
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.Models
+    name: Models
+    href: Orleans.GpuBridge.Grains.Models.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.Models
+    name: Models
+    href: Orleans.GpuBridge.Grains.Models.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Grains.Enums
+  commentId: N:Orleans.GpuBridge.Grains.Enums
+  href: Orleans.html
+  name: Orleans.GpuBridge.Grains.Enums
+  nameWithType: Orleans.GpuBridge.Grains.Enums
+  fullName: Orleans.GpuBridge.Grains.Enums
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.Enums
+    name: Enums
+    href: Orleans.GpuBridge.Grains.Enums.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.Enums
+    name: Enums
+    href: Orleans.GpuBridge.Grains.Enums.html
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: System.ArgumentException
+  commentId: T:System.ArgumentException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentexception
+  name: ArgumentException
+  nameWithType: ArgumentException
+  fullName: System.ArgumentException
+- uid: System.ArgumentOutOfRangeException
+  commentId: T:System.ArgumentOutOfRangeException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception
+  name: ArgumentOutOfRangeException
+  nameWithType: ArgumentOutOfRangeException
+  fullName: System.ArgumentOutOfRangeException
+- uid: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.WriteAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.WriteAsync
+  href: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain-1.html#Orleans_GpuBridge_Grains_Interfaces_IGpuResidentGrain_1_WriteAsync__1_Orleans_GpuBridge_Grains_Models_GpuMemoryHandle___0___System_Int32_
+  name: WriteAsync
+  nameWithType: IGpuResidentGrain<T>.WriteAsync
+  fullName: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain<T>.WriteAsync
+  nameWithType.vb: IGpuResidentGrain(Of T).WriteAsync
+  fullName.vb: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain(Of T).WriteAsync
+- uid: '{TData}[]'
+  isExternal: true
+  name: TData[]
+  nameWithType: TData[]
+  fullName: TData[]
+  nameWithType.vb: TData()
+  fullName.vb: TData()
+  name.vb: TData()
+  spec.csharp:
+  - name: TData
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - name: TData
+  - name: (
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.ReadAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.ReadAsync
+  href: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain-1.html#Orleans_GpuBridge_Grains_Interfaces_IGpuResidentGrain_1_ReadAsync__1_Orleans_GpuBridge_Grains_Models_GpuMemoryHandle_System_Int32_System_Int32_
+  name: ReadAsync
+  nameWithType: IGpuResidentGrain<T>.ReadAsync
+  fullName: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain<T>.ReadAsync
+  nameWithType.vb: IGpuResidentGrain(Of T).ReadAsync
+  fullName.vb: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain(Of T).ReadAsync
+- uid: System.Threading.Tasks.Task{{TData}[]}
+  commentId: T:System.Threading.Tasks.Task{``0[]}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TData[]>
+  nameWithType: Task<TData[]>
+  fullName: System.Threading.Tasks.Task<TData[]>
+  nameWithType.vb: Task(Of TData())
+  fullName.vb: System.Threading.Tasks.Task(Of TData())
+  name.vb: Task(Of TData())
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TData
+  - name: '['
+  - name: ']'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TData
+  - name: (
+  - name: )
+  - name: )
+- uid: Orleans.GpuBridge.Grains.Models.GpuComputeResult
+  commentId: T:Orleans.GpuBridge.Grains.Models.GpuComputeResult
+  href: Orleans.GpuBridge.Grains.Models.GpuComputeResult.html
+  name: GpuComputeResult
+  nameWithType: GpuComputeResult
+  fullName: Orleans.GpuBridge.Grains.Models.GpuComputeResult
+- uid: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.ComputeAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.ComputeAsync
+  href: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain-1.html#Orleans_GpuBridge_Grains_Interfaces_IGpuResidentGrain_1_ComputeAsync_Orleans_GpuBridge_Abstractions_KernelId_Orleans_GpuBridge_Grains_Models_GpuMemoryHandle_Orleans_GpuBridge_Grains_Models_GpuMemoryHandle_Orleans_GpuBridge_Grains_Models_GpuComputeParams_
+  name: ComputeAsync
+  nameWithType: IGpuResidentGrain<T>.ComputeAsync
+  fullName: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain<T>.ComputeAsync
+  nameWithType.vb: IGpuResidentGrain(Of T).ComputeAsync
+  fullName.vb: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain(Of T).ComputeAsync
+- uid: Orleans.GpuBridge.Abstractions.KernelId
+  commentId: T:Orleans.GpuBridge.Abstractions.KernelId
+  parent: Orleans.GpuBridge.Abstractions
+  href: Orleans.GpuBridge.Abstractions.KernelId.html
+  name: KernelId
+  nameWithType: KernelId
+  fullName: Orleans.GpuBridge.Abstractions.KernelId
+- uid: Orleans.GpuBridge.Grains.Models.GpuComputeParams
+  commentId: T:Orleans.GpuBridge.Grains.Models.GpuComputeParams
+  parent: Orleans.GpuBridge.Grains.Models
+  href: Orleans.GpuBridge.Grains.Models.GpuComputeParams.html
+  name: GpuComputeParams
+  nameWithType: GpuComputeParams
+  fullName: Orleans.GpuBridge.Grains.Models.GpuComputeParams
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Grains.Models.GpuComputeResult}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Grains.Models.GpuComputeResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<GpuComputeResult>
+  nameWithType: Task<GpuComputeResult>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Grains.Models.GpuComputeResult>
+  nameWithType.vb: Task(Of GpuComputeResult)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Grains.Models.GpuComputeResult)
+  name.vb: Task(Of GpuComputeResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Grains.Models.GpuComputeResult
+    name: GpuComputeResult
+    href: Orleans.GpuBridge.Grains.Models.GpuComputeResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Grains.Models.GpuComputeResult
+    name: GpuComputeResult
+    href: Orleans.GpuBridge.Grains.Models.GpuComputeResult.html
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions
+  commentId: N:Orleans.GpuBridge.Abstractions
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions
+  nameWithType: Orleans.GpuBridge.Abstractions
+  fullName: Orleans.GpuBridge.Abstractions
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+- uid: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.ReleaseAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.ReleaseAsync
+  href: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain-1.html#Orleans_GpuBridge_Grains_Interfaces_IGpuResidentGrain_1_ReleaseAsync_Orleans_GpuBridge_Grains_Models_GpuMemoryHandle_
+  name: ReleaseAsync
+  nameWithType: IGpuResidentGrain<T>.ReleaseAsync
+  fullName: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain<T>.ReleaseAsync
+  nameWithType.vb: IGpuResidentGrain(Of T).ReleaseAsync
+  fullName.vb: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain(Of T).ReleaseAsync
+- uid: Orleans.GpuBridge.Abstractions.Models.GpuMemoryInfo
+  commentId: T:Orleans.GpuBridge.Abstractions.Models.GpuMemoryInfo
+  parent: Orleans.GpuBridge.Abstractions.Models
+  href: Orleans.GpuBridge.Abstractions.Models.GpuMemoryInfo.html
+  name: GpuMemoryInfo
+  nameWithType: GpuMemoryInfo
+  fullName: Orleans.GpuBridge.Abstractions.Models.GpuMemoryInfo
+- uid: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.GetMemoryInfoAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.GetMemoryInfoAsync
+  href: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain-1.html#Orleans_GpuBridge_Grains_Interfaces_IGpuResidentGrain_1_GetMemoryInfoAsync
+  name: GetMemoryInfoAsync
+  nameWithType: IGpuResidentGrain<T>.GetMemoryInfoAsync
+  fullName: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain<T>.GetMemoryInfoAsync
+  nameWithType.vb: IGpuResidentGrain(Of T).GetMemoryInfoAsync
+  fullName.vb: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain(Of T).GetMemoryInfoAsync
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Models.GpuMemoryInfo}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Models.GpuMemoryInfo}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<GpuMemoryInfo>
+  nameWithType: Task<GpuMemoryInfo>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Models.GpuMemoryInfo>
+  nameWithType.vb: Task(Of GpuMemoryInfo)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Models.GpuMemoryInfo)
+  name.vb: Task(Of GpuMemoryInfo)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Models.GpuMemoryInfo
+    name: GpuMemoryInfo
+    href: Orleans.GpuBridge.Abstractions.Models.GpuMemoryInfo.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Models.GpuMemoryInfo
+    name: GpuMemoryInfo
+    href: Orleans.GpuBridge.Abstractions.Models.GpuMemoryInfo.html
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Models
+  commentId: N:Orleans.GpuBridge.Abstractions.Models
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Models
+  nameWithType: Orleans.GpuBridge.Abstractions.Models
+  fullName: Orleans.GpuBridge.Abstractions.Models
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Models
+    name: Models
+    href: Orleans.GpuBridge.Abstractions.Models.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Models
+    name: Models
+    href: Orleans.GpuBridge.Abstractions.Models.html
+- uid: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.ClearAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.ClearAsync
+  href: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain-1.html#Orleans_GpuBridge_Grains_Interfaces_IGpuResidentGrain_1_ClearAsync
+  name: ClearAsync
+  nameWithType: IGpuResidentGrain<T>.ClearAsync
+  fullName: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain<T>.ClearAsync
+  nameWithType.vb: IGpuResidentGrain(Of T).ClearAsync
+  fullName.vb: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain(Of T).ClearAsync
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+  name: ArgumentNullException
+  nameWithType: ArgumentNullException
+  fullName: System.ArgumentNullException
+- uid: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.StoreDataAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.StoreDataAsync
+  href: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain-1.html#Orleans_GpuBridge_Grains_Interfaces_IGpuResidentGrain_1_StoreDataAsync__0___Orleans_GpuBridge_Grains_Enums_GpuMemoryType_
+  name: StoreDataAsync
+  nameWithType: IGpuResidentGrain<T>.StoreDataAsync
+  fullName: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain<T>.StoreDataAsync
+  nameWithType.vb: IGpuResidentGrain(Of T).StoreDataAsync
+  fullName.vb: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain(Of T).StoreDataAsync
+- uid: '{T}[]'
+  isExternal: true
+  name: T[]
+  nameWithType: T[]
+  fullName: T[]
+  nameWithType.vb: T()
+  fullName.vb: T()
+  name.vb: T()
+  spec.csharp:
+  - name: T
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - name: T
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.GetDataAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain`1.GetDataAsync
+  href: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain-1.html#Orleans_GpuBridge_Grains_Interfaces_IGpuResidentGrain_1_GetDataAsync
+  name: GetDataAsync
+  nameWithType: IGpuResidentGrain<T>.GetDataAsync
+  fullName: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain<T>.GetDataAsync
+  nameWithType.vb: IGpuResidentGrain(Of T).GetDataAsync
+  fullName.vb: Orleans.GpuBridge.Grains.Interfaces.IGpuResidentGrain(Of T).GetDataAsync
+- uid: System.Threading.Tasks.Task{{T}[]}
+  commentId: T:System.Threading.Tasks.Task{``0[]}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<T[]>
+  nameWithType: Task<T[]>
+  fullName: System.Threading.Tasks.Task<T[]>
+  nameWithType.vb: Task(Of T())
+  fullName.vb: System.Threading.Tasks.Task(Of T())
+  name.vb: Task(Of T())
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: T
+  - name: '['
+  - name: ']'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: (
+  - name: )
+  - name: )

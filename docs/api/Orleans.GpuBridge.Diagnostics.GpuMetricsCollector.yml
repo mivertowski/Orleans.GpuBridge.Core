@@ -1,0 +1,1343 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector
+  commentId: T:Orleans.GpuBridge.Diagnostics.GpuMetricsCollector
+  id: GpuMetricsCollector
+  parent: Orleans.GpuBridge.Diagnostics
+  children:
+  - Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Diagnostics.GpuMetricsCollector},Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry,Microsoft.Extensions.Options.IOptions{Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions})
+  - Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.Dispose
+  - Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.ExecuteAsync(System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetAllDeviceMetricsAsync
+  - Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetDeviceMetricsAsync(System.Int32)
+  - Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetSystemMetricsAsync
+  langs:
+  - csharp
+  - vb
+  name: GpuMetricsCollector
+  nameWithType: GpuMetricsCollector
+  fullName: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/GpuMetricsCollector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GpuMetricsCollector
+    path: ../src/Orleans.GpuBridge.Diagnostics/GpuMetricsCollector.cs
+    startLine: 40
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics
+  summary: Background service that continuously collects GPU and system performance metrics.
+  remarks: >-
+    <p>
+
+    The GpuMetricsCollector operates as a hosted background service that periodically
+
+    queries GPU devices and system resources to gather performance metrics. It supports
+
+    multiple GPU vendors (NVIDIA, AMD, Intel) and provides CPU fallbacks when hardware
+
+    monitoring tools are unavailable.
+
+    </p>
+
+    <p>
+
+    Key features:
+
+    - Automatic periodic metric collection based on configured intervals
+
+    - Multi-vendor GPU support with vendor-specific monitoring tools
+
+    - Thread-safe metric caching and retrieval
+
+    - Graceful handling of unavailable devices or monitoring tools
+
+    - Integration with Orleans telemetry system
+
+    - Configurable logging levels for debugging
+
+    </p>
+
+    <p>
+
+    The collector uses external tools for GPU monitoring:
+
+    - NVIDIA: nvidia-smi command-line utility
+
+    - AMD: rocm-smi command-line utility  
+
+    - Intel: Windows performance counters (future implementation)
+
+    </p>
+  example: []
+  syntax:
+    content: 'public sealed class GpuMetricsCollector : BackgroundService, IHostedService, IDisposable, IGpuMetricsCollector'
+    content.vb: Public NotInheritable Class GpuMetricsCollector Inherits BackgroundService Implements IHostedService, IDisposable, IGpuMetricsCollector
+  inheritance:
+  - System.Object
+  - Microsoft.Extensions.Hosting.BackgroundService
+  implements:
+  - Microsoft.Extensions.Hosting.IHostedService
+  - System.IDisposable
+  - Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector
+  inheritedMembers:
+  - Microsoft.Extensions.Hosting.BackgroundService.StartAsync(System.Threading.CancellationToken)
+  - Microsoft.Extensions.Hosting.BackgroundService.StopAsync(System.Threading.CancellationToken)
+  - Microsoft.Extensions.Hosting.BackgroundService.ExecuteTask
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Diagnostics.GpuMetricsCollector},Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry,Microsoft.Extensions.Options.IOptions{Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions})
+  commentId: M:Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Diagnostics.GpuMetricsCollector},Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry,Microsoft.Extensions.Options.IOptions{Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions})
+  id: '#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Diagnostics.GpuMetricsCollector},Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry,Microsoft.Extensions.Options.IOptions{Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions})'
+  parent: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector
+  langs:
+  - csharp
+  - vb
+  name: GpuMetricsCollector(ILogger<GpuMetricsCollector>, IGpuTelemetry, IOptions<GpuMetricsOptions>)
+  nameWithType: GpuMetricsCollector.GpuMetricsCollector(ILogger<GpuMetricsCollector>, IGpuTelemetry, IOptions<GpuMetricsOptions>)
+  fullName: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GpuMetricsCollector(Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Diagnostics.GpuMetricsCollector>, Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry, Microsoft.Extensions.Options.IOptions<Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions>)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/GpuMetricsCollector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Diagnostics/GpuMetricsCollector.cs
+    startLine: 59
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics
+  summary: Initializes a new instance of the <xref href="Orleans.GpuBridge.Diagnostics.GpuMetricsCollector" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public GpuMetricsCollector(ILogger<GpuMetricsCollector> logger, IGpuTelemetry telemetry, IOptions<GpuMetricsOptions> options)
+    parameters:
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Diagnostics.GpuMetricsCollector}
+      description: The logger instance for diagnostic output.
+    - id: telemetry
+      type: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry
+      description: The telemetry system for metric reporting.
+    - id: options
+      type: Microsoft.Extensions.Options.IOptions{Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions}
+      description: Configuration options for metrics collection behavior.
+    content.vb: Public Sub New(logger As ILogger(Of GpuMetricsCollector), telemetry As IGpuTelemetry, options As IOptions(Of GpuMetricsOptions))
+  overload: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.#ctor*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown when any of the required parameters are null.
+  nameWithType.vb: GpuMetricsCollector.New(ILogger(Of GpuMetricsCollector), IGpuTelemetry, IOptions(Of GpuMetricsOptions))
+  fullName.vb: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.New(Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Diagnostics.GpuMetricsCollector), Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry, Microsoft.Extensions.Options.IOptions(Of Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions))
+  name.vb: New(ILogger(Of GpuMetricsCollector), IGpuTelemetry, IOptions(Of GpuMetricsOptions))
+- uid: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.ExecuteAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.ExecuteAsync(System.Threading.CancellationToken)
+  id: ExecuteAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector
+  langs:
+  - csharp
+  - vb
+  name: ExecuteAsync(CancellationToken)
+  nameWithType: GpuMetricsCollector.ExecuteAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.ExecuteAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/GpuMetricsCollector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ExecuteAsync
+    path: ../src/Orleans.GpuBridge.Diagnostics/GpuMetricsCollector.cs
+    startLine: 84
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics
+  summary: Executes the background metrics collection service.
+  remarks: >-
+    This method runs continuously until the application shuts down, collecting
+
+    metrics at the configured interval. It handles exceptions gracefully and
+
+    implements exponential backoff on persistent failures.
+  example: []
+  syntax:
+    content: protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    parameters:
+    - id: stoppingToken
+      type: System.Threading.CancellationToken
+      description: Token that signals when the service should stop.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task that represents the lifetime of the background service.
+    content.vb: Protected Overrides Function ExecuteAsync(stoppingToken As CancellationToken) As Task
+  overridden: Microsoft.Extensions.Hosting.BackgroundService.ExecuteAsync(System.Threading.CancellationToken)
+  overload: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.ExecuteAsync*
+- uid: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetDeviceMetricsAsync(System.Int32)
+  commentId: M:Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetDeviceMetricsAsync(System.Int32)
+  id: GetDeviceMetricsAsync(System.Int32)
+  parent: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector
+  langs:
+  - csharp
+  - vb
+  name: GetDeviceMetricsAsync(int)
+  nameWithType: GpuMetricsCollector.GetDeviceMetricsAsync(int)
+  fullName: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetDeviceMetricsAsync(int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/GpuMetricsCollector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetDeviceMetricsAsync
+    path: ../src/Orleans.GpuBridge.Diagnostics/GpuMetricsCollector.cs
+    startLine: 371
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics
+  summary: Retrieves performance metrics for a specific GPU device.
+  remarks: >-
+    This method first attempts to return cached metrics, then falls back to
+
+    collecting fresh metrics if cached data is unavailable. The method will
+
+    automatically detect the GPU vendor and use the appropriate monitoring tool.
+  example: []
+  syntax:
+    content: public Task<GpuDeviceMetrics> GetDeviceMetricsAsync(int deviceIndex)
+    parameters:
+    - id: deviceIndex
+      type: System.Int32
+      description: The zero-based index of the GPU device to query.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Diagnostics.Models.GpuDeviceMetrics}
+      description: >-
+        A task containing the GPU device metrics including utilization, memory usage,
+
+        temperature, and power consumption.
+    content.vb: Public Function GetDeviceMetricsAsync(deviceIndex As Integer) As Task(Of GpuDeviceMetrics)
+  overload: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetDeviceMetricsAsync*
+  exceptions:
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: Thrown when no metrics are available for the specified device index.
+  nameWithType.vb: GpuMetricsCollector.GetDeviceMetricsAsync(Integer)
+  fullName.vb: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetDeviceMetricsAsync(Integer)
+  name.vb: GetDeviceMetricsAsync(Integer)
+- uid: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetSystemMetricsAsync
+  commentId: M:Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetSystemMetricsAsync
+  id: GetSystemMetricsAsync
+  parent: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector
+  langs:
+  - csharp
+  - vb
+  name: GetSystemMetricsAsync()
+  nameWithType: GpuMetricsCollector.GetSystemMetricsAsync()
+  fullName: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetSystemMetricsAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/GpuMetricsCollector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetSystemMetricsAsync
+    path: ../src/Orleans.GpuBridge.Diagnostics/GpuMetricsCollector.cs
+    startLine: 403
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics
+  summary: Retrieves current system performance metrics for the host process.
+  remarks: >-
+    System metrics are collected fresh on each call and include process-level
+
+    resource consumption data useful for capacity planning and troubleshooting.
+  example: []
+  syntax:
+    content: public Task<SystemMetrics> GetSystemMetricsAsync()
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Diagnostics.Models.SystemMetrics}
+      description: >-
+        A task containing system metrics including CPU usage, memory consumption,
+
+        thread count, and handle count.
+    content.vb: Public Function GetSystemMetricsAsync() As Task(Of SystemMetrics)
+  overload: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetSystemMetricsAsync*
+- uid: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetAllDeviceMetricsAsync
+  commentId: M:Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetAllDeviceMetricsAsync
+  id: GetAllDeviceMetricsAsync
+  parent: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector
+  langs:
+  - csharp
+  - vb
+  name: GetAllDeviceMetricsAsync()
+  nameWithType: GpuMetricsCollector.GetAllDeviceMetricsAsync()
+  fullName: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetAllDeviceMetricsAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/GpuMetricsCollector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetAllDeviceMetricsAsync
+    path: ../src/Orleans.GpuBridge.Diagnostics/GpuMetricsCollector.cs
+    startLine: 427
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics
+  summary: Retrieves performance metrics for all available GPU devices.
+  remarks: >-
+    This method triggers a fresh collection cycle for all configured devices up to
+
+    the MaxDevices limit. Devices that cannot be queried are omitted from the results.
+
+    The operation is performed in parallel for better performance.
+  example: []
+  syntax:
+    content: public Task<IReadOnlyList<GpuDeviceMetrics>> GetAllDeviceMetricsAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Diagnostics.Models.GpuDeviceMetrics}}
+      description: A task containing a read-only list of GPU device metrics for all detected devices.
+    content.vb: Public Function GetAllDeviceMetricsAsync() As Task(Of IReadOnlyList(Of GpuDeviceMetrics))
+  overload: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetAllDeviceMetricsAsync*
+- uid: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.Dispose
+  commentId: M:Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.Dispose
+  id: Dispose
+  parent: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: GpuMetricsCollector.Dispose()
+  fullName: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.Dispose()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Diagnostics/GpuMetricsCollector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Dispose
+    path: ../src/Orleans.GpuBridge.Diagnostics/GpuMetricsCollector.cs
+    startLine: 444
+  assemblies:
+  - Orleans.GpuBridge.Diagnostics
+  namespace: Orleans.GpuBridge.Diagnostics
+  summary: Releases all resources used by the GpuMetricsCollector.
+  remarks: >-
+    This method stops the metrics collection timer and releases associated resources.
+
+    It should be called when the service is no longer needed to prevent resource leaks.
+  example: []
+  syntax:
+    content: public override void Dispose()
+    content.vb: Public Overrides Sub Dispose()
+  overridden: Microsoft.Extensions.Hosting.BackgroundService.Dispose
+  overload: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.Dispose*
+references:
+- uid: Orleans.GpuBridge.Diagnostics
+  commentId: N:Orleans.GpuBridge.Diagnostics
+  href: Orleans.html
+  name: Orleans.GpuBridge.Diagnostics
+  nameWithType: Orleans.GpuBridge.Diagnostics
+  fullName: Orleans.GpuBridge.Diagnostics
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Diagnostics
+    name: Diagnostics
+    href: Orleans.GpuBridge.Diagnostics.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Diagnostics
+    name: Diagnostics
+    href: Orleans.GpuBridge.Diagnostics.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Microsoft.Extensions.Hosting.BackgroundService
+  commentId: T:Microsoft.Extensions.Hosting.BackgroundService
+  parent: Microsoft.Extensions.Hosting
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice
+  name: BackgroundService
+  nameWithType: BackgroundService
+  fullName: Microsoft.Extensions.Hosting.BackgroundService
+- uid: Microsoft.Extensions.Hosting.IHostedService
+  commentId: T:Microsoft.Extensions.Hosting.IHostedService
+  parent: Microsoft.Extensions.Hosting
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.ihostedservice
+  name: IHostedService
+  nameWithType: IHostedService
+  fullName: Microsoft.Extensions.Hosting.IHostedService
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector
+  commentId: T:Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector
+  parent: Orleans.GpuBridge.Abstractions.Metrics
+  href: Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector.html
+  name: IGpuMetricsCollector
+  nameWithType: IGpuMetricsCollector
+  fullName: Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector
+- uid: Microsoft.Extensions.Hosting.BackgroundService.StartAsync(System.Threading.CancellationToken)
+  commentId: M:Microsoft.Extensions.Hosting.BackgroundService.StartAsync(System.Threading.CancellationToken)
+  parent: Microsoft.Extensions.Hosting.BackgroundService
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.startasync
+  name: StartAsync(CancellationToken)
+  nameWithType: BackgroundService.StartAsync(CancellationToken)
+  fullName: Microsoft.Extensions.Hosting.BackgroundService.StartAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Hosting.BackgroundService.StartAsync(System.Threading.CancellationToken)
+    name: StartAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.startasync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Extensions.Hosting.BackgroundService.StartAsync(System.Threading.CancellationToken)
+    name: StartAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.startasync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Microsoft.Extensions.Hosting.BackgroundService.StopAsync(System.Threading.CancellationToken)
+  commentId: M:Microsoft.Extensions.Hosting.BackgroundService.StopAsync(System.Threading.CancellationToken)
+  parent: Microsoft.Extensions.Hosting.BackgroundService
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.stopasync
+  name: StopAsync(CancellationToken)
+  nameWithType: BackgroundService.StopAsync(CancellationToken)
+  fullName: Microsoft.Extensions.Hosting.BackgroundService.StopAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Hosting.BackgroundService.StopAsync(System.Threading.CancellationToken)
+    name: StopAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.stopasync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Extensions.Hosting.BackgroundService.StopAsync(System.Threading.CancellationToken)
+    name: StopAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.stopasync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Microsoft.Extensions.Hosting.BackgroundService.ExecuteTask
+  commentId: P:Microsoft.Extensions.Hosting.BackgroundService.ExecuteTask
+  parent: Microsoft.Extensions.Hosting.BackgroundService
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.executetask
+  name: ExecuteTask
+  nameWithType: BackgroundService.ExecuteTask
+  fullName: Microsoft.Extensions.Hosting.BackgroundService.ExecuteTask
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Microsoft.Extensions.Hosting
+  commentId: N:Microsoft.Extensions.Hosting
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Hosting
+  nameWithType: Microsoft.Extensions.Hosting
+  fullName: Microsoft.Extensions.Hosting
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Hosting
+    name: Hosting
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Hosting
+    name: Hosting
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting
+- uid: Orleans.GpuBridge.Abstractions.Metrics
+  commentId: N:Orleans.GpuBridge.Abstractions.Metrics
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Metrics
+  nameWithType: Orleans.GpuBridge.Abstractions.Metrics
+  fullName: Orleans.GpuBridge.Abstractions.Metrics
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Metrics
+    name: Metrics
+    href: Orleans.GpuBridge.Abstractions.Metrics.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Metrics
+    name: Metrics
+    href: Orleans.GpuBridge.Abstractions.Metrics.html
+- uid: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector
+  commentId: T:Orleans.GpuBridge.Diagnostics.GpuMetricsCollector
+  href: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.html
+  name: GpuMetricsCollector
+  nameWithType: GpuMetricsCollector
+  fullName: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+  name: ArgumentNullException
+  nameWithType: ArgumentNullException
+  fullName: System.ArgumentNullException
+- uid: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.#ctor
+  href: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.html#Orleans_GpuBridge_Diagnostics_GpuMetricsCollector__ctor_Microsoft_Extensions_Logging_ILogger_Orleans_GpuBridge_Diagnostics_GpuMetricsCollector__Orleans_GpuBridge_Diagnostics_Interfaces_IGpuTelemetry_Microsoft_Extensions_Options_IOptions_Orleans_GpuBridge_Diagnostics_Configuration_GpuMetricsOptions__
+  name: GpuMetricsCollector
+  nameWithType: GpuMetricsCollector.GpuMetricsCollector
+  fullName: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GpuMetricsCollector
+  nameWithType.vb: GpuMetricsCollector.New
+  fullName.vb: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.New
+  name.vb: New
+- uid: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Diagnostics.GpuMetricsCollector}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Diagnostics.GpuMetricsCollector}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<GpuMetricsCollector>
+  nameWithType: ILogger<GpuMetricsCollector>
+  fullName: Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Diagnostics.GpuMetricsCollector>
+  nameWithType.vb: ILogger(Of GpuMetricsCollector)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Diagnostics.GpuMetricsCollector)
+  name.vb: ILogger(Of GpuMetricsCollector)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector
+    name: GpuMetricsCollector
+    href: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector
+    name: GpuMetricsCollector
+    href: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.html
+  - name: )
+- uid: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry
+  commentId: T:Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry
+  parent: Orleans.GpuBridge.Diagnostics.Interfaces
+  href: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry.html
+  name: IGpuTelemetry
+  nameWithType: IGpuTelemetry
+  fullName: Orleans.GpuBridge.Diagnostics.Interfaces.IGpuTelemetry
+- uid: Microsoft.Extensions.Options.IOptions{Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions}
+  commentId: T:Microsoft.Extensions.Options.IOptions{Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions}
+  parent: Microsoft.Extensions.Options
+  definition: Microsoft.Extensions.Options.IOptions`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  name: IOptions<GpuMetricsOptions>
+  nameWithType: IOptions<GpuMetricsOptions>
+  fullName: Microsoft.Extensions.Options.IOptions<Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions>
+  nameWithType.vb: IOptions(Of GpuMetricsOptions)
+  fullName.vb: Microsoft.Extensions.Options.IOptions(Of Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions)
+  name.vb: IOptions(Of GpuMetricsOptions)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: <
+  - uid: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions
+    name: GpuMetricsOptions
+    href: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions
+    name: GpuMetricsOptions
+    href: Orleans.GpuBridge.Diagnostics.Configuration.GpuMetricsOptions.html
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: Orleans.GpuBridge.Diagnostics.Interfaces
+  commentId: N:Orleans.GpuBridge.Diagnostics.Interfaces
+  href: Orleans.html
+  name: Orleans.GpuBridge.Diagnostics.Interfaces
+  nameWithType: Orleans.GpuBridge.Diagnostics.Interfaces
+  fullName: Orleans.GpuBridge.Diagnostics.Interfaces
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Diagnostics
+    name: Diagnostics
+    href: Orleans.GpuBridge.Diagnostics.html
+  - name: .
+  - uid: Orleans.GpuBridge.Diagnostics.Interfaces
+    name: Interfaces
+    href: Orleans.GpuBridge.Diagnostics.Interfaces.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Diagnostics
+    name: Diagnostics
+    href: Orleans.GpuBridge.Diagnostics.html
+  - name: .
+  - uid: Orleans.GpuBridge.Diagnostics.Interfaces
+    name: Interfaces
+    href: Orleans.GpuBridge.Diagnostics.Interfaces.html
+- uid: Microsoft.Extensions.Options.IOptions`1
+  commentId: T:Microsoft.Extensions.Options.IOptions`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  name: IOptions<TOptions>
+  nameWithType: IOptions<TOptions>
+  fullName: Microsoft.Extensions.Options.IOptions<TOptions>
+  nameWithType.vb: IOptions(Of TOptions)
+  fullName.vb: Microsoft.Extensions.Options.IOptions(Of TOptions)
+  name.vb: IOptions(Of TOptions)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: <
+  - name: TOptions
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOptions
+  - name: )
+- uid: Microsoft.Extensions.Options
+  commentId: N:Microsoft.Extensions.Options
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Options
+  nameWithType: Microsoft.Extensions.Options
+  fullName: Microsoft.Extensions.Options
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Options
+    name: Options
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Options
+    name: Options
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options
+- uid: Microsoft.Extensions.Hosting.BackgroundService.ExecuteAsync(System.Threading.CancellationToken)
+  commentId: M:Microsoft.Extensions.Hosting.BackgroundService.ExecuteAsync(System.Threading.CancellationToken)
+  parent: Microsoft.Extensions.Hosting.BackgroundService
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.executeasync
+  name: ExecuteAsync(CancellationToken)
+  nameWithType: BackgroundService.ExecuteAsync(CancellationToken)
+  fullName: Microsoft.Extensions.Hosting.BackgroundService.ExecuteAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Hosting.BackgroundService.ExecuteAsync(System.Threading.CancellationToken)
+    name: ExecuteAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.executeasync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Extensions.Hosting.BackgroundService.ExecuteAsync(System.Threading.CancellationToken)
+    name: ExecuteAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.executeasync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.ExecuteAsync*
+  commentId: Overload:Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.ExecuteAsync
+  href: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.html#Orleans_GpuBridge_Diagnostics_GpuMetricsCollector_ExecuteAsync_System_Threading_CancellationToken_
+  name: ExecuteAsync
+  nameWithType: GpuMetricsCollector.ExecuteAsync
+  fullName: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.ExecuteAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: System.InvalidOperationException
+  commentId: T:System.InvalidOperationException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
+  name: InvalidOperationException
+  nameWithType: InvalidOperationException
+  fullName: System.InvalidOperationException
+- uid: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetDeviceMetricsAsync*
+  commentId: Overload:Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetDeviceMetricsAsync
+  href: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.html#Orleans_GpuBridge_Diagnostics_GpuMetricsCollector_GetDeviceMetricsAsync_System_Int32_
+  name: GetDeviceMetricsAsync
+  nameWithType: GpuMetricsCollector.GetDeviceMetricsAsync
+  fullName: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetDeviceMetricsAsync
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Diagnostics.Models.GpuDeviceMetrics}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Diagnostics.Models.GpuDeviceMetrics}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<GpuDeviceMetrics>
+  nameWithType: Task<GpuDeviceMetrics>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Diagnostics.Models.GpuDeviceMetrics>
+  nameWithType.vb: Task(Of GpuDeviceMetrics)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Diagnostics.Models.GpuDeviceMetrics)
+  name.vb: Task(Of GpuDeviceMetrics)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Diagnostics.Models.GpuDeviceMetrics
+    name: GpuDeviceMetrics
+    href: Orleans.GpuBridge.Diagnostics.Models.GpuDeviceMetrics.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Diagnostics.Models.GpuDeviceMetrics
+    name: GpuDeviceMetrics
+    href: Orleans.GpuBridge.Diagnostics.Models.GpuDeviceMetrics.html
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetSystemMetricsAsync*
+  commentId: Overload:Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetSystemMetricsAsync
+  href: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.html#Orleans_GpuBridge_Diagnostics_GpuMetricsCollector_GetSystemMetricsAsync
+  name: GetSystemMetricsAsync
+  nameWithType: GpuMetricsCollector.GetSystemMetricsAsync
+  fullName: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetSystemMetricsAsync
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Diagnostics.Models.SystemMetrics}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Diagnostics.Models.SystemMetrics}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<SystemMetrics>
+  nameWithType: Task<SystemMetrics>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Diagnostics.Models.SystemMetrics>
+  nameWithType.vb: Task(Of SystemMetrics)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Diagnostics.Models.SystemMetrics)
+  name.vb: Task(Of SystemMetrics)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics
+    name: SystemMetrics
+    href: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics
+    name: SystemMetrics
+    href: Orleans.GpuBridge.Diagnostics.Models.SystemMetrics.html
+  - name: )
+- uid: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetAllDeviceMetricsAsync*
+  commentId: Overload:Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetAllDeviceMetricsAsync
+  href: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.html#Orleans_GpuBridge_Diagnostics_GpuMetricsCollector_GetAllDeviceMetricsAsync
+  name: GetAllDeviceMetricsAsync
+  nameWithType: GpuMetricsCollector.GetAllDeviceMetricsAsync
+  fullName: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.GetAllDeviceMetricsAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Diagnostics.Models.GpuDeviceMetrics}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Diagnostics.Models.GpuDeviceMetrics}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IReadOnlyList<GpuDeviceMetrics>>
+  nameWithType: Task<IReadOnlyList<GpuDeviceMetrics>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Diagnostics.Models.GpuDeviceMetrics>>
+  nameWithType.vb: Task(Of IReadOnlyList(Of GpuDeviceMetrics))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Diagnostics.Models.GpuDeviceMetrics))
+  name.vb: Task(Of IReadOnlyList(Of GpuDeviceMetrics))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: Orleans.GpuBridge.Diagnostics.Models.GpuDeviceMetrics
+    name: GpuDeviceMetrics
+    href: Orleans.GpuBridge.Diagnostics.Models.GpuDeviceMetrics.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Diagnostics.Models.GpuDeviceMetrics
+    name: GpuDeviceMetrics
+    href: Orleans.GpuBridge.Diagnostics.Models.GpuDeviceMetrics.html
+  - name: )
+  - name: )
+- uid: Microsoft.Extensions.Hosting.BackgroundService.Dispose
+  commentId: M:Microsoft.Extensions.Hosting.BackgroundService.Dispose
+  parent: Microsoft.Extensions.Hosting.BackgroundService
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.dispose
+  name: Dispose()
+  nameWithType: BackgroundService.Dispose()
+  fullName: Microsoft.Extensions.Hosting.BackgroundService.Dispose()
+  spec.csharp:
+  - uid: Microsoft.Extensions.Hosting.BackgroundService.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Extensions.Hosting.BackgroundService.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.dispose
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.Dispose*
+  commentId: Overload:Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.Dispose
+  href: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.html#Orleans_GpuBridge_Diagnostics_GpuMetricsCollector_Dispose
+  name: Dispose
+  nameWithType: GpuMetricsCollector.Dispose
+  fullName: Orleans.GpuBridge.Diagnostics.GpuMetricsCollector.Dispose

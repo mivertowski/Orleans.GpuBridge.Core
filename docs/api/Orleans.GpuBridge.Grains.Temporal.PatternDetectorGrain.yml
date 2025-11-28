@@ -1,0 +1,2032 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain
+  commentId: T:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain
+  id: PatternDetectorGrain
+  parent: Orleans.GpuBridge.Grains.Temporal
+  children:
+  - Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain},Orleans.Runtime.IPersistentState{Orleans.GpuBridge.Grains.Temporal.PatternDetectorState})
+  - Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ClearAsync
+  - Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ConfigureWindowAsync(System.Int64,System.Int32)
+  - Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetMatchesByPatternAsync(System.String,System.Int32)
+  - Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetRecentMatchesAsync(System.Int32,System.Nullable{System.Int64})
+  - Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetRegisteredPatternsAsync
+  - Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetStatisticsAsync
+  - Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.OnActivateAsync(System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ProcessEventAsync(Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData)
+  - Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ProcessEventBatchAsync(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData})
+  - Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.RegisterPatternAsync(Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration)
+  - Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.UnregisterPatternAsync(System.String)
+  langs:
+  - csharp
+  - vb
+  name: PatternDetectorGrain
+  nameWithType: PatternDetectorGrain
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: PatternDetectorGrain
+    path: ../src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+    startLine: 32
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Temporal
+  summary: Orleans grain implementation for distributed temporal pattern detection.
+  remarks: >-
+    <p>
+
+    This grain maintains a sliding window of events and checks registered
+
+    patterns for matches. It supports:
+
+    <ul><li>Dynamic pattern registration/unregistration</li><li>Batch event processing</li><li>GPU-accelerated pattern matching (when available)</li><li>Persistent state via Orleans storage</li></ul>
+
+    </p>
+  example: []
+  syntax:
+    content: 'public sealed class PatternDetectorGrain : Grain, IGrainBase, IPatternDetectorGrain, IGrainWithStringKey, IGrain, IAddressable'
+    content.vb: Public NotInheritable Class PatternDetectorGrain Inherits Grain Implements IGrainBase, IPatternDetectorGrain, IGrainWithStringKey, IGrain, IAddressable
+  inheritance:
+  - System.Object
+  - Orleans.Grain
+  implements:
+  - Orleans.IGrainBase
+  - Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain
+  - Orleans.IGrainWithStringKey
+  - Orleans.IGrain
+  - Orleans.Runtime.IAddressable
+  inheritedMembers:
+  - Orleans.Grain.OnDeactivateAsync(Orleans.DeactivationReason,System.Threading.CancellationToken)
+  - Orleans.Grain.GrainContext
+  - Orleans.Grain.GrainReference
+  - Orleans.Grain.IdentityString
+  - Orleans.Grain.RuntimeIdentity
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain},Orleans.Runtime.IPersistentState{Orleans.GpuBridge.Grains.Temporal.PatternDetectorState})
+  commentId: M:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain},Orleans.Runtime.IPersistentState{Orleans.GpuBridge.Grains.Temporal.PatternDetectorState})
+  id: '#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain},Orleans.Runtime.IPersistentState{Orleans.GpuBridge.Grains.Temporal.PatternDetectorState})'
+  parent: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain
+  langs:
+  - csharp
+  - vb
+  name: PatternDetectorGrain(ILogger<PatternDetectorGrain>, IPersistentState<PatternDetectorState>)
+  nameWithType: PatternDetectorGrain.PatternDetectorGrain(ILogger<PatternDetectorGrain>, IPersistentState<PatternDetectorState>)
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.PatternDetectorGrain(Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain>, Orleans.Runtime.IPersistentState<Orleans.GpuBridge.Grains.Temporal.PatternDetectorState>)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+    startLine: 46
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Temporal
+  syntax:
+    content: public PatternDetectorGrain(ILogger<PatternDetectorGrain> logger, IPersistentState<PatternDetectorState> state)
+    parameters:
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain}
+    - id: state
+      type: Orleans.Runtime.IPersistentState{Orleans.GpuBridge.Grains.Temporal.PatternDetectorState}
+      attributes:
+      - type: Orleans.Runtime.PersistentStateAttribute
+        ctor: Orleans.Runtime.PersistentStateAttribute.#ctor(System.String,System.String)
+        arguments:
+        - type: System.String
+          value: patternDetector
+        - type: System.String
+          value: GpuBridgeStore
+    content.vb: Public Sub New(logger As ILogger(Of PatternDetectorGrain), state As IPersistentState(Of PatternDetectorState))
+  overload: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.#ctor*
+  nameWithType.vb: PatternDetectorGrain.New(ILogger(Of PatternDetectorGrain), IPersistentState(Of PatternDetectorState))
+  fullName.vb: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.New(Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain), Orleans.Runtime.IPersistentState(Of Orleans.GpuBridge.Grains.Temporal.PatternDetectorState))
+  name.vb: New(ILogger(Of PatternDetectorGrain), IPersistentState(Of PatternDetectorState))
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.OnActivateAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.OnActivateAsync(System.Threading.CancellationToken)
+  id: OnActivateAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain
+  langs:
+  - csharp
+  - vb
+  name: OnActivateAsync(CancellationToken)
+  nameWithType: PatternDetectorGrain.OnActivateAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.OnActivateAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: OnActivateAsync
+    path: ../src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+    startLine: 55
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Temporal
+  summary: >-
+    This method is called at the end of the process of activating a grain.
+
+    It is called before any messages have been dispatched to the grain.
+
+    For grains with declared persistent state, this method is called after the State property has been populated.
+  example: []
+  syntax:
+    content: public override Task OnActivateAsync(CancellationToken cancellationToken)
+    parameters:
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: A cancellation token which signals when activation is being canceled.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Overrides Function OnActivateAsync(cancellationToken As CancellationToken) As Task
+  overridden: Orleans.Grain.OnActivateAsync(System.Threading.CancellationToken)
+  overload: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.OnActivateAsync*
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.RegisterPatternAsync(Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration)
+  commentId: M:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.RegisterPatternAsync(Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration)
+  id: RegisterPatternAsync(Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration)
+  parent: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain
+  langs:
+  - csharp
+  - vb
+  name: RegisterPatternAsync(PatternConfiguration)
+  nameWithType: PatternDetectorGrain.RegisterPatternAsync(PatternConfiguration)
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.RegisterPatternAsync(Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RegisterPatternAsync
+    path: ../src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+    startLine: 122
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Temporal
+  summary: Registers a pattern for detection using pattern configuration.
+  example: []
+  syntax:
+    content: public Task<bool> RegisterPatternAsync(PatternConfiguration config)
+    parameters:
+    - id: config
+      type: Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration
+      description: Pattern configuration
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: True if registration succeeded
+    content.vb: Public Function RegisterPatternAsync(config As PatternConfiguration) As Task(Of Boolean)
+  overload: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.RegisterPatternAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.RegisterPatternAsync(Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration)
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.UnregisterPatternAsync(System.String)
+  commentId: M:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.UnregisterPatternAsync(System.String)
+  id: UnregisterPatternAsync(System.String)
+  parent: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain
+  langs:
+  - csharp
+  - vb
+  name: UnregisterPatternAsync(string)
+  nameWithType: PatternDetectorGrain.UnregisterPatternAsync(string)
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.UnregisterPatternAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: UnregisterPatternAsync
+    path: ../src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+    startLine: 169
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Temporal
+  summary: Unregisters a pattern.
+  example: []
+  syntax:
+    content: public Task<bool> UnregisterPatternAsync(string patternId)
+    parameters:
+    - id: patternId
+      type: System.String
+      description: Pattern identifier
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: True if pattern was removed
+    content.vb: Public Function UnregisterPatternAsync(patternId As String) As Task(Of Boolean)
+  overload: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.UnregisterPatternAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.UnregisterPatternAsync(System.String)
+  nameWithType.vb: PatternDetectorGrain.UnregisterPatternAsync(String)
+  fullName.vb: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.UnregisterPatternAsync(String)
+  name.vb: UnregisterPatternAsync(String)
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetRegisteredPatternsAsync
+  commentId: M:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetRegisteredPatternsAsync
+  id: GetRegisteredPatternsAsync
+  parent: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain
+  langs:
+  - csharp
+  - vb
+  name: GetRegisteredPatternsAsync()
+  nameWithType: PatternDetectorGrain.GetRegisteredPatternsAsync()
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetRegisteredPatternsAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetRegisteredPatternsAsync
+    path: ../src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+    startLine: 188
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Temporal
+  summary: Gets all registered patterns.
+  example: []
+  syntax:
+    content: public Task<IReadOnlyList<PatternConfiguration>> GetRegisteredPatternsAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration}}
+      description: List of registered pattern configurations
+    content.vb: Public Function GetRegisteredPatternsAsync() As Task(Of IReadOnlyList(Of PatternConfiguration))
+  overload: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetRegisteredPatternsAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetRegisteredPatternsAsync
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ProcessEventAsync(Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData)
+  commentId: M:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ProcessEventAsync(Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData)
+  id: ProcessEventAsync(Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData)
+  parent: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain
+  langs:
+  - csharp
+  - vb
+  name: ProcessEventAsync(TemporalEventData)
+  nameWithType: PatternDetectorGrain.ProcessEventAsync(TemporalEventData)
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ProcessEventAsync(Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ProcessEventAsync
+    path: ../src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+    startLine: 195
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Temporal
+  summary: Processes a single event and returns any triggered matches.
+  example: []
+  syntax:
+    content: public Task<IReadOnlyList<PatternMatchData>> ProcessEventAsync(TemporalEventData evt)
+    parameters:
+    - id: evt
+      type: Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData
+      description: Event to process
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternMatchData}}
+      description: Pattern matches triggered by this event
+    content.vb: Public Function ProcessEventAsync(evt As TemporalEventData) As Task(Of IReadOnlyList(Of PatternMatchData))
+  overload: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ProcessEventAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ProcessEventAsync(Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData)
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ProcessEventBatchAsync(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData})
+  commentId: M:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ProcessEventBatchAsync(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData})
+  id: ProcessEventBatchAsync(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData})
+  parent: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain
+  langs:
+  - csharp
+  - vb
+  name: ProcessEventBatchAsync(IReadOnlyList<TemporalEventData>)
+  nameWithType: PatternDetectorGrain.ProcessEventBatchAsync(IReadOnlyList<TemporalEventData>)
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ProcessEventBatchAsync(System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData>)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ProcessEventBatchAsync
+    path: ../src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+    startLine: 208
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Temporal
+  summary: Processes a batch of events and returns all triggered matches.
+  example: []
+  syntax:
+    content: public Task<PatternProcessingResult> ProcessEventBatchAsync(IReadOnlyList<TemporalEventData> events)
+    parameters:
+    - id: events
+      type: System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData}
+      description: Events to process
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternProcessingResult}
+      description: Pattern matches triggered by these events
+    content.vb: Public Function ProcessEventBatchAsync(events As IReadOnlyList(Of TemporalEventData)) As Task(Of PatternProcessingResult)
+  overload: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ProcessEventBatchAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ProcessEventBatchAsync(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData})
+  nameWithType.vb: PatternDetectorGrain.ProcessEventBatchAsync(IReadOnlyList(Of TemporalEventData))
+  fullName.vb: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ProcessEventBatchAsync(System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData))
+  name.vb: ProcessEventBatchAsync(IReadOnlyList(Of TemporalEventData))
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetRecentMatchesAsync(System.Int32,System.Nullable{System.Int64})
+  commentId: M:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetRecentMatchesAsync(System.Int32,System.Nullable{System.Int64})
+  id: GetRecentMatchesAsync(System.Int32,System.Nullable{System.Int64})
+  parent: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain
+  langs:
+  - csharp
+  - vb
+  name: GetRecentMatchesAsync(int, long?)
+  nameWithType: PatternDetectorGrain.GetRecentMatchesAsync(int, long?)
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetRecentMatchesAsync(int, long?)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetRecentMatchesAsync
+    path: ../src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+    startLine: 272
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Temporal
+  summary: Gets recent pattern matches.
+  example: []
+  syntax:
+    content: public Task<IReadOnlyList<PatternMatchData>> GetRecentMatchesAsync(int maxResults = 100, long? sinceNanos = null)
+    parameters:
+    - id: maxResults
+      type: System.Int32
+      description: Maximum results to return
+    - id: sinceNanos
+      type: System.Nullable{System.Int64}
+      description: 'Optional: only get matches after this timestamp'
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternMatchData}}
+      description: Recent pattern matches
+    content.vb: Public Function GetRecentMatchesAsync(maxResults As Integer = 100, sinceNanos As Long? = Nothing) As Task(Of IReadOnlyList(Of PatternMatchData))
+  overload: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetRecentMatchesAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetRecentMatchesAsync(System.Int32,System.Nullable{System.Int64})
+  nameWithType.vb: PatternDetectorGrain.GetRecentMatchesAsync(Integer, Long?)
+  fullName.vb: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetRecentMatchesAsync(Integer, Long?)
+  name.vb: GetRecentMatchesAsync(Integer, Long?)
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetMatchesByPatternAsync(System.String,System.Int32)
+  commentId: M:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetMatchesByPatternAsync(System.String,System.Int32)
+  id: GetMatchesByPatternAsync(System.String,System.Int32)
+  parent: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain
+  langs:
+  - csharp
+  - vb
+  name: GetMatchesByPatternAsync(string, int)
+  nameWithType: PatternDetectorGrain.GetMatchesByPatternAsync(string, int)
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetMatchesByPatternAsync(string, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetMatchesByPatternAsync
+    path: ../src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+    startLine: 287
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Temporal
+  summary: Gets matches for a specific pattern.
+  example: []
+  syntax:
+    content: public Task<IReadOnlyList<PatternMatchData>> GetMatchesByPatternAsync(string patternId, int maxResults = 100)
+    parameters:
+    - id: patternId
+      type: System.String
+      description: Pattern identifier
+    - id: maxResults
+      type: System.Int32
+      description: Maximum results to return
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternMatchData}}
+      description: Matches for the specified pattern
+    content.vb: Public Function GetMatchesByPatternAsync(patternId As String, maxResults As Integer = 100) As Task(Of IReadOnlyList(Of PatternMatchData))
+  overload: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetMatchesByPatternAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetMatchesByPatternAsync(System.String,System.Int32)
+  nameWithType.vb: PatternDetectorGrain.GetMatchesByPatternAsync(String, Integer)
+  fullName.vb: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetMatchesByPatternAsync(String, Integer)
+  name.vb: GetMatchesByPatternAsync(String, Integer)
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetStatisticsAsync
+  commentId: M:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetStatisticsAsync
+  id: GetStatisticsAsync
+  parent: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain
+  langs:
+  - csharp
+  - vb
+  name: GetStatisticsAsync()
+  nameWithType: PatternDetectorGrain.GetStatisticsAsync()
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetStatisticsAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetStatisticsAsync
+    path: ../src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+    startLine: 302
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Temporal
+  summary: Gets detection statistics.
+  example: []
+  syntax:
+    content: public Task<PatternDetectionStats> GetStatisticsAsync()
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternDetectionStats}
+      description: Current detection statistics
+    content.vb: Public Function GetStatisticsAsync() As Task(Of PatternDetectionStats)
+  overload: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetStatisticsAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetStatisticsAsync
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ClearAsync
+  commentId: M:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ClearAsync
+  id: ClearAsync
+  parent: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain
+  langs:
+  - csharp
+  - vb
+  name: ClearAsync()
+  nameWithType: PatternDetectorGrain.ClearAsync()
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ClearAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ClearAsync
+    path: ../src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+    startLine: 336
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Temporal
+  summary: Clears all events and matches (resets detector state).
+  example: []
+  syntax:
+    content: public Task ClearAsync()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function ClearAsync() As Task
+  overload: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ClearAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ClearAsync
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ConfigureWindowAsync(System.Int64,System.Int32)
+  commentId: M:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ConfigureWindowAsync(System.Int64,System.Int32)
+  id: ConfigureWindowAsync(System.Int64,System.Int32)
+  parent: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain
+  langs:
+  - csharp
+  - vb
+  name: ConfigureWindowAsync(long, int)
+  nameWithType: PatternDetectorGrain.ConfigureWindowAsync(long, int)
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ConfigureWindowAsync(long, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ConfigureWindowAsync
+    path: ../src/Orleans.GpuBridge.Grains/Temporal/PatternDetectorGrain.cs
+    startLine: 346
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Temporal
+  summary: Sets the sliding window configuration.
+  example: []
+  syntax:
+    content: public Task ConfigureWindowAsync(long windowSizeNanos, int maxEvents = 10000)
+    parameters:
+    - id: windowSizeNanos
+      type: System.Int64
+      description: Window size in nanoseconds
+    - id: maxEvents
+      type: System.Int32
+      description: Maximum events to keep in window
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function ConfigureWindowAsync(windowSizeNanos As Long, maxEvents As Integer = 10000) As Task
+  overload: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ConfigureWindowAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ConfigureWindowAsync(System.Int64,System.Int32)
+  nameWithType.vb: PatternDetectorGrain.ConfigureWindowAsync(Long, Integer)
+  fullName.vb: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ConfigureWindowAsync(Long, Integer)
+  name.vb: ConfigureWindowAsync(Long, Integer)
+references:
+- uid: Orleans.GpuBridge.Grains.Temporal
+  commentId: N:Orleans.GpuBridge.Grains.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Grains.Temporal
+  nameWithType: Orleans.GpuBridge.Grains.Temporal
+  fullName: Orleans.GpuBridge.Grains.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Grains.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Grains.Temporal.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Orleans.Grain
+  commentId: T:Orleans.Grain
+  parent: Orleans
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain
+  name: Grain
+  nameWithType: Grain
+  fullName: Orleans.Grain
+- uid: Orleans.IGrainBase
+  commentId: T:Orleans.IGrainBase
+  parent: Orleans
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.igrainbase
+  name: IGrainBase
+  nameWithType: IGrainBase
+  fullName: Orleans.IGrainBase
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Patterns
+  href: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.html
+  name: IPatternDetectorGrain
+  nameWithType: IPatternDetectorGrain
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain
+- uid: Orleans.IGrainWithStringKey
+  commentId: T:Orleans.IGrainWithStringKey
+  parent: Orleans
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.igrainwithstringkey
+  name: IGrainWithStringKey
+  nameWithType: IGrainWithStringKey
+  fullName: Orleans.IGrainWithStringKey
+- uid: Orleans.IGrain
+  commentId: T:Orleans.IGrain
+  parent: Orleans
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.igrain
+  name: IGrain
+  nameWithType: IGrain
+  fullName: Orleans.IGrain
+- uid: Orleans.Runtime.IAddressable
+  commentId: T:Orleans.Runtime.IAddressable
+  parent: Orleans.Runtime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.runtime.iaddressable
+  name: IAddressable
+  nameWithType: IAddressable
+  fullName: Orleans.Runtime.IAddressable
+- uid: Orleans.Grain.OnDeactivateAsync(Orleans.DeactivationReason,System.Threading.CancellationToken)
+  commentId: M:Orleans.Grain.OnDeactivateAsync(Orleans.DeactivationReason,System.Threading.CancellationToken)
+  parent: Orleans.Grain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain.ondeactivateasync
+  name: OnDeactivateAsync(DeactivationReason, CancellationToken)
+  nameWithType: Grain.OnDeactivateAsync(DeactivationReason, CancellationToken)
+  fullName: Orleans.Grain.OnDeactivateAsync(Orleans.DeactivationReason, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Orleans.Grain.OnDeactivateAsync(Orleans.DeactivationReason,System.Threading.CancellationToken)
+    name: OnDeactivateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.grain.ondeactivateasync
+  - name: (
+  - uid: Orleans.DeactivationReason
+    name: DeactivationReason
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.deactivationreason
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.Grain.OnDeactivateAsync(Orleans.DeactivationReason,System.Threading.CancellationToken)
+    name: OnDeactivateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.grain.ondeactivateasync
+  - name: (
+  - uid: Orleans.DeactivationReason
+    name: DeactivationReason
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.deactivationreason
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Orleans.Grain.GrainContext
+  commentId: P:Orleans.Grain.GrainContext
+  parent: Orleans.Grain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain.graincontext
+  name: GrainContext
+  nameWithType: Grain.GrainContext
+  fullName: Orleans.Grain.GrainContext
+- uid: Orleans.Grain.GrainReference
+  commentId: P:Orleans.Grain.GrainReference
+  parent: Orleans.Grain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain.grainreference
+  name: GrainReference
+  nameWithType: Grain.GrainReference
+  fullName: Orleans.Grain.GrainReference
+- uid: Orleans.Grain.IdentityString
+  commentId: P:Orleans.Grain.IdentityString
+  parent: Orleans.Grain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain.identitystring
+  name: IdentityString
+  nameWithType: Grain.IdentityString
+  fullName: Orleans.Grain.IdentityString
+- uid: Orleans.Grain.RuntimeIdentity
+  commentId: P:Orleans.Grain.RuntimeIdentity
+  parent: Orleans.Grain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain.runtimeidentity
+  name: RuntimeIdentity
+  nameWithType: Grain.RuntimeIdentity
+  fullName: Orleans.Grain.RuntimeIdentity
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans
+  commentId: N:Orleans
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans
+  name: Orleans
+  nameWithType: Orleans
+  fullName: Orleans
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns
+  commentId: N:Orleans.GpuBridge.Abstractions.Temporal.Patterns
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Temporal.Patterns
+  nameWithType: Orleans.GpuBridge.Abstractions.Temporal.Patterns
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Patterns
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns
+    name: Patterns
+    href: Orleans.GpuBridge.Abstractions.Temporal.Patterns.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns
+    name: Patterns
+    href: Orleans.GpuBridge.Abstractions.Temporal.Patterns.html
+- uid: Orleans.Runtime
+  commentId: N:Orleans.Runtime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans
+  name: Orleans.Runtime
+  nameWithType: Orleans.Runtime
+  fullName: Orleans.Runtime
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans
+  - name: .
+  - uid: Orleans.Runtime
+    name: Runtime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans
+  - name: .
+  - uid: Orleans.Runtime
+    name: Runtime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.#ctor
+  href: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.html#Orleans_GpuBridge_Grains_Temporal_PatternDetectorGrain__ctor_Microsoft_Extensions_Logging_ILogger_Orleans_GpuBridge_Grains_Temporal_PatternDetectorGrain__Orleans_Runtime_IPersistentState_Orleans_GpuBridge_Grains_Temporal_PatternDetectorState__
+  name: PatternDetectorGrain
+  nameWithType: PatternDetectorGrain.PatternDetectorGrain
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.PatternDetectorGrain
+  nameWithType.vb: PatternDetectorGrain.New
+  fullName.vb: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.New
+  name.vb: New
+- uid: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<PatternDetectorGrain>
+  nameWithType: ILogger<PatternDetectorGrain>
+  fullName: Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain>
+  nameWithType.vb: ILogger(Of PatternDetectorGrain)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain)
+  name.vb: ILogger(Of PatternDetectorGrain)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain
+    name: PatternDetectorGrain
+    href: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain
+    name: PatternDetectorGrain
+    href: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.html
+  - name: )
+- uid: Orleans.Runtime.IPersistentState{Orleans.GpuBridge.Grains.Temporal.PatternDetectorState}
+  commentId: T:Orleans.Runtime.IPersistentState{Orleans.GpuBridge.Grains.Temporal.PatternDetectorState}
+  parent: Orleans.Runtime
+  definition: Orleans.Runtime.IPersistentState`1
+  href: https://learn.microsoft.com/dotnet/api/orleans.runtime.ipersistentstate-1
+  name: IPersistentState<PatternDetectorState>
+  nameWithType: IPersistentState<PatternDetectorState>
+  fullName: Orleans.Runtime.IPersistentState<Orleans.GpuBridge.Grains.Temporal.PatternDetectorState>
+  nameWithType.vb: IPersistentState(Of PatternDetectorState)
+  fullName.vb: Orleans.Runtime.IPersistentState(Of Orleans.GpuBridge.Grains.Temporal.PatternDetectorState)
+  name.vb: IPersistentState(Of PatternDetectorState)
+  spec.csharp:
+  - uid: Orleans.Runtime.IPersistentState`1
+    name: IPersistentState
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.ipersistentstate-1
+  - name: <
+  - uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorState
+    name: PatternDetectorState
+    href: Orleans.GpuBridge.Grains.Temporal.PatternDetectorState.html
+  - name: '>'
+  spec.vb:
+  - uid: Orleans.Runtime.IPersistentState`1
+    name: IPersistentState
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.ipersistentstate-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorState
+    name: PatternDetectorState
+    href: Orleans.GpuBridge.Grains.Temporal.PatternDetectorState.html
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: Orleans.Runtime.IPersistentState`1
+  commentId: T:Orleans.Runtime.IPersistentState`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.runtime.ipersistentstate-1
+  name: IPersistentState<TState>
+  nameWithType: IPersistentState<TState>
+  fullName: Orleans.Runtime.IPersistentState<TState>
+  nameWithType.vb: IPersistentState(Of TState)
+  fullName.vb: Orleans.Runtime.IPersistentState(Of TState)
+  name.vb: IPersistentState(Of TState)
+  spec.csharp:
+  - uid: Orleans.Runtime.IPersistentState`1
+    name: IPersistentState
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.ipersistentstate-1
+  - name: <
+  - name: TState
+  - name: '>'
+  spec.vb:
+  - uid: Orleans.Runtime.IPersistentState`1
+    name: IPersistentState
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.ipersistentstate-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+- uid: Orleans.Grain.OnActivateAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.Grain.OnActivateAsync(System.Threading.CancellationToken)
+  parent: Orleans.Grain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain.onactivateasync
+  name: OnActivateAsync(CancellationToken)
+  nameWithType: Grain.OnActivateAsync(CancellationToken)
+  fullName: Orleans.Grain.OnActivateAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Orleans.Grain.OnActivateAsync(System.Threading.CancellationToken)
+    name: OnActivateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.grain.onactivateasync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.Grain.OnActivateAsync(System.Threading.CancellationToken)
+    name: OnActivateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.grain.onactivateasync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.OnActivateAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.OnActivateAsync
+  href: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.html#Orleans_GpuBridge_Grains_Temporal_PatternDetectorGrain_OnActivateAsync_System_Threading_CancellationToken_
+  name: OnActivateAsync
+  nameWithType: PatternDetectorGrain.OnActivateAsync
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.OnActivateAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.RegisterPatternAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.RegisterPatternAsync
+  href: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.html#Orleans_GpuBridge_Grains_Temporal_PatternDetectorGrain_RegisterPatternAsync_Orleans_GpuBridge_Abstractions_Temporal_Patterns_PatternConfiguration_
+  name: RegisterPatternAsync
+  nameWithType: PatternDetectorGrain.RegisterPatternAsync
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.RegisterPatternAsync
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.RegisterPatternAsync(Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.RegisterPatternAsync(Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain
+  name: RegisterPatternAsync(PatternConfiguration)
+  nameWithType: IPatternDetectorGrain.RegisterPatternAsync(PatternConfiguration)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.RegisterPatternAsync(Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.RegisterPatternAsync(Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration)
+    name: RegisterPatternAsync
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration
+    name: PatternConfiguration
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.RegisterPatternAsync(Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration)
+    name: RegisterPatternAsync
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration
+    name: PatternConfiguration
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Patterns
+  href: Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration.html
+  name: PatternConfiguration
+  nameWithType: PatternConfiguration
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.UnregisterPatternAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.UnregisterPatternAsync
+  href: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.html#Orleans_GpuBridge_Grains_Temporal_PatternDetectorGrain_UnregisterPatternAsync_System_String_
+  name: UnregisterPatternAsync
+  nameWithType: PatternDetectorGrain.UnregisterPatternAsync
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.UnregisterPatternAsync
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.UnregisterPatternAsync(System.String)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.UnregisterPatternAsync(System.String)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: UnregisterPatternAsync(string)
+  nameWithType: IPatternDetectorGrain.UnregisterPatternAsync(string)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.UnregisterPatternAsync(string)
+  nameWithType.vb: IPatternDetectorGrain.UnregisterPatternAsync(String)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.UnregisterPatternAsync(String)
+  name.vb: UnregisterPatternAsync(String)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.UnregisterPatternAsync(System.String)
+    name: UnregisterPatternAsync
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.UnregisterPatternAsync(System.String)
+    name: UnregisterPatternAsync
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetRegisteredPatternsAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetRegisteredPatternsAsync
+  href: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.html#Orleans_GpuBridge_Grains_Temporal_PatternDetectorGrain_GetRegisteredPatternsAsync
+  name: GetRegisteredPatternsAsync
+  nameWithType: PatternDetectorGrain.GetRegisteredPatternsAsync
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetRegisteredPatternsAsync
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetRegisteredPatternsAsync
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetRegisteredPatternsAsync
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain
+  name: GetRegisteredPatternsAsync()
+  nameWithType: IPatternDetectorGrain.GetRegisteredPatternsAsync()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetRegisteredPatternsAsync()
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetRegisteredPatternsAsync
+    name: GetRegisteredPatternsAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetRegisteredPatternsAsync
+    name: GetRegisteredPatternsAsync
+  - name: (
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IReadOnlyList<PatternConfiguration>>
+  nameWithType: Task<IReadOnlyList<PatternConfiguration>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration>>
+  nameWithType.vb: Task(Of IReadOnlyList(Of PatternConfiguration))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration))
+  name.vb: Task(Of IReadOnlyList(Of PatternConfiguration))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration
+    name: PatternConfiguration
+    href: Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration
+    name: PatternConfiguration
+    href: Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternConfiguration.html
+  - name: )
+  - name: )
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ProcessEventAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ProcessEventAsync
+  href: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.html#Orleans_GpuBridge_Grains_Temporal_PatternDetectorGrain_ProcessEventAsync_Orleans_GpuBridge_Abstractions_Temporal_Patterns_TemporalEventData_
+  name: ProcessEventAsync
+  nameWithType: PatternDetectorGrain.ProcessEventAsync
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ProcessEventAsync
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ProcessEventAsync(Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ProcessEventAsync(Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain
+  name: ProcessEventAsync(TemporalEventData)
+  nameWithType: IPatternDetectorGrain.ProcessEventAsync(TemporalEventData)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ProcessEventAsync(Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ProcessEventAsync(Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData)
+    name: ProcessEventAsync
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData
+    name: TemporalEventData
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ProcessEventAsync(Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData)
+    name: ProcessEventAsync
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData
+    name: TemporalEventData
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Patterns
+  href: Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData.html
+  name: TemporalEventData
+  nameWithType: TemporalEventData
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternMatchData}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternMatchData}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IReadOnlyList<PatternMatchData>>
+  nameWithType: Task<IReadOnlyList<PatternMatchData>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternMatchData>>
+  nameWithType.vb: Task(Of IReadOnlyList(Of PatternMatchData))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternMatchData))
+  name.vb: Task(Of IReadOnlyList(Of PatternMatchData))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternMatchData
+    name: PatternMatchData
+    href: Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternMatchData.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternMatchData
+    name: PatternMatchData
+    href: Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternMatchData.html
+  - name: )
+  - name: )
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ProcessEventBatchAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ProcessEventBatchAsync
+  href: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.html#Orleans_GpuBridge_Grains_Temporal_PatternDetectorGrain_ProcessEventBatchAsync_System_Collections_Generic_IReadOnlyList_Orleans_GpuBridge_Abstractions_Temporal_Patterns_TemporalEventData__
+  name: ProcessEventBatchAsync
+  nameWithType: PatternDetectorGrain.ProcessEventBatchAsync
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ProcessEventBatchAsync
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ProcessEventBatchAsync(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData})
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ProcessEventBatchAsync(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData})
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: ProcessEventBatchAsync(IReadOnlyList<TemporalEventData>)
+  nameWithType: IPatternDetectorGrain.ProcessEventBatchAsync(IReadOnlyList<TemporalEventData>)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ProcessEventBatchAsync(System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData>)
+  nameWithType.vb: IPatternDetectorGrain.ProcessEventBatchAsync(IReadOnlyList(Of TemporalEventData))
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ProcessEventBatchAsync(System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData))
+  name.vb: ProcessEventBatchAsync(IReadOnlyList(Of TemporalEventData))
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ProcessEventBatchAsync(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData})
+    name: ProcessEventBatchAsync
+  - name: (
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData
+    name: TemporalEventData
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ProcessEventBatchAsync(System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData})
+    name: ProcessEventBatchAsync
+  - name: (
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData
+    name: TemporalEventData
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData}
+  commentId: T:System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<TemporalEventData>
+  nameWithType: IReadOnlyList<TemporalEventData>
+  fullName: System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData>
+  nameWithType.vb: IReadOnlyList(Of TemporalEventData)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData)
+  name.vb: IReadOnlyList(Of TemporalEventData)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData
+    name: TemporalEventData
+    href: Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData
+    name: TemporalEventData
+    href: Orleans.GpuBridge.Abstractions.Temporal.Patterns.TemporalEventData.html
+  - name: )
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternProcessingResult}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternProcessingResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<PatternProcessingResult>
+  nameWithType: Task<PatternProcessingResult>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternProcessingResult>
+  nameWithType.vb: Task(Of PatternProcessingResult)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternProcessingResult)
+  name.vb: Task(Of PatternProcessingResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternProcessingResult
+    name: PatternProcessingResult
+    href: Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternProcessingResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternProcessingResult
+    name: PatternProcessingResult
+    href: Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternProcessingResult.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetRecentMatchesAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetRecentMatchesAsync
+  href: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.html#Orleans_GpuBridge_Grains_Temporal_PatternDetectorGrain_GetRecentMatchesAsync_System_Int32_System_Nullable_System_Int64__
+  name: GetRecentMatchesAsync
+  nameWithType: PatternDetectorGrain.GetRecentMatchesAsync
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetRecentMatchesAsync
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetRecentMatchesAsync(System.Int32,System.Nullable{System.Int64})
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetRecentMatchesAsync(System.Int32,System.Nullable{System.Int64})
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: GetRecentMatchesAsync(int, long?)
+  nameWithType: IPatternDetectorGrain.GetRecentMatchesAsync(int, long?)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetRecentMatchesAsync(int, long?)
+  nameWithType.vb: IPatternDetectorGrain.GetRecentMatchesAsync(Integer, Long?)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetRecentMatchesAsync(Integer, Long?)
+  name.vb: GetRecentMatchesAsync(Integer, Long?)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetRecentMatchesAsync(System.Int32,System.Nullable{System.Int64})
+    name: GetRecentMatchesAsync
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetRecentMatchesAsync(System.Int32,System.Nullable{System.Int64})
+    name: GetRecentMatchesAsync
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '?'
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Nullable{System.Int64}
+  commentId: T:System.Nullable{System.Int64}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long?
+  nameWithType: long?
+  fullName: long?
+  nameWithType.vb: Long?
+  fullName.vb: Long?
+  name.vb: Long?
+  spec.csharp:
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '?'
+  spec.vb:
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetMatchesByPatternAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetMatchesByPatternAsync
+  href: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.html#Orleans_GpuBridge_Grains_Temporal_PatternDetectorGrain_GetMatchesByPatternAsync_System_String_System_Int32_
+  name: GetMatchesByPatternAsync
+  nameWithType: PatternDetectorGrain.GetMatchesByPatternAsync
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetMatchesByPatternAsync
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetMatchesByPatternAsync(System.String,System.Int32)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetMatchesByPatternAsync(System.String,System.Int32)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: GetMatchesByPatternAsync(string, int)
+  nameWithType: IPatternDetectorGrain.GetMatchesByPatternAsync(string, int)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetMatchesByPatternAsync(string, int)
+  nameWithType.vb: IPatternDetectorGrain.GetMatchesByPatternAsync(String, Integer)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetMatchesByPatternAsync(String, Integer)
+  name.vb: GetMatchesByPatternAsync(String, Integer)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetMatchesByPatternAsync(System.String,System.Int32)
+    name: GetMatchesByPatternAsync
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetMatchesByPatternAsync(System.String,System.Int32)
+    name: GetMatchesByPatternAsync
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetStatisticsAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetStatisticsAsync
+  href: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.html#Orleans_GpuBridge_Grains_Temporal_PatternDetectorGrain_GetStatisticsAsync
+  name: GetStatisticsAsync
+  nameWithType: PatternDetectorGrain.GetStatisticsAsync
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.GetStatisticsAsync
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetStatisticsAsync
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetStatisticsAsync
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain
+  name: GetStatisticsAsync()
+  nameWithType: IPatternDetectorGrain.GetStatisticsAsync()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetStatisticsAsync()
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetStatisticsAsync
+    name: GetStatisticsAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.GetStatisticsAsync
+    name: GetStatisticsAsync
+  - name: (
+  - name: )
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternDetectionStats}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternDetectionStats}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<PatternDetectionStats>
+  nameWithType: Task<PatternDetectionStats>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternDetectionStats>
+  nameWithType.vb: Task(Of PatternDetectionStats)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternDetectionStats)
+  name.vb: Task(Of PatternDetectionStats)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternDetectionStats
+    name: PatternDetectionStats
+    href: Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternDetectionStats.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternDetectionStats
+    name: PatternDetectionStats
+    href: Orleans.GpuBridge.Abstractions.Temporal.Patterns.PatternDetectionStats.html
+  - name: )
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ClearAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ClearAsync
+  href: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.html#Orleans_GpuBridge_Grains_Temporal_PatternDetectorGrain_ClearAsync
+  name: ClearAsync
+  nameWithType: PatternDetectorGrain.ClearAsync
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ClearAsync
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ClearAsync
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ClearAsync
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain
+  name: ClearAsync()
+  nameWithType: IPatternDetectorGrain.ClearAsync()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ClearAsync()
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ClearAsync
+    name: ClearAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ClearAsync
+    name: ClearAsync
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ConfigureWindowAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ConfigureWindowAsync
+  href: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.html#Orleans_GpuBridge_Grains_Temporal_PatternDetectorGrain_ConfigureWindowAsync_System_Int64_System_Int32_
+  name: ConfigureWindowAsync
+  nameWithType: PatternDetectorGrain.ConfigureWindowAsync
+  fullName: Orleans.GpuBridge.Grains.Temporal.PatternDetectorGrain.ConfigureWindowAsync
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ConfigureWindowAsync(System.Int64,System.Int32)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ConfigureWindowAsync(System.Int64,System.Int32)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: ConfigureWindowAsync(long, int)
+  nameWithType: IPatternDetectorGrain.ConfigureWindowAsync(long, int)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ConfigureWindowAsync(long, int)
+  nameWithType.vb: IPatternDetectorGrain.ConfigureWindowAsync(Long, Integer)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ConfigureWindowAsync(Long, Integer)
+  name.vb: ConfigureWindowAsync(Long, Integer)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ConfigureWindowAsync(System.Int64,System.Int32)
+    name: ConfigureWindowAsync
+  - name: (
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Patterns.IPatternDetectorGrain.ConfigureWindowAsync(System.Int64,System.Int32)
+    name: ConfigureWindowAsync
+  - name: (
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long

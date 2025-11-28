@@ -1,0 +1,1776 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration
+  commentId: T:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration
+  id: DotGpuBackendConfiguration
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  children:
+  - Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.CacheDirectory
+  - Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.DeviceFilter
+  - Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableDebugMode
+  - Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableDiskCache
+  - Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableOptimizations
+  - Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.LanguageSettings
+  - Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.MaxConcurrentCompilations
+  - Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.MemorySettings
+  - Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.OptimizationLevel
+  - Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.PlatformSpecificSettings
+  - Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.PreferredPlatforms
+  langs:
+  - csharp
+  - vb
+  name: DotGpuBackendConfiguration
+  nameWithType: DotGpuBackendConfiguration
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeBackendConfiguration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DotGpuBackendConfiguration
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeBackendConfiguration.cs
+    startLine: 59
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Configuration options for the DotCompute backend provider.
+  remarks: >-
+    This class provides comprehensive configuration options for the DotCompute GPU backend,
+
+    allowing fine-tuned control over compilation, execution, memory management, and platform
+
+    preferences. The configuration supports multiple GPU vendors and compute platforms.
+
+
+    <p>
+
+    The DotCompute backend serves as a unified abstraction over multiple GPU compute APIs
+
+    including CUDA, OpenCL, DirectCompute, Metal, and Vulkan. Configuration settings allow
+
+    you to optimize for specific hardware configurations and use cases.
+
+    </p>
+
+
+    <p>
+
+    Default settings are optimized for production use with balanced performance and resource
+
+    usage. Adjust specific settings based on your deployment environment and performance
+
+    requirements.
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// Basic configuration for production use
+
+    services.AddGpuBridge(options =&gt; options.PreferGpu = true)
+            .AddDotGpuBackend(config =&gt;
+            {
+                config.EnableOptimizations = true;
+                config.OptimizationLevel = OptimizationLevel.O2;
+                config.PreferredPlatforms.Clear();
+                config.PreferredPlatforms.Add(GpuBackend.CUDA);
+                config.PreferredPlatforms.Add(GpuBackend.OpenCL);
+            });
+
+    // Debug configuration for development
+
+    services.AddGpuBridge(options =&gt; options.PreferGpu = true)
+            .AddDotGpuBackend(config =&gt;
+            {
+                config.EnableDebugMode = true;
+                config.EnableOptimizations = false;
+                config.OptimizationLevel = OptimizationLevel.O0;
+                config.EnableDiskCache = false;
+            });
+
+    // High-performance configuration for compute-intensive workloads
+
+    services.AddGpuBridge(options =&gt; options.PreferGpu = true)
+            .AddDotGpuBackend(config =&gt;
+            {
+                config.OptimizationLevel = OptimizationLevel.O3;
+                config.MaxConcurrentCompilations = Environment.ProcessorCount * 2;
+                config.MemorySettings.InitialPoolSize = 1024 * 1024 * 1024; // 1 GB
+                config.MemorySettings.MaxPoolSize = 8L * 1024 * 1024 * 1024; // 8 GB
+            });</code></pre>
+  syntax:
+    content: public class DotGpuBackendConfiguration
+    content.vb: Public Class DotGpuBackendConfiguration
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableDebugMode
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableDebugMode
+  id: EnableDebugMode
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration
+  langs:
+  - csharp
+  - vb
+  name: EnableDebugMode
+  nameWithType: DotGpuBackendConfiguration.EnableDebugMode
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableDebugMode
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeBackendConfiguration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: EnableDebugMode
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeBackendConfiguration.cs
+    startLine: 88
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Gets or sets whether to enable debug mode for DotCompute kernel compilation and execution.
+  remarks: >-
+    Debug mode enables additional runtime checks, detailed error reporting, and debugging
+
+    symbols in compiled kernels. This significantly impacts performance and should only
+
+    be used during development.
+
+
+    <p>
+
+    When enabled, debug mode provides:
+
+    - Detailed kernel compilation errors and warnings
+
+    - Runtime bounds checking and validation
+
+    - Debugging symbols for GPU debuggers
+
+    - Verbose logging of GPU operations
+
+    - Slower kernel execution due to additional checks
+
+    </p>
+
+
+    <p>
+
+    Recommended settings:
+
+    - Development: <code>true</code>
+
+    - Staging: <code>false</code>
+
+    - Production: <code>false</code>
+
+    </p>
+  example: []
+  syntax:
+    content: public bool EnableDebugMode { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+      description: <code>true</code> to enable debug mode; otherwise, <code>false</code>. Default is <code>false</code>.
+    content.vb: Public Property EnableDebugMode As Boolean
+  overload: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableDebugMode*
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableOptimizations
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableOptimizations
+  id: EnableOptimizations
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration
+  langs:
+  - csharp
+  - vb
+  name: EnableOptimizations
+  nameWithType: DotGpuBackendConfiguration.EnableOptimizations
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableOptimizations
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeBackendConfiguration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: EnableOptimizations
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeBackendConfiguration.cs
+    startLine: 115
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Gets or sets whether to enable compiler optimizations for kernel compilation.
+  remarks: >-
+    This setting controls whether the DotCompute compiler applies general optimizations
+
+    during kernel compilation. Works in conjunction with <xref href="Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.OptimizationLevel" data-throw-if-not-resolved="false"></xref>
+
+    to control the specific level of optimization applied.
+
+
+    <p>
+
+    When enabled, optimizations can include:
+
+    - Dead code elimination
+
+    - Constant folding and propagation
+
+    - Loop optimizations and unrolling
+
+    - Instruction scheduling and reordering
+
+    - Memory access pattern optimization
+
+    </p>
+
+
+    <p>
+
+    Disabling optimizations is primarily useful for debugging scenarios where you need
+
+    predictable code generation and line-by-line correspondence with source code.
+
+    </p>
+  example: []
+  syntax:
+    content: public bool EnableOptimizations { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+      description: <code>true</code> to enable optimizations; otherwise, <code>false</code>. Default is <code>true</code>.
+    content.vb: Public Property EnableOptimizations As Boolean
+  overload: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableOptimizations*
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.OptimizationLevel
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.OptimizationLevel
+  id: OptimizationLevel
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration
+  langs:
+  - csharp
+  - vb
+  name: OptimizationLevel
+  nameWithType: DotGpuBackendConfiguration.OptimizationLevel
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.OptimizationLevel
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeBackendConfiguration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: OptimizationLevel
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeBackendConfiguration.cs
+    startLine: 139
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Gets or sets the optimization level for kernel compilation.
+  remarks: >-
+    The optimization level controls the trade-off between compilation time and runtime
+
+    performance. Higher levels generally produce faster code but take longer to compile.
+
+
+    <p>
+
+    Recommended levels by use case:
+
+    - Development and debugging: <xref href="Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel.O0" data-throw-if-not-resolved="false"></xref> or <xref href="Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel.O1" data-throw-if-not-resolved="false"></xref>
+
+    - Production deployments: <xref href="Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel.O2" data-throw-if-not-resolved="false"></xref>
+
+    - Performance-critical applications: <xref href="Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel.O3" data-throw-if-not-resolved="false"></xref>
+
+    </p>
+
+
+    <p>
+
+    This setting is only effective when <xref href="Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableOptimizations" data-throw-if-not-resolved="false"></xref> is <code>true</code>.
+
+    </p>
+  example: []
+  syntax:
+    content: public OptimizationLevel OptimizationLevel { get; set; }
+    parameters: []
+    return:
+      type: Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel
+      description: >-
+        An <xref href="Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel" data-throw-if-not-resolved="false"></xref> value specifying the
+
+        optimization level. Default is <xref href="Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel.O2" data-throw-if-not-resolved="false"></xref>.
+    content.vb: Public Property OptimizationLevel As OptimizationLevel
+  overload: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.OptimizationLevel*
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.MaxConcurrentCompilations
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.MaxConcurrentCompilations
+  id: MaxConcurrentCompilations
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration
+  langs:
+  - csharp
+  - vb
+  name: MaxConcurrentCompilations
+  nameWithType: DotGpuBackendConfiguration.MaxConcurrentCompilations
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.MaxConcurrentCompilations
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeBackendConfiguration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MaxConcurrentCompilations
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeBackendConfiguration.cs
+    startLine: 171
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Gets or sets the maximum number of concurrent kernel compilations allowed.
+  remarks: >-
+    This setting controls the parallelism level for kernel compilation operations.
+
+    Higher values can reduce overall compilation time when compiling multiple kernels
+
+    simultaneously, but may increase memory usage and system load.
+
+
+    <p>
+
+    Considerations for setting this value:
+
+    - CPU cores: Generally set to processor count or 2x processor count
+
+    - Memory: Each compilation uses significant memory (100MB-1GB per compilation)
+
+    - I/O: Concurrent disk operations for cache and temporary files
+
+    - GPU driver limits: Some drivers have limits on concurrent compilation contexts
+
+    </p>
+
+
+    <p>
+
+    Recommended values:
+
+    - Development machines: 2-4
+
+    - CI/Build servers: <xref href="System.Environment.ProcessorCount" data-throw-if-not-resolved="false"></xref>
+
+    - Production servers: <xref href="System.Environment.ProcessorCount" data-throw-if-not-resolved="false"></xref> * 2 (if memory permits)
+
+    </p>
+  example: []
+  syntax:
+    content: public int MaxConcurrentCompilations { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+      description: >-
+        The maximum number of concurrent compilations. Default is the processor count.
+
+        Must be a positive integer.
+    content.vb: Public Property MaxConcurrentCompilations As Integer
+  overload: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.MaxConcurrentCompilations*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Thrown when the value is less than or equal to zero.
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableDiskCache
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableDiskCache
+  id: EnableDiskCache
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration
+  langs:
+  - csharp
+  - vb
+  name: EnableDiskCache
+  nameWithType: DotGpuBackendConfiguration.EnableDiskCache
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableDiskCache
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeBackendConfiguration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: EnableDiskCache
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeBackendConfiguration.cs
+    startLine: 204
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Gets or sets whether to cache compiled kernels to disk for faster subsequent loads.
+  remarks: >-
+    Disk caching stores compiled kernel binaries to persistent storage, significantly
+
+    reducing application startup time and kernel compilation overhead on subsequent runs.
+
+
+    <p>
+
+    Cache benefits:
+
+    - Faster application startup (avoids recompilation)
+
+    - Reduced CPU usage for repeated kernel compilations
+
+    - Consistent performance across application restarts
+
+    - Shared cache across application instances
+
+    </p>
+
+
+    <p>
+
+    Cache considerations:
+
+    - Disk space usage (compiled kernels can be 1MB-100MB each)
+
+    - Cache invalidation when kernel source or compiler versions change
+
+    - File system permissions for cache directory access
+
+    - Concurrent access from multiple application instances
+
+    </p>
+
+
+    <p>
+
+    The cache directory is specified by <xref href="Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.CacheDirectory" data-throw-if-not-resolved="false"></xref> or uses a
+
+    system-appropriate default location if not specified.
+
+    </p>
+  example: []
+  syntax:
+    content: public bool EnableDiskCache { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+      description: <code>true</code> to enable disk caching; otherwise, <code>false</code>. Default is <code>true</code>.
+    content.vb: Public Property EnableDiskCache As Boolean
+  overload: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableDiskCache*
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.CacheDirectory
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.CacheDirectory
+  id: CacheDirectory
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration
+  langs:
+  - csharp
+  - vb
+  name: CacheDirectory
+  nameWithType: DotGpuBackendConfiguration.CacheDirectory
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.CacheDirectory
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeBackendConfiguration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CacheDirectory
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeBackendConfiguration.cs
+    startLine: 245
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Gets or sets the directory path for caching compiled kernels.
+  remarks: >-
+    Specifies the filesystem location where compiled kernel binaries are stored for
+
+    caching. If <code>null</code> or empty, the backend will use a system-appropriate default
+
+    cache directory.
+
+
+    <p>
+
+    Default cache locations by platform:
+
+    - Windows: <code>%LOCALAPPDATA%\Orleans.GpuBridge\DotCompute\Cache</code>
+
+    - Linux: <code>~/.cache/orleans-gpubridge/dotcompute</code>
+
+    - macOS: <code>~/Library/Caches/Orleans.GpuBridge.DotCompute</code>
+
+    </p>
+
+
+    <p>
+
+    Directory requirements:
+
+    - Must be writable by the application process
+
+    - Should have sufficient disk space (recommend 1GB minimum)
+
+    - Can be shared across application instances for efficiency
+
+    - Should be on a fast storage device (SSD preferred)
+
+    </p>
+
+
+    <p>
+
+    This setting is only effective when <xref href="Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableDiskCache" data-throw-if-not-resolved="false"></xref> is <code>true</code>.
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// Use custom cache directory
+
+    config.CacheDirectory = "/opt/app/gpu-cache";
+
+
+    // Use default system directory
+
+    config.CacheDirectory = null;</code></pre>
+  syntax:
+    content: public string? CacheDirectory { get; set; }
+    parameters: []
+    return:
+      type: System.String
+      description: The directory path for kernel cache, or <code>null</code> to use the default system cache directory.
+    content.vb: Public Property CacheDirectory As String
+  overload: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.CacheDirectory*
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.PreferredPlatforms
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.PreferredPlatforms
+  id: PreferredPlatforms
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration
+  langs:
+  - csharp
+  - vb
+  name: PreferredPlatforms
+  nameWithType: DotGpuBackendConfiguration.PreferredPlatforms
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.PreferredPlatforms
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeBackendConfiguration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: PreferredPlatforms
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeBackendConfiguration.cs
+    startLine: 294
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Gets or sets the list of preferred GPU compute platforms in priority order.
+  remarks: >-
+    This list defines the platform selection priority when multiple GPU backends are
+
+    available on the system. The DotCompute backend will attempt to use platforms
+
+    in the specified order until a compatible one is found.
+
+
+    <p>
+
+    Platform characteristics:
+
+    - <xref href="Orleans.GpuBridge.Abstractions.Enums.GpuBackend.CUDA" data-throw-if-not-resolved="false"></xref>: NVIDIA GPUs only, excellent performance
+
+    - <xref href="Orleans.GpuBridge.Abstractions.Enums.GpuBackend.OpenCL" data-throw-if-not-resolved="false"></xref>: Cross-vendor compatibility, good portability
+
+    - <xref href="Orleans.GpuBridge.Abstractions.Enums.GpuBackend.DirectCompute" data-throw-if-not-resolved="false"></xref>: Windows DirectX, good Windows integration
+
+    - <xref href="Orleans.GpuBridge.Abstractions.Enums.GpuBackend.Metal" data-throw-if-not-resolved="false"></xref>: Apple platforms only, optimized for Apple hardware
+
+    - <xref href="Orleans.GpuBridge.Abstractions.Enums.GpuBackend.Vulkan" data-throw-if-not-resolved="false"></xref>: Modern cross-platform API, excellent performance
+
+    </p>
+
+
+    <p>
+
+    Selection considerations:
+
+    - Hardware availability (vendor-specific platforms)
+
+    - Performance requirements (vendor-specific vs. cross-platform)
+
+    - Portability needs (single platform vs. multiple platforms)
+
+    - Development tools and debugging support
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// NVIDIA-first configuration
+
+    config.PreferredPlatforms = new List&lt;GpuBackend&gt;
+
+    {
+        GpuBackend.CUDA,
+        GpuBackend.Vulkan,
+        GpuBackend.OpenCL
+    };
+
+
+    // Cross-platform configuration
+
+    config.PreferredPlatforms = new List&lt;GpuBackend&gt;
+
+    {
+        GpuBackend.OpenCL,
+        GpuBackend.Vulkan
+    };</code></pre>
+  syntax:
+    content: public List<GpuBackend> PreferredPlatforms { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{Orleans.GpuBridge.Abstractions.Enums.GpuBackend}
+      description: >-
+        A list of <xref href="Orleans.GpuBridge.Abstractions.Enums.GpuBackend" data-throw-if-not-resolved="false"></xref> values representing preferred platforms.
+
+        Default includes all supported platforms in optimal order.
+    content.vb: Public Property PreferredPlatforms As List(Of GpuBackend)
+  overload: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.PreferredPlatforms*
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.DeviceFilter
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.DeviceFilter
+  id: DeviceFilter
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration
+  langs:
+  - csharp
+  - vb
+  name: DeviceFilter
+  nameWithType: DotGpuBackendConfiguration.DeviceFilter
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.DeviceFilter
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeBackendConfiguration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DeviceFilter
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeBackendConfiguration.cs
+    startLine: 357
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Gets or sets the device selection filter function for choosing specific GPU devices.
+  remarks: >-
+    This filter allows fine-grained control over which GPU devices are selected for
+
+    kernel execution. The function receives a platform-specific device object and
+
+    should return <code>true</code> for devices that meet your criteria.
+
+
+    <p>
+
+    The device object type depends on the underlying platform:
+
+    - CUDA: CudaDevice with properties like ComputeCapability, TotalMemory
+
+    - OpenCL: OpenCLDevice with properties like DeviceType, MaxWorkGroupSize
+
+    - DirectCompute: DirectComputeDevice with DirectX-specific properties
+
+    - Metal: MetalDevice with Apple-specific properties
+
+    - Vulkan: VulkanDevice with Vulkan API properties
+
+    </p>
+
+
+    <p>
+
+    Common filtering criteria:
+
+    - Memory capacity (minimum required GPU memory)
+
+    - Compute capability (minimum hardware feature support)
+
+    - Device type (discrete vs. integrated GPUs)
+
+    - Vendor preference (specific GPU manufacturers)
+
+    - Performance characteristics (memory bandwidth, compute units)
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// Filter for high-memory devices only
+
+    config.DeviceFilter = device =&gt;
+
+    {
+        return device switch
+        {
+            CudaDevice cuda =&gt; cuda.TotalMemory &gt; 8L * 1024 * 1024 * 1024, // 8GB+
+            OpenCLDevice opencl =&gt; opencl.GlobalMemorySize &gt; 8L * 1024 * 1024 * 1024,
+            _ =&gt; true // Accept other device types
+        };
+    };
+
+
+    // Filter for discrete GPUs only
+
+    config.DeviceFilter = device =&gt;
+
+    {
+        return device switch
+        {
+            OpenCLDevice opencl =&gt; opencl.DeviceType == DeviceType.GPU,
+            _ =&gt; true
+        };
+    };</code></pre>
+  syntax:
+    content: public Func<object, bool>? DeviceFilter { get; set; }
+    parameters: []
+    return:
+      type: System.Func{System.Object,System.Boolean}
+      description: >-
+        A function that takes a device object and returns <code>true</code> if the device should be used,
+
+        or <code>null</code> to use all available devices.
+    content.vb: Public Property DeviceFilter As Func(Of Object, Boolean)
+  overload: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.DeviceFilter*
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.MemorySettings
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.MemorySettings
+  id: MemorySettings
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration
+  langs:
+  - csharp
+  - vb
+  name: MemorySettings
+  nameWithType: DotGpuBackendConfiguration.MemorySettings
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.MemorySettings
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeBackendConfiguration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MemorySettings
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeBackendConfiguration.cs
+    startLine: 384
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Gets or sets the memory management settings for the DotCompute backend.
+  remarks: >-
+    These settings control how the DotCompute backend manages GPU memory allocation,
+
+    pooling, and optimization. Proper memory configuration is crucial for achieving
+
+    optimal performance in GPU compute workloads.
+
+
+    <p>
+
+    Memory management affects:
+
+    - Allocation performance and fragmentation
+
+    - Memory usage efficiency and peak consumption
+
+    - Transfer performance between CPU and GPU
+
+    - Multi-kernel memory sharing and reuse
+
+    </p>
+
+
+    <p>
+
+    The default settings are optimized for typical workloads, but may need adjustment
+
+    based on your specific memory usage patterns and hardware configuration.
+
+    </p>
+  example: []
+  syntax:
+    content: public DotComputeMemorySettings MemorySettings { get; set; }
+    parameters: []
+    return:
+      type: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings
+      description: >-
+        A <xref href="Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings" data-throw-if-not-resolved="false"></xref> instance containing memory configuration.
+
+        Never <code>null</code>.
+    content.vb: Public Property MemorySettings As DotComputeMemorySettings
+  overload: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.MemorySettings*
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.LanguageSettings
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.LanguageSettings
+  id: LanguageSettings
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration
+  langs:
+  - csharp
+  - vb
+  name: LanguageSettings
+  nameWithType: DotGpuBackendConfiguration.LanguageSettings
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.LanguageSettings
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeBackendConfiguration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: LanguageSettings
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeBackendConfiguration.cs
+    startLine: 411
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Gets or sets the kernel language compilation settings.
+  remarks: >-
+    These settings control how the DotCompute backend handles different kernel
+
+    programming languages and their compilation. The backend supports multiple
+
+    source languages and can automatically translate between them when needed.
+
+
+    <p>
+
+    Language settings affect:
+
+    - Source language preference for each platform
+
+    - Automatic language translation capabilities
+
+    - Preprocessor definitions and include paths
+
+    - Compilation flags and optimization settings
+
+    </p>
+
+
+    <p>
+
+    The default settings provide good cross-platform compatibility while optimizing
+
+    for platform-specific languages when available.
+
+    </p>
+  example: []
+  syntax:
+    content: public KernelLanguageSettings LanguageSettings { get; set; }
+    parameters: []
+    return:
+      type: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings
+      description: >-
+        A <xref href="Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings" data-throw-if-not-resolved="false"></xref> instance containing language configuration.
+
+        Never <code>null</code>.
+    content.vb: Public Property LanguageSettings As KernelLanguageSettings
+  overload: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.LanguageSettings*
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.PlatformSpecificSettings
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.PlatformSpecificSettings
+  id: PlatformSpecificSettings
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration
+  langs:
+  - csharp
+  - vb
+  name: PlatformSpecificSettings
+  nameWithType: DotGpuBackendConfiguration.PlatformSpecificSettings
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.PlatformSpecificSettings
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeBackendConfiguration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: PlatformSpecificSettings
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeBackendConfiguration.cs
+    startLine: 456
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Gets or sets platform-specific configuration settings.
+  remarks: >-
+    This dictionary allows you to specify platform-specific configuration that cannot
+
+    be expressed through the common configuration properties. Each platform may have
+
+    unique settings that are not applicable to other platforms.
+
+
+    <p>
+
+    Platform-specific settings examples:
+
+    - CUDA: Stream priorities, memory pool configurations, P2P settings
+
+    - OpenCL: Context properties, queue properties, extension usage
+
+    - DirectCompute: Device debug layer settings, feature level requirements
+
+    - Metal: Command queue configurations, heap settings
+
+    - Vulkan: Instance extensions, device extensions, queue families
+
+    </p>
+
+
+    <p>
+
+    The configuration objects are platform-specific and should match the expected
+
+    types for each backend. Consult the DotCompute documentation for detailed
+
+    information about supported platform-specific options.
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// CUDA-specific settings
+
+    config.PlatformSpecificSettings[GpuBackend.CUDA] = new CudaSettings
+
+    {
+        EnableP2P = true,
+        StreamPriority = CudaStreamPriority.High
+    };
+
+
+    // OpenCL-specific settings
+
+    config.PlatformSpecificSettings[GpuBackend.OpenCL] = new OpenCLSettings
+
+    {
+        EnableImageSupport = true,
+        PreferredWorkGroupSize = 256
+    };</code></pre>
+  syntax:
+    content: public Dictionary<GpuBackend, object> PlatformSpecificSettings { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.Dictionary{Orleans.GpuBridge.Abstractions.Enums.GpuBackend,System.Object}
+      description: A dictionary mapping <xref href="Orleans.GpuBridge.Abstractions.Enums.GpuBackend" data-throw-if-not-resolved="false"></xref> values to platform-specific configuration objects.
+    content.vb: Public Property PlatformSpecificSettings As Dictionary(Of GpuBackend, Object)
+  overload: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.PlatformSpecificSettings*
+references:
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  commentId: N:Orleans.GpuBridge.Backends.DotCompute.Configuration
+  href: Orleans.html
+  name: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  nameWithType: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends
+    name: Backends
+    href: Orleans.GpuBridge.Backends.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute
+    name: DotCompute
+    href: Orleans.GpuBridge.Backends.DotCompute.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Configuration
+    name: Configuration
+    href: Orleans.GpuBridge.Backends.DotCompute.Configuration.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends
+    name: Backends
+    href: Orleans.GpuBridge.Backends.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute
+    name: DotCompute
+    href: Orleans.GpuBridge.Backends.DotCompute.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Configuration
+    name: Configuration
+    href: Orleans.GpuBridge.Backends.DotCompute.Configuration.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableDebugMode*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableDebugMode
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotGpuBackendConfiguration_EnableDebugMode
+  name: EnableDebugMode
+  nameWithType: DotGpuBackendConfiguration.EnableDebugMode
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableDebugMode
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.OptimizationLevel
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.OptimizationLevel
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotGpuBackendConfiguration_OptimizationLevel
+  name: OptimizationLevel
+  nameWithType: DotGpuBackendConfiguration.OptimizationLevel
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.OptimizationLevel
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableOptimizations*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableOptimizations
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotGpuBackendConfiguration_EnableOptimizations
+  name: EnableOptimizations
+  nameWithType: DotGpuBackendConfiguration.EnableOptimizations
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableOptimizations
+- uid: Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel
+  commentId: T:Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel
+  parent: Orleans.GpuBridge.Abstractions.Enums.Compilation
+  href: Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel.html
+  name: OptimizationLevel
+  nameWithType: OptimizationLevel
+  fullName: Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel
+- uid: Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel.O2
+  commentId: F:Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel.O2
+  href: Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel.html#Orleans_GpuBridge_Abstractions_Enums_Compilation_OptimizationLevel_O2
+  name: O2
+  nameWithType: OptimizationLevel.O2
+  fullName: Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel.O2
+- uid: Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel.O0
+  commentId: F:Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel.O0
+  name: O0
+  nameWithType: OptimizationLevel.O0
+  fullName: Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel.O0
+- uid: Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel.O1
+  commentId: F:Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel.O1
+  name: O1
+  nameWithType: OptimizationLevel.O1
+  fullName: Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel.O1
+- uid: Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel.O3
+  commentId: F:Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel.O3
+  name: O3
+  nameWithType: OptimizationLevel.O3
+  fullName: Orleans.GpuBridge.Abstractions.Enums.Compilation.OptimizationLevel.O3
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableOptimizations
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableOptimizations
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotGpuBackendConfiguration_EnableOptimizations
+  name: EnableOptimizations
+  nameWithType: DotGpuBackendConfiguration.EnableOptimizations
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableOptimizations
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.OptimizationLevel*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.OptimizationLevel
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotGpuBackendConfiguration_OptimizationLevel
+  name: OptimizationLevel
+  nameWithType: DotGpuBackendConfiguration.OptimizationLevel
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.OptimizationLevel
+- uid: Orleans.GpuBridge.Abstractions.Enums.Compilation
+  commentId: N:Orleans.GpuBridge.Abstractions.Enums.Compilation
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Enums.Compilation
+  nameWithType: Orleans.GpuBridge.Abstractions.Enums.Compilation
+  fullName: Orleans.GpuBridge.Abstractions.Enums.Compilation
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Enums
+    name: Enums
+    href: Orleans.GpuBridge.Abstractions.Enums.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Enums.Compilation
+    name: Compilation
+    href: Orleans.GpuBridge.Abstractions.Enums.Compilation.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Enums
+    name: Enums
+    href: Orleans.GpuBridge.Abstractions.Enums.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Enums.Compilation
+    name: Compilation
+    href: Orleans.GpuBridge.Abstractions.Enums.Compilation.html
+- uid: System.Environment.ProcessorCount
+  commentId: P:System.Environment.ProcessorCount
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.environment.processorcount
+  name: ProcessorCount
+  nameWithType: Environment.ProcessorCount
+  fullName: System.Environment.ProcessorCount
+- uid: System.ArgumentOutOfRangeException
+  commentId: T:System.ArgumentOutOfRangeException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception
+  name: ArgumentOutOfRangeException
+  nameWithType: ArgumentOutOfRangeException
+  fullName: System.ArgumentOutOfRangeException
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.MaxConcurrentCompilations*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.MaxConcurrentCompilations
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotGpuBackendConfiguration_MaxConcurrentCompilations
+  name: MaxConcurrentCompilations
+  nameWithType: DotGpuBackendConfiguration.MaxConcurrentCompilations
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.MaxConcurrentCompilations
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.CacheDirectory
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.CacheDirectory
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotGpuBackendConfiguration_CacheDirectory
+  name: CacheDirectory
+  nameWithType: DotGpuBackendConfiguration.CacheDirectory
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.CacheDirectory
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableDiskCache*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableDiskCache
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotGpuBackendConfiguration_EnableDiskCache
+  name: EnableDiskCache
+  nameWithType: DotGpuBackendConfiguration.EnableDiskCache
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableDiskCache
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableDiskCache
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableDiskCache
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotGpuBackendConfiguration_EnableDiskCache
+  name: EnableDiskCache
+  nameWithType: DotGpuBackendConfiguration.EnableDiskCache
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.EnableDiskCache
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.CacheDirectory*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.CacheDirectory
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotGpuBackendConfiguration_CacheDirectory
+  name: CacheDirectory
+  nameWithType: DotGpuBackendConfiguration.CacheDirectory
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.CacheDirectory
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Orleans.GpuBridge.Abstractions.Enums.GpuBackend
+  commentId: T:Orleans.GpuBridge.Abstractions.Enums.GpuBackend
+  parent: Orleans.GpuBridge.Abstractions.Enums
+  href: Orleans.GpuBridge.Abstractions.Enums.GpuBackend.html
+  name: GpuBackend
+  nameWithType: GpuBackend
+  fullName: Orleans.GpuBridge.Abstractions.Enums.GpuBackend
+- uid: Orleans.GpuBridge.Abstractions.Enums.GpuBackend.CUDA
+  commentId: F:Orleans.GpuBridge.Abstractions.Enums.GpuBackend.CUDA
+  name: CUDA
+  nameWithType: GpuBackend.CUDA
+  fullName: Orleans.GpuBridge.Abstractions.Enums.GpuBackend.CUDA
+- uid: Orleans.GpuBridge.Abstractions.Enums.GpuBackend.OpenCL
+  commentId: F:Orleans.GpuBridge.Abstractions.Enums.GpuBackend.OpenCL
+  name: OpenCL
+  nameWithType: GpuBackend.OpenCL
+  fullName: Orleans.GpuBridge.Abstractions.Enums.GpuBackend.OpenCL
+- uid: Orleans.GpuBridge.Abstractions.Enums.GpuBackend.DirectCompute
+  commentId: F:Orleans.GpuBridge.Abstractions.Enums.GpuBackend.DirectCompute
+  name: DirectCompute
+  nameWithType: GpuBackend.DirectCompute
+  fullName: Orleans.GpuBridge.Abstractions.Enums.GpuBackend.DirectCompute
+- uid: Orleans.GpuBridge.Abstractions.Enums.GpuBackend.Metal
+  commentId: F:Orleans.GpuBridge.Abstractions.Enums.GpuBackend.Metal
+  name: Metal
+  nameWithType: GpuBackend.Metal
+  fullName: Orleans.GpuBridge.Abstractions.Enums.GpuBackend.Metal
+- uid: Orleans.GpuBridge.Abstractions.Enums.GpuBackend.Vulkan
+  commentId: F:Orleans.GpuBridge.Abstractions.Enums.GpuBackend.Vulkan
+  name: Vulkan
+  nameWithType: GpuBackend.Vulkan
+  fullName: Orleans.GpuBridge.Abstractions.Enums.GpuBackend.Vulkan
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.PreferredPlatforms*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.PreferredPlatforms
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotGpuBackendConfiguration_PreferredPlatforms
+  name: PreferredPlatforms
+  nameWithType: DotGpuBackendConfiguration.PreferredPlatforms
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.PreferredPlatforms
+- uid: System.Collections.Generic.List{Orleans.GpuBridge.Abstractions.Enums.GpuBackend}
+  commentId: T:System.Collections.Generic.List{Orleans.GpuBridge.Abstractions.Enums.GpuBackend}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<GpuBackend>
+  nameWithType: List<GpuBackend>
+  fullName: System.Collections.Generic.List<Orleans.GpuBridge.Abstractions.Enums.GpuBackend>
+  nameWithType.vb: List(Of GpuBackend)
+  fullName.vb: System.Collections.Generic.List(Of Orleans.GpuBridge.Abstractions.Enums.GpuBackend)
+  name.vb: List(Of GpuBackend)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Enums.GpuBackend
+    name: GpuBackend
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Enums.GpuBackend
+    name: GpuBackend
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Enums
+  commentId: N:Orleans.GpuBridge.Abstractions.Enums
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Enums
+  nameWithType: Orleans.GpuBridge.Abstractions.Enums
+  fullName: Orleans.GpuBridge.Abstractions.Enums
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Enums
+    name: Enums
+    href: Orleans.GpuBridge.Abstractions.Enums.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Enums
+    name: Enums
+    href: Orleans.GpuBridge.Abstractions.Enums.html
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.DeviceFilter*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.DeviceFilter
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotGpuBackendConfiguration_DeviceFilter
+  name: DeviceFilter
+  nameWithType: DotGpuBackendConfiguration.DeviceFilter
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.DeviceFilter
+- uid: System.Func{System.Object,System.Boolean}
+  commentId: T:System.Func{System.Object,System.Boolean}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<object, bool>
+  nameWithType: Func<object, bool>
+  fullName: System.Func<object, bool>
+  nameWithType.vb: Func(Of Object, Boolean)
+  fullName.vb: System.Func(Of Object, Boolean)
+  name.vb: Func(Of Object, Boolean)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings
+  commentId: T:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.html
+  name: DotComputeMemorySettings
+  nameWithType: DotComputeMemorySettings
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.MemorySettings*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.MemorySettings
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotGpuBackendConfiguration_MemorySettings
+  name: MemorySettings
+  nameWithType: DotGpuBackendConfiguration.MemorySettings
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.MemorySettings
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings
+  commentId: T:Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.html
+  name: KernelLanguageSettings
+  nameWithType: KernelLanguageSettings
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.LanguageSettings*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.LanguageSettings
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotGpuBackendConfiguration_LanguageSettings
+  name: LanguageSettings
+  nameWithType: DotGpuBackendConfiguration.LanguageSettings
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.LanguageSettings
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.PlatformSpecificSettings*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.PlatformSpecificSettings
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotGpuBackendConfiguration_PlatformSpecificSettings
+  name: PlatformSpecificSettings
+  nameWithType: DotGpuBackendConfiguration.PlatformSpecificSettings
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.PlatformSpecificSettings
+- uid: System.Collections.Generic.Dictionary{Orleans.GpuBridge.Abstractions.Enums.GpuBackend,System.Object}
+  commentId: T:System.Collections.Generic.Dictionary{Orleans.GpuBridge.Abstractions.Enums.GpuBackend,System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<GpuBackend, object>
+  nameWithType: Dictionary<GpuBackend, object>
+  fullName: System.Collections.Generic.Dictionary<Orleans.GpuBridge.Abstractions.Enums.GpuBackend, object>
+  nameWithType.vb: Dictionary(Of GpuBackend, Object)
+  fullName.vb: System.Collections.Generic.Dictionary(Of Orleans.GpuBridge.Abstractions.Enums.GpuBackend, Object)
+  name.vb: Dictionary(Of GpuBackend, Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Enums.GpuBackend
+    name: GpuBackend
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Enums.GpuBackend
+    name: GpuBackend
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )

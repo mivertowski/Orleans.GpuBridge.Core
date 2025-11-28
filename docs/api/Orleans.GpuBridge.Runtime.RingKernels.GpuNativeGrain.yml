@@ -1,0 +1,1981 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain
+  commentId: T:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain
+  id: GpuNativeGrain
+  parent: Orleans.GpuBridge.Runtime.RingKernels
+  children:
+  - Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.#ctor(DotCompute.Abstractions.RingKernels.IRingKernelRuntime,Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain})
+  - Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.DisposeAsync
+  - Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetCurrentTimestamp
+  - Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetKernelConfiguration
+  - Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetKernelMetricsAsync(System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetKernelStatusAsync(System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.InvokeKernelAsync``2(``0,System.TimeSpan,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.InvokeKernelMethodAsync``1(System.String,System.Object[],System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.IsKernelActive
+  - Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.KernelId
+  - Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.LastTimestamp
+  - Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.OnActivateAsync(System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.OnDeactivateAsync(Orleans.DeactivationReason,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.UpdateTimestamp(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  langs:
+  - csharp
+  - vb
+  name: GpuNativeGrain
+  nameWithType: GpuNativeGrain
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GpuNativeGrain
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+    startLine: 32
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Base class for Orleans grains that execute as GPU-native actors using persistent ring kernels.
+  remarks: >-
+    <p>
+
+    This class bridges Orleans grain lifecycle with DotCompute ring kernel lifecycle:
+
+    - OnActivateAsync() → LaunchAsync() + ActivateAsync() (GPU kernel starts)
+
+    - Method calls → SendMessage() → GPU processes → ReceiveMessage() → Return
+
+    - OnDeactivateAsync() → DeactivateAsync() (GPU kernel pauses)
+
+    - DisposeAsync() → TerminateAsync() (GPU kernel exits)
+
+    </p>
+
+    <p>
+
+    Performance characteristics:
+
+    - First activation: ~10-50ms (kernel compilation + launch)
+
+    - Subsequent calls: 100-500ns (GPU queue operations only)
+
+    - Reactivation: ~1μs (no compilation, just ActivateAsync)
+
+    </p>
+
+    <p>
+
+    The grain maintains GPU state across Orleans activation cycles. Ring kernel stays
+
+    launched but paused during grain idle periods, enabling instant reactivation.
+
+    </p>
+  example: []
+  syntax:
+    content: 'public abstract class GpuNativeGrain : Grain, IGrainBase, IGrainWithIntegerKey, IGrain, IAddressable, IAsyncDisposable'
+    content.vb: Public MustInherit Class GpuNativeGrain Inherits Grain Implements IGrainBase, IGrainWithIntegerKey, IGrain, IAddressable, IAsyncDisposable
+  inheritance:
+  - System.Object
+  - Orleans.Grain
+  derivedClasses:
+  - Orleans.GpuBridge.Grains.RingKernels.VectorAddActor
+  implements:
+  - Orleans.IGrainBase
+  - Orleans.IGrainWithIntegerKey
+  - Orleans.IGrain
+  - Orleans.Runtime.IAddressable
+  - System.IAsyncDisposable
+  inheritedMembers:
+  - Orleans.Grain.RegisterTimer(System.Func{System.Object,System.Threading.Tasks.Task},System.Object,System.TimeSpan,System.TimeSpan)
+  - Orleans.Grain.DeactivateOnIdle
+  - Orleans.Grain.MigrateOnIdle
+  - Orleans.Grain.DelayDeactivation(System.TimeSpan)
+  - Orleans.Grain.GrainContext
+  - Orleans.Grain.GrainReference
+  - Orleans.Grain.GrainFactory
+  - Orleans.Grain.ServiceProvider
+  - Orleans.Grain.IdentityString
+  - Orleans.Grain.RuntimeIdentity
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.#ctor(DotCompute.Abstractions.RingKernels.IRingKernelRuntime,Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain})
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.#ctor(DotCompute.Abstractions.RingKernels.IRingKernelRuntime,Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain})
+  id: '#ctor(DotCompute.Abstractions.RingKernels.IRingKernelRuntime,Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain})'
+  parent: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain
+  langs:
+  - csharp
+  - vb
+  name: GpuNativeGrain(IRingKernelRuntime, ILogger<GpuNativeGrain>)
+  nameWithType: GpuNativeGrain.GpuNativeGrain(IRingKernelRuntime, ILogger<GpuNativeGrain>)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GpuNativeGrain(DotCompute.Abstractions.RingKernels.IRingKernelRuntime, Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain>)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+    startLine: 56
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Initializes a new instance of the <xref href="Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: protected GpuNativeGrain(IRingKernelRuntime runtime, ILogger<GpuNativeGrain> logger)
+    parameters:
+    - id: runtime
+      type: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+      description: Ring kernel runtime for GPU operations.
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain}
+      description: Logger instance.
+    content.vb: Protected Sub New(runtime As IRingKernelRuntime, logger As ILogger(Of GpuNativeGrain))
+  overload: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.#ctor*
+  nameWithType.vb: GpuNativeGrain.New(IRingKernelRuntime, ILogger(Of GpuNativeGrain))
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.New(DotCompute.Abstractions.RingKernels.IRingKernelRuntime, Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain))
+  name.vb: New(IRingKernelRuntime, ILogger(Of GpuNativeGrain))
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.KernelId
+  commentId: P:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.KernelId
+  id: KernelId
+  parent: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain
+  langs:
+  - csharp
+  - vb
+  name: KernelId
+  nameWithType: GpuNativeGrain.KernelId
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.KernelId
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: KernelId
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+    startLine: 79
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Gets the ring kernel ID for this grain.
+  remarks: >-
+    Format: {GrainTypeName}_{PrimaryKey}
+
+    Example: VectorAddActor_42
+  example: []
+  syntax:
+    content: protected string KernelId { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Protected ReadOnly Property KernelId As String
+  overload: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.KernelId*
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.IsKernelActive
+  commentId: P:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.IsKernelActive
+  id: IsKernelActive
+  parent: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain
+  langs:
+  - csharp
+  - vb
+  name: IsKernelActive
+  nameWithType: GpuNativeGrain.IsKernelActive
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.IsKernelActive
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsKernelActive
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+    startLine: 84
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Gets a value indicating whether the GPU kernel is currently active.
+  example: []
+  syntax:
+    content: protected bool IsKernelActive { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Protected ReadOnly Property IsKernelActive As Boolean
+  overload: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.IsKernelActive*
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetKernelConfiguration
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetKernelConfiguration
+  id: GetKernelConfiguration
+  parent: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain
+  langs:
+  - csharp
+  - vb
+  name: GetKernelConfiguration()
+  nameWithType: GpuNativeGrain.GetKernelConfiguration()
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetKernelConfiguration()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetKernelConfiguration
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+    startLine: 93
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Gets grid and block size configuration for kernel launch.
+  remarks: >-
+    Override to customize GPU thread configuration.
+
+    Default: 1 block × 256 threads (suitable for single-actor workloads).
+  example: []
+  syntax:
+    content: protected virtual (int gridSize, int blockSize) GetKernelConfiguration()
+    return:
+      type: System.ValueTuple{System.Int32,System.Int32}
+    content.vb: Protected Overridable Function GetKernelConfiguration() As (gridSize As Integer, blockSize As Integer)
+  overload: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetKernelConfiguration*
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.OnActivateAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.OnActivateAsync(System.Threading.CancellationToken)
+  id: OnActivateAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain
+  langs:
+  - csharp
+  - vb
+  name: OnActivateAsync(CancellationToken)
+  nameWithType: GpuNativeGrain.OnActivateAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.OnActivateAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: OnActivateAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+    startLine: 103
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: >-
+    Called when the grain is activated by Orleans.
+
+    Launches the persistent ring kernel on GPU.
+  example: []
+  syntax:
+    content: public override Task OnActivateAsync(CancellationToken cancellationToken)
+    parameters:
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Overrides Function OnActivateAsync(cancellationToken As CancellationToken) As Task
+  overridden: Orleans.Grain.OnActivateAsync(System.Threading.CancellationToken)
+  overload: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.OnActivateAsync*
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.OnDeactivateAsync(Orleans.DeactivationReason,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.OnDeactivateAsync(Orleans.DeactivationReason,System.Threading.CancellationToken)
+  id: OnDeactivateAsync(Orleans.DeactivationReason,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain
+  langs:
+  - csharp
+  - vb
+  name: OnDeactivateAsync(DeactivationReason, CancellationToken)
+  nameWithType: GpuNativeGrain.OnDeactivateAsync(DeactivationReason, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.OnDeactivateAsync(Orleans.DeactivationReason, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: OnDeactivateAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+    startLine: 157
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: >-
+    Called when the grain is deactivated by Orleans.
+
+    Deactivates the ring kernel (pauses it) but keeps it launched for fast reactivation.
+  example: []
+  syntax:
+    content: public override Task OnDeactivateAsync(DeactivationReason reason, CancellationToken cancellationToken)
+    parameters:
+    - id: reason
+      type: Orleans.DeactivationReason
+      description: Deactivation reason.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Overrides Function OnDeactivateAsync(reason As DeactivationReason, cancellationToken As CancellationToken) As Task
+  overridden: Orleans.Grain.OnDeactivateAsync(Orleans.DeactivationReason,System.Threading.CancellationToken)
+  overload: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.OnDeactivateAsync*
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.InvokeKernelAsync``2(``0,System.TimeSpan,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.InvokeKernelAsync``2(``0,System.TimeSpan,System.Threading.CancellationToken)
+  id: InvokeKernelAsync``2(``0,System.TimeSpan,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain
+  langs:
+  - csharp
+  - vb
+  name: InvokeKernelAsync<TRequest, TResponse>(TRequest, TimeSpan, CancellationToken)
+  nameWithType: GpuNativeGrain.InvokeKernelAsync<TRequest, TResponse>(TRequest, TimeSpan, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.InvokeKernelAsync<TRequest, TResponse>(TRequest, System.TimeSpan, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: InvokeKernelAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+    startLine: 213
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Invokes a GPU kernel method with typed request/response.
+  remarks: >-
+    <p>
+
+    Message flow with HLC temporal ordering:
+
+    1. Generate HLC timestamp (CPU-side, ~50ns)
+
+    2. Wrap request + timestamp into ActorMessage
+
+    3. Send to GPU via ring kernel queue
+
+    4. GPU temporal kernel processes with HLC update (~20ns on GPU)
+
+    5. Response unwrapped and returned
+
+    </p>
+
+    <p>
+
+    For small payloads (&lt;= 8 bytes), data is embedded directly in ActorMessage.
+
+    Larger payloads require GPU memory management (Phase 4).
+
+    </p>
+  example: []
+  syntax:
+    content: 'protected Task<TResponse> InvokeKernelAsync<TRequest, TResponse>(TRequest request, TimeSpan timeout = default, CancellationToken cancellationToken = default) where TRequest : unmanaged where TResponse : unmanaged'
+    parameters:
+    - id: request
+      type: '{TRequest}'
+      description: Request payload.
+    - id: timeout
+      type: System.TimeSpan
+      description: 'Response timeout (default: 5 seconds).'
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    typeParameters:
+    - id: TRequest
+      description: Unmanaged request type.
+    - id: TResponse
+      description: Unmanaged response type.
+    return:
+      type: System.Threading.Tasks.Task{{TResponse}}
+      description: Response from GPU kernel.
+    content.vb: Protected Function InvokeKernelAsync(Of TRequest As Structure, TResponse As Structure)(request As TRequest, timeout As TimeSpan = Nothing, cancellationToken As CancellationToken = Nothing) As Task(Of TResponse)
+  overload: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.InvokeKernelAsync*
+  exceptions:
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: Kernel not launched.
+  - type: System.TimeoutException
+    commentId: T:System.TimeoutException
+    description: GPU kernel did not respond within timeout.
+  nameWithType.vb: GpuNativeGrain.InvokeKernelAsync(Of TRequest, TResponse)(TRequest, TimeSpan, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.InvokeKernelAsync(Of TRequest, TResponse)(TRequest, System.TimeSpan, System.Threading.CancellationToken)
+  name.vb: InvokeKernelAsync(Of TRequest, TResponse)(TRequest, TimeSpan, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.InvokeKernelMethodAsync``1(System.String,System.Object[],System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.InvokeKernelMethodAsync``1(System.String,System.Object[],System.Threading.CancellationToken)
+  id: InvokeKernelMethodAsync``1(System.String,System.Object[],System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain
+  langs:
+  - csharp
+  - vb
+  name: InvokeKernelMethodAsync<TResponse>(string, object[], CancellationToken)
+  nameWithType: GpuNativeGrain.InvokeKernelMethodAsync<TResponse>(string, object[], CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.InvokeKernelMethodAsync<TResponse>(string, object[], System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: InvokeKernelMethodAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+    startLine: 315
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Invokes a GPU kernel method using Orleans message serialization.
+  example: []
+  syntax:
+    content: 'protected Task<TResponse> InvokeKernelMethodAsync<TResponse>(string methodName, object[] args, CancellationToken cancellationToken = default) where TResponse : unmanaged'
+    parameters:
+    - id: methodName
+      type: System.String
+      description: Method name to invoke.
+    - id: args
+      type: System.Object[]
+      description: Method arguments.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    typeParameters:
+    - id: TResponse
+      description: Expected return type.
+    return:
+      type: System.Threading.Tasks.Task{{TResponse}}
+      description: Response from GPU kernel.
+    content.vb: Protected Function InvokeKernelMethodAsync(Of TResponse As Structure)(methodName As String, args As Object(), cancellationToken As CancellationToken = Nothing) As Task(Of TResponse)
+  overload: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.InvokeKernelMethodAsync*
+  exceptions:
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: Kernel not launched.
+  - type: System.TimeoutException
+    commentId: T:System.TimeoutException
+    description: GPU kernel did not respond.
+  nameWithType.vb: GpuNativeGrain.InvokeKernelMethodAsync(Of TResponse)(String, Object(), CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.InvokeKernelMethodAsync(Of TResponse)(String, Object(), System.Threading.CancellationToken)
+  name.vb: InvokeKernelMethodAsync(Of TResponse)(String, Object(), CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetCurrentTimestamp
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetCurrentTimestamp
+  id: GetCurrentTimestamp
+  parent: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain
+  langs:
+  - csharp
+  - vb
+  name: GetCurrentTimestamp()
+  nameWithType: GpuNativeGrain.GetCurrentTimestamp()
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetCurrentTimestamp()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetCurrentTimestamp
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+    startLine: 375
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Gets the current HLC timestamp for this grain.
+  remarks: >-
+    This generates a new monotonic timestamp that incorporates:
+
+    - Current physical time (nanosecond precision)
+
+    - Logical counter for events at same physical time
+
+    - Grain's unique node ID
+  example: []
+  syntax:
+    content: protected HybridTimestamp GetCurrentTimestamp()
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+      description: New HLC timestamp for local event.
+    content.vb: Protected Function GetCurrentTimestamp() As HybridTimestamp
+  overload: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetCurrentTimestamp*
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.UpdateTimestamp(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.UpdateTimestamp(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  id: UpdateTimestamp(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain
+  langs:
+  - csharp
+  - vb
+  name: UpdateTimestamp(HybridTimestamp)
+  nameWithType: GpuNativeGrain.UpdateTimestamp(HybridTimestamp)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.UpdateTimestamp(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: UpdateTimestamp
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+    startLine: 388
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Updates HLC with a received timestamp (for causal ordering).
+  remarks: >-
+    Implements Lamport clock update rules to maintain happens-before relationships.
+
+    Should be called when receiving messages from other actors.
+  example: []
+  syntax:
+    content: protected void UpdateTimestamp(HybridTimestamp receivedTimestamp)
+    parameters:
+    - id: receivedTimestamp
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+      description: Timestamp from received message.
+    content.vb: Protected Sub UpdateTimestamp(receivedTimestamp As HybridTimestamp)
+  overload: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.UpdateTimestamp*
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.LastTimestamp
+  commentId: P:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.LastTimestamp
+  id: LastTimestamp
+  parent: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain
+  langs:
+  - csharp
+  - vb
+  name: LastTimestamp
+  nameWithType: GpuNativeGrain.LastTimestamp
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.LastTimestamp
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: LastTimestamp
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+    startLine: 401
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Gets the last generated HLC timestamp.
+  example: []
+  syntax:
+    content: protected HybridTimestamp LastTimestamp { get; }
+    parameters: []
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    content.vb: Protected ReadOnly Property LastTimestamp As HybridTimestamp
+  overload: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.LastTimestamp*
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetKernelStatusAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetKernelStatusAsync(System.Threading.CancellationToken)
+  id: GetKernelStatusAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain
+  langs:
+  - csharp
+  - vb
+  name: GetKernelStatusAsync(CancellationToken)
+  nameWithType: GpuNativeGrain.GetKernelStatusAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetKernelStatusAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetKernelStatusAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+    startLine: 408
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Gets current ring kernel status and metrics.
+  example: []
+  syntax:
+    content: protected Task<RingKernelStatus> GetKernelStatusAsync(CancellationToken cancellationToken = default)
+    parameters:
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{DotCompute.Abstractions.RingKernels.RingKernelStatus}
+      description: Kernel status information.
+    content.vb: Protected Function GetKernelStatusAsync(cancellationToken As CancellationToken = Nothing) As Task(Of RingKernelStatus)
+  overload: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetKernelStatusAsync*
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetKernelMetricsAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetKernelMetricsAsync(System.Threading.CancellationToken)
+  id: GetKernelMetricsAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain
+  langs:
+  - csharp
+  - vb
+  name: GetKernelMetricsAsync(CancellationToken)
+  nameWithType: GpuNativeGrain.GetKernelMetricsAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetKernelMetricsAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetKernelMetricsAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+    startLine: 423
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Gets ring kernel performance metrics.
+  example: []
+  syntax:
+    content: protected Task<RingKernelMetrics> GetKernelMetricsAsync(CancellationToken cancellationToken = default)
+    parameters:
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{DotCompute.Abstractions.RingKernels.RingKernelMetrics}
+      description: Performance metrics.
+    content.vb: Protected Function GetKernelMetricsAsync(cancellationToken As CancellationToken = Nothing) As Task(Of RingKernelMetrics)
+  overload: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetKernelMetricsAsync*
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.DisposeAsync
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.DisposeAsync
+  id: DisposeAsync
+  parent: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain
+  langs:
+  - csharp
+  - vb
+  name: DisposeAsync()
+  nameWithType: GpuNativeGrain.DisposeAsync()
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.DisposeAsync()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DisposeAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/GpuNativeGrain.cs
+    startLine: 436
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Disposes the GPU-native grain and terminates the ring kernel.
+  example: []
+  syntax:
+    content: public virtual ValueTask DisposeAsync()
+    return:
+      type: System.Threading.Tasks.ValueTask
+    content.vb: Public Overridable Function DisposeAsync() As ValueTask
+  overload: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.DisposeAsync*
+  implements:
+  - System.IAsyncDisposable.DisposeAsync
+references:
+- uid: Orleans.GpuBridge.Runtime.RingKernels
+  commentId: N:Orleans.GpuBridge.Runtime.RingKernels
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.RingKernels
+  nameWithType: Orleans.GpuBridge.Runtime.RingKernels
+  fullName: Orleans.GpuBridge.Runtime.RingKernels
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.RingKernels
+    name: RingKernels
+    href: Orleans.GpuBridge.Runtime.RingKernels.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.RingKernels
+    name: RingKernels
+    href: Orleans.GpuBridge.Runtime.RingKernels.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Orleans.Grain
+  commentId: T:Orleans.Grain
+  parent: Orleans
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain
+  name: Grain
+  nameWithType: Grain
+  fullName: Orleans.Grain
+- uid: Orleans.IGrainBase
+  commentId: T:Orleans.IGrainBase
+  parent: Orleans
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.igrainbase
+  name: IGrainBase
+  nameWithType: IGrainBase
+  fullName: Orleans.IGrainBase
+- uid: Orleans.IGrainWithIntegerKey
+  commentId: T:Orleans.IGrainWithIntegerKey
+  parent: Orleans
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.igrainwithintegerkey
+  name: IGrainWithIntegerKey
+  nameWithType: IGrainWithIntegerKey
+  fullName: Orleans.IGrainWithIntegerKey
+- uid: Orleans.IGrain
+  commentId: T:Orleans.IGrain
+  parent: Orleans
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.igrain
+  name: IGrain
+  nameWithType: IGrain
+  fullName: Orleans.IGrain
+- uid: Orleans.Runtime.IAddressable
+  commentId: T:Orleans.Runtime.IAddressable
+  parent: Orleans.Runtime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.runtime.iaddressable
+  name: IAddressable
+  nameWithType: IAddressable
+  fullName: Orleans.Runtime.IAddressable
+- uid: System.IAsyncDisposable
+  commentId: T:System.IAsyncDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable
+  name: IAsyncDisposable
+  nameWithType: IAsyncDisposable
+  fullName: System.IAsyncDisposable
+- uid: Orleans.Grain.RegisterTimer(System.Func{System.Object,System.Threading.Tasks.Task},System.Object,System.TimeSpan,System.TimeSpan)
+  commentId: M:Orleans.Grain.RegisterTimer(System.Func{System.Object,System.Threading.Tasks.Task},System.Object,System.TimeSpan,System.TimeSpan)
+  parent: Orleans.Grain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain.registertimer
+  name: RegisterTimer(Func<object, Task>, object, TimeSpan, TimeSpan)
+  nameWithType: Grain.RegisterTimer(Func<object, Task>, object, TimeSpan, TimeSpan)
+  fullName: Orleans.Grain.RegisterTimer(System.Func<object, System.Threading.Tasks.Task>, object, System.TimeSpan, System.TimeSpan)
+  nameWithType.vb: Grain.RegisterTimer(Func(Of Object, Task), Object, TimeSpan, TimeSpan)
+  fullName.vb: Orleans.Grain.RegisterTimer(System.Func(Of Object, System.Threading.Tasks.Task), Object, System.TimeSpan, System.TimeSpan)
+  name.vb: RegisterTimer(Func(Of Object, Task), Object, TimeSpan, TimeSpan)
+  spec.csharp:
+  - uid: Orleans.Grain.RegisterTimer(System.Func{System.Object,System.Threading.Tasks.Task},System.Object,System.TimeSpan,System.TimeSpan)
+    name: RegisterTimer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.grain.registertimer
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: )
+  spec.vb:
+  - uid: Orleans.Grain.RegisterTimer(System.Func{System.Object,System.Threading.Tasks.Task},System.Object,System.TimeSpan,System.TimeSpan)
+    name: RegisterTimer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.grain.registertimer
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: )
+- uid: Orleans.Grain.DeactivateOnIdle
+  commentId: M:Orleans.Grain.DeactivateOnIdle
+  parent: Orleans.Grain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain.deactivateonidle
+  name: DeactivateOnIdle()
+  nameWithType: Grain.DeactivateOnIdle()
+  fullName: Orleans.Grain.DeactivateOnIdle()
+  spec.csharp:
+  - uid: Orleans.Grain.DeactivateOnIdle
+    name: DeactivateOnIdle
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.grain.deactivateonidle
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Orleans.Grain.DeactivateOnIdle
+    name: DeactivateOnIdle
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.grain.deactivateonidle
+  - name: (
+  - name: )
+- uid: Orleans.Grain.MigrateOnIdle
+  commentId: M:Orleans.Grain.MigrateOnIdle
+  parent: Orleans.Grain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain.migrateonidle
+  name: MigrateOnIdle()
+  nameWithType: Grain.MigrateOnIdle()
+  fullName: Orleans.Grain.MigrateOnIdle()
+  spec.csharp:
+  - uid: Orleans.Grain.MigrateOnIdle
+    name: MigrateOnIdle
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.grain.migrateonidle
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Orleans.Grain.MigrateOnIdle
+    name: MigrateOnIdle
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.grain.migrateonidle
+  - name: (
+  - name: )
+- uid: Orleans.Grain.DelayDeactivation(System.TimeSpan)
+  commentId: M:Orleans.Grain.DelayDeactivation(System.TimeSpan)
+  parent: Orleans.Grain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain.delaydeactivation
+  name: DelayDeactivation(TimeSpan)
+  nameWithType: Grain.DelayDeactivation(TimeSpan)
+  fullName: Orleans.Grain.DelayDeactivation(System.TimeSpan)
+  spec.csharp:
+  - uid: Orleans.Grain.DelayDeactivation(System.TimeSpan)
+    name: DelayDeactivation
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.grain.delaydeactivation
+  - name: (
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: )
+  spec.vb:
+  - uid: Orleans.Grain.DelayDeactivation(System.TimeSpan)
+    name: DelayDeactivation
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.grain.delaydeactivation
+  - name: (
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: )
+- uid: Orleans.Grain.GrainContext
+  commentId: P:Orleans.Grain.GrainContext
+  parent: Orleans.Grain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain.graincontext
+  name: GrainContext
+  nameWithType: Grain.GrainContext
+  fullName: Orleans.Grain.GrainContext
+- uid: Orleans.Grain.GrainReference
+  commentId: P:Orleans.Grain.GrainReference
+  parent: Orleans.Grain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain.grainreference
+  name: GrainReference
+  nameWithType: Grain.GrainReference
+  fullName: Orleans.Grain.GrainReference
+- uid: Orleans.Grain.GrainFactory
+  commentId: P:Orleans.Grain.GrainFactory
+  parent: Orleans.Grain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain.grainfactory
+  name: GrainFactory
+  nameWithType: Grain.GrainFactory
+  fullName: Orleans.Grain.GrainFactory
+- uid: Orleans.Grain.ServiceProvider
+  commentId: P:Orleans.Grain.ServiceProvider
+  parent: Orleans.Grain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain.serviceprovider
+  name: ServiceProvider
+  nameWithType: Grain.ServiceProvider
+  fullName: Orleans.Grain.ServiceProvider
+- uid: Orleans.Grain.IdentityString
+  commentId: P:Orleans.Grain.IdentityString
+  parent: Orleans.Grain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain.identitystring
+  name: IdentityString
+  nameWithType: Grain.IdentityString
+  fullName: Orleans.Grain.IdentityString
+- uid: Orleans.Grain.RuntimeIdentity
+  commentId: P:Orleans.Grain.RuntimeIdentity
+  parent: Orleans.Grain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain.runtimeidentity
+  name: RuntimeIdentity
+  nameWithType: Grain.RuntimeIdentity
+  fullName: Orleans.Grain.RuntimeIdentity
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans
+  commentId: N:Orleans
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans
+  name: Orleans
+  nameWithType: Orleans
+  fullName: Orleans
+- uid: Orleans.Runtime
+  commentId: N:Orleans.Runtime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans
+  name: Orleans.Runtime
+  nameWithType: Orleans.Runtime
+  fullName: Orleans.Runtime
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans
+  - name: .
+  - uid: Orleans.Runtime
+    name: Runtime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans
+  - name: .
+  - uid: Orleans.Runtime
+    name: Runtime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain
+  commentId: T:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain
+  parent: Orleans.GpuBridge.Runtime.RingKernels
+  href: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.html
+  name: GpuNativeGrain
+  nameWithType: GpuNativeGrain
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.#ctor
+  href: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.html#Orleans_GpuBridge_Runtime_RingKernels_GpuNativeGrain__ctor_DotCompute_Abstractions_RingKernels_IRingKernelRuntime_Microsoft_Extensions_Logging_ILogger_Orleans_GpuBridge_Runtime_RingKernels_GpuNativeGrain__
+  name: GpuNativeGrain
+  nameWithType: GpuNativeGrain.GpuNativeGrain
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GpuNativeGrain
+  nameWithType.vb: GpuNativeGrain.New
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.New
+  name.vb: New
+- uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  commentId: T:DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  parent: DotCompute.Abstractions.RingKernels
+  isExternal: true
+  name: IRingKernelRuntime
+  nameWithType: IRingKernelRuntime
+  fullName: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+- uid: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<GpuNativeGrain>
+  nameWithType: ILogger<GpuNativeGrain>
+  fullName: Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain>
+  nameWithType.vb: ILogger(Of GpuNativeGrain)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain)
+  name.vb: ILogger(Of GpuNativeGrain)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain
+    name: GpuNativeGrain
+    href: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain
+    name: GpuNativeGrain
+    href: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.html
+  - name: )
+- uid: DotCompute.Abstractions.RingKernels
+  commentId: N:DotCompute.Abstractions.RingKernels
+  isExternal: true
+  name: DotCompute.Abstractions.RingKernels
+  nameWithType: DotCompute.Abstractions.RingKernels
+  fullName: DotCompute.Abstractions.RingKernels
+  spec.csharp:
+  - uid: DotCompute
+    name: DotCompute
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions
+    name: Abstractions
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions.RingKernels
+    name: RingKernels
+    isExternal: true
+  spec.vb:
+  - uid: DotCompute
+    name: DotCompute
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions
+    name: Abstractions
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions.RingKernels
+    name: RingKernels
+    isExternal: true
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.KernelId*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.KernelId
+  href: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.html#Orleans_GpuBridge_Runtime_RingKernels_GpuNativeGrain_KernelId
+  name: KernelId
+  nameWithType: GpuNativeGrain.KernelId
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.KernelId
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.IsKernelActive*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.IsKernelActive
+  href: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.html#Orleans_GpuBridge_Runtime_RingKernels_GpuNativeGrain_IsKernelActive
+  name: IsKernelActive
+  nameWithType: GpuNativeGrain.IsKernelActive
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.IsKernelActive
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetKernelConfiguration*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetKernelConfiguration
+  href: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.html#Orleans_GpuBridge_Runtime_RingKernels_GpuNativeGrain_GetKernelConfiguration
+  name: GetKernelConfiguration
+  nameWithType: GpuNativeGrain.GetKernelConfiguration
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetKernelConfiguration
+- uid: System.ValueTuple{System.Int32,System.Int32}
+  commentId: T:System.ValueTuple{System.Int32,System.Int32}
+  parent: System
+  definition: System.ValueTuple`2
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: (int gridSize, int blockSize)
+  nameWithType: (int gridSize, int blockSize)
+  fullName: (int gridSize, int blockSize)
+  nameWithType.vb: (gridSize As Integer, blockSize As Integer)
+  fullName.vb: (gridSize As Integer, blockSize As Integer)
+  name.vb: (gridSize As Integer, blockSize As Integer)
+  spec.csharp:
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32}.gridSize
+    name: gridSize
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32-.gridsize
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32}.blockSize
+    name: blockSize
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32-.blocksize
+  - name: )
+  spec.vb:
+  - name: (
+  - uid: System.ValueTuple{System.Int32,System.Int32}.gridSize
+    name: gridSize
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32-.gridsize
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32}.blockSize
+    name: blockSize
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32-.blocksize
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.ValueTuple`2
+  commentId: T:System.ValueTuple`2
+  name: (T1, T2)
+  nameWithType: (T1, T2)
+  fullName: (T1, T2)
+  spec.csharp:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+  spec.vb:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+- uid: Orleans.Grain.OnActivateAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.Grain.OnActivateAsync(System.Threading.CancellationToken)
+  parent: Orleans.Grain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain.onactivateasync
+  name: OnActivateAsync(CancellationToken)
+  nameWithType: Grain.OnActivateAsync(CancellationToken)
+  fullName: Orleans.Grain.OnActivateAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Orleans.Grain.OnActivateAsync(System.Threading.CancellationToken)
+    name: OnActivateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.grain.onactivateasync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.Grain.OnActivateAsync(System.Threading.CancellationToken)
+    name: OnActivateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.grain.onactivateasync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.OnActivateAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.OnActivateAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.html#Orleans_GpuBridge_Runtime_RingKernels_GpuNativeGrain_OnActivateAsync_System_Threading_CancellationToken_
+  name: OnActivateAsync
+  nameWithType: GpuNativeGrain.OnActivateAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.OnActivateAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Orleans.Grain.OnDeactivateAsync(Orleans.DeactivationReason,System.Threading.CancellationToken)
+  commentId: M:Orleans.Grain.OnDeactivateAsync(Orleans.DeactivationReason,System.Threading.CancellationToken)
+  parent: Orleans.Grain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain.ondeactivateasync
+  name: OnDeactivateAsync(DeactivationReason, CancellationToken)
+  nameWithType: Grain.OnDeactivateAsync(DeactivationReason, CancellationToken)
+  fullName: Orleans.Grain.OnDeactivateAsync(Orleans.DeactivationReason, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Orleans.Grain.OnDeactivateAsync(Orleans.DeactivationReason,System.Threading.CancellationToken)
+    name: OnDeactivateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.grain.ondeactivateasync
+  - name: (
+  - uid: Orleans.DeactivationReason
+    name: DeactivationReason
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.deactivationreason
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.Grain.OnDeactivateAsync(Orleans.DeactivationReason,System.Threading.CancellationToken)
+    name: OnDeactivateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.grain.ondeactivateasync
+  - name: (
+  - uid: Orleans.DeactivationReason
+    name: DeactivationReason
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.deactivationreason
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.OnDeactivateAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.OnDeactivateAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.html#Orleans_GpuBridge_Runtime_RingKernels_GpuNativeGrain_OnDeactivateAsync_Orleans_DeactivationReason_System_Threading_CancellationToken_
+  name: OnDeactivateAsync
+  nameWithType: GpuNativeGrain.OnDeactivateAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.OnDeactivateAsync
+- uid: Orleans.DeactivationReason
+  commentId: T:Orleans.DeactivationReason
+  parent: Orleans
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.deactivationreason
+  name: DeactivationReason
+  nameWithType: DeactivationReason
+  fullName: Orleans.DeactivationReason
+- uid: System.InvalidOperationException
+  commentId: T:System.InvalidOperationException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
+  name: InvalidOperationException
+  nameWithType: InvalidOperationException
+  fullName: System.InvalidOperationException
+- uid: System.TimeoutException
+  commentId: T:System.TimeoutException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.timeoutexception
+  name: TimeoutException
+  nameWithType: TimeoutException
+  fullName: System.TimeoutException
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.InvokeKernelAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.InvokeKernelAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.html#Orleans_GpuBridge_Runtime_RingKernels_GpuNativeGrain_InvokeKernelAsync__2___0_System_TimeSpan_System_Threading_CancellationToken_
+  name: InvokeKernelAsync
+  nameWithType: GpuNativeGrain.InvokeKernelAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.InvokeKernelAsync
+- uid: '{TRequest}'
+  commentId: '!:TRequest'
+  definition: TRequest
+  name: TRequest
+  nameWithType: TRequest
+  fullName: TRequest
+- uid: System.TimeSpan
+  commentId: T:System.TimeSpan
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan
+  nameWithType: TimeSpan
+  fullName: System.TimeSpan
+- uid: System.Threading.Tasks.Task{{TResponse}}
+  commentId: T:System.Threading.Tasks.Task{``1}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResponse>
+  nameWithType: Task<TResponse>
+  fullName: System.Threading.Tasks.Task<TResponse>
+  nameWithType.vb: Task(Of TResponse)
+  fullName.vb: System.Threading.Tasks.Task(Of TResponse)
+  name.vb: Task(Of TResponse)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResponse
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResponse
+  - name: )
+- uid: TRequest
+  name: TRequest
+  nameWithType: TRequest
+  fullName: TRequest
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.InvokeKernelMethodAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.InvokeKernelMethodAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.html#Orleans_GpuBridge_Runtime_RingKernels_GpuNativeGrain_InvokeKernelMethodAsync__1_System_String_System_Object___System_Threading_CancellationToken_
+  name: InvokeKernelMethodAsync
+  nameWithType: GpuNativeGrain.InvokeKernelMethodAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.InvokeKernelMethodAsync
+- uid: System.Object[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object[]
+  nameWithType: object[]
+  fullName: object[]
+  nameWithType.vb: Object()
+  fullName.vb: Object()
+  name.vb: Object()
+  spec.csharp:
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetCurrentTimestamp*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetCurrentTimestamp
+  href: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.html#Orleans_GpuBridge_Runtime_RingKernels_GpuNativeGrain_GetCurrentTimestamp
+  name: GetCurrentTimestamp
+  nameWithType: GpuNativeGrain.GetCurrentTimestamp
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetCurrentTimestamp
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html
+  name: HybridTimestamp
+  nameWithType: HybridTimestamp
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+- uid: Orleans.GpuBridge.Abstractions.Temporal
+  commentId: N:Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Temporal
+  nameWithType: Orleans.GpuBridge.Abstractions.Temporal
+  fullName: Orleans.GpuBridge.Abstractions.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.UpdateTimestamp*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.UpdateTimestamp
+  href: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.html#Orleans_GpuBridge_Runtime_RingKernels_GpuNativeGrain_UpdateTimestamp_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_
+  name: UpdateTimestamp
+  nameWithType: GpuNativeGrain.UpdateTimestamp
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.UpdateTimestamp
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.LastTimestamp*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.LastTimestamp
+  href: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.html#Orleans_GpuBridge_Runtime_RingKernels_GpuNativeGrain_LastTimestamp
+  name: LastTimestamp
+  nameWithType: GpuNativeGrain.LastTimestamp
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.LastTimestamp
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetKernelStatusAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetKernelStatusAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.html#Orleans_GpuBridge_Runtime_RingKernels_GpuNativeGrain_GetKernelStatusAsync_System_Threading_CancellationToken_
+  name: GetKernelStatusAsync
+  nameWithType: GpuNativeGrain.GetKernelStatusAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetKernelStatusAsync
+- uid: System.Threading.Tasks.Task{DotCompute.Abstractions.RingKernels.RingKernelStatus}
+  commentId: T:System.Threading.Tasks.Task{DotCompute.Abstractions.RingKernels.RingKernelStatus}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<RingKernelStatus>
+  nameWithType: Task<RingKernelStatus>
+  fullName: System.Threading.Tasks.Task<DotCompute.Abstractions.RingKernels.RingKernelStatus>
+  nameWithType.vb: Task(Of RingKernelStatus)
+  fullName.vb: System.Threading.Tasks.Task(Of DotCompute.Abstractions.RingKernels.RingKernelStatus)
+  name.vb: Task(Of RingKernelStatus)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: DotCompute.Abstractions.RingKernels.RingKernelStatus
+    name: RingKernelStatus
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DotCompute.Abstractions.RingKernels.RingKernelStatus
+    name: RingKernelStatus
+    isExternal: true
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetKernelMetricsAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetKernelMetricsAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.html#Orleans_GpuBridge_Runtime_RingKernels_GpuNativeGrain_GetKernelMetricsAsync_System_Threading_CancellationToken_
+  name: GetKernelMetricsAsync
+  nameWithType: GpuNativeGrain.GetKernelMetricsAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.GetKernelMetricsAsync
+- uid: System.Threading.Tasks.Task{DotCompute.Abstractions.RingKernels.RingKernelMetrics}
+  commentId: T:System.Threading.Tasks.Task{DotCompute.Abstractions.RingKernels.RingKernelMetrics}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<RingKernelMetrics>
+  nameWithType: Task<RingKernelMetrics>
+  fullName: System.Threading.Tasks.Task<DotCompute.Abstractions.RingKernels.RingKernelMetrics>
+  nameWithType.vb: Task(Of RingKernelMetrics)
+  fullName.vb: System.Threading.Tasks.Task(Of DotCompute.Abstractions.RingKernels.RingKernelMetrics)
+  name.vb: Task(Of RingKernelMetrics)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: DotCompute.Abstractions.RingKernels.RingKernelMetrics
+    name: RingKernelMetrics
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DotCompute.Abstractions.RingKernels.RingKernelMetrics
+    name: RingKernelMetrics
+    isExternal: true
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.DisposeAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.DisposeAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.html#Orleans_GpuBridge_Runtime_RingKernels_GpuNativeGrain_DisposeAsync
+  name: DisposeAsync
+  nameWithType: GpuNativeGrain.DisposeAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuNativeGrain.DisposeAsync
+- uid: System.IAsyncDisposable.DisposeAsync
+  commentId: M:System.IAsyncDisposable.DisposeAsync
+  parent: System.IAsyncDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  name: DisposeAsync()
+  nameWithType: IAsyncDisposable.DisposeAsync()
+  fullName: System.IAsyncDisposable.DisposeAsync()
+  spec.csharp:
+  - uid: System.IAsyncDisposable.DisposeAsync
+    name: DisposeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IAsyncDisposable.DisposeAsync
+    name: DisposeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  - name: (
+  - name: )
+- uid: System.Threading.Tasks.ValueTask
+  commentId: T:System.Threading.Tasks.ValueTask
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask
+  name: ValueTask
+  nameWithType: ValueTask
+  fullName: System.Threading.Tasks.ValueTask

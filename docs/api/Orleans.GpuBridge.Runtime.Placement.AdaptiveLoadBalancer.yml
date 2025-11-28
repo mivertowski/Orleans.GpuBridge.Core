@@ -1,0 +1,1407 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer
+  commentId: T:Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer
+  id: AdaptiveLoadBalancer
+  parent: Orleans.GpuBridge.Runtime.Placement
+  children:
+  - Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.#ctor(Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor,Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer},System.Int32)
+  - Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.ApplyBackpressureAsync(System.Int32,System.TimeSpan,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.Dispose
+  - Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.EvaluateRebalanceAsync(System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.GetLoadStatusAsync(System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.GetMetricsAsync(System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.SelectDeviceAsync(Orleans.GpuBridge.Abstractions.Placement.LoadBalancingRequest,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.SubscribeToEvents(System.Action{Orleans.GpuBridge.Abstractions.Placement.LoadBalancingEvent})
+  langs:
+  - csharp
+  - vb
+  name: AdaptiveLoadBalancer
+  nameWithType: AdaptiveLoadBalancer
+  fullName: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Placement/AdaptiveLoadBalancer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AdaptiveLoadBalancer
+    path: ../src/Orleans.GpuBridge.Runtime/Placement/AdaptiveLoadBalancer.cs
+    startLine: 28
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Placement
+  summary: Adaptive load balancer for GPU-native grains with queue-depth awareness.
+  remarks: >-
+    <p>
+
+    This load balancer implements multiple strategies for distributing grains
+
+    across GPU devices based on real-time metrics from the queue depth monitor.
+
+    </p>
+
+    <p>
+
+    <strong>Strategies:</strong>
+
+    <ul><li><strong>RoundRobin</strong>: Simple rotation through devices</li><li><strong>LeastLoaded</strong>: Route to device with lowest queue depth</li><li><strong>WeightedScore</strong>: Multi-factor scoring (queue, memory, compute)</li><li><strong>Adaptive</strong>: Uses trend prediction for proactive placement</li></ul>
+
+    </p>
+  example: []
+  syntax:
+    content: 'public sealed class AdaptiveLoadBalancer : IAdaptiveLoadBalancer, IDisposable'
+    content.vb: Public NotInheritable Class AdaptiveLoadBalancer Implements IAdaptiveLoadBalancer, IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.#ctor(Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor,Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer},System.Int32)
+  commentId: M:Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.#ctor(Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor,Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer},System.Int32)
+  id: '#ctor(Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor,Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer},System.Int32)'
+  parent: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer
+  langs:
+  - csharp
+  - vb
+  name: AdaptiveLoadBalancer(IQueueDepthMonitor, ILogger<AdaptiveLoadBalancer>, int)
+  nameWithType: AdaptiveLoadBalancer.AdaptiveLoadBalancer(IQueueDepthMonitor, ILogger<AdaptiveLoadBalancer>, int)
+  fullName: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.AdaptiveLoadBalancer(Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor, Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer>, int)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Placement/AdaptiveLoadBalancer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Runtime/Placement/AdaptiveLoadBalancer.cs
+    startLine: 51
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Placement
+  summary: Initializes a new instance of the <xref href="Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public AdaptiveLoadBalancer(IQueueDepthMonitor queueDepthMonitor, ILogger<AdaptiveLoadBalancer> logger, int deviceCount = 1)
+    parameters:
+    - id: queueDepthMonitor
+      type: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor
+      description: Queue depth monitor for metrics.
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer}
+      description: Logger for diagnostic output.
+    - id: deviceCount
+      type: System.Int32
+      description: Number of GPU devices available.
+    content.vb: Public Sub New(queueDepthMonitor As IQueueDepthMonitor, logger As ILogger(Of AdaptiveLoadBalancer), deviceCount As Integer = 1)
+  overload: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.#ctor*
+  nameWithType.vb: AdaptiveLoadBalancer.New(IQueueDepthMonitor, ILogger(Of AdaptiveLoadBalancer), Integer)
+  fullName.vb: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.New(Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor, Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer), Integer)
+  name.vb: New(IQueueDepthMonitor, ILogger(Of AdaptiveLoadBalancer), Integer)
+- uid: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.SelectDeviceAsync(Orleans.GpuBridge.Abstractions.Placement.LoadBalancingRequest,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.SelectDeviceAsync(Orleans.GpuBridge.Abstractions.Placement.LoadBalancingRequest,System.Threading.CancellationToken)
+  id: SelectDeviceAsync(Orleans.GpuBridge.Abstractions.Placement.LoadBalancingRequest,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer
+  langs:
+  - csharp
+  - vb
+  name: SelectDeviceAsync(LoadBalancingRequest, CancellationToken)
+  nameWithType: AdaptiveLoadBalancer.SelectDeviceAsync(LoadBalancingRequest, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.SelectDeviceAsync(Orleans.GpuBridge.Abstractions.Placement.LoadBalancingRequest, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Placement/AdaptiveLoadBalancer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: SelectDeviceAsync
+    path: ../src/Orleans.GpuBridge.Runtime/Placement/AdaptiveLoadBalancer.cs
+    startLine: 70
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Placement
+  summary: Selects the optimal GPU device for a new grain activation.
+  example: []
+  syntax:
+    content: public Task<LoadBalancingResult> SelectDeviceAsync(LoadBalancingRequest request, CancellationToken ct = default)
+    parameters:
+    - id: request
+      type: Orleans.GpuBridge.Abstractions.Placement.LoadBalancingRequest
+      description: Load balancing request with requirements.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Placement.LoadBalancingResult}
+      description: Selected device with placement score.
+    content.vb: Public Function SelectDeviceAsync(request As LoadBalancingRequest, ct As CancellationToken = Nothing) As Task(Of LoadBalancingResult)
+  overload: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.SelectDeviceAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.SelectDeviceAsync(Orleans.GpuBridge.Abstractions.Placement.LoadBalancingRequest,System.Threading.CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.GetLoadStatusAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.GetLoadStatusAsync(System.Threading.CancellationToken)
+  id: GetLoadStatusAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer
+  langs:
+  - csharp
+  - vb
+  name: GetLoadStatusAsync(CancellationToken)
+  nameWithType: AdaptiveLoadBalancer.GetLoadStatusAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.GetLoadStatusAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Placement/AdaptiveLoadBalancer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetLoadStatusAsync
+    path: ../src/Orleans.GpuBridge.Runtime/Placement/AdaptiveLoadBalancer.cs
+    startLine: 156
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Placement
+  summary: Gets the current load status across all available devices.
+  example: []
+  syntax:
+    content: public Task<IReadOnlyList<DeviceLoadStatus>> GetLoadStatusAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Placement.DeviceLoadStatus}}
+      description: Load status for each device.
+    content.vb: Public Function GetLoadStatusAsync(ct As CancellationToken = Nothing) As Task(Of IReadOnlyList(Of DeviceLoadStatus))
+  overload: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.GetLoadStatusAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.GetLoadStatusAsync(System.Threading.CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.EvaluateRebalanceAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.EvaluateRebalanceAsync(System.Threading.CancellationToken)
+  id: EvaluateRebalanceAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer
+  langs:
+  - csharp
+  - vb
+  name: EvaluateRebalanceAsync(CancellationToken)
+  nameWithType: AdaptiveLoadBalancer.EvaluateRebalanceAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.EvaluateRebalanceAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Placement/AdaptiveLoadBalancer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: EvaluateRebalanceAsync
+    path: ../src/Orleans.GpuBridge.Runtime/Placement/AdaptiveLoadBalancer.cs
+    startLine: 212
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Placement
+  summary: Evaluates whether grains should be rebalanced across devices.
+  example: []
+  syntax:
+    content: public Task<RebalanceRecommendation> EvaluateRebalanceAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Placement.RebalanceRecommendation}
+      description: Rebalancing recommendation with migration suggestions.
+    content.vb: Public Function EvaluateRebalanceAsync(ct As CancellationToken = Nothing) As Task(Of RebalanceRecommendation)
+  overload: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.EvaluateRebalanceAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.EvaluateRebalanceAsync(System.Threading.CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.ApplyBackpressureAsync(System.Int32,System.TimeSpan,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.ApplyBackpressureAsync(System.Int32,System.TimeSpan,System.Threading.CancellationToken)
+  id: ApplyBackpressureAsync(System.Int32,System.TimeSpan,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer
+  langs:
+  - csharp
+  - vb
+  name: ApplyBackpressureAsync(int, TimeSpan, CancellationToken)
+  nameWithType: AdaptiveLoadBalancer.ApplyBackpressureAsync(int, TimeSpan, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.ApplyBackpressureAsync(int, System.TimeSpan, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Placement/AdaptiveLoadBalancer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ApplyBackpressureAsync
+    path: ../src/Orleans.GpuBridge.Runtime/Placement/AdaptiveLoadBalancer.cs
+    startLine: 315
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Placement
+  summary: Applies backpressure by temporarily reducing acceptance of new grains.
+  example: []
+  syntax:
+    content: public Task ApplyBackpressureAsync(int deviceIndex, TimeSpan duration, CancellationToken ct = default)
+    parameters:
+    - id: deviceIndex
+      type: System.Int32
+      description: GPU device to apply backpressure.
+    - id: duration
+      type: System.TimeSpan
+      description: Duration to apply backpressure.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function ApplyBackpressureAsync(deviceIndex As Integer, duration As TimeSpan, ct As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.ApplyBackpressureAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.ApplyBackpressureAsync(System.Int32,System.TimeSpan,System.Threading.CancellationToken)
+  nameWithType.vb: AdaptiveLoadBalancer.ApplyBackpressureAsync(Integer, TimeSpan, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.ApplyBackpressureAsync(Integer, System.TimeSpan, System.Threading.CancellationToken)
+  name.vb: ApplyBackpressureAsync(Integer, TimeSpan, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.SubscribeToEvents(System.Action{Orleans.GpuBridge.Abstractions.Placement.LoadBalancingEvent})
+  commentId: M:Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.SubscribeToEvents(System.Action{Orleans.GpuBridge.Abstractions.Placement.LoadBalancingEvent})
+  id: SubscribeToEvents(System.Action{Orleans.GpuBridge.Abstractions.Placement.LoadBalancingEvent})
+  parent: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer
+  langs:
+  - csharp
+  - vb
+  name: SubscribeToEvents(Action<LoadBalancingEvent>)
+  nameWithType: AdaptiveLoadBalancer.SubscribeToEvents(Action<LoadBalancingEvent>)
+  fullName: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.SubscribeToEvents(System.Action<Orleans.GpuBridge.Abstractions.Placement.LoadBalancingEvent>)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Placement/AdaptiveLoadBalancer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: SubscribeToEvents
+    path: ../src/Orleans.GpuBridge.Runtime/Placement/AdaptiveLoadBalancer.cs
+    startLine: 344
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Placement
+  summary: Registers a callback for load balancing events.
+  example: []
+  syntax:
+    content: public IDisposable SubscribeToEvents(Action<LoadBalancingEvent> callback)
+    parameters:
+    - id: callback
+      type: System.Action{Orleans.GpuBridge.Abstractions.Placement.LoadBalancingEvent}
+      description: Event callback.
+    return:
+      type: System.IDisposable
+      description: Subscription handle.
+    content.vb: Public Function SubscribeToEvents(callback As Action(Of LoadBalancingEvent)) As IDisposable
+  overload: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.SubscribeToEvents*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.SubscribeToEvents(System.Action{Orleans.GpuBridge.Abstractions.Placement.LoadBalancingEvent})
+  nameWithType.vb: AdaptiveLoadBalancer.SubscribeToEvents(Action(Of LoadBalancingEvent))
+  fullName.vb: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.SubscribeToEvents(System.Action(Of Orleans.GpuBridge.Abstractions.Placement.LoadBalancingEvent))
+  name.vb: SubscribeToEvents(Action(Of LoadBalancingEvent))
+- uid: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.GetMetricsAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.GetMetricsAsync(System.Threading.CancellationToken)
+  id: GetMetricsAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer
+  langs:
+  - csharp
+  - vb
+  name: GetMetricsAsync(CancellationToken)
+  nameWithType: AdaptiveLoadBalancer.GetMetricsAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.GetMetricsAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Placement/AdaptiveLoadBalancer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetMetricsAsync
+    path: ../src/Orleans.GpuBridge.Runtime/Placement/AdaptiveLoadBalancer.cs
+    startLine: 352
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Placement
+  summary: Gets performance metrics for the load balancer.
+  example: []
+  syntax:
+    content: public Task<LoadBalancerMetrics> GetMetricsAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Placement.LoadBalancerMetrics}
+      description: Load balancer performance metrics.
+    content.vb: Public Function GetMetricsAsync(ct As CancellationToken = Nothing) As Task(Of LoadBalancerMetrics)
+  overload: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.GetMetricsAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.GetMetricsAsync(System.Threading.CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.Dispose
+  commentId: M:Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.Dispose
+  id: Dispose
+  parent: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: AdaptiveLoadBalancer.Dispose()
+  fullName: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.Dispose()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Placement/AdaptiveLoadBalancer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Dispose
+    path: ../src/Orleans.GpuBridge.Runtime/Placement/AdaptiveLoadBalancer.cs
+    startLine: 595
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Placement
+  summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+references:
+- uid: Orleans.GpuBridge.Runtime.Placement
+  commentId: N:Orleans.GpuBridge.Runtime.Placement
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Placement
+  nameWithType: Orleans.GpuBridge.Runtime.Placement
+  fullName: Orleans.GpuBridge.Runtime.Placement
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Placement
+    name: Placement
+    href: Orleans.GpuBridge.Runtime.Placement.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Placement
+    name: Placement
+    href: Orleans.GpuBridge.Runtime.Placement.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer
+  commentId: T:Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer
+  parent: Orleans.GpuBridge.Abstractions.Placement
+  href: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.html
+  name: IAdaptiveLoadBalancer
+  nameWithType: IAdaptiveLoadBalancer
+  fullName: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Abstractions.Placement
+  commentId: N:Orleans.GpuBridge.Abstractions.Placement
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Placement
+  nameWithType: Orleans.GpuBridge.Abstractions.Placement
+  fullName: Orleans.GpuBridge.Abstractions.Placement
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Placement
+    name: Placement
+    href: Orleans.GpuBridge.Abstractions.Placement.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Placement
+    name: Placement
+    href: Orleans.GpuBridge.Abstractions.Placement.html
+- uid: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer
+  commentId: T:Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer
+  href: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.html
+  name: AdaptiveLoadBalancer
+  nameWithType: AdaptiveLoadBalancer
+  fullName: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer
+- uid: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.#ctor
+  href: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.html#Orleans_GpuBridge_Runtime_Placement_AdaptiveLoadBalancer__ctor_Orleans_GpuBridge_Abstractions_Placement_IQueueDepthMonitor_Microsoft_Extensions_Logging_ILogger_Orleans_GpuBridge_Runtime_Placement_AdaptiveLoadBalancer__System_Int32_
+  name: AdaptiveLoadBalancer
+  nameWithType: AdaptiveLoadBalancer.AdaptiveLoadBalancer
+  fullName: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.AdaptiveLoadBalancer
+  nameWithType.vb: AdaptiveLoadBalancer.New
+  fullName.vb: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.New
+  name.vb: New
+- uid: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor
+  commentId: T:Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor
+  parent: Orleans.GpuBridge.Abstractions.Placement
+  href: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor.html
+  name: IQueueDepthMonitor
+  nameWithType: IQueueDepthMonitor
+  fullName: Orleans.GpuBridge.Abstractions.Placement.IQueueDepthMonitor
+- uid: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<AdaptiveLoadBalancer>
+  nameWithType: ILogger<AdaptiveLoadBalancer>
+  fullName: Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer>
+  nameWithType.vb: ILogger(Of AdaptiveLoadBalancer)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer)
+  name.vb: ILogger(Of AdaptiveLoadBalancer)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer
+    name: AdaptiveLoadBalancer
+    href: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer
+    name: AdaptiveLoadBalancer
+    href: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.html
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.SelectDeviceAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.SelectDeviceAsync
+  href: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.html#Orleans_GpuBridge_Runtime_Placement_AdaptiveLoadBalancer_SelectDeviceAsync_Orleans_GpuBridge_Abstractions_Placement_LoadBalancingRequest_System_Threading_CancellationToken_
+  name: SelectDeviceAsync
+  nameWithType: AdaptiveLoadBalancer.SelectDeviceAsync
+  fullName: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.SelectDeviceAsync
+- uid: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.SelectDeviceAsync(Orleans.GpuBridge.Abstractions.Placement.LoadBalancingRequest,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.SelectDeviceAsync(Orleans.GpuBridge.Abstractions.Placement.LoadBalancingRequest,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: SelectDeviceAsync(LoadBalancingRequest, CancellationToken)
+  nameWithType: IAdaptiveLoadBalancer.SelectDeviceAsync(LoadBalancingRequest, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.SelectDeviceAsync(Orleans.GpuBridge.Abstractions.Placement.LoadBalancingRequest, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.SelectDeviceAsync(Orleans.GpuBridge.Abstractions.Placement.LoadBalancingRequest,System.Threading.CancellationToken)
+    name: SelectDeviceAsync
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.Placement.LoadBalancingRequest
+    name: LoadBalancingRequest
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.SelectDeviceAsync(Orleans.GpuBridge.Abstractions.Placement.LoadBalancingRequest,System.Threading.CancellationToken)
+    name: SelectDeviceAsync
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.Placement.LoadBalancingRequest
+    name: LoadBalancingRequest
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Placement.LoadBalancingRequest
+  commentId: T:Orleans.GpuBridge.Abstractions.Placement.LoadBalancingRequest
+  parent: Orleans.GpuBridge.Abstractions.Placement
+  href: Orleans.GpuBridge.Abstractions.Placement.LoadBalancingRequest.html
+  name: LoadBalancingRequest
+  nameWithType: LoadBalancingRequest
+  fullName: Orleans.GpuBridge.Abstractions.Placement.LoadBalancingRequest
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Placement.LoadBalancingResult}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Placement.LoadBalancingResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<LoadBalancingResult>
+  nameWithType: Task<LoadBalancingResult>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Placement.LoadBalancingResult>
+  nameWithType.vb: Task(Of LoadBalancingResult)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Placement.LoadBalancingResult)
+  name.vb: Task(Of LoadBalancingResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Placement.LoadBalancingResult
+    name: LoadBalancingResult
+    href: Orleans.GpuBridge.Abstractions.Placement.LoadBalancingResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Placement.LoadBalancingResult
+    name: LoadBalancingResult
+    href: Orleans.GpuBridge.Abstractions.Placement.LoadBalancingResult.html
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.GetLoadStatusAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.GetLoadStatusAsync
+  href: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.html#Orleans_GpuBridge_Runtime_Placement_AdaptiveLoadBalancer_GetLoadStatusAsync_System_Threading_CancellationToken_
+  name: GetLoadStatusAsync
+  nameWithType: AdaptiveLoadBalancer.GetLoadStatusAsync
+  fullName: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.GetLoadStatusAsync
+- uid: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.GetLoadStatusAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.GetLoadStatusAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: GetLoadStatusAsync(CancellationToken)
+  nameWithType: IAdaptiveLoadBalancer.GetLoadStatusAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.GetLoadStatusAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.GetLoadStatusAsync(System.Threading.CancellationToken)
+    name: GetLoadStatusAsync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.GetLoadStatusAsync(System.Threading.CancellationToken)
+    name: GetLoadStatusAsync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Placement.DeviceLoadStatus}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Abstractions.Placement.DeviceLoadStatus}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IReadOnlyList<DeviceLoadStatus>>
+  nameWithType: Task<IReadOnlyList<DeviceLoadStatus>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Abstractions.Placement.DeviceLoadStatus>>
+  nameWithType.vb: Task(Of IReadOnlyList(Of DeviceLoadStatus))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Abstractions.Placement.DeviceLoadStatus))
+  name.vb: Task(Of IReadOnlyList(Of DeviceLoadStatus))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Placement.DeviceLoadStatus
+    name: DeviceLoadStatus
+    href: Orleans.GpuBridge.Abstractions.Placement.DeviceLoadStatus.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Placement.DeviceLoadStatus
+    name: DeviceLoadStatus
+    href: Orleans.GpuBridge.Abstractions.Placement.DeviceLoadStatus.html
+  - name: )
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.EvaluateRebalanceAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.EvaluateRebalanceAsync
+  href: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.html#Orleans_GpuBridge_Runtime_Placement_AdaptiveLoadBalancer_EvaluateRebalanceAsync_System_Threading_CancellationToken_
+  name: EvaluateRebalanceAsync
+  nameWithType: AdaptiveLoadBalancer.EvaluateRebalanceAsync
+  fullName: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.EvaluateRebalanceAsync
+- uid: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.EvaluateRebalanceAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.EvaluateRebalanceAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: EvaluateRebalanceAsync(CancellationToken)
+  nameWithType: IAdaptiveLoadBalancer.EvaluateRebalanceAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.EvaluateRebalanceAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.EvaluateRebalanceAsync(System.Threading.CancellationToken)
+    name: EvaluateRebalanceAsync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.EvaluateRebalanceAsync(System.Threading.CancellationToken)
+    name: EvaluateRebalanceAsync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Placement.RebalanceRecommendation}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Placement.RebalanceRecommendation}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<RebalanceRecommendation>
+  nameWithType: Task<RebalanceRecommendation>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Placement.RebalanceRecommendation>
+  nameWithType.vb: Task(Of RebalanceRecommendation)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Placement.RebalanceRecommendation)
+  name.vb: Task(Of RebalanceRecommendation)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Placement.RebalanceRecommendation
+    name: RebalanceRecommendation
+    href: Orleans.GpuBridge.Abstractions.Placement.RebalanceRecommendation.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Placement.RebalanceRecommendation
+    name: RebalanceRecommendation
+    href: Orleans.GpuBridge.Abstractions.Placement.RebalanceRecommendation.html
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.ApplyBackpressureAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.ApplyBackpressureAsync
+  href: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.html#Orleans_GpuBridge_Runtime_Placement_AdaptiveLoadBalancer_ApplyBackpressureAsync_System_Int32_System_TimeSpan_System_Threading_CancellationToken_
+  name: ApplyBackpressureAsync
+  nameWithType: AdaptiveLoadBalancer.ApplyBackpressureAsync
+  fullName: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.ApplyBackpressureAsync
+- uid: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.ApplyBackpressureAsync(System.Int32,System.TimeSpan,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.ApplyBackpressureAsync(System.Int32,System.TimeSpan,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: ApplyBackpressureAsync(int, TimeSpan, CancellationToken)
+  nameWithType: IAdaptiveLoadBalancer.ApplyBackpressureAsync(int, TimeSpan, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.ApplyBackpressureAsync(int, System.TimeSpan, System.Threading.CancellationToken)
+  nameWithType.vb: IAdaptiveLoadBalancer.ApplyBackpressureAsync(Integer, TimeSpan, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.ApplyBackpressureAsync(Integer, System.TimeSpan, System.Threading.CancellationToken)
+  name.vb: ApplyBackpressureAsync(Integer, TimeSpan, CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.ApplyBackpressureAsync(System.Int32,System.TimeSpan,System.Threading.CancellationToken)
+    name: ApplyBackpressureAsync
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.ApplyBackpressureAsync(System.Int32,System.TimeSpan,System.Threading.CancellationToken)
+    name: ApplyBackpressureAsync
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.TimeSpan
+  commentId: T:System.TimeSpan
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan
+  nameWithType: TimeSpan
+  fullName: System.TimeSpan
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.SubscribeToEvents*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.SubscribeToEvents
+  href: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.html#Orleans_GpuBridge_Runtime_Placement_AdaptiveLoadBalancer_SubscribeToEvents_System_Action_Orleans_GpuBridge_Abstractions_Placement_LoadBalancingEvent__
+  name: SubscribeToEvents
+  nameWithType: AdaptiveLoadBalancer.SubscribeToEvents
+  fullName: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.SubscribeToEvents
+- uid: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.SubscribeToEvents(System.Action{Orleans.GpuBridge.Abstractions.Placement.LoadBalancingEvent})
+  commentId: M:Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.SubscribeToEvents(System.Action{Orleans.GpuBridge.Abstractions.Placement.LoadBalancingEvent})
+  parent: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: SubscribeToEvents(Action<LoadBalancingEvent>)
+  nameWithType: IAdaptiveLoadBalancer.SubscribeToEvents(Action<LoadBalancingEvent>)
+  fullName: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.SubscribeToEvents(System.Action<Orleans.GpuBridge.Abstractions.Placement.LoadBalancingEvent>)
+  nameWithType.vb: IAdaptiveLoadBalancer.SubscribeToEvents(Action(Of LoadBalancingEvent))
+  fullName.vb: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.SubscribeToEvents(System.Action(Of Orleans.GpuBridge.Abstractions.Placement.LoadBalancingEvent))
+  name.vb: SubscribeToEvents(Action(Of LoadBalancingEvent))
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.SubscribeToEvents(System.Action{Orleans.GpuBridge.Abstractions.Placement.LoadBalancingEvent})
+    name: SubscribeToEvents
+  - name: (
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Placement.LoadBalancingEvent
+    name: LoadBalancingEvent
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.SubscribeToEvents(System.Action{Orleans.GpuBridge.Abstractions.Placement.LoadBalancingEvent})
+    name: SubscribeToEvents
+  - name: (
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Placement.LoadBalancingEvent
+    name: LoadBalancingEvent
+  - name: )
+  - name: )
+- uid: System.Action{Orleans.GpuBridge.Abstractions.Placement.LoadBalancingEvent}
+  commentId: T:System.Action{Orleans.GpuBridge.Abstractions.Placement.LoadBalancingEvent}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<LoadBalancingEvent>
+  nameWithType: Action<LoadBalancingEvent>
+  fullName: System.Action<Orleans.GpuBridge.Abstractions.Placement.LoadBalancingEvent>
+  nameWithType.vb: Action(Of LoadBalancingEvent)
+  fullName.vb: System.Action(Of Orleans.GpuBridge.Abstractions.Placement.LoadBalancingEvent)
+  name.vb: Action(Of LoadBalancingEvent)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Placement.LoadBalancingEvent
+    name: LoadBalancingEvent
+    href: Orleans.GpuBridge.Abstractions.Placement.LoadBalancingEvent.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Placement.LoadBalancingEvent
+    name: LoadBalancingEvent
+    href: Orleans.GpuBridge.Abstractions.Placement.LoadBalancingEvent.html
+  - name: )
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.GetMetricsAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.GetMetricsAsync
+  href: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.html#Orleans_GpuBridge_Runtime_Placement_AdaptiveLoadBalancer_GetMetricsAsync_System_Threading_CancellationToken_
+  name: GetMetricsAsync
+  nameWithType: AdaptiveLoadBalancer.GetMetricsAsync
+  fullName: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.GetMetricsAsync
+- uid: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.GetMetricsAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.GetMetricsAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: GetMetricsAsync(CancellationToken)
+  nameWithType: IAdaptiveLoadBalancer.GetMetricsAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.GetMetricsAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.GetMetricsAsync(System.Threading.CancellationToken)
+    name: GetMetricsAsync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Placement.IAdaptiveLoadBalancer.GetMetricsAsync(System.Threading.CancellationToken)
+    name: GetMetricsAsync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Placement.LoadBalancerMetrics}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Placement.LoadBalancerMetrics}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<LoadBalancerMetrics>
+  nameWithType: Task<LoadBalancerMetrics>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Placement.LoadBalancerMetrics>
+  nameWithType.vb: Task(Of LoadBalancerMetrics)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Placement.LoadBalancerMetrics)
+  name.vb: Task(Of LoadBalancerMetrics)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Placement.LoadBalancerMetrics
+    name: LoadBalancerMetrics
+    href: Orleans.GpuBridge.Abstractions.Placement.LoadBalancerMetrics.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Placement.LoadBalancerMetrics
+    name: LoadBalancerMetrics
+    href: Orleans.GpuBridge.Abstractions.Placement.LoadBalancerMetrics.html
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.Dispose*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.Dispose
+  href: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.html#Orleans_GpuBridge_Runtime_Placement_AdaptiveLoadBalancer_Dispose
+  name: Dispose
+  nameWithType: AdaptiveLoadBalancer.Dispose
+  fullName: Orleans.GpuBridge.Runtime.Placement.AdaptiveLoadBalancer.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )

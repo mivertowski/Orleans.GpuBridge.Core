@@ -1,0 +1,270 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource
+  id: IPhysicalClockSource
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  children:
+  - Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetClockDrift
+  - Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetCurrentTimeNanos
+  - Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetErrorBound
+  - Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.IsSynchronized
+  langs:
+  - csharp
+  - vb
+  name: IPhysicalClockSource
+  nameWithType: IPhysicalClockSource
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource
+  type: Interface
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IPhysicalClockSource
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+    startLine: 255
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Provides physical clock time for Hybrid Logical Clocks.
+  remarks: >-
+    Implementations can provide different clock sources:
+
+    <ul><li>System clock (default)</li><li>NTP synchronized clock</li><li>PTP (Precision Time Protocol) clock</li><li>GPS synchronized clock</li></ul>
+  example: []
+  syntax:
+    content: public interface IPhysicalClockSource
+    content.vb: Public Interface IPhysicalClockSource
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetCurrentTimeNanos
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetCurrentTimeNanos
+  id: GetCurrentTimeNanos
+  parent: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource
+  langs:
+  - csharp
+  - vb
+  name: GetCurrentTimeNanos()
+  nameWithType: IPhysicalClockSource.GetCurrentTimeNanos()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetCurrentTimeNanos()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetCurrentTimeNanos
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+    startLine: 260
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Gets current physical time in nanoseconds since Unix epoch (1970-01-01 00:00:00 UTC).
+  example: []
+  syntax:
+    content: long GetCurrentTimeNanos()
+    return:
+      type: System.Int64
+    content.vb: Function GetCurrentTimeNanos() As Long
+  overload: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetCurrentTimeNanos*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetErrorBound
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetErrorBound
+  id: GetErrorBound
+  parent: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource
+  langs:
+  - csharp
+  - vb
+  name: GetErrorBound()
+  nameWithType: IPhysicalClockSource.GetErrorBound()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetErrorBound()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetErrorBound
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+    startLine: 269
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Gets the estimated error bound in nanoseconds (±).
+  remarks: >-
+    For example, if error bound is 1,000,000 (1ms), the actual time is within
+
+    [GetCurrentTimeNanos() - 1ms, GetCurrentTimeNanos() + 1ms].
+  example: []
+  syntax:
+    content: long GetErrorBound()
+    return:
+      type: System.Int64
+    content.vb: Function GetErrorBound() As Long
+  overload: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetErrorBound*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.IsSynchronized
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.IsSynchronized
+  id: IsSynchronized
+  parent: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource
+  langs:
+  - csharp
+  - vb
+  name: IsSynchronized
+  nameWithType: IPhysicalClockSource.IsSynchronized
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.IsSynchronized
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsSynchronized
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+    startLine: 274
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Indicates whether the clock is synchronized with an external time source.
+  example: []
+  syntax:
+    content: bool IsSynchronized { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property IsSynchronized As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.IsSynchronized*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetClockDrift
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetClockDrift
+  id: GetClockDrift
+  parent: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource
+  langs:
+  - csharp
+  - vb
+  name: GetClockDrift()
+  nameWithType: IPhysicalClockSource.GetClockDrift()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetClockDrift()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetClockDrift
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+    startLine: 283
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Gets the clock drift rate in parts per million (PPM).
+  remarks: >-
+    Positive values indicate the clock runs faster than real time.
+
+    For example, +10 PPM means the clock gains 10 microseconds per second.
+  example: []
+  syntax:
+    content: double GetClockDrift()
+    return:
+      type: System.Double
+    content.vb: Function GetClockDrift() As Double
+  overload: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetClockDrift*
+references:
+- uid: Orleans.GpuBridge.Abstractions.Temporal
+  commentId: N:Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Temporal
+  nameWithType: Orleans.GpuBridge.Abstractions.Temporal
+  fullName: Orleans.GpuBridge.Abstractions.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetCurrentTimeNanos*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetCurrentTimeNanos
+  href: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.html#Orleans_GpuBridge_Abstractions_Temporal_IPhysicalClockSource_GetCurrentTimeNanos
+  name: GetCurrentTimeNanos
+  nameWithType: IPhysicalClockSource.GetCurrentTimeNanos
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetCurrentTimeNanos
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetErrorBound*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetErrorBound
+  href: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.html#Orleans_GpuBridge_Abstractions_Temporal_IPhysicalClockSource_GetErrorBound
+  name: GetErrorBound
+  nameWithType: IPhysicalClockSource.GetErrorBound
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetErrorBound
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.IsSynchronized*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.IsSynchronized
+  href: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.html#Orleans_GpuBridge_Abstractions_Temporal_IPhysicalClockSource_IsSynchronized
+  name: IsSynchronized
+  nameWithType: IPhysicalClockSource.IsSynchronized
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.IsSynchronized
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetClockDrift*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetClockDrift
+  href: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.html#Orleans_GpuBridge_Abstractions_Temporal_IPhysicalClockSource_GetClockDrift
+  name: GetClockDrift
+  nameWithType: IPhysicalClockSource.GetClockDrift
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.GetClockDrift
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double

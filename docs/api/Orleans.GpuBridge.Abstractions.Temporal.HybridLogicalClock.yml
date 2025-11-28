@@ -1,0 +1,782 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock
+  id: HybridLogicalClock
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  children:
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.#ctor(System.UInt16,Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource)
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.CurrentPhysicalTime
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.GetClockDriftNanos(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.LastTimestamp
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.NodeId
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.Now
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.Reset(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.ToString
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.Update(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  langs:
+  - csharp
+  - vb
+  name: HybridLogicalClock
+  nameWithType: HybridLogicalClock
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: HybridLogicalClock
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+    startLine: 33
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Implements a Hybrid Logical Clock for distributed event ordering.
+  remarks: >-
+    <p>
+
+    The Hybrid Logical Clock (HLC) combines physical time with logical counters to provide:
+
+    </p>
+
+    <ul><li>Total ordering of events (no ambiguity)</li><li>Bounded drift from physical time</li><li>Causality preservation (if A→B then HLC(A) &lt; HLC(B))</li></ul>
+
+    <p>
+
+    Thread-safe implementation using interlocked operations for lock-free performance.
+
+    </p>
+
+    <p>
+
+    Usage:
+
+    <pre><code class="lang-csharp">var clock = new HybridLogicalClock(nodeId: 1);
+
+
+    // Generate timestamp for local event
+
+    var timestamp = clock.Now();
+
+
+    // Update clock on message receipt
+
+    clock.Update(receivedTimestamp);</code></pre>
+
+    </p>
+  example: []
+  syntax:
+    content: public sealed class HybridLogicalClock
+    content.vb: Public NotInheritable Class HybridLogicalClock
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.NodeId
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.NodeId
+  id: NodeId
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock
+  langs:
+  - csharp
+  - vb
+  name: NodeId
+  nameWithType: HybridLogicalClock.NodeId
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.NodeId
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: NodeId
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+    startLine: 43
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Gets the node identifier for this clock.
+  example: []
+  syntax:
+    content: public ushort NodeId { get; }
+    parameters: []
+    return:
+      type: System.UInt16
+    content.vb: Public ReadOnly Property NodeId As UShort
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.NodeId*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.CurrentPhysicalTime
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.CurrentPhysicalTime
+  id: CurrentPhysicalTime
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock
+  langs:
+  - csharp
+  - vb
+  name: CurrentPhysicalTime
+  nameWithType: HybridLogicalClock.CurrentPhysicalTime
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.CurrentPhysicalTime
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CurrentPhysicalTime
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+    startLine: 48
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Gets the current physical time in nanoseconds.
+  example: []
+  syntax:
+    content: public long CurrentPhysicalTime { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public ReadOnly Property CurrentPhysicalTime As Long
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.CurrentPhysicalTime*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.LastTimestamp
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.LastTimestamp
+  id: LastTimestamp
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock
+  langs:
+  - csharp
+  - vb
+  name: LastTimestamp
+  nameWithType: HybridLogicalClock.LastTimestamp
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.LastTimestamp
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: LastTimestamp
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+    startLine: 53
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Gets the last generated timestamp.
+  example: []
+  syntax:
+    content: public HybridTimestamp LastTimestamp { get; }
+    parameters: []
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    content.vb: Public ReadOnly Property LastTimestamp As HybridTimestamp
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.LastTimestamp*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.#ctor(System.UInt16,Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.#ctor(System.UInt16,Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource)
+  id: '#ctor(System.UInt16,Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource)'
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock
+  langs:
+  - csharp
+  - vb
+  name: HybridLogicalClock(ushort, IPhysicalClockSource?)
+  nameWithType: HybridLogicalClock.HybridLogicalClock(ushort, IPhysicalClockSource?)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.HybridLogicalClock(ushort, Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource?)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+    startLine: 63
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Creates a new Hybrid Logical Clock.
+  example: []
+  syntax:
+    content: public HybridLogicalClock(ushort nodeId, IPhysicalClockSource? clockSource = null)
+    parameters:
+    - id: nodeId
+      type: System.UInt16
+      description: Unique node identifier (0-65535)
+    - id: clockSource
+      type: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource
+      description: Optional custom physical clock source (defaults to system clock)
+    content.vb: Public Sub New(nodeId As UShort, clockSource As IPhysicalClockSource = Nothing)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.#ctor*
+  nameWithType.vb: HybridLogicalClock.New(UShort, IPhysicalClockSource)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.New(UShort, Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource)
+  name.vb: New(UShort, IPhysicalClockSource)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.Now
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.Now
+  id: Now
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock
+  langs:
+  - csharp
+  - vb
+  name: Now()
+  nameWithType: HybridLogicalClock.Now()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.Now()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Now
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+    startLine: 90
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Generates a new timestamp for a local event.
+  remarks: >-
+    <p>
+
+    HLC update rules for local events:
+
+    </p>
+
+
+    <pre><code class="lang-csharp">physical_time = max(last_physical_time, system_time)
+
+    if (physical_time == last_physical_time)
+        logical_counter = last_logical_counter + 1
+    else
+        logical_counter = 0</code></pre>
+    <p>
+
+    Thread-safe using compare-and-swap to avoid locks.
+
+    </p>
+  example: []
+  syntax:
+    content: public HybridTimestamp Now()
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+      description: New hybrid timestamp
+    content.vb: Public Function Now() As HybridTimestamp
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.Now*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.Update(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.Update(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  id: Update(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock
+  langs:
+  - csharp
+  - vb
+  name: Update(HybridTimestamp)
+  nameWithType: HybridLogicalClock.Update(HybridTimestamp)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.Update(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Update
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+    startLine: 148
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Updates the clock based on a received timestamp.
+  remarks: >-
+    <p>
+
+    HLC update rules for message receipt:
+
+    </p>
+
+
+    <pre><code class="lang-csharp">physical_time = max(last_physical_time, system_time, received_physical_time)
+
+    if (physical_time == last_physical_time AND physical_time == received_physical_time)
+        logical_counter = max(last_logical_counter, received_logical_counter) + 1
+    else if (physical_time == last_physical_time)
+        logical_counter = last_logical_counter + 1
+    else if (physical_time == received_physical_time)
+        logical_counter = received_logical_counter + 1
+    else
+        logical_counter = 0</code></pre>
+    <p>
+
+    This ensures causality: if message M was sent with timestamp T_send,
+
+    the recipient's clock will be updated such that all subsequent events
+
+    have timestamps greater than T_send.
+
+    </p>
+  example: []
+  syntax:
+    content: public HybridTimestamp Update(HybridTimestamp receivedTimestamp)
+    parameters:
+    - id: receivedTimestamp
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+      description: Timestamp from received message
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+      description: New timestamp after update
+    content.vb: Public Function Update(receivedTimestamp As HybridTimestamp) As HybridTimestamp
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.Update*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.GetClockDriftNanos(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.GetClockDriftNanos(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  id: GetClockDriftNanos(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock
+  langs:
+  - csharp
+  - vb
+  name: GetClockDriftNanos(HybridTimestamp)
+  nameWithType: HybridLogicalClock.GetClockDriftNanos(HybridTimestamp)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.GetClockDriftNanos(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetClockDriftNanos
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+    startLine: 208
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Gets the clock drift in nanoseconds relative to another timestamp.
+  remarks: >-
+    Positive drift means this clock is ahead of the other timestamp.
+
+    Negative drift means this clock is behind.
+  example: []
+  syntax:
+    content: public long GetClockDriftNanos(HybridTimestamp other)
+    parameters:
+    - id: other
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    return:
+      type: System.Int64
+    content.vb: Public Function GetClockDriftNanos(other As HybridTimestamp) As Long
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.GetClockDriftNanos*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.Reset(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.Reset(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  id: Reset(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock
+  langs:
+  - csharp
+  - vb
+  name: Reset(HybridTimestamp)
+  nameWithType: HybridLogicalClock.Reset(HybridTimestamp)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.Reset(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Reset
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+    startLine: 221
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Resets the clock to a specific timestamp.
+  remarks: >-
+    WARNING: This violates monotonicity and should only be used for testing
+
+    or clock synchronization recovery scenarios.
+  example: []
+  syntax:
+    content: public void Reset(HybridTimestamp timestamp)
+    parameters:
+    - id: timestamp
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    content.vb: Public Sub Reset(timestamp As HybridTimestamp)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.Reset*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.ToString
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.ToString
+  id: ToString
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: HybridLogicalClock.ToString()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.ToString()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ToString
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridLogicalClock.cs
+    startLine: 236
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Returns a string that represents the current object.
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+      description: A string that represents the current object.
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.Object.ToString
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.ToString*
+references:
+- uid: Orleans.GpuBridge.Abstractions.Temporal
+  commentId: N:Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Temporal
+  nameWithType: Orleans.GpuBridge.Abstractions.Temporal
+  fullName: Orleans.GpuBridge.Abstractions.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.NodeId*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.NodeId
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.html#Orleans_GpuBridge_Abstractions_Temporal_HybridLogicalClock_NodeId
+  name: NodeId
+  nameWithType: HybridLogicalClock.NodeId
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.NodeId
+- uid: System.UInt16
+  commentId: T:System.UInt16
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uint16
+  name: ushort
+  nameWithType: ushort
+  fullName: ushort
+  nameWithType.vb: UShort
+  fullName.vb: UShort
+  name.vb: UShort
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.CurrentPhysicalTime*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.CurrentPhysicalTime
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.html#Orleans_GpuBridge_Abstractions_Temporal_HybridLogicalClock_CurrentPhysicalTime
+  name: CurrentPhysicalTime
+  nameWithType: HybridLogicalClock.CurrentPhysicalTime
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.CurrentPhysicalTime
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.LastTimestamp*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.LastTimestamp
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.html#Orleans_GpuBridge_Abstractions_Temporal_HybridLogicalClock_LastTimestamp
+  name: LastTimestamp
+  nameWithType: HybridLogicalClock.LastTimestamp
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.LastTimestamp
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html
+  name: HybridTimestamp
+  nameWithType: HybridTimestamp
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.#ctor
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.html#Orleans_GpuBridge_Abstractions_Temporal_HybridLogicalClock__ctor_System_UInt16_Orleans_GpuBridge_Abstractions_Temporal_IPhysicalClockSource_
+  name: HybridLogicalClock
+  nameWithType: HybridLogicalClock.HybridLogicalClock
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.HybridLogicalClock
+  nameWithType.vb: HybridLogicalClock.New
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.New
+  name.vb: New
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.html
+  name: IPhysicalClockSource
+  nameWithType: IPhysicalClockSource
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.Now*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.Now
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.html#Orleans_GpuBridge_Abstractions_Temporal_HybridLogicalClock_Now
+  name: Now
+  nameWithType: HybridLogicalClock.Now
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.Now
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.Update*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.Update
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.html#Orleans_GpuBridge_Abstractions_Temporal_HybridLogicalClock_Update_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_
+  name: Update
+  nameWithType: HybridLogicalClock.Update
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.Update
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.GetClockDriftNanos*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.GetClockDriftNanos
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.html#Orleans_GpuBridge_Abstractions_Temporal_HybridLogicalClock_GetClockDriftNanos_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_
+  name: GetClockDriftNanos
+  nameWithType: HybridLogicalClock.GetClockDriftNanos
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.GetClockDriftNanos
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.Reset*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.Reset
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.html#Orleans_GpuBridge_Abstractions_Temporal_HybridLogicalClock_Reset_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_
+  name: Reset
+  nameWithType: HybridLogicalClock.Reset
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.Reset
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.ToString*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.ToString
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.html#Orleans_GpuBridge_Abstractions_Temporal_HybridLogicalClock_ToString
+  name: ToString
+  nameWithType: HybridLogicalClock.ToString
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridLogicalClock.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

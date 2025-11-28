@@ -1,0 +1,730 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Grains.Models.GpuComputeParams
+  commentId: T:Orleans.GpuBridge.Grains.Models.GpuComputeParams
+  id: GpuComputeParams
+  parent: Orleans.GpuBridge.Grains.Models
+  children:
+  - Orleans.GpuBridge.Grains.Models.GpuComputeParams.#ctor(System.Int32,System.Int32,System.Collections.Generic.Dictionary{System.String,System.Object})
+  - Orleans.GpuBridge.Grains.Models.GpuComputeParams.Constants
+  - Orleans.GpuBridge.Grains.Models.GpuComputeParams.WorkGroupSize
+  - Orleans.GpuBridge.Grains.Models.GpuComputeParams.WorkGroups
+  langs:
+  - csharp
+  - vb
+  name: GpuComputeParams
+  nameWithType: GpuComputeParams
+  fullName: Orleans.GpuBridge.Grains.Models.GpuComputeParams
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Models/GpuComputeParams.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GpuComputeParams
+    path: ../src/Orleans.GpuBridge.Grains/Models/GpuComputeParams.cs
+    startLine: 23
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Models
+  summary: >-
+    Parameters for configuring GPU kernel execution within resident grains.
+
+    These parameters control work group sizing, thread organization, and kernel constants.
+  example: []
+  syntax:
+    content: >-
+      [GenerateSerializer]
+
+      public sealed record GpuComputeParams : IEquatable<GpuComputeParams>
+    content.vb: >-
+      <GenerateSerializer>
+
+      Public NotInheritable Class GpuComputeParams Implements IEquatable(Of GpuComputeParams)
+  inheritance:
+  - System.Object
+  implements:
+  - System.IEquatable{Orleans.GpuBridge.Grains.Models.GpuComputeParams}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  attributes:
+  - type: Orleans.GenerateSerializerAttribute
+    ctor: Orleans.GenerateSerializerAttribute.#ctor
+    arguments: []
+- uid: Orleans.GpuBridge.Grains.Models.GpuComputeParams.#ctor(System.Int32,System.Int32,System.Collections.Generic.Dictionary{System.String,System.Object})
+  commentId: M:Orleans.GpuBridge.Grains.Models.GpuComputeParams.#ctor(System.Int32,System.Int32,System.Collections.Generic.Dictionary{System.String,System.Object})
+  id: '#ctor(System.Int32,System.Int32,System.Collections.Generic.Dictionary{System.String,System.Object})'
+  parent: Orleans.GpuBridge.Grains.Models.GpuComputeParams
+  langs:
+  - csharp
+  - vb
+  name: GpuComputeParams(int, int, Dictionary<string, object>?)
+  nameWithType: GpuComputeParams.GpuComputeParams(int, int, Dictionary<string, object>?)
+  fullName: Orleans.GpuBridge.Grains.Models.GpuComputeParams.GpuComputeParams(int, int, System.Collections.Generic.Dictionary<string, object>?)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Models/GpuComputeParams.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Grains/Models/GpuComputeParams.cs
+    startLine: 23
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Models
+  summary: >-
+    Parameters for configuring GPU kernel execution within resident grains.
+
+    These parameters control work group sizing, thread organization, and kernel constants.
+  example: []
+  syntax:
+    content: public GpuComputeParams(int WorkGroupSize = 256, int WorkGroups = 0, Dictionary<string, object>? Constants = null)
+    parameters:
+    - id: WorkGroupSize
+      type: System.Int32
+      description: >-
+        The number of threads per work group (also known as block size in CUDA terminology).
+
+        This affects resource utilization and should be a multiple of the warp/wavefront size.
+
+        Default is 256 threads per work group.
+    - id: WorkGroups
+      type: System.Int32
+      description: >-
+        The total number of work groups to launch (also known as grid size in CUDA terminology).
+
+        When set to 0, the system will automatically calculate the optimal number based on data size.
+
+        Default is 0 (automatic calculation).
+    - id: Constants
+      type: System.Collections.Generic.Dictionary{System.String,System.Object}
+      description: >-
+        A dictionary of named constants to pass to the kernel.
+
+        These values are accessible within the kernel code and can include scalars, arrays, or other serializable objects.
+
+        Default is null (no constants).
+    content.vb: Public Sub New(WorkGroupSize As Integer = 256, WorkGroups As Integer = 0, Constants As Dictionary(Of String, Object) = Nothing)
+  overload: Orleans.GpuBridge.Grains.Models.GpuComputeParams.#ctor*
+  nameWithType.vb: GpuComputeParams.New(Integer, Integer, Dictionary(Of String, Object))
+  fullName.vb: Orleans.GpuBridge.Grains.Models.GpuComputeParams.New(Integer, Integer, System.Collections.Generic.Dictionary(Of String, Object))
+  name.vb: New(Integer, Integer, Dictionary(Of String, Object))
+- uid: Orleans.GpuBridge.Grains.Models.GpuComputeParams.WorkGroupSize
+  commentId: P:Orleans.GpuBridge.Grains.Models.GpuComputeParams.WorkGroupSize
+  id: WorkGroupSize
+  parent: Orleans.GpuBridge.Grains.Models.GpuComputeParams
+  langs:
+  - csharp
+  - vb
+  name: WorkGroupSize
+  nameWithType: GpuComputeParams.WorkGroupSize
+  fullName: Orleans.GpuBridge.Grains.Models.GpuComputeParams.WorkGroupSize
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Models/GpuComputeParams.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: WorkGroupSize
+    path: ../src/Orleans.GpuBridge.Grains/Models/GpuComputeParams.cs
+    startLine: 25
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Models
+  summary: >-
+    The number of threads per work group (also known as block size in CUDA terminology).
+
+    This affects resource utilization and should be a multiple of the warp/wavefront size.
+
+    Default is 256 threads per work group.
+  example: []
+  syntax:
+    content: >-
+      [Id(0)]
+
+      public int WorkGroupSize { get; init; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: >-
+      <Id(0)>
+
+      Public Property WorkGroupSize As Integer
+  overload: Orleans.GpuBridge.Grains.Models.GpuComputeParams.WorkGroupSize*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "0"
+- uid: Orleans.GpuBridge.Grains.Models.GpuComputeParams.WorkGroups
+  commentId: P:Orleans.GpuBridge.Grains.Models.GpuComputeParams.WorkGroups
+  id: WorkGroups
+  parent: Orleans.GpuBridge.Grains.Models.GpuComputeParams
+  langs:
+  - csharp
+  - vb
+  name: WorkGroups
+  nameWithType: GpuComputeParams.WorkGroups
+  fullName: Orleans.GpuBridge.Grains.Models.GpuComputeParams.WorkGroups
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Models/GpuComputeParams.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: WorkGroups
+    path: ../src/Orleans.GpuBridge.Grains/Models/GpuComputeParams.cs
+    startLine: 26
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Models
+  summary: >-
+    The total number of work groups to launch (also known as grid size in CUDA terminology).
+
+    When set to 0, the system will automatically calculate the optimal number based on data size.
+
+    Default is 0 (automatic calculation).
+  example: []
+  syntax:
+    content: >-
+      [Id(1)]
+
+      public int WorkGroups { get; init; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: >-
+      <Id(1)>
+
+      Public Property WorkGroups As Integer
+  overload: Orleans.GpuBridge.Grains.Models.GpuComputeParams.WorkGroups*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "1"
+- uid: Orleans.GpuBridge.Grains.Models.GpuComputeParams.Constants
+  commentId: P:Orleans.GpuBridge.Grains.Models.GpuComputeParams.Constants
+  id: Constants
+  parent: Orleans.GpuBridge.Grains.Models.GpuComputeParams
+  langs:
+  - csharp
+  - vb
+  name: Constants
+  nameWithType: GpuComputeParams.Constants
+  fullName: Orleans.GpuBridge.Grains.Models.GpuComputeParams.Constants
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Models/GpuComputeParams.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Constants
+    path: ../src/Orleans.GpuBridge.Grains/Models/GpuComputeParams.cs
+    startLine: 27
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Models
+  summary: >-
+    A dictionary of named constants to pass to the kernel.
+
+    These values are accessible within the kernel code and can include scalars, arrays, or other serializable objects.
+
+    Default is null (no constants).
+  example: []
+  syntax:
+    content: >-
+      [Id(2)]
+
+      public Dictionary<string, object>? Constants { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.Dictionary{System.String,System.Object}
+    content.vb: >-
+      <Id(2)>
+
+      Public Property Constants As Dictionary(Of String, Object)
+  overload: Orleans.GpuBridge.Grains.Models.GpuComputeParams.Constants*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "2"
+references:
+- uid: Orleans.GpuBridge.Grains.Models
+  commentId: N:Orleans.GpuBridge.Grains.Models
+  href: Orleans.html
+  name: Orleans.GpuBridge.Grains.Models
+  nameWithType: Orleans.GpuBridge.Grains.Models
+  fullName: Orleans.GpuBridge.Grains.Models
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.Models
+    name: Models
+    href: Orleans.GpuBridge.Grains.Models.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.Models
+    name: Models
+    href: Orleans.GpuBridge.Grains.Models.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IEquatable{Orleans.GpuBridge.Grains.Models.GpuComputeParams}
+  commentId: T:System.IEquatable{Orleans.GpuBridge.Grains.Models.GpuComputeParams}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<GpuComputeParams>
+  nameWithType: IEquatable<GpuComputeParams>
+  fullName: System.IEquatable<Orleans.GpuBridge.Grains.Models.GpuComputeParams>
+  nameWithType.vb: IEquatable(Of GpuComputeParams)
+  fullName.vb: System.IEquatable(Of Orleans.GpuBridge.Grains.Models.GpuComputeParams)
+  name.vb: IEquatable(Of GpuComputeParams)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: Orleans.GpuBridge.Grains.Models.GpuComputeParams
+    name: GpuComputeParams
+    href: Orleans.GpuBridge.Grains.Models.GpuComputeParams.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Grains.Models.GpuComputeParams
+    name: GpuComputeParams
+    href: Orleans.GpuBridge.Grains.Models.GpuComputeParams.html
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Orleans.GpuBridge.Grains.Models.GpuComputeParams.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Grains.Models.GpuComputeParams.#ctor
+  href: Orleans.GpuBridge.Grains.Models.GpuComputeParams.html#Orleans_GpuBridge_Grains_Models_GpuComputeParams__ctor_System_Int32_System_Int32_System_Collections_Generic_Dictionary_System_String_System_Object__
+  name: GpuComputeParams
+  nameWithType: GpuComputeParams.GpuComputeParams
+  fullName: Orleans.GpuBridge.Grains.Models.GpuComputeParams.GpuComputeParams
+  nameWithType.vb: GpuComputeParams.New
+  fullName.vb: Orleans.GpuBridge.Grains.Models.GpuComputeParams.New
+  name.vb: New
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Collections.Generic.Dictionary{System.String,System.Object}
+  commentId: T:System.Collections.Generic.Dictionary{System.String,System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<string, object>
+  nameWithType: Dictionary<string, object>
+  fullName: System.Collections.Generic.Dictionary<string, object>
+  nameWithType.vb: Dictionary(Of String, Object)
+  fullName.vb: System.Collections.Generic.Dictionary(Of String, Object)
+  name.vb: Dictionary(Of String, Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Orleans.GpuBridge.Grains.Models.GpuComputeParams.WorkGroupSize*
+  commentId: Overload:Orleans.GpuBridge.Grains.Models.GpuComputeParams.WorkGroupSize
+  href: Orleans.GpuBridge.Grains.Models.GpuComputeParams.html#Orleans_GpuBridge_Grains_Models_GpuComputeParams_WorkGroupSize
+  name: WorkGroupSize
+  nameWithType: GpuComputeParams.WorkGroupSize
+  fullName: Orleans.GpuBridge.Grains.Models.GpuComputeParams.WorkGroupSize
+- uid: Orleans.GpuBridge.Grains.Models.GpuComputeParams.WorkGroups*
+  commentId: Overload:Orleans.GpuBridge.Grains.Models.GpuComputeParams.WorkGroups
+  href: Orleans.GpuBridge.Grains.Models.GpuComputeParams.html#Orleans_GpuBridge_Grains_Models_GpuComputeParams_WorkGroups
+  name: WorkGroups
+  nameWithType: GpuComputeParams.WorkGroups
+  fullName: Orleans.GpuBridge.Grains.Models.GpuComputeParams.WorkGroups
+- uid: Orleans.GpuBridge.Grains.Models.GpuComputeParams.Constants*
+  commentId: Overload:Orleans.GpuBridge.Grains.Models.GpuComputeParams.Constants
+  href: Orleans.GpuBridge.Grains.Models.GpuComputeParams.html#Orleans_GpuBridge_Grains_Models_GpuComputeParams_Constants
+  name: Constants
+  nameWithType: GpuComputeParams.Constants
+  fullName: Orleans.GpuBridge.Grains.Models.GpuComputeParams.Constants

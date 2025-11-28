@@ -1,0 +1,2218 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge
+  commentId: T:Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge
+  id: CpuFallbackRingKernelBridge
+  parent: Orleans.GpuBridge.Runtime.RingKernels
+  children:
+  - Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge})
+  - Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.AllocateStateAsync``1(System.String,System.Int32,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ExecuteFireAndForgetAsync``2(System.String,System.Int32,``0,Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``1},System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ExecuteHandlerAsync``3(System.String,System.Int32,``0,Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``2},System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.GetDevicePlacementAsync(System.String,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.GetTelemetry
+  - Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.IsGpuAvailableAsync(System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ReadStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ReleaseStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.WriteStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},``0,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: CpuFallbackRingKernelBridge
+  nameWithType: CpuFallbackRingKernelBridge
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/CpuFallbackRingKernelBridge.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CpuFallbackRingKernelBridge
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/CpuFallbackRingKernelBridge.cs
+    startLine: 32
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: CPU fallback implementation of the ring kernel bridge for when no GPU is available.
+  remarks: >-
+    <p>
+
+    This bridge provides a fully functional CPU-only implementation that allows
+
+    generated actors to work without GPU hardware. Useful for:
+
+    </p>
+
+    <ul><li>Development environments without GPU</li><li>Unit testing without GPU dependencies</li><li>Graceful degradation when GPU fails</li></ul>
+
+    <p>
+
+    Performance characteristics (CPU fallback):
+
+    </p>
+
+    <ul><li>Handler execution: ~1-10μs (direct method call)</li><li>State access: immediate (in-memory)</li></ul>
+  example: []
+  syntax:
+    content: 'public sealed class CpuFallbackRingKernelBridge : IRingKernelBridge'
+    content.vb: Public NotInheritable Class CpuFallbackRingKernelBridge Implements IRingKernelBridge
+  inheritance:
+  - System.Object
+  implements:
+  - Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge})
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge})
+  id: '#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge})'
+  parent: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge
+  langs:
+  - csharp
+  - vb
+  name: CpuFallbackRingKernelBridge(ILogger<CpuFallbackRingKernelBridge>)
+  nameWithType: CpuFallbackRingKernelBridge.CpuFallbackRingKernelBridge(ILogger<CpuFallbackRingKernelBridge>)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.CpuFallbackRingKernelBridge(Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge>)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/CpuFallbackRingKernelBridge.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/CpuFallbackRingKernelBridge.cs
+    startLine: 47
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Initializes a new instance of the <xref href="Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public CpuFallbackRingKernelBridge(ILogger<CpuFallbackRingKernelBridge> logger)
+    parameters:
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge}
+      description: Logger for bridge operations.
+    content.vb: Public Sub New(logger As ILogger(Of CpuFallbackRingKernelBridge))
+  overload: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.#ctor*
+  nameWithType.vb: CpuFallbackRingKernelBridge.New(ILogger(Of CpuFallbackRingKernelBridge))
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.New(Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge))
+  name.vb: New(ILogger(Of CpuFallbackRingKernelBridge))
+- uid: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.IsGpuAvailableAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.IsGpuAvailableAsync(System.Threading.CancellationToken)
+  id: IsGpuAvailableAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge
+  langs:
+  - csharp
+  - vb
+  name: IsGpuAvailableAsync(CancellationToken)
+  nameWithType: CpuFallbackRingKernelBridge.IsGpuAvailableAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.IsGpuAvailableAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/CpuFallbackRingKernelBridge.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsGpuAvailableAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/CpuFallbackRingKernelBridge.cs
+    startLine: 56
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Checks if GPU execution is available.
+  example: []
+  syntax:
+    content: public Task<bool> IsGpuAvailableAsync(CancellationToken cancellationToken = default)
+    parameters:
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: True if at least one GPU device is available
+    content.vb: Public Function IsGpuAvailableAsync(cancellationToken As CancellationToken = Nothing) As Task(Of Boolean)
+  overload: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.IsGpuAvailableAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.IsGpuAvailableAsync(System.Threading.CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.GetDevicePlacementAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.GetDevicePlacementAsync(System.String,System.Threading.CancellationToken)
+  id: GetDevicePlacementAsync(System.String,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge
+  langs:
+  - csharp
+  - vb
+  name: GetDevicePlacementAsync(string, CancellationToken)
+  nameWithType: CpuFallbackRingKernelBridge.GetDevicePlacementAsync(string, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.GetDevicePlacementAsync(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/CpuFallbackRingKernelBridge.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetDevicePlacementAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/CpuFallbackRingKernelBridge.cs
+    startLine: 63
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Gets the GPU device ID to use for actor placement.
+  example: []
+  syntax:
+    content: public Task<int> GetDevicePlacementAsync(string actorKey, CancellationToken cancellationToken = default)
+    parameters:
+    - id: actorKey
+      type: System.String
+      description: The actor's grain key for placement decisions
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+      description: GPU device ID (0-based) or -1 if no GPU available
+    content.vb: Public Function GetDevicePlacementAsync(actorKey As String, cancellationToken As CancellationToken = Nothing) As Task(Of Integer)
+  overload: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.GetDevicePlacementAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.GetDevicePlacementAsync(System.String,System.Threading.CancellationToken)
+  nameWithType.vb: CpuFallbackRingKernelBridge.GetDevicePlacementAsync(String, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.GetDevicePlacementAsync(String, System.Threading.CancellationToken)
+  name.vb: GetDevicePlacementAsync(String, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.AllocateStateAsync``1(System.String,System.Int32,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.AllocateStateAsync``1(System.String,System.Int32,System.Threading.CancellationToken)
+  id: AllocateStateAsync``1(System.String,System.Int32,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge
+  langs:
+  - csharp
+  - vb
+  name: AllocateStateAsync<TState>(string, int, CancellationToken)
+  nameWithType: CpuFallbackRingKernelBridge.AllocateStateAsync<TState>(string, int, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.AllocateStateAsync<TState>(string, int, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/CpuFallbackRingKernelBridge.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AllocateStateAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/CpuFallbackRingKernelBridge.cs
+    startLine: 72
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Allocates GPU memory for actor state.
+  example: []
+  syntax:
+    content: 'public Task<GpuStateHandle<TState>> AllocateStateAsync<TState>(string actorId, int deviceId, CancellationToken cancellationToken = default) where TState : unmanaged'
+    parameters:
+    - id: actorId
+      type: System.String
+      description: Unique actor identifier
+    - id: deviceId
+      type: System.Int32
+      description: Target GPU device ID
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token
+    typeParameters:
+    - id: TState
+      description: Actor state type (blittable struct)
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{{TState}}}
+      description: Handle to GPU-resident state memory
+    content.vb: Public Function AllocateStateAsync(Of TState As Structure)(actorId As String, deviceId As Integer, cancellationToken As CancellationToken = Nothing) As Task(Of GpuStateHandle(Of TState))
+  overload: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.AllocateStateAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.AllocateStateAsync``1(System.String,System.Int32,System.Threading.CancellationToken)
+  nameWithType.vb: CpuFallbackRingKernelBridge.AllocateStateAsync(Of TState)(String, Integer, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.AllocateStateAsync(Of TState)(String, Integer, System.Threading.CancellationToken)
+  name.vb: AllocateStateAsync(Of TState)(String, Integer, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ReleaseStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ReleaseStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},System.Threading.CancellationToken)
+  id: ReleaseStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge
+  langs:
+  - csharp
+  - vb
+  name: ReleaseStateAsync<TState>(GpuStateHandle<TState>, CancellationToken)
+  nameWithType: CpuFallbackRingKernelBridge.ReleaseStateAsync<TState>(GpuStateHandle<TState>, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ReleaseStateAsync<TState>(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle<TState>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/CpuFallbackRingKernelBridge.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ReleaseStateAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/CpuFallbackRingKernelBridge.cs
+    startLine: 99
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Releases GPU memory for actor state.
+  example: []
+  syntax:
+    content: 'public Task ReleaseStateAsync<TState>(GpuStateHandle<TState> handle, CancellationToken cancellationToken = default) where TState : unmanaged'
+    parameters:
+    - id: handle
+      type: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{{TState}}
+      description: State handle to release
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token
+    typeParameters:
+    - id: TState
+      description: Actor state type
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function ReleaseStateAsync(Of TState As Structure)(handle As GpuStateHandle(Of TState), cancellationToken As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ReleaseStateAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReleaseStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{{TState}},System.Threading.CancellationToken)
+  nameWithType.vb: CpuFallbackRingKernelBridge.ReleaseStateAsync(Of TState)(GpuStateHandle(Of TState), CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ReleaseStateAsync(Of TState)(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle(Of TState), System.Threading.CancellationToken)
+  name.vb: ReleaseStateAsync(Of TState)(GpuStateHandle(Of TState), CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ExecuteHandlerAsync``3(System.String,System.Int32,``0,Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``2},System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ExecuteHandlerAsync``3(System.String,System.Int32,``0,Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``2},System.Threading.CancellationToken)
+  id: ExecuteHandlerAsync``3(System.String,System.Int32,``0,Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``2},System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge
+  langs:
+  - csharp
+  - vb
+  name: ExecuteHandlerAsync<TRequest, TResponse, TState>(string, int, TRequest, GpuStateHandle<TState>, CancellationToken)
+  nameWithType: CpuFallbackRingKernelBridge.ExecuteHandlerAsync<TRequest, TResponse, TState>(string, int, TRequest, GpuStateHandle<TState>, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ExecuteHandlerAsync<TRequest, TResponse, TState>(string, int, TRequest, Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle<TState>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/CpuFallbackRingKernelBridge.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ExecuteHandlerAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/CpuFallbackRingKernelBridge.cs
+    startLine: 115
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Executes a ring kernel handler with request/response pattern.
+  example: []
+  syntax:
+    content: 'public Task<RingKernelResult<TResponse, TState>> ExecuteHandlerAsync<TRequest, TResponse, TState>(string kernelId, int handlerId, TRequest request, GpuStateHandle<TState> stateHandle, CancellationToken cancellationToken = default) where TRequest : unmanaged where TResponse : unmanaged where TState : unmanaged'
+    parameters:
+    - id: kernelId
+      type: System.String
+      description: Ring kernel identifier
+    - id: handlerId
+      type: System.Int32
+      description: Handler ID within the kernel
+    - id: request
+      type: '{TRequest}'
+      description: Request payload
+    - id: stateHandle
+      type: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{{TState}}
+      description: Handle to GPU-resident state
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token
+    typeParameters:
+    - id: TRequest
+      description: Request message type (blittable struct)
+    - id: TResponse
+      description: Response message type (blittable struct)
+    - id: TState
+      description: Actor state type (blittable struct)
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.RingKernels.RingKernelResult{{TResponse},{TState}}}
+      description: Response and updated state from GPU execution
+    content.vb: Public Function ExecuteHandlerAsync(Of TRequest As Structure, TResponse As Structure, TState As Structure)(kernelId As String, handlerId As Integer, request As TRequest, stateHandle As GpuStateHandle(Of TState), cancellationToken As CancellationToken = Nothing) As Task(Of RingKernelResult(Of TResponse, TState))
+  overload: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ExecuteHandlerAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteHandlerAsync``3(System.String,System.Int32,{TRequest},Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{{TState}},System.Threading.CancellationToken)
+  nameWithType.vb: CpuFallbackRingKernelBridge.ExecuteHandlerAsync(Of TRequest, TResponse, TState)(String, Integer, TRequest, GpuStateHandle(Of TState), CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ExecuteHandlerAsync(Of TRequest, TResponse, TState)(String, Integer, TRequest, Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle(Of TState), System.Threading.CancellationToken)
+  name.vb: ExecuteHandlerAsync(Of TRequest, TResponse, TState)(String, Integer, TRequest, GpuStateHandle(Of TState), CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ExecuteFireAndForgetAsync``2(System.String,System.Int32,``0,Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``1},System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ExecuteFireAndForgetAsync``2(System.String,System.Int32,``0,Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``1},System.Threading.CancellationToken)
+  id: ExecuteFireAndForgetAsync``2(System.String,System.Int32,``0,Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``1},System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge
+  langs:
+  - csharp
+  - vb
+  name: ExecuteFireAndForgetAsync<TRequest, TState>(string, int, TRequest, GpuStateHandle<TState>, CancellationToken)
+  nameWithType: CpuFallbackRingKernelBridge.ExecuteFireAndForgetAsync<TRequest, TState>(string, int, TRequest, GpuStateHandle<TState>, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ExecuteFireAndForgetAsync<TRequest, TState>(string, int, TRequest, Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle<TState>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/CpuFallbackRingKernelBridge.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ExecuteFireAndForgetAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/CpuFallbackRingKernelBridge.cs
+    startLine: 170
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Executes a fire-and-forget ring kernel handler.
+  example: []
+  syntax:
+    content: 'public Task<TState> ExecuteFireAndForgetAsync<TRequest, TState>(string kernelId, int handlerId, TRequest request, GpuStateHandle<TState> stateHandle, CancellationToken cancellationToken = default) where TRequest : unmanaged where TState : unmanaged'
+    parameters:
+    - id: kernelId
+      type: System.String
+      description: Ring kernel identifier
+    - id: handlerId
+      type: System.Int32
+      description: Handler ID within the kernel
+    - id: request
+      type: '{TRequest}'
+      description: Request payload
+    - id: stateHandle
+      type: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{{TState}}
+      description: Handle to GPU-resident state
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token
+    typeParameters:
+    - id: TRequest
+      description: Request message type (blittable struct)
+    - id: TState
+      description: Actor state type (blittable struct)
+    return:
+      type: System.Threading.Tasks.Task{{TState}}
+      description: Updated state from GPU execution
+    content.vb: Public Function ExecuteFireAndForgetAsync(Of TRequest As Structure, TState As Structure)(kernelId As String, handlerId As Integer, request As TRequest, stateHandle As GpuStateHandle(Of TState), cancellationToken As CancellationToken = Nothing) As Task(Of TState)
+  overload: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ExecuteFireAndForgetAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteFireAndForgetAsync``2(System.String,System.Int32,{TRequest},Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{{TState}},System.Threading.CancellationToken)
+  nameWithType.vb: CpuFallbackRingKernelBridge.ExecuteFireAndForgetAsync(Of TRequest, TState)(String, Integer, TRequest, GpuStateHandle(Of TState), CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ExecuteFireAndForgetAsync(Of TRequest, TState)(String, Integer, TRequest, Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle(Of TState), System.Threading.CancellationToken)
+  name.vb: ExecuteFireAndForgetAsync(Of TRequest, TState)(String, Integer, TRequest, GpuStateHandle(Of TState), CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ReadStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ReadStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},System.Threading.CancellationToken)
+  id: ReadStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge
+  langs:
+  - csharp
+  - vb
+  name: ReadStateAsync<TState>(GpuStateHandle<TState>, CancellationToken)
+  nameWithType: CpuFallbackRingKernelBridge.ReadStateAsync<TState>(GpuStateHandle<TState>, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ReadStateAsync<TState>(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle<TState>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/CpuFallbackRingKernelBridge.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ReadStateAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/CpuFallbackRingKernelBridge.cs
+    startLine: 195
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Reads current state from GPU memory.
+  example: []
+  syntax:
+    content: 'public Task<TState> ReadStateAsync<TState>(GpuStateHandle<TState> handle, CancellationToken cancellationToken = default) where TState : unmanaged'
+    parameters:
+    - id: handle
+      type: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{{TState}}
+      description: State handle
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token
+    typeParameters:
+    - id: TState
+      description: Actor state type
+    return:
+      type: System.Threading.Tasks.Task{{TState}}
+      description: Current state value
+    content.vb: Public Function ReadStateAsync(Of TState As Structure)(handle As GpuStateHandle(Of TState), cancellationToken As CancellationToken = Nothing) As Task(Of TState)
+  overload: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ReadStateAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReadStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{{TState}},System.Threading.CancellationToken)
+  nameWithType.vb: CpuFallbackRingKernelBridge.ReadStateAsync(Of TState)(GpuStateHandle(Of TState), CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ReadStateAsync(Of TState)(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle(Of TState), System.Threading.CancellationToken)
+  name.vb: ReadStateAsync(Of TState)(GpuStateHandle(Of TState), CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.WriteStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},``0,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.WriteStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},``0,System.Threading.CancellationToken)
+  id: WriteStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},``0,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge
+  langs:
+  - csharp
+  - vb
+  name: WriteStateAsync<TState>(GpuStateHandle<TState>, TState, CancellationToken)
+  nameWithType: CpuFallbackRingKernelBridge.WriteStateAsync<TState>(GpuStateHandle<TState>, TState, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.WriteStateAsync<TState>(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle<TState>, TState, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/CpuFallbackRingKernelBridge.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: WriteStateAsync
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/CpuFallbackRingKernelBridge.cs
+    startLine: 207
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Writes state to GPU memory.
+  example: []
+  syntax:
+    content: 'public Task WriteStateAsync<TState>(GpuStateHandle<TState> handle, TState state, CancellationToken cancellationToken = default) where TState : unmanaged'
+    parameters:
+    - id: handle
+      type: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{{TState}}
+      description: State handle
+    - id: state
+      type: '{TState}'
+      description: State value to write
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token
+    typeParameters:
+    - id: TState
+      description: Actor state type
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function WriteStateAsync(Of TState As Structure)(handle As GpuStateHandle(Of TState), state As TState, cancellationToken As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.WriteStateAsync*
+  implements:
+  - Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.WriteStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{{TState}},{TState},System.Threading.CancellationToken)
+  nameWithType.vb: CpuFallbackRingKernelBridge.WriteStateAsync(Of TState)(GpuStateHandle(Of TState), TState, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.WriteStateAsync(Of TState)(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle(Of TState), TState, System.Threading.CancellationToken)
+  name.vb: WriteStateAsync(Of TState)(GpuStateHandle(Of TState), TState, CancellationToken)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.GetTelemetry
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.GetTelemetry
+  id: GetTelemetry
+  parent: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge
+  langs:
+  - csharp
+  - vb
+  name: GetTelemetry()
+  nameWithType: CpuFallbackRingKernelBridge.GetTelemetry()
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.GetTelemetry()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/CpuFallbackRingKernelBridge.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetTelemetry
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/CpuFallbackRingKernelBridge.cs
+    startLine: 222
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Gets telemetry data for ring kernel operations.
+  example: []
+  syntax:
+    content: public RingKernelTelemetry GetTelemetry()
+    return:
+      type: Orleans.GpuBridge.Abstractions.RingKernels.RingKernelTelemetry
+      description: Current telemetry snapshot
+    content.vb: Public Function GetTelemetry() As RingKernelTelemetry
+  overload: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.GetTelemetry*
+  implements:
+  - Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.GetTelemetry
+references:
+- uid: Orleans.GpuBridge.Runtime.RingKernels
+  commentId: N:Orleans.GpuBridge.Runtime.RingKernels
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.RingKernels
+  nameWithType: Orleans.GpuBridge.Runtime.RingKernels
+  fullName: Orleans.GpuBridge.Runtime.RingKernels
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.RingKernels
+    name: RingKernels
+    href: Orleans.GpuBridge.Runtime.RingKernels.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.RingKernels
+    name: RingKernels
+    href: Orleans.GpuBridge.Runtime.RingKernels.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge
+  commentId: T:Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge
+  parent: Orleans.GpuBridge.Abstractions.RingKernels
+  href: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.html
+  name: IRingKernelBridge
+  nameWithType: IRingKernelBridge
+  fullName: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Abstractions.RingKernels
+  commentId: N:Orleans.GpuBridge.Abstractions.RingKernels
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.RingKernels
+  nameWithType: Orleans.GpuBridge.Abstractions.RingKernels
+  fullName: Orleans.GpuBridge.Abstractions.RingKernels
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels
+    name: RingKernels
+    href: Orleans.GpuBridge.Abstractions.RingKernels.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels
+    name: RingKernels
+    href: Orleans.GpuBridge.Abstractions.RingKernels.html
+- uid: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge
+  commentId: T:Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge
+  href: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.html
+  name: CpuFallbackRingKernelBridge
+  nameWithType: CpuFallbackRingKernelBridge
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge
+- uid: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.#ctor
+  href: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.html#Orleans_GpuBridge_Runtime_RingKernels_CpuFallbackRingKernelBridge__ctor_Microsoft_Extensions_Logging_ILogger_Orleans_GpuBridge_Runtime_RingKernels_CpuFallbackRingKernelBridge__
+  name: CpuFallbackRingKernelBridge
+  nameWithType: CpuFallbackRingKernelBridge.CpuFallbackRingKernelBridge
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.CpuFallbackRingKernelBridge
+  nameWithType.vb: CpuFallbackRingKernelBridge.New
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.New
+  name.vb: New
+- uid: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<CpuFallbackRingKernelBridge>
+  nameWithType: ILogger<CpuFallbackRingKernelBridge>
+  fullName: Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge>
+  nameWithType.vb: ILogger(Of CpuFallbackRingKernelBridge)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge)
+  name.vb: ILogger(Of CpuFallbackRingKernelBridge)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge
+    name: CpuFallbackRingKernelBridge
+    href: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge
+    name: CpuFallbackRingKernelBridge
+    href: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.html
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.IsGpuAvailableAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.IsGpuAvailableAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.html#Orleans_GpuBridge_Runtime_RingKernels_CpuFallbackRingKernelBridge_IsGpuAvailableAsync_System_Threading_CancellationToken_
+  name: IsGpuAvailableAsync
+  nameWithType: CpuFallbackRingKernelBridge.IsGpuAvailableAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.IsGpuAvailableAsync
+- uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.IsGpuAvailableAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.IsGpuAvailableAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: IsGpuAvailableAsync(CancellationToken)
+  nameWithType: IRingKernelBridge.IsGpuAvailableAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.IsGpuAvailableAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.IsGpuAvailableAsync(System.Threading.CancellationToken)
+    name: IsGpuAvailableAsync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.IsGpuAvailableAsync(System.Threading.CancellationToken)
+    name: IsGpuAvailableAsync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.GetDevicePlacementAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.GetDevicePlacementAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.html#Orleans_GpuBridge_Runtime_RingKernels_CpuFallbackRingKernelBridge_GetDevicePlacementAsync_System_String_System_Threading_CancellationToken_
+  name: GetDevicePlacementAsync
+  nameWithType: CpuFallbackRingKernelBridge.GetDevicePlacementAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.GetDevicePlacementAsync
+- uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.GetDevicePlacementAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.GetDevicePlacementAsync(System.String,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: GetDevicePlacementAsync(string, CancellationToken)
+  nameWithType: IRingKernelBridge.GetDevicePlacementAsync(string, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.GetDevicePlacementAsync(string, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelBridge.GetDevicePlacementAsync(String, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.GetDevicePlacementAsync(String, System.Threading.CancellationToken)
+  name.vb: GetDevicePlacementAsync(String, CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.GetDevicePlacementAsync(System.String,System.Threading.CancellationToken)
+    name: GetDevicePlacementAsync
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.GetDevicePlacementAsync(System.String,System.Threading.CancellationToken)
+    name: GetDevicePlacementAsync
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{System.Int32}
+  commentId: T:System.Threading.Tasks.Task{System.Int32}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<int>
+  nameWithType: Task<int>
+  fullName: System.Threading.Tasks.Task<int>
+  nameWithType.vb: Task(Of Integer)
+  fullName.vb: System.Threading.Tasks.Task(Of Integer)
+  name.vb: Task(Of Integer)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.AllocateStateAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.AllocateStateAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.html#Orleans_GpuBridge_Runtime_RingKernels_CpuFallbackRingKernelBridge_AllocateStateAsync__1_System_String_System_Int32_System_Threading_CancellationToken_
+  name: AllocateStateAsync
+  nameWithType: CpuFallbackRingKernelBridge.AllocateStateAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.AllocateStateAsync
+- uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.AllocateStateAsync``1(System.String,System.Int32,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.AllocateStateAsync``1(System.String,System.Int32,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: AllocateStateAsync<TState>(string, int, CancellationToken)
+  nameWithType: IRingKernelBridge.AllocateStateAsync<TState>(string, int, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.AllocateStateAsync<TState>(string, int, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelBridge.AllocateStateAsync(Of TState)(String, Integer, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.AllocateStateAsync(Of TState)(String, Integer, System.Threading.CancellationToken)
+  name.vb: AllocateStateAsync(Of TState)(String, Integer, CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.AllocateStateAsync``1(System.String,System.Int32,System.Threading.CancellationToken)
+    name: AllocateStateAsync
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.AllocateStateAsync``1(System.String,System.Int32,System.Threading.CancellationToken)
+    name: AllocateStateAsync
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{{TState}}}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<GpuStateHandle<TState>>
+  nameWithType: Task<GpuStateHandle<TState>>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle<TState>>
+  nameWithType.vb: Task(Of GpuStateHandle(Of TState))
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle(Of TState))
+  name.vb: Task(Of GpuStateHandle(Of TState))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+    href: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle-1.html
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+    href: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ReleaseStateAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ReleaseStateAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.html#Orleans_GpuBridge_Runtime_RingKernels_CpuFallbackRingKernelBridge_ReleaseStateAsync__1_Orleans_GpuBridge_Abstractions_RingKernels_GpuStateHandle___0__System_Threading_CancellationToken_
+  name: ReleaseStateAsync
+  nameWithType: CpuFallbackRingKernelBridge.ReleaseStateAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ReleaseStateAsync
+- uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReleaseStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{{TState}},System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReleaseStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge
+  definition: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReleaseStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},System.Threading.CancellationToken)
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: ReleaseStateAsync<TState>(GpuStateHandle<TState>, CancellationToken)
+  nameWithType: IRingKernelBridge.ReleaseStateAsync<TState>(GpuStateHandle<TState>, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReleaseStateAsync<TState>(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle<TState>, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelBridge.ReleaseStateAsync(Of TState)(GpuStateHandle(Of TState), CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReleaseStateAsync(Of TState)(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle(Of TState), System.Threading.CancellationToken)
+  name.vb: ReleaseStateAsync(Of TState)(GpuStateHandle(Of TState), CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReleaseStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},System.Threading.CancellationToken)
+    name: ReleaseStateAsync
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReleaseStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},System.Threading.CancellationToken)
+    name: ReleaseStateAsync
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{{TState}}
+  commentId: T:Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0}
+  parent: Orleans.GpuBridge.Abstractions.RingKernels
+  definition: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+  href: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle-1.html
+  name: GpuStateHandle<TState>
+  nameWithType: GpuStateHandle<TState>
+  fullName: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle<TState>
+  nameWithType.vb: GpuStateHandle(Of TState)
+  fullName.vb: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle(Of TState)
+  name.vb: GpuStateHandle(Of TState)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+    href: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle-1.html
+  - name: <
+  - name: TState
+  - name: '>'
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+    href: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReleaseStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReleaseStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},System.Threading.CancellationToken)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: ReleaseStateAsync<TState>(GpuStateHandle<TState>, CancellationToken)
+  nameWithType: IRingKernelBridge.ReleaseStateAsync<TState>(GpuStateHandle<TState>, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReleaseStateAsync<TState>(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle<TState>, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelBridge.ReleaseStateAsync(Of TState)(GpuStateHandle(Of TState), CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReleaseStateAsync(Of TState)(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle(Of TState), System.Threading.CancellationToken)
+  name.vb: ReleaseStateAsync(Of TState)(GpuStateHandle(Of TState), CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReleaseStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},System.Threading.CancellationToken)
+    name: ReleaseStateAsync
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReleaseStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},System.Threading.CancellationToken)
+    name: ReleaseStateAsync
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+  commentId: T:Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+  href: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle-1.html
+  name: GpuStateHandle<TState>
+  nameWithType: GpuStateHandle<TState>
+  fullName: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle<TState>
+  nameWithType.vb: GpuStateHandle(Of TState)
+  fullName.vb: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle(Of TState)
+  name.vb: GpuStateHandle(Of TState)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+    href: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle-1.html
+  - name: <
+  - name: TState
+  - name: '>'
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+    href: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ExecuteHandlerAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ExecuteHandlerAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.html#Orleans_GpuBridge_Runtime_RingKernels_CpuFallbackRingKernelBridge_ExecuteHandlerAsync__3_System_String_System_Int32___0_Orleans_GpuBridge_Abstractions_RingKernels_GpuStateHandle___2__System_Threading_CancellationToken_
+  name: ExecuteHandlerAsync
+  nameWithType: CpuFallbackRingKernelBridge.ExecuteHandlerAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ExecuteHandlerAsync
+- uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteHandlerAsync``3(System.String,System.Int32,{TRequest},Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{{TState}},System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteHandlerAsync``3(System.String,System.Int32,``0,Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``2},System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge
+  definition: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteHandlerAsync``3(System.String,System.Int32,``0,Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``2},System.Threading.CancellationToken)
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: ExecuteHandlerAsync<TRequest, TResponse, TState>(string, int, TRequest, GpuStateHandle<TState>, CancellationToken)
+  nameWithType: IRingKernelBridge.ExecuteHandlerAsync<TRequest, TResponse, TState>(string, int, TRequest, GpuStateHandle<TState>, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteHandlerAsync<TRequest, TResponse, TState>(string, int, TRequest, Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle<TState>, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelBridge.ExecuteHandlerAsync(Of TRequest, TResponse, TState)(String, Integer, TRequest, GpuStateHandle(Of TState), CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteHandlerAsync(Of TRequest, TResponse, TState)(String, Integer, TRequest, Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle(Of TState), System.Threading.CancellationToken)
+  name.vb: ExecuteHandlerAsync(Of TRequest, TResponse, TState)(String, Integer, TRequest, GpuStateHandle(Of TState), CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteHandlerAsync``3(System.String,System.Int32,``0,Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``2},System.Threading.CancellationToken)
+    name: ExecuteHandlerAsync
+  - name: <
+  - name: TRequest
+  - name: ','
+  - name: " "
+  - name: TResponse
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - name: TRequest
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteHandlerAsync``3(System.String,System.Int32,``0,Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``2},System.Threading.CancellationToken)
+    name: ExecuteHandlerAsync
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TRequest
+  - name: ','
+  - name: " "
+  - name: TResponse
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - name: TRequest
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: '{TRequest}'
+  commentId: '!:TRequest'
+  definition: TRequest
+  name: TRequest
+  nameWithType: TRequest
+  fullName: TRequest
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.RingKernels.RingKernelResult{{TResponse},{TState}}}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.RingKernels.RingKernelResult{``1,``2}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<RingKernelResult<TResponse, TState>>
+  nameWithType: Task<RingKernelResult<TResponse, TState>>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.RingKernels.RingKernelResult<TResponse, TState>>
+  nameWithType.vb: Task(Of RingKernelResult(Of TResponse, TState))
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.RingKernels.RingKernelResult(Of TResponse, TState))
+  name.vb: Task(Of RingKernelResult(Of TResponse, TState))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.RingKernelResult`2
+    name: RingKernelResult
+    href: Orleans.GpuBridge.Abstractions.RingKernels.RingKernelResult-2.html
+  - name: <
+  - name: TResponse
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.RingKernelResult`2
+    name: RingKernelResult
+    href: Orleans.GpuBridge.Abstractions.RingKernels.RingKernelResult-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResponse
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: )
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteHandlerAsync``3(System.String,System.Int32,``0,Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``2},System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteHandlerAsync``3(System.String,System.Int32,``0,Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``2},System.Threading.CancellationToken)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: ExecuteHandlerAsync<TRequest, TResponse, TState>(string, int, TRequest, GpuStateHandle<TState>, CancellationToken)
+  nameWithType: IRingKernelBridge.ExecuteHandlerAsync<TRequest, TResponse, TState>(string, int, TRequest, GpuStateHandle<TState>, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteHandlerAsync<TRequest, TResponse, TState>(string, int, TRequest, Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle<TState>, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelBridge.ExecuteHandlerAsync(Of TRequest, TResponse, TState)(String, Integer, TRequest, GpuStateHandle(Of TState), CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteHandlerAsync(Of TRequest, TResponse, TState)(String, Integer, TRequest, Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle(Of TState), System.Threading.CancellationToken)
+  name.vb: ExecuteHandlerAsync(Of TRequest, TResponse, TState)(String, Integer, TRequest, GpuStateHandle(Of TState), CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteHandlerAsync``3(System.String,System.Int32,``0,Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``2},System.Threading.CancellationToken)
+    name: ExecuteHandlerAsync
+  - name: <
+  - name: TRequest
+  - name: ','
+  - name: " "
+  - name: TResponse
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - name: TRequest
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteHandlerAsync``3(System.String,System.Int32,``0,Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``2},System.Threading.CancellationToken)
+    name: ExecuteHandlerAsync
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TRequest
+  - name: ','
+  - name: " "
+  - name: TResponse
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - name: TRequest
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: TRequest
+  name: TRequest
+  nameWithType: TRequest
+  fullName: TRequest
+- uid: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ExecuteFireAndForgetAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ExecuteFireAndForgetAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.html#Orleans_GpuBridge_Runtime_RingKernels_CpuFallbackRingKernelBridge_ExecuteFireAndForgetAsync__2_System_String_System_Int32___0_Orleans_GpuBridge_Abstractions_RingKernels_GpuStateHandle___1__System_Threading_CancellationToken_
+  name: ExecuteFireAndForgetAsync
+  nameWithType: CpuFallbackRingKernelBridge.ExecuteFireAndForgetAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ExecuteFireAndForgetAsync
+- uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteFireAndForgetAsync``2(System.String,System.Int32,{TRequest},Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{{TState}},System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteFireAndForgetAsync``2(System.String,System.Int32,``0,Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``1},System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge
+  definition: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteFireAndForgetAsync``2(System.String,System.Int32,``0,Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``1},System.Threading.CancellationToken)
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: ExecuteFireAndForgetAsync<TRequest, TState>(string, int, TRequest, GpuStateHandle<TState>, CancellationToken)
+  nameWithType: IRingKernelBridge.ExecuteFireAndForgetAsync<TRequest, TState>(string, int, TRequest, GpuStateHandle<TState>, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteFireAndForgetAsync<TRequest, TState>(string, int, TRequest, Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle<TState>, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelBridge.ExecuteFireAndForgetAsync(Of TRequest, TState)(String, Integer, TRequest, GpuStateHandle(Of TState), CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteFireAndForgetAsync(Of TRequest, TState)(String, Integer, TRequest, Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle(Of TState), System.Threading.CancellationToken)
+  name.vb: ExecuteFireAndForgetAsync(Of TRequest, TState)(String, Integer, TRequest, GpuStateHandle(Of TState), CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteFireAndForgetAsync``2(System.String,System.Int32,``0,Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``1},System.Threading.CancellationToken)
+    name: ExecuteFireAndForgetAsync
+  - name: <
+  - name: TRequest
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - name: TRequest
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteFireAndForgetAsync``2(System.String,System.Int32,``0,Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``1},System.Threading.CancellationToken)
+    name: ExecuteFireAndForgetAsync
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TRequest
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - name: TRequest
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading.Tasks.Task{{TState}}
+  commentId: T:System.Threading.Tasks.Task{``1}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TState>
+  nameWithType: Task<TState>
+  fullName: System.Threading.Tasks.Task<TState>
+  nameWithType.vb: Task(Of TState)
+  fullName.vb: System.Threading.Tasks.Task(Of TState)
+  name.vb: Task(Of TState)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TState
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteFireAndForgetAsync``2(System.String,System.Int32,``0,Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``1},System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteFireAndForgetAsync``2(System.String,System.Int32,``0,Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``1},System.Threading.CancellationToken)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: ExecuteFireAndForgetAsync<TRequest, TState>(string, int, TRequest, GpuStateHandle<TState>, CancellationToken)
+  nameWithType: IRingKernelBridge.ExecuteFireAndForgetAsync<TRequest, TState>(string, int, TRequest, GpuStateHandle<TState>, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteFireAndForgetAsync<TRequest, TState>(string, int, TRequest, Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle<TState>, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelBridge.ExecuteFireAndForgetAsync(Of TRequest, TState)(String, Integer, TRequest, GpuStateHandle(Of TState), CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteFireAndForgetAsync(Of TRequest, TState)(String, Integer, TRequest, Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle(Of TState), System.Threading.CancellationToken)
+  name.vb: ExecuteFireAndForgetAsync(Of TRequest, TState)(String, Integer, TRequest, GpuStateHandle(Of TState), CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteFireAndForgetAsync``2(System.String,System.Int32,``0,Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``1},System.Threading.CancellationToken)
+    name: ExecuteFireAndForgetAsync
+  - name: <
+  - name: TRequest
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - name: TRequest
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ExecuteFireAndForgetAsync``2(System.String,System.Int32,``0,Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``1},System.Threading.CancellationToken)
+    name: ExecuteFireAndForgetAsync
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TRequest
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - name: TRequest
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ReadStateAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ReadStateAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.html#Orleans_GpuBridge_Runtime_RingKernels_CpuFallbackRingKernelBridge_ReadStateAsync__1_Orleans_GpuBridge_Abstractions_RingKernels_GpuStateHandle___0__System_Threading_CancellationToken_
+  name: ReadStateAsync
+  nameWithType: CpuFallbackRingKernelBridge.ReadStateAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.ReadStateAsync
+- uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReadStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{{TState}},System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReadStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge
+  definition: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReadStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},System.Threading.CancellationToken)
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: ReadStateAsync<TState>(GpuStateHandle<TState>, CancellationToken)
+  nameWithType: IRingKernelBridge.ReadStateAsync<TState>(GpuStateHandle<TState>, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReadStateAsync<TState>(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle<TState>, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelBridge.ReadStateAsync(Of TState)(GpuStateHandle(Of TState), CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReadStateAsync(Of TState)(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle(Of TState), System.Threading.CancellationToken)
+  name.vb: ReadStateAsync(Of TState)(GpuStateHandle(Of TState), CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReadStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},System.Threading.CancellationToken)
+    name: ReadStateAsync
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReadStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},System.Threading.CancellationToken)
+    name: ReadStateAsync
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReadStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReadStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},System.Threading.CancellationToken)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: ReadStateAsync<TState>(GpuStateHandle<TState>, CancellationToken)
+  nameWithType: IRingKernelBridge.ReadStateAsync<TState>(GpuStateHandle<TState>, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReadStateAsync<TState>(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle<TState>, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelBridge.ReadStateAsync(Of TState)(GpuStateHandle(Of TState), CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReadStateAsync(Of TState)(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle(Of TState), System.Threading.CancellationToken)
+  name.vb: ReadStateAsync(Of TState)(GpuStateHandle(Of TState), CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReadStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},System.Threading.CancellationToken)
+    name: ReadStateAsync
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.ReadStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},System.Threading.CancellationToken)
+    name: ReadStateAsync
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.WriteStateAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.WriteStateAsync
+  href: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.html#Orleans_GpuBridge_Runtime_RingKernels_CpuFallbackRingKernelBridge_WriteStateAsync__1_Orleans_GpuBridge_Abstractions_RingKernels_GpuStateHandle___0____0_System_Threading_CancellationToken_
+  name: WriteStateAsync
+  nameWithType: CpuFallbackRingKernelBridge.WriteStateAsync
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.WriteStateAsync
+- uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.WriteStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{{TState}},{TState},System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.WriteStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},``0,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge
+  definition: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.WriteStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},``0,System.Threading.CancellationToken)
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: WriteStateAsync<TState>(GpuStateHandle<TState>, TState, CancellationToken)
+  nameWithType: IRingKernelBridge.WriteStateAsync<TState>(GpuStateHandle<TState>, TState, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.WriteStateAsync<TState>(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle<TState>, TState, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelBridge.WriteStateAsync(Of TState)(GpuStateHandle(Of TState), TState, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.WriteStateAsync(Of TState)(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle(Of TState), TState, System.Threading.CancellationToken)
+  name.vb: WriteStateAsync(Of TState)(GpuStateHandle(Of TState), TState, CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.WriteStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},``0,System.Threading.CancellationToken)
+    name: WriteStateAsync
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.WriteStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},``0,System.Threading.CancellationToken)
+    name: WriteStateAsync
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: '{TState}'
+  commentId: '!:TState'
+  definition: TState
+  name: TState
+  nameWithType: TState
+  fullName: TState
+- uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.WriteStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},``0,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.WriteStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},``0,System.Threading.CancellationToken)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: WriteStateAsync<TState>(GpuStateHandle<TState>, TState, CancellationToken)
+  nameWithType: IRingKernelBridge.WriteStateAsync<TState>(GpuStateHandle<TState>, TState, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.WriteStateAsync<TState>(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle<TState>, TState, System.Threading.CancellationToken)
+  nameWithType.vb: IRingKernelBridge.WriteStateAsync(Of TState)(GpuStateHandle(Of TState), TState, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.WriteStateAsync(Of TState)(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle(Of TState), TState, System.Threading.CancellationToken)
+  name.vb: WriteStateAsync(Of TState)(GpuStateHandle(Of TState), TState, CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.WriteStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},``0,System.Threading.CancellationToken)
+    name: WriteStateAsync
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.WriteStateAsync``1(Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle{``0},``0,System.Threading.CancellationToken)
+    name: WriteStateAsync
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.GpuStateHandle`1
+    name: GpuStateHandle
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: TState
+  name: TState
+  nameWithType: TState
+  fullName: TState
+- uid: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.GetTelemetry*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.GetTelemetry
+  href: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.html#Orleans_GpuBridge_Runtime_RingKernels_CpuFallbackRingKernelBridge_GetTelemetry
+  name: GetTelemetry
+  nameWithType: CpuFallbackRingKernelBridge.GetTelemetry
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.CpuFallbackRingKernelBridge.GetTelemetry
+- uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.GetTelemetry
+  commentId: M:Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.GetTelemetry
+  parent: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge
+  name: GetTelemetry()
+  nameWithType: IRingKernelBridge.GetTelemetry()
+  fullName: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.GetTelemetry()
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.GetTelemetry
+    name: GetTelemetry
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.GetTelemetry
+    name: GetTelemetry
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.RingKernels.RingKernelTelemetry
+  commentId: T:Orleans.GpuBridge.Abstractions.RingKernels.RingKernelTelemetry
+  parent: Orleans.GpuBridge.Abstractions.RingKernels
+  href: Orleans.GpuBridge.Abstractions.RingKernels.RingKernelTelemetry.html
+  name: RingKernelTelemetry
+  nameWithType: RingKernelTelemetry
+  fullName: Orleans.GpuBridge.Abstractions.RingKernels.RingKernelTelemetry

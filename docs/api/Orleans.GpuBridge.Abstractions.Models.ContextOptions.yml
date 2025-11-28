@@ -1,0 +1,837 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.Models.ContextOptions
+  commentId: T:Orleans.GpuBridge.Abstractions.Models.ContextOptions
+  id: ContextOptions
+  parent: Orleans.GpuBridge.Abstractions.Models
+  children:
+  - Orleans.GpuBridge.Abstractions.Models.ContextOptions.#ctor(System.Boolean,System.Boolean,System.Int32,System.Boolean,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
+  - Orleans.GpuBridge.Abstractions.Models.ContextOptions.CommandQueueCount
+  - Orleans.GpuBridge.Abstractions.Models.ContextOptions.CustomOptions
+  - Orleans.GpuBridge.Abstractions.Models.ContextOptions.EnableDebugMode
+  - Orleans.GpuBridge.Abstractions.Models.ContextOptions.EnableOutOfOrderExecution
+  - Orleans.GpuBridge.Abstractions.Models.ContextOptions.EnableProfiling
+  langs:
+  - csharp
+  - vb
+  name: ContextOptions
+  nameWithType: ContextOptions
+  fullName: Orleans.GpuBridge.Abstractions.Models.ContextOptions
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Models/ContextOptions.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ContextOptions
+    path: ../src/Orleans.GpuBridge.Abstractions/Models/ContextOptions.cs
+    startLine: 43
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Models
+  summary: >-
+    Configuration options for creating a compute context.
+
+    These options control various aspects of context behavior including debugging,
+
+    profiling, concurrency, and backend-specific customizations.
+  example: []
+  syntax:
+    content: 'public sealed record ContextOptions : IEquatable<ContextOptions>'
+    content.vb: Public NotInheritable Class ContextOptions Implements IEquatable(Of ContextOptions)
+  inheritance:
+  - System.Object
+  implements:
+  - System.IEquatable{Orleans.GpuBridge.Abstractions.Models.ContextOptions}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Abstractions.Models.ContextOptions.#ctor(System.Boolean,System.Boolean,System.Int32,System.Boolean,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
+  commentId: M:Orleans.GpuBridge.Abstractions.Models.ContextOptions.#ctor(System.Boolean,System.Boolean,System.Int32,System.Boolean,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})
+  id: '#ctor(System.Boolean,System.Boolean,System.Int32,System.Boolean,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})'
+  parent: Orleans.GpuBridge.Abstractions.Models.ContextOptions
+  langs:
+  - csharp
+  - vb
+  name: ContextOptions(bool, bool, int, bool, IReadOnlyDictionary<string, object>?)
+  nameWithType: ContextOptions.ContextOptions(bool, bool, int, bool, IReadOnlyDictionary<string, object>?)
+  fullName: Orleans.GpuBridge.Abstractions.Models.ContextOptions.ContextOptions(bool, bool, int, bool, System.Collections.Generic.IReadOnlyDictionary<string, object>?)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Models/ContextOptions.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Abstractions/Models/ContextOptions.cs
+    startLine: 43
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Models
+  summary: >-
+    Configuration options for creating a compute context.
+
+    These options control various aspects of context behavior including debugging,
+
+    profiling, concurrency, and backend-specific customizations.
+  example: []
+  syntax:
+    content: public ContextOptions(bool EnableProfiling = false, bool EnableDebugMode = false, int CommandQueueCount = 1, bool EnableOutOfOrderExecution = false, IReadOnlyDictionary<string, object>? CustomOptions = null)
+    parameters:
+    - id: EnableProfiling
+      type: System.Boolean
+      description: >-
+        Indicates whether profiling should be enabled for this context.
+
+        When enabled, the context will collect timing and performance metrics
+
+        for kernels and operations executed within the context.
+
+        This may introduce slight performance overhead but provides valuable
+
+        debugging and optimization information. Default is false.
+    - id: EnableDebugMode
+      type: System.Boolean
+      description: >-
+        Indicates whether debug mode should be enabled for this context.
+
+        Debug mode typically enables additional validation, error checking,
+
+        and diagnostic information that can help during development.
+
+        This may significantly impact performance and should only be used during development.
+
+        Default is false.
+    - id: CommandQueueCount
+      type: System.Int32
+      description: >-
+        The number of command queues to create for this context.
+
+        Multiple command queues enable concurrent execution of independent operations
+
+        and can improve throughput for workloads with multiple parallel streams.
+
+        Must be at least 1. Default is 1.
+    - id: EnableOutOfOrderExecution
+      type: System.Boolean
+      description: >-
+        Indicates whether out-of-order execution should be enabled for the context.
+
+        When enabled, operations may complete in a different order than they were submitted,
+
+        potentially improving performance through better resource utilization.
+
+        Applications must handle proper synchronization when this is enabled.
+
+        Default is false.
+    - id: CustomOptions
+      type: System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object}
+      description: >-
+        Backend-specific custom options as key-value pairs.
+
+        This allows backend providers to accept additional configuration parameters
+
+        that are not covered by the standard options. The interpretation of these
+
+        options is specific to each backend implementation.
+
+        If null, no custom options are applied.
+    content.vb: Public Sub New(EnableProfiling As Boolean = False, EnableDebugMode As Boolean = False, CommandQueueCount As Integer = 1, EnableOutOfOrderExecution As Boolean = False, CustomOptions As IReadOnlyDictionary(Of String, Object) = Nothing)
+  overload: Orleans.GpuBridge.Abstractions.Models.ContextOptions.#ctor*
+  nameWithType.vb: ContextOptions.New(Boolean, Boolean, Integer, Boolean, IReadOnlyDictionary(Of String, Object))
+  fullName.vb: Orleans.GpuBridge.Abstractions.Models.ContextOptions.New(Boolean, Boolean, Integer, Boolean, System.Collections.Generic.IReadOnlyDictionary(Of String, Object))
+  name.vb: New(Boolean, Boolean, Integer, Boolean, IReadOnlyDictionary(Of String, Object))
+- uid: Orleans.GpuBridge.Abstractions.Models.ContextOptions.EnableProfiling
+  commentId: P:Orleans.GpuBridge.Abstractions.Models.ContextOptions.EnableProfiling
+  id: EnableProfiling
+  parent: Orleans.GpuBridge.Abstractions.Models.ContextOptions
+  langs:
+  - csharp
+  - vb
+  name: EnableProfiling
+  nameWithType: ContextOptions.EnableProfiling
+  fullName: Orleans.GpuBridge.Abstractions.Models.ContextOptions.EnableProfiling
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Models/ContextOptions.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: EnableProfiling
+    path: ../src/Orleans.GpuBridge.Abstractions/Models/ContextOptions.cs
+    startLine: 44
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Models
+  summary: >-
+    Indicates whether profiling should be enabled for this context.
+
+    When enabled, the context will collect timing and performance metrics
+
+    for kernels and operations executed within the context.
+
+    This may introduce slight performance overhead but provides valuable
+
+    debugging and optimization information. Default is false.
+  example: []
+  syntax:
+    content: public bool EnableProfiling { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property EnableProfiling As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Models.ContextOptions.EnableProfiling*
+- uid: Orleans.GpuBridge.Abstractions.Models.ContextOptions.EnableDebugMode
+  commentId: P:Orleans.GpuBridge.Abstractions.Models.ContextOptions.EnableDebugMode
+  id: EnableDebugMode
+  parent: Orleans.GpuBridge.Abstractions.Models.ContextOptions
+  langs:
+  - csharp
+  - vb
+  name: EnableDebugMode
+  nameWithType: ContextOptions.EnableDebugMode
+  fullName: Orleans.GpuBridge.Abstractions.Models.ContextOptions.EnableDebugMode
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Models/ContextOptions.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: EnableDebugMode
+    path: ../src/Orleans.GpuBridge.Abstractions/Models/ContextOptions.cs
+    startLine: 45
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Models
+  summary: >-
+    Indicates whether debug mode should be enabled for this context.
+
+    Debug mode typically enables additional validation, error checking,
+
+    and diagnostic information that can help during development.
+
+    This may significantly impact performance and should only be used during development.
+
+    Default is false.
+  example: []
+  syntax:
+    content: public bool EnableDebugMode { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property EnableDebugMode As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Models.ContextOptions.EnableDebugMode*
+- uid: Orleans.GpuBridge.Abstractions.Models.ContextOptions.CommandQueueCount
+  commentId: P:Orleans.GpuBridge.Abstractions.Models.ContextOptions.CommandQueueCount
+  id: CommandQueueCount
+  parent: Orleans.GpuBridge.Abstractions.Models.ContextOptions
+  langs:
+  - csharp
+  - vb
+  name: CommandQueueCount
+  nameWithType: ContextOptions.CommandQueueCount
+  fullName: Orleans.GpuBridge.Abstractions.Models.ContextOptions.CommandQueueCount
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Models/ContextOptions.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CommandQueueCount
+    path: ../src/Orleans.GpuBridge.Abstractions/Models/ContextOptions.cs
+    startLine: 46
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Models
+  summary: >-
+    The number of command queues to create for this context.
+
+    Multiple command queues enable concurrent execution of independent operations
+
+    and can improve throughput for workloads with multiple parallel streams.
+
+    Must be at least 1. Default is 1.
+  example: []
+  syntax:
+    content: public int CommandQueueCount { get; init; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property CommandQueueCount As Integer
+  overload: Orleans.GpuBridge.Abstractions.Models.ContextOptions.CommandQueueCount*
+- uid: Orleans.GpuBridge.Abstractions.Models.ContextOptions.EnableOutOfOrderExecution
+  commentId: P:Orleans.GpuBridge.Abstractions.Models.ContextOptions.EnableOutOfOrderExecution
+  id: EnableOutOfOrderExecution
+  parent: Orleans.GpuBridge.Abstractions.Models.ContextOptions
+  langs:
+  - csharp
+  - vb
+  name: EnableOutOfOrderExecution
+  nameWithType: ContextOptions.EnableOutOfOrderExecution
+  fullName: Orleans.GpuBridge.Abstractions.Models.ContextOptions.EnableOutOfOrderExecution
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Models/ContextOptions.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: EnableOutOfOrderExecution
+    path: ../src/Orleans.GpuBridge.Abstractions/Models/ContextOptions.cs
+    startLine: 47
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Models
+  summary: >-
+    Indicates whether out-of-order execution should be enabled for the context.
+
+    When enabled, operations may complete in a different order than they were submitted,
+
+    potentially improving performance through better resource utilization.
+
+    Applications must handle proper synchronization when this is enabled.
+
+    Default is false.
+  example: []
+  syntax:
+    content: public bool EnableOutOfOrderExecution { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property EnableOutOfOrderExecution As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Models.ContextOptions.EnableOutOfOrderExecution*
+- uid: Orleans.GpuBridge.Abstractions.Models.ContextOptions.CustomOptions
+  commentId: P:Orleans.GpuBridge.Abstractions.Models.ContextOptions.CustomOptions
+  id: CustomOptions
+  parent: Orleans.GpuBridge.Abstractions.Models.ContextOptions
+  langs:
+  - csharp
+  - vb
+  name: CustomOptions
+  nameWithType: ContextOptions.CustomOptions
+  fullName: Orleans.GpuBridge.Abstractions.Models.ContextOptions.CustomOptions
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Models/ContextOptions.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CustomOptions
+    path: ../src/Orleans.GpuBridge.Abstractions/Models/ContextOptions.cs
+    startLine: 48
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Models
+  summary: >-
+    Backend-specific custom options as key-value pairs.
+
+    This allows backend providers to accept additional configuration parameters
+
+    that are not covered by the standard options. The interpretation of these
+
+    options is specific to each backend implementation.
+
+    If null, no custom options are applied.
+  example: []
+  syntax:
+    content: public IReadOnlyDictionary<string, object>? CustomOptions { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object}
+    content.vb: Public Property CustomOptions As IReadOnlyDictionary(Of String, Object)
+  overload: Orleans.GpuBridge.Abstractions.Models.ContextOptions.CustomOptions*
+references:
+- uid: Orleans.GpuBridge.Abstractions.Models
+  commentId: N:Orleans.GpuBridge.Abstractions.Models
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Models
+  nameWithType: Orleans.GpuBridge.Abstractions.Models
+  fullName: Orleans.GpuBridge.Abstractions.Models
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Models
+    name: Models
+    href: Orleans.GpuBridge.Abstractions.Models.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Models
+    name: Models
+    href: Orleans.GpuBridge.Abstractions.Models.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IEquatable{Orleans.GpuBridge.Abstractions.Models.ContextOptions}
+  commentId: T:System.IEquatable{Orleans.GpuBridge.Abstractions.Models.ContextOptions}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<ContextOptions>
+  nameWithType: IEquatable<ContextOptions>
+  fullName: System.IEquatable<Orleans.GpuBridge.Abstractions.Models.ContextOptions>
+  nameWithType.vb: IEquatable(Of ContextOptions)
+  fullName.vb: System.IEquatable(Of Orleans.GpuBridge.Abstractions.Models.ContextOptions)
+  name.vb: IEquatable(Of ContextOptions)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Models.ContextOptions
+    name: ContextOptions
+    href: Orleans.GpuBridge.Abstractions.Models.ContextOptions.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Models.ContextOptions
+    name: ContextOptions
+    href: Orleans.GpuBridge.Abstractions.Models.ContextOptions.html
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Models.ContextOptions.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Models.ContextOptions.#ctor
+  href: Orleans.GpuBridge.Abstractions.Models.ContextOptions.html#Orleans_GpuBridge_Abstractions_Models_ContextOptions__ctor_System_Boolean_System_Boolean_System_Int32_System_Boolean_System_Collections_Generic_IReadOnlyDictionary_System_String_System_Object__
+  name: ContextOptions
+  nameWithType: ContextOptions.ContextOptions
+  fullName: Orleans.GpuBridge.Abstractions.Models.ContextOptions.ContextOptions
+  nameWithType.vb: ContextOptions.New
+  fullName.vb: Orleans.GpuBridge.Abstractions.Models.ContextOptions.New
+  name.vb: New
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object}
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<string, object>
+  nameWithType: IReadOnlyDictionary<string, object>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<string, object>
+  nameWithType.vb: IReadOnlyDictionary(Of String, Object)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of String, Object)
+  name.vb: IReadOnlyDictionary(Of String, Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyDictionary`2
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<TKey, TValue>
+  nameWithType: IReadOnlyDictionary<TKey, TValue>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>
+  nameWithType.vb: IReadOnlyDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of TKey, TValue)
+  name.vb: IReadOnlyDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Orleans.GpuBridge.Abstractions.Models.ContextOptions.EnableProfiling*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Models.ContextOptions.EnableProfiling
+  href: Orleans.GpuBridge.Abstractions.Models.ContextOptions.html#Orleans_GpuBridge_Abstractions_Models_ContextOptions_EnableProfiling
+  name: EnableProfiling
+  nameWithType: ContextOptions.EnableProfiling
+  fullName: Orleans.GpuBridge.Abstractions.Models.ContextOptions.EnableProfiling
+- uid: Orleans.GpuBridge.Abstractions.Models.ContextOptions.EnableDebugMode*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Models.ContextOptions.EnableDebugMode
+  href: Orleans.GpuBridge.Abstractions.Models.ContextOptions.html#Orleans_GpuBridge_Abstractions_Models_ContextOptions_EnableDebugMode
+  name: EnableDebugMode
+  nameWithType: ContextOptions.EnableDebugMode
+  fullName: Orleans.GpuBridge.Abstractions.Models.ContextOptions.EnableDebugMode
+- uid: Orleans.GpuBridge.Abstractions.Models.ContextOptions.CommandQueueCount*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Models.ContextOptions.CommandQueueCount
+  href: Orleans.GpuBridge.Abstractions.Models.ContextOptions.html#Orleans_GpuBridge_Abstractions_Models_ContextOptions_CommandQueueCount
+  name: CommandQueueCount
+  nameWithType: ContextOptions.CommandQueueCount
+  fullName: Orleans.GpuBridge.Abstractions.Models.ContextOptions.CommandQueueCount
+- uid: Orleans.GpuBridge.Abstractions.Models.ContextOptions.EnableOutOfOrderExecution*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Models.ContextOptions.EnableOutOfOrderExecution
+  href: Orleans.GpuBridge.Abstractions.Models.ContextOptions.html#Orleans_GpuBridge_Abstractions_Models_ContextOptions_EnableOutOfOrderExecution
+  name: EnableOutOfOrderExecution
+  nameWithType: ContextOptions.EnableOutOfOrderExecution
+  fullName: Orleans.GpuBridge.Abstractions.Models.ContextOptions.EnableOutOfOrderExecution
+- uid: Orleans.GpuBridge.Abstractions.Models.ContextOptions.CustomOptions*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Models.ContextOptions.CustomOptions
+  href: Orleans.GpuBridge.Abstractions.Models.ContextOptions.html#Orleans_GpuBridge_Abstractions_Models_ContextOptions_CustomOptions
+  name: CustomOptions
+  nameWithType: ContextOptions.CustomOptions
+  fullName: Orleans.GpuBridge.Abstractions.Models.ContextOptions.CustomOptions

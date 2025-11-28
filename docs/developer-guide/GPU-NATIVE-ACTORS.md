@@ -5,7 +5,7 @@
 Version: 2.0 (DotCompute Edition)
 Last Updated: 2025-11-12
 Audience: C# Developers, Orleans Developers, GPU Computing Specialists
-GPU Framework: **DotCompute 0.4.2-rc2**
+GPU Framework: **DotCompute 0.5.1**
 
 ---
 

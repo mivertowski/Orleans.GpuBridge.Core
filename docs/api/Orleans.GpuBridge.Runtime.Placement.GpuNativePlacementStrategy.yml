@@ -1,0 +1,1120 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy
+  commentId: T:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy
+  id: GpuNativePlacementStrategy
+  parent: Orleans.GpuBridge.Runtime.Placement
+  children:
+  - Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.AffinityGroupId
+  - Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.ComputeWeight
+  - Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.EnableDynamicRebalancing
+  - Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.Instance
+  - Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MaxComputeUtilization
+  - Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MaxQueueUtilization
+  - Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MemoryWeight
+  - Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MinimumGpuMemoryMB
+  - Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MinimumPlacementScore
+  - Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.PreferLocalGpu
+  - Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.QueueWeight
+  langs:
+  - csharp
+  - vb
+  name: GpuNativePlacementStrategy
+  nameWithType: GpuNativePlacementStrategy
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementStrategy.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GpuNativePlacementStrategy
+    path: ../src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementStrategy.cs
+    startLine: 30
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Placement
+  summary: Advanced placement strategy for GPU-native grains with ring kernel awareness.
+  remarks: >-
+    <p>
+
+    This strategy extends basic GPU placement with ring kernel-specific optimizations:
+
+    - **Queue Depth Tracking**: Monitors ring kernel message queue utilization
+
+    - **Device Affinity**: Collocates related grains on the same GPU for P2P messaging
+
+    - **Compute Unit Awareness**: Tracks actual GPU compute utilization
+
+    - **Dynamic Load Balancing**: Rebalances grains when GPUs become overloaded
+
+    </p>
+
+    <p>
+
+    Placement scoring algorithm:
+
+    <pre><code class="lang-csharp">Score = (AvailableMemoryRatio × 0.3) +
+            ((1 - QueueUtilization) × 0.4) +
+            ((1 - ComputeUtilization) × 0.3)</code></pre>
+    Higher scores indicate better placement targets.
+
+    </p>
+  example: []
+  syntax:
+    content: >-
+      [Serializable]
+
+      [GenerateSerializer]
+
+      public sealed class GpuNativePlacementStrategy : PlacementStrategy
+    content.vb: >-
+      <Serializable>
+
+      <GenerateSerializer>
+
+      Public NotInheritable Class GpuNativePlacementStrategy Inherits PlacementStrategy
+  inheritance:
+  - System.Object
+  - Orleans.Runtime.PlacementStrategy
+  inheritedMembers:
+  - Orleans.Runtime.PlacementStrategy.Initialize(Orleans.Metadata.GrainProperties)
+  - Orleans.Runtime.PlacementStrategy.PopulateGrainProperties(System.IServiceProvider,System.Type,Orleans.Runtime.GrainType,System.Collections.Generic.Dictionary{System.String,System.String})
+  - Orleans.Runtime.PlacementStrategy.IsUsingGrainDirectory
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  attributes:
+  - type: System.SerializableAttribute
+    ctor: System.SerializableAttribute.#ctor
+    arguments: []
+  - type: Orleans.GenerateSerializerAttribute
+    ctor: Orleans.GenerateSerializerAttribute.#ctor
+    arguments: []
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.Instance
+  commentId: P:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.Instance
+  id: Instance
+  parent: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy
+  langs:
+  - csharp
+  - vb
+  name: Instance
+  nameWithType: GpuNativePlacementStrategy.Instance
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.Instance
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementStrategy.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Instance
+    path: ../src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementStrategy.cs
+    startLine: 37
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Placement
+  summary: Singleton instance for GPU-native placement.
+  example: []
+  syntax:
+    content: public static GpuNativePlacementStrategy Instance { get; }
+    parameters: []
+    return:
+      type: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy
+    content.vb: Public Shared ReadOnly Property Instance As GpuNativePlacementStrategy
+  overload: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.Instance*
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MinimumGpuMemoryMB
+  commentId: P:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MinimumGpuMemoryMB
+  id: MinimumGpuMemoryMB
+  parent: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy
+  langs:
+  - csharp
+  - vb
+  name: MinimumGpuMemoryMB
+  nameWithType: GpuNativePlacementStrategy.MinimumGpuMemoryMB
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MinimumGpuMemoryMB
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementStrategy.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MinimumGpuMemoryMB
+    path: ../src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementStrategy.cs
+    startLine: 42
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Placement
+  summary: Minimum GPU memory required (MB).
+  example: []
+  syntax:
+    content: >-
+      [Id(0)]
+
+      public int MinimumGpuMemoryMB { get; init; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: >-
+      <Id(0)>
+
+      Public Property MinimumGpuMemoryMB As Integer
+  overload: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MinimumGpuMemoryMB*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "0"
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MaxQueueUtilization
+  commentId: P:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MaxQueueUtilization
+  id: MaxQueueUtilization
+  parent: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy
+  langs:
+  - csharp
+  - vb
+  name: MaxQueueUtilization
+  nameWithType: GpuNativePlacementStrategy.MaxQueueUtilization
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MaxQueueUtilization
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementStrategy.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MaxQueueUtilization
+    path: ../src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementStrategy.cs
+    startLine: 52
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Placement
+  summary: Maximum ring kernel queue depth utilization (0.0 - 1.0).
+  remarks: >-
+    Grains won't be placed on GPUs where queue utilization exceeds this threshold.
+
+    Default: 0.8 (80% full).
+  example: []
+  syntax:
+    content: >-
+      [Id(1)]
+
+      public double MaxQueueUtilization { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: >-
+      <Id(1)>
+
+      Public Property MaxQueueUtilization As Double
+  overload: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MaxQueueUtilization*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "1"
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MaxComputeUtilization
+  commentId: P:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MaxComputeUtilization
+  id: MaxComputeUtilization
+  parent: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy
+  langs:
+  - csharp
+  - vb
+  name: MaxComputeUtilization
+  nameWithType: GpuNativePlacementStrategy.MaxComputeUtilization
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MaxComputeUtilization
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementStrategy.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MaxComputeUtilization
+    path: ../src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementStrategy.cs
+    startLine: 62
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Placement
+  summary: Maximum GPU compute utilization (0.0 - 1.0).
+  remarks: >-
+    Grains won't be placed on GPUs where compute utilization exceeds this threshold.
+
+    Default: 0.9 (90% busy).
+  example: []
+  syntax:
+    content: >-
+      [Id(2)]
+
+      public double MaxComputeUtilization { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: >-
+      <Id(2)>
+
+      Public Property MaxComputeUtilization As Double
+  overload: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MaxComputeUtilization*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "2"
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.AffinityGroupId
+  commentId: P:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.AffinityGroupId
+  id: AffinityGroupId
+  parent: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy
+  langs:
+  - csharp
+  - vb
+  name: AffinityGroupId
+  nameWithType: GpuNativePlacementStrategy.AffinityGroupId
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.AffinityGroupId
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementStrategy.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AffinityGroupId
+    path: ../src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementStrategy.cs
+    startLine: 73
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Placement
+  summary: Device affinity group ID for collocating related grains.
+  remarks: >-
+    Grains with the same affinity group will be placed on the same GPU when possible.
+
+    This enables efficient P2P messaging without PCIe transfers.
+
+    Default: null (no affinity).
+  example: []
+  syntax:
+    content: >-
+      [Id(3)]
+
+      public string? AffinityGroupId { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <Id(3)>
+
+      Public Property AffinityGroupId As String
+  overload: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.AffinityGroupId*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "3"
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.PreferLocalGpu
+  commentId: P:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.PreferLocalGpu
+  id: PreferLocalGpu
+  parent: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy
+  langs:
+  - csharp
+  - vb
+  name: PreferLocalGpu
+  nameWithType: GpuNativePlacementStrategy.PreferLocalGpu
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.PreferLocalGpu
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementStrategy.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: PreferLocalGpu
+    path: ../src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementStrategy.cs
+    startLine: 83
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Placement
+  summary: Prefer local GPU even if remote GPUs have better scores.
+  remarks: >-
+    Reduces network latency at the cost of potentially suboptimal GPU utilization.
+
+    Default: false.
+  example: []
+  syntax:
+    content: >-
+      [Id(4)]
+
+      public bool PreferLocalGpu { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: >-
+      <Id(4)>
+
+      Public Property PreferLocalGpu As Boolean
+  overload: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.PreferLocalGpu*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "4"
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.EnableDynamicRebalancing
+  commentId: P:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.EnableDynamicRebalancing
+  id: EnableDynamicRebalancing
+  parent: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy
+  langs:
+  - csharp
+  - vb
+  name: EnableDynamicRebalancing
+  nameWithType: GpuNativePlacementStrategy.EnableDynamicRebalancing
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.EnableDynamicRebalancing
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementStrategy.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: EnableDynamicRebalancing
+    path: ../src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementStrategy.cs
+    startLine: 93
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Placement
+  summary: Enable dynamic rebalancing when GPU load becomes skewed.
+  remarks: >-
+    When enabled, grains may be migrated between GPUs to maintain balanced load.
+
+    Default: true.
+  example: []
+  syntax:
+    content: >-
+      [Id(5)]
+
+      public bool EnableDynamicRebalancing { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: >-
+      <Id(5)>
+
+      Public Property EnableDynamicRebalancing As Boolean
+  overload: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.EnableDynamicRebalancing*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "5"
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MinimumPlacementScore
+  commentId: P:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MinimumPlacementScore
+  id: MinimumPlacementScore
+  parent: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy
+  langs:
+  - csharp
+  - vb
+  name: MinimumPlacementScore
+  nameWithType: GpuNativePlacementStrategy.MinimumPlacementScore
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MinimumPlacementScore
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementStrategy.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MinimumPlacementScore
+    path: ../src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementStrategy.cs
+    startLine: 103
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Placement
+  summary: Minimum placement score to consider a GPU viable (0.0 - 1.0).
+  remarks: >-
+    GPUs with scores below this threshold will be excluded from placement.
+
+    Default: 0.2 (20% score).
+  example: []
+  syntax:
+    content: >-
+      [Id(6)]
+
+      public double MinimumPlacementScore { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: >-
+      <Id(6)>
+
+      Public Property MinimumPlacementScore As Double
+  overload: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MinimumPlacementScore*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "6"
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MemoryWeight
+  commentId: P:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MemoryWeight
+  id: MemoryWeight
+  parent: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy
+  langs:
+  - csharp
+  - vb
+  name: MemoryWeight
+  nameWithType: GpuNativePlacementStrategy.MemoryWeight
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MemoryWeight
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementStrategy.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MemoryWeight
+    path: ../src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementStrategy.cs
+    startLine: 109
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Placement
+  summary: Weight for memory availability in placement score.
+  example: []
+  syntax:
+    content: >-
+      [Id(7)]
+
+      public double MemoryWeight { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: >-
+      <Id(7)>
+
+      Public Property MemoryWeight As Double
+  overload: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MemoryWeight*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "7"
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.QueueWeight
+  commentId: P:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.QueueWeight
+  id: QueueWeight
+  parent: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy
+  langs:
+  - csharp
+  - vb
+  name: QueueWeight
+  nameWithType: GpuNativePlacementStrategy.QueueWeight
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.QueueWeight
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementStrategy.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: QueueWeight
+    path: ../src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementStrategy.cs
+    startLine: 115
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Placement
+  summary: Weight for queue utilization in placement score.
+  example: []
+  syntax:
+    content: >-
+      [Id(8)]
+
+      public double QueueWeight { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: >-
+      <Id(8)>
+
+      Public Property QueueWeight As Double
+  overload: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.QueueWeight*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "8"
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.ComputeWeight
+  commentId: P:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.ComputeWeight
+  id: ComputeWeight
+  parent: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy
+  langs:
+  - csharp
+  - vb
+  name: ComputeWeight
+  nameWithType: GpuNativePlacementStrategy.ComputeWeight
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.ComputeWeight
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementStrategy.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ComputeWeight
+    path: ../src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementStrategy.cs
+    startLine: 121
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Placement
+  summary: Weight for compute utilization in placement score.
+  example: []
+  syntax:
+    content: >-
+      [Id(9)]
+
+      public double ComputeWeight { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: >-
+      <Id(9)>
+
+      Public Property ComputeWeight As Double
+  overload: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.ComputeWeight*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "9"
+references:
+- uid: Orleans.GpuBridge.Runtime.Placement
+  commentId: N:Orleans.GpuBridge.Runtime.Placement
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Placement
+  nameWithType: Orleans.GpuBridge.Runtime.Placement
+  fullName: Orleans.GpuBridge.Runtime.Placement
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Placement
+    name: Placement
+    href: Orleans.GpuBridge.Runtime.Placement.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Placement
+    name: Placement
+    href: Orleans.GpuBridge.Runtime.Placement.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Orleans.Runtime.PlacementStrategy
+  commentId: T:Orleans.Runtime.PlacementStrategy
+  parent: Orleans.Runtime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.runtime.placementstrategy
+  name: PlacementStrategy
+  nameWithType: PlacementStrategy
+  fullName: Orleans.Runtime.PlacementStrategy
+- uid: Orleans.Runtime.PlacementStrategy.Initialize(Orleans.Metadata.GrainProperties)
+  commentId: M:Orleans.Runtime.PlacementStrategy.Initialize(Orleans.Metadata.GrainProperties)
+  parent: Orleans.Runtime.PlacementStrategy
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.runtime.placementstrategy.initialize
+  name: Initialize(GrainProperties)
+  nameWithType: PlacementStrategy.Initialize(GrainProperties)
+  fullName: Orleans.Runtime.PlacementStrategy.Initialize(Orleans.Metadata.GrainProperties)
+  spec.csharp:
+  - uid: Orleans.Runtime.PlacementStrategy.Initialize(Orleans.Metadata.GrainProperties)
+    name: Initialize
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.placementstrategy.initialize
+  - name: (
+  - uid: Orleans.Metadata.GrainProperties
+    name: GrainProperties
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.metadata.grainproperties
+  - name: )
+  spec.vb:
+  - uid: Orleans.Runtime.PlacementStrategy.Initialize(Orleans.Metadata.GrainProperties)
+    name: Initialize
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.placementstrategy.initialize
+  - name: (
+  - uid: Orleans.Metadata.GrainProperties
+    name: GrainProperties
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.metadata.grainproperties
+  - name: )
+- uid: Orleans.Runtime.PlacementStrategy.PopulateGrainProperties(System.IServiceProvider,System.Type,Orleans.Runtime.GrainType,System.Collections.Generic.Dictionary{System.String,System.String})
+  commentId: M:Orleans.Runtime.PlacementStrategy.PopulateGrainProperties(System.IServiceProvider,System.Type,Orleans.Runtime.GrainType,System.Collections.Generic.Dictionary{System.String,System.String})
+  parent: Orleans.Runtime.PlacementStrategy
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.runtime.placementstrategy.populategrainproperties
+  name: PopulateGrainProperties(IServiceProvider, Type, GrainType, Dictionary<string, string>)
+  nameWithType: PlacementStrategy.PopulateGrainProperties(IServiceProvider, Type, GrainType, Dictionary<string, string>)
+  fullName: Orleans.Runtime.PlacementStrategy.PopulateGrainProperties(System.IServiceProvider, System.Type, Orleans.Runtime.GrainType, System.Collections.Generic.Dictionary<string, string>)
+  nameWithType.vb: PlacementStrategy.PopulateGrainProperties(IServiceProvider, Type, GrainType, Dictionary(Of String, String))
+  fullName.vb: Orleans.Runtime.PlacementStrategy.PopulateGrainProperties(System.IServiceProvider, System.Type, Orleans.Runtime.GrainType, System.Collections.Generic.Dictionary(Of String, String))
+  name.vb: PopulateGrainProperties(IServiceProvider, Type, GrainType, Dictionary(Of String, String))
+  spec.csharp:
+  - uid: Orleans.Runtime.PlacementStrategy.PopulateGrainProperties(System.IServiceProvider,System.Type,Orleans.Runtime.GrainType,System.Collections.Generic.Dictionary{System.String,System.String})
+    name: PopulateGrainProperties
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.placementstrategy.populategrainproperties
+  - name: (
+  - uid: System.IServiceProvider
+    name: IServiceProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: Orleans.Runtime.GrainType
+    name: GrainType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.graintype
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: Orleans.Runtime.PlacementStrategy.PopulateGrainProperties(System.IServiceProvider,System.Type,Orleans.Runtime.GrainType,System.Collections.Generic.Dictionary{System.String,System.String})
+    name: PopulateGrainProperties
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.placementstrategy.populategrainproperties
+  - name: (
+  - uid: System.IServiceProvider
+    name: IServiceProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: Orleans.Runtime.GrainType
+    name: GrainType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.graintype
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: Orleans.Runtime.PlacementStrategy.IsUsingGrainDirectory
+  commentId: P:Orleans.Runtime.PlacementStrategy.IsUsingGrainDirectory
+  parent: Orleans.Runtime.PlacementStrategy
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.runtime.placementstrategy.isusinggraindirectory
+  name: IsUsingGrainDirectory
+  nameWithType: PlacementStrategy.IsUsingGrainDirectory
+  fullName: Orleans.Runtime.PlacementStrategy.IsUsingGrainDirectory
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.Runtime
+  commentId: N:Orleans.Runtime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans
+  name: Orleans.Runtime
+  nameWithType: Orleans.Runtime
+  fullName: Orleans.Runtime
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans
+  - name: .
+  - uid: Orleans.Runtime
+    name: Runtime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans
+  - name: .
+  - uid: Orleans.Runtime
+    name: Runtime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.Instance*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.Instance
+  href: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.html#Orleans_GpuBridge_Runtime_Placement_GpuNativePlacementStrategy_Instance
+  name: Instance
+  nameWithType: GpuNativePlacementStrategy.Instance
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.Instance
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy
+  commentId: T:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy
+  parent: Orleans.GpuBridge.Runtime.Placement
+  href: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.html
+  name: GpuNativePlacementStrategy
+  nameWithType: GpuNativePlacementStrategy
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MinimumGpuMemoryMB*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MinimumGpuMemoryMB
+  href: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.html#Orleans_GpuBridge_Runtime_Placement_GpuNativePlacementStrategy_MinimumGpuMemoryMB
+  name: MinimumGpuMemoryMB
+  nameWithType: GpuNativePlacementStrategy.MinimumGpuMemoryMB
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MinimumGpuMemoryMB
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MaxQueueUtilization*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MaxQueueUtilization
+  href: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.html#Orleans_GpuBridge_Runtime_Placement_GpuNativePlacementStrategy_MaxQueueUtilization
+  name: MaxQueueUtilization
+  nameWithType: GpuNativePlacementStrategy.MaxQueueUtilization
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MaxQueueUtilization
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MaxComputeUtilization*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MaxComputeUtilization
+  href: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.html#Orleans_GpuBridge_Runtime_Placement_GpuNativePlacementStrategy_MaxComputeUtilization
+  name: MaxComputeUtilization
+  nameWithType: GpuNativePlacementStrategy.MaxComputeUtilization
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MaxComputeUtilization
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.AffinityGroupId*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.AffinityGroupId
+  href: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.html#Orleans_GpuBridge_Runtime_Placement_GpuNativePlacementStrategy_AffinityGroupId
+  name: AffinityGroupId
+  nameWithType: GpuNativePlacementStrategy.AffinityGroupId
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.AffinityGroupId
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.PreferLocalGpu*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.PreferLocalGpu
+  href: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.html#Orleans_GpuBridge_Runtime_Placement_GpuNativePlacementStrategy_PreferLocalGpu
+  name: PreferLocalGpu
+  nameWithType: GpuNativePlacementStrategy.PreferLocalGpu
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.PreferLocalGpu
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.EnableDynamicRebalancing*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.EnableDynamicRebalancing
+  href: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.html#Orleans_GpuBridge_Runtime_Placement_GpuNativePlacementStrategy_EnableDynamicRebalancing
+  name: EnableDynamicRebalancing
+  nameWithType: GpuNativePlacementStrategy.EnableDynamicRebalancing
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.EnableDynamicRebalancing
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MinimumPlacementScore*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MinimumPlacementScore
+  href: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.html#Orleans_GpuBridge_Runtime_Placement_GpuNativePlacementStrategy_MinimumPlacementScore
+  name: MinimumPlacementScore
+  nameWithType: GpuNativePlacementStrategy.MinimumPlacementScore
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MinimumPlacementScore
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MemoryWeight*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MemoryWeight
+  href: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.html#Orleans_GpuBridge_Runtime_Placement_GpuNativePlacementStrategy_MemoryWeight
+  name: MemoryWeight
+  nameWithType: GpuNativePlacementStrategy.MemoryWeight
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.MemoryWeight
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.QueueWeight*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.QueueWeight
+  href: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.html#Orleans_GpuBridge_Runtime_Placement_GpuNativePlacementStrategy_QueueWeight
+  name: QueueWeight
+  nameWithType: GpuNativePlacementStrategy.QueueWeight
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.QueueWeight
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.ComputeWeight*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.ComputeWeight
+  href: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.html#Orleans_GpuBridge_Runtime_Placement_GpuNativePlacementStrategy_ComputeWeight
+  name: ComputeWeight
+  nameWithType: GpuNativePlacementStrategy.ComputeWeight
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementStrategy.ComputeWeight

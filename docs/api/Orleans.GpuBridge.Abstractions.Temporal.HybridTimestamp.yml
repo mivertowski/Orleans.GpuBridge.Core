@@ -1,0 +1,1598 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  id: HybridTimestamp
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  children:
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.#ctor(System.Int64,System.Int64,System.UInt16)
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.CompareTo(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Equals(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Equals(System.Object)
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.FromInt64(System.Int64,System.UInt16)
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.GetCurrentPhysicalTimeNanos
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.GetHashCode
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Increment(System.Int64)
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.LogicalCounter
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.NodeId
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Now(System.UInt16)
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.PhysicalTime
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.ToInt64
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.ToString
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Update(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,System.Int64)
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_Equality(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_GreaterThan(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_GreaterThanOrEqual(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_Inequality(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_LessThan(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  - Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_LessThanOrEqual(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  langs:
+  - csharp
+  - vb
+  name: HybridTimestamp
+  nameWithType: HybridTimestamp
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  type: Struct
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: HybridTimestamp
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+    startLine: 17
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: >-
+    Hybrid Logical Clock timestamp combining physical time and logical counter.
+
+    Provides happens-before ordering for distributed events.
+  remarks: >-
+    HLC timestamps ensure:
+
+    1. Monotonicity: Timestamps never decrease for an actor
+
+    2. Causality: If event A happens-before event B, then HLC(A) &lt; HLC(B)
+
+    3. Physical time approximation: HLC tracks physical time closely
+  example: []
+  syntax:
+    content: >-
+      [GenerateSerializer]
+
+      [Immutable]
+
+      public readonly struct HybridTimestamp : IComparable<HybridTimestamp>, IEquatable<HybridTimestamp>
+    content.vb: >-
+      <GenerateSerializer>
+
+      <Immutable>
+
+      Public Structure HybridTimestamp Implements IComparable(Of HybridTimestamp), IEquatable(Of HybridTimestamp)
+  implements:
+  - System.IComparable{Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp}
+  - System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp}
+  inheritedMembers:
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  attributes:
+  - type: Orleans.GenerateSerializerAttribute
+    ctor: Orleans.GenerateSerializerAttribute.#ctor
+    arguments: []
+  - type: Orleans.ImmutableAttribute
+    ctor: Orleans.ImmutableAttribute.#ctor
+    arguments: []
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.PhysicalTime
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.PhysicalTime
+  id: PhysicalTime
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  langs:
+  - csharp
+  - vb
+  name: PhysicalTime
+  nameWithType: HybridTimestamp.PhysicalTime
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.PhysicalTime
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: PhysicalTime
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+    startLine: 25
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Physical time component in nanoseconds since Unix epoch.
+  example: []
+  syntax:
+    content: >-
+      [Id(0)]
+
+      public long PhysicalTime { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: >-
+      <Id(0)>
+
+      Public Property PhysicalTime As Long
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.PhysicalTime*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "0"
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.LogicalCounter
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.LogicalCounter
+  id: LogicalCounter
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  langs:
+  - csharp
+  - vb
+  name: LogicalCounter
+  nameWithType: HybridTimestamp.LogicalCounter
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.LogicalCounter
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: LogicalCounter
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+    startLine: 31
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Logical counter for events occurring at the same physical time.
+  example: []
+  syntax:
+    content: >-
+      [Id(1)]
+
+      public long LogicalCounter { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: >-
+      <Id(1)>
+
+      Public Property LogicalCounter As Long
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.LogicalCounter*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "1"
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.NodeId
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.NodeId
+  id: NodeId
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  langs:
+  - csharp
+  - vb
+  name: NodeId
+  nameWithType: HybridTimestamp.NodeId
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.NodeId
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: NodeId
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+    startLine: 37
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Node identifier for tie-breaking concurrent events (optional).
+  example: []
+  syntax:
+    content: >-
+      [Id(2)]
+
+      public ushort NodeId { get; init; }
+    parameters: []
+    return:
+      type: System.UInt16
+    content.vb: >-
+      <Id(2)>
+
+      Public Property NodeId As UShort
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.NodeId*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "2"
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.#ctor(System.Int64,System.Int64,System.UInt16)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.#ctor(System.Int64,System.Int64,System.UInt16)
+  id: '#ctor(System.Int64,System.Int64,System.UInt16)'
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  langs:
+  - csharp
+  - vb
+  name: HybridTimestamp(long, long, ushort)
+  nameWithType: HybridTimestamp.HybridTimestamp(long, long, ushort)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.HybridTimestamp(long, long, ushort)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+    startLine: 43
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Creates a new HLC timestamp.
+  example: []
+  syntax:
+    content: public HybridTimestamp(long physicalTime, long logicalCounter, ushort nodeId = 0)
+    parameters:
+    - id: physicalTime
+      type: System.Int64
+    - id: logicalCounter
+      type: System.Int64
+    - id: nodeId
+      type: System.UInt16
+    content.vb: Public Sub New(physicalTime As Long, logicalCounter As Long, nodeId As UShort = 0)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.#ctor*
+  nameWithType.vb: HybridTimestamp.New(Long, Long, UShort)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.New(Long, Long, UShort)
+  name.vb: New(Long, Long, UShort)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Now(System.UInt16)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Now(System.UInt16)
+  id: Now(System.UInt16)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  langs:
+  - csharp
+  - vb
+  name: Now(ushort)
+  nameWithType: HybridTimestamp.Now(ushort)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Now(ushort)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Now
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+    startLine: 53
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Creates an HLC timestamp from current system time.
+  example: []
+  syntax:
+    content: public static HybridTimestamp Now(ushort nodeId = 0)
+    parameters:
+    - id: nodeId
+      type: System.UInt16
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    content.vb: Public Shared Function Now(nodeId As UShort = 0) As HybridTimestamp
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Now*
+  nameWithType.vb: HybridTimestamp.Now(UShort)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Now(UShort)
+  name.vb: Now(UShort)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.GetCurrentPhysicalTimeNanos
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.GetCurrentPhysicalTimeNanos
+  id: GetCurrentPhysicalTimeNanos
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  langs:
+  - csharp
+  - vb
+  name: GetCurrentPhysicalTimeNanos()
+  nameWithType: HybridTimestamp.GetCurrentPhysicalTimeNanos()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.GetCurrentPhysicalTimeNanos()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetCurrentPhysicalTimeNanos
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+    startLine: 63
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Gets current physical time in nanoseconds since Unix epoch.
+  example: []
+  syntax:
+    content: public static long GetCurrentPhysicalTimeNanos()
+    return:
+      type: System.Int64
+    content.vb: Public Shared Function GetCurrentPhysicalTimeNanos() As Long
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.GetCurrentPhysicalTimeNanos*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Update(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,System.Int64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Update(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,System.Int64)
+  id: Update(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,System.Int64)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  langs:
+  - csharp
+  - vb
+  name: Update(HybridTimestamp, HybridTimestamp, long)
+  nameWithType: HybridTimestamp.Update(HybridTimestamp, HybridTimestamp, long)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Update(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp, Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp, long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Update
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+    startLine: 76
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Updates HLC timestamp based on received timestamp (Lamport clock algorithm).
+  example: []
+  syntax:
+    content: public static HybridTimestamp Update(HybridTimestamp local, HybridTimestamp received, long physicalTime)
+    parameters:
+    - id: local
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+      description: Local HLC timestamp.
+    - id: received
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+      description: Received HLC timestamp from remote actor.
+    - id: physicalTime
+      type: System.Int64
+      description: Current physical time in nanoseconds.
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+      description: Updated HLC timestamp maintaining causal ordering.
+    content.vb: Public Shared Function Update(local As HybridTimestamp, received As HybridTimestamp, physicalTime As Long) As HybridTimestamp
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Update*
+  nameWithType.vb: HybridTimestamp.Update(HybridTimestamp, HybridTimestamp, Long)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Update(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp, Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp, Long)
+  name.vb: Update(HybridTimestamp, HybridTimestamp, Long)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Increment(System.Int64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Increment(System.Int64)
+  id: Increment(System.Int64)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  langs:
+  - csharp
+  - vb
+  name: Increment(long)
+  nameWithType: HybridTimestamp.Increment(long)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Increment(long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Increment
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+    startLine: 112
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Increments the logical counter for a local event.
+  example: []
+  syntax:
+    content: public HybridTimestamp Increment(long physicalTime)
+    parameters:
+    - id: physicalTime
+      type: System.Int64
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    content.vb: Public Function Increment(physicalTime As Long) As HybridTimestamp
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Increment*
+  nameWithType.vb: HybridTimestamp.Increment(Long)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Increment(Long)
+  name.vb: Increment(Long)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.CompareTo(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.CompareTo(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  id: CompareTo(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  langs:
+  - csharp
+  - vb
+  name: CompareTo(HybridTimestamp)
+  nameWithType: HybridTimestamp.CompareTo(HybridTimestamp)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.CompareTo(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CompareTo
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+    startLine: 134
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Compares two HLC timestamps for happens-before ordering.
+  example: []
+  syntax:
+    content: public int CompareTo(HybridTimestamp other)
+    parameters:
+    - id: other
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    return:
+      type: System.Int32
+      description: >-
+        -1 if this &lt; other (this happens-before other)
+
+        0 if this == other (concurrent or same event)
+
+        1 if this &gt; other (other happens-before this)
+    content.vb: Public Function CompareTo(other As HybridTimestamp) As Integer
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.CompareTo*
+  implements:
+  - System.IComparable{Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp}.CompareTo(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Equals(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Equals(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  id: Equals(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  langs:
+  - csharp
+  - vb
+  name: Equals(HybridTimestamp)
+  nameWithType: HybridTimestamp.Equals(HybridTimestamp)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Equals(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Equals
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+    startLine: 151
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Indicates whether the current object is equal to another object of the same type.
+  example: []
+  syntax:
+    content: public bool Equals(HybridTimestamp other)
+    parameters:
+    - id: other
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+      description: An object to compare with this object.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the current object is equal to the <code class="paramref">other</code> parameter; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Public Function Equals(other As HybridTimestamp) As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Equals*
+  implements:
+  - System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp}.Equals(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Equals(System.Object)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Equals(System.Object)
+  id: Equals(System.Object)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  langs:
+  - csharp
+  - vb
+  name: Equals(object?)
+  nameWithType: HybridTimestamp.Equals(object?)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Equals(object?)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Equals
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+    startLine: 157
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Indicates whether this instance and a specified object are equal.
+  example: []
+  syntax:
+    content: public override bool Equals(object? obj)
+    parameters:
+    - id: obj
+      type: System.Object
+      description: The object to compare with the current instance.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if <code class="paramref">obj</code> and this instance are the same type and represent the same value; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Public Overrides Function Equals(obj As Object) As Boolean
+  overridden: System.ValueType.Equals(System.Object)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Equals*
+  nameWithType.vb: HybridTimestamp.Equals(Object)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Equals(Object)
+  name.vb: Equals(Object)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.GetHashCode
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.GetHashCode
+  id: GetHashCode
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  langs:
+  - csharp
+  - vb
+  name: GetHashCode()
+  nameWithType: HybridTimestamp.GetHashCode()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.GetHashCode()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetHashCode
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+    startLine: 160
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Returns the hash code for this instance.
+  example: []
+  syntax:
+    content: public override int GetHashCode()
+    return:
+      type: System.Int32
+      description: A 32-bit signed integer that is the hash code for this instance.
+    content.vb: Public Overrides Function GetHashCode() As Integer
+  overridden: System.ValueType.GetHashCode
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.GetHashCode*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.ToString
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.ToString
+  id: ToString
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: HybridTimestamp.ToString()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.ToString()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ToString
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+    startLine: 164
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Returns the fully qualified type name of this instance.
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+      description: The fully qualified type name.
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.ValueType.ToString
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.ToString*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_Equality(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_Equality(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  id: op_Equality(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  langs:
+  - csharp
+  - vb
+  name: operator ==(HybridTimestamp, HybridTimestamp)
+  nameWithType: HybridTimestamp.operator ==(HybridTimestamp, HybridTimestamp)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.operator ==(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp, Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  type: Operator
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: op_Equality
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+    startLine: 167
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  syntax:
+    content: public static bool operator ==(HybridTimestamp left, HybridTimestamp right)
+    parameters:
+    - id: left
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    - id: right
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Operator =(left As HybridTimestamp, right As HybridTimestamp) As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_Equality*
+  nameWithType.vb: HybridTimestamp.=(HybridTimestamp, HybridTimestamp)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.=(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp, Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  name.vb: =(HybridTimestamp, HybridTimestamp)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_Inequality(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_Inequality(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  id: op_Inequality(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  langs:
+  - csharp
+  - vb
+  name: operator !=(HybridTimestamp, HybridTimestamp)
+  nameWithType: HybridTimestamp.operator !=(HybridTimestamp, HybridTimestamp)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.operator !=(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp, Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  type: Operator
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: op_Inequality
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+    startLine: 170
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  syntax:
+    content: public static bool operator !=(HybridTimestamp left, HybridTimestamp right)
+    parameters:
+    - id: left
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    - id: right
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Operator <>(left As HybridTimestamp, right As HybridTimestamp) As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_Inequality*
+  nameWithType.vb: HybridTimestamp.<>(HybridTimestamp, HybridTimestamp)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.<>(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp, Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  name.vb: <>(HybridTimestamp, HybridTimestamp)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_LessThan(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_LessThan(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  id: op_LessThan(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  langs:
+  - csharp
+  - vb
+  name: operator <(HybridTimestamp, HybridTimestamp)
+  nameWithType: HybridTimestamp.operator <(HybridTimestamp, HybridTimestamp)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.operator <(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp, Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  type: Operator
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: op_LessThan
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+    startLine: 173
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  syntax:
+    content: public static bool operator <(HybridTimestamp left, HybridTimestamp right)
+    parameters:
+    - id: left
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    - id: right
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Operator <(left As HybridTimestamp, right As HybridTimestamp) As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_LessThan*
+  nameWithType.vb: HybridTimestamp.<(HybridTimestamp, HybridTimestamp)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.<(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp, Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  name.vb: <(HybridTimestamp, HybridTimestamp)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_LessThanOrEqual(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_LessThanOrEqual(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  id: op_LessThanOrEqual(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  langs:
+  - csharp
+  - vb
+  name: operator <=(HybridTimestamp, HybridTimestamp)
+  nameWithType: HybridTimestamp.operator <=(HybridTimestamp, HybridTimestamp)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.operator <=(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp, Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  type: Operator
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: op_LessThanOrEqual
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+    startLine: 176
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  syntax:
+    content: public static bool operator <=(HybridTimestamp left, HybridTimestamp right)
+    parameters:
+    - id: left
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    - id: right
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Operator <=(left As HybridTimestamp, right As HybridTimestamp) As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_LessThanOrEqual*
+  nameWithType.vb: HybridTimestamp.<=(HybridTimestamp, HybridTimestamp)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.<=(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp, Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  name.vb: <=(HybridTimestamp, HybridTimestamp)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_GreaterThan(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_GreaterThan(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  id: op_GreaterThan(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  langs:
+  - csharp
+  - vb
+  name: operator >(HybridTimestamp, HybridTimestamp)
+  nameWithType: HybridTimestamp.operator >(HybridTimestamp, HybridTimestamp)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.operator >(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp, Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  type: Operator
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: op_GreaterThan
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+    startLine: 179
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  syntax:
+    content: public static bool operator >(HybridTimestamp left, HybridTimestamp right)
+    parameters:
+    - id: left
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    - id: right
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Operator >(left As HybridTimestamp, right As HybridTimestamp) As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_GreaterThan*
+  nameWithType.vb: HybridTimestamp.>(HybridTimestamp, HybridTimestamp)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.>(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp, Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  name.vb: '>(HybridTimestamp, HybridTimestamp)'
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_GreaterThanOrEqual(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_GreaterThanOrEqual(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  id: op_GreaterThanOrEqual(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp,Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  langs:
+  - csharp
+  - vb
+  name: operator >=(HybridTimestamp, HybridTimestamp)
+  nameWithType: HybridTimestamp.operator >=(HybridTimestamp, HybridTimestamp)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.operator >=(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp, Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  type: Operator
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: op_GreaterThanOrEqual
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+    startLine: 182
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  syntax:
+    content: public static bool operator >=(HybridTimestamp left, HybridTimestamp right)
+    parameters:
+    - id: left
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    - id: right
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Operator >=(left As HybridTimestamp, right As HybridTimestamp) As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_GreaterThanOrEqual*
+  nameWithType.vb: HybridTimestamp.>=(HybridTimestamp, HybridTimestamp)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.>=(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp, Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  name.vb: '>=(HybridTimestamp, HybridTimestamp)'
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.ToInt64
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.ToInt64
+  id: ToInt64
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  langs:
+  - csharp
+  - vb
+  name: ToInt64()
+  nameWithType: HybridTimestamp.ToInt64()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.ToInt64()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ToInt64
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+    startLine: 190
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: >-
+    Converts this HLC timestamp to a 64-bit integer representation.
+
+    Uses physical time for the conversion, providing nanosecond precision.
+  example: []
+  syntax:
+    content: public long ToInt64()
+    return:
+      type: System.Int64
+      description: The physical time component in nanoseconds since Unix epoch.
+    content.vb: Public Function ToInt64() As Long
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.ToInt64*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.FromInt64(System.Int64,System.UInt16)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.FromInt64(System.Int64,System.UInt16)
+  id: FromInt64(System.Int64,System.UInt16)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  langs:
+  - csharp
+  - vb
+  name: FromInt64(long, ushort)
+  nameWithType: HybridTimestamp.FromInt64(long, ushort)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.FromInt64(long, ushort)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: FromInt64
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/HybridTimestamp.cs
+    startLine: 198
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Creates an HLC timestamp from a 64-bit integer representation.
+  example: []
+  syntax:
+    content: public static HybridTimestamp FromInt64(long value, ushort nodeId = 0)
+    parameters:
+    - id: value
+      type: System.Int64
+      description: Physical time in nanoseconds since Unix epoch.
+    - id: nodeId
+      type: System.UInt16
+      description: Optional node identifier for distributed ordering.
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+      description: A new HLC timestamp with the specified physical time.
+    content.vb: Public Shared Function FromInt64(value As Long, nodeId As UShort = 0) As HybridTimestamp
+  overload: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.FromInt64*
+  nameWithType.vb: HybridTimestamp.FromInt64(Long, UShort)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.FromInt64(Long, UShort)
+  name.vb: FromInt64(Long, UShort)
+references:
+- uid: Orleans.GpuBridge.Abstractions.Temporal
+  commentId: N:Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Temporal
+  nameWithType: Orleans.GpuBridge.Abstractions.Temporal
+  fullName: Orleans.GpuBridge.Abstractions.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+- uid: System.IComparable{Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp}
+  commentId: T:System.IComparable{Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp}
+  parent: System
+  definition: System.IComparable`1
+  href: https://learn.microsoft.com/dotnet/api/system.icomparable-1
+  name: IComparable<HybridTimestamp>
+  nameWithType: IComparable<HybridTimestamp>
+  fullName: System.IComparable<Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp>
+  nameWithType.vb: IComparable(Of HybridTimestamp)
+  fullName.vb: System.IComparable(Of Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  name.vb: IComparable(Of HybridTimestamp)
+  spec.csharp:
+  - uid: System.IComparable`1
+    name: IComparable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.icomparable-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    name: HybridTimestamp
+    href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IComparable`1
+    name: IComparable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.icomparable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    name: HybridTimestamp
+    href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html
+  - name: )
+- uid: System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp}
+  commentId: T:System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<HybridTimestamp>
+  nameWithType: IEquatable<HybridTimestamp>
+  fullName: System.IEquatable<Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp>
+  nameWithType.vb: IEquatable(Of HybridTimestamp)
+  fullName.vb: System.IEquatable(Of Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  name.vb: IEquatable(Of HybridTimestamp)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    name: HybridTimestamp
+    href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    name: HybridTimestamp
+    href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.IComparable`1
+  commentId: T:System.IComparable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.icomparable-1
+  name: IComparable<T>
+  nameWithType: IComparable<T>
+  fullName: System.IComparable<T>
+  nameWithType.vb: IComparable(Of T)
+  fullName.vb: System.IComparable(Of T)
+  name.vb: IComparable(Of T)
+  spec.csharp:
+  - uid: System.IComparable`1
+    name: IComparable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.icomparable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IComparable`1
+    name: IComparable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.icomparable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.PhysicalTime*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.PhysicalTime
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_PhysicalTime
+  name: PhysicalTime
+  nameWithType: HybridTimestamp.PhysicalTime
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.PhysicalTime
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.LogicalCounter*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.LogicalCounter
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_LogicalCounter
+  name: LogicalCounter
+  nameWithType: HybridTimestamp.LogicalCounter
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.LogicalCounter
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.NodeId*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.NodeId
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_NodeId
+  name: NodeId
+  nameWithType: HybridTimestamp.NodeId
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.NodeId
+- uid: System.UInt16
+  commentId: T:System.UInt16
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uint16
+  name: ushort
+  nameWithType: ushort
+  fullName: ushort
+  nameWithType.vb: UShort
+  fullName.vb: UShort
+  name.vb: UShort
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.#ctor
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp__ctor_System_Int64_System_Int64_System_UInt16_
+  name: HybridTimestamp
+  nameWithType: HybridTimestamp.HybridTimestamp
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.HybridTimestamp
+  nameWithType.vb: HybridTimestamp.New
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.New
+  name.vb: New
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Now*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Now
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_Now_System_UInt16_
+  name: Now
+  nameWithType: HybridTimestamp.Now
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Now
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html
+  name: HybridTimestamp
+  nameWithType: HybridTimestamp
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.GetCurrentPhysicalTimeNanos*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.GetCurrentPhysicalTimeNanos
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_GetCurrentPhysicalTimeNanos
+  name: GetCurrentPhysicalTimeNanos
+  nameWithType: HybridTimestamp.GetCurrentPhysicalTimeNanos
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.GetCurrentPhysicalTimeNanos
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Update*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Update
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_Update_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_System_Int64_
+  name: Update
+  nameWithType: HybridTimestamp.Update
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Update
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Increment*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Increment
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_Increment_System_Int64_
+  name: Increment
+  nameWithType: HybridTimestamp.Increment
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Increment
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.CompareTo*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.CompareTo
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_CompareTo_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_
+  name: CompareTo
+  nameWithType: HybridTimestamp.CompareTo
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.CompareTo
+- uid: System.IComparable{Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp}.CompareTo(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  commentId: M:System.IComparable{Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp}.CompareTo(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  parent: System.IComparable{Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp}
+  definition: System.IComparable`1.CompareTo(`0)
+  href: https://learn.microsoft.com/dotnet/api/system.icomparable-1.compareto
+  name: CompareTo(HybridTimestamp)
+  nameWithType: IComparable<HybridTimestamp>.CompareTo(HybridTimestamp)
+  fullName: System.IComparable<Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp>.CompareTo(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  nameWithType.vb: IComparable(Of HybridTimestamp).CompareTo(HybridTimestamp)
+  fullName.vb: System.IComparable(Of Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp).CompareTo(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  spec.csharp:
+  - uid: System.IComparable{Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp}.CompareTo(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+    name: CompareTo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.icomparable-1.compareto
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    name: HybridTimestamp
+    href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html
+  - name: )
+  spec.vb:
+  - uid: System.IComparable{Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp}.CompareTo(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+    name: CompareTo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.icomparable-1.compareto
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    name: HybridTimestamp
+    href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.IComparable`1.CompareTo(`0)
+  commentId: M:System.IComparable`1.CompareTo(`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.icomparable-1.compareto
+  name: CompareTo(T)
+  nameWithType: IComparable<T>.CompareTo(T)
+  fullName: System.IComparable<T>.CompareTo(T)
+  nameWithType.vb: IComparable(Of T).CompareTo(T)
+  fullName.vb: System.IComparable(Of T).CompareTo(T)
+  spec.csharp:
+  - uid: System.IComparable`1.CompareTo(`0)
+    name: CompareTo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.icomparable-1.compareto
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: System.IComparable`1.CompareTo(`0)
+    name: CompareTo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.icomparable-1.compareto
+  - name: (
+  - name: T
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Equals*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Equals
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_Equals_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_
+  name: Equals
+  nameWithType: HybridTimestamp.Equals
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.Equals
+- uid: System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp}.Equals(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  commentId: M:System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp}.Equals(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  parent: System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp}
+  definition: System.IEquatable`1.Equals(`0)
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  name: Equals(HybridTimestamp)
+  nameWithType: IEquatable<HybridTimestamp>.Equals(HybridTimestamp)
+  fullName: System.IEquatable<Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp>.Equals(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  nameWithType.vb: IEquatable(Of HybridTimestamp).Equals(HybridTimestamp)
+  fullName.vb: System.IEquatable(Of Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp).Equals(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+  spec.csharp:
+  - uid: System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp}.Equals(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    name: HybridTimestamp
+    href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html
+  - name: )
+  spec.vb:
+  - uid: System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp}.Equals(Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    name: HybridTimestamp
+    href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html
+  - name: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.IEquatable`1.Equals(`0)
+  commentId: M:System.IEquatable`1.Equals(`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  name: Equals(T)
+  nameWithType: IEquatable<T>.Equals(T)
+  fullName: System.IEquatable<T>.Equals(T)
+  nameWithType.vb: IEquatable(Of T).Equals(T)
+  fullName.vb: System.IEquatable(Of T).Equals(T)
+  spec.csharp:
+  - uid: System.IEquatable`1.Equals(`0)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: System.IEquatable`1.Equals(`0)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - name: T
+  - name: )
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.GetHashCode*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.GetHashCode
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_GetHashCode
+  name: GetHashCode
+  nameWithType: HybridTimestamp.GetHashCode
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.GetHashCode
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.ToString*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.ToString
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_ToString
+  name: ToString
+  nameWithType: HybridTimestamp.ToString
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_Equality*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_Equality
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_op_Equality_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_
+  name: operator ==
+  nameWithType: HybridTimestamp.operator ==
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.operator ==
+  nameWithType.vb: HybridTimestamp.=
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.=
+  name.vb: =
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_Equality*
+    name: ==
+    href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_op_Equality_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_Inequality*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_Inequality
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_op_Inequality_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_
+  name: operator !=
+  nameWithType: HybridTimestamp.operator !=
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.operator !=
+  nameWithType.vb: HybridTimestamp.<>
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.<>
+  name.vb: <>
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_Inequality*
+    name: '!='
+    href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_op_Inequality_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_LessThan*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_LessThan
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_op_LessThan_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_
+  name: operator <
+  nameWithType: HybridTimestamp.operator <
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.operator <
+  nameWithType.vb: HybridTimestamp.<
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.<
+  name.vb: <
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_LessThan*
+    name: <
+    href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_op_LessThan_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_LessThanOrEqual*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_LessThanOrEqual
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_op_LessThanOrEqual_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_
+  name: operator <=
+  nameWithType: HybridTimestamp.operator <=
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.operator <=
+  nameWithType.vb: HybridTimestamp.<=
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.<=
+  name.vb: <=
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_LessThanOrEqual*
+    name: <=
+    href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_op_LessThanOrEqual_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_GreaterThan*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_GreaterThan
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_op_GreaterThan_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_
+  name: operator >
+  nameWithType: HybridTimestamp.operator >
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.operator >
+  nameWithType.vb: HybridTimestamp.>
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.>
+  name.vb: '>'
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_GreaterThan*
+    name: '>'
+    href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_op_GreaterThan_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_GreaterThanOrEqual*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_GreaterThanOrEqual
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_op_GreaterThanOrEqual_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_
+  name: operator >=
+  nameWithType: HybridTimestamp.operator >=
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.operator >=
+  nameWithType.vb: HybridTimestamp.>=
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.>=
+  name.vb: '>='
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.op_GreaterThanOrEqual*
+    name: '>='
+    href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_op_GreaterThanOrEqual_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.ToInt64*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.ToInt64
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_ToInt64
+  name: ToInt64
+  nameWithType: HybridTimestamp.ToInt64
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.ToInt64
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.FromInt64*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.FromInt64
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html#Orleans_GpuBridge_Abstractions_Temporal_HybridTimestamp_FromInt64_System_Int64_System_UInt16_
+  name: FromInt64
+  nameWithType: HybridTimestamp.FromInt64
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.FromInt64

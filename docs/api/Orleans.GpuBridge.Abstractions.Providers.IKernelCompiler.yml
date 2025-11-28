@@ -1,0 +1,1154 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler
+  commentId: T:Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler
+  id: IKernelCompiler
+  parent: Orleans.GpuBridge.Abstractions.Providers
+  children:
+  - Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.ClearCache
+  - Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromAssemblyAsync(System.Reflection.Assembly,System.String,System.String,Orleans.GpuBridge.Abstractions.Models.Compilation.KernelCompilationOptions,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromMethodAsync(System.Reflection.MethodInfo,Orleans.GpuBridge.Abstractions.Models.Compilation.KernelCompilationOptions,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromSourceAsync(System.String,System.String,Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage,Orleans.GpuBridge.Abstractions.Models.Compilation.KernelCompilationOptions,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.GetDiagnosticsAsync(Orleans.GpuBridge.Abstractions.Models.CompiledKernel,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.ValidateMethodAsync(System.Reflection.MethodInfo,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: IKernelCompiler
+  nameWithType: IKernelCompiler
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler
+  type: Interface
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/IKernelCompiler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IKernelCompiler
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/IKernelCompiler.cs
+    startLine: 51
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: Defines the contract for GPU kernel compilation services.
+  remarks: >-
+    This interface abstracts the kernel compilation process across different GPU backends,
+
+    providing a unified API for compiling C# methods, source code, or assembly IL into
+
+    GPU-executable kernels. Implementations handle backend-specific compilation details
+
+    while maintaining consistent behavior across different GPU architectures and vendors.
+
+
+    <p>
+
+    The compiler interface supports multiple compilation paths:
+
+    - Direct C# method compilation with reflection
+
+    - Source code compilation from various GPU languages
+
+    - Assembly IL compilation for advanced scenarios
+
+    </p>
+
+
+    <p>
+
+    All compilation operations are asynchronous and support cancellation to handle
+
+    potentially long-running compilation processes, especially when aggressive
+
+    optimizations are enabled.
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// Compile a C# method to a GPU kernel
+
+    var compiler = serviceProvider.GetRequiredService&lt;IKernelCompiler&gt;();
+
+    var options = new KernelCompilationOptions(OptimizationLevel.O2);
+
+    var kernel = await compiler.CompileFromMethodAsync(methodInfo, options);
+
+
+    // Compile from CUDA source code
+
+    var cudaKernel = await compiler.CompileFromSourceAsync(
+        cudaCode, "vectorAdd", KernelLanguage.CUDA, options);
+
+    // Validate before compilation
+
+    var validation = await compiler.ValidateMethodAsync(methodInfo);
+
+    if (validation.IsValid)
+
+    {
+        var kernel = await compiler.CompileFromMethodAsync(methodInfo, options);
+    }</code></pre>
+  syntax:
+    content: public interface IKernelCompiler
+    content.vb: Public Interface IKernelCompiler
+- uid: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromMethodAsync(System.Reflection.MethodInfo,Orleans.GpuBridge.Abstractions.Models.Compilation.KernelCompilationOptions,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromMethodAsync(System.Reflection.MethodInfo,Orleans.GpuBridge.Abstractions.Models.Compilation.KernelCompilationOptions,System.Threading.CancellationToken)
+  id: CompileFromMethodAsync(System.Reflection.MethodInfo,Orleans.GpuBridge.Abstractions.Models.Compilation.KernelCompilationOptions,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler
+  langs:
+  - csharp
+  - vb
+  name: CompileFromMethodAsync(MethodInfo, KernelCompilationOptions, CancellationToken)
+  nameWithType: IKernelCompiler.CompileFromMethodAsync(MethodInfo, KernelCompilationOptions, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromMethodAsync(System.Reflection.MethodInfo, Orleans.GpuBridge.Abstractions.Models.Compilation.KernelCompilationOptions, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/IKernelCompiler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CompileFromMethodAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/IKernelCompiler.cs
+    startLine: 86
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: Compiles a GPU kernel from a C# method using reflection.
+  remarks: >-
+    This method analyzes the provided C# method and generates equivalent GPU code.
+
+    Not all C# constructs are supported in GPU kernels - use <xref href="Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.ValidateMethodAsync(System.Reflection.MethodInfo%2cSystem.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref>
+
+    to check compatibility before compilation.
+  example: []
+  syntax:
+    content: >-
+      [RequiresUnreferencedCode("Uses method validation which may not work with trimming.")]
+
+      Task<CompiledKernel> CompileFromMethodAsync(MethodInfo method, KernelCompilationOptions options, CancellationToken cancellationToken = default)
+    parameters:
+    - id: method
+      type: System.Reflection.MethodInfo
+      description: >-
+        The <xref href="System.Reflection.MethodInfo" data-throw-if-not-resolved="false"></xref> representing the C# method to compile.
+
+        The method should be static and follow GPU kernel conventions.
+      attributes:
+      - type: System.Diagnostics.CodeAnalysis.NotNullAttribute
+        ctor: System.Diagnostics.CodeAnalysis.NotNullAttribute.#ctor
+        arguments: []
+    - id: options
+      type: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelCompilationOptions
+      description: >-
+        Compilation options that control optimization level, debug information,
+
+        and other compilation behaviors.
+      attributes:
+      - type: System.Diagnostics.CodeAnalysis.NotNullAttribute
+        ctor: System.Diagnostics.CodeAnalysis.NotNullAttribute.#ctor
+        arguments: []
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: A cancellation token that can be used to cancel the compilation operation.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Models.CompiledKernel}
+      description: >-
+        A task that represents the asynchronous compilation operation.
+
+        The task result contains the compiled kernel if successful.
+    content.vb: >-
+      <RequiresUnreferencedCode("Uses method validation which may not work with trimming.")>
+
+      Function CompileFromMethodAsync(method As MethodInfo, options As KernelCompilationOptions, cancellationToken As CancellationToken = Nothing) As Task(Of CompiledKernel)
+  overload: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromMethodAsync*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown when <code class="paramref">method</code> or <code class="paramref">options</code> is null.
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: >-
+      Thrown when the method cannot be compiled as a GPU kernel due to
+
+      unsupported constructs or incompatible signature.
+  - type: System.OperationCanceledException
+    commentId: T:System.OperationCanceledException
+    description: Thrown when the compilation is cancelled via <code class="paramref">cancellationToken</code>.
+  attributes:
+  - type: System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute
+    ctor: System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: Uses method validation which may not work with trimming.
+- uid: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromSourceAsync(System.String,System.String,Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage,Orleans.GpuBridge.Abstractions.Models.Compilation.KernelCompilationOptions,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromSourceAsync(System.String,System.String,Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage,Orleans.GpuBridge.Abstractions.Models.Compilation.KernelCompilationOptions,System.Threading.CancellationToken)
+  id: CompileFromSourceAsync(System.String,System.String,Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage,Orleans.GpuBridge.Abstractions.Models.Compilation.KernelCompilationOptions,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler
+  langs:
+  - csharp
+  - vb
+  name: CompileFromSourceAsync(string, string, KernelLanguage, KernelCompilationOptions, CancellationToken)
+  nameWithType: IKernelCompiler.CompileFromSourceAsync(string, string, KernelLanguage, KernelCompilationOptions, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromSourceAsync(string, string, Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage, Orleans.GpuBridge.Abstractions.Models.Compilation.KernelCompilationOptions, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/IKernelCompiler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CompileFromSourceAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/IKernelCompiler.cs
+    startLine: 138
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: Compiles a GPU kernel from source code in a specified language.
+  remarks: >-
+    This method provides flexibility to compile kernels written in native GPU
+
+    languages like CUDA C, OpenCL C, or other supported languages. The availability
+
+    of specific languages depends on the backend implementation.
+  example: []
+  syntax:
+    content: Task<CompiledKernel> CompileFromSourceAsync(string sourceCode, string entryPoint, KernelLanguage language, KernelCompilationOptions options, CancellationToken cancellationToken = default)
+    parameters:
+    - id: sourceCode
+      type: System.String
+      description: The source code of the kernel in the specified language.
+      attributes:
+      - type: System.Diagnostics.CodeAnalysis.NotNullAttribute
+        ctor: System.Diagnostics.CodeAnalysis.NotNullAttribute.#ctor
+        arguments: []
+    - id: entryPoint
+      type: System.String
+      description: The name of the entry point function within the source code.
+      attributes:
+      - type: System.Diagnostics.CodeAnalysis.NotNullAttribute
+        ctor: System.Diagnostics.CodeAnalysis.NotNullAttribute.#ctor
+        arguments: []
+    - id: language
+      type: Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage
+      description: The programming language of the source code.
+    - id: options
+      type: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelCompilationOptions
+      description: >-
+        Compilation options that control optimization level, debug information,
+
+        and other compilation behaviors.
+      attributes:
+      - type: System.Diagnostics.CodeAnalysis.NotNullAttribute
+        ctor: System.Diagnostics.CodeAnalysis.NotNullAttribute.#ctor
+        arguments: []
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: A cancellation token that can be used to cancel the compilation operation.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Models.CompiledKernel}
+      description: >-
+        A task that represents the asynchronous compilation operation.
+
+        The task result contains the compiled kernel if successful.
+    content.vb: Function CompileFromSourceAsync(sourceCode As String, entryPoint As String, language As KernelLanguage, options As KernelCompilationOptions, cancellationToken As CancellationToken = Nothing) As Task(Of CompiledKernel)
+  overload: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromSourceAsync*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: >-
+      Thrown when <code class="paramref">sourceCode</code>, <code class="paramref">entryPoint</code>,
+
+      or <code class="paramref">options</code> is null.
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Thrown when <code class="paramref">sourceCode</code> or <code class="paramref">entryPoint</code> is empty.
+  - type: System.NotSupportedException
+    commentId: T:System.NotSupportedException
+    description: >-
+      Thrown when the specified <code class="paramref">language</code> is not supported
+
+      by the current backend.
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: >-
+      Thrown when the source code contains compilation errors or the entry point
+
+      cannot be found.
+  - type: System.OperationCanceledException
+    commentId: T:System.OperationCanceledException
+    description: Thrown when the compilation is cancelled via <code class="paramref">cancellationToken</code>.
+  nameWithType.vb: IKernelCompiler.CompileFromSourceAsync(String, String, KernelLanguage, KernelCompilationOptions, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromSourceAsync(String, String, Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage, Orleans.GpuBridge.Abstractions.Models.Compilation.KernelCompilationOptions, System.Threading.CancellationToken)
+  name.vb: CompileFromSourceAsync(String, String, KernelLanguage, KernelCompilationOptions, CancellationToken)
+- uid: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromAssemblyAsync(System.Reflection.Assembly,System.String,System.String,Orleans.GpuBridge.Abstractions.Models.Compilation.KernelCompilationOptions,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromAssemblyAsync(System.Reflection.Assembly,System.String,System.String,Orleans.GpuBridge.Abstractions.Models.Compilation.KernelCompilationOptions,System.Threading.CancellationToken)
+  id: CompileFromAssemblyAsync(System.Reflection.Assembly,System.String,System.String,Orleans.GpuBridge.Abstractions.Models.Compilation.KernelCompilationOptions,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler
+  langs:
+  - csharp
+  - vb
+  name: CompileFromAssemblyAsync(Assembly, string, string, KernelCompilationOptions, CancellationToken)
+  nameWithType: IKernelCompiler.CompileFromAssemblyAsync(Assembly, string, string, KernelCompilationOptions, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromAssemblyAsync(System.Reflection.Assembly, string, string, Orleans.GpuBridge.Abstractions.Models.Compilation.KernelCompilationOptions, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/IKernelCompiler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CompileFromAssemblyAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/IKernelCompiler.cs
+    startLine: 188
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: Compiles a GPU kernel from .NET assembly intermediate language (IL).
+  remarks: >-
+    This method enables compilation of kernels from pre-compiled assemblies,
+
+    which is useful for dynamic kernel loading scenarios or when working with
+
+    assemblies loaded at runtime. The method will be located using reflection
+
+    and compiled to GPU code.
+  example: []
+  syntax:
+    content: >-
+      [RequiresUnreferencedCode("Uses reflection to find types and methods which may be trimmed.")]
+
+      Task<CompiledKernel> CompileFromAssemblyAsync(Assembly assembly, string typeName, string methodName, KernelCompilationOptions options, CancellationToken cancellationToken = default)
+    parameters:
+    - id: assembly
+      type: System.Reflection.Assembly
+      description: The assembly containing the method to compile.
+      attributes:
+      - type: System.Diagnostics.CodeAnalysis.NotNullAttribute
+        ctor: System.Diagnostics.CodeAnalysis.NotNullAttribute.#ctor
+        arguments: []
+    - id: typeName
+      type: System.String
+      description: The full name of the type containing the kernel method.
+      attributes:
+      - type: System.Diagnostics.CodeAnalysis.NotNullAttribute
+        ctor: System.Diagnostics.CodeAnalysis.NotNullAttribute.#ctor
+        arguments: []
+    - id: methodName
+      type: System.String
+      description: The name of the method to compile as a kernel.
+      attributes:
+      - type: System.Diagnostics.CodeAnalysis.NotNullAttribute
+        ctor: System.Diagnostics.CodeAnalysis.NotNullAttribute.#ctor
+        arguments: []
+    - id: options
+      type: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelCompilationOptions
+      description: >-
+        Compilation options that control optimization level, debug information,
+
+        and other compilation behaviors.
+      attributes:
+      - type: System.Diagnostics.CodeAnalysis.NotNullAttribute
+        ctor: System.Diagnostics.CodeAnalysis.NotNullAttribute.#ctor
+        arguments: []
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: A cancellation token that can be used to cancel the compilation operation.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Models.CompiledKernel}
+      description: >-
+        A task that represents the asynchronous compilation operation.
+
+        The task result contains the compiled kernel if successful.
+    content.vb: >-
+      <RequiresUnreferencedCode("Uses reflection to find types and methods which may be trimmed.")>
+
+      Function CompileFromAssemblyAsync(assembly As Assembly, typeName As String, methodName As String, options As KernelCompilationOptions, cancellationToken As CancellationToken = Nothing) As Task(Of CompiledKernel)
+  overload: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromAssemblyAsync*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: >-
+      Thrown when <code class="paramref">assembly</code>, <code class="paramref">typeName</code>,
+
+      <code class="paramref">methodName</code>, or <code class="paramref">options</code> is null.
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Thrown when <code class="paramref">typeName</code> or <code class="paramref">methodName</code> is empty.
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: >-
+      Thrown when the specified type or method cannot be found in the assembly,
+
+      or the method cannot be compiled as a GPU kernel.
+  - type: System.OperationCanceledException
+    commentId: T:System.OperationCanceledException
+    description: Thrown when the compilation is cancelled via <code class="paramref">cancellationToken</code>.
+  attributes:
+  - type: System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute
+    ctor: System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: Uses reflection to find types and methods which may be trimmed.
+  nameWithType.vb: IKernelCompiler.CompileFromAssemblyAsync(Assembly, String, String, KernelCompilationOptions, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromAssemblyAsync(System.Reflection.Assembly, String, String, Orleans.GpuBridge.Abstractions.Models.Compilation.KernelCompilationOptions, System.Threading.CancellationToken)
+  name.vb: CompileFromAssemblyAsync(Assembly, String, String, KernelCompilationOptions, CancellationToken)
+- uid: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.ValidateMethodAsync(System.Reflection.MethodInfo,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.ValidateMethodAsync(System.Reflection.MethodInfo,System.Threading.CancellationToken)
+  id: ValidateMethodAsync(System.Reflection.MethodInfo,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler
+  langs:
+  - csharp
+  - vb
+  name: ValidateMethodAsync(MethodInfo, CancellationToken)
+  nameWithType: IKernelCompiler.ValidateMethodAsync(MethodInfo, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.ValidateMethodAsync(System.Reflection.MethodInfo, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/IKernelCompiler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ValidateMethodAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/IKernelCompiler.cs
+    startLine: 225
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: Validates whether a C# method can be successfully compiled as a GPU kernel.
+  remarks: >-
+    This method performs static analysis of the C# method to determine if it
+
+    can be successfully compiled to GPU code. It checks for unsupported language
+
+    constructs, invalid memory access patterns, and other compatibility issues.
+
+
+    <p>
+
+    Use this method before attempting compilation to provide better error messages
+
+    and avoid unnecessary compilation attempts for incompatible methods.
+
+    </p>
+  example: []
+  syntax:
+    content: >-
+      [RequiresUnreferencedCode("Uses method body analysis which may not work with trimming.")]
+
+      Task<KernelValidationResult> ValidateMethodAsync(MethodInfo method, CancellationToken cancellationToken = default)
+    parameters:
+    - id: method
+      type: System.Reflection.MethodInfo
+      description: The <xref href="System.Reflection.MethodInfo" data-throw-if-not-resolved="false"></xref> representing the C# method to validate.
+      attributes:
+      - type: System.Diagnostics.CodeAnalysis.NotNullAttribute
+        ctor: System.Diagnostics.CodeAnalysis.NotNullAttribute.#ctor
+        arguments: []
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: A cancellation token that can be used to cancel the validation operation.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult}
+      description: >-
+        A task that represents the asynchronous validation operation.
+
+        The task result contains validation results including any errors or warnings.
+    content.vb: >-
+      <RequiresUnreferencedCode("Uses method body analysis which may not work with trimming.")>
+
+      Function ValidateMethodAsync(method As MethodInfo, cancellationToken As CancellationToken = Nothing) As Task(Of KernelValidationResult)
+  overload: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.ValidateMethodAsync*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown when <code class="paramref">method</code> is null.
+  - type: System.OperationCanceledException
+    commentId: T:System.OperationCanceledException
+    description: Thrown when the validation is cancelled via <code class="paramref">cancellationToken</code>.
+  attributes:
+  - type: System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute
+    ctor: System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: Uses method body analysis which may not work with trimming.
+- uid: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.GetDiagnosticsAsync(Orleans.GpuBridge.Abstractions.Models.CompiledKernel,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.GetDiagnosticsAsync(Orleans.GpuBridge.Abstractions.Models.CompiledKernel,System.Threading.CancellationToken)
+  id: GetDiagnosticsAsync(Orleans.GpuBridge.Abstractions.Models.CompiledKernel,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler
+  langs:
+  - csharp
+  - vb
+  name: GetDiagnosticsAsync(CompiledKernel, CancellationToken)
+  nameWithType: IKernelCompiler.GetDiagnosticsAsync(CompiledKernel, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.GetDiagnosticsAsync(Orleans.GpuBridge.Abstractions.Models.CompiledKernel, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/IKernelCompiler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetDiagnosticsAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/IKernelCompiler.cs
+    startLine: 262
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: Retrieves detailed compilation diagnostics for a compiled kernel.
+  remarks: >-
+    Diagnostics provide detailed information about the compilation process,
+
+    including intermediate representations, optimization reports, and performance
+
+    characteristics. This information is valuable for debugging and optimization.
+
+
+    <p>
+
+    The availability of specific diagnostic information depends on the backend
+
+    and compilation options used when the kernel was originally compiled.
+
+    </p>
+  example: []
+  syntax:
+    content: Task<CompilationDiagnostics> GetDiagnosticsAsync(CompiledKernel kernel, CancellationToken cancellationToken = default)
+    parameters:
+    - id: kernel
+      type: Orleans.GpuBridge.Abstractions.Models.CompiledKernel
+      description: The compiled kernel for which to retrieve diagnostics.
+      attributes:
+      - type: System.Diagnostics.CodeAnalysis.NotNullAttribute
+        ctor: System.Diagnostics.CodeAnalysis.NotNullAttribute.#ctor
+        arguments: []
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: A cancellation token that can be used to cancel the diagnostic operation.
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Models.Compilation.CompilationDiagnostics}
+      description: >-
+        A task that represents the asynchronous diagnostic operation.
+
+        The task result contains detailed compilation diagnostics.
+    content.vb: Function GetDiagnosticsAsync(kernel As CompiledKernel, cancellationToken As CancellationToken = Nothing) As Task(Of CompilationDiagnostics)
+  overload: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.GetDiagnosticsAsync*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown when <code class="paramref">kernel</code> is null.
+  - type: System.ObjectDisposedException
+    commentId: T:System.ObjectDisposedException
+    description: Thrown when <code class="paramref">kernel</code> has been disposed.
+  - type: System.OperationCanceledException
+    commentId: T:System.OperationCanceledException
+    description: Thrown when the operation is cancelled via <code class="paramref">cancellationToken</code>.
+- uid: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.ClearCache
+  commentId: M:Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.ClearCache
+  id: ClearCache
+  parent: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler
+  langs:
+  - csharp
+  - vb
+  name: ClearCache()
+  nameWithType: IKernelCompiler.ClearCache()
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.ClearCache()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/IKernelCompiler.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ClearCache
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/IKernelCompiler.cs
+    startLine: 281
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: Clears the internal compilation cache to free memory and force recompilation.
+  remarks: >-
+    The compiler may cache compiled kernels to improve performance of repeated
+
+    compilations. This method clears all cached data, which may be useful for:
+
+    - Freeing memory in long-running applications
+
+    - Forcing recompilation with updated options
+
+    - Debugging compilation-related issues
+
+
+    <p>
+
+    After calling this method, subsequent compilation requests will not benefit
+
+    from cached results until the cache is repopulated.
+
+    </p>
+  example: []
+  syntax:
+    content: void ClearCache()
+    content.vb: Sub ClearCache()
+  overload: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.ClearCache*
+references:
+- uid: Orleans.GpuBridge.Abstractions.Providers
+  commentId: N:Orleans.GpuBridge.Abstractions.Providers
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Providers
+  nameWithType: Orleans.GpuBridge.Abstractions.Providers
+  fullName: Orleans.GpuBridge.Abstractions.Providers
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Providers
+    name: Providers
+    href: Orleans.GpuBridge.Abstractions.Providers.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Providers
+    name: Providers
+    href: Orleans.GpuBridge.Abstractions.Providers.html
+- uid: System.Reflection.MethodInfo
+  commentId: T:System.Reflection.MethodInfo
+  parent: System.Reflection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.reflection.methodinfo
+  name: MethodInfo
+  nameWithType: MethodInfo
+  fullName: System.Reflection.MethodInfo
+- uid: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.ValidateMethodAsync(System.Reflection.MethodInfo,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.ValidateMethodAsync(System.Reflection.MethodInfo,System.Threading.CancellationToken)
+  isExternal: true
+  href: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.html#Orleans_GpuBridge_Abstractions_Providers_IKernelCompiler_ValidateMethodAsync_System_Reflection_MethodInfo_System_Threading_CancellationToken_
+  name: ValidateMethodAsync(MethodInfo, CancellationToken)
+  nameWithType: IKernelCompiler.ValidateMethodAsync(MethodInfo, CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.ValidateMethodAsync(System.Reflection.MethodInfo, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.ValidateMethodAsync(System.Reflection.MethodInfo,System.Threading.CancellationToken)
+    name: ValidateMethodAsync
+    href: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.html#Orleans_GpuBridge_Abstractions_Providers_IKernelCompiler_ValidateMethodAsync_System_Reflection_MethodInfo_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Reflection.MethodInfo
+    name: MethodInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.methodinfo
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.ValidateMethodAsync(System.Reflection.MethodInfo,System.Threading.CancellationToken)
+    name: ValidateMethodAsync
+    href: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.html#Orleans_GpuBridge_Abstractions_Providers_IKernelCompiler_ValidateMethodAsync_System_Reflection_MethodInfo_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Reflection.MethodInfo
+    name: MethodInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.methodinfo
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+  name: ArgumentNullException
+  nameWithType: ArgumentNullException
+  fullName: System.ArgumentNullException
+- uid: System.InvalidOperationException
+  commentId: T:System.InvalidOperationException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
+  name: InvalidOperationException
+  nameWithType: InvalidOperationException
+  fullName: System.InvalidOperationException
+- uid: System.OperationCanceledException
+  commentId: T:System.OperationCanceledException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.operationcanceledexception
+  name: OperationCanceledException
+  nameWithType: OperationCanceledException
+  fullName: System.OperationCanceledException
+- uid: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromMethodAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromMethodAsync
+  href: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.html#Orleans_GpuBridge_Abstractions_Providers_IKernelCompiler_CompileFromMethodAsync_System_Reflection_MethodInfo_Orleans_GpuBridge_Abstractions_Models_Compilation_KernelCompilationOptions_System_Threading_CancellationToken_
+  name: CompileFromMethodAsync
+  nameWithType: IKernelCompiler.CompileFromMethodAsync
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromMethodAsync
+- uid: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelCompilationOptions
+  commentId: T:Orleans.GpuBridge.Abstractions.Models.Compilation.KernelCompilationOptions
+  parent: Orleans.GpuBridge.Abstractions.Models.Compilation
+  href: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelCompilationOptions.html
+  name: KernelCompilationOptions
+  nameWithType: KernelCompilationOptions
+  fullName: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelCompilationOptions
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Models.CompiledKernel}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Models.CompiledKernel}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<CompiledKernel>
+  nameWithType: Task<CompiledKernel>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Models.CompiledKernel>
+  nameWithType.vb: Task(Of CompiledKernel)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Models.CompiledKernel)
+  name.vb: Task(Of CompiledKernel)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Models.CompiledKernel
+    name: CompiledKernel
+    href: Orleans.GpuBridge.Abstractions.Models.CompiledKernel.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Models.CompiledKernel
+    name: CompiledKernel
+    href: Orleans.GpuBridge.Abstractions.Models.CompiledKernel.html
+  - name: )
+- uid: System.Reflection
+  commentId: N:System.Reflection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Reflection
+  nameWithType: System.Reflection
+  fullName: System.Reflection
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Reflection
+    name: Reflection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Reflection
+    name: Reflection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection
+- uid: Orleans.GpuBridge.Abstractions.Models.Compilation
+  commentId: N:Orleans.GpuBridge.Abstractions.Models.Compilation
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Models.Compilation
+  nameWithType: Orleans.GpuBridge.Abstractions.Models.Compilation
+  fullName: Orleans.GpuBridge.Abstractions.Models.Compilation
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Models
+    name: Models
+    href: Orleans.GpuBridge.Abstractions.Models.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Models.Compilation
+    name: Compilation
+    href: Orleans.GpuBridge.Abstractions.Models.Compilation.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Models
+    name: Models
+    href: Orleans.GpuBridge.Abstractions.Models.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Models.Compilation
+    name: Compilation
+    href: Orleans.GpuBridge.Abstractions.Models.Compilation.html
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: System.ArgumentException
+  commentId: T:System.ArgumentException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentexception
+  name: ArgumentException
+  nameWithType: ArgumentException
+  fullName: System.ArgumentException
+- uid: System.NotSupportedException
+  commentId: T:System.NotSupportedException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.notsupportedexception
+  name: NotSupportedException
+  nameWithType: NotSupportedException
+  fullName: System.NotSupportedException
+- uid: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromSourceAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromSourceAsync
+  href: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.html#Orleans_GpuBridge_Abstractions_Providers_IKernelCompiler_CompileFromSourceAsync_System_String_System_String_Orleans_GpuBridge_Abstractions_Enums_Compilation_KernelLanguage_Orleans_GpuBridge_Abstractions_Models_Compilation_KernelCompilationOptions_System_Threading_CancellationToken_
+  name: CompileFromSourceAsync
+  nameWithType: IKernelCompiler.CompileFromSourceAsync
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromSourceAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage
+  commentId: T:Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage
+  parent: Orleans.GpuBridge.Abstractions.Enums.Compilation
+  href: Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.html
+  name: KernelLanguage
+  nameWithType: KernelLanguage
+  fullName: Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Abstractions.Enums.Compilation
+  commentId: N:Orleans.GpuBridge.Abstractions.Enums.Compilation
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Enums.Compilation
+  nameWithType: Orleans.GpuBridge.Abstractions.Enums.Compilation
+  fullName: Orleans.GpuBridge.Abstractions.Enums.Compilation
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Enums
+    name: Enums
+    href: Orleans.GpuBridge.Abstractions.Enums.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Enums.Compilation
+    name: Compilation
+    href: Orleans.GpuBridge.Abstractions.Enums.Compilation.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Enums
+    name: Enums
+    href: Orleans.GpuBridge.Abstractions.Enums.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Enums.Compilation
+    name: Compilation
+    href: Orleans.GpuBridge.Abstractions.Enums.Compilation.html
+- uid: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromAssemblyAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromAssemblyAsync
+  href: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.html#Orleans_GpuBridge_Abstractions_Providers_IKernelCompiler_CompileFromAssemblyAsync_System_Reflection_Assembly_System_String_System_String_Orleans_GpuBridge_Abstractions_Models_Compilation_KernelCompilationOptions_System_Threading_CancellationToken_
+  name: CompileFromAssemblyAsync
+  nameWithType: IKernelCompiler.CompileFromAssemblyAsync
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.CompileFromAssemblyAsync
+- uid: System.Reflection.Assembly
+  commentId: T:System.Reflection.Assembly
+  parent: System.Reflection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly
+  name: Assembly
+  nameWithType: Assembly
+  fullName: System.Reflection.Assembly
+- uid: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.ValidateMethodAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.ValidateMethodAsync
+  href: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.html#Orleans_GpuBridge_Abstractions_Providers_IKernelCompiler_ValidateMethodAsync_System_Reflection_MethodInfo_System_Threading_CancellationToken_
+  name: ValidateMethodAsync
+  nameWithType: IKernelCompiler.ValidateMethodAsync
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.ValidateMethodAsync
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<KernelValidationResult>
+  nameWithType: Task<KernelValidationResult>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult>
+  nameWithType.vb: Task(Of KernelValidationResult)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult)
+  name.vb: Task(Of KernelValidationResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult
+    name: KernelValidationResult
+    href: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult
+    name: KernelValidationResult
+    href: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.html
+  - name: )
+- uid: System.ObjectDisposedException
+  commentId: T:System.ObjectDisposedException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.objectdisposedexception
+  name: ObjectDisposedException
+  nameWithType: ObjectDisposedException
+  fullName: System.ObjectDisposedException
+- uid: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.GetDiagnosticsAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.GetDiagnosticsAsync
+  href: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.html#Orleans_GpuBridge_Abstractions_Providers_IKernelCompiler_GetDiagnosticsAsync_Orleans_GpuBridge_Abstractions_Models_CompiledKernel_System_Threading_CancellationToken_
+  name: GetDiagnosticsAsync
+  nameWithType: IKernelCompiler.GetDiagnosticsAsync
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.GetDiagnosticsAsync
+- uid: Orleans.GpuBridge.Abstractions.Models.CompiledKernel
+  commentId: T:Orleans.GpuBridge.Abstractions.Models.CompiledKernel
+  parent: Orleans.GpuBridge.Abstractions.Models
+  href: Orleans.GpuBridge.Abstractions.Models.CompiledKernel.html
+  name: CompiledKernel
+  nameWithType: CompiledKernel
+  fullName: Orleans.GpuBridge.Abstractions.Models.CompiledKernel
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Models.Compilation.CompilationDiagnostics}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Abstractions.Models.Compilation.CompilationDiagnostics}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<CompilationDiagnostics>
+  nameWithType: Task<CompilationDiagnostics>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Abstractions.Models.Compilation.CompilationDiagnostics>
+  nameWithType.vb: Task(Of CompilationDiagnostics)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Abstractions.Models.Compilation.CompilationDiagnostics)
+  name.vb: Task(Of CompilationDiagnostics)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Models.Compilation.CompilationDiagnostics
+    name: CompilationDiagnostics
+    href: Orleans.GpuBridge.Abstractions.Models.Compilation.CompilationDiagnostics.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Models.Compilation.CompilationDiagnostics
+    name: CompilationDiagnostics
+    href: Orleans.GpuBridge.Abstractions.Models.Compilation.CompilationDiagnostics.html
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Models
+  commentId: N:Orleans.GpuBridge.Abstractions.Models
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Models
+  nameWithType: Orleans.GpuBridge.Abstractions.Models
+  fullName: Orleans.GpuBridge.Abstractions.Models
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Models
+    name: Models
+    href: Orleans.GpuBridge.Abstractions.Models.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Models
+    name: Models
+    href: Orleans.GpuBridge.Abstractions.Models.html
+- uid: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.ClearCache*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.ClearCache
+  href: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.html#Orleans_GpuBridge_Abstractions_Providers_IKernelCompiler_ClearCache
+  name: ClearCache
+  nameWithType: IKernelCompiler.ClearCache
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler.ClearCache

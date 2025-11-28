@@ -1,0 +1,1031 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator
+  id: NetworkLatencyCompensator
+  parent: Orleans.GpuBridge.Runtime.Temporal.Network
+  children:
+  - Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator},System.Nullable{System.TimeSpan})
+  - Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.CompensateTimestamp(System.Int64,System.Net.IPEndPoint)
+  - Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.GetStatistics(System.Net.IPEndPoint)
+  - Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.MeasureLatencyAsync(System.Net.IPEndPoint,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.StartPeriodicMeasurements(System.Collections.Generic.IEnumerable{System.Net.IPEndPoint})
+  - Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.StopPeriodicMeasurements
+  langs:
+  - csharp
+  - vb
+  name: NetworkLatencyCompensator
+  nameWithType: NetworkLatencyCompensator
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Network/NetworkLatencyCompensator.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: NetworkLatencyCompensator
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Network/NetworkLatencyCompensator.cs
+    startLine: 33
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Network
+  summary: >-
+    Measures and compensates for network latency in distributed timestamps.
+
+    Uses RTT (Round-Trip Time) measurement to adjust remote timestamps for one-way network delay.
+  remarks: >-
+    Algorithm:
+
+    1. Measure RTT to remote endpoint via TCP connection or ICMP ping
+
+    2. Assume symmetric path: one-way latency ≈ RTT / 2
+
+    3. Compensate remote timestamp: adjusted = original + (RTT / 2)
+
+
+    Limitations:
+
+    - Assumes symmetric network paths (may be inaccurate for asymmetric routes)
+
+    - RTT varies over time (use median of multiple samples)
+
+    - Does not account for clock drift (use PTP/NTP for clock sync)
+
+
+    Performance:
+
+    - RTT measurement: ~1ms per endpoint
+
+    - Compensation calculation: ~10ns overhead
+
+    - Measurement frequency: Every 1 minute per endpoint
+  example: []
+  syntax:
+    content: public sealed class NetworkLatencyCompensator
+    content.vb: Public NotInheritable Class NetworkLatencyCompensator
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator},System.Nullable{System.TimeSpan})
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator},System.Nullable{System.TimeSpan})
+  id: '#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator},System.Nullable{System.TimeSpan})'
+  parent: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator
+  langs:
+  - csharp
+  - vb
+  name: NetworkLatencyCompensator(ILogger<NetworkLatencyCompensator>, TimeSpan?)
+  nameWithType: NetworkLatencyCompensator.NetworkLatencyCompensator(ILogger<NetworkLatencyCompensator>, TimeSpan?)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.NetworkLatencyCompensator(Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator>, System.TimeSpan?)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Network/NetworkLatencyCompensator.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Network/NetworkLatencyCompensator.cs
+    startLine: 45
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Network
+  summary: Initializes a new network latency compensator.
+  example: []
+  syntax:
+    content: public NetworkLatencyCompensator(ILogger<NetworkLatencyCompensator> logger, TimeSpan? measurementInterval = null)
+    parameters:
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator}
+      description: Logger for diagnostic messages.
+    - id: measurementInterval
+      type: System.Nullable{System.TimeSpan}
+      description: 'Interval between background measurements (default: 1 minute).'
+    content.vb: Public Sub New(logger As ILogger(Of NetworkLatencyCompensator), measurementInterval As TimeSpan? = Nothing)
+  overload: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.#ctor*
+  nameWithType.vb: NetworkLatencyCompensator.New(ILogger(Of NetworkLatencyCompensator), TimeSpan?)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.New(Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator), System.TimeSpan?)
+  name.vb: New(ILogger(Of NetworkLatencyCompensator), TimeSpan?)
+- uid: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.MeasureLatencyAsync(System.Net.IPEndPoint,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.MeasureLatencyAsync(System.Net.IPEndPoint,System.Threading.CancellationToken)
+  id: MeasureLatencyAsync(System.Net.IPEndPoint,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator
+  langs:
+  - csharp
+  - vb
+  name: MeasureLatencyAsync(IPEndPoint, CancellationToken)
+  nameWithType: NetworkLatencyCompensator.MeasureLatencyAsync(IPEndPoint, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.MeasureLatencyAsync(System.Net.IPEndPoint, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Network/NetworkLatencyCompensator.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MeasureLatencyAsync
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Network/NetworkLatencyCompensator.cs
+    startLine: 60
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Network
+  summary: >-
+    Measures round-trip time (RTT) to remote endpoint.
+
+    Takes median of 10 TCP connection roundtrips for robustness.
+  example: []
+  syntax:
+    content: public Task<TimeSpan> MeasureLatencyAsync(IPEndPoint remote, CancellationToken ct = default)
+    parameters:
+    - id: remote
+      type: System.Net.IPEndPoint
+      description: Remote endpoint to measure.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{System.TimeSpan}
+      description: Median RTT as TimeSpan.
+    content.vb: Public Function MeasureLatencyAsync(remote As IPEndPoint, ct As CancellationToken = Nothing) As Task(Of TimeSpan)
+  overload: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.MeasureLatencyAsync*
+- uid: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.CompensateTimestamp(System.Int64,System.Net.IPEndPoint)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.CompensateTimestamp(System.Int64,System.Net.IPEndPoint)
+  id: CompensateTimestamp(System.Int64,System.Net.IPEndPoint)
+  parent: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator
+  langs:
+  - csharp
+  - vb
+  name: CompensateTimestamp(long, IPEndPoint)
+  nameWithType: NetworkLatencyCompensator.CompensateTimestamp(long, IPEndPoint)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.CompensateTimestamp(long, System.Net.IPEndPoint)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Network/NetworkLatencyCompensator.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CompensateTimestamp
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Network/NetworkLatencyCompensator.cs
+    startLine: 134
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Network
+  summary: >-
+    Compensates remote timestamp for network latency.
+
+    Adjusts timestamp assuming symmetric network path (RTT/2).
+  example: []
+  syntax:
+    content: public long CompensateTimestamp(long remoteTimestampNanos, IPEndPoint sourceEndpoint)
+    parameters:
+    - id: remoteTimestampNanos
+      type: System.Int64
+      description: Timestamp from remote node (nanoseconds).
+    - id: sourceEndpoint
+      type: System.Net.IPEndPoint
+      description: Remote endpoint that sent the timestamp.
+    return:
+      type: System.Int64
+      description: Compensated timestamp in nanoseconds.
+    content.vb: Public Function CompensateTimestamp(remoteTimestampNanos As Long, sourceEndpoint As IPEndPoint) As Long
+  overload: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.CompensateTimestamp*
+  nameWithType.vb: NetworkLatencyCompensator.CompensateTimestamp(Long, IPEndPoint)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.CompensateTimestamp(Long, System.Net.IPEndPoint)
+  name.vb: CompensateTimestamp(Long, IPEndPoint)
+- uid: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.GetStatistics(System.Net.IPEndPoint)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.GetStatistics(System.Net.IPEndPoint)
+  id: GetStatistics(System.Net.IPEndPoint)
+  parent: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator
+  langs:
+  - csharp
+  - vb
+  name: GetStatistics(IPEndPoint)
+  nameWithType: NetworkLatencyCompensator.GetStatistics(IPEndPoint)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.GetStatistics(System.Net.IPEndPoint)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Network/NetworkLatencyCompensator.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetStatistics
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Network/NetworkLatencyCompensator.cs
+    startLine: 168
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Network
+  summary: Gets cached latency statistics for an endpoint.
+  example: []
+  syntax:
+    content: public LatencyStatistics? GetStatistics(IPEndPoint endpoint)
+    parameters:
+    - id: endpoint
+      type: System.Net.IPEndPoint
+      description: Remote endpoint.
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.Network.LatencyStatistics
+      description: Latency statistics, or null if no measurements available.
+    content.vb: Public Function GetStatistics(endpoint As IPEndPoint) As LatencyStatistics
+  overload: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.GetStatistics*
+- uid: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.StartPeriodicMeasurements(System.Collections.Generic.IEnumerable{System.Net.IPEndPoint})
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.StartPeriodicMeasurements(System.Collections.Generic.IEnumerable{System.Net.IPEndPoint})
+  id: StartPeriodicMeasurements(System.Collections.Generic.IEnumerable{System.Net.IPEndPoint})
+  parent: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator
+  langs:
+  - csharp
+  - vb
+  name: StartPeriodicMeasurements(IEnumerable<IPEndPoint>)
+  nameWithType: NetworkLatencyCompensator.StartPeriodicMeasurements(IEnumerable<IPEndPoint>)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.StartPeriodicMeasurements(System.Collections.Generic.IEnumerable<System.Net.IPEndPoint>)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Network/NetworkLatencyCompensator.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: StartPeriodicMeasurements
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Network/NetworkLatencyCompensator.cs
+    startLine: 179
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Network
+  summary: >-
+    Starts background latency measurement for known endpoints.
+
+    Measurements repeat every measurementInterval.
+  example: []
+  syntax:
+    content: public void StartPeriodicMeasurements(IEnumerable<IPEndPoint> endpoints)
+    parameters:
+    - id: endpoints
+      type: System.Collections.Generic.IEnumerable{System.Net.IPEndPoint}
+      description: Endpoints to monitor.
+    content.vb: Public Sub StartPeriodicMeasurements(endpoints As IEnumerable(Of IPEndPoint))
+  overload: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.StartPeriodicMeasurements*
+  nameWithType.vb: NetworkLatencyCompensator.StartPeriodicMeasurements(IEnumerable(Of IPEndPoint))
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.StartPeriodicMeasurements(System.Collections.Generic.IEnumerable(Of System.Net.IPEndPoint))
+  name.vb: StartPeriodicMeasurements(IEnumerable(Of IPEndPoint))
+- uid: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.StopPeriodicMeasurements
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.StopPeriodicMeasurements
+  id: StopPeriodicMeasurements
+  parent: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator
+  langs:
+  - csharp
+  - vb
+  name: StopPeriodicMeasurements()
+  nameWithType: NetworkLatencyCompensator.StopPeriodicMeasurements()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.StopPeriodicMeasurements()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Network/NetworkLatencyCompensator.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: StopPeriodicMeasurements
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Network/NetworkLatencyCompensator.cs
+    startLine: 217
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Network
+  summary: Stops all background measurements.
+  example: []
+  syntax:
+    content: public void StopPeriodicMeasurements()
+    content.vb: Public Sub StopPeriodicMeasurements()
+  overload: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.StopPeriodicMeasurements*
+references:
+- uid: Orleans.GpuBridge.Runtime.Temporal.Network
+  commentId: N:Orleans.GpuBridge.Runtime.Temporal.Network
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Temporal.Network
+  nameWithType: Orleans.GpuBridge.Runtime.Temporal.Network
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Network
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Network
+    name: Network
+    href: Orleans.GpuBridge.Runtime.Temporal.Network.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Network
+    name: Network
+    href: Orleans.GpuBridge.Runtime.Temporal.Network.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.#ctor
+  href: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.html#Orleans_GpuBridge_Runtime_Temporal_Network_NetworkLatencyCompensator__ctor_Microsoft_Extensions_Logging_ILogger_Orleans_GpuBridge_Runtime_Temporal_Network_NetworkLatencyCompensator__System_Nullable_System_TimeSpan__
+  name: NetworkLatencyCompensator
+  nameWithType: NetworkLatencyCompensator.NetworkLatencyCompensator
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.NetworkLatencyCompensator
+  nameWithType.vb: NetworkLatencyCompensator.New
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.New
+  name.vb: New
+- uid: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<NetworkLatencyCompensator>
+  nameWithType: ILogger<NetworkLatencyCompensator>
+  fullName: Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator>
+  nameWithType.vb: ILogger(Of NetworkLatencyCompensator)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator)
+  name.vb: ILogger(Of NetworkLatencyCompensator)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator
+    name: NetworkLatencyCompensator
+    href: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator
+    name: NetworkLatencyCompensator
+    href: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.html
+  - name: )
+- uid: System.Nullable{System.TimeSpan}
+  commentId: T:System.Nullable{System.TimeSpan}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan?
+  nameWithType: TimeSpan?
+  fullName: System.TimeSpan?
+  spec.csharp:
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+  spec.vb:
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.MeasureLatencyAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.MeasureLatencyAsync
+  href: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.html#Orleans_GpuBridge_Runtime_Temporal_Network_NetworkLatencyCompensator_MeasureLatencyAsync_System_Net_IPEndPoint_System_Threading_CancellationToken_
+  name: MeasureLatencyAsync
+  nameWithType: NetworkLatencyCompensator.MeasureLatencyAsync
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.MeasureLatencyAsync
+- uid: System.Net.IPEndPoint
+  commentId: T:System.Net.IPEndPoint
+  parent: System.Net
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.ipendpoint
+  name: IPEndPoint
+  nameWithType: IPEndPoint
+  fullName: System.Net.IPEndPoint
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.TimeSpan}
+  commentId: T:System.Threading.Tasks.Task{System.TimeSpan}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TimeSpan>
+  nameWithType: Task<TimeSpan>
+  fullName: System.Threading.Tasks.Task<System.TimeSpan>
+  nameWithType.vb: Task(Of TimeSpan)
+  fullName.vb: System.Threading.Tasks.Task(Of System.TimeSpan)
+  name.vb: Task(Of TimeSpan)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: )
+- uid: System.Net
+  commentId: N:System.Net
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Net
+  nameWithType: System.Net
+  fullName: System.Net
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.CompensateTimestamp*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.CompensateTimestamp
+  href: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.html#Orleans_GpuBridge_Runtime_Temporal_Network_NetworkLatencyCompensator_CompensateTimestamp_System_Int64_System_Net_IPEndPoint_
+  name: CompensateTimestamp
+  nameWithType: NetworkLatencyCompensator.CompensateTimestamp
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.CompensateTimestamp
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.GetStatistics*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.GetStatistics
+  href: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.html#Orleans_GpuBridge_Runtime_Temporal_Network_NetworkLatencyCompensator_GetStatistics_System_Net_IPEndPoint_
+  name: GetStatistics
+  nameWithType: NetworkLatencyCompensator.GetStatistics
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.GetStatistics
+- uid: Orleans.GpuBridge.Runtime.Temporal.Network.LatencyStatistics
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.Network.LatencyStatistics
+  parent: Orleans.GpuBridge.Runtime.Temporal.Network
+  href: Orleans.GpuBridge.Runtime.Temporal.Network.LatencyStatistics.html
+  name: LatencyStatistics
+  nameWithType: LatencyStatistics
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Network.LatencyStatistics
+- uid: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.StartPeriodicMeasurements*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.StartPeriodicMeasurements
+  href: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.html#Orleans_GpuBridge_Runtime_Temporal_Network_NetworkLatencyCompensator_StartPeriodicMeasurements_System_Collections_Generic_IEnumerable_System_Net_IPEndPoint__
+  name: StartPeriodicMeasurements
+  nameWithType: NetworkLatencyCompensator.StartPeriodicMeasurements
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.StartPeriodicMeasurements
+- uid: System.Collections.Generic.IEnumerable{System.Net.IPEndPoint}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Net.IPEndPoint}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<IPEndPoint>
+  nameWithType: IEnumerable<IPEndPoint>
+  fullName: System.Collections.Generic.IEnumerable<System.Net.IPEndPoint>
+  nameWithType.vb: IEnumerable(Of IPEndPoint)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.Net.IPEndPoint)
+  name.vb: IEnumerable(Of IPEndPoint)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.Net.IPEndPoint
+    name: IPEndPoint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.ipendpoint
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Net.IPEndPoint
+    name: IPEndPoint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.ipendpoint
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.StopPeriodicMeasurements*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.StopPeriodicMeasurements
+  href: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.html#Orleans_GpuBridge_Runtime_Temporal_Network_NetworkLatencyCompensator_StopPeriodicMeasurements
+  name: StopPeriodicMeasurements
+  nameWithType: NetworkLatencyCompensator.StopPeriodicMeasurements
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Network.NetworkLatencyCompensator.StopPeriodicMeasurements

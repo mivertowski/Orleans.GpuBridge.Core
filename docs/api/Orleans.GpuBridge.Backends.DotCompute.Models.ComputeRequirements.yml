@@ -1,0 +1,617 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements
+  commentId: T:Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements
+  id: ComputeRequirements
+  parent: Orleans.GpuBridge.Backends.DotCompute.Models
+  children:
+  - Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.MinComputeUnits
+  - Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.MinMemoryBytes
+  - Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.PreferGpu
+  - Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.RequiredType
+  langs:
+  - csharp
+  - vb
+  name: ComputeRequirements
+  nameWithType: ComputeRequirements
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Models/ComputeRequirements.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ComputeRequirements
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Models/ComputeRequirements.cs
+    startLine: 13
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Models
+  summary: Specifies requirements and preferences for compute device selection during GPU operations.
+  remarks: >-
+    This class defines the criteria used by the device manager to select the most appropriate
+
+    compute device for a given task. The requirements include memory constraints, compute unit
+
+    preferences, and device type restrictions. The device manager uses these requirements
+
+    to score available devices and select the best match.
+  example: []
+  syntax:
+    content: public sealed class ComputeRequirements
+    content.vb: Public NotInheritable Class ComputeRequirements
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.PreferGpu
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.PreferGpu
+  id: PreferGpu
+  parent: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements
+  langs:
+  - csharp
+  - vb
+  name: PreferGpu
+  nameWithType: ComputeRequirements.PreferGpu
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.PreferGpu
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Models/ComputeRequirements.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: PreferGpu
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Models/ComputeRequirements.cs
+    startLine: 26
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Models
+  summary: Gets or sets whether GPU devices should be preferred over CPU devices.
+  remarks: >-
+    When <code>true</code>, the device scoring algorithm will give higher scores to GPU devices
+
+    (CUDA, OpenCL, DirectCompute, Metal) compared to CPU devices. When <code>false</code>,
+
+    CPU devices will receive higher scores, making them more likely to be selected.
+  example: []
+  syntax:
+    content: public bool PreferGpu { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+      description: <code>true</code> to prefer GPU devices (default); <code>false</code> to prefer CPU devices.
+    content.vb: Public Property PreferGpu As Boolean
+  overload: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.PreferGpu*
+- uid: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.MinMemoryBytes
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.MinMemoryBytes
+  id: MinMemoryBytes
+  parent: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements
+  langs:
+  - csharp
+  - vb
+  name: MinMemoryBytes
+  nameWithType: ComputeRequirements.MinMemoryBytes
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.MinMemoryBytes
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Models/ComputeRequirements.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MinMemoryBytes
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Models/ComputeRequirements.cs
+    startLine: 40
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Models
+  summary: Gets or sets the minimum amount of memory required in bytes.
+  remarks: >-
+    Devices with available memory below this threshold will receive lower scores
+
+    during device selection. This ensures that selected devices have sufficient
+
+    memory for the intended compute operations. The value should account for
+
+    both input data and any intermediate buffers required during computation.
+  example: []
+  syntax:
+    content: public long MinMemoryBytes { get; set; }
+    parameters: []
+    return:
+      type: System.Int64
+      description: The minimum memory requirement in bytes. Defaults to 256MB (268,435,456 bytes).
+    content.vb: Public Property MinMemoryBytes As Long
+  overload: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.MinMemoryBytes*
+- uid: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.MinComputeUnits
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.MinComputeUnits
+  id: MinComputeUnits
+  parent: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements
+  langs:
+  - csharp
+  - vb
+  name: MinComputeUnits
+  nameWithType: ComputeRequirements.MinComputeUnits
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.MinComputeUnits
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Models/ComputeRequirements.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MinComputeUnits
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Models/ComputeRequirements.cs
+    startLine: 54
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Models
+  summary: Gets or sets the minimum number of compute units required.
+  remarks: >-
+    Compute units represent parallel processing capabilities of the device.
+
+    For GPUs, this typically corresponds to streaming multiprocessors (CUDA),
+
+    compute units (OpenCL), or similar parallel processing blocks.
+
+    For CPUs, this represents the number of logical processors.
+  example: []
+  syntax:
+    content: public int MinComputeUnits { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+      description: The minimum number of compute units. Defaults to 1.
+    content.vb: Public Property MinComputeUnits As Integer
+  overload: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.MinComputeUnits*
+- uid: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.RequiredType
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.RequiredType
+  id: RequiredType
+  parent: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements
+  langs:
+  - csharp
+  - vb
+  name: RequiredType
+  nameWithType: ComputeRequirements.RequiredType
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.RequiredType
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Models/ComputeRequirements.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RequiredType
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Models/ComputeRequirements.cs
+    startLine: 68
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Models
+  summary: Gets or sets the required device type, if any specific type is mandated.
+  remarks: >-
+    When set to a specific device type, only devices of that type will be considered
+
+    during device selection. This is useful when a particular compute backend
+
+    is required for compatibility or performance reasons. When <code>null</code>,
+
+    all available device types are considered based on other criteria.
+  example: []
+  syntax:
+    content: public DeviceType? RequiredType { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{Orleans.GpuBridge.Abstractions.Enums.DeviceType}
+      description: The required <xref href="Orleans.GpuBridge.Abstractions.Enums.DeviceType" data-throw-if-not-resolved="false"></xref>, or <code>null</code> if no specific type is required.
+    content.vb: Public Property RequiredType As DeviceType?
+  overload: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.RequiredType*
+references:
+- uid: Orleans.GpuBridge.Backends.DotCompute.Models
+  commentId: N:Orleans.GpuBridge.Backends.DotCompute.Models
+  href: Orleans.html
+  name: Orleans.GpuBridge.Backends.DotCompute.Models
+  nameWithType: Orleans.GpuBridge.Backends.DotCompute.Models
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Models
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends
+    name: Backends
+    href: Orleans.GpuBridge.Backends.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute
+    name: DotCompute
+    href: Orleans.GpuBridge.Backends.DotCompute.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Models
+    name: Models
+    href: Orleans.GpuBridge.Backends.DotCompute.Models.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends
+    name: Backends
+    href: Orleans.GpuBridge.Backends.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute
+    name: DotCompute
+    href: Orleans.GpuBridge.Backends.DotCompute.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Models
+    name: Models
+    href: Orleans.GpuBridge.Backends.DotCompute.Models.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.PreferGpu*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.PreferGpu
+  href: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.html#Orleans_GpuBridge_Backends_DotCompute_Models_ComputeRequirements_PreferGpu
+  name: PreferGpu
+  nameWithType: ComputeRequirements.PreferGpu
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.PreferGpu
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.MinMemoryBytes*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.MinMemoryBytes
+  href: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.html#Orleans_GpuBridge_Backends_DotCompute_Models_ComputeRequirements_MinMemoryBytes
+  name: MinMemoryBytes
+  nameWithType: ComputeRequirements.MinMemoryBytes
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.MinMemoryBytes
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.MinComputeUnits*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.MinComputeUnits
+  href: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.html#Orleans_GpuBridge_Backends_DotCompute_Models_ComputeRequirements_MinComputeUnits
+  name: MinComputeUnits
+  nameWithType: ComputeRequirements.MinComputeUnits
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.MinComputeUnits
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Abstractions.Enums.DeviceType
+  commentId: T:Orleans.GpuBridge.Abstractions.Enums.DeviceType
+  parent: Orleans.GpuBridge.Abstractions.Enums
+  href: Orleans.GpuBridge.Abstractions.Enums.DeviceType.html
+  name: DeviceType
+  nameWithType: DeviceType
+  fullName: Orleans.GpuBridge.Abstractions.Enums.DeviceType
+- uid: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.RequiredType*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.RequiredType
+  href: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.html#Orleans_GpuBridge_Backends_DotCompute_Models_ComputeRequirements_RequiredType
+  name: RequiredType
+  nameWithType: ComputeRequirements.RequiredType
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Models.ComputeRequirements.RequiredType
+- uid: System.Nullable{Orleans.GpuBridge.Abstractions.Enums.DeviceType}
+  commentId: T:System.Nullable{Orleans.GpuBridge.Abstractions.Enums.DeviceType}
+  parent: System
+  definition: System.Nullable`1
+  href: Orleans.GpuBridge.Abstractions.Enums.DeviceType.html
+  name: DeviceType?
+  nameWithType: DeviceType?
+  fullName: Orleans.GpuBridge.Abstractions.Enums.DeviceType?
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Enums.DeviceType
+    name: DeviceType
+    href: Orleans.GpuBridge.Abstractions.Enums.DeviceType.html
+  - name: '?'
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Enums.DeviceType
+    name: DeviceType
+    href: Orleans.GpuBridge.Abstractions.Enums.DeviceType.html
+  - name: '?'
+- uid: Orleans.GpuBridge.Abstractions.Enums
+  commentId: N:Orleans.GpuBridge.Abstractions.Enums
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Enums
+  nameWithType: Orleans.GpuBridge.Abstractions.Enums
+  fullName: Orleans.GpuBridge.Abstractions.Enums
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Enums
+    name: Enums
+    href: Orleans.GpuBridge.Abstractions.Enums.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Enums
+    name: Enums
+    href: Orleans.GpuBridge.Abstractions.Enums.html
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

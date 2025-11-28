@@ -1,0 +1,1213 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage
+  id: TemporalResidentMessage
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  children:
+  - Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.CausalDependencies
+  - Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.GetAgeNanos(System.Int64)
+  - Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.HLC
+  - Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.IsExpired(System.Int64)
+  - Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.IsValidAt(System.Int64)
+  - Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.PhysicalTimeNanos
+  - Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.Priority
+  - Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.SequenceNumber
+  - Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.TimestampErrorBoundNanos
+  - Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.ToString
+  - Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.ValidityWindow
+  langs:
+  - csharp
+  - vb
+  name: TemporalResidentMessage
+  nameWithType: TemporalResidentMessage
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/TemporalResidentMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TemporalResidentMessage
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/TemporalResidentMessage.cs
+    startLine: 28
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Base message type for Ring Kernel communication with temporal correctness metadata.
+  remarks: >-
+    <p>
+
+    Extends <xref href="Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage" data-throw-if-not-resolved="false"></xref> with temporal information for:
+
+    </p>
+
+    <ul><li>Total event ordering via Hybrid Logical Clocks</li><li>Causal dependency tracking</li><li>Physical timestamp with error bounds</li><li>Message sequencing per sender</li></ul>
+
+    <p>
+
+    Use temporal messages when you need:
+
+    - Guaranteed message ordering across distributed actors
+
+    - Detection of concurrent events
+
+    - Temporal pattern matching (e.g., "events within 5 seconds")
+
+    - Causal relationship tracking (A caused B caused C)
+
+    </p>
+  example: []
+  syntax:
+    content: 'public abstract record TemporalResidentMessage : ResidentMessage, IEquatable<ResidentMessage>, IEquatable<TemporalResidentMessage>'
+    content.vb: Public MustInherit Class TemporalResidentMessage Inherits ResidentMessage Implements IEquatable(Of ResidentMessage), IEquatable(Of TemporalResidentMessage)
+  inheritance:
+  - System.Object
+  - Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage
+  implements:
+  - System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage}
+  - System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage}
+  inheritedMembers:
+  - Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage.RequestId
+  - Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage.TimestampTicks
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.HLC
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.HLC
+  id: HLC
+  parent: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage
+  langs:
+  - csharp
+  - vb
+  name: HLC
+  nameWithType: TemporalResidentMessage.HLC
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.HLC
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/TemporalResidentMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: HLC
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/TemporalResidentMessage.cs
+    startLine: 39
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Hybrid Logical Clock timestamp providing total ordering of events.
+  remarks: >-
+    The HLC timestamp ensures:
+
+    - If event A happens-before event B, then HLC(A) &lt; HLC(B)
+
+    - Bounded drift from physical time
+
+    - Deterministic ordering across distributed actors
+  example: []
+  syntax:
+    content: public HybridTimestamp HLC { get; init; }
+    parameters: []
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    content.vb: Public Property HLC As HybridTimestamp
+  overload: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.HLC*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.PhysicalTimeNanos
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.PhysicalTimeNanos
+  id: PhysicalTimeNanos
+  parent: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage
+  langs:
+  - csharp
+  - vb
+  name: PhysicalTimeNanos
+  nameWithType: TemporalResidentMessage.PhysicalTimeNanos
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.PhysicalTimeNanos
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/TemporalResidentMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: PhysicalTimeNanos
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/TemporalResidentMessage.cs
+    startLine: 52
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Physical timestamp in nanoseconds since Unix epoch (1970-01-01 00:00:00 UTC).
+  remarks: >-
+    This is the wall-clock time when the message was created,
+
+    independent of the HLC logical counter.
+
+    Used for:
+
+    - Measuring actual elapsed time
+
+    - Temporal queries ("find events between T1 and T2")
+
+    - Latency measurement
+  example: []
+  syntax:
+    content: public long PhysicalTimeNanos { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property PhysicalTimeNanos As Long
+  overload: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.PhysicalTimeNanos*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.TimestampErrorBoundNanos
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.TimestampErrorBoundNanos
+  id: TimestampErrorBoundNanos
+  parent: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage
+  langs:
+  - csharp
+  - vb
+  name: TimestampErrorBoundNanos
+  nameWithType: TemporalResidentMessage.TimestampErrorBoundNanos
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.TimestampErrorBoundNanos
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/TemporalResidentMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TimestampErrorBoundNanos
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/TemporalResidentMessage.cs
+    startLine: 69
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Error bound for physical timestamp in nanoseconds (±).
+  remarks: >-
+    <p>
+
+    Indicates the uncertainty in the physical timestamp due to:
+
+    - Clock synchronization error (NTP: ±1-10ms, PTP: ±10-100ns)
+
+    - Clock drift since last synchronization
+
+    - Measurement overhead
+
+    </p>
+
+    <p>
+
+    The actual physical time is within:
+
+    [PhysicalTimeNanos - TimestampErrorBoundNanos, PhysicalTimeNanos + TimestampErrorBoundNanos]
+
+    </p>
+  example: []
+  syntax:
+    content: public long TimestampErrorBoundNanos { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property TimestampErrorBoundNanos As Long
+  overload: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.TimestampErrorBoundNanos*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.CausalDependencies
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.CausalDependencies
+  id: CausalDependencies
+  parent: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage
+  langs:
+  - csharp
+  - vb
+  name: CausalDependencies
+  nameWithType: TemporalResidentMessage.CausalDependencies
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.CausalDependencies
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/TemporalResidentMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CausalDependencies
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/TemporalResidentMessage.cs
+    startLine: 98
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: List of message IDs that must be processed before this message (causal dependencies).
+  remarks: >-
+    <p>
+
+    Enforces causal ordering: if message A is a dependency of message B,
+
+    then B will not be processed until A completes.
+
+    </p>
+
+    <p>
+
+    Example: Transaction graph
+
+    <pre><code class="lang-csharp">// Node A sends $1000 to Node B
+
+    var msg1 = new TransferMessage { ... };
+
+
+    // Node B splits money: $500 to C, $500 to D
+
+    // Both depend on receiving msg1 first
+
+    var msg2 = new TransferMessage
+
+    {
+        CausalDependencies = ImmutableArray.Create(msg1.RequestId)
+    };
+
+    var msg3 = new TransferMessage
+
+    {
+        CausalDependencies = ImmutableArray.Create(msg1.RequestId)
+    };</code></pre>
+
+    </p>
+  example: []
+  syntax:
+    content: public ImmutableArray<Guid> CausalDependencies { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Immutable.ImmutableArray{System.Guid}
+    content.vb: Public Property CausalDependencies As ImmutableArray(Of Guid)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.CausalDependencies*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.SequenceNumber
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.SequenceNumber
+  id: SequenceNumber
+  parent: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage
+  langs:
+  - csharp
+  - vb
+  name: SequenceNumber
+  nameWithType: TemporalResidentMessage.SequenceNumber
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.SequenceNumber
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/TemporalResidentMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: SequenceNumber
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/TemporalResidentMessage.cs
+    startLine: 115
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Sequence number for messages from this sender (monotonically increasing).
+  remarks: >-
+    <p>
+
+    Provides FIFO ordering guarantee within a single sender:
+
+    if sender X sends messages M1, M2, M3 with sequence numbers 1, 2, 3,
+
+    the receiver will process them in that order.
+
+    </p>
+
+    <p>
+
+    Combined with HLC timestamps, this provides both:
+
+    - Local FIFO ordering (sequence numbers)
+
+    - Global causal ordering (HLC + dependencies)
+
+    </p>
+  example: []
+  syntax:
+    content: public ulong SequenceNumber { get; init; }
+    parameters: []
+    return:
+      type: System.UInt64
+    content.vb: Public Property SequenceNumber As ULong
+  overload: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.SequenceNumber*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.ValidityWindow
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.ValidityWindow
+  id: ValidityWindow
+  parent: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage
+  langs:
+  - csharp
+  - vb
+  name: ValidityWindow
+  nameWithType: TemporalResidentMessage.ValidityWindow
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.ValidityWindow
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/TemporalResidentMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ValidityWindow
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/TemporalResidentMessage.cs
+    startLine: 135
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: 'Optional: Valid time range for processing this message.'
+  remarks: >-
+    <p>
+
+    If specified, the message should only be processed if the current time
+
+    falls within [ValidFrom, ValidTo]. Messages outside this range may be:
+
+    - Dropped (if too late)
+
+    - Queued (if too early)
+
+    - Logged as deadline misses (for monitoring)
+
+    </p>
+
+    <p>
+
+    Use for:
+
+    - Real-time systems with deadlines
+
+    - Time-sensitive trading operations
+
+    - Event windows ("process all events between T1 and T2")
+
+    </p>
+  example: []
+  syntax:
+    content: public TimeRange? ValidityWindow { get; init; }
+    parameters: []
+    return:
+      type: System.Nullable{Orleans.GpuBridge.Abstractions.Temporal.TimeRange}
+    content.vb: Public Property ValidityWindow As TimeRange?
+  overload: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.ValidityWindow*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.Priority
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.Priority
+  id: Priority
+  parent: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage
+  langs:
+  - csharp
+  - vb
+  name: Priority
+  nameWithType: TemporalResidentMessage.Priority
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.Priority
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/TemporalResidentMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Priority
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/TemporalResidentMessage.cs
+    startLine: 144
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: 'Optional: Priority level for message processing.'
+  remarks: >-
+    Higher priority messages are processed before lower priority messages,
+
+    subject to HLC ordering constraints and causal dependencies.
+  example: []
+  syntax:
+    content: public MessagePriority Priority { get; init; }
+    parameters: []
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.MessagePriority
+    content.vb: Public Property Priority As MessagePriority
+  overload: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.Priority*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.IsValidAt(System.Int64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.IsValidAt(System.Int64)
+  id: IsValidAt(System.Int64)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage
+  langs:
+  - csharp
+  - vb
+  name: IsValidAt(long)
+  nameWithType: TemporalResidentMessage.IsValidAt(long)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.IsValidAt(long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/TemporalResidentMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsValidAt
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/TemporalResidentMessage.cs
+    startLine: 149
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Checks if this message's validity window contains the specified time.
+  example: []
+  syntax:
+    content: public bool IsValidAt(long timeNanos)
+    parameters:
+    - id: timeNanos
+      type: System.Int64
+    return:
+      type: System.Boolean
+    content.vb: Public Function IsValidAt(timeNanos As Long) As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.IsValidAt*
+  nameWithType.vb: TemporalResidentMessage.IsValidAt(Long)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.IsValidAt(Long)
+  name.vb: IsValidAt(Long)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.IsExpired(System.Int64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.IsExpired(System.Int64)
+  id: IsExpired(System.Int64)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage
+  langs:
+  - csharp
+  - vb
+  name: IsExpired(long)
+  nameWithType: TemporalResidentMessage.IsExpired(long)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.IsExpired(long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/TemporalResidentMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsExpired
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/TemporalResidentMessage.cs
+    startLine: 157
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Checks if this message has expired (past the validity window).
+  example: []
+  syntax:
+    content: public bool IsExpired(long currentTimeNanos)
+    parameters:
+    - id: currentTimeNanos
+      type: System.Int64
+    return:
+      type: System.Boolean
+    content.vb: Public Function IsExpired(currentTimeNanos As Long) As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.IsExpired*
+  nameWithType.vb: TemporalResidentMessage.IsExpired(Long)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.IsExpired(Long)
+  name.vb: IsExpired(Long)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.GetAgeNanos(System.Int64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.GetAgeNanos(System.Int64)
+  id: GetAgeNanos(System.Int64)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage
+  langs:
+  - csharp
+  - vb
+  name: GetAgeNanos(long)
+  nameWithType: TemporalResidentMessage.GetAgeNanos(long)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.GetAgeNanos(long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/TemporalResidentMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetAgeNanos
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/TemporalResidentMessage.cs
+    startLine: 165
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Gets the age of this message in nanoseconds.
+  example: []
+  syntax:
+    content: public long GetAgeNanos(long currentTimeNanos)
+    parameters:
+    - id: currentTimeNanos
+      type: System.Int64
+    return:
+      type: System.Int64
+    content.vb: Public Function GetAgeNanos(currentTimeNanos As Long) As Long
+  overload: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.GetAgeNanos*
+  nameWithType.vb: TemporalResidentMessage.GetAgeNanos(Long)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.GetAgeNanos(Long)
+  name.vb: GetAgeNanos(Long)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.ToString
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.ToString
+  id: ToString
+  parent: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: TemporalResidentMessage.ToString()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.ToString()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/TemporalResidentMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ToString
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/TemporalResidentMessage.cs
+    startLine: 171
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Returns a string that represents the current object.
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+      description: A string that represents the current object.
+    content.vb: Public Overrides Function ToString() As String
+  overridden: Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage.ToString
+  overload: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.ToString*
+references:
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage.html
+  name: ResidentMessage
+  nameWithType: ResidentMessage
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage
+- uid: Orleans.GpuBridge.Abstractions.Temporal
+  commentId: N:Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Temporal
+  nameWithType: Orleans.GpuBridge.Abstractions.Temporal
+  fullName: Orleans.GpuBridge.Abstractions.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage}
+  commentId: T:System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<ResidentMessage>
+  nameWithType: IEquatable<ResidentMessage>
+  fullName: System.IEquatable<Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage>
+  nameWithType.vb: IEquatable(Of ResidentMessage)
+  fullName.vb: System.IEquatable(Of Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage)
+  name.vb: IEquatable(Of ResidentMessage)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage
+    name: ResidentMessage
+    href: Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage
+    name: ResidentMessage
+    href: Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage.html
+  - name: )
+- uid: System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage}
+  commentId: T:System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<TemporalResidentMessage>
+  nameWithType: IEquatable<TemporalResidentMessage>
+  fullName: System.IEquatable<Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage>
+  nameWithType.vb: IEquatable(Of TemporalResidentMessage)
+  fullName.vb: System.IEquatable(Of Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage)
+  name.vb: IEquatable(Of TemporalResidentMessage)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage
+    name: TemporalResidentMessage
+    href: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage
+    name: TemporalResidentMessage
+    href: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.html
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage.RequestId
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage.RequestId
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage
+  href: Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage.html#Orleans_GpuBridge_Abstractions_Temporal_ResidentMessage_RequestId
+  name: RequestId
+  nameWithType: ResidentMessage.RequestId
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage.RequestId
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage.TimestampTicks
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage.TimestampTicks
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage
+  href: Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage.html#Orleans_GpuBridge_Abstractions_Temporal_ResidentMessage_TimestampTicks
+  name: TimestampTicks
+  nameWithType: ResidentMessage.TimestampTicks
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage.TimestampTicks
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.HLC*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.HLC
+  href: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.html#Orleans_GpuBridge_Abstractions_Temporal_TemporalResidentMessage_HLC
+  name: HLC
+  nameWithType: TemporalResidentMessage.HLC
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.HLC
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html
+  name: HybridTimestamp
+  nameWithType: HybridTimestamp
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.PhysicalTimeNanos*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.PhysicalTimeNanos
+  href: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.html#Orleans_GpuBridge_Abstractions_Temporal_TemporalResidentMessage_PhysicalTimeNanos
+  name: PhysicalTimeNanos
+  nameWithType: TemporalResidentMessage.PhysicalTimeNanos
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.PhysicalTimeNanos
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.TimestampErrorBoundNanos*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.TimestampErrorBoundNanos
+  href: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.html#Orleans_GpuBridge_Abstractions_Temporal_TemporalResidentMessage_TimestampErrorBoundNanos
+  name: TimestampErrorBoundNanos
+  nameWithType: TemporalResidentMessage.TimestampErrorBoundNanos
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.TimestampErrorBoundNanos
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.CausalDependencies*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.CausalDependencies
+  href: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.html#Orleans_GpuBridge_Abstractions_Temporal_TemporalResidentMessage_CausalDependencies
+  name: CausalDependencies
+  nameWithType: TemporalResidentMessage.CausalDependencies
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.CausalDependencies
+- uid: System.Collections.Immutable.ImmutableArray{System.Guid}
+  commentId: T:System.Collections.Immutable.ImmutableArray{System.Guid}
+  parent: System.Collections.Immutable
+  definition: System.Collections.Immutable.ImmutableArray`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1
+  name: ImmutableArray<Guid>
+  nameWithType: ImmutableArray<Guid>
+  fullName: System.Collections.Immutable.ImmutableArray<System.Guid>
+  nameWithType.vb: ImmutableArray(Of Guid)
+  fullName.vb: System.Collections.Immutable.ImmutableArray(Of System.Guid)
+  name.vb: ImmutableArray(Of Guid)
+  spec.csharp:
+  - uid: System.Collections.Immutable.ImmutableArray`1
+    name: ImmutableArray
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1
+  - name: <
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Immutable.ImmutableArray`1
+    name: ImmutableArray
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: System.Collections.Immutable.ImmutableArray`1
+  commentId: T:System.Collections.Immutable.ImmutableArray`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1
+  name: ImmutableArray<T>
+  nameWithType: ImmutableArray<T>
+  fullName: System.Collections.Immutable.ImmutableArray<T>
+  nameWithType.vb: ImmutableArray(Of T)
+  fullName.vb: System.Collections.Immutable.ImmutableArray(Of T)
+  name.vb: ImmutableArray(Of T)
+  spec.csharp:
+  - uid: System.Collections.Immutable.ImmutableArray`1
+    name: ImmutableArray
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Immutable.ImmutableArray`1
+    name: ImmutableArray
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Immutable
+  commentId: N:System.Collections.Immutable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Immutable
+  nameWithType: System.Collections.Immutable
+  fullName: System.Collections.Immutable
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Immutable
+    name: Immutable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.immutable
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Immutable
+    name: Immutable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.immutable
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.SequenceNumber*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.SequenceNumber
+  href: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.html#Orleans_GpuBridge_Abstractions_Temporal_TemporalResidentMessage_SequenceNumber
+  name: SequenceNumber
+  nameWithType: TemporalResidentMessage.SequenceNumber
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.SequenceNumber
+- uid: System.UInt64
+  commentId: T:System.UInt64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uint64
+  name: ulong
+  nameWithType: ulong
+  fullName: ulong
+  nameWithType.vb: ULong
+  fullName.vb: ULong
+  name.vb: ULong
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.ValidityWindow*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.ValidityWindow
+  href: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.html#Orleans_GpuBridge_Abstractions_Temporal_TemporalResidentMessage_ValidityWindow
+  name: ValidityWindow
+  nameWithType: TemporalResidentMessage.ValidityWindow
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.ValidityWindow
+- uid: System.Nullable{Orleans.GpuBridge.Abstractions.Temporal.TimeRange}
+  commentId: T:System.Nullable{Orleans.GpuBridge.Abstractions.Temporal.TimeRange}
+  parent: System
+  definition: System.Nullable`1
+  href: Orleans.GpuBridge.Abstractions.Temporal.TimeRange.html
+  name: TimeRange?
+  nameWithType: TimeRange?
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TimeRange?
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.TimeRange
+    name: TimeRange
+    href: Orleans.GpuBridge.Abstractions.Temporal.TimeRange.html
+  - name: '?'
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.TimeRange
+    name: TimeRange
+    href: Orleans.GpuBridge.Abstractions.Temporal.TimeRange.html
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.Priority*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.Priority
+  href: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.html#Orleans_GpuBridge_Abstractions_Temporal_TemporalResidentMessage_Priority
+  name: Priority
+  nameWithType: TemporalResidentMessage.Priority
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.Priority
+- uid: Orleans.GpuBridge.Abstractions.Temporal.MessagePriority
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.MessagePriority
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.MessagePriority.html
+  name: MessagePriority
+  nameWithType: MessagePriority
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.MessagePriority
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.IsValidAt*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.IsValidAt
+  href: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.html#Orleans_GpuBridge_Abstractions_Temporal_TemporalResidentMessage_IsValidAt_System_Int64_
+  name: IsValidAt
+  nameWithType: TemporalResidentMessage.IsValidAt
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.IsValidAt
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.IsExpired*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.IsExpired
+  href: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.html#Orleans_GpuBridge_Abstractions_Temporal_TemporalResidentMessage_IsExpired_System_Int64_
+  name: IsExpired
+  nameWithType: TemporalResidentMessage.IsExpired
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.IsExpired
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.GetAgeNanos*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.GetAgeNanos
+  href: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.html#Orleans_GpuBridge_Abstractions_Temporal_TemporalResidentMessage_GetAgeNanos_System_Int64_
+  name: GetAgeNanos
+  nameWithType: TemporalResidentMessage.GetAgeNanos
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.GetAgeNanos
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage.ToString
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage.ToString
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage
+  name: ToString()
+  nameWithType: ResidentMessage.ToString()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage.ToString()
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage.ToString
+    name: ToString
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ResidentMessage.ToString
+    name: ToString
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.ToString*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.ToString
+  href: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.html#Orleans_GpuBridge_Abstractions_Temporal_TemporalResidentMessage_ToString
+  name: ToString
+  nameWithType: TemporalResidentMessage.ToString
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

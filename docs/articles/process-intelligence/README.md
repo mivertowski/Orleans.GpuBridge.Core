@@ -1868,7 +1868,7 @@ Network: 100 Gbps Ethernet (Orleans cluster interconnect)
 OS: Ubuntu 22.04 LTS
 .NET: .NET 9.0
 Orleans: 8.2.0
-DotCompute: 0.4.0-RC2
+DotCompute: 0.5.1
 CUDA: 12.3
 cuBLAS: 12.3
 cuSPARSE: 12.1

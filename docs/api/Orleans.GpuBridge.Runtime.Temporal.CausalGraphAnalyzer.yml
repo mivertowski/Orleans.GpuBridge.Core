@@ -1,0 +1,1571 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer
+  id: CausalGraphAnalyzer
+  parent: Orleans.GpuBridge.Runtime.Temporal
+  children:
+  - Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.#ctor(Microsoft.Extensions.Logging.ILogger)
+  - Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.AddEvent(Orleans.GpuBridge.Abstractions.Temporal.CausalEvent)
+  - Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.AddEvents(System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Abstractions.Temporal.CausalEvent})
+  - Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.Clear
+  - Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.EventCount
+  - Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.FindCommonAncestors(System.Guid[])
+  - Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalChain(System.Guid)
+  - Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalDepth(System.Guid)
+  - Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalSinks
+  - Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalSources
+  - Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetConcurrentEvents(System.Guid)
+  - Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetDependentEvents(System.Guid)
+  - Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetRelationship(System.Guid,System.Guid)
+  - Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetStatistics
+  - Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.HasCausalCycle
+  - Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.IsCausallyRelated(System.Guid,System.Guid)
+  - Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.ToString
+  - Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.TotalQueries
+  langs:
+  - csharp
+  - vb
+  name: CausalGraphAnalyzer
+  nameWithType: CausalGraphAnalyzer
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CausalGraphAnalyzer
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+    startLine: 31
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Analyzes causal relationships between events in a distributed system.
+  remarks: >-
+    <p>
+
+    Provides comprehensive causal analysis including:
+
+    - Causal chain reconstruction (all events leading to a specific event)
+
+    - Concurrent event detection (events with no causal relationship)
+
+    - Common ancestor finding (join points in causal history)
+
+    - Dependent event discovery (events caused by a specific event)
+
+    - Causal depth calculation (maximum chain length)
+
+    </p>
+
+    <p>
+
+    Performance characteristics:
+
+    - GetCausalChain: O(D × E) where D is depth and E is events per level
+
+    - GetConcurrentEvents: O(N × V) where N is events and V is vector clock size
+
+    - IsCausallyRelated: O(V) where V is vector clock size
+
+    - GetCausalDepth: O(D × E) using BFS
+
+    </p>
+  example: []
+  syntax:
+    content: 'public sealed class CausalGraphAnalyzer : ICausalGraphAnalyzer'
+    content.vb: Public NotInheritable Class CausalGraphAnalyzer Implements ICausalGraphAnalyzer
+  inheritance:
+  - System.Object
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.EventCount
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.EventCount
+  id: EventCount
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer
+  langs:
+  - csharp
+  - vb
+  name: EventCount
+  nameWithType: CausalGraphAnalyzer.EventCount
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.EventCount
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: EventCount
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+    startLine: 44
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Gets the number of events in the analyzer.
+  example: []
+  syntax:
+    content: public int EventCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property EventCount As Integer
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.EventCount*
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.TotalQueries
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.TotalQueries
+  id: TotalQueries
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer
+  langs:
+  - csharp
+  - vb
+  name: TotalQueries
+  nameWithType: CausalGraphAnalyzer.TotalQueries
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.TotalQueries
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TotalQueries
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+    startLine: 49
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Gets the total number of queries performed.
+  example: []
+  syntax:
+    content: public long TotalQueries { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public ReadOnly Property TotalQueries As Long
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.TotalQueries*
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.#ctor(Microsoft.Extensions.Logging.ILogger)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.#ctor(Microsoft.Extensions.Logging.ILogger)
+  id: '#ctor(Microsoft.Extensions.Logging.ILogger)'
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer
+  langs:
+  - csharp
+  - vb
+  name: CausalGraphAnalyzer(ILogger?)
+  nameWithType: CausalGraphAnalyzer.CausalGraphAnalyzer(ILogger?)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.CausalGraphAnalyzer(Microsoft.Extensions.Logging.ILogger?)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+    startLine: 55
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Creates a new causal graph analyzer.
+  example: []
+  syntax:
+    content: public CausalGraphAnalyzer(ILogger? logger = null)
+    parameters:
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger
+      description: Optional logger
+    content.vb: Public Sub New(logger As ILogger = Nothing)
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.#ctor*
+  nameWithType.vb: CausalGraphAnalyzer.New(ILogger)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.New(Microsoft.Extensions.Logging.ILogger)
+  name.vb: New(ILogger)
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.AddEvent(Orleans.GpuBridge.Abstractions.Temporal.CausalEvent)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.AddEvent(Orleans.GpuBridge.Abstractions.Temporal.CausalEvent)
+  id: AddEvent(Orleans.GpuBridge.Abstractions.Temporal.CausalEvent)
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer
+  langs:
+  - csharp
+  - vb
+  name: AddEvent(CausalEvent)
+  nameWithType: CausalGraphAnalyzer.AddEvent(CausalEvent)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.AddEvent(Orleans.GpuBridge.Abstractions.Temporal.CausalEvent)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AddEvent
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+    startLine: 64
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Adds an event to the analyzer.
+  example: []
+  syntax:
+    content: public void AddEvent(CausalEvent evt)
+    parameters:
+    - id: evt
+      type: Orleans.GpuBridge.Abstractions.Temporal.CausalEvent
+      description: Event to add
+    content.vb: Public Sub AddEvent(evt As CausalEvent)
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.AddEvent*
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.AddEvents(System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Abstractions.Temporal.CausalEvent})
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.AddEvents(System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Abstractions.Temporal.CausalEvent})
+  id: AddEvents(System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Abstractions.Temporal.CausalEvent})
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer
+  langs:
+  - csharp
+  - vb
+  name: AddEvents(IEnumerable<CausalEvent>)
+  nameWithType: CausalGraphAnalyzer.AddEvents(IEnumerable<CausalEvent>)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.AddEvents(System.Collections.Generic.IEnumerable<Orleans.GpuBridge.Abstractions.Temporal.CausalEvent>)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AddEvents
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+    startLine: 96
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Adds multiple events to the analyzer.
+  example: []
+  syntax:
+    content: public void AddEvents(IEnumerable<CausalEvent> events)
+    parameters:
+    - id: events
+      type: System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Abstractions.Temporal.CausalEvent}
+      description: Events to add
+    content.vb: Public Sub AddEvents(events As IEnumerable(Of CausalEvent))
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.AddEvents*
+  nameWithType.vb: CausalGraphAnalyzer.AddEvents(IEnumerable(Of CausalEvent))
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.AddEvents(System.Collections.Generic.IEnumerable(Of Orleans.GpuBridge.Abstractions.Temporal.CausalEvent))
+  name.vb: AddEvents(IEnumerable(Of CausalEvent))
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalChain(System.Guid)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalChain(System.Guid)
+  id: GetCausalChain(System.Guid)
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer
+  langs:
+  - csharp
+  - vb
+  name: GetCausalChain(Guid)
+  nameWithType: CausalGraphAnalyzer.GetCausalChain(Guid)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalChain(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetCausalChain
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+    startLine: 105
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Gets the complete causal chain leading to a specific event.
+  example: []
+  syntax:
+    content: public IEnumerable<CausalEvent> GetCausalChain(Guid eventId)
+    parameters:
+    - id: eventId
+      type: System.Guid
+      description: Event to trace back from
+    return:
+      type: System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Abstractions.Temporal.CausalEvent}
+      description: All causally preceding events, in causal order
+    content.vb: Public Function GetCausalChain(eventId As Guid) As IEnumerable(Of CausalEvent)
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalChain*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetCausalChain(System.Guid)
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetConcurrentEvents(System.Guid)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetConcurrentEvents(System.Guid)
+  id: GetConcurrentEvents(System.Guid)
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer
+  langs:
+  - csharp
+  - vb
+  name: GetConcurrentEvents(Guid)
+  nameWithType: CausalGraphAnalyzer.GetConcurrentEvents(Guid)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetConcurrentEvents(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetConcurrentEvents
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+    startLine: 157
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Gets all events that are concurrent with a specific event.
+  example: []
+  syntax:
+    content: public IEnumerable<CausalEvent> GetConcurrentEvents(Guid eventId)
+    parameters:
+    - id: eventId
+      type: System.Guid
+      description: Event to find concurrent events for
+    return:
+      type: System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Abstractions.Temporal.CausalEvent}
+      description: All concurrent events (neither before nor after)
+    content.vb: Public Function GetConcurrentEvents(eventId As Guid) As IEnumerable(Of CausalEvent)
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetConcurrentEvents*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetConcurrentEvents(System.Guid)
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.IsCausallyRelated(System.Guid,System.Guid)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.IsCausallyRelated(System.Guid,System.Guid)
+  id: IsCausallyRelated(System.Guid,System.Guid)
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer
+  langs:
+  - csharp
+  - vb
+  name: IsCausallyRelated(Guid, Guid)
+  nameWithType: CausalGraphAnalyzer.IsCausallyRelated(Guid, Guid)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.IsCausallyRelated(System.Guid, System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsCausallyRelated
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+    startLine: 186
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Checks if two events are causally related.
+  example: []
+  syntax:
+    content: public bool IsCausallyRelated(Guid eventId1, Guid eventId2)
+    parameters:
+    - id: eventId1
+      type: System.Guid
+      description: First event
+    - id: eventId2
+      type: System.Guid
+      description: Second event
+    return:
+      type: System.Boolean
+      description: True if one event causally precedes the other
+    content.vb: Public Function IsCausallyRelated(eventId1 As Guid, eventId2 As Guid) As Boolean
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.IsCausallyRelated*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.IsCausallyRelated(System.Guid,System.Guid)
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetRelationship(System.Guid,System.Guid)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetRelationship(System.Guid,System.Guid)
+  id: GetRelationship(System.Guid,System.Guid)
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer
+  langs:
+  - csharp
+  - vb
+  name: GetRelationship(Guid, Guid)
+  nameWithType: CausalGraphAnalyzer.GetRelationship(Guid, Guid)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetRelationship(System.Guid, System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetRelationship
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+    startLine: 202
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Gets the causal relationship between two events.
+  example: []
+  syntax:
+    content: public CausalRelationship GetRelationship(Guid eventId1, Guid eventId2)
+    parameters:
+    - id: eventId1
+      type: System.Guid
+      description: First event
+    - id: eventId2
+      type: System.Guid
+      description: Second event
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.CausalRelationship
+      description: The causal relationship between events
+    content.vb: Public Function GetRelationship(eventId1 As Guid, eventId2 As Guid) As CausalRelationship
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetRelationship*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetRelationship(System.Guid,System.Guid)
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.FindCommonAncestors(System.Guid[])
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.FindCommonAncestors(System.Guid[])
+  id: FindCommonAncestors(System.Guid[])
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer
+  langs:
+  - csharp
+  - vb
+  name: FindCommonAncestors(params Guid[])
+  nameWithType: CausalGraphAnalyzer.FindCommonAncestors(params Guid[])
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.FindCommonAncestors(params System.Guid[])
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: FindCommonAncestors
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+    startLine: 216
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Finds common causal ancestors of multiple events.
+  example: []
+  syntax:
+    content: public IEnumerable<CausalEvent> FindCommonAncestors(params Guid[] eventIds)
+    parameters:
+    - id: eventIds
+      type: System.Guid[]
+      description: Events to find ancestors for
+    return:
+      type: System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Abstractions.Temporal.CausalEvent}
+      description: Common causal ancestors
+    content.vb: Public Function FindCommonAncestors(ParamArray eventIds As Guid()) As IEnumerable(Of CausalEvent)
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.FindCommonAncestors*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.FindCommonAncestors(System.Guid[])
+  nameWithType.vb: CausalGraphAnalyzer.FindCommonAncestors(ParamArray Guid())
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.FindCommonAncestors(ParamArray System.Guid())
+  name.vb: FindCommonAncestors(ParamArray Guid())
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetDependentEvents(System.Guid)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetDependentEvents(System.Guid)
+  id: GetDependentEvents(System.Guid)
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer
+  langs:
+  - csharp
+  - vb
+  name: GetDependentEvents(Guid)
+  nameWithType: CausalGraphAnalyzer.GetDependentEvents(Guid)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetDependentEvents(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetDependentEvents
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+    startLine: 245
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Finds all events that depend on a specific event.
+  example: []
+  syntax:
+    content: public IEnumerable<CausalEvent> GetDependentEvents(Guid eventId)
+    parameters:
+    - id: eventId
+      type: System.Guid
+      description: Event to find dependents for
+    return:
+      type: System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Abstractions.Temporal.CausalEvent}
+      description: All events that causally follow this event
+    content.vb: Public Function GetDependentEvents(eventId As Guid) As IEnumerable(Of CausalEvent)
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetDependentEvents*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetDependentEvents(System.Guid)
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalDepth(System.Guid)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalDepth(System.Guid)
+  id: GetCausalDepth(System.Guid)
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer
+  langs:
+  - csharp
+  - vb
+  name: GetCausalDepth(Guid)
+  nameWithType: CausalGraphAnalyzer.GetCausalDepth(Guid)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalDepth(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetCausalDepth
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+    startLine: 298
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Gets the causal depth (maximum chain length) of an event.
+  example: []
+  syntax:
+    content: public int GetCausalDepth(Guid eventId)
+    parameters:
+    - id: eventId
+      type: System.Guid
+      description: Event to analyze
+    return:
+      type: System.Int32
+      description: Maximum causal chain length
+    content.vb: Public Function GetCausalDepth(eventId As Guid) As Integer
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalDepth*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetCausalDepth(System.Guid)
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalSinks
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalSinks
+  id: GetCausalSinks
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer
+  langs:
+  - csharp
+  - vb
+  name: GetCausalSinks()
+  nameWithType: CausalGraphAnalyzer.GetCausalSinks()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalSinks()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetCausalSinks
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+    startLine: 345
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Gets events that are causal "sinks" (have no dependents).
+  example: []
+  syntax:
+    content: public IEnumerable<CausalEvent> GetCausalSinks()
+    return:
+      type: System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Abstractions.Temporal.CausalEvent}
+      description: Events with no dependents
+    content.vb: Public Function GetCausalSinks() As IEnumerable(Of CausalEvent)
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalSinks*
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalSources
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalSources
+  id: GetCausalSources
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer
+  langs:
+  - csharp
+  - vb
+  name: GetCausalSources()
+  nameWithType: CausalGraphAnalyzer.GetCausalSources()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalSources()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetCausalSources
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+    startLine: 357
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Gets events that are causal "sources" (have no dependencies).
+  example: []
+  syntax:
+    content: public IEnumerable<CausalEvent> GetCausalSources()
+    return:
+      type: System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Abstractions.Temporal.CausalEvent}
+      description: Events with no dependencies
+    content.vb: Public Function GetCausalSources() As IEnumerable(Of CausalEvent)
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalSources*
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.HasCausalCycle
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.HasCausalCycle
+  id: HasCausalCycle
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer
+  langs:
+  - csharp
+  - vb
+  name: HasCausalCycle()
+  nameWithType: CausalGraphAnalyzer.HasCausalCycle()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.HasCausalCycle()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: HasCausalCycle
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+    startLine: 372
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Detects if there's a causal cycle in the graph.
+  remarks: >-
+    A well-formed causal graph should never have cycles.
+
+    This method can help detect corruption or bugs.
+  example: []
+  syntax:
+    content: public bool HasCausalCycle()
+    return:
+      type: System.Boolean
+      description: True if a cycle exists
+    content.vb: Public Function HasCausalCycle() As Boolean
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.HasCausalCycle*
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetStatistics
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetStatistics
+  id: GetStatistics
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer
+  langs:
+  - csharp
+  - vb
+  name: GetStatistics()
+  nameWithType: CausalGraphAnalyzer.GetStatistics()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetStatistics()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetStatistics
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+    startLine: 420
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Gets statistics about the causal graph.
+  example: []
+  syntax:
+    content: public CausalGraphStatistics GetStatistics()
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.CausalGraphStatistics
+    content.vb: Public Function GetStatistics() As CausalGraphStatistics
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetStatistics*
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.Clear
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.Clear
+  id: Clear
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer
+  langs:
+  - csharp
+  - vb
+  name: Clear()
+  nameWithType: CausalGraphAnalyzer.Clear()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.Clear()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Clear
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+    startLine: 442
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Clears all events from the analyzer.
+  example: []
+  syntax:
+    content: public void Clear()
+    content.vb: Public Sub Clear()
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.Clear*
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.ToString
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.ToString
+  id: ToString
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: CausalGraphAnalyzer.ToString()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.ToString()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ToString
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalGraphAnalyzer.cs
+    startLine: 452
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Returns a string that represents the current object.
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+      description: A string that represents the current object.
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.Object.ToString
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.ToString*
+references:
+- uid: Orleans.GpuBridge.Runtime.Temporal
+  commentId: N:Orleans.GpuBridge.Runtime.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Temporal
+  nameWithType: Orleans.GpuBridge.Runtime.Temporal
+  fullName: Orleans.GpuBridge.Runtime.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.html
+  name: ICausalGraphAnalyzer
+  nameWithType: ICausalGraphAnalyzer
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Abstractions.Temporal
+  commentId: N:Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Temporal
+  nameWithType: Orleans.GpuBridge.Abstractions.Temporal
+  fullName: Orleans.GpuBridge.Abstractions.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.EventCount*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.EventCount
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.html#Orleans_GpuBridge_Runtime_Temporal_CausalGraphAnalyzer_EventCount
+  name: EventCount
+  nameWithType: CausalGraphAnalyzer.EventCount
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.EventCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.TotalQueries*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.TotalQueries
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.html#Orleans_GpuBridge_Runtime_Temporal_CausalGraphAnalyzer_TotalQueries
+  name: TotalQueries
+  nameWithType: CausalGraphAnalyzer.TotalQueries
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.TotalQueries
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.#ctor
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.html#Orleans_GpuBridge_Runtime_Temporal_CausalGraphAnalyzer__ctor_Microsoft_Extensions_Logging_ILogger_
+  name: CausalGraphAnalyzer
+  nameWithType: CausalGraphAnalyzer.CausalGraphAnalyzer
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.CausalGraphAnalyzer
+  nameWithType.vb: CausalGraphAnalyzer.New
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.New
+  name.vb: New
+- uid: Microsoft.Extensions.Logging.ILogger
+  commentId: T:Microsoft.Extensions.Logging.ILogger
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  name: ILogger
+  nameWithType: ILogger
+  fullName: Microsoft.Extensions.Logging.ILogger
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.AddEvent*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.AddEvent
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.html#Orleans_GpuBridge_Runtime_Temporal_CausalGraphAnalyzer_AddEvent_Orleans_GpuBridge_Abstractions_Temporal_CausalEvent_
+  name: AddEvent
+  nameWithType: CausalGraphAnalyzer.AddEvent
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.AddEvent
+- uid: Orleans.GpuBridge.Abstractions.Temporal.CausalEvent
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.CausalEvent
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.CausalEvent.html
+  name: CausalEvent
+  nameWithType: CausalEvent
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.CausalEvent
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.AddEvents*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.AddEvents
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.html#Orleans_GpuBridge_Runtime_Temporal_CausalGraphAnalyzer_AddEvents_System_Collections_Generic_IEnumerable_Orleans_GpuBridge_Abstractions_Temporal_CausalEvent__
+  name: AddEvents
+  nameWithType: CausalGraphAnalyzer.AddEvents
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.AddEvents
+- uid: System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Abstractions.Temporal.CausalEvent}
+  commentId: T:System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Abstractions.Temporal.CausalEvent}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<CausalEvent>
+  nameWithType: IEnumerable<CausalEvent>
+  fullName: System.Collections.Generic.IEnumerable<Orleans.GpuBridge.Abstractions.Temporal.CausalEvent>
+  nameWithType.vb: IEnumerable(Of CausalEvent)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of Orleans.GpuBridge.Abstractions.Temporal.CausalEvent)
+  name.vb: IEnumerable(Of CausalEvent)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.CausalEvent
+    name: CausalEvent
+    href: Orleans.GpuBridge.Abstractions.Temporal.CausalEvent.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.CausalEvent
+    name: CausalEvent
+    href: Orleans.GpuBridge.Abstractions.Temporal.CausalEvent.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalChain*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalChain
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.html#Orleans_GpuBridge_Runtime_Temporal_CausalGraphAnalyzer_GetCausalChain_System_Guid_
+  name: GetCausalChain
+  nameWithType: CausalGraphAnalyzer.GetCausalChain
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalChain
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetCausalChain(System.Guid)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetCausalChain(System.Guid)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: GetCausalChain(Guid)
+  nameWithType: ICausalGraphAnalyzer.GetCausalChain(Guid)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetCausalChain(System.Guid)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetCausalChain(System.Guid)
+    name: GetCausalChain
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetCausalChain(System.Guid)
+    name: GetCausalChain
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetConcurrentEvents*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetConcurrentEvents
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.html#Orleans_GpuBridge_Runtime_Temporal_CausalGraphAnalyzer_GetConcurrentEvents_System_Guid_
+  name: GetConcurrentEvents
+  nameWithType: CausalGraphAnalyzer.GetConcurrentEvents
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetConcurrentEvents
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetConcurrentEvents(System.Guid)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetConcurrentEvents(System.Guid)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: GetConcurrentEvents(Guid)
+  nameWithType: ICausalGraphAnalyzer.GetConcurrentEvents(Guid)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetConcurrentEvents(System.Guid)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetConcurrentEvents(System.Guid)
+    name: GetConcurrentEvents
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetConcurrentEvents(System.Guid)
+    name: GetConcurrentEvents
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.IsCausallyRelated*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.IsCausallyRelated
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.html#Orleans_GpuBridge_Runtime_Temporal_CausalGraphAnalyzer_IsCausallyRelated_System_Guid_System_Guid_
+  name: IsCausallyRelated
+  nameWithType: CausalGraphAnalyzer.IsCausallyRelated
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.IsCausallyRelated
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.IsCausallyRelated(System.Guid,System.Guid)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.IsCausallyRelated(System.Guid,System.Guid)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: IsCausallyRelated(Guid, Guid)
+  nameWithType: ICausalGraphAnalyzer.IsCausallyRelated(Guid, Guid)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.IsCausallyRelated(System.Guid, System.Guid)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.IsCausallyRelated(System.Guid,System.Guid)
+    name: IsCausallyRelated
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.IsCausallyRelated(System.Guid,System.Guid)
+    name: IsCausallyRelated
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetRelationship*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetRelationship
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.html#Orleans_GpuBridge_Runtime_Temporal_CausalGraphAnalyzer_GetRelationship_System_Guid_System_Guid_
+  name: GetRelationship
+  nameWithType: CausalGraphAnalyzer.GetRelationship
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetRelationship
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetRelationship(System.Guid,System.Guid)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetRelationship(System.Guid,System.Guid)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: GetRelationship(Guid, Guid)
+  nameWithType: ICausalGraphAnalyzer.GetRelationship(Guid, Guid)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetRelationship(System.Guid, System.Guid)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetRelationship(System.Guid,System.Guid)
+    name: GetRelationship
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetRelationship(System.Guid,System.Guid)
+    name: GetRelationship
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.CausalRelationship
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.CausalRelationship
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.CausalRelationship.html
+  name: CausalRelationship
+  nameWithType: CausalRelationship
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.CausalRelationship
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.FindCommonAncestors*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.FindCommonAncestors
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.html#Orleans_GpuBridge_Runtime_Temporal_CausalGraphAnalyzer_FindCommonAncestors_System_Guid___
+  name: FindCommonAncestors
+  nameWithType: CausalGraphAnalyzer.FindCommonAncestors
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.FindCommonAncestors
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.FindCommonAncestors(System.Guid[])
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.FindCommonAncestors(System.Guid[])
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: FindCommonAncestors(params Guid[])
+  nameWithType: ICausalGraphAnalyzer.FindCommonAncestors(params Guid[])
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.FindCommonAncestors(params System.Guid[])
+  nameWithType.vb: ICausalGraphAnalyzer.FindCommonAncestors(ParamArray Guid())
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.FindCommonAncestors(ParamArray System.Guid())
+  name.vb: FindCommonAncestors(ParamArray Guid())
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.FindCommonAncestors(System.Guid[])
+    name: FindCommonAncestors
+  - name: (
+  - name: params
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.FindCommonAncestors(System.Guid[])
+    name: FindCommonAncestors
+  - name: (
+  - name: ParamArray
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: (
+  - name: )
+  - name: )
+- uid: System.Guid[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid[]
+  nameWithType: Guid[]
+  fullName: System.Guid[]
+  nameWithType.vb: Guid()
+  fullName.vb: System.Guid()
+  name.vb: Guid()
+  spec.csharp:
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetDependentEvents*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetDependentEvents
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.html#Orleans_GpuBridge_Runtime_Temporal_CausalGraphAnalyzer_GetDependentEvents_System_Guid_
+  name: GetDependentEvents
+  nameWithType: CausalGraphAnalyzer.GetDependentEvents
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetDependentEvents
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetDependentEvents(System.Guid)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetDependentEvents(System.Guid)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: GetDependentEvents(Guid)
+  nameWithType: ICausalGraphAnalyzer.GetDependentEvents(Guid)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetDependentEvents(System.Guid)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetDependentEvents(System.Guid)
+    name: GetDependentEvents
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetDependentEvents(System.Guid)
+    name: GetDependentEvents
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalDepth*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalDepth
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.html#Orleans_GpuBridge_Runtime_Temporal_CausalGraphAnalyzer_GetCausalDepth_System_Guid_
+  name: GetCausalDepth
+  nameWithType: CausalGraphAnalyzer.GetCausalDepth
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalDepth
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetCausalDepth(System.Guid)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetCausalDepth(System.Guid)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: GetCausalDepth(Guid)
+  nameWithType: ICausalGraphAnalyzer.GetCausalDepth(Guid)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetCausalDepth(System.Guid)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetCausalDepth(System.Guid)
+    name: GetCausalDepth
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalGraphAnalyzer.GetCausalDepth(System.Guid)
+    name: GetCausalDepth
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalSinks*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalSinks
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.html#Orleans_GpuBridge_Runtime_Temporal_CausalGraphAnalyzer_GetCausalSinks
+  name: GetCausalSinks
+  nameWithType: CausalGraphAnalyzer.GetCausalSinks
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalSinks
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalSources*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalSources
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.html#Orleans_GpuBridge_Runtime_Temporal_CausalGraphAnalyzer_GetCausalSources
+  name: GetCausalSources
+  nameWithType: CausalGraphAnalyzer.GetCausalSources
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetCausalSources
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.HasCausalCycle*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.HasCausalCycle
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.html#Orleans_GpuBridge_Runtime_Temporal_CausalGraphAnalyzer_HasCausalCycle
+  name: HasCausalCycle
+  nameWithType: CausalGraphAnalyzer.HasCausalCycle
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.HasCausalCycle
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetStatistics*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetStatistics
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.html#Orleans_GpuBridge_Runtime_Temporal_CausalGraphAnalyzer_GetStatistics
+  name: GetStatistics
+  nameWithType: CausalGraphAnalyzer.GetStatistics
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.GetStatistics
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphStatistics
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.CausalGraphStatistics
+  parent: Orleans.GpuBridge.Runtime.Temporal
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalGraphStatistics.html
+  name: CausalGraphStatistics
+  nameWithType: CausalGraphStatistics
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphStatistics
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.Clear*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.Clear
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.html#Orleans_GpuBridge_Runtime_Temporal_CausalGraphAnalyzer_Clear
+  name: Clear
+  nameWithType: CausalGraphAnalyzer.Clear
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.Clear
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.ToString*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.ToString
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.html#Orleans_GpuBridge_Runtime_Temporal_CausalGraphAnalyzer_ToString
+  name: ToString
+  nameWithType: CausalGraphAnalyzer.ToString
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalGraphAnalyzer.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

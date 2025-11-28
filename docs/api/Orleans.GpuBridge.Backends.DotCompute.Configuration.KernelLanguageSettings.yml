@@ -1,0 +1,1297 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings
+  commentId: T:Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings
+  id: KernelLanguageSettings
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  children:
+  - Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.EnableLanguageTranslation
+  - Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.IncludeDirectories
+  - Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.PreferredLanguages
+  - Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.PreprocessorDefines
+  langs:
+  - csharp
+  - vb
+  name: KernelLanguageSettings
+  nameWithType: KernelLanguageSettings
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/KernelLanguageSettings.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: KernelLanguageSettings
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/KernelLanguageSettings.cs
+    startLine: 60
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Kernel language compilation configuration settings for the DotCompute backend.
+  remarks: >-
+    This class provides comprehensive configuration for kernel programming language
+
+    support, compilation preferences, and language-specific settings in the DotCompute
+
+    backend. The backend supports multiple kernel languages and can automatically
+
+    translate between them when needed.
+
+
+    <p>
+
+    Language selection affects:
+
+    - Compilation performance and kernel optimization
+
+    - Platform compatibility and portability
+
+    - Development experience and debugging capabilities
+
+    - Runtime performance characteristics
+
+    - Feature availability and language-specific optimizations
+
+    </p>
+
+
+    <p>
+
+    The DotCompute backend provides intelligent language selection based on platform
+
+    capabilities, performance characteristics, and developer preferences. When a
+
+    preferred language is not available, the backend can automatically translate
+
+    to a supported language or use a fallback language.
+
+    </p>
+
+
+    <p>
+
+    The default configuration provides optimal language selection for each platform
+
+    while enabling automatic translation for maximum compatibility.
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// CUDA-optimized configuration
+
+    var cudaSettings = new KernelLanguageSettings();
+
+    cudaSettings.PreferredLanguages.Clear();
+
+    cudaSettings.PreferredLanguages[GpuBackend.CUDA] = KernelLanguage.CUDA;
+
+    cudaSettings.PreferredLanguages[GpuBackend.OpenCL] = KernelLanguage.OpenCL;
+
+    cudaSettings.EnableLanguageTranslation = true;
+
+
+    // Cross-platform configuration
+
+    var crossPlatformSettings = new KernelLanguageSettings();
+
+    crossPlatformSettings.PreferredLanguages.Clear();
+
+    crossPlatformSettings.PreferredLanguages[GpuBackend.OpenCL] = KernelLanguage.OpenCL;
+
+    crossPlatformSettings.PreferredLanguages[GpuBackend.Vulkan] = KernelLanguage.SPIRV;
+
+    cudaSettings.EnableLanguageTranslation = true;
+
+
+    // C#-first configuration for .NET developers
+
+    var csharpSettings = new KernelLanguageSettings();
+
+    foreach (var platform in Enum.GetValues&lt;GpuBackend&gt;())
+
+    {
+        csharpSettings.PreferredLanguages[platform] = KernelLanguage.CSharp;
+    }
+
+    csharpSettings.EnableLanguageTranslation = true;</code></pre>
+  syntax:
+    content: public class KernelLanguageSettings
+    content.vb: Public Class KernelLanguageSettings
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.PreferredLanguages
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.PreferredLanguages
+  id: PreferredLanguages
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings
+  langs:
+  - csharp
+  - vb
+  name: PreferredLanguages
+  nameWithType: KernelLanguageSettings.PreferredLanguages
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.PreferredLanguages
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/KernelLanguageSettings.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: PreferredLanguages
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/KernelLanguageSettings.cs
+    startLine: 118
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Gets or sets the preferred kernel language for each compute platform.
+  remarks: >-
+    This dictionary defines the preferred source language for kernel compilation on each
+
+    platform. The DotCompute backend will attempt to use the specified language when
+
+    compiling kernels for the corresponding platform.
+
+
+    <p>
+
+    Default language mappings are optimized for performance and platform capabilities:
+
+    - <xref href="Orleans.GpuBridge.Abstractions.Enums.GpuBackend.CUDA" data-throw-if-not-resolved="false"></xref>: <xref href="Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.CUDA" data-throw-if-not-resolved="false"></xref> for native performance
+
+    - <xref href="Orleans.GpuBridge.Abstractions.Enums.GpuBackend.OpenCL" data-throw-if-not-resolved="false"></xref>: <xref href="Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.OpenCL" data-throw-if-not-resolved="false"></xref> for compatibility
+
+    - <xref href="Orleans.GpuBridge.Abstractions.Enums.GpuBackend.DirectCompute" data-throw-if-not-resolved="false"></xref>: <xref href="Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.HLSL" data-throw-if-not-resolved="false"></xref> for DirectX integration
+
+    - <xref href="Orleans.GpuBridge.Abstractions.Enums.GpuBackend.Metal" data-throw-if-not-resolved="false"></xref>: <xref href="Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.MSL" data-throw-if-not-resolved="false"></xref> for Apple optimization
+
+    - <xref href="Orleans.GpuBridge.Abstractions.Enums.GpuBackend.Vulkan" data-throw-if-not-resolved="false"></xref>: <xref href="Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.HLSL" data-throw-if-not-resolved="false"></xref> with SPIR-V compilation
+
+    </p>
+
+
+    <p>
+
+    Language selection considerations:
+
+    - Performance: Native platform languages typically offer best performance
+
+    - Portability: Cross-platform languages (OpenCL, C#) improve portability
+
+    - Development experience: C# provides familiar syntax and tooling
+
+    - Feature support: Some languages expose more platform-specific features
+
+    - Ecosystem: Available libraries, tools, and community support
+
+    </p>
+
+
+    <p>
+
+    If a preferred language is not supported on a platform, the backend will:
+
+    1. Attempt automatic translation if <xref href="Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.EnableLanguageTranslation" data-throw-if-not-resolved="false"></xref> is enabled
+
+    2. Fall back to a supported language for the platform
+
+    3. Use C# as the ultimate fallback with translation
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// Performance-oriented configuration
+
+    languageSettings.PreferredLanguages[GpuBackend.CUDA] = KernelLanguage.CUDA;
+
+    languageSettings.PreferredLanguages[GpuBackend.OpenCL] = KernelLanguage.OpenCL;
+
+    languageSettings.PreferredLanguages[GpuBackend.Metal] = KernelLanguage.MSL;
+
+
+    // Developer-friendly configuration
+
+    foreach (var backend in Enum.GetValues&lt;GpuBackend&gt;())
+
+    {
+        languageSettings.PreferredLanguages[backend] = KernelLanguage.CSharp;
+    }
+
+
+    // Portability-focused configuration
+
+    languageSettings.PreferredLanguages[GpuBackend.CUDA] = KernelLanguage.OpenCL;
+
+    languageSettings.PreferredLanguages[GpuBackend.OpenCL] = KernelLanguage.OpenCL;
+
+    languageSettings.PreferredLanguages[GpuBackend.Vulkan] = KernelLanguage.SPIRV;</code></pre>
+  syntax:
+    content: public Dictionary<GpuBackend, KernelLanguage> PreferredLanguages { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.Dictionary{Orleans.GpuBridge.Abstractions.Enums.GpuBackend,Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage}
+      description: >-
+        A dictionary mapping <xref href="Orleans.GpuBridge.Abstractions.Enums.GpuBackend" data-throw-if-not-resolved="false"></xref> values to <xref href="Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage" data-throw-if-not-resolved="false"></xref> preferences.
+
+        Default includes optimal language selection for each platform.
+    content.vb: Public Property PreferredLanguages As Dictionary(Of GpuBackend, KernelLanguage)
+  overload: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.PreferredLanguages*
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.EnableLanguageTranslation
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.EnableLanguageTranslation
+  id: EnableLanguageTranslation
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings
+  langs:
+  - csharp
+  - vb
+  name: EnableLanguageTranslation
+  nameWithType: KernelLanguageSettings.EnableLanguageTranslation
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.EnableLanguageTranslation
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/KernelLanguageSettings.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: EnableLanguageTranslation
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/KernelLanguageSettings.cs
+    startLine: 171
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Gets or sets whether to enable automatic language translation between kernel languages.
+  remarks: >-
+    Automatic language translation allows the DotCompute backend to automatically
+
+    convert kernel source code between different programming languages when the
+
+    preferred language is not available or supported on a target platform.
+
+
+    <p>
+
+    Translation capabilities:
+
+    - C# to platform-specific languages (CUDA, OpenCL, HLSL, MSL)
+
+    - OpenCL to other C-based languages with platform adaptations
+
+    - HLSL to SPIR-V for Vulkan compatibility
+
+    - Basic cross-translation between similar C-based languages
+
+    - Automatic API and syntax adaptation for platform differences
+
+    </p>
+
+
+    <p>
+
+    Translation benefits:
+
+    - Improved platform compatibility and portability
+
+    - Reduced need for multiple language implementations
+
+    - Automatic optimization for target platform capabilities
+
+    - Simplified development workflow for multi-platform deployment
+
+    - Fallback support when preferred languages are unavailable
+
+    </p>
+
+
+    <p>
+
+    Translation limitations:
+
+    - May not preserve all language-specific optimizations
+
+    - Some advanced language features may not translate perfectly
+
+    - Potential performance overhead from translated code
+
+    - Debugging information may be less precise in translated code
+
+    - Complex language constructs may require manual implementation
+
+    </p>
+
+
+    <p>
+
+    Translation is performed at compilation time and cached to minimize overhead.
+
+    The system uses sophisticated analysis to ensure translated code maintains
+
+    semantic correctness while optimizing for the target platform.
+
+    </p>
+  example: []
+  syntax:
+    content: public bool EnableLanguageTranslation { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+      description: <code>true</code> to enable automatic language translation; otherwise, <code>false</code>. Default is <code>true</code>.
+    content.vb: Public Property EnableLanguageTranslation As Boolean
+  overload: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.EnableLanguageTranslation*
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.PreprocessorDefines
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.PreprocessorDefines
+  id: PreprocessorDefines
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings
+  langs:
+  - csharp
+  - vb
+  name: PreprocessorDefines
+  nameWithType: KernelLanguageSettings.PreprocessorDefines
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.PreprocessorDefines
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/KernelLanguageSettings.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: PreprocessorDefines
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/KernelLanguageSettings.cs
+    startLine: 236
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Gets or sets custom preprocessor definitions for kernel compilation.
+  remarks: >-
+    Preprocessor definitions allow you to control conditional compilation and
+
+    provide compile-time constants to kernel source code. These definitions
+
+    are applied during kernel compilation and can affect code generation,
+
+    optimization, and feature selection.
+
+
+    <p>
+
+    Common use cases for preprocessor definitions:
+
+    - Feature flags to enable/disable specific functionality
+
+    - Platform-specific code paths and optimizations
+
+    - Compile-time constants for algorithm parameters
+
+    - Debug flags for development and troubleshooting
+
+    - Version-specific compatibility macros
+
+    </p>
+
+
+    <p>
+
+    Definition formats:
+
+    - Simple macro: <code>{"DEBUG", ""}</code> defines <code>#define DEBUG</code>
+
+    - Valued macro: <code>{"BLOCK_SIZE", "256"}</code> defines <code>#define BLOCK_SIZE 256</code>
+
+    - Complex value: <code>{"PI", "3.14159f"}</code> defines <code>#define PI 3.14159f</code>
+
+    </p>
+
+
+    <p>
+
+    Platform considerations:
+
+    - CUDA: Uses nvcc preprocessor with C++ extensions
+
+    - OpenCL: Uses standard C preprocessor with OpenCL extensions
+
+    - HLSL: Uses HLSL compiler preprocessor with shader-specific features
+
+    - MSL: Uses Metal compiler preprocessor with C++ extensions
+
+    - C#: Definitions may be converted to constants in translated code
+
+    </p>
+
+
+    <p>
+
+    The preprocessor definitions are applied to all kernel compilations.
+
+    For platform-specific definitions, consider using conditional logic
+
+    within the kernel code or platform-specific build configurations.
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// Performance and debugging definitions
+
+    languageSettings.PreprocessorDefines["BLOCK_SIZE"] = "256";
+
+    languageSettings.PreprocessorDefines["ENABLE_BOUNDS_CHECK"] = "";  // Simple flag
+
+    languageSettings.PreprocessorDefines["MAX_ITERATIONS"] = "1000";
+
+    languageSettings.PreprocessorDefines["PI"] = "3.14159265359f";
+
+
+    // Platform-specific optimizations
+
+    languageSettings.PreprocessorDefines["USE_FAST_MATH"] = "";
+
+    languageSettings.PreprocessorDefines["UNROLL_LOOPS"] = "4";
+
+    languageSettings.PreprocessorDefines["CACHE_LINE_SIZE"] = "128";
+
+
+    // Feature flags
+
+    languageSettings.PreprocessorDefines["ENABLE_DOUBLE_PRECISION"] = "";
+
+    languageSettings.PreprocessorDefines["USE_TEXTURE_MEMORY"] = "";
+
+    languageSettings.PreprocessorDefines["DEBUG_VERBOSE"] = "";</code></pre>
+  syntax:
+    content: public Dictionary<string, string> PreprocessorDefines { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.Dictionary{System.String,System.String}
+      description: >-
+        A dictionary mapping preprocessor macro names to their values. 
+
+        Empty values represent macro definitions without values.
+    content.vb: Public Property PreprocessorDefines As Dictionary(Of String, String)
+  overload: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.PreprocessorDefines*
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.IncludeDirectories
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.IncludeDirectories
+  id: IncludeDirectories
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings
+  langs:
+  - csharp
+  - vb
+  name: IncludeDirectories
+  nameWithType: KernelLanguageSettings.IncludeDirectories
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.IncludeDirectories
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/KernelLanguageSettings.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IncludeDirectories
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/KernelLanguageSettings.cs
+    startLine: 306
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Gets or sets the list of include directories for kernel compilation.
+  remarks: >-
+    Include directories specify the search paths for header files, libraries,
+
+    and other resources referenced by kernel source code. This enables modular
+
+    kernel development with shared code, libraries, and platform-specific headers.
+
+
+    <p>
+
+    Include directory use cases:
+
+    - Shared kernel utilities and common functions
+
+    - Platform-specific header files and extensions
+
+    - Third-party GPU libraries and frameworks
+
+    - Algorithm implementations and mathematical functions
+
+    - Custom data structures and type definitions
+
+    </p>
+
+
+    <p>
+
+    Path resolution:
+
+    - Absolute paths: Used directly for include searches
+
+    - Relative paths: Resolved relative to application working directory
+
+    - Environment variables: Expanded if supported by platform
+
+    - Platform conventions: May follow platform-specific search patterns
+
+    </p>
+
+
+    <p>
+
+    Platform-specific behavior:
+
+    - CUDA: Uses nvcc include search with standard CUDA headers
+
+    - OpenCL: Uses compiler-specific include paths and OpenCL headers
+
+    - HLSL: Uses HLSL compiler include search with DirectX headers
+
+    - MSL: Uses Metal compiler include search with Metal framework headers
+
+    - C#: May be converted to using statements in translated code
+
+    </p>
+
+
+    <p>
+
+    Include directories are searched in the order specified. Standard system
+
+    and platform-specific include directories are automatically included
+
+    by the compiler and do not need to be specified explicitly.
+
+    </p>
+
+
+    <p>
+
+    Security consideration: Include directories should only reference trusted
+
+    locations to prevent inclusion of malicious or unintended code.
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// Common kernel utilities
+
+    languageSettings.IncludeDirectories.Add("/opt/app/kernels/common");
+
+    languageSettings.IncludeDirectories.Add("./kernels/shared");
+
+
+    // Platform-specific libraries
+
+    languageSettings.IncludeDirectories.Add("/usr/local/cuda/include");
+
+    languageSettings.IncludeDirectories.Add("/opt/intel/opencl/include");
+
+
+    // Application-specific headers
+
+    languageSettings.IncludeDirectories.Add("../shared/gpu-headers");
+
+    languageSettings.IncludeDirectories.Add("./resources/kernels");
+
+
+    // Third-party libraries
+
+    languageSettings.IncludeDirectories.Add("/opt/nvidia/math-libs/include");
+
+    languageSettings.IncludeDirectories.Add("./third-party/thrust/include");</code></pre>
+  syntax:
+    content: public List<string> IncludeDirectories { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{System.String}
+      description: >-
+        A list of directory paths to search for header files and includes.
+
+        Paths can be absolute or relative to the application working directory.
+    content.vb: Public Property IncludeDirectories As List(Of String)
+  overload: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.IncludeDirectories*
+references:
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  commentId: N:Orleans.GpuBridge.Backends.DotCompute.Configuration
+  href: Orleans.html
+  name: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  nameWithType: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends
+    name: Backends
+    href: Orleans.GpuBridge.Backends.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute
+    name: DotCompute
+    href: Orleans.GpuBridge.Backends.DotCompute.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Configuration
+    name: Configuration
+    href: Orleans.GpuBridge.Backends.DotCompute.Configuration.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends
+    name: Backends
+    href: Orleans.GpuBridge.Backends.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute
+    name: DotCompute
+    href: Orleans.GpuBridge.Backends.DotCompute.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Configuration
+    name: Configuration
+    href: Orleans.GpuBridge.Backends.DotCompute.Configuration.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Abstractions.Enums.GpuBackend
+  commentId: T:Orleans.GpuBridge.Abstractions.Enums.GpuBackend
+  parent: Orleans.GpuBridge.Abstractions.Enums
+  href: Orleans.GpuBridge.Abstractions.Enums.GpuBackend.html
+  name: GpuBackend
+  nameWithType: GpuBackend
+  fullName: Orleans.GpuBridge.Abstractions.Enums.GpuBackend
+- uid: Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage
+  commentId: T:Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage
+  parent: Orleans.GpuBridge.Abstractions.Enums.Compilation
+  href: Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.html
+  name: KernelLanguage
+  nameWithType: KernelLanguage
+  fullName: Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage
+- uid: Orleans.GpuBridge.Abstractions.Enums.GpuBackend.CUDA
+  commentId: F:Orleans.GpuBridge.Abstractions.Enums.GpuBackend.CUDA
+  name: CUDA
+  nameWithType: GpuBackend.CUDA
+  fullName: Orleans.GpuBridge.Abstractions.Enums.GpuBackend.CUDA
+- uid: Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.CUDA
+  commentId: F:Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.CUDA
+  name: CUDA
+  nameWithType: KernelLanguage.CUDA
+  fullName: Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.CUDA
+- uid: Orleans.GpuBridge.Abstractions.Enums.GpuBackend.OpenCL
+  commentId: F:Orleans.GpuBridge.Abstractions.Enums.GpuBackend.OpenCL
+  name: OpenCL
+  nameWithType: GpuBackend.OpenCL
+  fullName: Orleans.GpuBridge.Abstractions.Enums.GpuBackend.OpenCL
+- uid: Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.OpenCL
+  commentId: F:Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.OpenCL
+  name: OpenCL
+  nameWithType: KernelLanguage.OpenCL
+  fullName: Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.OpenCL
+- uid: Orleans.GpuBridge.Abstractions.Enums.GpuBackend.DirectCompute
+  commentId: F:Orleans.GpuBridge.Abstractions.Enums.GpuBackend.DirectCompute
+  name: DirectCompute
+  nameWithType: GpuBackend.DirectCompute
+  fullName: Orleans.GpuBridge.Abstractions.Enums.GpuBackend.DirectCompute
+- uid: Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.HLSL
+  commentId: F:Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.HLSL
+  name: HLSL
+  nameWithType: KernelLanguage.HLSL
+  fullName: Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.HLSL
+- uid: Orleans.GpuBridge.Abstractions.Enums.GpuBackend.Metal
+  commentId: F:Orleans.GpuBridge.Abstractions.Enums.GpuBackend.Metal
+  name: Metal
+  nameWithType: GpuBackend.Metal
+  fullName: Orleans.GpuBridge.Abstractions.Enums.GpuBackend.Metal
+- uid: Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.MSL
+  commentId: F:Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.MSL
+  name: MSL
+  nameWithType: KernelLanguage.MSL
+  fullName: Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage.MSL
+- uid: Orleans.GpuBridge.Abstractions.Enums.GpuBackend.Vulkan
+  commentId: F:Orleans.GpuBridge.Abstractions.Enums.GpuBackend.Vulkan
+  name: Vulkan
+  nameWithType: GpuBackend.Vulkan
+  fullName: Orleans.GpuBridge.Abstractions.Enums.GpuBackend.Vulkan
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.EnableLanguageTranslation
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.EnableLanguageTranslation
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_KernelLanguageSettings_EnableLanguageTranslation
+  name: EnableLanguageTranslation
+  nameWithType: KernelLanguageSettings.EnableLanguageTranslation
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.EnableLanguageTranslation
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.PreferredLanguages*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.PreferredLanguages
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_KernelLanguageSettings_PreferredLanguages
+  name: PreferredLanguages
+  nameWithType: KernelLanguageSettings.PreferredLanguages
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.PreferredLanguages
+- uid: System.Collections.Generic.Dictionary{Orleans.GpuBridge.Abstractions.Enums.GpuBackend,Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage}
+  commentId: T:System.Collections.Generic.Dictionary{Orleans.GpuBridge.Abstractions.Enums.GpuBackend,Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<GpuBackend, KernelLanguage>
+  nameWithType: Dictionary<GpuBackend, KernelLanguage>
+  fullName: System.Collections.Generic.Dictionary<Orleans.GpuBridge.Abstractions.Enums.GpuBackend, Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage>
+  nameWithType.vb: Dictionary(Of GpuBackend, KernelLanguage)
+  fullName.vb: System.Collections.Generic.Dictionary(Of Orleans.GpuBridge.Abstractions.Enums.GpuBackend, Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage)
+  name.vb: Dictionary(Of GpuBackend, KernelLanguage)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Enums.GpuBackend
+    name: GpuBackend
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage
+    name: KernelLanguage
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Enums.GpuBackend
+    name: GpuBackend
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Enums.Compilation.KernelLanguage
+    name: KernelLanguage
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Enums
+  commentId: N:Orleans.GpuBridge.Abstractions.Enums
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Enums
+  nameWithType: Orleans.GpuBridge.Abstractions.Enums
+  fullName: Orleans.GpuBridge.Abstractions.Enums
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Enums
+    name: Enums
+    href: Orleans.GpuBridge.Abstractions.Enums.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Enums
+    name: Enums
+    href: Orleans.GpuBridge.Abstractions.Enums.html
+- uid: Orleans.GpuBridge.Abstractions.Enums.Compilation
+  commentId: N:Orleans.GpuBridge.Abstractions.Enums.Compilation
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Enums.Compilation
+  nameWithType: Orleans.GpuBridge.Abstractions.Enums.Compilation
+  fullName: Orleans.GpuBridge.Abstractions.Enums.Compilation
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Enums
+    name: Enums
+    href: Orleans.GpuBridge.Abstractions.Enums.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Enums.Compilation
+    name: Compilation
+    href: Orleans.GpuBridge.Abstractions.Enums.Compilation.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Enums
+    name: Enums
+    href: Orleans.GpuBridge.Abstractions.Enums.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Enums.Compilation
+    name: Compilation
+    href: Orleans.GpuBridge.Abstractions.Enums.Compilation.html
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.EnableLanguageTranslation*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.EnableLanguageTranslation
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_KernelLanguageSettings_EnableLanguageTranslation
+  name: EnableLanguageTranslation
+  nameWithType: KernelLanguageSettings.EnableLanguageTranslation
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.EnableLanguageTranslation
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.PreprocessorDefines*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.PreprocessorDefines
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_KernelLanguageSettings_PreprocessorDefines
+  name: PreprocessorDefines
+  nameWithType: KernelLanguageSettings.PreprocessorDefines
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.PreprocessorDefines
+- uid: System.Collections.Generic.Dictionary{System.String,System.String}
+  commentId: T:System.Collections.Generic.Dictionary{System.String,System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<string, string>
+  nameWithType: Dictionary<string, string>
+  fullName: System.Collections.Generic.Dictionary<string, string>
+  nameWithType.vb: Dictionary(Of String, String)
+  fullName.vb: System.Collections.Generic.Dictionary(Of String, String)
+  name.vb: Dictionary(Of String, String)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.IncludeDirectories*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.IncludeDirectories
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_KernelLanguageSettings_IncludeDirectories
+  name: IncludeDirectories
+  nameWithType: KernelLanguageSettings.IncludeDirectories
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.KernelLanguageSettings.IncludeDirectories
+- uid: System.Collections.Generic.List{System.String}
+  commentId: T:System.Collections.Generic.List{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<string>
+  nameWithType: List<string>
+  fullName: System.Collections.Generic.List<string>
+  nameWithType.vb: List(Of String)
+  fullName.vb: System.Collections.Generic.List(Of String)
+  name.vb: List(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

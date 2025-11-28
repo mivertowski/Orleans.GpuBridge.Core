@@ -1,0 +1,1953 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  id: VectorClock
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  children:
+  - Orleans.GpuBridge.Abstractions.Temporal.VectorClock.#ctor
+  - Orleans.GpuBridge.Abstractions.Temporal.VectorClock.#ctor(System.Collections.Generic.IDictionary{System.UInt16,System.Int64})
+  - Orleans.GpuBridge.Abstractions.Temporal.VectorClock.#ctor(System.Collections.Immutable.ImmutableDictionary{System.UInt16,System.Int64})
+  - Orleans.GpuBridge.Abstractions.Temporal.VectorClock.ActorIds
+  - Orleans.GpuBridge.Abstractions.Temporal.VectorClock.CompareTo(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  - Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Count
+  - Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Create(System.UInt16,System.Int64)
+  - Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Equals(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  - Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Equals(System.Object)
+  - Orleans.GpuBridge.Abstractions.Temporal.VectorClock.FromBytes(System.ReadOnlySpan{System.Byte})
+  - Orleans.GpuBridge.Abstractions.Temporal.VectorClock.GetHashCode
+  - Orleans.GpuBridge.Abstractions.Temporal.VectorClock.HappensAfter(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  - Orleans.GpuBridge.Abstractions.Temporal.VectorClock.HappensBefore(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  - Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Increment(System.UInt16)
+  - Orleans.GpuBridge.Abstractions.Temporal.VectorClock.IsConcurrentWith(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  - Orleans.GpuBridge.Abstractions.Temporal.VectorClock.IsDominatedBy(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  - Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Item(System.UInt16)
+  - Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Merge(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  - Orleans.GpuBridge.Abstractions.Temporal.VectorClock.ToBytes
+  - Orleans.GpuBridge.Abstractions.Temporal.VectorClock.ToString
+  - Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Update(Orleans.GpuBridge.Abstractions.Temporal.VectorClock,System.UInt16)
+  - Orleans.GpuBridge.Abstractions.Temporal.VectorClock.op_Equality(Orleans.GpuBridge.Abstractions.Temporal.VectorClock,Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  - Orleans.GpuBridge.Abstractions.Temporal.VectorClock.op_Inequality(Orleans.GpuBridge.Abstractions.Temporal.VectorClock,Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  langs:
+  - csharp
+  - vb
+  name: VectorClock
+  nameWithType: VectorClock
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: VectorClock
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+    startLine: 30
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Vector clock for tracking causal relationships in distributed systems.
+  remarks: >-
+    <p>
+
+    Vector clocks provide partial ordering of events across distributed actors.
+
+    Each actor maintains a vector of logical times, one entry per actor.
+
+    </p>
+
+    <p>
+
+    Key properties:
+
+    - If A happens-before B, then VC(A) &lt; VC(B)
+
+    - If VC(A) &lt; VC(B), then A happens-before B
+
+    - If neither VC(A) &lt; VC(B) nor VC(B) &lt; VC(A), then A and B are concurrent
+
+    </p>
+
+    <p>
+
+    Use cases:
+
+    - Multi-actor causal dependency tracking
+
+    - Detecting concurrent operations (conflicts)
+
+    - Causal message delivery ordering
+
+    - Distributed debugging and replay
+
+    </p>
+  example: []
+  syntax:
+    content: 'public sealed class VectorClock : IEquatable<VectorClock>, IComparable<VectorClock>'
+    content.vb: Public NotInheritable Class VectorClock Implements IEquatable(Of VectorClock), IComparable(Of VectorClock)
+  inheritance:
+  - System.Object
+  implements:
+  - System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.VectorClock}
+  - System.IComparable{Orleans.GpuBridge.Abstractions.Temporal.VectorClock}
+  inheritedMembers:
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Item(System.UInt16)
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Item(System.UInt16)
+  id: Item(System.UInt16)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  langs:
+  - csharp
+  - vb
+  name: this[ushort]
+  nameWithType: VectorClock.this[ushort]
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.this[ushort]
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: this[]
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+    startLine: 39
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Gets the clock value for a specific actor.
+  example: []
+  syntax:
+    content: public long this[ushort actorId] { get; }
+    parameters:
+    - id: actorId
+      type: System.UInt16
+      description: Actor identifier
+    return:
+      type: System.Int64
+      description: Clock value (0 if actor not in vector)
+    content.vb: Public ReadOnly Default Property this[](actorId As UShort) As Long
+  overload: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Item*
+  nameWithType.vb: VectorClock.this[](UShort)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.this[](UShort)
+  name.vb: this[](UShort)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.ActorIds
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.ActorIds
+  id: ActorIds
+  parent: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  langs:
+  - csharp
+  - vb
+  name: ActorIds
+  nameWithType: VectorClock.ActorIds
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.ActorIds
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ActorIds
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+    startLine: 44
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Gets all actor IDs in this vector clock.
+  example: []
+  syntax:
+    content: public IEnumerable<ushort> ActorIds { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IEnumerable{System.UInt16}
+    content.vb: Public ReadOnly Property ActorIds As IEnumerable(Of UShort)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.ActorIds*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Count
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Count
+  id: Count
+  parent: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  langs:
+  - csharp
+  - vb
+  name: Count
+  nameWithType: VectorClock.Count
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Count
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Count
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+    startLine: 49
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Gets the number of actors in this vector clock.
+  example: []
+  syntax:
+    content: public int Count { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property Count As Integer
+  overload: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Count*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.#ctor
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.#ctor
+  id: '#ctor'
+  parent: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  langs:
+  - csharp
+  - vb
+  name: VectorClock()
+  nameWithType: VectorClock.VectorClock()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.VectorClock()
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+    startLine: 54
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Creates an empty vector clock.
+  example: []
+  syntax:
+    content: public VectorClock()
+    content.vb: Public Sub New()
+  overload: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.#ctor*
+  nameWithType.vb: VectorClock.New()
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.New()
+  name.vb: New()
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.#ctor(System.Collections.Immutable.ImmutableDictionary{System.UInt16,System.Int64})
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.#ctor(System.Collections.Immutable.ImmutableDictionary{System.UInt16,System.Int64})
+  id: '#ctor(System.Collections.Immutable.ImmutableDictionary{System.UInt16,System.Int64})'
+  parent: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  langs:
+  - csharp
+  - vb
+  name: VectorClock(ImmutableDictionary<ushort, long>)
+  nameWithType: VectorClock.VectorClock(ImmutableDictionary<ushort, long>)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.VectorClock(System.Collections.Immutable.ImmutableDictionary<ushort, long>)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+    startLine: 63
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Creates a vector clock with the specified clock values.
+  example: []
+  syntax:
+    content: public VectorClock(ImmutableDictionary<ushort, long> clocks)
+    parameters:
+    - id: clocks
+      type: System.Collections.Immutable.ImmutableDictionary{System.UInt16,System.Int64}
+      description: Dictionary of actor IDs to clock values
+    content.vb: Public Sub New(clocks As ImmutableDictionary(Of UShort, Long))
+  overload: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.#ctor*
+  nameWithType.vb: VectorClock.New(ImmutableDictionary(Of UShort, Long))
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.New(System.Collections.Immutable.ImmutableDictionary(Of UShort, Long))
+  name.vb: New(ImmutableDictionary(Of UShort, Long))
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.#ctor(System.Collections.Generic.IDictionary{System.UInt16,System.Int64})
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.#ctor(System.Collections.Generic.IDictionary{System.UInt16,System.Int64})
+  id: '#ctor(System.Collections.Generic.IDictionary{System.UInt16,System.Int64})'
+  parent: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  langs:
+  - csharp
+  - vb
+  name: VectorClock(IDictionary<ushort, long>)
+  nameWithType: VectorClock.VectorClock(IDictionary<ushort, long>)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.VectorClock(System.Collections.Generic.IDictionary<ushort, long>)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+    startLine: 73
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Creates a vector clock from a dictionary.
+  example: []
+  syntax:
+    content: public VectorClock(IDictionary<ushort, long> clocks)
+    parameters:
+    - id: clocks
+      type: System.Collections.Generic.IDictionary{System.UInt16,System.Int64}
+      description: Dictionary of actor IDs to clock values
+    content.vb: Public Sub New(clocks As IDictionary(Of UShort, Long))
+  overload: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.#ctor*
+  nameWithType.vb: VectorClock.New(IDictionary(Of UShort, Long))
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.New(System.Collections.Generic.IDictionary(Of UShort, Long))
+  name.vb: New(IDictionary(Of UShort, Long))
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Increment(System.UInt16)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Increment(System.UInt16)
+  id: Increment(System.UInt16)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  langs:
+  - csharp
+  - vb
+  name: Increment(ushort)
+  nameWithType: VectorClock.Increment(ushort)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Increment(ushort)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Increment
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+    startLine: 87
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Increments the clock for the specified actor.
+  remarks: Called when a local event occurs at the actor.
+  example: []
+  syntax:
+    content: public VectorClock Increment(ushort actorId)
+    parameters:
+    - id: actorId
+      type: System.UInt16
+      description: Actor to increment
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+      description: New vector clock with incremented value
+    content.vb: Public Function Increment(actorId As UShort) As VectorClock
+  overload: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Increment*
+  nameWithType.vb: VectorClock.Increment(UShort)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Increment(UShort)
+  name.vb: Increment(UShort)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Merge(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Merge(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  id: Merge(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  langs:
+  - csharp
+  - vb
+  name: Merge(VectorClock)
+  nameWithType: VectorClock.Merge(VectorClock)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Merge(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Merge
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+    startLine: 103
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Merges this vector clock with another, taking the maximum of each entry.
+  remarks: >-
+    Called when receiving a message from another actor.
+
+    The result represents knowledge of both vector clocks combined.
+  example: []
+  syntax:
+    content: public VectorClock Merge(VectorClock other)
+    parameters:
+    - id: other
+      type: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+      description: Vector clock to merge with
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+      description: New vector clock with merged values
+    content.vb: Public Function Merge(other As VectorClock) As VectorClock
+  overload: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Merge*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Update(Orleans.GpuBridge.Abstractions.Temporal.VectorClock,System.UInt16)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Update(Orleans.GpuBridge.Abstractions.Temporal.VectorClock,System.UInt16)
+  id: Update(Orleans.GpuBridge.Abstractions.Temporal.VectorClock,System.UInt16)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  langs:
+  - csharp
+  - vb
+  name: Update(VectorClock, ushort)
+  nameWithType: VectorClock.Update(VectorClock, ushort)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Update(Orleans.GpuBridge.Abstractions.Temporal.VectorClock, ushort)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Update
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+    startLine: 130
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Updates this vector clock upon receiving a message.
+  remarks: >-
+    Equivalent to: Merge(receivedClock).Increment(localActorId)
+
+    This is the typical operation when processing a received message.
+  example: []
+  syntax:
+    content: public VectorClock Update(VectorClock receivedClock, ushort localActorId)
+    parameters:
+    - id: receivedClock
+      type: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+      description: Vector clock from received message
+    - id: localActorId
+      type: System.UInt16
+      description: Local actor ID
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+      description: New vector clock after update
+    content.vb: Public Function Update(receivedClock As VectorClock, localActorId As UShort) As VectorClock
+  overload: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Update*
+  nameWithType.vb: VectorClock.Update(VectorClock, UShort)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Update(Orleans.GpuBridge.Abstractions.Temporal.VectorClock, UShort)
+  name.vb: Update(VectorClock, UShort)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.CompareTo(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.CompareTo(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  id: CompareTo(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  langs:
+  - csharp
+  - vb
+  name: CompareTo(VectorClock)
+  nameWithType: VectorClock.CompareTo(VectorClock)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.CompareTo(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CompareTo
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+    startLine: 140
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Determines the causal relationship between this and another vector clock.
+  example: []
+  syntax:
+    content: public CausalRelationship CompareTo(VectorClock other)
+    parameters:
+    - id: other
+      type: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+      description: Vector clock to compare with
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.CausalRelationship
+      description: Causal relationship
+    content.vb: Public Function CompareTo(other As VectorClock) As CausalRelationship
+  overload: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.CompareTo*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.HappensBefore(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.HappensBefore(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  id: HappensBefore(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  langs:
+  - csharp
+  - vb
+  name: HappensBefore(VectorClock)
+  nameWithType: VectorClock.HappensBefore(VectorClock)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.HappensBefore(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: HappensBefore
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+    startLine: 196
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Checks if this vector clock happens-before another.
+  example: []
+  syntax:
+    content: public bool HappensBefore(VectorClock other)
+    parameters:
+    - id: other
+      type: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+      description: Vector clock to compare with
+    return:
+      type: System.Boolean
+      description: True if this happens-before other
+    content.vb: Public Function HappensBefore(other As VectorClock) As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.HappensBefore*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.HappensAfter(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.HappensAfter(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  id: HappensAfter(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  langs:
+  - csharp
+  - vb
+  name: HappensAfter(VectorClock)
+  nameWithType: VectorClock.HappensAfter(VectorClock)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.HappensAfter(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: HappensAfter
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+    startLine: 206
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Checks if this vector clock happens-after another.
+  example: []
+  syntax:
+    content: public bool HappensAfter(VectorClock other)
+    parameters:
+    - id: other
+      type: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+      description: Vector clock to compare with
+    return:
+      type: System.Boolean
+      description: True if this happens-after other
+    content.vb: Public Function HappensAfter(other As VectorClock) As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.HappensAfter*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.IsConcurrentWith(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.IsConcurrentWith(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  id: IsConcurrentWith(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  langs:
+  - csharp
+  - vb
+  name: IsConcurrentWith(VectorClock)
+  nameWithType: VectorClock.IsConcurrentWith(VectorClock)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.IsConcurrentWith(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsConcurrentWith
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+    startLine: 216
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Checks if this vector clock is concurrent with another.
+  example: []
+  syntax:
+    content: public bool IsConcurrentWith(VectorClock other)
+    parameters:
+    - id: other
+      type: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+      description: Vector clock to compare with
+    return:
+      type: System.Boolean
+      description: True if concurrent (neither happens-before nor happens-after)
+    content.vb: Public Function IsConcurrentWith(other As VectorClock) As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.IsConcurrentWith*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.IsDominatedBy(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.IsDominatedBy(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  id: IsDominatedBy(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  langs:
+  - csharp
+  - vb
+  name: IsDominatedBy(VectorClock)
+  nameWithType: VectorClock.IsDominatedBy(VectorClock)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.IsDominatedBy(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsDominatedBy
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+    startLine: 229
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Checks if this vector clock is causally dominated by another.
+  remarks: Used to check if all events in this clock are known by other.
+  example: []
+  syntax:
+    content: public bool IsDominatedBy(VectorClock other)
+    parameters:
+    - id: other
+      type: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+      description: Vector clock to compare with
+    return:
+      type: System.Boolean
+      description: True if this ≤ other (happens-before or equal)
+    content.vb: Public Function IsDominatedBy(other As VectorClock) As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.IsDominatedBy*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Equals(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Equals(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  id: Equals(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  langs:
+  - csharp
+  - vb
+  name: Equals(VectorClock?)
+  nameWithType: VectorClock.Equals(VectorClock?)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Equals(Orleans.GpuBridge.Abstractions.Temporal.VectorClock?)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Equals
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+    startLine: 297
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Indicates whether the current object is equal to another object of the same type.
+  example: []
+  syntax:
+    content: public bool Equals(VectorClock? other)
+    parameters:
+    - id: other
+      type: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+      description: An object to compare with this object.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the current object is equal to the <code class="paramref">other</code> parameter; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Public Function Equals(other As VectorClock) As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Equals*
+  implements:
+  - System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.VectorClock}.Equals(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  nameWithType.vb: VectorClock.Equals(VectorClock)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Equals(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  name.vb: Equals(VectorClock)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Equals(System.Object)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Equals(System.Object)
+  id: Equals(System.Object)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  langs:
+  - csharp
+  - vb
+  name: Equals(object?)
+  nameWithType: VectorClock.Equals(object?)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Equals(object?)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Equals
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+    startLine: 317
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Determines whether the specified object is equal to the current object.
+  example: []
+  syntax:
+    content: public override bool Equals(object? obj)
+    parameters:
+    - id: obj
+      type: System.Object
+      description: The object to compare with the current object.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the specified object  is equal to the current object; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Public Overrides Function Equals(obj As Object) As Boolean
+  overridden: System.Object.Equals(System.Object)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Equals*
+  nameWithType.vb: VectorClock.Equals(Object)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Equals(Object)
+  name.vb: Equals(Object)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.GetHashCode
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.GetHashCode
+  id: GetHashCode
+  parent: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  langs:
+  - csharp
+  - vb
+  name: GetHashCode()
+  nameWithType: VectorClock.GetHashCode()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.GetHashCode()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetHashCode
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+    startLine: 320
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Serves as the default hash function.
+  example: []
+  syntax:
+    content: public override int GetHashCode()
+    return:
+      type: System.Int32
+      description: A hash code for the current object.
+    content.vb: Public Overrides Function GetHashCode() As Integer
+  overridden: System.Object.GetHashCode
+  overload: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.GetHashCode*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.op_Equality(Orleans.GpuBridge.Abstractions.Temporal.VectorClock,Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.op_Equality(Orleans.GpuBridge.Abstractions.Temporal.VectorClock,Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  id: op_Equality(Orleans.GpuBridge.Abstractions.Temporal.VectorClock,Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  langs:
+  - csharp
+  - vb
+  name: operator ==(VectorClock?, VectorClock?)
+  nameWithType: VectorClock.operator ==(VectorClock?, VectorClock?)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.operator ==(Orleans.GpuBridge.Abstractions.Temporal.VectorClock?, Orleans.GpuBridge.Abstractions.Temporal.VectorClock?)
+  type: Operator
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: op_Equality
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+    startLine: 334
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Equality operator.
+  example: []
+  syntax:
+    content: public static bool operator ==(VectorClock? left, VectorClock? right)
+    parameters:
+    - id: left
+      type: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+    - id: right
+      type: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Operator =(left As VectorClock, right As VectorClock) As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.op_Equality*
+  nameWithType.vb: VectorClock.=(VectorClock, VectorClock)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.=(Orleans.GpuBridge.Abstractions.Temporal.VectorClock, Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  name.vb: =(VectorClock, VectorClock)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.op_Inequality(Orleans.GpuBridge.Abstractions.Temporal.VectorClock,Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.op_Inequality(Orleans.GpuBridge.Abstractions.Temporal.VectorClock,Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  id: op_Inequality(Orleans.GpuBridge.Abstractions.Temporal.VectorClock,Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  langs:
+  - csharp
+  - vb
+  name: operator !=(VectorClock?, VectorClock?)
+  nameWithType: VectorClock.operator !=(VectorClock?, VectorClock?)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.operator !=(Orleans.GpuBridge.Abstractions.Temporal.VectorClock?, Orleans.GpuBridge.Abstractions.Temporal.VectorClock?)
+  type: Operator
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: op_Inequality
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+    startLine: 343
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Inequality operator.
+  example: []
+  syntax:
+    content: public static bool operator !=(VectorClock? left, VectorClock? right)
+    parameters:
+    - id: left
+      type: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+    - id: right
+      type: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Operator <>(left As VectorClock, right As VectorClock) As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.op_Inequality*
+  nameWithType.vb: VectorClock.<>(VectorClock, VectorClock)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.<>(Orleans.GpuBridge.Abstractions.Temporal.VectorClock, Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  name.vb: <>(VectorClock, VectorClock)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.ToBytes
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.ToBytes
+  id: ToBytes
+  parent: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  langs:
+  - csharp
+  - vb
+  name: ToBytes()
+  nameWithType: VectorClock.ToBytes()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.ToBytes()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ToBytes
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+    startLine: 356
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Converts vector clock to compact byte array.
+  remarks: 'Format: [count:2 bytes] ([actorId:2 bytes][value:8 bytes])*'
+  example: []
+  syntax:
+    content: public byte[] ToBytes()
+    return:
+      type: System.Byte[]
+      description: Byte array representation
+    content.vb: Public Function ToBytes() As Byte()
+  overload: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.ToBytes*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.FromBytes(System.ReadOnlySpan{System.Byte})
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.FromBytes(System.ReadOnlySpan{System.Byte})
+  id: FromBytes(System.ReadOnlySpan{System.Byte})
+  parent: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  langs:
+  - csharp
+  - vb
+  name: FromBytes(ReadOnlySpan<byte>)
+  nameWithType: VectorClock.FromBytes(ReadOnlySpan<byte>)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.FromBytes(System.ReadOnlySpan<byte>)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: FromBytes
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+    startLine: 382
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Creates vector clock from byte array.
+  example: []
+  syntax:
+    content: public static VectorClock FromBytes(ReadOnlySpan<byte> bytes)
+    parameters:
+    - id: bytes
+      type: System.ReadOnlySpan{System.Byte}
+      description: Byte array from ToBytes()
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+      description: Deserialized vector clock
+    content.vb: Public Shared Function FromBytes(bytes As ReadOnlySpan(Of Byte)) As VectorClock
+  overload: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.FromBytes*
+  nameWithType.vb: VectorClock.FromBytes(ReadOnlySpan(Of Byte))
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.FromBytes(System.ReadOnlySpan(Of Byte))
+  name.vb: FromBytes(ReadOnlySpan(Of Byte))
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.ToString
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.ToString
+  id: ToString
+  parent: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: VectorClock.ToString()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.ToString()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ToString
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+    startLine: 411
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Returns a string that represents the current object.
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+      description: A string that represents the current object.
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.Object.ToString
+  overload: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.ToString*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Create(System.UInt16,System.Int64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Create(System.UInt16,System.Int64)
+  id: Create(System.UInt16,System.Int64)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  langs:
+  - csharp
+  - vb
+  name: Create(ushort, long)
+  nameWithType: VectorClock.Create(ushort, long)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Create(ushort, long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Create
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/VectorClock.cs
+    startLine: 434
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal
+  summary: Creates a vector clock with a single actor.
+  example: []
+  syntax:
+    content: public static VectorClock Create(ushort actorId, long value = 0)
+    parameters:
+    - id: actorId
+      type: System.UInt16
+      description: Actor ID
+    - id: value
+      type: System.Int64
+      description: Clock value
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+      description: Vector clock with single entry
+    content.vb: Public Shared Function Create(actorId As UShort, value As Long = 0) As VectorClock
+  overload: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Create*
+  nameWithType.vb: VectorClock.Create(UShort, Long)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Create(UShort, Long)
+  name.vb: Create(UShort, Long)
+references:
+- uid: Orleans.GpuBridge.Abstractions.Temporal
+  commentId: N:Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Temporal
+  nameWithType: Orleans.GpuBridge.Abstractions.Temporal
+  fullName: Orleans.GpuBridge.Abstractions.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.VectorClock}
+  commentId: T:System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.VectorClock}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<VectorClock>
+  nameWithType: IEquatable<VectorClock>
+  fullName: System.IEquatable<Orleans.GpuBridge.Abstractions.Temporal.VectorClock>
+  nameWithType.vb: IEquatable(Of VectorClock)
+  fullName.vb: System.IEquatable(Of Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  name.vb: IEquatable(Of VectorClock)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+    name: VectorClock
+    href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+    name: VectorClock
+    href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html
+  - name: )
+- uid: System.IComparable{Orleans.GpuBridge.Abstractions.Temporal.VectorClock}
+  commentId: T:System.IComparable{Orleans.GpuBridge.Abstractions.Temporal.VectorClock}
+  parent: System
+  definition: System.IComparable`1
+  href: https://learn.microsoft.com/dotnet/api/system.icomparable-1
+  name: IComparable<VectorClock>
+  nameWithType: IComparable<VectorClock>
+  fullName: System.IComparable<Orleans.GpuBridge.Abstractions.Temporal.VectorClock>
+  nameWithType.vb: IComparable(Of VectorClock)
+  fullName.vb: System.IComparable(Of Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  name.vb: IComparable(Of VectorClock)
+  spec.csharp:
+  - uid: System.IComparable`1
+    name: IComparable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.icomparable-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+    name: VectorClock
+    href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IComparable`1
+    name: IComparable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.icomparable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+    name: VectorClock
+    href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.IComparable`1
+  commentId: T:System.IComparable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.icomparable-1
+  name: IComparable<T>
+  nameWithType: IComparable<T>
+  fullName: System.IComparable<T>
+  nameWithType.vb: IComparable(Of T)
+  fullName.vb: System.IComparable(Of T)
+  name.vb: IComparable(Of T)
+  spec.csharp:
+  - uid: System.IComparable`1
+    name: IComparable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.icomparable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IComparable`1
+    name: IComparable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.icomparable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Item*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Item
+  href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html#Orleans_GpuBridge_Abstractions_Temporal_VectorClock_Item_System_UInt16_
+  name: this
+  nameWithType: VectorClock.this
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.this
+  nameWithType.vb: VectorClock.this[]
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.this[]
+  name.vb: this[]
+- uid: System.UInt16
+  commentId: T:System.UInt16
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uint16
+  name: ushort
+  nameWithType: ushort
+  fullName: ushort
+  nameWithType.vb: UShort
+  fullName.vb: UShort
+  name.vb: UShort
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.ActorIds*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.ActorIds
+  href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html#Orleans_GpuBridge_Abstractions_Temporal_VectorClock_ActorIds
+  name: ActorIds
+  nameWithType: VectorClock.ActorIds
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.ActorIds
+- uid: System.Collections.Generic.IEnumerable{System.UInt16}
+  commentId: T:System.Collections.Generic.IEnumerable{System.UInt16}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<ushort>
+  nameWithType: IEnumerable<ushort>
+  fullName: System.Collections.Generic.IEnumerable<ushort>
+  nameWithType.vb: IEnumerable(Of UShort)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of UShort)
+  name.vb: IEnumerable(Of UShort)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.UInt16
+    name: ushort
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint16
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.UInt16
+    name: UShort
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint16
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Count*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Count
+  href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html#Orleans_GpuBridge_Abstractions_Temporal_VectorClock_Count
+  name: Count
+  nameWithType: VectorClock.Count
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Count
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.#ctor
+  href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html#Orleans_GpuBridge_Abstractions_Temporal_VectorClock__ctor
+  name: VectorClock
+  nameWithType: VectorClock.VectorClock
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.VectorClock
+  nameWithType.vb: VectorClock.New
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.New
+  name.vb: New
+- uid: System.Collections.Immutable.ImmutableDictionary{System.UInt16,System.Int64}
+  commentId: T:System.Collections.Immutable.ImmutableDictionary{System.UInt16,System.Int64}
+  parent: System.Collections.Immutable
+  definition: System.Collections.Immutable.ImmutableDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutabledictionary-2
+  name: ImmutableDictionary<ushort, long>
+  nameWithType: ImmutableDictionary<ushort, long>
+  fullName: System.Collections.Immutable.ImmutableDictionary<ushort, long>
+  nameWithType.vb: ImmutableDictionary(Of UShort, Long)
+  fullName.vb: System.Collections.Immutable.ImmutableDictionary(Of UShort, Long)
+  name.vb: ImmutableDictionary(Of UShort, Long)
+  spec.csharp:
+  - uid: System.Collections.Immutable.ImmutableDictionary`2
+    name: ImmutableDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutabledictionary-2
+  - name: <
+  - uid: System.UInt16
+    name: ushort
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint16
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Immutable.ImmutableDictionary`2
+    name: ImmutableDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutabledictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.UInt16
+    name: UShort
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint16
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+- uid: System.Collections.Immutable.ImmutableDictionary`2
+  commentId: T:System.Collections.Immutable.ImmutableDictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutabledictionary-2
+  name: ImmutableDictionary<TKey, TValue>
+  nameWithType: ImmutableDictionary<TKey, TValue>
+  fullName: System.Collections.Immutable.ImmutableDictionary<TKey, TValue>
+  nameWithType.vb: ImmutableDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Immutable.ImmutableDictionary(Of TKey, TValue)
+  name.vb: ImmutableDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Immutable.ImmutableDictionary`2
+    name: ImmutableDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutabledictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Immutable.ImmutableDictionary`2
+    name: ImmutableDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutabledictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Immutable
+  commentId: N:System.Collections.Immutable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Immutable
+  nameWithType: System.Collections.Immutable
+  fullName: System.Collections.Immutable
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Immutable
+    name: Immutable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.immutable
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Immutable
+    name: Immutable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.immutable
+- uid: System.Collections.Generic.IDictionary{System.UInt16,System.Int64}
+  commentId: T:System.Collections.Generic.IDictionary{System.UInt16,System.Int64}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  name: IDictionary<ushort, long>
+  nameWithType: IDictionary<ushort, long>
+  fullName: System.Collections.Generic.IDictionary<ushort, long>
+  nameWithType.vb: IDictionary(Of UShort, Long)
+  fullName.vb: System.Collections.Generic.IDictionary(Of UShort, Long)
+  name.vb: IDictionary(Of UShort, Long)
+  spec.csharp:
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  - name: <
+  - uid: System.UInt16
+    name: ushort
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint16
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.UInt16
+    name: UShort
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint16
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+- uid: System.Collections.Generic.IDictionary`2
+  commentId: T:System.Collections.Generic.IDictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  name: IDictionary<TKey, TValue>
+  nameWithType: IDictionary<TKey, TValue>
+  fullName: System.Collections.Generic.IDictionary<TKey, TValue>
+  nameWithType.vb: IDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.IDictionary(Of TKey, TValue)
+  name.vb: IDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Increment*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Increment
+  href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html#Orleans_GpuBridge_Abstractions_Temporal_VectorClock_Increment_System_UInt16_
+  name: Increment
+  nameWithType: VectorClock.Increment
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Increment
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html
+  name: VectorClock
+  nameWithType: VectorClock
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Merge*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Merge
+  href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html#Orleans_GpuBridge_Abstractions_Temporal_VectorClock_Merge_Orleans_GpuBridge_Abstractions_Temporal_VectorClock_
+  name: Merge
+  nameWithType: VectorClock.Merge
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Merge
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Update*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Update
+  href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html#Orleans_GpuBridge_Abstractions_Temporal_VectorClock_Update_Orleans_GpuBridge_Abstractions_Temporal_VectorClock_System_UInt16_
+  name: Update
+  nameWithType: VectorClock.Update
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Update
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.CompareTo*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.CompareTo
+  href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html#Orleans_GpuBridge_Abstractions_Temporal_VectorClock_CompareTo_Orleans_GpuBridge_Abstractions_Temporal_VectorClock_
+  name: CompareTo
+  nameWithType: VectorClock.CompareTo
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.CompareTo
+- uid: Orleans.GpuBridge.Abstractions.Temporal.CausalRelationship
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.CausalRelationship
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.CausalRelationship.html
+  name: CausalRelationship
+  nameWithType: CausalRelationship
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.CausalRelationship
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.HappensBefore*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.HappensBefore
+  href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html#Orleans_GpuBridge_Abstractions_Temporal_VectorClock_HappensBefore_Orleans_GpuBridge_Abstractions_Temporal_VectorClock_
+  name: HappensBefore
+  nameWithType: VectorClock.HappensBefore
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.HappensBefore
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.HappensAfter*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.HappensAfter
+  href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html#Orleans_GpuBridge_Abstractions_Temporal_VectorClock_HappensAfter_Orleans_GpuBridge_Abstractions_Temporal_VectorClock_
+  name: HappensAfter
+  nameWithType: VectorClock.HappensAfter
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.HappensAfter
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.IsConcurrentWith*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.IsConcurrentWith
+  href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html#Orleans_GpuBridge_Abstractions_Temporal_VectorClock_IsConcurrentWith_Orleans_GpuBridge_Abstractions_Temporal_VectorClock_
+  name: IsConcurrentWith
+  nameWithType: VectorClock.IsConcurrentWith
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.IsConcurrentWith
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.IsDominatedBy*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.IsDominatedBy
+  href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html#Orleans_GpuBridge_Abstractions_Temporal_VectorClock_IsDominatedBy_Orleans_GpuBridge_Abstractions_Temporal_VectorClock_
+  name: IsDominatedBy
+  nameWithType: VectorClock.IsDominatedBy
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.IsDominatedBy
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Equals*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Equals
+  href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html#Orleans_GpuBridge_Abstractions_Temporal_VectorClock_Equals_Orleans_GpuBridge_Abstractions_Temporal_VectorClock_
+  name: Equals
+  nameWithType: VectorClock.Equals
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Equals
+- uid: System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.VectorClock}.Equals(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  commentId: M:System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.VectorClock}.Equals(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  parent: System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.VectorClock}
+  definition: System.IEquatable`1.Equals(`0)
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  name: Equals(VectorClock)
+  nameWithType: IEquatable<VectorClock>.Equals(VectorClock)
+  fullName: System.IEquatable<Orleans.GpuBridge.Abstractions.Temporal.VectorClock>.Equals(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  nameWithType.vb: IEquatable(Of VectorClock).Equals(VectorClock)
+  fullName.vb: System.IEquatable(Of Orleans.GpuBridge.Abstractions.Temporal.VectorClock).Equals(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+  spec.csharp:
+  - uid: System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.VectorClock}.Equals(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+    name: VectorClock
+    href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html
+  - name: )
+  spec.vb:
+  - uid: System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.VectorClock}.Equals(Orleans.GpuBridge.Abstractions.Temporal.VectorClock)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock
+    name: VectorClock
+    href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html
+  - name: )
+- uid: System.IEquatable`1.Equals(`0)
+  commentId: M:System.IEquatable`1.Equals(`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  name: Equals(T)
+  nameWithType: IEquatable<T>.Equals(T)
+  fullName: System.IEquatable<T>.Equals(T)
+  nameWithType.vb: IEquatable(Of T).Equals(T)
+  fullName.vb: System.IEquatable(Of T).Equals(T)
+  spec.csharp:
+  - uid: System.IEquatable`1.Equals(`0)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: System.IEquatable`1.Equals(`0)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - name: T
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.GetHashCode*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.GetHashCode
+  href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html#Orleans_GpuBridge_Abstractions_Temporal_VectorClock_GetHashCode
+  name: GetHashCode
+  nameWithType: VectorClock.GetHashCode
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.GetHashCode
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.op_Equality*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.op_Equality
+  href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html#Orleans_GpuBridge_Abstractions_Temporal_VectorClock_op_Equality_Orleans_GpuBridge_Abstractions_Temporal_VectorClock_Orleans_GpuBridge_Abstractions_Temporal_VectorClock_
+  name: operator ==
+  nameWithType: VectorClock.operator ==
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.operator ==
+  nameWithType.vb: VectorClock.=
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.=
+  name.vb: =
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.op_Equality*
+    name: ==
+    href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html#Orleans_GpuBridge_Abstractions_Temporal_VectorClock_op_Equality_Orleans_GpuBridge_Abstractions_Temporal_VectorClock_Orleans_GpuBridge_Abstractions_Temporal_VectorClock_
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.op_Inequality*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.op_Inequality
+  href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html#Orleans_GpuBridge_Abstractions_Temporal_VectorClock_op_Inequality_Orleans_GpuBridge_Abstractions_Temporal_VectorClock_Orleans_GpuBridge_Abstractions_Temporal_VectorClock_
+  name: operator !=
+  nameWithType: VectorClock.operator !=
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.operator !=
+  nameWithType.vb: VectorClock.<>
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.<>
+  name.vb: <>
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.op_Inequality*
+    name: '!='
+    href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html#Orleans_GpuBridge_Abstractions_Temporal_VectorClock_op_Inequality_Orleans_GpuBridge_Abstractions_Temporal_VectorClock_Orleans_GpuBridge_Abstractions_Temporal_VectorClock_
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.ToBytes*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.ToBytes
+  href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html#Orleans_GpuBridge_Abstractions_Temporal_VectorClock_ToBytes
+  name: ToBytes
+  nameWithType: VectorClock.ToBytes
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.ToBytes
+- uid: System.Byte[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.byte
+  name: byte[]
+  nameWithType: byte[]
+  fullName: byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.FromBytes*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.FromBytes
+  href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html#Orleans_GpuBridge_Abstractions_Temporal_VectorClock_FromBytes_System_ReadOnlySpan_System_Byte__
+  name: FromBytes
+  nameWithType: VectorClock.FromBytes
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.FromBytes
+- uid: System.ReadOnlySpan{System.Byte}
+  commentId: T:System.ReadOnlySpan{System.Byte}
+  parent: System
+  definition: System.ReadOnlySpan`1
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<byte>
+  nameWithType: ReadOnlySpan<byte>
+  fullName: System.ReadOnlySpan<byte>
+  nameWithType.vb: ReadOnlySpan(Of Byte)
+  fullName.vb: System.ReadOnlySpan(Of Byte)
+  name.vb: ReadOnlySpan(Of Byte)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: )
+- uid: System.ReadOnlySpan`1
+  commentId: T:System.ReadOnlySpan`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<T>
+  nameWithType: ReadOnlySpan<T>
+  fullName: System.ReadOnlySpan<T>
+  nameWithType.vb: ReadOnlySpan(Of T)
+  fullName.vb: System.ReadOnlySpan(Of T)
+  name.vb: ReadOnlySpan(Of T)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.ToString*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.ToString
+  href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html#Orleans_GpuBridge_Abstractions_Temporal_VectorClock_ToString
+  name: ToString
+  nameWithType: VectorClock.ToString
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Create*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Create
+  href: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.html#Orleans_GpuBridge_Abstractions_Temporal_VectorClock_Create_System_UInt16_System_Int64_
+  name: Create
+  nameWithType: VectorClock.Create
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.VectorClock.Create

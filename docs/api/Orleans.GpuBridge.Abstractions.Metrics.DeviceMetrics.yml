@@ -1,0 +1,981 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics
+  commentId: T:Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics
+  id: DeviceMetrics
+  parent: Orleans.GpuBridge.Abstractions.Metrics
+  children:
+  - Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.ClockSpeeds
+  - Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.DeviceIndex
+  - Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.MemoryInfo
+  - Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.PerformanceCounters
+  - Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.PowerConsumption
+  - Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.Temperature
+  - Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.Timestamp
+  - Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.Utilization
+  langs:
+  - csharp
+  - vb
+  name: DeviceMetrics
+  nameWithType: DeviceMetrics
+  fullName: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Metrics/IGpuMetricsCollector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DeviceMetrics
+    path: ../src/Orleans.GpuBridge.Abstractions/Metrics/IGpuMetricsCollector.cs
+    startLine: 262
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Metrics
+  summary: Comprehensive device metrics combining all GPU metrics
+  example: []
+  syntax:
+    content: >-
+      [GenerateSerializer]
+
+      [Immutable]
+
+      public sealed record DeviceMetrics : IEquatable<DeviceMetrics>
+    content.vb: >-
+      <GenerateSerializer>
+
+      <Immutable>
+
+      Public NotInheritable Class DeviceMetrics Implements IEquatable(Of DeviceMetrics)
+  inheritance:
+  - System.Object
+  implements:
+  - System.IEquatable{Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  attributes:
+  - type: Orleans.GenerateSerializerAttribute
+    ctor: Orleans.GenerateSerializerAttribute.#ctor
+    arguments: []
+  - type: Orleans.ImmutableAttribute
+    ctor: Orleans.ImmutableAttribute.#ctor
+    arguments: []
+- uid: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.MemoryInfo
+  commentId: P:Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.MemoryInfo
+  id: MemoryInfo
+  parent: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics
+  langs:
+  - csharp
+  - vb
+  name: MemoryInfo
+  nameWithType: DeviceMetrics.MemoryInfo
+  fullName: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.MemoryInfo
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Metrics/IGpuMetricsCollector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MemoryInfo
+    path: ../src/Orleans.GpuBridge.Abstractions/Metrics/IGpuMetricsCollector.cs
+    startLine: 269
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Metrics
+  summary: Gets the GPU memory information
+  example: []
+  syntax:
+    content: >-
+      [Id(0)]
+
+      public GpuMemoryInfo MemoryInfo { get; init; }
+    parameters: []
+    return:
+      type: Orleans.GpuBridge.Abstractions.Models.GpuMemoryInfo
+    content.vb: >-
+      <Id(0)>
+
+      Public Property MemoryInfo As GpuMemoryInfo
+  overload: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.MemoryInfo*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "0"
+- uid: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.Utilization
+  commentId: P:Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.Utilization
+  id: Utilization
+  parent: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics
+  langs:
+  - csharp
+  - vb
+  name: Utilization
+  nameWithType: DeviceMetrics.Utilization
+  fullName: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.Utilization
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Metrics/IGpuMetricsCollector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Utilization
+    path: ../src/Orleans.GpuBridge.Abstractions/Metrics/IGpuMetricsCollector.cs
+    startLine: 275
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Metrics
+  summary: Gets the GPU utilization metrics
+  example: []
+  syntax:
+    content: >-
+      [Id(1)]
+
+      public GpuUtilizationMetrics Utilization { get; init; }
+    parameters: []
+    return:
+      type: Orleans.GpuBridge.Abstractions.Metrics.GpuUtilizationMetrics
+    content.vb: >-
+      <Id(1)>
+
+      Public Property Utilization As GpuUtilizationMetrics
+  overload: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.Utilization*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "1"
+- uid: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.ClockSpeeds
+  commentId: P:Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.ClockSpeeds
+  id: ClockSpeeds
+  parent: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics
+  langs:
+  - csharp
+  - vb
+  name: ClockSpeeds
+  nameWithType: DeviceMetrics.ClockSpeeds
+  fullName: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.ClockSpeeds
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Metrics/IGpuMetricsCollector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ClockSpeeds
+    path: ../src/Orleans.GpuBridge.Abstractions/Metrics/IGpuMetricsCollector.cs
+    startLine: 281
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Metrics
+  summary: Gets the GPU clock speeds
+  example: []
+  syntax:
+    content: >-
+      [Id(2)]
+
+      public GpuClockSpeeds ClockSpeeds { get; init; }
+    parameters: []
+    return:
+      type: Orleans.GpuBridge.Abstractions.Metrics.GpuClockSpeeds
+    content.vb: >-
+      <Id(2)>
+
+      Public Property ClockSpeeds As GpuClockSpeeds
+  overload: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.ClockSpeeds*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "2"
+- uid: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.Temperature
+  commentId: P:Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.Temperature
+  id: Temperature
+  parent: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics
+  langs:
+  - csharp
+  - vb
+  name: Temperature
+  nameWithType: DeviceMetrics.Temperature
+  fullName: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.Temperature
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Metrics/IGpuMetricsCollector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Temperature
+    path: ../src/Orleans.GpuBridge.Abstractions/Metrics/IGpuMetricsCollector.cs
+    startLine: 287
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Metrics
+  summary: Gets the temperature in Celsius
+  example: []
+  syntax:
+    content: >-
+      [Id(3)]
+
+      public double Temperature { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: >-
+      <Id(3)>
+
+      Public Property Temperature As Double
+  overload: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.Temperature*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "3"
+- uid: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.PowerConsumption
+  commentId: P:Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.PowerConsumption
+  id: PowerConsumption
+  parent: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics
+  langs:
+  - csharp
+  - vb
+  name: PowerConsumption
+  nameWithType: DeviceMetrics.PowerConsumption
+  fullName: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.PowerConsumption
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Metrics/IGpuMetricsCollector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: PowerConsumption
+    path: ../src/Orleans.GpuBridge.Abstractions/Metrics/IGpuMetricsCollector.cs
+    startLine: 293
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Metrics
+  summary: Gets the power consumption in watts
+  example: []
+  syntax:
+    content: >-
+      [Id(4)]
+
+      public double PowerConsumption { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: >-
+      <Id(4)>
+
+      Public Property PowerConsumption As Double
+  overload: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.PowerConsumption*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "4"
+- uid: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.PerformanceCounters
+  commentId: P:Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.PerformanceCounters
+  id: PerformanceCounters
+  parent: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics
+  langs:
+  - csharp
+  - vb
+  name: PerformanceCounters
+  nameWithType: DeviceMetrics.PerformanceCounters
+  fullName: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.PerformanceCounters
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Metrics/IGpuMetricsCollector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: PerformanceCounters
+    path: ../src/Orleans.GpuBridge.Abstractions/Metrics/IGpuMetricsCollector.cs
+    startLine: 299
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Metrics
+  summary: Gets the performance counters
+  example: []
+  syntax:
+    content: >-
+      [Id(5)]
+
+      public IReadOnlyDictionary<string, double> PerformanceCounters { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyDictionary{System.String,System.Double}
+    content.vb: >-
+      <Id(5)>
+
+      Public Property PerformanceCounters As IReadOnlyDictionary(Of String, Double)
+  overload: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.PerformanceCounters*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "5"
+- uid: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.DeviceIndex
+  commentId: P:Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.DeviceIndex
+  id: DeviceIndex
+  parent: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics
+  langs:
+  - csharp
+  - vb
+  name: DeviceIndex
+  nameWithType: DeviceMetrics.DeviceIndex
+  fullName: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.DeviceIndex
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Metrics/IGpuMetricsCollector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DeviceIndex
+    path: ../src/Orleans.GpuBridge.Abstractions/Metrics/IGpuMetricsCollector.cs
+    startLine: 305
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Metrics
+  summary: Gets the device index
+  example: []
+  syntax:
+    content: >-
+      [Id(6)]
+
+      public int DeviceIndex { get; init; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: >-
+      <Id(6)>
+
+      Public Property DeviceIndex As Integer
+  overload: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.DeviceIndex*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "6"
+- uid: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.Timestamp
+  commentId: P:Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.Timestamp
+  id: Timestamp
+  parent: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics
+  langs:
+  - csharp
+  - vb
+  name: Timestamp
+  nameWithType: DeviceMetrics.Timestamp
+  fullName: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.Timestamp
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Metrics/IGpuMetricsCollector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Timestamp
+    path: ../src/Orleans.GpuBridge.Abstractions/Metrics/IGpuMetricsCollector.cs
+    startLine: 311
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Metrics
+  summary: Gets the timestamp when these metrics were captured
+  example: []
+  syntax:
+    content: >-
+      [Id(7)]
+
+      public DateTime Timestamp { get; init; }
+    parameters: []
+    return:
+      type: System.DateTime
+    content.vb: >-
+      <Id(7)>
+
+      Public Property Timestamp As Date
+  overload: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.Timestamp*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "7"
+references:
+- uid: Orleans.GpuBridge.Abstractions.Metrics
+  commentId: N:Orleans.GpuBridge.Abstractions.Metrics
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Metrics
+  nameWithType: Orleans.GpuBridge.Abstractions.Metrics
+  fullName: Orleans.GpuBridge.Abstractions.Metrics
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Metrics
+    name: Metrics
+    href: Orleans.GpuBridge.Abstractions.Metrics.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Metrics
+    name: Metrics
+    href: Orleans.GpuBridge.Abstractions.Metrics.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IEquatable{Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics}
+  commentId: T:System.IEquatable{Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<DeviceMetrics>
+  nameWithType: IEquatable<DeviceMetrics>
+  fullName: System.IEquatable<Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics>
+  nameWithType.vb: IEquatable(Of DeviceMetrics)
+  fullName.vb: System.IEquatable(Of Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics)
+  name.vb: IEquatable(Of DeviceMetrics)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics
+    name: DeviceMetrics
+    href: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics
+    name: DeviceMetrics
+    href: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.html
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.MemoryInfo*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.MemoryInfo
+  href: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.html#Orleans_GpuBridge_Abstractions_Metrics_DeviceMetrics_MemoryInfo
+  name: MemoryInfo
+  nameWithType: DeviceMetrics.MemoryInfo
+  fullName: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.MemoryInfo
+- uid: Orleans.GpuBridge.Abstractions.Models.GpuMemoryInfo
+  commentId: T:Orleans.GpuBridge.Abstractions.Models.GpuMemoryInfo
+  parent: Orleans.GpuBridge.Abstractions.Models
+  href: Orleans.GpuBridge.Abstractions.Models.GpuMemoryInfo.html
+  name: GpuMemoryInfo
+  nameWithType: GpuMemoryInfo
+  fullName: Orleans.GpuBridge.Abstractions.Models.GpuMemoryInfo
+- uid: Orleans.GpuBridge.Abstractions.Models
+  commentId: N:Orleans.GpuBridge.Abstractions.Models
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Models
+  nameWithType: Orleans.GpuBridge.Abstractions.Models
+  fullName: Orleans.GpuBridge.Abstractions.Models
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Models
+    name: Models
+    href: Orleans.GpuBridge.Abstractions.Models.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Models
+    name: Models
+    href: Orleans.GpuBridge.Abstractions.Models.html
+- uid: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.Utilization*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.Utilization
+  href: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.html#Orleans_GpuBridge_Abstractions_Metrics_DeviceMetrics_Utilization
+  name: Utilization
+  nameWithType: DeviceMetrics.Utilization
+  fullName: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.Utilization
+- uid: Orleans.GpuBridge.Abstractions.Metrics.GpuUtilizationMetrics
+  commentId: T:Orleans.GpuBridge.Abstractions.Metrics.GpuUtilizationMetrics
+  parent: Orleans.GpuBridge.Abstractions.Metrics
+  href: Orleans.GpuBridge.Abstractions.Metrics.GpuUtilizationMetrics.html
+  name: GpuUtilizationMetrics
+  nameWithType: GpuUtilizationMetrics
+  fullName: Orleans.GpuBridge.Abstractions.Metrics.GpuUtilizationMetrics
+- uid: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.ClockSpeeds*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.ClockSpeeds
+  href: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.html#Orleans_GpuBridge_Abstractions_Metrics_DeviceMetrics_ClockSpeeds
+  name: ClockSpeeds
+  nameWithType: DeviceMetrics.ClockSpeeds
+  fullName: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.ClockSpeeds
+- uid: Orleans.GpuBridge.Abstractions.Metrics.GpuClockSpeeds
+  commentId: T:Orleans.GpuBridge.Abstractions.Metrics.GpuClockSpeeds
+  parent: Orleans.GpuBridge.Abstractions.Metrics
+  href: Orleans.GpuBridge.Abstractions.Metrics.GpuClockSpeeds.html
+  name: GpuClockSpeeds
+  nameWithType: GpuClockSpeeds
+  fullName: Orleans.GpuBridge.Abstractions.Metrics.GpuClockSpeeds
+- uid: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.Temperature*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.Temperature
+  href: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.html#Orleans_GpuBridge_Abstractions_Metrics_DeviceMetrics_Temperature
+  name: Temperature
+  nameWithType: DeviceMetrics.Temperature
+  fullName: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.Temperature
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.PowerConsumption*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.PowerConsumption
+  href: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.html#Orleans_GpuBridge_Abstractions_Metrics_DeviceMetrics_PowerConsumption
+  name: PowerConsumption
+  nameWithType: DeviceMetrics.PowerConsumption
+  fullName: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.PowerConsumption
+- uid: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.PerformanceCounters*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.PerformanceCounters
+  href: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.html#Orleans_GpuBridge_Abstractions_Metrics_DeviceMetrics_PerformanceCounters
+  name: PerformanceCounters
+  nameWithType: DeviceMetrics.PerformanceCounters
+  fullName: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.PerformanceCounters
+- uid: System.Collections.Generic.IReadOnlyDictionary{System.String,System.Double}
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary{System.String,System.Double}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<string, double>
+  nameWithType: IReadOnlyDictionary<string, double>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<string, double>
+  nameWithType.vb: IReadOnlyDictionary(Of String, Double)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of String, Double)
+  name.vb: IReadOnlyDictionary(Of String, Double)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyDictionary`2
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<TKey, TValue>
+  nameWithType: IReadOnlyDictionary<TKey, TValue>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>
+  nameWithType.vb: IReadOnlyDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of TKey, TValue)
+  name.vb: IReadOnlyDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.DeviceIndex*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.DeviceIndex
+  href: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.html#Orleans_GpuBridge_Abstractions_Metrics_DeviceMetrics_DeviceIndex
+  name: DeviceIndex
+  nameWithType: DeviceMetrics.DeviceIndex
+  fullName: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.DeviceIndex
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.Timestamp*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.Timestamp
+  href: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.html#Orleans_GpuBridge_Abstractions_Metrics_DeviceMetrics_Timestamp
+  name: Timestamp
+  nameWithType: DeviceMetrics.Timestamp
+  fullName: Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics.Timestamp
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date

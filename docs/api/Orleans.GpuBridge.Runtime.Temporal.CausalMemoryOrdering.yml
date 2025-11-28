@@ -1,0 +1,1302 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering
+  id: CausalMemoryOrdering
+  parent: Orleans.GpuBridge.Runtime.Temporal
+  children:
+  - Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering})
+  - Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.AcquireSemantics
+  - Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ApplyOrdering(Orleans.GpuBridge.Runtime.Temporal.MemoryOperation)
+  - Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.CurrentMode
+  - Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.GetStatistics
+  - Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.InsertFence(Orleans.GpuBridge.Abstractions.Temporal.FenceScope)
+  - Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoadInt32(System.Int32@)
+  - Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoadInt64(System.Int64@)
+  - Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoad``1(``0@)
+  - Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStoreInt32(System.Int32@,System.Int32)
+  - Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStoreInt64(System.Int64@,System.Int64)
+  - Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStore``1(``0@,``0)
+  - Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ReleaseSemantics
+  - Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ResetStatistics
+  - Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.SetMode(Orleans.GpuBridge.Abstractions.Temporal.MemoryOrderingMode)
+  - Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ToString
+  langs:
+  - csharp
+  - vb
+  name: CausalMemoryOrdering
+  nameWithType: CausalMemoryOrdering
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CausalMemoryOrdering
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+    startLine: 43
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Provides causal memory ordering operations for GPU temporal correctness.
+  remarks: >-
+    <p>
+
+    This implementation abstracts over CUDA memory fence primitives:
+
+    <ul><li>__threadfence_block() - Thread block scope fence</li><li>__threadfence() - Device scope fence</li><li>__threadfence_system() - System scope fence (multi-GPU)</li></ul>
+
+    </p>
+
+    <p>
+
+    <strong>Memory Ordering Modes:</strong>
+
+    <ul><li>Relaxed: No ordering guarantees (maximum performance)</li><li>Acquire: All prior writes visible before subsequent reads</li><li>Release: All prior writes committed before subsequent writes</li><li>ReleaseAcquire: Combined acquire and release semantics</li><li>SequentiallyConsistent: Total ordering (strongest guarantee)</li></ul>
+
+    </p>
+
+    <p>
+
+    <strong>Performance Characteristics:</strong>
+
+    <ul><li>ThreadBlock fence: ~5-10 cycles</li><li>Device fence: ~50-100 cycles</li><li>System fence: ~500-1000 cycles</li></ul>
+
+    </p>
+  example: []
+  syntax:
+    content: 'public sealed class CausalMemoryOrdering : ICausalMemoryOrdering'
+    content.vb: Public NotInheritable Class CausalMemoryOrdering Implements ICausalMemoryOrdering
+  inheritance:
+  - System.Object
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering})
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering})
+  id: '#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering})'
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering
+  langs:
+  - csharp
+  - vb
+  name: CausalMemoryOrdering(ILogger<CausalMemoryOrdering>)
+  nameWithType: CausalMemoryOrdering.CausalMemoryOrdering(ILogger<CausalMemoryOrdering>)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.CausalMemoryOrdering(Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering>)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+    startLine: 62
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Initializes a new instance of the <xref href="Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public CausalMemoryOrdering(ILogger<CausalMemoryOrdering> logger)
+    parameters:
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering}
+      description: Logger for diagnostic output.
+    content.vb: Public Sub New(logger As ILogger(Of CausalMemoryOrdering))
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.#ctor*
+  nameWithType.vb: CausalMemoryOrdering.New(ILogger(Of CausalMemoryOrdering))
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.New(Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering))
+  name.vb: New(ILogger(Of CausalMemoryOrdering))
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.InsertFence(Orleans.GpuBridge.Abstractions.Temporal.FenceScope)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.InsertFence(Orleans.GpuBridge.Abstractions.Temporal.FenceScope)
+  id: InsertFence(Orleans.GpuBridge.Abstractions.Temporal.FenceScope)
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering
+  langs:
+  - csharp
+  - vb
+  name: InsertFence(FenceScope)
+  nameWithType: CausalMemoryOrdering.InsertFence(FenceScope)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.InsertFence(Orleans.GpuBridge.Abstractions.Temporal.FenceScope)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: InsertFence
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+    startLine: 71
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Inserts a memory fence with the specified scope.
+  example: []
+  syntax:
+    content: public long InsertFence(FenceScope scope)
+    parameters:
+    - id: scope
+      type: Orleans.GpuBridge.Abstractions.Temporal.FenceScope
+      description: Fence scope.
+    return:
+      type: System.Int64
+      description: Fence identifier for tracking.
+    content.vb: Public Function InsertFence(scope As FenceScope) As Long
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.InsertFence*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.InsertFence(Orleans.GpuBridge.Abstractions.Temporal.FenceScope)
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.CurrentMode
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.CurrentMode
+  id: CurrentMode
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering
+  langs:
+  - csharp
+  - vb
+  name: CurrentMode
+  nameWithType: CausalMemoryOrdering.CurrentMode
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.CurrentMode
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CurrentMode
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+    startLine: 118
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Gets the current memory ordering mode.
+  example: []
+  syntax:
+    content: public MemoryOrderingMode CurrentMode { get; }
+    parameters: []
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.MemoryOrderingMode
+    content.vb: Public ReadOnly Property CurrentMode As MemoryOrderingMode
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.CurrentMode*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.CurrentMode
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.SetMode(Orleans.GpuBridge.Abstractions.Temporal.MemoryOrderingMode)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.SetMode(Orleans.GpuBridge.Abstractions.Temporal.MemoryOrderingMode)
+  id: SetMode(Orleans.GpuBridge.Abstractions.Temporal.MemoryOrderingMode)
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering
+  langs:
+  - csharp
+  - vb
+  name: SetMode(MemoryOrderingMode)
+  nameWithType: CausalMemoryOrdering.SetMode(MemoryOrderingMode)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.SetMode(Orleans.GpuBridge.Abstractions.Temporal.MemoryOrderingMode)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: SetMode
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+    startLine: 121
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Sets the memory ordering mode for subsequent operations.
+  example: []
+  syntax:
+    content: public void SetMode(MemoryOrderingMode mode)
+    parameters:
+    - id: mode
+      type: Orleans.GpuBridge.Abstractions.Temporal.MemoryOrderingMode
+      description: Memory ordering mode.
+    content.vb: Public Sub SetMode(mode As MemoryOrderingMode)
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.SetMode*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.SetMode(Orleans.GpuBridge.Abstractions.Temporal.MemoryOrderingMode)
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.AcquireSemantics
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.AcquireSemantics
+  id: AcquireSemantics
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering
+  langs:
+  - csharp
+  - vb
+  name: AcquireSemantics()
+  nameWithType: CausalMemoryOrdering.AcquireSemantics()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.AcquireSemantics()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AcquireSemantics
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+    startLine: 133
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Ensures all prior stores are visible to subsequent loads.
+  example: []
+  syntax:
+    content: public void AcquireSemantics()
+    content.vb: Public Sub AcquireSemantics()
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.AcquireSemantics*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.AcquireSemantics
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ReleaseSemantics
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ReleaseSemantics
+  id: ReleaseSemantics
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering
+  langs:
+  - csharp
+  - vb
+  name: ReleaseSemantics()
+  nameWithType: CausalMemoryOrdering.ReleaseSemantics()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ReleaseSemantics()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ReleaseSemantics
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+    startLine: 156
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Ensures all prior stores are committed before subsequent operations.
+  example: []
+  syntax:
+    content: public void ReleaseSemantics()
+    content.vb: Public Sub ReleaseSemantics()
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ReleaseSemantics*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.ReleaseSemantics
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.GetStatistics
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.GetStatistics
+  id: GetStatistics
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering
+  langs:
+  - csharp
+  - vb
+  name: GetStatistics()
+  nameWithType: CausalMemoryOrdering.GetStatistics()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.GetStatistics()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetStatistics
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+    startLine: 177
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Gets memory ordering statistics.
+  example: []
+  syntax:
+    content: public MemoryOrderingStatistics GetStatistics()
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.MemoryOrderingStatistics
+    content.vb: Public Function GetStatistics() As MemoryOrderingStatistics
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.GetStatistics*
+  implements:
+  - Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.GetStatistics
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ApplyOrdering(Orleans.GpuBridge.Runtime.Temporal.MemoryOperation)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ApplyOrdering(Orleans.GpuBridge.Runtime.Temporal.MemoryOperation)
+  id: ApplyOrdering(Orleans.GpuBridge.Runtime.Temporal.MemoryOperation)
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering
+  langs:
+  - csharp
+  - vb
+  name: ApplyOrdering(MemoryOperation)
+  nameWithType: CausalMemoryOrdering.ApplyOrdering(MemoryOperation)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ApplyOrdering(Orleans.GpuBridge.Runtime.Temporal.MemoryOperation)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ApplyOrdering
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+    startLine: 260
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Applies memory ordering based on current mode.
+  example: []
+  syntax:
+    content: public void ApplyOrdering(MemoryOperation operation)
+    parameters:
+    - id: operation
+      type: Orleans.GpuBridge.Runtime.Temporal.MemoryOperation
+      description: Type of operation being performed.
+    content.vb: Public Sub ApplyOrdering(operation As MemoryOperation)
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ApplyOrdering*
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoadInt32(System.Int32@)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoadInt32(System.Int32@)
+  id: OrderedLoadInt32(System.Int32@)
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering
+  langs:
+  - csharp
+  - vb
+  name: OrderedLoadInt32(ref int)
+  nameWithType: CausalMemoryOrdering.OrderedLoadInt32(ref int)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoadInt32(ref int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: OrderedLoadInt32
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+    startLine: 305
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Executes an ordered load of a 32-bit integer.
+  example: []
+  syntax:
+    content: public int OrderedLoadInt32(ref int location)
+    parameters:
+    - id: location
+      type: System.Int32
+      description: Location to load from.
+    return:
+      type: System.Int32
+      description: The loaded value.
+    content.vb: Public Function OrderedLoadInt32(location As Integer) As Integer
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoadInt32*
+  nameWithType.vb: CausalMemoryOrdering.OrderedLoadInt32(Integer)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoadInt32(Integer)
+  name.vb: OrderedLoadInt32(Integer)
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStoreInt32(System.Int32@,System.Int32)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStoreInt32(System.Int32@,System.Int32)
+  id: OrderedStoreInt32(System.Int32@,System.Int32)
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering
+  langs:
+  - csharp
+  - vb
+  name: OrderedStoreInt32(ref int, int)
+  nameWithType: CausalMemoryOrdering.OrderedStoreInt32(ref int, int)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStoreInt32(ref int, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: OrderedStoreInt32
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+    startLine: 316
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Executes an ordered store of a 32-bit integer.
+  example: []
+  syntax:
+    content: public void OrderedStoreInt32(ref int location, int value)
+    parameters:
+    - id: location
+      type: System.Int32
+      description: Location to store to.
+    - id: value
+      type: System.Int32
+      description: Value to store.
+    content.vb: Public Sub OrderedStoreInt32(location As Integer, value As Integer)
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStoreInt32*
+  nameWithType.vb: CausalMemoryOrdering.OrderedStoreInt32(Integer, Integer)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStoreInt32(Integer, Integer)
+  name.vb: OrderedStoreInt32(Integer, Integer)
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoadInt64(System.Int64@)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoadInt64(System.Int64@)
+  id: OrderedLoadInt64(System.Int64@)
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering
+  langs:
+  - csharp
+  - vb
+  name: OrderedLoadInt64(ref long)
+  nameWithType: CausalMemoryOrdering.OrderedLoadInt64(ref long)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoadInt64(ref long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: OrderedLoadInt64
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+    startLine: 327
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Executes an ordered load of a 64-bit integer.
+  example: []
+  syntax:
+    content: public long OrderedLoadInt64(ref long location)
+    parameters:
+    - id: location
+      type: System.Int64
+      description: Location to load from.
+    return:
+      type: System.Int64
+      description: The loaded value.
+    content.vb: Public Function OrderedLoadInt64(location As Long) As Long
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoadInt64*
+  nameWithType.vb: CausalMemoryOrdering.OrderedLoadInt64(Long)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoadInt64(Long)
+  name.vb: OrderedLoadInt64(Long)
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStoreInt64(System.Int64@,System.Int64)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStoreInt64(System.Int64@,System.Int64)
+  id: OrderedStoreInt64(System.Int64@,System.Int64)
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering
+  langs:
+  - csharp
+  - vb
+  name: OrderedStoreInt64(ref long, long)
+  nameWithType: CausalMemoryOrdering.OrderedStoreInt64(ref long, long)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStoreInt64(ref long, long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: OrderedStoreInt64
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+    startLine: 338
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Executes an ordered store of a 64-bit integer.
+  example: []
+  syntax:
+    content: public void OrderedStoreInt64(ref long location, long value)
+    parameters:
+    - id: location
+      type: System.Int64
+      description: Location to store to.
+    - id: value
+      type: System.Int64
+      description: Value to store.
+    content.vb: Public Sub OrderedStoreInt64(location As Long, value As Long)
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStoreInt64*
+  nameWithType.vb: CausalMemoryOrdering.OrderedStoreInt64(Long, Long)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStoreInt64(Long, Long)
+  name.vb: OrderedStoreInt64(Long, Long)
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoad``1(``0@)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoad``1(``0@)
+  id: OrderedLoad``1(``0@)
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering
+  langs:
+  - csharp
+  - vb
+  name: OrderedLoad<T>(ref T?)
+  nameWithType: CausalMemoryOrdering.OrderedLoad<T>(ref T?)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoad<T>(ref T?)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: OrderedLoad
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+    startLine: 350
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Executes an ordered load of a reference type.
+  example: []
+  syntax:
+    content: 'public T? OrderedLoad<T>(ref T? location) where T : class'
+    parameters:
+    - id: location
+      type: '{T}'
+      description: Location to load from.
+    typeParameters:
+    - id: T
+      description: Reference type to load.
+    return:
+      type: '{T}'
+      description: The loaded value.
+    content.vb: Public Function OrderedLoad(Of T As Class)(location As T) As T
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoad*
+  nameWithType.vb: CausalMemoryOrdering.OrderedLoad(Of T)(T)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoad(Of T)(T)
+  name.vb: OrderedLoad(Of T)(T)
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStore``1(``0@,``0)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStore``1(``0@,``0)
+  id: OrderedStore``1(``0@,``0)
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering
+  langs:
+  - csharp
+  - vb
+  name: OrderedStore<T>(ref T?, T?)
+  nameWithType: CausalMemoryOrdering.OrderedStore<T>(ref T?, T?)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStore<T>(ref T?, T?)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: OrderedStore
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+    startLine: 362
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Executes an ordered store of a reference type.
+  example: []
+  syntax:
+    content: 'public void OrderedStore<T>(ref T? location, T? value) where T : class'
+    parameters:
+    - id: location
+      type: '{T}'
+      description: Location to store to.
+    - id: value
+      type: '{T}'
+      description: Value to store.
+    typeParameters:
+    - id: T
+      description: Reference type to store.
+    content.vb: Public Sub OrderedStore(Of T As Class)(location As T, value As T)
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStore*
+  nameWithType.vb: CausalMemoryOrdering.OrderedStore(Of T)(T, T)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStore(Of T)(T, T)
+  name.vb: OrderedStore(Of T)(T, T)
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ResetStatistics
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ResetStatistics
+  id: ResetStatistics
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering
+  langs:
+  - csharp
+  - vb
+  name: ResetStatistics()
+  nameWithType: CausalMemoryOrdering.ResetStatistics()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ResetStatistics()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ResetStatistics
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+    startLine: 371
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Resets statistics counters.
+  example: []
+  syntax:
+    content: public void ResetStatistics()
+    content.vb: Public Sub ResetStatistics()
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ResetStatistics*
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ToString
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ToString
+  id: ToString
+  parent: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: CausalMemoryOrdering.ToString()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ToString()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ToString
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/CausalMemoryOrdering.cs
+    startLine: 384
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Returns a string that represents the current object.
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+      description: A string that represents the current object.
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.Object.ToString
+  overload: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ToString*
+references:
+- uid: Orleans.GpuBridge.Runtime.Temporal
+  commentId: N:Orleans.GpuBridge.Runtime.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Temporal
+  nameWithType: Orleans.GpuBridge.Runtime.Temporal
+  fullName: Orleans.GpuBridge.Runtime.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.html
+  name: ICausalMemoryOrdering
+  nameWithType: ICausalMemoryOrdering
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Abstractions.Temporal
+  commentId: N:Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Temporal
+  nameWithType: Orleans.GpuBridge.Abstractions.Temporal
+  fullName: Orleans.GpuBridge.Abstractions.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.html
+  name: CausalMemoryOrdering
+  nameWithType: CausalMemoryOrdering
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.#ctor
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.html#Orleans_GpuBridge_Runtime_Temporal_CausalMemoryOrdering__ctor_Microsoft_Extensions_Logging_ILogger_Orleans_GpuBridge_Runtime_Temporal_CausalMemoryOrdering__
+  name: CausalMemoryOrdering
+  nameWithType: CausalMemoryOrdering.CausalMemoryOrdering
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.CausalMemoryOrdering
+  nameWithType.vb: CausalMemoryOrdering.New
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.New
+  name.vb: New
+- uid: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<CausalMemoryOrdering>
+  nameWithType: ILogger<CausalMemoryOrdering>
+  fullName: Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering>
+  nameWithType.vb: ILogger(Of CausalMemoryOrdering)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering)
+  name.vb: ILogger(Of CausalMemoryOrdering)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering
+    name: CausalMemoryOrdering
+    href: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering
+    name: CausalMemoryOrdering
+    href: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.html
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.InsertFence*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.InsertFence
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.html#Orleans_GpuBridge_Runtime_Temporal_CausalMemoryOrdering_InsertFence_Orleans_GpuBridge_Abstractions_Temporal_FenceScope_
+  name: InsertFence
+  nameWithType: CausalMemoryOrdering.InsertFence
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.InsertFence
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.InsertFence(Orleans.GpuBridge.Abstractions.Temporal.FenceScope)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.InsertFence(Orleans.GpuBridge.Abstractions.Temporal.FenceScope)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering
+  name: InsertFence(FenceScope)
+  nameWithType: ICausalMemoryOrdering.InsertFence(FenceScope)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.InsertFence(Orleans.GpuBridge.Abstractions.Temporal.FenceScope)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.InsertFence(Orleans.GpuBridge.Abstractions.Temporal.FenceScope)
+    name: InsertFence
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.FenceScope
+    name: FenceScope
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.InsertFence(Orleans.GpuBridge.Abstractions.Temporal.FenceScope)
+    name: InsertFence
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.FenceScope
+    name: FenceScope
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.FenceScope
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.FenceScope
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.FenceScope.html
+  name: FenceScope
+  nameWithType: FenceScope
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.FenceScope
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.CurrentMode*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.CurrentMode
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.html#Orleans_GpuBridge_Runtime_Temporal_CausalMemoryOrdering_CurrentMode
+  name: CurrentMode
+  nameWithType: CausalMemoryOrdering.CurrentMode
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.CurrentMode
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.CurrentMode
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.CurrentMode
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering
+  name: CurrentMode
+  nameWithType: ICausalMemoryOrdering.CurrentMode
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.CurrentMode
+- uid: Orleans.GpuBridge.Abstractions.Temporal.MemoryOrderingMode
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.MemoryOrderingMode
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.MemoryOrderingMode.html
+  name: MemoryOrderingMode
+  nameWithType: MemoryOrderingMode
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.MemoryOrderingMode
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.SetMode*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.SetMode
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.html#Orleans_GpuBridge_Runtime_Temporal_CausalMemoryOrdering_SetMode_Orleans_GpuBridge_Abstractions_Temporal_MemoryOrderingMode_
+  name: SetMode
+  nameWithType: CausalMemoryOrdering.SetMode
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.SetMode
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.SetMode(Orleans.GpuBridge.Abstractions.Temporal.MemoryOrderingMode)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.SetMode(Orleans.GpuBridge.Abstractions.Temporal.MemoryOrderingMode)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering
+  name: SetMode(MemoryOrderingMode)
+  nameWithType: ICausalMemoryOrdering.SetMode(MemoryOrderingMode)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.SetMode(Orleans.GpuBridge.Abstractions.Temporal.MemoryOrderingMode)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.SetMode(Orleans.GpuBridge.Abstractions.Temporal.MemoryOrderingMode)
+    name: SetMode
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.MemoryOrderingMode
+    name: MemoryOrderingMode
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.SetMode(Orleans.GpuBridge.Abstractions.Temporal.MemoryOrderingMode)
+    name: SetMode
+  - name: (
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.MemoryOrderingMode
+    name: MemoryOrderingMode
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.AcquireSemantics*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.AcquireSemantics
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.html#Orleans_GpuBridge_Runtime_Temporal_CausalMemoryOrdering_AcquireSemantics
+  name: AcquireSemantics
+  nameWithType: CausalMemoryOrdering.AcquireSemantics
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.AcquireSemantics
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.AcquireSemantics
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.AcquireSemantics
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering
+  name: AcquireSemantics()
+  nameWithType: ICausalMemoryOrdering.AcquireSemantics()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.AcquireSemantics()
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.AcquireSemantics
+    name: AcquireSemantics
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.AcquireSemantics
+    name: AcquireSemantics
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ReleaseSemantics*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ReleaseSemantics
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.html#Orleans_GpuBridge_Runtime_Temporal_CausalMemoryOrdering_ReleaseSemantics
+  name: ReleaseSemantics
+  nameWithType: CausalMemoryOrdering.ReleaseSemantics
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ReleaseSemantics
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.ReleaseSemantics
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.ReleaseSemantics
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering
+  name: ReleaseSemantics()
+  nameWithType: ICausalMemoryOrdering.ReleaseSemantics()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.ReleaseSemantics()
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.ReleaseSemantics
+    name: ReleaseSemantics
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.ReleaseSemantics
+    name: ReleaseSemantics
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.GetStatistics*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.GetStatistics
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.html#Orleans_GpuBridge_Runtime_Temporal_CausalMemoryOrdering_GetStatistics
+  name: GetStatistics
+  nameWithType: CausalMemoryOrdering.GetStatistics
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.GetStatistics
+- uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.GetStatistics
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.GetStatistics
+  parent: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering
+  name: GetStatistics()
+  nameWithType: ICausalMemoryOrdering.GetStatistics()
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.GetStatistics()
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.GetStatistics
+    name: GetStatistics
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.ICausalMemoryOrdering.GetStatistics
+    name: GetStatistics
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.MemoryOrderingStatistics
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.MemoryOrderingStatistics
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.MemoryOrderingStatistics.html
+  name: MemoryOrderingStatistics
+  nameWithType: MemoryOrderingStatistics
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.MemoryOrderingStatistics
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ApplyOrdering*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ApplyOrdering
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.html#Orleans_GpuBridge_Runtime_Temporal_CausalMemoryOrdering_ApplyOrdering_Orleans_GpuBridge_Runtime_Temporal_MemoryOperation_
+  name: ApplyOrdering
+  nameWithType: CausalMemoryOrdering.ApplyOrdering
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ApplyOrdering
+- uid: Orleans.GpuBridge.Runtime.Temporal.MemoryOperation
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.MemoryOperation
+  parent: Orleans.GpuBridge.Runtime.Temporal
+  href: Orleans.GpuBridge.Runtime.Temporal.MemoryOperation.html
+  name: MemoryOperation
+  nameWithType: MemoryOperation
+  fullName: Orleans.GpuBridge.Runtime.Temporal.MemoryOperation
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoadInt32*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoadInt32
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.html#Orleans_GpuBridge_Runtime_Temporal_CausalMemoryOrdering_OrderedLoadInt32_System_Int32__
+  name: OrderedLoadInt32
+  nameWithType: CausalMemoryOrdering.OrderedLoadInt32
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoadInt32
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStoreInt32*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStoreInt32
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.html#Orleans_GpuBridge_Runtime_Temporal_CausalMemoryOrdering_OrderedStoreInt32_System_Int32__System_Int32_
+  name: OrderedStoreInt32
+  nameWithType: CausalMemoryOrdering.OrderedStoreInt32
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStoreInt32
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoadInt64*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoadInt64
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.html#Orleans_GpuBridge_Runtime_Temporal_CausalMemoryOrdering_OrderedLoadInt64_System_Int64__
+  name: OrderedLoadInt64
+  nameWithType: CausalMemoryOrdering.OrderedLoadInt64
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoadInt64
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStoreInt64*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStoreInt64
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.html#Orleans_GpuBridge_Runtime_Temporal_CausalMemoryOrdering_OrderedStoreInt64_System_Int64__System_Int64_
+  name: OrderedStoreInt64
+  nameWithType: CausalMemoryOrdering.OrderedStoreInt64
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStoreInt64
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoad*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoad
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.html#Orleans_GpuBridge_Runtime_Temporal_CausalMemoryOrdering_OrderedLoad__1___0__
+  name: OrderedLoad
+  nameWithType: CausalMemoryOrdering.OrderedLoad
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedLoad
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStore*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStore
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.html#Orleans_GpuBridge_Runtime_Temporal_CausalMemoryOrdering_OrderedStore__1___0____0_
+  name: OrderedStore
+  nameWithType: CausalMemoryOrdering.OrderedStore
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.OrderedStore
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ResetStatistics*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ResetStatistics
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.html#Orleans_GpuBridge_Runtime_Temporal_CausalMemoryOrdering_ResetStatistics
+  name: ResetStatistics
+  nameWithType: CausalMemoryOrdering.ResetStatistics
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ResetStatistics
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ToString*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ToString
+  href: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.html#Orleans_GpuBridge_Runtime_Temporal_CausalMemoryOrdering_ToString
+  name: ToString
+  nameWithType: CausalMemoryOrdering.ToString
+  fullName: Orleans.GpuBridge.Runtime.Temporal.CausalMemoryOrdering.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

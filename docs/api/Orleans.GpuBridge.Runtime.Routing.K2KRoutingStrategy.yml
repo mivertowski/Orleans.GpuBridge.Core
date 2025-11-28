@@ -1,0 +1,367 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+  commentId: T:Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+  id: K2KRoutingStrategy
+  parent: Orleans.GpuBridge.Runtime.Routing
+  children:
+  - Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.Broadcast
+  - Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.Direct
+  - Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.HashRouted
+  - Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.Ring
+  langs:
+  - csharp
+  - vb
+  name: K2KRoutingStrategy
+  nameWithType: K2KRoutingStrategy
+  fullName: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+  type: Enum
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Routing/K2KRoutingStrategy.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: K2KRoutingStrategy
+    path: ../src/Orleans.GpuBridge.Runtime/Routing/K2KRoutingStrategy.cs
+    startLine: 8
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Routing
+  summary: Defines routing strategies for kernel-to-kernel (K2K) messaging.
+  example: []
+  syntax:
+    content: public enum K2KRoutingStrategy
+    content.vb: Public Enum K2KRoutingStrategy
+  extensionMethods:
+  - Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.GetDefaultMaxHops
+  - Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.IsMultiTarget
+  - Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.RequiresTargetId
+- uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.Direct
+  commentId: F:Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.Direct
+  id: Direct
+  parent: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+  langs:
+  - csharp
+  - vb
+  name: Direct
+  nameWithType: K2KRoutingStrategy.Direct
+  fullName: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.Direct
+  type: Field
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Routing/K2KRoutingStrategy.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Direct
+    path: ../src/Orleans.GpuBridge.Runtime/Routing/K2KRoutingStrategy.cs
+    startLine: 14
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Routing
+  summary: >-
+    Direct point-to-point routing to a specific target actor.
+
+    Provides lowest latency (100-500ns) for known targets.
+  example: []
+  syntax:
+    content: Direct = 0
+    return:
+      type: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+- uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.Broadcast
+  commentId: F:Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.Broadcast
+  id: Broadcast
+  parent: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+  langs:
+  - csharp
+  - vb
+  name: Broadcast
+  nameWithType: K2KRoutingStrategy.Broadcast
+  fullName: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.Broadcast
+  type: Field
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Routing/K2KRoutingStrategy.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Broadcast
+    path: ../src/Orleans.GpuBridge.Runtime/Routing/K2KRoutingStrategy.cs
+    startLine: 20
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Routing
+  summary: >-
+    Broadcasts the message to all actors of the target type.
+
+    Uses parallel GPU-native message enqueue operations.
+  example: []
+  syntax:
+    content: Broadcast = 1
+    return:
+      type: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+- uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.Ring
+  commentId: F:Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.Ring
+  id: Ring
+  parent: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+  langs:
+  - csharp
+  - vb
+  name: Ring
+  nameWithType: K2KRoutingStrategy.Ring
+  fullName: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.Ring
+  type: Field
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Routing/K2KRoutingStrategy.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Ring
+    path: ../src/Orleans.GpuBridge.Runtime/Routing/K2KRoutingStrategy.cs
+    startLine: 27
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Routing
+  summary: >-
+    Ring topology routing where messages are forwarded in a circular pattern.
+
+    Each actor forwards to its successor until the message completes the ring.
+
+    Useful for consensus protocols and aggregation patterns.
+  example: []
+  syntax:
+    content: Ring = 2
+    return:
+      type: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+- uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.HashRouted
+  commentId: F:Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.HashRouted
+  id: HashRouted
+  parent: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+  langs:
+  - csharp
+  - vb
+  name: HashRouted
+  nameWithType: K2KRoutingStrategy.HashRouted
+  fullName: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.HashRouted
+  type: Field
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Routing/K2KRoutingStrategy.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: HashRouted
+    path: ../src/Orleans.GpuBridge.Runtime/Routing/K2KRoutingStrategy.cs
+    startLine: 33
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Routing
+  summary: >-
+    Hash-based routing using consistent hashing to select target actors.
+
+    Distributes load evenly across actors based on message content hash.
+  example: []
+  syntax:
+    content: HashRouted = 3
+    return:
+      type: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+references:
+- uid: Orleans.GpuBridge.Runtime.Routing
+  commentId: N:Orleans.GpuBridge.Runtime.Routing
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Routing
+  nameWithType: Orleans.GpuBridge.Runtime.Routing
+  fullName: Orleans.GpuBridge.Runtime.Routing
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Routing
+    name: Routing
+    href: Orleans.GpuBridge.Runtime.Routing.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Routing
+    name: Routing
+    href: Orleans.GpuBridge.Runtime.Routing.html
+- uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.GetDefaultMaxHops
+  commentId: M:Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.GetDefaultMaxHops(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+  parent: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions
+  definition: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.GetDefaultMaxHops(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+  href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.html#Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategyExtensions_GetDefaultMaxHops_Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategy_
+  name: GetDefaultMaxHops(K2KRoutingStrategy)
+  nameWithType: K2KRoutingStrategyExtensions.GetDefaultMaxHops(K2KRoutingStrategy)
+  fullName: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.GetDefaultMaxHops(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.GetDefaultMaxHops(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+    name: GetDefaultMaxHops
+    href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.html#Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategyExtensions_GetDefaultMaxHops_Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategy_
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+    name: K2KRoutingStrategy
+    href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.html
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.GetDefaultMaxHops(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+    name: GetDefaultMaxHops
+    href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.html#Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategyExtensions_GetDefaultMaxHops_Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategy_
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+    name: K2KRoutingStrategy
+    href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.html
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.IsMultiTarget
+  commentId: M:Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.IsMultiTarget(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+  parent: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions
+  definition: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.IsMultiTarget(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+  href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.html#Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategyExtensions_IsMultiTarget_Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategy_
+  name: IsMultiTarget(K2KRoutingStrategy)
+  nameWithType: K2KRoutingStrategyExtensions.IsMultiTarget(K2KRoutingStrategy)
+  fullName: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.IsMultiTarget(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.IsMultiTarget(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+    name: IsMultiTarget
+    href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.html#Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategyExtensions_IsMultiTarget_Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategy_
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+    name: K2KRoutingStrategy
+    href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.html
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.IsMultiTarget(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+    name: IsMultiTarget
+    href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.html#Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategyExtensions_IsMultiTarget_Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategy_
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+    name: K2KRoutingStrategy
+    href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.html
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.RequiresTargetId
+  commentId: M:Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.RequiresTargetId(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+  parent: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions
+  definition: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.RequiresTargetId(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+  href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.html#Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategyExtensions_RequiresTargetId_Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategy_
+  name: RequiresTargetId(K2KRoutingStrategy)
+  nameWithType: K2KRoutingStrategyExtensions.RequiresTargetId(K2KRoutingStrategy)
+  fullName: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.RequiresTargetId(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.RequiresTargetId(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+    name: RequiresTargetId
+    href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.html#Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategyExtensions_RequiresTargetId_Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategy_
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+    name: K2KRoutingStrategy
+    href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.html
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.RequiresTargetId(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+    name: RequiresTargetId
+    href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.html#Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategyExtensions_RequiresTargetId_Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategy_
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+    name: K2KRoutingStrategy
+    href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.html
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.GetDefaultMaxHops(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+  commentId: M:Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.GetDefaultMaxHops(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+  href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.html#Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategyExtensions_GetDefaultMaxHops_Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategy_
+  name: GetDefaultMaxHops(K2KRoutingStrategy)
+  nameWithType: K2KRoutingStrategyExtensions.GetDefaultMaxHops(K2KRoutingStrategy)
+  fullName: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.GetDefaultMaxHops(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.GetDefaultMaxHops(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+    name: GetDefaultMaxHops
+    href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.html#Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategyExtensions_GetDefaultMaxHops_Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategy_
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+    name: K2KRoutingStrategy
+    href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.html
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.GetDefaultMaxHops(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+    name: GetDefaultMaxHops
+    href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.html#Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategyExtensions_GetDefaultMaxHops_Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategy_
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+    name: K2KRoutingStrategy
+    href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.html
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions
+  commentId: T:Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions
+  parent: Orleans.GpuBridge.Runtime.Routing
+  href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.html
+  name: K2KRoutingStrategyExtensions
+  nameWithType: K2KRoutingStrategyExtensions
+  fullName: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions
+- uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.IsMultiTarget(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+  commentId: M:Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.IsMultiTarget(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+  href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.html#Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategyExtensions_IsMultiTarget_Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategy_
+  name: IsMultiTarget(K2KRoutingStrategy)
+  nameWithType: K2KRoutingStrategyExtensions.IsMultiTarget(K2KRoutingStrategy)
+  fullName: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.IsMultiTarget(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.IsMultiTarget(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+    name: IsMultiTarget
+    href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.html#Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategyExtensions_IsMultiTarget_Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategy_
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+    name: K2KRoutingStrategy
+    href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.html
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.IsMultiTarget(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+    name: IsMultiTarget
+    href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.html#Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategyExtensions_IsMultiTarget_Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategy_
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+    name: K2KRoutingStrategy
+    href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.html
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.RequiresTargetId(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+  commentId: M:Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.RequiresTargetId(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+  href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.html#Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategyExtensions_RequiresTargetId_Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategy_
+  name: RequiresTargetId(K2KRoutingStrategy)
+  nameWithType: K2KRoutingStrategyExtensions.RequiresTargetId(K2KRoutingStrategy)
+  fullName: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.RequiresTargetId(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.RequiresTargetId(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+    name: RequiresTargetId
+    href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.html#Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategyExtensions_RequiresTargetId_Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategy_
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+    name: K2KRoutingStrategy
+    href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.html
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.RequiresTargetId(Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy)
+    name: RequiresTargetId
+    href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategyExtensions.html#Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategyExtensions_RequiresTargetId_Orleans_GpuBridge_Runtime_Routing_K2KRoutingStrategy_
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+    name: K2KRoutingStrategy
+    href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.html
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+  commentId: T:Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy
+  parent: Orleans.GpuBridge.Runtime.Routing
+  href: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy.html
+  name: K2KRoutingStrategy
+  nameWithType: K2KRoutingStrategy
+  fullName: Orleans.GpuBridge.Runtime.Routing.K2KRoutingStrategy

@@ -1,0 +1,1385 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData
+  id: TemporalHyperedgeData
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  children:
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.Cardinality
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ContainsVertex(System.UInt64)
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.DurationNanos
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.HLC
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.HyperedgeId
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.HyperedgeType
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.IsValidAt(System.Int64)
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.OverlapsWith(System.Int64,System.Int64)
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.Properties
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ValidFrom
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ValidTo
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.VertexIds
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.VertexRoles
+  - Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.Weight
+  langs:
+  - csharp
+  - vb
+  name: TemporalHyperedgeData
+  nameWithType: TemporalHyperedgeData
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TemporalHyperedgeData
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+    startLine: 25
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Represents a temporal hyperedge - a many-to-many relationship with time validity.
+  remarks: >-
+    <p>
+
+    Unlike regular temporal edges (binary relationships), temporal hyperedges connect
+
+    multiple vertices simultaneously, enabling:
+
+    <ul><li>Group transactions (multiple parties involved)</li><li>Meeting attendance (many participants at once)</li><li>Multi-party contracts (effective during time window)</li></ul>
+
+    </p>
+  example: []
+  syntax:
+    content: >-
+      [GenerateSerializer]
+
+      [Immutable]
+
+      public sealed record TemporalHyperedgeData : IEquatable<TemporalHyperedgeData>
+    content.vb: >-
+      <GenerateSerializer>
+
+      <Immutable>
+
+      Public NotInheritable Class TemporalHyperedgeData Implements IEquatable(Of TemporalHyperedgeData)
+  inheritance:
+  - System.Object
+  implements:
+  - System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  attributes:
+  - type: Orleans.GenerateSerializerAttribute
+    ctor: Orleans.GenerateSerializerAttribute.#ctor
+    arguments: []
+  - type: Orleans.ImmutableAttribute
+    ctor: Orleans.ImmutableAttribute.#ctor
+    arguments: []
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.HyperedgeId
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.HyperedgeId
+  id: HyperedgeId
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData
+  langs:
+  - csharp
+  - vb
+  name: HyperedgeId
+  nameWithType: TemporalHyperedgeData.HyperedgeId
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.HyperedgeId
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: HyperedgeId
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+    startLine: 32
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Unique hyperedge identifier.
+  example: []
+  syntax:
+    content: >-
+      [Id(0)]
+
+      public string HyperedgeId { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <Id(0)>
+
+      Public Property HyperedgeId As String
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.HyperedgeId*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "0"
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.VertexIds
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.VertexIds
+  id: VertexIds
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData
+  langs:
+  - csharp
+  - vb
+  name: VertexIds
+  nameWithType: TemporalHyperedgeData.VertexIds
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.VertexIds
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: VertexIds
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+    startLine: 38
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Vertex identifiers in this hyperedge.
+  example: []
+  syntax:
+    content: >-
+      [Id(1)]
+
+      public IReadOnlyList<ulong> VertexIds { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{System.UInt64}
+    content.vb: >-
+      <Id(1)>
+
+      Public Property VertexIds As IReadOnlyList(Of ULong)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.VertexIds*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "1"
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ValidFrom
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ValidFrom
+  id: ValidFrom
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData
+  langs:
+  - csharp
+  - vb
+  name: ValidFrom
+  nameWithType: TemporalHyperedgeData.ValidFrom
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ValidFrom
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ValidFrom
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+    startLine: 44
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Start of the time range when this hyperedge was valid (inclusive, nanoseconds).
+  example: []
+  syntax:
+    content: >-
+      [Id(2)]
+
+      public long ValidFrom { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: >-
+      <Id(2)>
+
+      Public Property ValidFrom As Long
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ValidFrom*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "2"
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ValidTo
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ValidTo
+  id: ValidTo
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData
+  langs:
+  - csharp
+  - vb
+  name: ValidTo
+  nameWithType: TemporalHyperedgeData.ValidTo
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ValidTo
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ValidTo
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+    startLine: 50
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: End of the time range when this hyperedge was valid (inclusive, nanoseconds).
+  example: []
+  syntax:
+    content: >-
+      [Id(3)]
+
+      public long ValidTo { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: >-
+      <Id(3)>
+
+      Public Property ValidTo As Long
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ValidTo*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "3"
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.HLC
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.HLC
+  id: HLC
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData
+  langs:
+  - csharp
+  - vb
+  name: HLC
+  nameWithType: TemporalHyperedgeData.HLC
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.HLC
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: HLC
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+    startLine: 56
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Hybrid Logical Clock timestamp when the hyperedge was created.
+  example: []
+  syntax:
+    content: >-
+      [Id(4)]
+
+      public HybridTimestamp HLC { get; init; }
+    parameters: []
+    return:
+      type: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+    content.vb: >-
+      <Id(4)>
+
+      Public Property HLC As HybridTimestamp
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.HLC*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "4"
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.HyperedgeType
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.HyperedgeType
+  id: HyperedgeType
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData
+  langs:
+  - csharp
+  - vb
+  name: HyperedgeType
+  nameWithType: TemporalHyperedgeData.HyperedgeType
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.HyperedgeType
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: HyperedgeType
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+    startLine: 62
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Hyperedge type identifier.
+  example: []
+  syntax:
+    content: >-
+      [Id(5)]
+
+      public string HyperedgeType { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <Id(5)>
+
+      Public Property HyperedgeType As String
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.HyperedgeType*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "5"
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.Weight
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.Weight
+  id: Weight
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData
+  langs:
+  - csharp
+  - vb
+  name: Weight
+  nameWithType: TemporalHyperedgeData.Weight
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.Weight
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Weight
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+    startLine: 68
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Aggregate weight of the hyperedge.
+  example: []
+  syntax:
+    content: >-
+      [Id(6)]
+
+      public double Weight { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: >-
+      <Id(6)>
+
+      Public Property Weight As Double
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.Weight*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "6"
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.Properties
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.Properties
+  id: Properties
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData
+  langs:
+  - csharp
+  - vb
+  name: Properties
+  nameWithType: TemporalHyperedgeData.Properties
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.Properties
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Properties
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+    startLine: 74
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Additional hyperedge metadata.
+  example: []
+  syntax:
+    content: >-
+      [Id(7)]
+
+      public IReadOnlyDictionary<string, object>? Properties { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object}
+    content.vb: >-
+      <Id(7)>
+
+      Public Property Properties As IReadOnlyDictionary(Of String, Object)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.Properties*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "7"
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.VertexRoles
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.VertexRoles
+  id: VertexRoles
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData
+  langs:
+  - csharp
+  - vb
+  name: VertexRoles
+  nameWithType: TemporalHyperedgeData.VertexRoles
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.VertexRoles
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: VertexRoles
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+    startLine: 80
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Role assignments for vertices (vertex ID → role).
+  example: []
+  syntax:
+    content: >-
+      [Id(8)]
+
+      public IReadOnlyDictionary<ulong, string>? VertexRoles { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyDictionary{System.UInt64,System.String}
+    content.vb: >-
+      <Id(8)>
+
+      Public Property VertexRoles As IReadOnlyDictionary(Of ULong, String)
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.VertexRoles*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "8"
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.Cardinality
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.Cardinality
+  id: Cardinality
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData
+  langs:
+  - csharp
+  - vb
+  name: Cardinality
+  nameWithType: TemporalHyperedgeData.Cardinality
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.Cardinality
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Cardinality
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+    startLine: 86
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Number of vertices in the hyperedge.
+  example: []
+  syntax:
+    content: public int Cardinality { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property Cardinality As Integer
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.Cardinality*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.DurationNanos
+  commentId: P:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.DurationNanos
+  id: DurationNanos
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData
+  langs:
+  - csharp
+  - vb
+  name: DurationNanos
+  nameWithType: TemporalHyperedgeData.DurationNanos
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.DurationNanos
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DurationNanos
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+    startLine: 91
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Duration of the hyperedge's validity in nanoseconds.
+  example: []
+  syntax:
+    content: public long DurationNanos { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public ReadOnly Property DurationNanos As Long
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.DurationNanos*
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.IsValidAt(System.Int64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.IsValidAt(System.Int64)
+  id: IsValidAt(System.Int64)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData
+  langs:
+  - csharp
+  - vb
+  name: IsValidAt(long)
+  nameWithType: TemporalHyperedgeData.IsValidAt(long)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.IsValidAt(long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsValidAt
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+    startLine: 96
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Checks if this hyperedge was valid at the specified time.
+  example: []
+  syntax:
+    content: public bool IsValidAt(long timeNanos)
+    parameters:
+    - id: timeNanos
+      type: System.Int64
+    return:
+      type: System.Boolean
+    content.vb: Public Function IsValidAt(timeNanos As Long) As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.IsValidAt*
+  nameWithType.vb: TemporalHyperedgeData.IsValidAt(Long)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.IsValidAt(Long)
+  name.vb: IsValidAt(Long)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.OverlapsWith(System.Int64,System.Int64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.OverlapsWith(System.Int64,System.Int64)
+  id: OverlapsWith(System.Int64,System.Int64)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData
+  langs:
+  - csharp
+  - vb
+  name: OverlapsWith(long, long)
+  nameWithType: TemporalHyperedgeData.OverlapsWith(long, long)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.OverlapsWith(long, long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: OverlapsWith
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+    startLine: 104
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Checks if this hyperedge overlaps with the specified time range.
+  example: []
+  syntax:
+    content: public bool OverlapsWith(long startTime, long endTime)
+    parameters:
+    - id: startTime
+      type: System.Int64
+    - id: endTime
+      type: System.Int64
+    return:
+      type: System.Boolean
+    content.vb: Public Function OverlapsWith(startTime As Long, endTime As Long) As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.OverlapsWith*
+  nameWithType.vb: TemporalHyperedgeData.OverlapsWith(Long, Long)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.OverlapsWith(Long, Long)
+  name.vb: OverlapsWith(Long, Long)
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ContainsVertex(System.UInt64)
+  commentId: M:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ContainsVertex(System.UInt64)
+  id: ContainsVertex(System.UInt64)
+  parent: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData
+  langs:
+  - csharp
+  - vb
+  name: ContainsVertex(ulong)
+  nameWithType: TemporalHyperedgeData.ContainsVertex(ulong)
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ContainsVertex(ulong)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ContainsVertex
+    path: ../src/Orleans.GpuBridge.Abstractions/Temporal/Graph/HypergraphTemporalIntegration.cs
+    startLine: 112
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  summary: Checks if this hyperedge contains a specific vertex.
+  example: []
+  syntax:
+    content: public bool ContainsVertex(ulong vertexId)
+    parameters:
+    - id: vertexId
+      type: System.UInt64
+    return:
+      type: System.Boolean
+    content.vb: Public Function ContainsVertex(vertexId As ULong) As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ContainsVertex*
+  nameWithType.vb: TemporalHyperedgeData.ContainsVertex(ULong)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ContainsVertex(ULong)
+  name.vb: ContainsVertex(ULong)
+references:
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  commentId: N:Orleans.GpuBridge.Abstractions.Temporal.Graph
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  nameWithType: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph
+    name: Graph
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph
+    name: Graph
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData}
+  commentId: T:System.IEquatable{Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<TemporalHyperedgeData>
+  nameWithType: IEquatable<TemporalHyperedgeData>
+  fullName: System.IEquatable<Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData>
+  nameWithType.vb: IEquatable(Of TemporalHyperedgeData)
+  fullName.vb: System.IEquatable(Of Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData)
+  name.vb: IEquatable(Of TemporalHyperedgeData)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData
+    name: TemporalHyperedgeData
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData
+    name: TemporalHyperedgeData
+    href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.html
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.HyperedgeId*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.HyperedgeId
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_TemporalHyperedgeData_HyperedgeId
+  name: HyperedgeId
+  nameWithType: TemporalHyperedgeData.HyperedgeId
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.HyperedgeId
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.VertexIds*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.VertexIds
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_TemporalHyperedgeData_VertexIds
+  name: VertexIds
+  nameWithType: TemporalHyperedgeData.VertexIds
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.VertexIds
+- uid: System.Collections.Generic.IReadOnlyList{System.UInt64}
+  commentId: T:System.Collections.Generic.IReadOnlyList{System.UInt64}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<ulong>
+  nameWithType: IReadOnlyList<ulong>
+  fullName: System.Collections.Generic.IReadOnlyList<ulong>
+  nameWithType.vb: IReadOnlyList(Of ULong)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of ULong)
+  name.vb: IReadOnlyList(Of ULong)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: System.UInt64
+    name: ulong
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint64
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.UInt64
+    name: ULong
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint64
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ValidFrom*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ValidFrom
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_TemporalHyperedgeData_ValidFrom
+  name: ValidFrom
+  nameWithType: TemporalHyperedgeData.ValidFrom
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ValidFrom
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ValidTo*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ValidTo
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_TemporalHyperedgeData_ValidTo
+  name: ValidTo
+  nameWithType: TemporalHyperedgeData.ValidTo
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ValidTo
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.HLC*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.HLC
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_TemporalHyperedgeData_HLC
+  name: HLC
+  nameWithType: TemporalHyperedgeData.HLC
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.HLC
+- uid: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp.html
+  name: HybridTimestamp
+  nameWithType: HybridTimestamp
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.HybridTimestamp
+- uid: Orleans.GpuBridge.Abstractions.Temporal
+  commentId: N:Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Temporal
+  nameWithType: Orleans.GpuBridge.Abstractions.Temporal
+  fullName: Orleans.GpuBridge.Abstractions.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.HyperedgeType*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.HyperedgeType
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_TemporalHyperedgeData_HyperedgeType
+  name: HyperedgeType
+  nameWithType: TemporalHyperedgeData.HyperedgeType
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.HyperedgeType
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.Weight*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.Weight
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_TemporalHyperedgeData_Weight
+  name: Weight
+  nameWithType: TemporalHyperedgeData.Weight
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.Weight
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.Properties*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.Properties
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_TemporalHyperedgeData_Properties
+  name: Properties
+  nameWithType: TemporalHyperedgeData.Properties
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.Properties
+- uid: System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object}
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<string, object>
+  nameWithType: IReadOnlyDictionary<string, object>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<string, object>
+  nameWithType.vb: IReadOnlyDictionary(Of String, Object)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of String, Object)
+  name.vb: IReadOnlyDictionary(Of String, Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyDictionary`2
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<TKey, TValue>
+  nameWithType: IReadOnlyDictionary<TKey, TValue>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>
+  nameWithType.vb: IReadOnlyDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of TKey, TValue)
+  name.vb: IReadOnlyDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.VertexRoles*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.VertexRoles
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_TemporalHyperedgeData_VertexRoles
+  name: VertexRoles
+  nameWithType: TemporalHyperedgeData.VertexRoles
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.VertexRoles
+- uid: System.Collections.Generic.IReadOnlyDictionary{System.UInt64,System.String}
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary{System.UInt64,System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<ulong, string>
+  nameWithType: IReadOnlyDictionary<ulong, string>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<ulong, string>
+  nameWithType.vb: IReadOnlyDictionary(Of ULong, String)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of ULong, String)
+  name.vb: IReadOnlyDictionary(Of ULong, String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - uid: System.UInt64
+    name: ulong
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint64
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.UInt64
+    name: ULong
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint64
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.Cardinality*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.Cardinality
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_TemporalHyperedgeData_Cardinality
+  name: Cardinality
+  nameWithType: TemporalHyperedgeData.Cardinality
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.Cardinality
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.DurationNanos*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.DurationNanos
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_TemporalHyperedgeData_DurationNanos
+  name: DurationNanos
+  nameWithType: TemporalHyperedgeData.DurationNanos
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.DurationNanos
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.IsValidAt*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.IsValidAt
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_TemporalHyperedgeData_IsValidAt_System_Int64_
+  name: IsValidAt
+  nameWithType: TemporalHyperedgeData.IsValidAt
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.IsValidAt
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.OverlapsWith*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.OverlapsWith
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_TemporalHyperedgeData_OverlapsWith_System_Int64_System_Int64_
+  name: OverlapsWith
+  nameWithType: TemporalHyperedgeData.OverlapsWith
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.OverlapsWith
+- uid: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ContainsVertex*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ContainsVertex
+  href: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.html#Orleans_GpuBridge_Abstractions_Temporal_Graph_TemporalHyperedgeData_ContainsVertex_System_UInt64_
+  name: ContainsVertex
+  nameWithType: TemporalHyperedgeData.ContainsVertex
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.Graph.TemporalHyperedgeData.ContainsVertex
+- uid: System.UInt64
+  commentId: T:System.UInt64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uint64
+  name: ulong
+  nameWithType: ulong
+  fullName: ulong
+  nameWithType.vb: ULong
+  fullName.vb: ULong
+  name.vb: ULong

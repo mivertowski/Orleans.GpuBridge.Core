@@ -1,0 +1,901 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+  commentId: T:Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+  id: GpuMemoryHandle
+  parent: Orleans.GpuBridge.Grains.Models
+  children:
+  - Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.#ctor(System.String,System.Int64,Orleans.GpuBridge.Grains.Enums.GpuMemoryType,System.Int32,System.DateTime)
+  - Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.AllocatedAt
+  - Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Create(System.Int64,Orleans.GpuBridge.Grains.Enums.GpuMemoryType,System.Int32)
+  - Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Create(System.String,System.Int64)
+  - Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.DeviceIndex
+  - Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Empty
+  - Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Id
+  - Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.SizeBytes
+  - Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Type
+  langs:
+  - csharp
+  - vb
+  name: GpuMemoryHandle
+  nameWithType: GpuMemoryHandle
+  fullName: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Models/GpuMemoryHandle.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GpuMemoryHandle
+    path: ../src/Orleans.GpuBridge.Grains/Models/GpuMemoryHandle.cs
+    startLine: 14
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Models
+  summary: >-
+    Represents a handle to a GPU memory allocation within a resident grain.
+
+    This record provides metadata about allocated memory including size, type, device location, and allocation timestamp.
+  example: []
+  syntax:
+    content: >-
+      [GenerateSerializer]
+
+      public sealed record GpuMemoryHandle : IEquatable<GpuMemoryHandle>
+    content.vb: >-
+      <GenerateSerializer>
+
+      Public NotInheritable Class GpuMemoryHandle Implements IEquatable(Of GpuMemoryHandle)
+  inheritance:
+  - System.Object
+  implements:
+  - System.IEquatable{Orleans.GpuBridge.Grains.Models.GpuMemoryHandle}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  attributes:
+  - type: Orleans.GenerateSerializerAttribute
+    ctor: Orleans.GenerateSerializerAttribute.#ctor
+    arguments: []
+- uid: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.#ctor(System.String,System.Int64,Orleans.GpuBridge.Grains.Enums.GpuMemoryType,System.Int32,System.DateTime)
+  commentId: M:Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.#ctor(System.String,System.Int64,Orleans.GpuBridge.Grains.Enums.GpuMemoryType,System.Int32,System.DateTime)
+  id: '#ctor(System.String,System.Int64,Orleans.GpuBridge.Grains.Enums.GpuMemoryType,System.Int32,System.DateTime)'
+  parent: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+  langs:
+  - csharp
+  - vb
+  name: GpuMemoryHandle(string, long, GpuMemoryType, int, DateTime)
+  nameWithType: GpuMemoryHandle.GpuMemoryHandle(string, long, GpuMemoryType, int, DateTime)
+  fullName: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.GpuMemoryHandle(string, long, Orleans.GpuBridge.Grains.Enums.GpuMemoryType, int, System.DateTime)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Models/GpuMemoryHandle.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Grains/Models/GpuMemoryHandle.cs
+    startLine: 14
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Models
+  summary: >-
+    Represents a handle to a GPU memory allocation within a resident grain.
+
+    This record provides metadata about allocated memory including size, type, device location, and allocation timestamp.
+  example: []
+  syntax:
+    content: public GpuMemoryHandle(string Id, long SizeBytes, GpuMemoryType Type, int DeviceIndex, DateTime AllocatedAt)
+    parameters:
+    - id: Id
+      type: System.String
+      description: Unique identifier for this memory allocation.
+    - id: SizeBytes
+      type: System.Int64
+      description: Size of the allocated memory in bytes.
+    - id: Type
+      type: Orleans.GpuBridge.Grains.Enums.GpuMemoryType
+      description: The type of GPU memory allocation (default, pinned, shared, etc.).
+    - id: DeviceIndex
+      type: System.Int32
+      description: Index of the GPU device where memory is allocated.
+    - id: AllocatedAt
+      type: System.DateTime
+      description: Timestamp when the memory was allocated.
+    content.vb: Public Sub New(Id As String, SizeBytes As Long, Type As GpuMemoryType, DeviceIndex As Integer, AllocatedAt As Date)
+  overload: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.#ctor*
+  nameWithType.vb: GpuMemoryHandle.New(String, Long, GpuMemoryType, Integer, Date)
+  fullName.vb: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.New(String, Long, Orleans.GpuBridge.Grains.Enums.GpuMemoryType, Integer, Date)
+  name.vb: New(String, Long, GpuMemoryType, Integer, Date)
+- uid: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Id
+  commentId: P:Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Id
+  id: Id
+  parent: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: GpuMemoryHandle.Id
+  fullName: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Id
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Models/GpuMemoryHandle.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Id
+    path: ../src/Orleans.GpuBridge.Grains/Models/GpuMemoryHandle.cs
+    startLine: 16
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Models
+  summary: Unique identifier for this memory allocation.
+  example: []
+  syntax:
+    content: >-
+      [Id(0)]
+
+      public string Id { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <Id(0)>
+
+      Public Property Id As String
+  overload: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Id*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "0"
+- uid: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.SizeBytes
+  commentId: P:Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.SizeBytes
+  id: SizeBytes
+  parent: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+  langs:
+  - csharp
+  - vb
+  name: SizeBytes
+  nameWithType: GpuMemoryHandle.SizeBytes
+  fullName: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.SizeBytes
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Models/GpuMemoryHandle.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: SizeBytes
+    path: ../src/Orleans.GpuBridge.Grains/Models/GpuMemoryHandle.cs
+    startLine: 17
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Models
+  summary: Size of the allocated memory in bytes.
+  example: []
+  syntax:
+    content: >-
+      [Id(1)]
+
+      public long SizeBytes { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: >-
+      <Id(1)>
+
+      Public Property SizeBytes As Long
+  overload: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.SizeBytes*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "1"
+- uid: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Type
+  commentId: P:Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Type
+  id: Type
+  parent: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+  langs:
+  - csharp
+  - vb
+  name: Type
+  nameWithType: GpuMemoryHandle.Type
+  fullName: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Type
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Models/GpuMemoryHandle.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Type
+    path: ../src/Orleans.GpuBridge.Grains/Models/GpuMemoryHandle.cs
+    startLine: 18
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Models
+  summary: The type of GPU memory allocation (default, pinned, shared, etc.).
+  example: []
+  syntax:
+    content: >-
+      [Id(2)]
+
+      public GpuMemoryType Type { get; init; }
+    parameters: []
+    return:
+      type: Orleans.GpuBridge.Grains.Enums.GpuMemoryType
+    content.vb: >-
+      <Id(2)>
+
+      Public Property Type As GpuMemoryType
+  overload: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Type*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "2"
+- uid: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.DeviceIndex
+  commentId: P:Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.DeviceIndex
+  id: DeviceIndex
+  parent: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+  langs:
+  - csharp
+  - vb
+  name: DeviceIndex
+  nameWithType: GpuMemoryHandle.DeviceIndex
+  fullName: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.DeviceIndex
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Models/GpuMemoryHandle.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DeviceIndex
+    path: ../src/Orleans.GpuBridge.Grains/Models/GpuMemoryHandle.cs
+    startLine: 19
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Models
+  summary: Index of the GPU device where memory is allocated.
+  example: []
+  syntax:
+    content: >-
+      [Id(3)]
+
+      public int DeviceIndex { get; init; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: >-
+      <Id(3)>
+
+      Public Property DeviceIndex As Integer
+  overload: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.DeviceIndex*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "3"
+- uid: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.AllocatedAt
+  commentId: P:Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.AllocatedAt
+  id: AllocatedAt
+  parent: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+  langs:
+  - csharp
+  - vb
+  name: AllocatedAt
+  nameWithType: GpuMemoryHandle.AllocatedAt
+  fullName: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.AllocatedAt
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Models/GpuMemoryHandle.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AllocatedAt
+    path: ../src/Orleans.GpuBridge.Grains/Models/GpuMemoryHandle.cs
+    startLine: 20
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Models
+  summary: Timestamp when the memory was allocated.
+  example: []
+  syntax:
+    content: >-
+      [Id(4)]
+
+      public DateTime AllocatedAt { get; init; }
+    parameters: []
+    return:
+      type: System.DateTime
+    content.vb: >-
+      <Id(4)>
+
+      Public Property AllocatedAt As Date
+  overload: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.AllocatedAt*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "4"
+- uid: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Create(System.Int64,Orleans.GpuBridge.Grains.Enums.GpuMemoryType,System.Int32)
+  commentId: M:Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Create(System.Int64,Orleans.GpuBridge.Grains.Enums.GpuMemoryType,System.Int32)
+  id: Create(System.Int64,Orleans.GpuBridge.Grains.Enums.GpuMemoryType,System.Int32)
+  parent: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+  langs:
+  - csharp
+  - vb
+  name: Create(long, GpuMemoryType, int)
+  nameWithType: GpuMemoryHandle.Create(long, GpuMemoryType, int)
+  fullName: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Create(long, Orleans.GpuBridge.Grains.Enums.GpuMemoryType, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Models/GpuMemoryHandle.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Create
+    path: ../src/Orleans.GpuBridge.Grains/Models/GpuMemoryHandle.cs
+    startLine: 29
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Models
+  summary: Creates a new GPU memory handle with automatically generated ID and current timestamp.
+  example: []
+  syntax:
+    content: public static GpuMemoryHandle Create(long sizeBytes, GpuMemoryType type, int deviceIndex)
+    parameters:
+    - id: sizeBytes
+      type: System.Int64
+      description: The size of the memory allocation in bytes.
+    - id: type
+      type: Orleans.GpuBridge.Grains.Enums.GpuMemoryType
+      description: The type of GPU memory to allocate.
+    - id: deviceIndex
+      type: System.Int32
+      description: The index of the target GPU device.
+    return:
+      type: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+      description: A new <xref href="Orleans.GpuBridge.Grains.Models.GpuMemoryHandle" data-throw-if-not-resolved="false"></xref> instance with unique ID and current timestamp.
+    content.vb: Public Shared Function Create(sizeBytes As Long, type As GpuMemoryType, deviceIndex As Integer) As GpuMemoryHandle
+  overload: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Create*
+  nameWithType.vb: GpuMemoryHandle.Create(Long, GpuMemoryType, Integer)
+  fullName.vb: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Create(Long, Orleans.GpuBridge.Grains.Enums.GpuMemoryType, Integer)
+  name.vb: Create(Long, GpuMemoryType, Integer)
+- uid: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Create(System.String,System.Int64)
+  commentId: M:Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Create(System.String,System.Int64)
+  id: Create(System.String,System.Int64)
+  parent: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+  langs:
+  - csharp
+  - vb
+  name: Create(string, long)
+  nameWithType: GpuMemoryHandle.Create(string, long)
+  fullName: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Create(string, long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Models/GpuMemoryHandle.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Create
+    path: ../src/Orleans.GpuBridge.Grains/Models/GpuMemoryHandle.cs
+    startLine: 42
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Models
+  summary: Creates a new GPU memory handle with a specific ID
+  example: []
+  syntax:
+    content: public static GpuMemoryHandle Create(string id, long sizeBytes)
+    parameters:
+    - id: id
+      type: System.String
+    - id: sizeBytes
+      type: System.Int64
+    return:
+      type: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+    content.vb: Public Shared Function Create(id As String, sizeBytes As Long) As GpuMemoryHandle
+  overload: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Create*
+  nameWithType.vb: GpuMemoryHandle.Create(String, Long)
+  fullName.vb: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Create(String, Long)
+  name.vb: Create(String, Long)
+- uid: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Empty
+  commentId: P:Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Empty
+  id: Empty
+  parent: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+  langs:
+  - csharp
+  - vb
+  name: Empty
+  nameWithType: GpuMemoryHandle.Empty
+  fullName: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Empty
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Models/GpuMemoryHandle.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Empty
+    path: ../src/Orleans.GpuBridge.Grains/Models/GpuMemoryHandle.cs
+    startLine: 55
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Models
+  summary: Empty GPU memory handle
+  example: []
+  syntax:
+    content: public static GpuMemoryHandle Empty { get; }
+    parameters: []
+    return:
+      type: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+    content.vb: Public Shared ReadOnly Property Empty As GpuMemoryHandle
+  overload: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Empty*
+references:
+- uid: Orleans.GpuBridge.Grains.Models
+  commentId: N:Orleans.GpuBridge.Grains.Models
+  href: Orleans.html
+  name: Orleans.GpuBridge.Grains.Models
+  nameWithType: Orleans.GpuBridge.Grains.Models
+  fullName: Orleans.GpuBridge.Grains.Models
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.Models
+    name: Models
+    href: Orleans.GpuBridge.Grains.Models.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.Models
+    name: Models
+    href: Orleans.GpuBridge.Grains.Models.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IEquatable{Orleans.GpuBridge.Grains.Models.GpuMemoryHandle}
+  commentId: T:System.IEquatable{Orleans.GpuBridge.Grains.Models.GpuMemoryHandle}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<GpuMemoryHandle>
+  nameWithType: IEquatable<GpuMemoryHandle>
+  fullName: System.IEquatable<Orleans.GpuBridge.Grains.Models.GpuMemoryHandle>
+  nameWithType.vb: IEquatable(Of GpuMemoryHandle)
+  fullName.vb: System.IEquatable(Of Orleans.GpuBridge.Grains.Models.GpuMemoryHandle)
+  name.vb: IEquatable(Of GpuMemoryHandle)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+    name: GpuMemoryHandle
+    href: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+    name: GpuMemoryHandle
+    href: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.html
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.#ctor
+  href: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.html#Orleans_GpuBridge_Grains_Models_GpuMemoryHandle__ctor_System_String_System_Int64_Orleans_GpuBridge_Grains_Enums_GpuMemoryType_System_Int32_System_DateTime_
+  name: GpuMemoryHandle
+  nameWithType: GpuMemoryHandle.GpuMemoryHandle
+  fullName: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.GpuMemoryHandle
+  nameWithType.vb: GpuMemoryHandle.New
+  fullName.vb: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.New
+  name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Grains.Enums.GpuMemoryType
+  commentId: T:Orleans.GpuBridge.Grains.Enums.GpuMemoryType
+  parent: Orleans.GpuBridge.Grains.Enums
+  href: Orleans.GpuBridge.Grains.Enums.GpuMemoryType.html
+  name: GpuMemoryType
+  nameWithType: GpuMemoryType
+  fullName: Orleans.GpuBridge.Grains.Enums.GpuMemoryType
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date
+- uid: Orleans.GpuBridge.Grains.Enums
+  commentId: N:Orleans.GpuBridge.Grains.Enums
+  href: Orleans.html
+  name: Orleans.GpuBridge.Grains.Enums
+  nameWithType: Orleans.GpuBridge.Grains.Enums
+  fullName: Orleans.GpuBridge.Grains.Enums
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.Enums
+    name: Enums
+    href: Orleans.GpuBridge.Grains.Enums.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.Enums
+    name: Enums
+    href: Orleans.GpuBridge.Grains.Enums.html
+- uid: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Id*
+  commentId: Overload:Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Id
+  href: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.html#Orleans_GpuBridge_Grains_Models_GpuMemoryHandle_Id
+  name: Id
+  nameWithType: GpuMemoryHandle.Id
+  fullName: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Id
+- uid: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.SizeBytes*
+  commentId: Overload:Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.SizeBytes
+  href: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.html#Orleans_GpuBridge_Grains_Models_GpuMemoryHandle_SizeBytes
+  name: SizeBytes
+  nameWithType: GpuMemoryHandle.SizeBytes
+  fullName: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.SizeBytes
+- uid: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Type*
+  commentId: Overload:Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Type
+  href: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.html#Orleans_GpuBridge_Grains_Models_GpuMemoryHandle_Type
+  name: Type
+  nameWithType: GpuMemoryHandle.Type
+  fullName: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Type
+- uid: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.DeviceIndex*
+  commentId: Overload:Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.DeviceIndex
+  href: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.html#Orleans_GpuBridge_Grains_Models_GpuMemoryHandle_DeviceIndex
+  name: DeviceIndex
+  nameWithType: GpuMemoryHandle.DeviceIndex
+  fullName: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.DeviceIndex
+- uid: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.AllocatedAt*
+  commentId: Overload:Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.AllocatedAt
+  href: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.html#Orleans_GpuBridge_Grains_Models_GpuMemoryHandle_AllocatedAt
+  name: AllocatedAt
+  nameWithType: GpuMemoryHandle.AllocatedAt
+  fullName: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.AllocatedAt
+- uid: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+  commentId: T:Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+  parent: Orleans.GpuBridge.Grains.Models
+  href: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.html
+  name: GpuMemoryHandle
+  nameWithType: GpuMemoryHandle
+  fullName: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle
+- uid: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Create*
+  commentId: Overload:Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Create
+  href: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.html#Orleans_GpuBridge_Grains_Models_GpuMemoryHandle_Create_System_Int64_Orleans_GpuBridge_Grains_Enums_GpuMemoryType_System_Int32_
+  name: Create
+  nameWithType: GpuMemoryHandle.Create
+  fullName: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Create
+- uid: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Empty*
+  commentId: Overload:Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Empty
+  href: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.html#Orleans_GpuBridge_Grains_Models_GpuMemoryHandle_Empty
+  name: Empty
+  nameWithType: GpuMemoryHandle.Empty
+  fullName: Orleans.GpuBridge.Grains.Models.GpuMemoryHandle.Empty

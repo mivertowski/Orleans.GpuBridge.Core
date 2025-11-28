@@ -1,0 +1,479 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.Providers.IComputeContext
+  commentId: T:Orleans.GpuBridge.Abstractions.Providers.IComputeContext
+  id: IComputeContext
+  parent: Orleans.GpuBridge.Abstractions.Providers
+  children:
+  - Orleans.GpuBridge.Abstractions.Providers.IComputeContext.ContextId
+  - Orleans.GpuBridge.Abstractions.Providers.IComputeContext.CreateCommandQueue(Orleans.GpuBridge.Abstractions.Models.CommandQueueOptions)
+  - Orleans.GpuBridge.Abstractions.Providers.IComputeContext.Device
+  - Orleans.GpuBridge.Abstractions.Providers.IComputeContext.MakeCurrent
+  - Orleans.GpuBridge.Abstractions.Providers.IComputeContext.SynchronizeAsync(System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: IComputeContext
+  nameWithType: IComputeContext
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IComputeContext
+  type: Interface
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/IComputeContext.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IComputeContext
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/IComputeContext.cs
+    startLine: 12
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: >-
+    Represents a compute context for kernel execution on a specific device.
+
+    A compute context maintains the execution environment, manages resources,
+
+    and provides isolation between different computation sessions on the same device.
+  example: []
+  syntax:
+    content: 'public interface IComputeContext : IDisposable'
+    content.vb: Public Interface IComputeContext Inherits IDisposable
+  inheritedMembers:
+  - System.IDisposable.Dispose
+- uid: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.Device
+  commentId: P:Orleans.GpuBridge.Abstractions.Providers.IComputeContext.Device
+  id: Device
+  parent: Orleans.GpuBridge.Abstractions.Providers.IComputeContext
+  langs:
+  - csharp
+  - vb
+  name: Device
+  nameWithType: IComputeContext.Device
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.Device
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/IComputeContext.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Device
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/IComputeContext.cs
+    startLine: 18
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: >-
+    Gets the associated compute device for this context.
+
+    This is the device on which all operations within this context will be executed.
+  example: []
+  syntax:
+    content: IComputeDevice Device { get; }
+    parameters: []
+    return:
+      type: Orleans.GpuBridge.Abstractions.Providers.IComputeDevice
+    content.vb: ReadOnly Property Device As IComputeDevice
+  overload: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.Device*
+- uid: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.ContextId
+  commentId: P:Orleans.GpuBridge.Abstractions.Providers.IComputeContext.ContextId
+  id: ContextId
+  parent: Orleans.GpuBridge.Abstractions.Providers.IComputeContext
+  langs:
+  - csharp
+  - vb
+  name: ContextId
+  nameWithType: IComputeContext.ContextId
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.ContextId
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/IComputeContext.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ContextId
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/IComputeContext.cs
+    startLine: 24
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: >-
+    Gets the unique identifier for this context.
+
+    This ID can be used for debugging, logging, and context management operations.
+  example: []
+  syntax:
+    content: string ContextId { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property ContextId As String
+  overload: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.ContextId*
+- uid: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.MakeCurrent
+  commentId: M:Orleans.GpuBridge.Abstractions.Providers.IComputeContext.MakeCurrent
+  id: MakeCurrent
+  parent: Orleans.GpuBridge.Abstractions.Providers.IComputeContext
+  langs:
+  - csharp
+  - vb
+  name: MakeCurrent()
+  nameWithType: IComputeContext.MakeCurrent()
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.MakeCurrent()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/IComputeContext.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MakeCurrent
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/IComputeContext.cs
+    startLine: 31
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: >-
+    Makes this context current for the calling thread.
+
+    This is required for certain backend APIs that maintain thread-local context state.
+
+    After calling this method, subsequent operations on the current thread will use this context.
+  example: []
+  syntax:
+    content: void MakeCurrent()
+    content.vb: Sub MakeCurrent()
+  overload: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.MakeCurrent*
+- uid: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.SynchronizeAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Abstractions.Providers.IComputeContext.SynchronizeAsync(System.Threading.CancellationToken)
+  id: SynchronizeAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Abstractions.Providers.IComputeContext
+  langs:
+  - csharp
+  - vb
+  name: SynchronizeAsync(CancellationToken)
+  nameWithType: IComputeContext.SynchronizeAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.SynchronizeAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/IComputeContext.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: SynchronizeAsync
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/IComputeContext.cs
+    startLine: 40
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: >-
+    Synchronizes all pending operations in this context.
+
+    This method blocks until all previously submitted work to this context has completed,
+
+    ensuring that all kernels, memory operations, and other commands have finished execution.
+  example: []
+  syntax:
+    content: Task SynchronizeAsync(CancellationToken cancellationToken = default)
+    parameters:
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Token to cancel the synchronization operation.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task that completes when all operations in the context have finished.
+    content.vb: Function SynchronizeAsync(cancellationToken As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.SynchronizeAsync*
+- uid: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.CreateCommandQueue(Orleans.GpuBridge.Abstractions.Models.CommandQueueOptions)
+  commentId: M:Orleans.GpuBridge.Abstractions.Providers.IComputeContext.CreateCommandQueue(Orleans.GpuBridge.Abstractions.Models.CommandQueueOptions)
+  id: CreateCommandQueue(Orleans.GpuBridge.Abstractions.Models.CommandQueueOptions)
+  parent: Orleans.GpuBridge.Abstractions.Providers.IComputeContext
+  langs:
+  - csharp
+  - vb
+  name: CreateCommandQueue(CommandQueueOptions)
+  nameWithType: IComputeContext.CreateCommandQueue(CommandQueueOptions)
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.CreateCommandQueue(Orleans.GpuBridge.Abstractions.Models.CommandQueueOptions)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Providers/IComputeContext.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CreateCommandQueue
+    path: ../src/Orleans.GpuBridge.Abstractions/Providers/IComputeContext.cs
+    startLine: 49
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Providers
+  summary: >-
+    Creates a command queue (also known as a stream) for this context.
+
+    Command queues allow asynchronous submission of work to the device and can be used
+
+    to overlap computation with memory transfers or to execute multiple kernels concurrently.
+  example: []
+  syntax:
+    content: ICommandQueue CreateCommandQueue(CommandQueueOptions options)
+    parameters:
+    - id: options
+      type: Orleans.GpuBridge.Abstractions.Models.CommandQueueOptions
+      description: Configuration options for the command queue creation.
+    return:
+      type: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue
+      description: A new command queue associated with this context.
+    content.vb: Function CreateCommandQueue(options As CommandQueueOptions) As ICommandQueue
+  overload: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.CreateCommandQueue*
+references:
+- uid: Orleans.GpuBridge.Abstractions.Providers
+  commentId: N:Orleans.GpuBridge.Abstractions.Providers
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Providers
+  nameWithType: Orleans.GpuBridge.Abstractions.Providers
+  fullName: Orleans.GpuBridge.Abstractions.Providers
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Providers
+    name: Providers
+    href: Orleans.GpuBridge.Abstractions.Providers.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Providers
+    name: Providers
+    href: Orleans.GpuBridge.Abstractions.Providers.html
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.Device*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.IComputeContext.Device
+  href: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.html#Orleans_GpuBridge_Abstractions_Providers_IComputeContext_Device
+  name: Device
+  nameWithType: IComputeContext.Device
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.Device
+- uid: Orleans.GpuBridge.Abstractions.Providers.IComputeDevice
+  commentId: T:Orleans.GpuBridge.Abstractions.Providers.IComputeDevice
+  parent: Orleans.GpuBridge.Abstractions.Providers
+  href: Orleans.GpuBridge.Abstractions.Providers.IComputeDevice.html
+  name: IComputeDevice
+  nameWithType: IComputeDevice
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IComputeDevice
+- uid: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.ContextId*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.IComputeContext.ContextId
+  href: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.html#Orleans_GpuBridge_Abstractions_Providers_IComputeContext_ContextId
+  name: ContextId
+  nameWithType: IComputeContext.ContextId
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.ContextId
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.MakeCurrent*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.IComputeContext.MakeCurrent
+  href: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.html#Orleans_GpuBridge_Abstractions_Providers_IComputeContext_MakeCurrent
+  name: MakeCurrent
+  nameWithType: IComputeContext.MakeCurrent
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.MakeCurrent
+- uid: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.SynchronizeAsync*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.IComputeContext.SynchronizeAsync
+  href: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.html#Orleans_GpuBridge_Abstractions_Providers_IComputeContext_SynchronizeAsync_System_Threading_CancellationToken_
+  name: SynchronizeAsync
+  nameWithType: IComputeContext.SynchronizeAsync
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.SynchronizeAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.CreateCommandQueue*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Providers.IComputeContext.CreateCommandQueue
+  href: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.html#Orleans_GpuBridge_Abstractions_Providers_IComputeContext_CreateCommandQueue_Orleans_GpuBridge_Abstractions_Models_CommandQueueOptions_
+  name: CreateCommandQueue
+  nameWithType: IComputeContext.CreateCommandQueue
+  fullName: Orleans.GpuBridge.Abstractions.Providers.IComputeContext.CreateCommandQueue
+- uid: Orleans.GpuBridge.Abstractions.Models.CommandQueueOptions
+  commentId: T:Orleans.GpuBridge.Abstractions.Models.CommandQueueOptions
+  parent: Orleans.GpuBridge.Abstractions.Models
+  href: Orleans.GpuBridge.Abstractions.Models.CommandQueueOptions.html
+  name: CommandQueueOptions
+  nameWithType: CommandQueueOptions
+  fullName: Orleans.GpuBridge.Abstractions.Models.CommandQueueOptions
+- uid: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue
+  commentId: T:Orleans.GpuBridge.Abstractions.Providers.ICommandQueue
+  parent: Orleans.GpuBridge.Abstractions.Providers
+  href: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue.html
+  name: ICommandQueue
+  nameWithType: ICommandQueue
+  fullName: Orleans.GpuBridge.Abstractions.Providers.ICommandQueue
+- uid: Orleans.GpuBridge.Abstractions.Models
+  commentId: N:Orleans.GpuBridge.Abstractions.Models
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Models
+  nameWithType: Orleans.GpuBridge.Abstractions.Models
+  fullName: Orleans.GpuBridge.Abstractions.Models
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Models
+    name: Models
+    href: Orleans.GpuBridge.Abstractions.Models.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Models
+    name: Models
+    href: Orleans.GpuBridge.Abstractions.Models.html

@@ -1,0 +1,1009 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult
+  commentId: T:Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult
+  id: KernelValidationResult
+  parent: Orleans.GpuBridge.Abstractions.Models.Compilation
+  children:
+  - Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.#ctor(System.Boolean,System.String,System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyList{System.String})
+  - Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.ErrorMessage
+  - Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.HasUnsupportedFeatures
+  - Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.HasWarnings
+  - Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.IsValid
+  - Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.IssueCount
+  - Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.UnsupportedFeatures
+  - Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.Warnings
+  langs:
+  - csharp
+  - vb
+  name: KernelValidationResult
+  nameWithType: KernelValidationResult
+  fullName: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Models/Compilation/KernelValidationResult.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: KernelValidationResult
+    path: ../src/Orleans.GpuBridge.Abstractions/Models/Compilation/KernelValidationResult.cs
+    startLine: 79
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Models.Compilation
+  summary: >-
+    Represents the result of kernel validation, indicating whether a method or source code
+
+    can be successfully compiled as a GPU kernel.
+  remarks: >-
+    This record provides comprehensive feedback about kernel validation, enabling
+
+    developers to understand not only whether compilation will succeed, but also
+
+    what specific issues need to be addressed.
+
+
+    <p>
+
+    Validation typically checks for:
+
+    - Supported language constructs and API calls
+
+    - Memory access patterns and synchronization
+
+    - Resource usage constraints
+
+    - Platform-specific limitations
+
+    - Type compatibility and marshalling requirements
+
+    </p>
+
+
+    <p>
+
+    Even when validation succeeds (<xref href="Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.IsValid" data-throw-if-not-resolved="false"></xref> is <code>true</code>), it's
+
+    important to review warnings as they may indicate performance issues or
+
+    potential portability problems.
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// Successful validation
+
+    var successResult = new KernelValidationResult(
+        IsValid: true,
+        Warnings: new[] { "Consider using shared memory for better performance" });
+
+    // Failed validation with detailed feedback
+
+    var failureResult = new KernelValidationResult(
+        IsValid: false,
+        ErrorMessage: "Kernel contains unsupported dynamic memory allocation",
+        UnsupportedFeatures: new[] { 
+            "Dynamic memory allocation (new, malloc)",
+            "Recursive function calls",
+            "Exception handling (try/catch)"
+        });
+
+    // Validation with warnings but no errors
+
+    var warningResult = new KernelValidationResult(
+        IsValid: true,
+        Warnings: new[] {
+            "High register usage may reduce occupancy",
+            "Uncoalesced memory access pattern detected"
+        });</code></pre>
+  syntax:
+    content: 'public sealed record KernelValidationResult : IEquatable<KernelValidationResult>'
+    content.vb: Public NotInheritable Class KernelValidationResult Implements IEquatable(Of KernelValidationResult)
+  inheritance:
+  - System.Object
+  implements:
+  - System.IEquatable{Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.#ctor(System.Boolean,System.String,System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyList{System.String})
+  commentId: M:Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.#ctor(System.Boolean,System.String,System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyList{System.String})
+  id: '#ctor(System.Boolean,System.String,System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyList{System.String})'
+  parent: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult
+  langs:
+  - csharp
+  - vb
+  name: KernelValidationResult(bool, string?, IReadOnlyList<string>?, IReadOnlyList<string>?)
+  nameWithType: KernelValidationResult.KernelValidationResult(bool, string?, IReadOnlyList<string>?, IReadOnlyList<string>?)
+  fullName: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.KernelValidationResult(bool, string?, System.Collections.Generic.IReadOnlyList<string>?, System.Collections.Generic.IReadOnlyList<string>?)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Models/Compilation/KernelValidationResult.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Abstractions/Models/Compilation/KernelValidationResult.cs
+    startLine: 79
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Models.Compilation
+  summary: >-
+    Represents the result of kernel validation, indicating whether a method or source code
+
+    can be successfully compiled as a GPU kernel.
+  remarks: >-
+    This record provides comprehensive feedback about kernel validation, enabling
+
+    developers to understand not only whether compilation will succeed, but also
+
+    what specific issues need to be addressed.
+
+
+    <p>
+
+    Validation typically checks for:
+
+    - Supported language constructs and API calls
+
+    - Memory access patterns and synchronization
+
+    - Resource usage constraints
+
+    - Platform-specific limitations
+
+    - Type compatibility and marshalling requirements
+
+    </p>
+
+
+    <p>
+
+    Even when validation succeeds (<xref href="Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.IsValid" data-throw-if-not-resolved="false"></xref> is <code>true</code>), it's
+
+    important to review warnings as they may indicate performance issues or
+
+    potential portability problems.
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// Successful validation
+
+    var successResult = new KernelValidationResult(
+        IsValid: true,
+        Warnings: new[] { "Consider using shared memory for better performance" });
+
+    // Failed validation with detailed feedback
+
+    var failureResult = new KernelValidationResult(
+        IsValid: false,
+        ErrorMessage: "Kernel contains unsupported dynamic memory allocation",
+        UnsupportedFeatures: new[] { 
+            "Dynamic memory allocation (new, malloc)",
+            "Recursive function calls",
+            "Exception handling (try/catch)"
+        });
+
+    // Validation with warnings but no errors
+
+    var warningResult = new KernelValidationResult(
+        IsValid: true,
+        Warnings: new[] {
+            "High register usage may reduce occupancy",
+            "Uncoalesced memory access pattern detected"
+        });</code></pre>
+  syntax:
+    content: public KernelValidationResult(bool IsValid, string? ErrorMessage = null, IReadOnlyList<string>? Warnings = null, IReadOnlyList<string>? UnsupportedFeatures = null)
+    parameters:
+    - id: IsValid
+      type: System.Boolean
+      description: >-
+        Indicates whether the kernel is valid and can be compiled successfully.
+
+        A value of <code>true</code> means the kernel passed all validation checks and is
+
+        suitable for GPU compilation. A value of <code>false</code> indicates that one or
+
+        more validation errors prevent successful compilation.
+    - id: ErrorMessage
+      type: System.String
+      description: >-
+        The primary error message if validation failed, or <code>null</code> if validation succeeded.
+
+        This message describes the most critical issue that prevents compilation.
+
+        Should be clear and actionable, helping developers understand how to fix
+
+        the validation failure. Only populated when <code class="paramref">IsValid</code> is <code>false</code>.
+    - id: Warnings
+      type: System.Collections.Generic.IReadOnlyList{System.String}
+      description: >-
+        A collection of warning messages about potential issues with the kernel.
+
+        Warnings don't prevent compilation but may indicate suboptimal code patterns,
+
+        deprecated features, or potential runtime issues. May be present even when
+
+        <code class="paramref">IsValid</code> is <code>true</code>. Default is <code>null</code>.
+    - id: UnsupportedFeatures
+      type: System.Collections.Generic.IReadOnlyList{System.String}
+      description: >-
+        A collection of specific language features or constructs used in the kernel
+
+        that are not supported by the target GPU backend. This provides detailed
+
+        information about which parts of the code need to be modified for successful
+
+        compilation. Default is <code>null</code>.
+    content.vb: Public Sub New(IsValid As Boolean, ErrorMessage As String = Nothing, Warnings As IReadOnlyList(Of String) = Nothing, UnsupportedFeatures As IReadOnlyList(Of String) = Nothing)
+  overload: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.#ctor*
+  nameWithType.vb: KernelValidationResult.New(Boolean, String, IReadOnlyList(Of String), IReadOnlyList(Of String))
+  fullName.vb: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.New(Boolean, String, System.Collections.Generic.IReadOnlyList(Of String), System.Collections.Generic.IReadOnlyList(Of String))
+  name.vb: New(Boolean, String, IReadOnlyList(Of String), IReadOnlyList(Of String))
+- uid: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.IsValid
+  commentId: P:Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.IsValid
+  id: IsValid
+  parent: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult
+  langs:
+  - csharp
+  - vb
+  name: IsValid
+  nameWithType: KernelValidationResult.IsValid
+  fullName: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.IsValid
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Models/Compilation/KernelValidationResult.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsValid
+    path: ../src/Orleans.GpuBridge.Abstractions/Models/Compilation/KernelValidationResult.cs
+    startLine: 80
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Models.Compilation
+  summary: >-
+    Indicates whether the kernel is valid and can be compiled successfully.
+
+    A value of <code>true</code> means the kernel passed all validation checks and is
+
+    suitable for GPU compilation. A value of <code>false</code> indicates that one or
+
+    more validation errors prevent successful compilation.
+  example: []
+  syntax:
+    content: public bool IsValid { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsValid As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.IsValid*
+- uid: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.ErrorMessage
+  commentId: P:Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.ErrorMessage
+  id: ErrorMessage
+  parent: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult
+  langs:
+  - csharp
+  - vb
+  name: ErrorMessage
+  nameWithType: KernelValidationResult.ErrorMessage
+  fullName: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.ErrorMessage
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Models/Compilation/KernelValidationResult.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ErrorMessage
+    path: ../src/Orleans.GpuBridge.Abstractions/Models/Compilation/KernelValidationResult.cs
+    startLine: 81
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Models.Compilation
+  summary: >-
+    The primary error message if validation failed, or <code>null</code> if validation succeeded.
+
+    This message describes the most critical issue that prevents compilation.
+
+    Should be clear and actionable, helping developers understand how to fix
+
+    the validation failure. Only populated when <code class="paramref">IsValid</code> is <code>false</code>.
+  example: []
+  syntax:
+    content: public string? ErrorMessage { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ErrorMessage As String
+  overload: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.ErrorMessage*
+- uid: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.Warnings
+  commentId: P:Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.Warnings
+  id: Warnings
+  parent: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult
+  langs:
+  - csharp
+  - vb
+  name: Warnings
+  nameWithType: KernelValidationResult.Warnings
+  fullName: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.Warnings
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Models/Compilation/KernelValidationResult.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Warnings
+    path: ../src/Orleans.GpuBridge.Abstractions/Models/Compilation/KernelValidationResult.cs
+    startLine: 82
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Models.Compilation
+  summary: >-
+    A collection of warning messages about potential issues with the kernel.
+
+    Warnings don't prevent compilation but may indicate suboptimal code patterns,
+
+    deprecated features, or potential runtime issues. May be present even when
+
+    <code class="paramref">IsValid</code> is <code>true</code>. Default is <code>null</code>.
+  example: []
+  syntax:
+    content: public IReadOnlyList<string>? Warnings { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{System.String}
+    content.vb: Public Property Warnings As IReadOnlyList(Of String)
+  overload: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.Warnings*
+- uid: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.UnsupportedFeatures
+  commentId: P:Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.UnsupportedFeatures
+  id: UnsupportedFeatures
+  parent: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult
+  langs:
+  - csharp
+  - vb
+  name: UnsupportedFeatures
+  nameWithType: KernelValidationResult.UnsupportedFeatures
+  fullName: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.UnsupportedFeatures
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Models/Compilation/KernelValidationResult.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: UnsupportedFeatures
+    path: ../src/Orleans.GpuBridge.Abstractions/Models/Compilation/KernelValidationResult.cs
+    startLine: 83
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Models.Compilation
+  summary: >-
+    A collection of specific language features or constructs used in the kernel
+
+    that are not supported by the target GPU backend. This provides detailed
+
+    information about which parts of the code need to be modified for successful
+
+    compilation. Default is <code>null</code>.
+  example: []
+  syntax:
+    content: public IReadOnlyList<string>? UnsupportedFeatures { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{System.String}
+    content.vb: Public Property UnsupportedFeatures As IReadOnlyList(Of String)
+  overload: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.UnsupportedFeatures*
+- uid: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.HasWarnings
+  commentId: P:Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.HasWarnings
+  id: HasWarnings
+  parent: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult
+  langs:
+  - csharp
+  - vb
+  name: HasWarnings
+  nameWithType: KernelValidationResult.HasWarnings
+  fullName: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.HasWarnings
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Models/Compilation/KernelValidationResult.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: HasWarnings
+    path: ../src/Orleans.GpuBridge.Abstractions/Models/Compilation/KernelValidationResult.cs
+    startLine: 91
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Models.Compilation
+  summary: Gets a value indicating whether the validation result has any warnings.
+  example: []
+  syntax:
+    content: public bool HasWarnings { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+      description: <code>true</code> if there are one or more warnings; otherwise, <code>false</code>.
+    content.vb: Public ReadOnly Property HasWarnings As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.HasWarnings*
+- uid: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.HasUnsupportedFeatures
+  commentId: P:Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.HasUnsupportedFeatures
+  id: HasUnsupportedFeatures
+  parent: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult
+  langs:
+  - csharp
+  - vb
+  name: HasUnsupportedFeatures
+  nameWithType: KernelValidationResult.HasUnsupportedFeatures
+  fullName: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.HasUnsupportedFeatures
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Models/Compilation/KernelValidationResult.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: HasUnsupportedFeatures
+    path: ../src/Orleans.GpuBridge.Abstractions/Models/Compilation/KernelValidationResult.cs
+    startLine: 99
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Models.Compilation
+  summary: Gets a value indicating whether the validation result identifies unsupported features.
+  example: []
+  syntax:
+    content: public bool HasUnsupportedFeatures { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+      description: <code>true</code> if there are one or more unsupported features identified; otherwise, <code>false</code>.
+    content.vb: Public ReadOnly Property HasUnsupportedFeatures As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.HasUnsupportedFeatures*
+- uid: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.IssueCount
+  commentId: P:Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.IssueCount
+  id: IssueCount
+  parent: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult
+  langs:
+  - csharp
+  - vb
+  name: IssueCount
+  nameWithType: KernelValidationResult.IssueCount
+  fullName: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.IssueCount
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Models/Compilation/KernelValidationResult.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IssueCount
+    path: ../src/Orleans.GpuBridge.Abstractions/Models/Compilation/KernelValidationResult.cs
+    startLine: 108
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Models.Compilation
+  summary: Gets the total number of issues (warnings + unsupported features) identified.
+  example: []
+  syntax:
+    content: public int IssueCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+      description: >-
+        The sum of warning count and unsupported feature count. Does not include
+
+        the error message in the count.
+    content.vb: Public ReadOnly Property IssueCount As Integer
+  overload: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.IssueCount*
+references:
+- uid: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.IsValid
+  commentId: P:Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.IsValid
+  href: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.html#Orleans_GpuBridge_Abstractions_Models_Compilation_KernelValidationResult_IsValid
+  name: IsValid
+  nameWithType: KernelValidationResult.IsValid
+  fullName: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.IsValid
+- uid: Orleans.GpuBridge.Abstractions.Models.Compilation
+  commentId: N:Orleans.GpuBridge.Abstractions.Models.Compilation
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Models.Compilation
+  nameWithType: Orleans.GpuBridge.Abstractions.Models.Compilation
+  fullName: Orleans.GpuBridge.Abstractions.Models.Compilation
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Models
+    name: Models
+    href: Orleans.GpuBridge.Abstractions.Models.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Models.Compilation
+    name: Compilation
+    href: Orleans.GpuBridge.Abstractions.Models.Compilation.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Models
+    name: Models
+    href: Orleans.GpuBridge.Abstractions.Models.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Models.Compilation
+    name: Compilation
+    href: Orleans.GpuBridge.Abstractions.Models.Compilation.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IEquatable{Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult}
+  commentId: T:System.IEquatable{Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<KernelValidationResult>
+  nameWithType: IEquatable<KernelValidationResult>
+  fullName: System.IEquatable<Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult>
+  nameWithType.vb: IEquatable(Of KernelValidationResult)
+  fullName.vb: System.IEquatable(Of Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult)
+  name.vb: IEquatable(Of KernelValidationResult)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult
+    name: KernelValidationResult
+    href: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult
+    name: KernelValidationResult
+    href: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.html
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.#ctor
+  href: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.html#Orleans_GpuBridge_Abstractions_Models_Compilation_KernelValidationResult__ctor_System_Boolean_System_String_System_Collections_Generic_IReadOnlyList_System_String__System_Collections_Generic_IReadOnlyList_System_String__
+  name: KernelValidationResult
+  nameWithType: KernelValidationResult.KernelValidationResult
+  fullName: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.KernelValidationResult
+  nameWithType.vb: KernelValidationResult.New
+  fullName.vb: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.New
+  name.vb: New
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Collections.Generic.IReadOnlyList{System.String}
+  commentId: T:System.Collections.Generic.IReadOnlyList{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<string>
+  nameWithType: IReadOnlyList<string>
+  fullName: System.Collections.Generic.IReadOnlyList<string>
+  nameWithType.vb: IReadOnlyList(Of String)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of String)
+  name.vb: IReadOnlyList(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.IsValid*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.IsValid
+  href: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.html#Orleans_GpuBridge_Abstractions_Models_Compilation_KernelValidationResult_IsValid
+  name: IsValid
+  nameWithType: KernelValidationResult.IsValid
+  fullName: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.IsValid
+- uid: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.ErrorMessage*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.ErrorMessage
+  href: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.html#Orleans_GpuBridge_Abstractions_Models_Compilation_KernelValidationResult_ErrorMessage
+  name: ErrorMessage
+  nameWithType: KernelValidationResult.ErrorMessage
+  fullName: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.ErrorMessage
+- uid: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.Warnings*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.Warnings
+  href: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.html#Orleans_GpuBridge_Abstractions_Models_Compilation_KernelValidationResult_Warnings
+  name: Warnings
+  nameWithType: KernelValidationResult.Warnings
+  fullName: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.Warnings
+- uid: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.UnsupportedFeatures*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.UnsupportedFeatures
+  href: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.html#Orleans_GpuBridge_Abstractions_Models_Compilation_KernelValidationResult_UnsupportedFeatures
+  name: UnsupportedFeatures
+  nameWithType: KernelValidationResult.UnsupportedFeatures
+  fullName: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.UnsupportedFeatures
+- uid: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.HasWarnings*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.HasWarnings
+  href: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.html#Orleans_GpuBridge_Abstractions_Models_Compilation_KernelValidationResult_HasWarnings
+  name: HasWarnings
+  nameWithType: KernelValidationResult.HasWarnings
+  fullName: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.HasWarnings
+- uid: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.HasUnsupportedFeatures*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.HasUnsupportedFeatures
+  href: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.html#Orleans_GpuBridge_Abstractions_Models_Compilation_KernelValidationResult_HasUnsupportedFeatures
+  name: HasUnsupportedFeatures
+  nameWithType: KernelValidationResult.HasUnsupportedFeatures
+  fullName: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.HasUnsupportedFeatures
+- uid: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.IssueCount*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.IssueCount
+  href: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.html#Orleans_GpuBridge_Abstractions_Models_Compilation_KernelValidationResult_IssueCount
+  name: IssueCount
+  nameWithType: KernelValidationResult.IssueCount
+  fullName: Orleans.GpuBridge.Abstractions.Models.Compilation.KernelValidationResult.IssueCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer

@@ -1,0 +1,1332 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions
+  commentId: T:Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions
+  id: ServiceCollectionExtensions
+  parent: Orleans.GpuBridge.Backends.DotCompute.Extensions
+  children:
+  - Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotComputeRingKernelBridge(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  - Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotComputeRingKernelBridge(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Orleans.GpuBridge.Backends.DotCompute.Extensions.DotComputeRingKernelBridgeOptions})
+  - Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder)
+  - Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder,System.Action{Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration})
+  - Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder,System.Func{System.IServiceProvider,Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider})
+  langs:
+  - csharp
+  - vb
+  name: ServiceCollectionExtensions
+  nameWithType: ServiceCollectionExtensions
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Extensions/ServiceCollectionExtensions.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ServiceCollectionExtensions
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Extensions/ServiceCollectionExtensions.cs
+    startLine: 35
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Extensions
+  summary: Extension methods for configuring and registering the DotCompute GPU backend provider.
+  remarks: >-
+    The DotCompute backend provides a unified abstraction over multiple GPU compute APIs
+
+    including CUDA, OpenCL, DirectCompute, Metal, and Vulkan. This allows applications
+
+    to leverage GPU acceleration across different hardware platforms and operating systems.
+
+
+    <p>
+
+    The backend supports:
+
+    - Multiple kernel programming languages (C#, CUDA, OpenCL, HLSL, MSL)
+
+    - Automatic language translation and cross-compilation
+
+    - Advanced memory management with pooling and optimization
+
+    - Platform-specific optimizations and feature detection
+
+    - Comprehensive debugging and profiling capabilities
+
+    </p>
+
+
+    <p>
+
+    Use these extension methods to configure the DotCompute backend with appropriate
+
+    settings for your deployment environment, performance requirements, and target platforms.
+
+    </p>
+  example: []
+  syntax:
+    content: public static class ServiceCollectionExtensions
+    content.vb: Public Module ServiceCollectionExtensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder)
+  commentId: M:Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder)
+  id: AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder)
+  isExtensionMethod: true
+  parent: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions
+  langs:
+  - csharp
+  - vb
+  name: AddDotGpuBackend(IGpuBridgeBuilder)
+  nameWithType: ServiceCollectionExtensions.AddDotGpuBackend(IGpuBridgeBuilder)
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Extensions/ServiceCollectionExtensions.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AddDotGpuBackend
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Extensions/ServiceCollectionExtensions.cs
+    startLine: 62
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Extensions
+  summary: Adds the DotCompute backend provider to the GPU Bridge with default configuration.
+  remarks: >-
+    This method registers the DotCompute backend provider with default settings optimized
+
+    for production use. The default configuration includes:
+
+    - Enabled optimizations with O2 optimization level
+
+    - Memory pooling with 512MB initial size and 4GB maximum
+
+    - Disk caching enabled for compiled kernels
+
+    - Automatic language translation enabled
+
+    - Platform preference: CUDA &gt; OpenCL &gt; DirectCompute &gt; Metal &gt; Vulkan
+
+
+    <p>
+
+    For custom configuration, use <xref href="Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder%2cSystem.Action%7bOrleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration%7d)" data-throw-if-not-resolved="false"></xref>
+
+    or <xref href="Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder%2cSystem.Func%7bSystem.IServiceProvider%2cOrleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider%7d)" data-throw-if-not-resolved="false"></xref>.
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">services.AddGpuBridge(options =&gt; options.PreferGpu = true)
+            .AddDotGpuBackend();</code></pre>
+  syntax:
+    content: public static IGpuBridgeBuilder AddDotGpuBackend(this IGpuBridgeBuilder builder)
+    parameters:
+    - id: builder
+      type: Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder
+      description: The GPU Bridge builder instance to configure.
+    return:
+      type: Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder
+      description: The <xref href="Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder" data-throw-if-not-resolved="false"></xref> for method chaining.
+    content.vb: Public Shared Function AddDotGpuBackend(builder As IGpuBridgeBuilder) As IGpuBridgeBuilder
+  overload: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend*
+- uid: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder,System.Action{Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration})
+  commentId: M:Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder,System.Action{Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration})
+  id: AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder,System.Action{Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration})
+  isExtensionMethod: true
+  parent: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions
+  langs:
+  - csharp
+  - vb
+  name: AddDotGpuBackend(IGpuBridgeBuilder, Action<DotGpuBackendConfiguration>)
+  nameWithType: ServiceCollectionExtensions.AddDotGpuBackend(IGpuBridgeBuilder, Action<DotGpuBackendConfiguration>)
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder, System.Action<Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration>)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Extensions/ServiceCollectionExtensions.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AddDotGpuBackend
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Extensions/ServiceCollectionExtensions.cs
+    startLine: 135
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Extensions
+  summary: Adds the DotCompute backend provider with custom configuration.
+  remarks: >-
+    This method registers the DotCompute backend provider and allows customization
+
+    of backend behavior through the provided configuration delegate. The configuration
+
+    is applied to <xref href="Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration" data-throw-if-not-resolved="false"></xref> which controls:
+
+
+    <p>
+
+    Key configuration areas:
+
+    - Compilation settings (optimization level, debug mode, caching)
+
+    - Platform preferences and device selection
+
+    - Memory management (pooling, alignment, defragmentation)
+
+    - Language settings (preferred languages, translation, preprocessor definitions)
+
+    - Platform-specific optimizations and features
+
+    </p>
+
+
+    <p>
+
+    The configuration is validated at registration time and applied when the backend
+
+    provider is instantiated. Invalid configurations will result in exceptions during
+
+    service registration or provider initialization.
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// High-performance CUDA-optimized configuration
+
+    services.AddGpuBridge(options =&gt; options.PreferGpu = true)
+            .AddDotGpuBackend(config =&gt;
+            {
+                config.OptimizationLevel = OptimizationLevel.O3;
+                config.PreferredPlatforms.Clear();
+                config.PreferredPlatforms.Add(GpuBackend.CUDA);
+                config.MemorySettings.InitialPoolSize = 1024 * 1024 * 1024; // 1 GB
+                config.LanguageSettings.PreferredLanguages[GpuBackend.CUDA] = KernelLanguage.CUDA;
+            });
+
+    // Cross-platform development configuration
+
+    services.AddGpuBridge(options =&gt; options.PreferGpu = true)
+            .AddDotGpuBackend(config =&gt;
+            {
+                config.EnableDebugMode = true;
+                config.OptimizationLevel = OptimizationLevel.O1;
+                config.PreferredPlatforms.Clear();
+                config.PreferredPlatforms.Add(GpuBackend.OpenCL);
+                config.LanguageSettings.EnableLanguageTranslation = true;
+                foreach (var platform in Enum.GetValues&lt;GpuBackend&gt;())
+                {
+                    config.LanguageSettings.PreferredLanguages[platform] = KernelLanguage.CSharp;
+                }
+            });
+
+    // Memory-constrained configuration
+
+    services.AddGpuBridge(options =&gt; options.PreferGpu = true)
+            .AddDotGpuBackend(config =&gt;
+            {
+                config.MemorySettings.InitialPoolSize = 128 * 1024 * 1024; // 128 MB
+                config.MemorySettings.MaxPoolSize = 1024 * 1024 * 1024;    // 1 GB
+                config.MemorySettings.EnableDefragmentation = true;
+                config.MemorySettings.DefragmentationThreshold = 0.15; // Aggressive
+            });</code></pre>
+  syntax:
+    content: public static IGpuBridgeBuilder AddDotGpuBackend(this IGpuBridgeBuilder builder, Action<DotGpuBackendConfiguration> configure)
+    parameters:
+    - id: builder
+      type: Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder
+      description: The GPU Bridge builder instance to configure.
+    - id: configure
+      type: System.Action{Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration}
+      description: A delegate to configure the DotCompute backend options.
+    return:
+      type: Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder
+      description: The <xref href="Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder" data-throw-if-not-resolved="false"></xref> for method chaining.
+    content.vb: Public Shared Function AddDotGpuBackend(builder As IGpuBridgeBuilder, configure As Action(Of DotGpuBackendConfiguration)) As IGpuBridgeBuilder
+  overload: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown when <code class="paramref">builder</code> or <code class="paramref">configure</code> is <code>null</code>.
+  nameWithType.vb: ServiceCollectionExtensions.AddDotGpuBackend(IGpuBridgeBuilder, Action(Of DotGpuBackendConfiguration))
+  fullName.vb: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder, System.Action(Of Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration))
+  name.vb: AddDotGpuBackend(IGpuBridgeBuilder, Action(Of DotGpuBackendConfiguration))
+- uid: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder,System.Func{System.IServiceProvider,Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider})
+  commentId: M:Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder,System.Func{System.IServiceProvider,Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider})
+  id: AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder,System.Func{System.IServiceProvider,Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider})
+  isExtensionMethod: true
+  parent: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions
+  langs:
+  - csharp
+  - vb
+  name: AddDotGpuBackend(IGpuBridgeBuilder, Func<IServiceProvider, DotComputeBackendProvider>)
+  nameWithType: ServiceCollectionExtensions.AddDotGpuBackend(IGpuBridgeBuilder, Func<IServiceProvider, DotComputeBackendProvider>)
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder, System.Func<System.IServiceProvider, Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider>)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Extensions/ServiceCollectionExtensions.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AddDotGpuBackend
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Extensions/ServiceCollectionExtensions.cs
+    startLine: 228
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Extensions
+  summary: Adds the DotCompute backend provider using a custom factory function.
+  remarks: >-
+    This method provides complete control over the instantiation of the DotCompute
+
+    backend provider. The factory function receives the <xref href="System.IServiceProvider" data-throw-if-not-resolved="false"></xref>
+
+    and should return a fully configured <xref href="Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider" data-throw-if-not-resolved="false"></xref> instance.
+
+
+    <p>
+
+    Use this method when you need:
+
+    - Complex initialization logic that cannot be expressed through configuration
+
+    - Dynamic configuration based on runtime conditions
+
+    - Custom dependency injection or service resolution
+
+    - Integration with existing factory patterns or IoC containers
+
+    - Advanced customization of the backend provider implementation
+
+    </p>
+
+
+    <p>
+
+    The factory function is called once per service provider scope when the
+
+    backend provider is first requested. The returned instance should be ready
+
+    for immediate use and properly configured for the target environment.
+
+    </p>
+
+
+    <p>
+
+    Note: When using a custom factory, standard configuration through
+
+    <xref href="Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration" data-throw-if-not-resolved="false"></xref> may not be applied unless
+
+    explicitly handled within the factory function.
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// Custom factory with conditional configuration
+
+    services.AddGpuBridge(options =&gt; options.PreferGpu = true)
+            .AddDotGpuBackend(serviceProvider =&gt;
+            {
+                var environment = serviceProvider.GetRequiredService&lt;IHostEnvironment&gt;();
+                var logger = serviceProvider.GetRequiredService&lt;ILogger&lt;DotComputeBackendProvider&gt;&gt;();
+
+                var config = new DotGpuBackendConfiguration();
+
+                if (environment.IsDevelopment())
+                {
+                    config.EnableDebugMode = true;
+                    config.OptimizationLevel = OptimizationLevel.O0;
+                    config.EnableDiskCache = false;
+                }
+                else
+                {
+                    config.OptimizationLevel = OptimizationLevel.O3;
+                    config.MemorySettings.InitialPoolSize = 2L * 1024 * 1024 * 1024; // 2 GB
+                }
+
+                return new DotComputeBackendProvider(config, logger);
+            });
+
+    // Factory with runtime hardware detection
+
+    services.AddGpuBridge(options =&gt; options.PreferGpu = true)
+            .AddDotGpuBackend(serviceProvider =&gt;
+            {
+                var config = new DotGpuBackendConfiguration();
+
+                // Detect available GPU hardware
+                if (IsNvidiaGpuAvailable())
+                {
+                    config.PreferredPlatforms.Clear();
+                    config.PreferredPlatforms.Add(GpuBackend.CUDA);
+                    config.LanguageSettings.PreferredLanguages[GpuBackend.CUDA] = KernelLanguage.CUDA;
+                }
+                else if (IsOpenCLAvailable())
+                {
+                    config.PreferredPlatforms.Clear();
+                    config.PreferredPlatforms.Add(GpuBackend.OpenCL);
+                }
+
+                var logger = serviceProvider.GetRequiredService&lt;ILogger&lt;DotComputeBackendProvider&gt;&gt;();
+                return new DotComputeBackendProvider(config, logger);
+            });</code></pre>
+  syntax:
+    content: public static IGpuBridgeBuilder AddDotGpuBackend(this IGpuBridgeBuilder builder, Func<IServiceProvider, DotComputeBackendProvider> factory)
+    parameters:
+    - id: builder
+      type: Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder
+      description: The GPU Bridge builder instance to configure.
+    - id: factory
+      type: System.Func{System.IServiceProvider,Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider}
+      description: A factory function to create the DotComputeBackendProvider instance.
+    return:
+      type: Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder
+      description: The <xref href="Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder" data-throw-if-not-resolved="false"></xref> for method chaining.
+    content.vb: Public Shared Function AddDotGpuBackend(builder As IGpuBridgeBuilder, factory As Func(Of IServiceProvider, DotComputeBackendProvider)) As IGpuBridgeBuilder
+  overload: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown when <code class="paramref">builder</code> or <code class="paramref">factory</code> is <code>null</code>.
+  nameWithType.vb: ServiceCollectionExtensions.AddDotGpuBackend(IGpuBridgeBuilder, Func(Of IServiceProvider, DotComputeBackendProvider))
+  fullName.vb: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder, System.Func(Of System.IServiceProvider, Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider))
+  name.vb: AddDotGpuBackend(IGpuBridgeBuilder, Func(Of IServiceProvider, DotComputeBackendProvider))
+- uid: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotComputeRingKernelBridge(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  commentId: M:Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotComputeRingKernelBridge(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  id: AddDotComputeRingKernelBridge(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  isExtensionMethod: true
+  parent: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions
+  langs:
+  - csharp
+  - vb
+  name: AddDotComputeRingKernelBridge(IServiceCollection)
+  nameWithType: ServiceCollectionExtensions.AddDotComputeRingKernelBridge(IServiceCollection)
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotComputeRingKernelBridge(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Extensions/ServiceCollectionExtensions.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AddDotComputeRingKernelBridge
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Extensions/ServiceCollectionExtensions.cs
+    startLine: 272
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Extensions
+  summary: Adds the DotCompute GPU-accelerated ring kernel bridge for generated actors.
+  remarks: >-
+    <p>
+
+    This registers the DotCompute implementation of <xref href="Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge" data-throw-if-not-resolved="false"></xref>
+
+    which provides actual GPU execution for generated actors using the DotCompute backend.
+
+    </p>
+
+    <p>
+
+    The bridge automatically falls back to CPU execution when:
+
+    - No GPU is available
+
+    - GPU execution fails
+
+    - Running in a development/test environment without CUDA support
+
+    </p>
+
+    <p>
+
+    This method replaces any previously registered <xref href="Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge" data-throw-if-not-resolved="false"></xref>
+
+    (such as the CPU fallback bridge) with the GPU-capable DotCompute implementation.
+
+    </p>
+
+    <p>
+
+    Performance characteristics:
+
+    - GPU execution: 100-500ns message latency (ring kernel queue operations)
+
+    - CPU fallback: 1-10μs message latency (direct method calls)
+
+    - Memory: GPU-resident state with automatic sync
+
+    </p>
+
+    <p>
+
+    Usage:
+
+    <pre><code class="lang-csharp">services.AddGpuBridge()
+            .AddDotGpuBackend()
+            .Services
+            .AddRingKernelSupport()
+            .AddDotComputeRingKernelBridge(); // GPU acceleration</code></pre>
+    </p>
+  example: []
+  syntax:
+    content: public static IServiceCollection AddDotComputeRingKernelBridge(this IServiceCollection services)
+    parameters:
+    - id: services
+      type: Microsoft.Extensions.DependencyInjection.IServiceCollection
+      description: Service collection.
+    return:
+      type: Microsoft.Extensions.DependencyInjection.IServiceCollection
+      description: Service collection for chaining.
+    content.vb: Public Shared Function AddDotComputeRingKernelBridge(services As IServiceCollection) As IServiceCollection
+  overload: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotComputeRingKernelBridge*
+- uid: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotComputeRingKernelBridge(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Orleans.GpuBridge.Backends.DotCompute.Extensions.DotComputeRingKernelBridgeOptions})
+  commentId: M:Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotComputeRingKernelBridge(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Orleans.GpuBridge.Backends.DotCompute.Extensions.DotComputeRingKernelBridgeOptions})
+  id: AddDotComputeRingKernelBridge(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Orleans.GpuBridge.Backends.DotCompute.Extensions.DotComputeRingKernelBridgeOptions})
+  isExtensionMethod: true
+  parent: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions
+  langs:
+  - csharp
+  - vb
+  name: AddDotComputeRingKernelBridge(IServiceCollection, Action<DotComputeRingKernelBridgeOptions>)
+  nameWithType: ServiceCollectionExtensions.AddDotComputeRingKernelBridge(IServiceCollection, Action<DotComputeRingKernelBridgeOptions>)
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotComputeRingKernelBridge(Microsoft.Extensions.DependencyInjection.IServiceCollection, System.Action<Orleans.GpuBridge.Backends.DotCompute.Extensions.DotComputeRingKernelBridgeOptions>)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Extensions/ServiceCollectionExtensions.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AddDotComputeRingKernelBridge
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Extensions/ServiceCollectionExtensions.cs
+    startLine: 314
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Extensions
+  summary: Adds the DotCompute ring kernel bridge with custom configuration.
+  remarks: >-
+    <p>
+
+    Use this overload to customize the DotCompute bridge behavior.
+
+    Configuration options control fallback behavior, telemetry, and GPU device selection.
+
+    </p>
+
+    <p>
+
+    Usage:
+
+    <pre><code class="lang-csharp">services.AddGpuBridge()
+            .AddDotGpuBackend()
+            .Services
+            .AddRingKernelSupport()
+            .AddDotComputeRingKernelBridge(options =&gt;
+            {
+                options.EnableCpuFallback = true;
+                options.PreferredDeviceId = 0;
+            });</code></pre>
+    </p>
+  example: []
+  syntax:
+    content: public static IServiceCollection AddDotComputeRingKernelBridge(this IServiceCollection services, Action<DotComputeRingKernelBridgeOptions> configure)
+    parameters:
+    - id: services
+      type: Microsoft.Extensions.DependencyInjection.IServiceCollection
+      description: Service collection.
+    - id: configure
+      type: System.Action{Orleans.GpuBridge.Backends.DotCompute.Extensions.DotComputeRingKernelBridgeOptions}
+      description: Configuration action for bridge options.
+    return:
+      type: Microsoft.Extensions.DependencyInjection.IServiceCollection
+      description: Service collection for chaining.
+    content.vb: Public Shared Function AddDotComputeRingKernelBridge(services As IServiceCollection, configure As Action(Of DotComputeRingKernelBridgeOptions)) As IServiceCollection
+  overload: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotComputeRingKernelBridge*
+  nameWithType.vb: ServiceCollectionExtensions.AddDotComputeRingKernelBridge(IServiceCollection, Action(Of DotComputeRingKernelBridgeOptions))
+  fullName.vb: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotComputeRingKernelBridge(Microsoft.Extensions.DependencyInjection.IServiceCollection, System.Action(Of Orleans.GpuBridge.Backends.DotCompute.Extensions.DotComputeRingKernelBridgeOptions))
+  name.vb: AddDotComputeRingKernelBridge(IServiceCollection, Action(Of DotComputeRingKernelBridgeOptions))
+references:
+- uid: Orleans.GpuBridge.Backends.DotCompute.Extensions
+  commentId: N:Orleans.GpuBridge.Backends.DotCompute.Extensions
+  href: Orleans.html
+  name: Orleans.GpuBridge.Backends.DotCompute.Extensions
+  nameWithType: Orleans.GpuBridge.Backends.DotCompute.Extensions
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Extensions
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends
+    name: Backends
+    href: Orleans.GpuBridge.Backends.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute
+    name: DotCompute
+    href: Orleans.GpuBridge.Backends.DotCompute.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Extensions
+    name: Extensions
+    href: Orleans.GpuBridge.Backends.DotCompute.Extensions.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends
+    name: Backends
+    href: Orleans.GpuBridge.Backends.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute
+    name: DotCompute
+    href: Orleans.GpuBridge.Backends.DotCompute.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Extensions
+    name: Extensions
+    href: Orleans.GpuBridge.Backends.DotCompute.Extensions.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder
+  commentId: T:Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder
+  parent: Orleans.GpuBridge.Runtime.Builders
+  href: Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder.html
+  name: IGpuBridgeBuilder
+  nameWithType: IGpuBridgeBuilder
+  fullName: Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder
+- uid: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder,System.Action{Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration})
+  commentId: M:Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder,System.Action{Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration})
+  isExternal: true
+  href: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.html#Orleans_GpuBridge_Backends_DotCompute_Extensions_ServiceCollectionExtensions_AddDotGpuBackend_Orleans_GpuBridge_Runtime_Builders_IGpuBridgeBuilder_System_Action_Orleans_GpuBridge_Backends_DotCompute_Configuration_DotGpuBackendConfiguration__
+  name: AddDotGpuBackend(IGpuBridgeBuilder, Action<DotGpuBackendConfiguration>)
+  nameWithType: ServiceCollectionExtensions.AddDotGpuBackend(IGpuBridgeBuilder, Action<DotGpuBackendConfiguration>)
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder, System.Action<Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration>)
+  nameWithType.vb: ServiceCollectionExtensions.AddDotGpuBackend(IGpuBridgeBuilder, Action(Of DotGpuBackendConfiguration))
+  fullName.vb: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder, System.Action(Of Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration))
+  name.vb: AddDotGpuBackend(IGpuBridgeBuilder, Action(Of DotGpuBackendConfiguration))
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder,System.Action{Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration})
+    name: AddDotGpuBackend
+    href: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.html#Orleans_GpuBridge_Backends_DotCompute_Extensions_ServiceCollectionExtensions_AddDotGpuBackend_Orleans_GpuBridge_Runtime_Builders_IGpuBridgeBuilder_System_Action_Orleans_GpuBridge_Backends_DotCompute_Configuration_DotGpuBackendConfiguration__
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder
+    name: IGpuBridgeBuilder
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration
+    name: DotGpuBackendConfiguration
+    href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder,System.Action{Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration})
+    name: AddDotGpuBackend
+    href: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.html#Orleans_GpuBridge_Backends_DotCompute_Extensions_ServiceCollectionExtensions_AddDotGpuBackend_Orleans_GpuBridge_Runtime_Builders_IGpuBridgeBuilder_System_Action_Orleans_GpuBridge_Backends_DotCompute_Configuration_DotGpuBackendConfiguration__
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder
+    name: IGpuBridgeBuilder
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration
+    name: DotGpuBackendConfiguration
+    href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.html
+  - name: )
+  - name: )
+- uid: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder,System.Func{System.IServiceProvider,Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider})
+  commentId: M:Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder,System.Func{System.IServiceProvider,Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider})
+  isExternal: true
+  href: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.html#Orleans_GpuBridge_Backends_DotCompute_Extensions_ServiceCollectionExtensions_AddDotGpuBackend_Orleans_GpuBridge_Runtime_Builders_IGpuBridgeBuilder_System_Func_System_IServiceProvider_Orleans_GpuBridge_Backends_DotCompute_DotComputeBackendProvider__
+  name: AddDotGpuBackend(IGpuBridgeBuilder, Func<IServiceProvider, DotComputeBackendProvider>)
+  nameWithType: ServiceCollectionExtensions.AddDotGpuBackend(IGpuBridgeBuilder, Func<IServiceProvider, DotComputeBackendProvider>)
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder, System.Func<System.IServiceProvider, Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider>)
+  nameWithType.vb: ServiceCollectionExtensions.AddDotGpuBackend(IGpuBridgeBuilder, Func(Of IServiceProvider, DotComputeBackendProvider))
+  fullName.vb: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder, System.Func(Of System.IServiceProvider, Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider))
+  name.vb: AddDotGpuBackend(IGpuBridgeBuilder, Func(Of IServiceProvider, DotComputeBackendProvider))
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder,System.Func{System.IServiceProvider,Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider})
+    name: AddDotGpuBackend
+    href: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.html#Orleans_GpuBridge_Backends_DotCompute_Extensions_ServiceCollectionExtensions_AddDotGpuBackend_Orleans_GpuBridge_Runtime_Builders_IGpuBridgeBuilder_System_Func_System_IServiceProvider_Orleans_GpuBridge_Backends_DotCompute_DotComputeBackendProvider__
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder
+    name: IGpuBridgeBuilder
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.IServiceProvider
+    name: IServiceProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider
+    name: DotComputeBackendProvider
+    href: Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend(Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder,System.Func{System.IServiceProvider,Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider})
+    name: AddDotGpuBackend
+    href: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.html#Orleans_GpuBridge_Backends_DotCompute_Extensions_ServiceCollectionExtensions_AddDotGpuBackend_Orleans_GpuBridge_Runtime_Builders_IGpuBridgeBuilder_System_Func_System_IServiceProvider_Orleans_GpuBridge_Backends_DotCompute_DotComputeBackendProvider__
+  - name: (
+  - uid: Orleans.GpuBridge.Runtime.Builders.IGpuBridgeBuilder
+    name: IGpuBridgeBuilder
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.IServiceProvider
+    name: IServiceProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider
+    name: DotComputeBackendProvider
+    href: Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider.html
+  - name: )
+  - name: )
+- uid: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend
+  href: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.html#Orleans_GpuBridge_Backends_DotCompute_Extensions_ServiceCollectionExtensions_AddDotGpuBackend_Orleans_GpuBridge_Runtime_Builders_IGpuBridgeBuilder_
+  name: AddDotGpuBackend
+  nameWithType: ServiceCollectionExtensions.AddDotGpuBackend
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotGpuBackend
+- uid: Orleans.GpuBridge.Runtime.Builders
+  commentId: N:Orleans.GpuBridge.Runtime.Builders
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Builders
+  nameWithType: Orleans.GpuBridge.Runtime.Builders
+  fullName: Orleans.GpuBridge.Runtime.Builders
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Builders
+    name: Builders
+    href: Orleans.GpuBridge.Runtime.Builders.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Builders
+    name: Builders
+    href: Orleans.GpuBridge.Runtime.Builders.html
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration
+  commentId: T:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.html
+  name: DotGpuBackendConfiguration
+  nameWithType: DotGpuBackendConfiguration
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+  name: ArgumentNullException
+  nameWithType: ArgumentNullException
+  fullName: System.ArgumentNullException
+- uid: System.Action{Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration}
+  commentId: T:System.Action{Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<DotGpuBackendConfiguration>
+  nameWithType: Action<DotGpuBackendConfiguration>
+  fullName: System.Action<Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration>
+  nameWithType.vb: Action(Of DotGpuBackendConfiguration)
+  fullName.vb: System.Action(Of Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration)
+  name.vb: Action(Of DotGpuBackendConfiguration)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration
+    name: DotGpuBackendConfiguration
+    href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration
+    name: DotGpuBackendConfiguration
+    href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotGpuBackendConfiguration.html
+  - name: )
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.IServiceProvider
+  commentId: T:System.IServiceProvider
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  name: IServiceProvider
+  nameWithType: IServiceProvider
+  fullName: System.IServiceProvider
+- uid: Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider
+  commentId: T:Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider
+  parent: Orleans.GpuBridge.Backends.DotCompute
+  href: Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider.html
+  name: DotComputeBackendProvider
+  nameWithType: DotComputeBackendProvider
+  fullName: Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider
+- uid: System.Func{System.IServiceProvider,Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider}
+  commentId: T:System.Func{System.IServiceProvider,Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<IServiceProvider, DotComputeBackendProvider>
+  nameWithType: Func<IServiceProvider, DotComputeBackendProvider>
+  fullName: System.Func<System.IServiceProvider, Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider>
+  nameWithType.vb: Func(Of IServiceProvider, DotComputeBackendProvider)
+  fullName.vb: System.Func(Of System.IServiceProvider, Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider)
+  name.vb: Func(Of IServiceProvider, DotComputeBackendProvider)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.IServiceProvider
+    name: IServiceProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider
+    name: DotComputeBackendProvider
+    href: Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.IServiceProvider
+    name: IServiceProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider
+    name: DotComputeBackendProvider
+    href: Orleans.GpuBridge.Backends.DotCompute.DotComputeBackendProvider.html
+  - name: )
+- uid: Orleans.GpuBridge.Backends.DotCompute
+  commentId: N:Orleans.GpuBridge.Backends.DotCompute
+  href: Orleans.html
+  name: Orleans.GpuBridge.Backends.DotCompute
+  nameWithType: Orleans.GpuBridge.Backends.DotCompute
+  fullName: Orleans.GpuBridge.Backends.DotCompute
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends
+    name: Backends
+    href: Orleans.GpuBridge.Backends.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute
+    name: DotCompute
+    href: Orleans.GpuBridge.Backends.DotCompute.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends
+    name: Backends
+    href: Orleans.GpuBridge.Backends.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute
+    name: DotCompute
+    href: Orleans.GpuBridge.Backends.DotCompute.html
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge
+  commentId: T:Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge
+  parent: Orleans.GpuBridge.Abstractions.RingKernels
+  href: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge.html
+  name: IRingKernelBridge
+  nameWithType: IRingKernelBridge
+  fullName: Orleans.GpuBridge.Abstractions.RingKernels.IRingKernelBridge
+- uid: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotComputeRingKernelBridge*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotComputeRingKernelBridge
+  href: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.html#Orleans_GpuBridge_Backends_DotCompute_Extensions_ServiceCollectionExtensions_AddDotComputeRingKernelBridge_Microsoft_Extensions_DependencyInjection_IServiceCollection_
+  name: AddDotComputeRingKernelBridge
+  nameWithType: ServiceCollectionExtensions.AddDotComputeRingKernelBridge
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Extensions.ServiceCollectionExtensions.AddDotComputeRingKernelBridge
+- uid: Microsoft.Extensions.DependencyInjection.IServiceCollection
+  commentId: T:Microsoft.Extensions.DependencyInjection.IServiceCollection
+  parent: Microsoft.Extensions.DependencyInjection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection
+  name: IServiceCollection
+  nameWithType: IServiceCollection
+  fullName: Microsoft.Extensions.DependencyInjection.IServiceCollection
+- uid: Orleans.GpuBridge.Abstractions.RingKernels
+  commentId: N:Orleans.GpuBridge.Abstractions.RingKernels
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.RingKernels
+  nameWithType: Orleans.GpuBridge.Abstractions.RingKernels
+  fullName: Orleans.GpuBridge.Abstractions.RingKernels
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels
+    name: RingKernels
+    href: Orleans.GpuBridge.Abstractions.RingKernels.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.RingKernels
+    name: RingKernels
+    href: Orleans.GpuBridge.Abstractions.RingKernels.html
+- uid: Microsoft.Extensions.DependencyInjection
+  commentId: N:Microsoft.Extensions.DependencyInjection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.DependencyInjection
+  nameWithType: Microsoft.Extensions.DependencyInjection
+  fullName: Microsoft.Extensions.DependencyInjection
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.DependencyInjection
+    name: DependencyInjection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.DependencyInjection
+    name: DependencyInjection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection
+- uid: System.Action{Orleans.GpuBridge.Backends.DotCompute.Extensions.DotComputeRingKernelBridgeOptions}
+  commentId: T:System.Action{Orleans.GpuBridge.Backends.DotCompute.Extensions.DotComputeRingKernelBridgeOptions}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<DotComputeRingKernelBridgeOptions>
+  nameWithType: Action<DotComputeRingKernelBridgeOptions>
+  fullName: System.Action<Orleans.GpuBridge.Backends.DotCompute.Extensions.DotComputeRingKernelBridgeOptions>
+  nameWithType.vb: Action(Of DotComputeRingKernelBridgeOptions)
+  fullName.vb: System.Action(Of Orleans.GpuBridge.Backends.DotCompute.Extensions.DotComputeRingKernelBridgeOptions)
+  name.vb: Action(Of DotComputeRingKernelBridgeOptions)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Extensions.DotComputeRingKernelBridgeOptions
+    name: DotComputeRingKernelBridgeOptions
+    href: Orleans.GpuBridge.Backends.DotCompute.Extensions.DotComputeRingKernelBridgeOptions.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Extensions.DotComputeRingKernelBridgeOptions
+    name: DotComputeRingKernelBridgeOptions
+    href: Orleans.GpuBridge.Backends.DotCompute.Extensions.DotComputeRingKernelBridgeOptions.html
+  - name: )

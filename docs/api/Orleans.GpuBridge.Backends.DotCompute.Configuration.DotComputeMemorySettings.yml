@@ -1,0 +1,1310 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings
+  commentId: T:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings
+  id: DotComputeMemorySettings
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  children:
+  - Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.AllocationAlignment
+  - Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.DefragmentationThreshold
+  - Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableDefragmentation
+  - Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableMemoryPooling
+  - Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.InitialPoolSize
+  - Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.MaxPoolSize
+  - Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.PreferUnifiedMemory
+  - Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.UsePinnedMemory
+  langs:
+  - csharp
+  - vb
+  name: DotComputeMemorySettings
+  nameWithType: DotComputeMemorySettings
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeMemorySettings.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DotComputeMemorySettings
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeMemorySettings.cs
+    startLine: 53
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Memory management configuration settings for the DotCompute backend.
+  remarks: >-
+    This class provides comprehensive configuration options for GPU memory management
+
+    in the DotCompute backend, including memory pooling, allocation strategies,
+
+    defragmentation, and platform-specific optimizations.
+
+
+    <p>
+
+    Proper memory configuration is critical for GPU performance. Poor memory management
+
+    can lead to:
+
+    - Frequent allocations causing performance bottlenecks
+
+    - Memory fragmentation reducing available memory
+
+    - Excessive memory transfers between CPU and GPU
+
+    - Out-of-memory errors in compute-intensive workloads
+
+    </p>
+
+
+    <p>
+
+    The default settings are optimized for typical GPU compute workloads with moderate
+
+    memory usage patterns. Adjust settings based on your specific workload characteristics:
+
+    - Large dataset processing: Increase pool sizes and alignment
+
+    - Frequent small allocations: Enable pooling and defragmentation
+
+    - Memory-constrained systems: Reduce pool sizes and enable aggressive cleanup
+
+    - High-performance computing: Enable unified memory and pinned memory features
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// Configuration for large dataset processing
+
+    var memorySettings = new DotComputeMemorySettings
+
+    {
+        EnableMemoryPooling = true,
+        InitialPoolSize = 2L * 1024 * 1024 * 1024, // 2 GB
+        MaxPoolSize = 16L * 1024 * 1024 * 1024,    // 16 GB
+        AllocationAlignment = 4096,                 // 4KB alignment
+        EnableDefragmentation = true,
+        DefragmentationThreshold = 0.15             // Defrag at 15% fragmentation
+    };
+
+
+    // Configuration for memory-constrained environments
+
+    var constrainedSettings = new DotComputeMemorySettings
+
+    {
+        EnableMemoryPooling = true,
+        InitialPoolSize = 128 * 1024 * 1024,       // 128 MB
+        MaxPoolSize = 1024 * 1024 * 1024,          // 1 GB
+        EnableDefragmentation = true,
+        DefragmentationThreshold = 0.10,           // Aggressive defrag at 10%
+        PreferUnifiedMemory = false                // Avoid unified memory overhead
+    };</code></pre>
+  syntax:
+    content: public class DotComputeMemorySettings
+    content.vb: Public Class DotComputeMemorySettings
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableMemoryPooling
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableMemoryPooling
+  id: EnableMemoryPooling
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings
+  langs:
+  - csharp
+  - vb
+  name: EnableMemoryPooling
+  nameWithType: DotComputeMemorySettings.EnableMemoryPooling
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableMemoryPooling
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeMemorySettings.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: EnableMemoryPooling
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeMemorySettings.cs
+    startLine: 88
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Gets or sets whether to enable memory pooling for GPU allocations.
+  remarks: >-
+    Memory pooling pre-allocates blocks of GPU memory and reuses them for subsequent
+
+    allocations, significantly reducing allocation overhead and memory fragmentation.
+
+    This is especially beneficial for workloads with frequent memory allocations.
+
+
+    <p>
+
+    Benefits of memory pooling:
+
+    - Faster allocation and deallocation (10-100x speedup)
+
+    - Reduced memory fragmentation
+
+    - More predictable memory usage patterns
+
+    - Better utilization of large memory blocks
+
+    - Reduced GPU driver overhead
+
+    </p>
+
+
+    <p>
+
+    Considerations:
+
+    - Initial memory overhead from pre-allocated pools
+
+    - May hold memory longer than necessary
+
+    - Requires tuning of pool sizes for optimal efficiency
+
+    - Most effective for repeated allocation patterns
+
+    </p>
+
+
+    <p>
+
+    Recommended to enable for most production workloads unless memory is severely
+
+    constrained or allocation patterns are highly irregular.
+
+    </p>
+  example: []
+  syntax:
+    content: public bool EnableMemoryPooling { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+      description: <code>true</code> to enable memory pooling; otherwise, <code>false</code>. Default is <code>true</code>.
+    content.vb: Public Property EnableMemoryPooling As Boolean
+  overload: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableMemoryPooling*
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.InitialPoolSize
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.InitialPoolSize
+  id: InitialPoolSize
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings
+  langs:
+  - csharp
+  - vb
+  name: InitialPoolSize
+  nameWithType: DotComputeMemorySettings.InitialPoolSize
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.InitialPoolSize
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeMemorySettings.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: InitialPoolSize
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeMemorySettings.cs
+    startLine: 136
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Gets or sets the initial memory pool size per GPU device in bytes.
+  remarks: >-
+    This setting determines the amount of GPU memory pre-allocated for the memory
+
+    pool when the backend is initialized. The pool will grow up to <xref href="Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.MaxPoolSize" data-throw-if-not-resolved="false"></xref>
+
+    as needed, but starts with this initial allocation.
+
+
+    <p>
+
+    Sizing considerations:
+
+    - Should accommodate typical working set size
+
+    - Larger initial size reduces early allocations and fragmentation
+
+    - Too large may waste memory or cause initialization failures
+
+    - Should be significantly smaller than total GPU memory
+
+    - Consider multiple GPU scenarios (allocation per device)
+
+    </p>
+
+
+    <p>
+
+    Recommended sizing guidelines:
+
+    - Development: 128-256 MB
+
+    - Small workloads: 256-512 MB
+
+    - Medium workloads: 512 MB - 2 GB
+
+    - Large workloads: 2-8 GB (depending on GPU memory capacity)
+
+    - Memory-constrained: 64-128 MB
+
+    </p>
+
+
+    <p>
+
+    This setting is only effective when <xref href="Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableMemoryPooling" data-throw-if-not-resolved="false"></xref> is <code>true</code>.
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// For 8GB GPU, allocate 1GB initially
+
+    memorySettings.InitialPoolSize = 1024 * 1024 * 1024; // 1 GB
+
+
+    // For memory-constrained 4GB GPU
+
+    memorySettings.InitialPoolSize = 256 * 1024 * 1024;  // 256 MB</code></pre>
+  syntax:
+    content: public long InitialPoolSize { get; set; }
+    parameters: []
+    return:
+      type: System.Int64
+      description: >-
+        The initial pool size in bytes. Default is 512 MB (536,870,912 bytes).
+
+        Must be a positive value.
+    content.vb: Public Property InitialPoolSize As Long
+  overload: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.InitialPoolSize*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Thrown when the value is less than or equal to zero, or exceeds <xref href="Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.MaxPoolSize" data-throw-if-not-resolved="false"></xref>.
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.MaxPoolSize
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.MaxPoolSize
+  id: MaxPoolSize
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings
+  langs:
+  - csharp
+  - vb
+  name: MaxPoolSize
+  nameWithType: DotComputeMemorySettings.MaxPoolSize
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.MaxPoolSize
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeMemorySettings.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MaxPoolSize
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeMemorySettings.cs
+    startLine: 182
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Gets or sets the maximum memory pool size per GPU device in bytes.
+  remarks: >-
+    This setting defines the upper limit for memory pool growth. When the pool
+
+    reaches this size, new allocations will either reuse existing pool memory
+
+    or fall back to direct GPU memory allocation if pooling is insufficient.
+
+
+    <p>
+
+    The maximum pool size serves as a safety mechanism to:
+
+    - Prevent unbounded memory growth
+
+    - Reserve GPU memory for other applications
+
+    - Avoid out-of-memory conditions
+
+    - Maintain system stability under load
+
+    </p>
+
+
+    <p>
+
+    Sizing guidelines:
+
+    - Should be 60-80% of total GPU memory for dedicated workloads
+
+    - Should be 40-60% of total GPU memory for shared environments
+
+    - Consider OS and driver memory overhead (typically 200-500 MB)
+
+    - Account for concurrent applications using GPU memory
+
+    - Leave buffer for temporary allocations and driver operations
+
+    </p>
+
+
+    <p>
+
+    Common configurations by GPU memory:
+
+    - 4 GB GPU: 2-3 GB max pool size
+
+    - 8 GB GPU: 5-7 GB max pool size  
+
+    - 16 GB GPU: 10-14 GB max pool size
+
+    - 32+ GB GPU: 20-28 GB max pool size
+
+    </p>
+
+
+    <p>
+
+    This setting is only effective when <xref href="Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableMemoryPooling" data-throw-if-not-resolved="false"></xref> is <code>true</code>.
+
+    </p>
+  example: []
+  syntax:
+    content: public long MaxPoolSize { get; set; }
+    parameters: []
+    return:
+      type: System.Int64
+      description: >-
+        The maximum pool size in bytes. Default is 4 GB (4,294,967,296 bytes).
+
+        Must be greater than or equal to <xref href="Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.InitialPoolSize" data-throw-if-not-resolved="false"></xref>.
+    content.vb: Public Property MaxPoolSize As Long
+  overload: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.MaxPoolSize*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Thrown when the value is less than <xref href="Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.InitialPoolSize" data-throw-if-not-resolved="false"></xref>.
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.AllocationAlignment
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.AllocationAlignment
+  id: AllocationAlignment
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings
+  langs:
+  - csharp
+  - vb
+  name: AllocationAlignment
+  nameWithType: DotComputeMemorySettings.AllocationAlignment
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.AllocationAlignment
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeMemorySettings.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AllocationAlignment
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeMemorySettings.cs
+    startLine: 241
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Gets or sets the memory allocation alignment in bytes.
+  remarks: >-
+    Memory alignment ensures that allocated memory addresses meet hardware requirements
+
+    for optimal performance. Different GPU architectures and data types have varying
+
+    alignment requirements for maximum memory bandwidth utilization.
+
+
+    <p>
+
+    Alignment benefits:
+
+    - Optimal memory access patterns and bandwidth
+
+    - Efficient vectorized operations and coalesced access
+
+    - Compatibility with hardware-specific optimizations
+
+    - Reduced memory access penalties and cache misses
+
+    </p>
+
+
+    <p>
+
+    Platform-specific recommendations:
+
+    - CUDA: 256-512 bytes (matches warp/coalescing requirements)
+
+    - OpenCL: 128-256 bytes (platform dependent)
+
+    - DirectCompute: 256 bytes (typical D3D11/12 alignment)
+
+    - Metal: 256 bytes (typical Metal buffer alignment)
+
+    - Vulkan: 256 bytes (typical Vulkan buffer alignment)
+
+    </p>
+
+
+    <p>
+
+    Data type considerations:
+
+    - Single precision (float): 128-256 byte alignment
+
+    - Double precision (double): 256-512 byte alignment
+
+    - Mixed data types: Use largest required alignment
+
+    - Structured data: Align to largest member + padding
+
+    </p>
+
+
+    <p>
+
+    Higher alignment values may waste some memory due to padding but can significantly
+
+    improve performance for memory-intensive kernels.
+
+    </p>
+  example:
+  - >-
+    <pre><code class="lang-csharp">// High-performance configuration for float4 data
+
+    memorySettings.AllocationAlignment = 512;  // 512-byte alignment
+
+
+    // Memory-efficient configuration
+
+    memorySettings.AllocationAlignment = 128;  // 128-byte alignment
+
+
+    // Conservative configuration for mixed workloads
+
+    memorySettings.AllocationAlignment = 256;  // 256-byte alignment (default)</code></pre>
+  syntax:
+    content: public int AllocationAlignment { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+      description: >-
+        The alignment requirement in bytes. Default is 256 bytes.
+
+        Must be a power of 2 and at least 1.
+    content.vb: Public Property AllocationAlignment As Integer
+  overload: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.AllocationAlignment*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Thrown when the value is not a power of 2 or is less than 1.
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableDefragmentation
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableDefragmentation
+  id: EnableDefragmentation
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings
+  langs:
+  - csharp
+  - vb
+  name: EnableDefragmentation
+  nameWithType: DotComputeMemorySettings.EnableDefragmentation
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableDefragmentation
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeMemorySettings.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: EnableDefragmentation
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeMemorySettings.cs
+    startLine: 285
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Gets or sets whether to enable automatic memory defragmentation.
+  remarks: >-
+    Automatic defragmentation periodically reorganizes memory pool allocations to
+
+    reduce fragmentation and maximize available contiguous memory blocks. This helps
+
+    maintain allocation performance over time, especially for long-running applications.
+
+
+    <p>
+
+    Defragmentation benefits:
+
+    - Maintains allocation performance over time
+
+    - Reduces memory waste from fragmentation
+
+    - Enables larger contiguous allocations
+
+    - Improves memory utilization efficiency
+
+    - Prevents gradual performance degradation
+
+    </p>
+
+
+    <p>
+
+    Defragmentation costs:
+
+    - Temporary performance impact during defrag operations
+
+    - Memory copying overhead for active allocations
+
+    - Potential kernel execution delays during defrag
+
+    - CPU processing time for fragmentation analysis
+
+    </p>
+
+
+    <p>
+
+    Defragmentation is triggered when fragmentation exceeds the threshold specified
+
+    by <xref href="Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.DefragmentationThreshold" data-throw-if-not-resolved="false"></xref>. The operation is performed during
+
+    idle periods when possible to minimize performance impact.
+
+    </p>
+
+
+    <p>
+
+    Recommended for most workloads, especially:
+
+    - Long-running applications
+
+    - Workloads with variable allocation sizes
+
+    - Applications with frequent allocation/deallocation cycles
+
+    - Memory-constrained environments
+
+    </p>
+  example: []
+  syntax:
+    content: public bool EnableDefragmentation { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+      description: <code>true</code> to enable automatic defragmentation; otherwise, <code>false</code>. Default is <code>true</code>.
+    content.vb: Public Property EnableDefragmentation As Boolean
+  overload: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableDefragmentation*
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.DefragmentationThreshold
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.DefragmentationThreshold
+  id: DefragmentationThreshold
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings
+  langs:
+  - csharp
+  - vb
+  name: DefragmentationThreshold
+  nameWithType: DotComputeMemorySettings.DefragmentationThreshold
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.DefragmentationThreshold
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeMemorySettings.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DefragmentationThreshold
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeMemorySettings.cs
+    startLine: 329
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Gets or sets the fragmentation threshold that triggers automatic defragmentation.
+  remarks: >-
+    This threshold determines when automatic defragmentation is triggered. The value
+
+    represents the percentage of memory pool space that is fragmented (unusable for
+
+    contiguous allocations due to fragmentation).
+
+
+    <p>
+
+    The fragmentation metric considers:
+
+    - Free memory blocks too small for typical allocations
+
+    - Scattered free regions preventing large allocations
+
+    - Overall efficiency of memory space utilization
+
+    - Impact on allocation success rates
+
+    </p>
+
+
+    <p>
+
+    Threshold selection guidelines:
+
+    - Lower values (0.10-0.20): More frequent defrag, better memory efficiency
+
+    - Medium values (0.20-0.30): Balanced performance and efficiency (recommended)
+
+    - Higher values (0.30-0.50): Less frequent defrag, may impact large allocations
+
+    - Very high values (&gt;0.50): Minimal defrag, risk of allocation failures
+
+    </p>
+
+
+    <p>
+
+    Workload-specific recommendations:
+
+    - Uniform allocation sizes: 0.30-0.40 (fragmentation less problematic)
+
+    - Mixed allocation sizes: 0.20-0.30 (fragmentation more problematic)
+
+    - Memory-constrained: 0.10-0.20 (aggressive defragmentation)
+
+    - Performance-critical: 0.25-0.35 (balance efficiency and performance)
+
+    </p>
+
+
+    <p>
+
+    This setting is only effective when <xref href="Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableDefragmentation" data-throw-if-not-resolved="false"></xref> is <code>true</code>.
+
+    </p>
+  example: []
+  syntax:
+    content: public double DefragmentationThreshold { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+      description: The fragmentation threshold as a percentage (0.0 to 1.0). Default is 0.25 (25%).
+    content.vb: Public Property DefragmentationThreshold As Double
+  overload: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.DefragmentationThreshold*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Thrown when the value is less than 0.0 or greater than 1.0.
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.PreferUnifiedMemory
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.PreferUnifiedMemory
+  id: PreferUnifiedMemory
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings
+  langs:
+  - csharp
+  - vb
+  name: PreferUnifiedMemory
+  nameWithType: DotComputeMemorySettings.PreferUnifiedMemory
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.PreferUnifiedMemory
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeMemorySettings.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: PreferUnifiedMemory
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeMemorySettings.cs
+    startLine: 374
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Gets or sets whether to prefer unified memory when available on the platform.
+  remarks: >-
+    Unified memory (also known as managed memory) provides a single address space
+
+    shared between CPU and GPU, allowing automatic data migration and simplified
+
+    memory management. This feature is available on select platforms and hardware.
+
+
+    <p>
+
+    Unified memory benefits:
+
+    - Simplified programming model (no explicit transfers)
+
+    - Automatic data migration between CPU and GPU
+
+    - Reduced memory duplication for shared data
+
+    - Better memory utilization on memory-constrained systems
+
+    - Easier debugging and memory profiling
+
+    </p>
+
+
+    <p>
+
+    Unified memory limitations:
+
+    - Platform availability (CUDA 6.0+, some OpenCL implementations)
+
+    - Performance overhead from automatic migration
+
+    - Potential page faults during GPU execution
+
+    - Limited control over data placement and timing
+
+    - May not be optimal for all memory access patterns
+
+    </p>
+
+
+    <p>
+
+    Platform support:
+
+    - CUDA: Unified Memory available on Pascal+ architectures (GTX 10xx+)
+
+    - OpenCL: Limited support in OpenCL 2.0+ (implementation dependent)
+
+    - DirectCompute: Not typically supported
+
+    - Metal: Shared memory on Apple Silicon (M1/M2 series)
+
+    - Vulkan: Limited through extensions (implementation dependent)
+
+    </p>
+
+
+    <p>
+
+    When unified memory is not available or not beneficial for the workload,
+
+    the backend will fall back to discrete memory management with explicit transfers.
+
+    </p>
+  example: []
+  syntax:
+    content: public bool PreferUnifiedMemory { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+      description: <code>true</code> to prefer unified memory; otherwise, <code>false</code>. Default is <code>true</code>.
+    content.vb: Public Property PreferUnifiedMemory As Boolean
+  overload: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.PreferUnifiedMemory*
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.UsePinnedMemory
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.UsePinnedMemory
+  id: UsePinnedMemory
+  parent: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings
+  langs:
+  - csharp
+  - vb
+  name: UsePinnedMemory
+  nameWithType: DotComputeMemorySettings.UsePinnedMemory
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.UsePinnedMemory
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeMemorySettings.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: UsePinnedMemory
+    path: ../src/Orleans.GpuBridge.Backends.DotCompute/Configuration/DotComputeMemorySettings.cs
+    startLine: 423
+  assemblies:
+  - Orleans.GpuBridge.Backends.DotCompute
+  namespace: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  summary: Gets or sets whether to use pinned (page-locked) memory for CPU-GPU transfers.
+  remarks: >-
+    Pinned memory (also called page-locked or non-pageable memory) is CPU memory
+
+    that is locked in physical RAM and cannot be swapped to disk. This enables
+
+    faster and more efficient transfers between CPU and GPU memory.
+
+
+    <p>
+
+    Pinned memory benefits:
+
+    - Significantly faster CPU-GPU transfer speeds (2-3x improvement)
+
+    - Enables asynchronous memory transfers
+
+    - Reduced CPU usage during memory operations
+
+    - More predictable transfer performance
+
+    - Better overlap of computation and communication
+
+    </p>
+
+
+    <p>
+
+    Pinned memory costs:
+
+    - Consumes system RAM that cannot be swapped
+
+    - Limited resource (typically 50-75% of system RAM)
+
+    - Slower allocation/deallocation compared to pageable memory
+
+    - May impact system performance if overused
+
+    - Not suitable for very large or temporary buffers
+
+    </p>
+
+
+    <p>
+
+    Usage recommendations:
+
+    - Enable for frequently transferred data
+
+    - Use for streaming or pipeline workloads
+
+    - Ideal for intermediate-sized buffers (MB to GB range)
+
+    - Avoid for very large datasets that exceed system RAM
+
+    - Consider system RAM capacity and other applications
+
+    </p>
+
+
+    <p>
+
+    Platform considerations:
+
+    - CUDA: cudaMallocHost() for pinned allocations
+
+    - OpenCL: CL_MEM_ALLOC_HOST_PTR flag
+
+    - DirectCompute: D3D11_USAGE_STAGING with appropriate flags
+
+    - Metal: Shared memory pools on macOS/iOS
+
+    - Vulkan: Host-visible memory with coherent flag
+
+    </p>
+  example: []
+  syntax:
+    content: public bool UsePinnedMemory { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+      description: <code>true</code> to use pinned memory; otherwise, <code>false</code>. Default is <code>true</code>.
+    content.vb: Public Property UsePinnedMemory As Boolean
+  overload: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.UsePinnedMemory*
+references:
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  commentId: N:Orleans.GpuBridge.Backends.DotCompute.Configuration
+  href: Orleans.html
+  name: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  nameWithType: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends
+    name: Backends
+    href: Orleans.GpuBridge.Backends.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute
+    name: DotCompute
+    href: Orleans.GpuBridge.Backends.DotCompute.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Configuration
+    name: Configuration
+    href: Orleans.GpuBridge.Backends.DotCompute.Configuration.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends
+    name: Backends
+    href: Orleans.GpuBridge.Backends.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute
+    name: DotCompute
+    href: Orleans.GpuBridge.Backends.DotCompute.html
+  - name: .
+  - uid: Orleans.GpuBridge.Backends.DotCompute.Configuration
+    name: Configuration
+    href: Orleans.GpuBridge.Backends.DotCompute.Configuration.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableMemoryPooling*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableMemoryPooling
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotComputeMemorySettings_EnableMemoryPooling
+  name: EnableMemoryPooling
+  nameWithType: DotComputeMemorySettings.EnableMemoryPooling
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableMemoryPooling
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.MaxPoolSize
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.MaxPoolSize
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotComputeMemorySettings_MaxPoolSize
+  name: MaxPoolSize
+  nameWithType: DotComputeMemorySettings.MaxPoolSize
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.MaxPoolSize
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableMemoryPooling
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableMemoryPooling
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotComputeMemorySettings_EnableMemoryPooling
+  name: EnableMemoryPooling
+  nameWithType: DotComputeMemorySettings.EnableMemoryPooling
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableMemoryPooling
+- uid: System.ArgumentOutOfRangeException
+  commentId: T:System.ArgumentOutOfRangeException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception
+  name: ArgumentOutOfRangeException
+  nameWithType: ArgumentOutOfRangeException
+  fullName: System.ArgumentOutOfRangeException
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.InitialPoolSize*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.InitialPoolSize
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotComputeMemorySettings_InitialPoolSize
+  name: InitialPoolSize
+  nameWithType: DotComputeMemorySettings.InitialPoolSize
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.InitialPoolSize
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.InitialPoolSize
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.InitialPoolSize
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotComputeMemorySettings_InitialPoolSize
+  name: InitialPoolSize
+  nameWithType: DotComputeMemorySettings.InitialPoolSize
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.InitialPoolSize
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.MaxPoolSize*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.MaxPoolSize
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotComputeMemorySettings_MaxPoolSize
+  name: MaxPoolSize
+  nameWithType: DotComputeMemorySettings.MaxPoolSize
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.MaxPoolSize
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.AllocationAlignment*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.AllocationAlignment
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotComputeMemorySettings_AllocationAlignment
+  name: AllocationAlignment
+  nameWithType: DotComputeMemorySettings.AllocationAlignment
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.AllocationAlignment
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.DefragmentationThreshold
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.DefragmentationThreshold
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotComputeMemorySettings_DefragmentationThreshold
+  name: DefragmentationThreshold
+  nameWithType: DotComputeMemorySettings.DefragmentationThreshold
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.DefragmentationThreshold
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableDefragmentation*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableDefragmentation
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotComputeMemorySettings_EnableDefragmentation
+  name: EnableDefragmentation
+  nameWithType: DotComputeMemorySettings.EnableDefragmentation
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableDefragmentation
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableDefragmentation
+  commentId: P:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableDefragmentation
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotComputeMemorySettings_EnableDefragmentation
+  name: EnableDefragmentation
+  nameWithType: DotComputeMemorySettings.EnableDefragmentation
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.EnableDefragmentation
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.DefragmentationThreshold*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.DefragmentationThreshold
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotComputeMemorySettings_DefragmentationThreshold
+  name: DefragmentationThreshold
+  nameWithType: DotComputeMemorySettings.DefragmentationThreshold
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.DefragmentationThreshold
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.PreferUnifiedMemory*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.PreferUnifiedMemory
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotComputeMemorySettings_PreferUnifiedMemory
+  name: PreferUnifiedMemory
+  nameWithType: DotComputeMemorySettings.PreferUnifiedMemory
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.PreferUnifiedMemory
+- uid: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.UsePinnedMemory*
+  commentId: Overload:Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.UsePinnedMemory
+  href: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.html#Orleans_GpuBridge_Backends_DotCompute_Configuration_DotComputeMemorySettings_UsePinnedMemory
+  name: UsePinnedMemory
+  nameWithType: DotComputeMemorySettings.UsePinnedMemory
+  fullName: Orleans.GpuBridge.Backends.DotCompute.Configuration.DotComputeMemorySettings.UsePinnedMemory

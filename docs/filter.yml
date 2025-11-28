@@ -1,0 +1,29 @@
+# API filtering rules for DocFX
+# This file excludes internal/generated types from API documentation
+
+apiRules:
+- exclude:
+    # Exclude internal namespaces
+    uidRegex: ^Orleans\.GpuBridge\..*\.Internal
+    type: Namespace
+- exclude:
+    # Exclude generated types
+    uidRegex: \.g\.cs$
+    type: Type
+- exclude:
+    # Exclude private members (default, but explicit)
+    hasAttribute:
+      uid: System.Runtime.CompilerServices.CompilerGeneratedAttribute
+    type: Member
+- exclude:
+    # Exclude obsolete types without replacement
+    hasAttribute:
+      uid: System.ObsoleteAttribute
+      ctorArguments:
+        - '*'
+        - 'true'
+    type: Type
+- include:
+    # Include all public API
+    uidRegex: ^Orleans\.GpuBridge\.
+    type: Namespace

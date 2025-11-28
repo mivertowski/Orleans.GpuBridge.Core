@@ -1,0 +1,1173 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector
+  id: TemporalPatternDetector
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  children:
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.#ctor(System.Int64,System.Int64,System.Int32,Orleans.GpuBridge.Runtime.Temporal.Graph.TemporalGraphStorage,Microsoft.Extensions.Logging.ILogger)
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.Clear
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.GetStatistics
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.ProcessEventAsync(Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.RecentMatches
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.RegisterPattern(Orleans.GpuBridge.Runtime.Temporal.Patterns.ITemporalPattern)
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.RegisteredPatternCount
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.ToString
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.UnregisterPattern(System.String)
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.WindowEventCount
+  - Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.WindowSizeNanos
+  langs:
+  - csharp
+  - vb
+  name: TemporalPatternDetector
+  nameWithType: TemporalPatternDetector
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/TemporalPatternDetector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TemporalPatternDetector
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/TemporalPatternDetector.cs
+    startLine: 27
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Detects temporal patterns in event streams using sliding time windows.
+  remarks: >-
+    <p>
+
+    The pattern detector maintains a sliding window of recent events and
+
+    continuously checks registered patterns for matches.
+
+    </p>
+
+    <p>
+
+    Features:
+
+    - Sliding time window (configurable size)
+
+    - Multiple pattern matching
+
+    - Automatic event expiration
+
+    - Pattern match deduplication
+
+    - Statistics tracking
+
+    </p>
+  example: []
+  syntax:
+    content: public sealed class TemporalPatternDetector
+    content.vb: Public NotInheritable Class TemporalPatternDetector
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.WindowEventCount
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.WindowEventCount
+  id: WindowEventCount
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector
+  langs:
+  - csharp
+  - vb
+  name: WindowEventCount
+  nameWithType: TemporalPatternDetector.WindowEventCount
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.WindowEventCount
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/TemporalPatternDetector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: WindowEventCount
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/TemporalPatternDetector.cs
+    startLine: 48
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Gets the current number of events in the window.
+  example: []
+  syntax:
+    content: public int WindowEventCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property WindowEventCount As Integer
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.WindowEventCount*
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.RegisteredPatternCount
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.RegisteredPatternCount
+  id: RegisteredPatternCount
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector
+  langs:
+  - csharp
+  - vb
+  name: RegisteredPatternCount
+  nameWithType: TemporalPatternDetector.RegisteredPatternCount
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.RegisteredPatternCount
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/TemporalPatternDetector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RegisteredPatternCount
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/TemporalPatternDetector.cs
+    startLine: 53
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Gets the number of registered patterns.
+  example: []
+  syntax:
+    content: public int RegisteredPatternCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property RegisteredPatternCount As Integer
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.RegisteredPatternCount*
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.RecentMatches
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.RecentMatches
+  id: RecentMatches
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector
+  langs:
+  - csharp
+  - vb
+  name: RecentMatches
+  nameWithType: TemporalPatternDetector.RecentMatches
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.RecentMatches
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/TemporalPatternDetector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RecentMatches
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/TemporalPatternDetector.cs
+    startLine: 58
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Gets recent pattern matches.
+  example: []
+  syntax:
+    content: public IReadOnlyList<PatternMatch> RecentMatches { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternMatch}
+    content.vb: Public ReadOnly Property RecentMatches As IReadOnlyList(Of PatternMatch)
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.RecentMatches*
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.WindowSizeNanos
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.WindowSizeNanos
+  id: WindowSizeNanos
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector
+  langs:
+  - csharp
+  - vb
+  name: WindowSizeNanos
+  nameWithType: TemporalPatternDetector.WindowSizeNanos
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.WindowSizeNanos
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/TemporalPatternDetector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: WindowSizeNanos
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/TemporalPatternDetector.cs
+    startLine: 63
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Gets the window size in nanoseconds.
+  example: []
+  syntax:
+    content: public long WindowSizeNanos { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public ReadOnly Property WindowSizeNanos As Long
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.WindowSizeNanos*
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.#ctor(System.Int64,System.Int64,System.Int32,Orleans.GpuBridge.Runtime.Temporal.Graph.TemporalGraphStorage,Microsoft.Extensions.Logging.ILogger)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.#ctor(System.Int64,System.Int64,System.Int32,Orleans.GpuBridge.Runtime.Temporal.Graph.TemporalGraphStorage,Microsoft.Extensions.Logging.ILogger)
+  id: '#ctor(System.Int64,System.Int64,System.Int32,Orleans.GpuBridge.Runtime.Temporal.Graph.TemporalGraphStorage,Microsoft.Extensions.Logging.ILogger)'
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector
+  langs:
+  - csharp
+  - vb
+  name: TemporalPatternDetector(long, long, int, TemporalGraphStorage?, ILogger?)
+  nameWithType: TemporalPatternDetector.TemporalPatternDetector(long, long, int, TemporalGraphStorage?, ILogger?)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.TemporalPatternDetector(long, long, int, Orleans.GpuBridge.Runtime.Temporal.Graph.TemporalGraphStorage?, Microsoft.Extensions.Logging.ILogger?)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/TemporalPatternDetector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/TemporalPatternDetector.cs
+    startLine: 73
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Creates a new temporal pattern detector.
+  example: []
+  syntax:
+    content: public TemporalPatternDetector(long windowSizeNanos = 5000000000, long slideIntervalNanos = 0, int maxWindowEvents = 10000, TemporalGraphStorage? graph = null, ILogger? logger = null)
+    parameters:
+    - id: windowSizeNanos
+      type: System.Int64
+      description: Size of the sliding window in nanoseconds
+    - id: slideIntervalNanos
+      type: System.Int64
+      description: How often to slide the window (0 = slide on every event)
+    - id: maxWindowEvents
+      type: System.Int32
+      description: Maximum events to keep in window (prevents memory issues)
+    - id: graph
+      type: Orleans.GpuBridge.Runtime.Temporal.Graph.TemporalGraphStorage
+      description: Optional temporal graph for path-based pattern matching
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger
+      description: Optional logger
+    content.vb: Public Sub New(windowSizeNanos As Long = 5000000000, slideIntervalNanos As Long = 0, maxWindowEvents As Integer = 10000, graph As TemporalGraphStorage = Nothing, logger As ILogger = Nothing)
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.#ctor*
+  nameWithType.vb: TemporalPatternDetector.New(Long, Long, Integer, TemporalGraphStorage, ILogger)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.New(Long, Long, Integer, Orleans.GpuBridge.Runtime.Temporal.Graph.TemporalGraphStorage, Microsoft.Extensions.Logging.ILogger)
+  name.vb: New(Long, Long, Integer, TemporalGraphStorage, ILogger)
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.RegisterPattern(Orleans.GpuBridge.Runtime.Temporal.Patterns.ITemporalPattern)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.RegisterPattern(Orleans.GpuBridge.Runtime.Temporal.Patterns.ITemporalPattern)
+  id: RegisterPattern(Orleans.GpuBridge.Runtime.Temporal.Patterns.ITemporalPattern)
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector
+  langs:
+  - csharp
+  - vb
+  name: RegisterPattern(ITemporalPattern)
+  nameWithType: TemporalPatternDetector.RegisterPattern(ITemporalPattern)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.RegisterPattern(Orleans.GpuBridge.Runtime.Temporal.Patterns.ITemporalPattern)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/TemporalPatternDetector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RegisterPattern
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/TemporalPatternDetector.cs
+    startLine: 93
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Registers a pattern for detection.
+  example: []
+  syntax:
+    content: public void RegisterPattern(ITemporalPattern pattern)
+    parameters:
+    - id: pattern
+      type: Orleans.GpuBridge.Runtime.Temporal.Patterns.ITemporalPattern
+    content.vb: Public Sub RegisterPattern(pattern As ITemporalPattern)
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.RegisterPattern*
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.UnregisterPattern(System.String)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.UnregisterPattern(System.String)
+  id: UnregisterPattern(System.String)
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector
+  langs:
+  - csharp
+  - vb
+  name: UnregisterPattern(string)
+  nameWithType: TemporalPatternDetector.UnregisterPattern(string)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.UnregisterPattern(string)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/TemporalPatternDetector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: UnregisterPattern
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/TemporalPatternDetector.cs
+    startLine: 112
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Unregisters a pattern.
+  example: []
+  syntax:
+    content: public bool UnregisterPattern(string patternId)
+    parameters:
+    - id: patternId
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Function UnregisterPattern(patternId As String) As Boolean
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.UnregisterPattern*
+  nameWithType.vb: TemporalPatternDetector.UnregisterPattern(String)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.UnregisterPattern(String)
+  name.vb: UnregisterPattern(String)
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.ProcessEventAsync(Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.ProcessEventAsync(Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent,System.Threading.CancellationToken)
+  id: ProcessEventAsync(Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector
+  langs:
+  - csharp
+  - vb
+  name: ProcessEventAsync(TemporalEvent, CancellationToken)
+  nameWithType: TemporalPatternDetector.ProcessEventAsync(TemporalEvent, CancellationToken)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.ProcessEventAsync(Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/TemporalPatternDetector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ProcessEventAsync
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/TemporalPatternDetector.cs
+    startLine: 126
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Processes a new event and checks for pattern matches.
+  example: []
+  syntax:
+    content: public Task<IEnumerable<PatternMatch>> ProcessEventAsync(TemporalEvent evt, CancellationToken ct = default)
+    parameters:
+    - id: evt
+      type: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternMatch}}
+    content.vb: Public Function ProcessEventAsync(evt As TemporalEvent, ct As CancellationToken = Nothing) As Task(Of IEnumerable(Of PatternMatch))
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.ProcessEventAsync*
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.GetStatistics
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.GetStatistics
+  id: GetStatistics
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector
+  langs:
+  - csharp
+  - vb
+  name: GetStatistics()
+  nameWithType: TemporalPatternDetector.GetStatistics()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.GetStatistics()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/TemporalPatternDetector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetStatistics
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/TemporalPatternDetector.cs
+    startLine: 241
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Gets statistics about pattern detection.
+  example: []
+  syntax:
+    content: public PatternDetectionStatistics GetStatistics()
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternDetectionStatistics
+    content.vb: Public Function GetStatistics() As PatternDetectionStatistics
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.GetStatistics*
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.Clear
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.Clear
+  id: Clear
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector
+  langs:
+  - csharp
+  - vb
+  name: Clear()
+  nameWithType: TemporalPatternDetector.Clear()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.Clear()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/TemporalPatternDetector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Clear
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/TemporalPatternDetector.cs
+    startLine: 266
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Clears all events and matches.
+  example: []
+  syntax:
+    content: public void Clear()
+    content.vb: Public Sub Clear()
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.Clear*
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.ToString
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.ToString
+  id: ToString
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: TemporalPatternDetector.ToString()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.ToString()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/Patterns/TemporalPatternDetector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ToString
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/Patterns/TemporalPatternDetector.cs
+    startLine: 277
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  summary: Returns a string that represents the current object.
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+      description: A string that represents the current object.
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.Object.ToString
+  overload: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.ToString*
+references:
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  commentId: N:Orleans.GpuBridge.Runtime.Temporal.Patterns
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  nameWithType: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns
+    name: Patterns
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns
+    name: Patterns
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.WindowEventCount*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.WindowEventCount
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_TemporalPatternDetector_WindowEventCount
+  name: WindowEventCount
+  nameWithType: TemporalPatternDetector.WindowEventCount
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.WindowEventCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.RegisteredPatternCount*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.RegisteredPatternCount
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_TemporalPatternDetector_RegisteredPatternCount
+  name: RegisteredPatternCount
+  nameWithType: TemporalPatternDetector.RegisteredPatternCount
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.RegisteredPatternCount
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.RecentMatches*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.RecentMatches
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_TemporalPatternDetector_RecentMatches
+  name: RecentMatches
+  nameWithType: TemporalPatternDetector.RecentMatches
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.RecentMatches
+- uid: System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternMatch}
+  commentId: T:System.Collections.Generic.IReadOnlyList{Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternMatch}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<PatternMatch>
+  nameWithType: IReadOnlyList<PatternMatch>
+  fullName: System.Collections.Generic.IReadOnlyList<Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternMatch>
+  nameWithType.vb: IReadOnlyList(Of PatternMatch)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternMatch)
+  name.vb: IReadOnlyList(Of PatternMatch)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternMatch
+    name: PatternMatch
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternMatch.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternMatch
+    name: PatternMatch
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternMatch.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.WindowSizeNanos*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.WindowSizeNanos
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_TemporalPatternDetector_WindowSizeNanos
+  name: WindowSizeNanos
+  nameWithType: TemporalPatternDetector.WindowSizeNanos
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.WindowSizeNanos
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.#ctor
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_TemporalPatternDetector__ctor_System_Int64_System_Int64_System_Int32_Orleans_GpuBridge_Runtime_Temporal_Graph_TemporalGraphStorage_Microsoft_Extensions_Logging_ILogger_
+  name: TemporalPatternDetector
+  nameWithType: TemporalPatternDetector.TemporalPatternDetector
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.TemporalPatternDetector
+  nameWithType.vb: TemporalPatternDetector.New
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.New
+  name.vb: New
+- uid: Orleans.GpuBridge.Runtime.Temporal.Graph.TemporalGraphStorage
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.Graph.TemporalGraphStorage
+  parent: Orleans.GpuBridge.Runtime.Temporal.Graph
+  href: Orleans.GpuBridge.Runtime.Temporal.Graph.TemporalGraphStorage.html
+  name: TemporalGraphStorage
+  nameWithType: TemporalGraphStorage
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Graph.TemporalGraphStorage
+- uid: Microsoft.Extensions.Logging.ILogger
+  commentId: T:Microsoft.Extensions.Logging.ILogger
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  name: ILogger
+  nameWithType: ILogger
+  fullName: Microsoft.Extensions.Logging.ILogger
+- uid: Orleans.GpuBridge.Runtime.Temporal.Graph
+  commentId: N:Orleans.GpuBridge.Runtime.Temporal.Graph
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Temporal.Graph
+  nameWithType: Orleans.GpuBridge.Runtime.Temporal.Graph
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Graph
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Graph
+    name: Graph
+    href: Orleans.GpuBridge.Runtime.Temporal.Graph.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Graph
+    name: Graph
+    href: Orleans.GpuBridge.Runtime.Temporal.Graph.html
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.RegisterPattern*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.RegisterPattern
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_TemporalPatternDetector_RegisterPattern_Orleans_GpuBridge_Runtime_Temporal_Patterns_ITemporalPattern_
+  name: RegisterPattern
+  nameWithType: TemporalPatternDetector.RegisterPattern
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.RegisterPattern
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.ITemporalPattern
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.Patterns.ITemporalPattern
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.ITemporalPattern.html
+  name: ITemporalPattern
+  nameWithType: ITemporalPattern
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.ITemporalPattern
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.UnregisterPattern*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.UnregisterPattern
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_TemporalPatternDetector_UnregisterPattern_System_String_
+  name: UnregisterPattern
+  nameWithType: TemporalPatternDetector.UnregisterPattern
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.UnregisterPattern
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.ProcessEventAsync*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.ProcessEventAsync
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_TemporalPatternDetector_ProcessEventAsync_Orleans_GpuBridge_Runtime_Temporal_Patterns_TemporalEvent_System_Threading_CancellationToken_
+  name: ProcessEventAsync
+  nameWithType: TemporalPatternDetector.ProcessEventAsync
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.ProcessEventAsync
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent.html
+  name: TemporalEvent
+  nameWithType: TemporalEvent
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalEvent
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternMatch}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternMatch}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<PatternMatch>>
+  nameWithType: Task<IEnumerable<PatternMatch>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternMatch>>
+  nameWithType.vb: Task(Of IEnumerable(Of PatternMatch))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternMatch))
+  name.vb: Task(Of IEnumerable(Of PatternMatch))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternMatch
+    name: PatternMatch
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternMatch.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternMatch
+    name: PatternMatch
+    href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternMatch.html
+  - name: )
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.GetStatistics*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.GetStatistics
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_TemporalPatternDetector_GetStatistics
+  name: GetStatistics
+  nameWithType: TemporalPatternDetector.GetStatistics
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.GetStatistics
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternDetectionStatistics
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternDetectionStatistics
+  parent: Orleans.GpuBridge.Runtime.Temporal.Patterns
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternDetectionStatistics.html
+  name: PatternDetectionStatistics
+  nameWithType: PatternDetectionStatistics
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.PatternDetectionStatistics
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.Clear*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.Clear
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_TemporalPatternDetector_Clear
+  name: Clear
+  nameWithType: TemporalPatternDetector.Clear
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.Clear
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.ToString*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.ToString
+  href: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.html#Orleans_GpuBridge_Runtime_Temporal_Patterns_TemporalPatternDetector_ToString
+  name: ToString
+  nameWithType: TemporalPatternDetector.ToString
+  fullName: Orleans.GpuBridge.Runtime.Temporal.Patterns.TemporalPatternDetector.ToString

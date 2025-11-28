@@ -1,0 +1,959 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+  commentId: T:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+  id: GpuCapacity
+  parent: Orleans.GpuBridge.Abstractions.Capacity
+  children:
+  - Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.#ctor(System.Int32,System.Int64,System.Int64,System.Int32,System.String,System.DateTime)
+  - Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.AvailableMemoryMB
+  - Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.Backend
+  - Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.DeviceCount
+  - Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.HasCapacity
+  - Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.IsStale
+  - Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.LastUpdated
+  - Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.MemoryUsagePercent
+  - Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.None
+  - Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.QueueDepth
+  - Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.ToString
+  - Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.TotalMemoryMB
+  - Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.WithUpdate(System.Int64,System.Int32)
+  langs:
+  - csharp
+  - vb
+  name: GpuCapacity
+  nameWithType: GpuCapacity
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GpuCapacity
+    path: ../src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+    startLine: 13
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Capacity
+  summary: Represents GPU capacity information for a silo
+  example: []
+  syntax:
+    content: >-
+      [GenerateSerializer]
+
+      public sealed record GpuCapacity : IEquatable<GpuCapacity>
+    content.vb: >-
+      <GenerateSerializer>
+
+      Public NotInheritable Class GpuCapacity Implements IEquatable(Of GpuCapacity)
+  inheritance:
+  - System.Object
+  implements:
+  - System.IEquatable{Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  attributes:
+  - type: Orleans.GenerateSerializerAttribute
+    ctor: Orleans.GenerateSerializerAttribute.#ctor
+    arguments: []
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.#ctor(System.Int32,System.Int64,System.Int64,System.Int32,System.String,System.DateTime)
+  commentId: M:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.#ctor(System.Int32,System.Int64,System.Int64,System.Int32,System.String,System.DateTime)
+  id: '#ctor(System.Int32,System.Int64,System.Int64,System.Int32,System.String,System.DateTime)'
+  parent: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+  langs:
+  - csharp
+  - vb
+  name: GpuCapacity(int, long, long, int, string, DateTime)
+  nameWithType: GpuCapacity.GpuCapacity(int, long, long, int, string, DateTime)
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.GpuCapacity(int, long, long, int, string, System.DateTime)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+    startLine: 13
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Capacity
+  summary: Represents GPU capacity information for a silo
+  example: []
+  syntax:
+    content: public GpuCapacity(int DeviceCount, long TotalMemoryMB, long AvailableMemoryMB, int QueueDepth, string Backend, DateTime LastUpdated)
+    parameters:
+    - id: DeviceCount
+      type: System.Int32
+      description: Number of GPU devices available
+    - id: TotalMemoryMB
+      type: System.Int64
+      description: Total GPU memory in MB across all devices
+    - id: AvailableMemoryMB
+      type: System.Int64
+      description: Currently available GPU memory in MB
+    - id: QueueDepth
+      type: System.Int32
+      description: Number of pending GPU operations
+    - id: Backend
+      type: System.String
+      description: GPU backend type (CUDA, OpenCL, etc.)
+    - id: LastUpdated
+      type: System.DateTime
+      description: Timestamp of last capacity update
+    content.vb: Public Sub New(DeviceCount As Integer, TotalMemoryMB As Long, AvailableMemoryMB As Long, QueueDepth As Integer, Backend As String, LastUpdated As Date)
+  overload: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.#ctor*
+  nameWithType.vb: GpuCapacity.New(Integer, Long, Long, Integer, String, Date)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.New(Integer, Long, Long, Integer, String, Date)
+  name.vb: New(Integer, Long, Long, Integer, String, Date)
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.DeviceCount
+  commentId: P:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.DeviceCount
+  id: DeviceCount
+  parent: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+  langs:
+  - csharp
+  - vb
+  name: DeviceCount
+  nameWithType: GpuCapacity.DeviceCount
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.DeviceCount
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DeviceCount
+    path: ../src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+    startLine: 15
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Capacity
+  summary: Number of GPU devices available
+  example: []
+  syntax:
+    content: public int DeviceCount { get; init; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property DeviceCount As Integer
+  overload: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.DeviceCount*
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.TotalMemoryMB
+  commentId: P:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.TotalMemoryMB
+  id: TotalMemoryMB
+  parent: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+  langs:
+  - csharp
+  - vb
+  name: TotalMemoryMB
+  nameWithType: GpuCapacity.TotalMemoryMB
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.TotalMemoryMB
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TotalMemoryMB
+    path: ../src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+    startLine: 16
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Capacity
+  summary: Total GPU memory in MB across all devices
+  example: []
+  syntax:
+    content: public long TotalMemoryMB { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property TotalMemoryMB As Long
+  overload: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.TotalMemoryMB*
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.AvailableMemoryMB
+  commentId: P:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.AvailableMemoryMB
+  id: AvailableMemoryMB
+  parent: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+  langs:
+  - csharp
+  - vb
+  name: AvailableMemoryMB
+  nameWithType: GpuCapacity.AvailableMemoryMB
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.AvailableMemoryMB
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: AvailableMemoryMB
+    path: ../src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+    startLine: 17
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Capacity
+  summary: Currently available GPU memory in MB
+  example: []
+  syntax:
+    content: public long AvailableMemoryMB { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property AvailableMemoryMB As Long
+  overload: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.AvailableMemoryMB*
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.QueueDepth
+  commentId: P:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.QueueDepth
+  id: QueueDepth
+  parent: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+  langs:
+  - csharp
+  - vb
+  name: QueueDepth
+  nameWithType: GpuCapacity.QueueDepth
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.QueueDepth
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: QueueDepth
+    path: ../src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+    startLine: 18
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Capacity
+  summary: Number of pending GPU operations
+  example: []
+  syntax:
+    content: public int QueueDepth { get; init; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property QueueDepth As Integer
+  overload: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.QueueDepth*
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.Backend
+  commentId: P:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.Backend
+  id: Backend
+  parent: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+  langs:
+  - csharp
+  - vb
+  name: Backend
+  nameWithType: GpuCapacity.Backend
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.Backend
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Backend
+    path: ../src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+    startLine: 19
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Capacity
+  summary: GPU backend type (CUDA, OpenCL, etc.)
+  example: []
+  syntax:
+    content: public string Backend { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Backend As String
+  overload: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.Backend*
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.LastUpdated
+  commentId: P:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.LastUpdated
+  id: LastUpdated
+  parent: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+  langs:
+  - csharp
+  - vb
+  name: LastUpdated
+  nameWithType: GpuCapacity.LastUpdated
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.LastUpdated
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: LastUpdated
+    path: ../src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+    startLine: 20
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Capacity
+  summary: Timestamp of last capacity update
+  example: []
+  syntax:
+    content: public DateTime LastUpdated { get; init; }
+    parameters: []
+    return:
+      type: System.DateTime
+    content.vb: Public Property LastUpdated As Date
+  overload: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.LastUpdated*
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.MemoryUsagePercent
+  commentId: P:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.MemoryUsagePercent
+  id: MemoryUsagePercent
+  parent: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+  langs:
+  - csharp
+  - vb
+  name: MemoryUsagePercent
+  nameWithType: GpuCapacity.MemoryUsagePercent
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.MemoryUsagePercent
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MemoryUsagePercent
+    path: ../src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+    startLine: 25
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Capacity
+  summary: Gets the percentage of memory currently in use
+  example: []
+  syntax:
+    content: public double MemoryUsagePercent { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public ReadOnly Property MemoryUsagePercent As Double
+  overload: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.MemoryUsagePercent*
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.HasCapacity
+  commentId: P:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.HasCapacity
+  id: HasCapacity
+  parent: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+  langs:
+  - csharp
+  - vb
+  name: HasCapacity
+  nameWithType: GpuCapacity.HasCapacity
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.HasCapacity
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: HasCapacity
+    path: ../src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+    startLine: 32
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Capacity
+  summary: Gets whether this silo has GPU capacity available
+  example: []
+  syntax:
+    content: public bool HasCapacity { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property HasCapacity As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.HasCapacity*
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.IsStale
+  commentId: P:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.IsStale
+  id: IsStale
+  parent: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+  langs:
+  - csharp
+  - vb
+  name: IsStale
+  nameWithType: GpuCapacity.IsStale
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.IsStale
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IsStale
+    path: ../src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+    startLine: 37
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Capacity
+  summary: Gets whether the capacity data is stale (older than 2 minutes)
+  example: []
+  syntax:
+    content: public bool IsStale { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsStale As Boolean
+  overload: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.IsStale*
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.None
+  commentId: P:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.None
+  id: None
+  parent: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+  langs:
+  - csharp
+  - vb
+  name: None
+  nameWithType: GpuCapacity.None
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.None
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: None
+    path: ../src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+    startLine: 42
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Capacity
+  summary: Creates a capacity instance representing no GPU available
+  example: []
+  syntax:
+    content: public static GpuCapacity None { get; }
+    parameters: []
+    return:
+      type: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+    content.vb: Public Shared ReadOnly Property None As GpuCapacity
+  overload: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.None*
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.WithUpdate(System.Int64,System.Int32)
+  commentId: M:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.WithUpdate(System.Int64,System.Int32)
+  id: WithUpdate(System.Int64,System.Int32)
+  parent: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+  langs:
+  - csharp
+  - vb
+  name: WithUpdate(long, int)
+  nameWithType: GpuCapacity.WithUpdate(long, int)
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.WithUpdate(long, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: WithUpdate
+    path: ../src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+    startLine: 53
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Capacity
+  summary: Creates an updated capacity with new available memory and queue depth
+  example: []
+  syntax:
+    content: public GpuCapacity WithUpdate(long availableMemoryMB, int queueDepth)
+    parameters:
+    - id: availableMemoryMB
+      type: System.Int64
+    - id: queueDepth
+      type: System.Int32
+    return:
+      type: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+    content.vb: Public Function WithUpdate(availableMemoryMB As Long, queueDepth As Integer) As GpuCapacity
+  overload: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.WithUpdate*
+  nameWithType.vb: GpuCapacity.WithUpdate(Long, Integer)
+  fullName.vb: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.WithUpdate(Long, Integer)
+  name.vb: WithUpdate(Long, Integer)
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.ToString
+  commentId: M:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.ToString
+  id: ToString
+  parent: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: GpuCapacity.ToString()
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.ToString()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ToString
+    path: ../src/Orleans.GpuBridge.Abstractions/Capacity/GpuCapacity.cs
+    startLine: 63
+  assemblies:
+  - Orleans.GpuBridge.Abstractions
+  namespace: Orleans.GpuBridge.Abstractions.Capacity
+  summary: Returns a human-readable string representation
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.Object.ToString
+  overload: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.ToString*
+references:
+- uid: Orleans.GpuBridge.Abstractions.Capacity
+  commentId: N:Orleans.GpuBridge.Abstractions.Capacity
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Capacity
+  nameWithType: Orleans.GpuBridge.Abstractions.Capacity
+  fullName: Orleans.GpuBridge.Abstractions.Capacity
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Capacity
+    name: Capacity
+    href: Orleans.GpuBridge.Abstractions.Capacity.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Capacity
+    name: Capacity
+    href: Orleans.GpuBridge.Abstractions.Capacity.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IEquatable{Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity}
+  commentId: T:System.IEquatable{Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<GpuCapacity>
+  nameWithType: IEquatable<GpuCapacity>
+  fullName: System.IEquatable<Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity>
+  nameWithType.vb: IEquatable(Of GpuCapacity)
+  fullName.vb: System.IEquatable(Of Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity)
+  name.vb: IEquatable(Of GpuCapacity)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+    name: GpuCapacity
+    href: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+    name: GpuCapacity
+    href: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.html
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.#ctor
+  href: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.html#Orleans_GpuBridge_Abstractions_Capacity_GpuCapacity__ctor_System_Int32_System_Int64_System_Int64_System_Int32_System_String_System_DateTime_
+  name: GpuCapacity
+  nameWithType: GpuCapacity.GpuCapacity
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.GpuCapacity
+  nameWithType.vb: GpuCapacity.New
+  fullName.vb: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.New
+  name.vb: New
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.DeviceCount*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.DeviceCount
+  href: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.html#Orleans_GpuBridge_Abstractions_Capacity_GpuCapacity_DeviceCount
+  name: DeviceCount
+  nameWithType: GpuCapacity.DeviceCount
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.DeviceCount
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.TotalMemoryMB*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.TotalMemoryMB
+  href: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.html#Orleans_GpuBridge_Abstractions_Capacity_GpuCapacity_TotalMemoryMB
+  name: TotalMemoryMB
+  nameWithType: GpuCapacity.TotalMemoryMB
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.TotalMemoryMB
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.AvailableMemoryMB*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.AvailableMemoryMB
+  href: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.html#Orleans_GpuBridge_Abstractions_Capacity_GpuCapacity_AvailableMemoryMB
+  name: AvailableMemoryMB
+  nameWithType: GpuCapacity.AvailableMemoryMB
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.AvailableMemoryMB
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.QueueDepth*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.QueueDepth
+  href: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.html#Orleans_GpuBridge_Abstractions_Capacity_GpuCapacity_QueueDepth
+  name: QueueDepth
+  nameWithType: GpuCapacity.QueueDepth
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.QueueDepth
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.Backend*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.Backend
+  href: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.html#Orleans_GpuBridge_Abstractions_Capacity_GpuCapacity_Backend
+  name: Backend
+  nameWithType: GpuCapacity.Backend
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.Backend
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.LastUpdated*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.LastUpdated
+  href: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.html#Orleans_GpuBridge_Abstractions_Capacity_GpuCapacity_LastUpdated
+  name: LastUpdated
+  nameWithType: GpuCapacity.LastUpdated
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.LastUpdated
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.MemoryUsagePercent*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.MemoryUsagePercent
+  href: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.html#Orleans_GpuBridge_Abstractions_Capacity_GpuCapacity_MemoryUsagePercent
+  name: MemoryUsagePercent
+  nameWithType: GpuCapacity.MemoryUsagePercent
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.MemoryUsagePercent
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.HasCapacity*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.HasCapacity
+  href: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.html#Orleans_GpuBridge_Abstractions_Capacity_GpuCapacity_HasCapacity
+  name: HasCapacity
+  nameWithType: GpuCapacity.HasCapacity
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.HasCapacity
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.IsStale*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.IsStale
+  href: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.html#Orleans_GpuBridge_Abstractions_Capacity_GpuCapacity_IsStale
+  name: IsStale
+  nameWithType: GpuCapacity.IsStale
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.IsStale
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.None*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.None
+  href: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.html#Orleans_GpuBridge_Abstractions_Capacity_GpuCapacity_None
+  name: None
+  nameWithType: GpuCapacity.None
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.None
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+  commentId: T:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+  parent: Orleans.GpuBridge.Abstractions.Capacity
+  href: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.html
+  name: GpuCapacity
+  nameWithType: GpuCapacity
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.WithUpdate*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.WithUpdate
+  href: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.html#Orleans_GpuBridge_Abstractions_Capacity_GpuCapacity_WithUpdate_System_Int64_System_Int32_
+  name: WithUpdate
+  nameWithType: GpuCapacity.WithUpdate
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.WithUpdate
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.ToString*
+  commentId: Overload:Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.ToString
+  href: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.html#Orleans_GpuBridge_Abstractions_Capacity_GpuCapacity_ToString
+  name: ToString
+  nameWithType: GpuCapacity.ToString
+  fullName: Orleans.GpuBridge.Abstractions.Capacity.GpuCapacity.ToString

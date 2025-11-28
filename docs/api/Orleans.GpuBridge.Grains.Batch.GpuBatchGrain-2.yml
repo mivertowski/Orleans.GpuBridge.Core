@@ -1,0 +1,1570 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2
+  commentId: T:Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2
+  id: GpuBatchGrain`2
+  parent: Orleans.GpuBridge.Grains.Batch
+  children:
+  - Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Grains.Batch.GpuBatchGrain{`0,`1}})
+  - Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.ExecuteAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  - Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.ExecuteWithCallbackAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Grains.Batch.IGpuResultObserver{`1},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  - Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.OnActivateAsync(System.Threading.CancellationToken)
+  - Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.ProcessBatchAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  langs:
+  - csharp
+  - vb
+  name: GpuBatchGrain<TIn, TOut>
+  nameWithType: GpuBatchGrain<TIn, TOut>
+  fullName: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain<TIn, TOut>
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Batch/GpuBatchGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GpuBatchGrain
+    path: ../src/Orleans.GpuBridge.Grains/Batch/GpuBatchGrain.cs
+    startLine: 18
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Batch
+  summary: GPU batch processing grain with placement strategy
+  example: []
+  syntax:
+    content: >-
+      [StatelessWorker(1)]
+
+      [Reentrant]
+
+      public sealed class GpuBatchGrain<TIn, TOut> : Grain, IGrainBase, IGpuBatchGrain<TIn, TOut>, IGrainWithGuidCompoundKey, IGrain, IAddressable where TIn : notnull where TOut : notnull
+    typeParameters:
+    - id: TIn
+    - id: TOut
+    content.vb: >-
+      <StatelessWorker(1)>
+
+      <Reentrant>
+
+      Public NotInheritable Class GpuBatchGrain(Of TIn, TOut) Inherits Grain Implements IGrainBase, IGpuBatchGrain(Of TIn, TOut), IGrainWithGuidCompoundKey, IGrain, IAddressable
+  inheritance:
+  - System.Object
+  - Orleans.Grain
+  implements:
+  - Orleans.IGrainBase
+  - Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain{{TIn},{TOut}}
+  - Orleans.IGrainWithGuidCompoundKey
+  - Orleans.IGrain
+  - Orleans.Runtime.IAddressable
+  inheritedMembers:
+  - Orleans.Grain.OnDeactivateAsync(Orleans.DeactivationReason,System.Threading.CancellationToken)
+  - Orleans.Grain.GrainContext
+  - Orleans.Grain.GrainReference
+  - Orleans.Grain.IdentityString
+  - Orleans.Grain.RuntimeIdentity
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  attributes:
+  - type: Orleans.Concurrency.StatelessWorkerAttribute
+    ctor: Orleans.Concurrency.StatelessWorkerAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 1
+  - type: Orleans.Concurrency.ReentrantAttribute
+    ctor: Orleans.Concurrency.ReentrantAttribute.#ctor
+    arguments: []
+  nameWithType.vb: GpuBatchGrain(Of TIn, TOut)
+  fullName.vb: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain(Of TIn, TOut)
+  name.vb: GpuBatchGrain(Of TIn, TOut)
+- uid: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Grains.Batch.GpuBatchGrain{`0,`1}})
+  commentId: M:Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Grains.Batch.GpuBatchGrain{`0,`1}})
+  id: '#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Grains.Batch.GpuBatchGrain{`0,`1}})'
+  parent: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2
+  langs:
+  - csharp
+  - vb
+  name: GpuBatchGrain(ILogger<GpuBatchGrain<TIn, TOut>>)
+  nameWithType: GpuBatchGrain<TIn, TOut>.GpuBatchGrain(ILogger<GpuBatchGrain<TIn, TOut>>)
+  fullName: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain<TIn, TOut>.GpuBatchGrain(Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Grains.Batch.GpuBatchGrain<TIn, TOut>>)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Batch/GpuBatchGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Grains/Batch/GpuBatchGrain.cs
+    startLine: 30
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Batch
+  syntax:
+    content: public GpuBatchGrain(ILogger<GpuBatchGrain<TIn, TOut>> logger)
+    parameters:
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2}
+    content.vb: Public Sub New(logger As ILogger(Of GpuBatchGrain(Of TIn, TOut)))
+  overload: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.#ctor*
+  nameWithType.vb: GpuBatchGrain(Of TIn, TOut).New(ILogger(Of GpuBatchGrain(Of TIn, TOut)))
+  fullName.vb: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain(Of TIn, TOut).New(Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Grains.Batch.GpuBatchGrain(Of TIn, TOut)))
+  name.vb: New(ILogger(Of GpuBatchGrain(Of TIn, TOut)))
+- uid: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.OnActivateAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.OnActivateAsync(System.Threading.CancellationToken)
+  id: OnActivateAsync(System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2
+  langs:
+  - csharp
+  - vb
+  name: OnActivateAsync(CancellationToken)
+  nameWithType: GpuBatchGrain<TIn, TOut>.OnActivateAsync(CancellationToken)
+  fullName: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain<TIn, TOut>.OnActivateAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Batch/GpuBatchGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: OnActivateAsync
+    path: ../src/Orleans.GpuBridge.Grains/Batch/GpuBatchGrain.cs
+    startLine: 38
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Batch
+  summary: >-
+    This method is called at the end of the process of activating a grain.
+
+    It is called before any messages have been dispatched to the grain.
+
+    For grains with declared persistent state, this method is called after the State property has been populated.
+  example: []
+  syntax:
+    content: public override Task OnActivateAsync(CancellationToken ct)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Overrides Function OnActivateAsync(ct As CancellationToken) As Task
+  overridden: Orleans.Grain.OnActivateAsync(System.Threading.CancellationToken)
+  overload: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.OnActivateAsync*
+  nameWithType.vb: GpuBatchGrain(Of TIn, TOut).OnActivateAsync(CancellationToken)
+  fullName.vb: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain(Of TIn, TOut).OnActivateAsync(System.Threading.CancellationToken)
+- uid: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.ExecuteAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  commentId: M:Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.ExecuteAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  id: ExecuteAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  parent: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2
+  langs:
+  - csharp
+  - vb
+  name: ExecuteAsync(IReadOnlyList<TIn>, GpuExecutionHints?)
+  nameWithType: GpuBatchGrain<TIn, TOut>.ExecuteAsync(IReadOnlyList<TIn>, GpuExecutionHints?)
+  fullName: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain<TIn, TOut>.ExecuteAsync(System.Collections.Generic.IReadOnlyList<TIn>, Orleans.GpuBridge.Abstractions.GpuExecutionHints?)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Batch/GpuBatchGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ExecuteAsync
+    path: ../src/Orleans.GpuBridge.Grains/Batch/GpuBatchGrain.cs
+    startLine: 57
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Batch
+  summary: Executes a batch of items on the GPU
+  example: []
+  syntax:
+    content: public Task<GpuBatchResult<TOut>> ExecuteAsync(IReadOnlyList<TIn> batch, GpuExecutionHints? hints = null)
+    parameters:
+    - id: batch
+      type: System.Collections.Generic.IReadOnlyList{{TIn}}
+    - id: hints
+      type: Orleans.GpuBridge.Abstractions.GpuExecutionHints
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Grains.Batch.GpuBatchResult{{TOut}}}
+    content.vb: Public Function ExecuteAsync(batch As IReadOnlyList(Of TIn), hints As GpuExecutionHints = Nothing) As Task(Of GpuBatchResult(Of TOut))
+  overload: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.ExecuteAsync*
+  implements:
+  - Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain{{TIn},{TOut}}.ExecuteAsync(System.Collections.Generic.IReadOnlyList{{TIn}},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  nameWithType.vb: GpuBatchGrain(Of TIn, TOut).ExecuteAsync(IReadOnlyList(Of TIn), GpuExecutionHints)
+  fullName.vb: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain(Of TIn, TOut).ExecuteAsync(System.Collections.Generic.IReadOnlyList(Of TIn), Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  name.vb: ExecuteAsync(IReadOnlyList(Of TIn), GpuExecutionHints)
+- uid: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.ExecuteWithCallbackAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Grains.Batch.IGpuResultObserver{`1},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  commentId: M:Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.ExecuteWithCallbackAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Grains.Batch.IGpuResultObserver{`1},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  id: ExecuteWithCallbackAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Grains.Batch.IGpuResultObserver{`1},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  parent: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2
+  langs:
+  - csharp
+  - vb
+  name: ExecuteWithCallbackAsync(IReadOnlyList<TIn>, IGpuResultObserver<TOut>, GpuExecutionHints?)
+  nameWithType: GpuBatchGrain<TIn, TOut>.ExecuteWithCallbackAsync(IReadOnlyList<TIn>, IGpuResultObserver<TOut>, GpuExecutionHints?)
+  fullName: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain<TIn, TOut>.ExecuteWithCallbackAsync(System.Collections.Generic.IReadOnlyList<TIn>, Orleans.GpuBridge.Grains.Batch.IGpuResultObserver<TOut>, Orleans.GpuBridge.Abstractions.GpuExecutionHints?)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Batch/GpuBatchGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ExecuteWithCallbackAsync
+    path: ../src/Orleans.GpuBridge.Grains/Batch/GpuBatchGrain.cs
+    startLine: 199
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Batch
+  summary: Executes a batch with a callback observer
+  example: []
+  syntax:
+    content: public Task<GpuBatchResult<TOut>> ExecuteWithCallbackAsync(IReadOnlyList<TIn> batch, IGpuResultObserver<TOut> observer, GpuExecutionHints? hints = null)
+    parameters:
+    - id: batch
+      type: System.Collections.Generic.IReadOnlyList{{TIn}}
+    - id: observer
+      type: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver{{TOut}}
+    - id: hints
+      type: Orleans.GpuBridge.Abstractions.GpuExecutionHints
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Grains.Batch.GpuBatchResult{{TOut}}}
+    content.vb: Public Function ExecuteWithCallbackAsync(batch As IReadOnlyList(Of TIn), observer As IGpuResultObserver(Of TOut), hints As GpuExecutionHints = Nothing) As Task(Of GpuBatchResult(Of TOut))
+  overload: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.ExecuteWithCallbackAsync*
+  implements:
+  - Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain{{TIn},{TOut}}.ExecuteWithCallbackAsync(System.Collections.Generic.IReadOnlyList{{TIn}},Orleans.GpuBridge.Grains.Batch.IGpuResultObserver{{TOut}},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  nameWithType.vb: GpuBatchGrain(Of TIn, TOut).ExecuteWithCallbackAsync(IReadOnlyList(Of TIn), IGpuResultObserver(Of TOut), GpuExecutionHints)
+  fullName.vb: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain(Of TIn, TOut).ExecuteWithCallbackAsync(System.Collections.Generic.IReadOnlyList(Of TIn), Orleans.GpuBridge.Grains.Batch.IGpuResultObserver(Of TOut), Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  name.vb: ExecuteWithCallbackAsync(IReadOnlyList(Of TIn), IGpuResultObserver(Of TOut), GpuExecutionHints)
+- uid: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.ProcessBatchAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  commentId: M:Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.ProcessBatchAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  id: ProcessBatchAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  parent: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2
+  langs:
+  - csharp
+  - vb
+  name: ProcessBatchAsync(IReadOnlyList<TIn>, GpuExecutionHints?)
+  nameWithType: GpuBatchGrain<TIn, TOut>.ProcessBatchAsync(IReadOnlyList<TIn>, GpuExecutionHints?)
+  fullName: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain<TIn, TOut>.ProcessBatchAsync(System.Collections.Generic.IReadOnlyList<TIn>, Orleans.GpuBridge.Abstractions.GpuExecutionHints?)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Batch/GpuBatchGrain.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ProcessBatchAsync
+    path: ../src/Orleans.GpuBridge.Grains/Batch/GpuBatchGrain.cs
+    startLine: 232
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Batch
+  summary: Processes a batch of items on the GPU (alias for ExecuteAsync)
+  example: []
+  syntax:
+    content: public Task<GpuBatchResult<TOut>> ProcessBatchAsync(IReadOnlyList<TIn> batch, GpuExecutionHints? hints = null)
+    parameters:
+    - id: batch
+      type: System.Collections.Generic.IReadOnlyList{{TIn}}
+    - id: hints
+      type: Orleans.GpuBridge.Abstractions.GpuExecutionHints
+    return:
+      type: System.Threading.Tasks.Task{Orleans.GpuBridge.Grains.Batch.GpuBatchResult{{TOut}}}
+    content.vb: Public Function ProcessBatchAsync(batch As IReadOnlyList(Of TIn), hints As GpuExecutionHints = Nothing) As Task(Of GpuBatchResult(Of TOut))
+  overload: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.ProcessBatchAsync*
+  implements:
+  - Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain{{TIn},{TOut}}.ProcessBatchAsync(System.Collections.Generic.IReadOnlyList{{TIn}},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  nameWithType.vb: GpuBatchGrain(Of TIn, TOut).ProcessBatchAsync(IReadOnlyList(Of TIn), GpuExecutionHints)
+  fullName.vb: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain(Of TIn, TOut).ProcessBatchAsync(System.Collections.Generic.IReadOnlyList(Of TIn), Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  name.vb: ProcessBatchAsync(IReadOnlyList(Of TIn), GpuExecutionHints)
+references:
+- uid: Orleans.GpuBridge.Grains.Batch
+  commentId: N:Orleans.GpuBridge.Grains.Batch
+  href: Orleans.html
+  name: Orleans.GpuBridge.Grains.Batch
+  nameWithType: Orleans.GpuBridge.Grains.Batch
+  fullName: Orleans.GpuBridge.Grains.Batch
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.Batch
+    name: Batch
+    href: Orleans.GpuBridge.Grains.Batch.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.Batch
+    name: Batch
+    href: Orleans.GpuBridge.Grains.Batch.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Orleans.Grain
+  commentId: T:Orleans.Grain
+  parent: Orleans
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain
+  name: Grain
+  nameWithType: Grain
+  fullName: Orleans.Grain
+- uid: Orleans.IGrainBase
+  commentId: T:Orleans.IGrainBase
+  parent: Orleans
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.igrainbase
+  name: IGrainBase
+  nameWithType: IGrainBase
+  fullName: Orleans.IGrainBase
+- uid: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain{{TIn},{TOut}}
+  commentId: T:Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain{`0,`1}
+  parent: Orleans.GpuBridge.Grains.Batch
+  definition: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain`2
+  href: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain-2.html
+  name: IGpuBatchGrain<TIn, TOut>
+  nameWithType: IGpuBatchGrain<TIn, TOut>
+  fullName: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain<TIn, TOut>
+  nameWithType.vb: IGpuBatchGrain(Of TIn, TOut)
+  fullName.vb: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain(Of TIn, TOut)
+  name.vb: IGpuBatchGrain(Of TIn, TOut)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain`2
+    name: IGpuBatchGrain
+    href: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain-2.html
+  - name: <
+  - name: TIn
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: '>'
+  spec.vb:
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain`2
+    name: IGpuBatchGrain
+    href: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TIn
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: )
+- uid: Orleans.IGrainWithGuidCompoundKey
+  commentId: T:Orleans.IGrainWithGuidCompoundKey
+  parent: Orleans
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.igrainwithguidcompoundkey
+  name: IGrainWithGuidCompoundKey
+  nameWithType: IGrainWithGuidCompoundKey
+  fullName: Orleans.IGrainWithGuidCompoundKey
+- uid: Orleans.IGrain
+  commentId: T:Orleans.IGrain
+  parent: Orleans
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.igrain
+  name: IGrain
+  nameWithType: IGrain
+  fullName: Orleans.IGrain
+- uid: Orleans.Runtime.IAddressable
+  commentId: T:Orleans.Runtime.IAddressable
+  parent: Orleans.Runtime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.runtime.iaddressable
+  name: IAddressable
+  nameWithType: IAddressable
+  fullName: Orleans.Runtime.IAddressable
+- uid: Orleans.Grain.OnDeactivateAsync(Orleans.DeactivationReason,System.Threading.CancellationToken)
+  commentId: M:Orleans.Grain.OnDeactivateAsync(Orleans.DeactivationReason,System.Threading.CancellationToken)
+  parent: Orleans.Grain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain.ondeactivateasync
+  name: OnDeactivateAsync(DeactivationReason, CancellationToken)
+  nameWithType: Grain.OnDeactivateAsync(DeactivationReason, CancellationToken)
+  fullName: Orleans.Grain.OnDeactivateAsync(Orleans.DeactivationReason, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Orleans.Grain.OnDeactivateAsync(Orleans.DeactivationReason,System.Threading.CancellationToken)
+    name: OnDeactivateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.grain.ondeactivateasync
+  - name: (
+  - uid: Orleans.DeactivationReason
+    name: DeactivationReason
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.deactivationreason
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.Grain.OnDeactivateAsync(Orleans.DeactivationReason,System.Threading.CancellationToken)
+    name: OnDeactivateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.grain.ondeactivateasync
+  - name: (
+  - uid: Orleans.DeactivationReason
+    name: DeactivationReason
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.deactivationreason
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Orleans.Grain.GrainContext
+  commentId: P:Orleans.Grain.GrainContext
+  parent: Orleans.Grain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain.graincontext
+  name: GrainContext
+  nameWithType: Grain.GrainContext
+  fullName: Orleans.Grain.GrainContext
+- uid: Orleans.Grain.GrainReference
+  commentId: P:Orleans.Grain.GrainReference
+  parent: Orleans.Grain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain.grainreference
+  name: GrainReference
+  nameWithType: Grain.GrainReference
+  fullName: Orleans.Grain.GrainReference
+- uid: Orleans.Grain.IdentityString
+  commentId: P:Orleans.Grain.IdentityString
+  parent: Orleans.Grain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain.identitystring
+  name: IdentityString
+  nameWithType: Grain.IdentityString
+  fullName: Orleans.Grain.IdentityString
+- uid: Orleans.Grain.RuntimeIdentity
+  commentId: P:Orleans.Grain.RuntimeIdentity
+  parent: Orleans.Grain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain.runtimeidentity
+  name: RuntimeIdentity
+  nameWithType: Grain.RuntimeIdentity
+  fullName: Orleans.Grain.RuntimeIdentity
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans
+  commentId: N:Orleans
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans
+  name: Orleans
+  nameWithType: Orleans
+  fullName: Orleans
+- uid: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain`2
+  commentId: T:Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain`2
+  href: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain-2.html
+  name: IGpuBatchGrain<TIn, TOut>
+  nameWithType: IGpuBatchGrain<TIn, TOut>
+  fullName: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain<TIn, TOut>
+  nameWithType.vb: IGpuBatchGrain(Of TIn, TOut)
+  fullName.vb: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain(Of TIn, TOut)
+  name.vb: IGpuBatchGrain(Of TIn, TOut)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain`2
+    name: IGpuBatchGrain
+    href: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain-2.html
+  - name: <
+  - name: TIn
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: '>'
+  spec.vb:
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain`2
+    name: IGpuBatchGrain
+    href: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TIn
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: )
+- uid: Orleans.Runtime
+  commentId: N:Orleans.Runtime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans
+  name: Orleans.Runtime
+  nameWithType: Orleans.Runtime
+  fullName: Orleans.Runtime
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans
+  - name: .
+  - uid: Orleans.Runtime
+    name: Runtime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans
+  - name: .
+  - uid: Orleans.Runtime
+    name: Runtime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime
+- uid: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.#ctor
+  href: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain-2.html#Orleans_GpuBridge_Grains_Batch_GpuBatchGrain_2__ctor_Microsoft_Extensions_Logging_ILogger_Orleans_GpuBridge_Grains_Batch_GpuBatchGrain__0__1___
+  name: GpuBatchGrain
+  nameWithType: GpuBatchGrain<TIn, TOut>.GpuBatchGrain
+  fullName: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain<TIn, TOut>.GpuBatchGrain
+  nameWithType.vb: GpuBatchGrain(Of TIn, TOut).New
+  fullName.vb: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain(Of TIn, TOut).New
+  name.vb: New
+- uid: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<GpuBatchGrain<TIn, TOut>>
+  nameWithType: ILogger<GpuBatchGrain<TIn, TOut>>
+  fullName: Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Grains.Batch.GpuBatchGrain<TIn, TOut>>
+  nameWithType.vb: ILogger(Of GpuBatchGrain(Of TIn, TOut))
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Grains.Batch.GpuBatchGrain(Of TIn, TOut))
+  name.vb: ILogger(Of GpuBatchGrain(Of TIn, TOut))
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2
+    name: GpuBatchGrain
+    href: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain-2.html
+  - name: <
+  - name: TIn
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2
+    name: GpuBatchGrain
+    href: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TIn
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: )
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: Orleans.Grain.OnActivateAsync(System.Threading.CancellationToken)
+  commentId: M:Orleans.Grain.OnActivateAsync(System.Threading.CancellationToken)
+  parent: Orleans.Grain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.grain.onactivateasync
+  name: OnActivateAsync(CancellationToken)
+  nameWithType: Grain.OnActivateAsync(CancellationToken)
+  fullName: Orleans.Grain.OnActivateAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Orleans.Grain.OnActivateAsync(System.Threading.CancellationToken)
+    name: OnActivateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.grain.onactivateasync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Orleans.Grain.OnActivateAsync(System.Threading.CancellationToken)
+    name: OnActivateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.grain.onactivateasync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.OnActivateAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.OnActivateAsync
+  href: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain-2.html#Orleans_GpuBridge_Grains_Batch_GpuBatchGrain_2_OnActivateAsync_System_Threading_CancellationToken_
+  name: OnActivateAsync
+  nameWithType: GpuBatchGrain<TIn, TOut>.OnActivateAsync
+  fullName: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain<TIn, TOut>.OnActivateAsync
+  nameWithType.vb: GpuBatchGrain(Of TIn, TOut).OnActivateAsync
+  fullName.vb: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain(Of TIn, TOut).OnActivateAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.ExecuteAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.ExecuteAsync
+  href: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain-2.html#Orleans_GpuBridge_Grains_Batch_GpuBatchGrain_2_ExecuteAsync_System_Collections_Generic_IReadOnlyList__0__Orleans_GpuBridge_Abstractions_GpuExecutionHints_
+  name: ExecuteAsync
+  nameWithType: GpuBatchGrain<TIn, TOut>.ExecuteAsync
+  fullName: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain<TIn, TOut>.ExecuteAsync
+  nameWithType.vb: GpuBatchGrain(Of TIn, TOut).ExecuteAsync
+  fullName.vb: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain(Of TIn, TOut).ExecuteAsync
+- uid: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain{{TIn},{TOut}}.ExecuteAsync(System.Collections.Generic.IReadOnlyList{{TIn}},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  commentId: M:Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain{`0,`1}.ExecuteAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  parent: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain{{TIn},{TOut}}
+  definition: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain`2.ExecuteAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  href: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain-2.html#Orleans_GpuBridge_Grains_Batch_IGpuBatchGrain_2_ExecuteAsync_System_Collections_Generic_IReadOnlyList__0__Orleans_GpuBridge_Abstractions_GpuExecutionHints_
+  name: ExecuteAsync(IReadOnlyList<TIn>, GpuExecutionHints)
+  nameWithType: IGpuBatchGrain<TIn, TOut>.ExecuteAsync(IReadOnlyList<TIn>, GpuExecutionHints)
+  fullName: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain<TIn, TOut>.ExecuteAsync(System.Collections.Generic.IReadOnlyList<TIn>, Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  nameWithType.vb: IGpuBatchGrain(Of TIn, TOut).ExecuteAsync(IReadOnlyList(Of TIn), GpuExecutionHints)
+  fullName.vb: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain(Of TIn, TOut).ExecuteAsync(System.Collections.Generic.IReadOnlyList(Of TIn), Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  name.vb: ExecuteAsync(IReadOnlyList(Of TIn), GpuExecutionHints)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain{`0,`1}.ExecuteAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+    name: ExecuteAsync
+    href: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain-2.html#Orleans_GpuBridge_Grains_Batch_IGpuBatchGrain_2_ExecuteAsync_System_Collections_Generic_IReadOnlyList__0__Orleans_GpuBridge_Abstractions_GpuExecutionHints_
+  - name: (
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: TIn
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.GpuExecutionHints
+    name: GpuExecutionHints
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain{`0,`1}.ExecuteAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+    name: ExecuteAsync
+    href: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain-2.html#Orleans_GpuBridge_Grains_Batch_IGpuBatchGrain_2_ExecuteAsync_System_Collections_Generic_IReadOnlyList__0__Orleans_GpuBridge_Abstractions_GpuExecutionHints_
+  - name: (
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TIn
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.GpuExecutionHints
+    name: GpuExecutionHints
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList{{TIn}}
+  commentId: T:System.Collections.Generic.IReadOnlyList{`0}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<TIn>
+  nameWithType: IReadOnlyList<TIn>
+  fullName: System.Collections.Generic.IReadOnlyList<TIn>
+  nameWithType.vb: IReadOnlyList(Of TIn)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of TIn)
+  name.vb: IReadOnlyList(Of TIn)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: TIn
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TIn
+  - name: )
+- uid: Orleans.GpuBridge.Abstractions.GpuExecutionHints
+  commentId: T:Orleans.GpuBridge.Abstractions.GpuExecutionHints
+  parent: Orleans.GpuBridge.Abstractions
+  href: Orleans.GpuBridge.Abstractions.GpuExecutionHints.html
+  name: GpuExecutionHints
+  nameWithType: GpuExecutionHints
+  fullName: Orleans.GpuBridge.Abstractions.GpuExecutionHints
+- uid: System.Threading.Tasks.Task{Orleans.GpuBridge.Grains.Batch.GpuBatchResult{{TOut}}}
+  commentId: T:System.Threading.Tasks.Task{Orleans.GpuBridge.Grains.Batch.GpuBatchResult{`1}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<GpuBatchResult<TOut>>
+  nameWithType: Task<GpuBatchResult<TOut>>
+  fullName: System.Threading.Tasks.Task<Orleans.GpuBridge.Grains.Batch.GpuBatchResult<TOut>>
+  nameWithType.vb: Task(Of GpuBatchResult(Of TOut))
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.GpuBridge.Grains.Batch.GpuBatchResult(Of TOut))
+  name.vb: Task(Of GpuBatchResult(Of TOut))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.GpuBridge.Grains.Batch.GpuBatchResult`1
+    name: GpuBatchResult
+    href: Orleans.GpuBridge.Grains.Batch.GpuBatchResult-1.html
+  - name: <
+  - name: TOut
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Grains.Batch.GpuBatchResult`1
+    name: GpuBatchResult
+    href: Orleans.GpuBridge.Grains.Batch.GpuBatchResult-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOut
+  - name: )
+  - name: )
+- uid: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain`2.ExecuteAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  commentId: M:Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain`2.ExecuteAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  isExternal: true
+  href: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain-2.html#Orleans_GpuBridge_Grains_Batch_IGpuBatchGrain_2_ExecuteAsync_System_Collections_Generic_IReadOnlyList__0__Orleans_GpuBridge_Abstractions_GpuExecutionHints_
+  name: ExecuteAsync(IReadOnlyList<TIn>, GpuExecutionHints)
+  nameWithType: IGpuBatchGrain<TIn, TOut>.ExecuteAsync(IReadOnlyList<TIn>, GpuExecutionHints)
+  fullName: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain<TIn, TOut>.ExecuteAsync(System.Collections.Generic.IReadOnlyList<TIn>, Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  nameWithType.vb: IGpuBatchGrain(Of TIn, TOut).ExecuteAsync(IReadOnlyList(Of TIn), GpuExecutionHints)
+  fullName.vb: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain(Of TIn, TOut).ExecuteAsync(System.Collections.Generic.IReadOnlyList(Of TIn), Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  name.vb: ExecuteAsync(IReadOnlyList(Of TIn), GpuExecutionHints)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain`2.ExecuteAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+    name: ExecuteAsync
+    href: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain-2.html#Orleans_GpuBridge_Grains_Batch_IGpuBatchGrain_2_ExecuteAsync_System_Collections_Generic_IReadOnlyList__0__Orleans_GpuBridge_Abstractions_GpuExecutionHints_
+  - name: (
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: TIn
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.GpuExecutionHints
+    name: GpuExecutionHints
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain`2.ExecuteAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+    name: ExecuteAsync
+    href: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain-2.html#Orleans_GpuBridge_Grains_Batch_IGpuBatchGrain_2_ExecuteAsync_System_Collections_Generic_IReadOnlyList__0__Orleans_GpuBridge_Abstractions_GpuExecutionHints_
+  - name: (
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TIn
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.GpuExecutionHints
+    name: GpuExecutionHints
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Orleans.GpuBridge.Abstractions
+  commentId: N:Orleans.GpuBridge.Abstractions
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions
+  nameWithType: Orleans.GpuBridge.Abstractions
+  fullName: Orleans.GpuBridge.Abstractions
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.ExecuteWithCallbackAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.ExecuteWithCallbackAsync
+  href: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain-2.html#Orleans_GpuBridge_Grains_Batch_GpuBatchGrain_2_ExecuteWithCallbackAsync_System_Collections_Generic_IReadOnlyList__0__Orleans_GpuBridge_Grains_Batch_IGpuResultObserver__1__Orleans_GpuBridge_Abstractions_GpuExecutionHints_
+  name: ExecuteWithCallbackAsync
+  nameWithType: GpuBatchGrain<TIn, TOut>.ExecuteWithCallbackAsync
+  fullName: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain<TIn, TOut>.ExecuteWithCallbackAsync
+  nameWithType.vb: GpuBatchGrain(Of TIn, TOut).ExecuteWithCallbackAsync
+  fullName.vb: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain(Of TIn, TOut).ExecuteWithCallbackAsync
+- uid: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain{{TIn},{TOut}}.ExecuteWithCallbackAsync(System.Collections.Generic.IReadOnlyList{{TIn}},Orleans.GpuBridge.Grains.Batch.IGpuResultObserver{{TOut}},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  commentId: M:Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain{`0,`1}.ExecuteWithCallbackAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Grains.Batch.IGpuResultObserver{`1},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  parent: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain{{TIn},{TOut}}
+  definition: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain`2.ExecuteWithCallbackAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Grains.Batch.IGpuResultObserver{`1},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  href: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain-2.html#Orleans_GpuBridge_Grains_Batch_IGpuBatchGrain_2_ExecuteWithCallbackAsync_System_Collections_Generic_IReadOnlyList__0__Orleans_GpuBridge_Grains_Batch_IGpuResultObserver__1__Orleans_GpuBridge_Abstractions_GpuExecutionHints_
+  name: ExecuteWithCallbackAsync(IReadOnlyList<TIn>, IGpuResultObserver<TOut>, GpuExecutionHints)
+  nameWithType: IGpuBatchGrain<TIn, TOut>.ExecuteWithCallbackAsync(IReadOnlyList<TIn>, IGpuResultObserver<TOut>, GpuExecutionHints)
+  fullName: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain<TIn, TOut>.ExecuteWithCallbackAsync(System.Collections.Generic.IReadOnlyList<TIn>, Orleans.GpuBridge.Grains.Batch.IGpuResultObserver<TOut>, Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  nameWithType.vb: IGpuBatchGrain(Of TIn, TOut).ExecuteWithCallbackAsync(IReadOnlyList(Of TIn), IGpuResultObserver(Of TOut), GpuExecutionHints)
+  fullName.vb: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain(Of TIn, TOut).ExecuteWithCallbackAsync(System.Collections.Generic.IReadOnlyList(Of TIn), Orleans.GpuBridge.Grains.Batch.IGpuResultObserver(Of TOut), Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  name.vb: ExecuteWithCallbackAsync(IReadOnlyList(Of TIn), IGpuResultObserver(Of TOut), GpuExecutionHints)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain{`0,`1}.ExecuteWithCallbackAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Grains.Batch.IGpuResultObserver{`1},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+    name: ExecuteWithCallbackAsync
+    href: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain-2.html#Orleans_GpuBridge_Grains_Batch_IGpuBatchGrain_2_ExecuteWithCallbackAsync_System_Collections_Generic_IReadOnlyList__0__Orleans_GpuBridge_Grains_Batch_IGpuResultObserver__1__Orleans_GpuBridge_Abstractions_GpuExecutionHints_
+  - name: (
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: TIn
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver`1
+    name: IGpuResultObserver
+    href: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver-1.html
+  - name: <
+  - name: TOut
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.GpuExecutionHints
+    name: GpuExecutionHints
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain{`0,`1}.ExecuteWithCallbackAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Grains.Batch.IGpuResultObserver{`1},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+    name: ExecuteWithCallbackAsync
+    href: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain-2.html#Orleans_GpuBridge_Grains_Batch_IGpuBatchGrain_2_ExecuteWithCallbackAsync_System_Collections_Generic_IReadOnlyList__0__Orleans_GpuBridge_Grains_Batch_IGpuResultObserver__1__Orleans_GpuBridge_Abstractions_GpuExecutionHints_
+  - name: (
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TIn
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver`1
+    name: IGpuResultObserver
+    href: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOut
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.GpuExecutionHints
+    name: GpuExecutionHints
+  - name: )
+- uid: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver{{TOut}}
+  commentId: T:Orleans.GpuBridge.Grains.Batch.IGpuResultObserver{`1}
+  parent: Orleans.GpuBridge.Grains.Batch
+  definition: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver`1
+  href: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver-1.html
+  name: IGpuResultObserver<TOut>
+  nameWithType: IGpuResultObserver<TOut>
+  fullName: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver<TOut>
+  nameWithType.vb: IGpuResultObserver(Of TOut)
+  fullName.vb: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver(Of TOut)
+  name.vb: IGpuResultObserver(Of TOut)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver`1
+    name: IGpuResultObserver
+    href: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver-1.html
+  - name: <
+  - name: TOut
+  - name: '>'
+  spec.vb:
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver`1
+    name: IGpuResultObserver
+    href: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOut
+  - name: )
+- uid: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain`2.ExecuteWithCallbackAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Grains.Batch.IGpuResultObserver{`1},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  commentId: M:Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain`2.ExecuteWithCallbackAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Grains.Batch.IGpuResultObserver{`1},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  isExternal: true
+  href: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain-2.html#Orleans_GpuBridge_Grains_Batch_IGpuBatchGrain_2_ExecuteWithCallbackAsync_System_Collections_Generic_IReadOnlyList__0__Orleans_GpuBridge_Grains_Batch_IGpuResultObserver__1__Orleans_GpuBridge_Abstractions_GpuExecutionHints_
+  name: ExecuteWithCallbackAsync(IReadOnlyList<TIn>, IGpuResultObserver<TOut>, GpuExecutionHints)
+  nameWithType: IGpuBatchGrain<TIn, TOut>.ExecuteWithCallbackAsync(IReadOnlyList<TIn>, IGpuResultObserver<TOut>, GpuExecutionHints)
+  fullName: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain<TIn, TOut>.ExecuteWithCallbackAsync(System.Collections.Generic.IReadOnlyList<TIn>, Orleans.GpuBridge.Grains.Batch.IGpuResultObserver<TOut>, Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  nameWithType.vb: IGpuBatchGrain(Of TIn, TOut).ExecuteWithCallbackAsync(IReadOnlyList(Of TIn), IGpuResultObserver(Of TOut), GpuExecutionHints)
+  fullName.vb: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain(Of TIn, TOut).ExecuteWithCallbackAsync(System.Collections.Generic.IReadOnlyList(Of TIn), Orleans.GpuBridge.Grains.Batch.IGpuResultObserver(Of TOut), Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  name.vb: ExecuteWithCallbackAsync(IReadOnlyList(Of TIn), IGpuResultObserver(Of TOut), GpuExecutionHints)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain`2.ExecuteWithCallbackAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Grains.Batch.IGpuResultObserver{`1},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+    name: ExecuteWithCallbackAsync
+    href: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain-2.html#Orleans_GpuBridge_Grains_Batch_IGpuBatchGrain_2_ExecuteWithCallbackAsync_System_Collections_Generic_IReadOnlyList__0__Orleans_GpuBridge_Grains_Batch_IGpuResultObserver__1__Orleans_GpuBridge_Abstractions_GpuExecutionHints_
+  - name: (
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: TIn
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver`1
+    name: IGpuResultObserver
+    href: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver-1.html
+  - name: <
+  - name: TOut
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.GpuExecutionHints
+    name: GpuExecutionHints
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain`2.ExecuteWithCallbackAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Grains.Batch.IGpuResultObserver{`1},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+    name: ExecuteWithCallbackAsync
+    href: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain-2.html#Orleans_GpuBridge_Grains_Batch_IGpuBatchGrain_2_ExecuteWithCallbackAsync_System_Collections_Generic_IReadOnlyList__0__Orleans_GpuBridge_Grains_Batch_IGpuResultObserver__1__Orleans_GpuBridge_Abstractions_GpuExecutionHints_
+  - name: (
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TIn
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver`1
+    name: IGpuResultObserver
+    href: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOut
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.GpuExecutionHints
+    name: GpuExecutionHints
+  - name: )
+- uid: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver`1
+  commentId: T:Orleans.GpuBridge.Grains.Batch.IGpuResultObserver`1
+  href: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver-1.html
+  name: IGpuResultObserver<T>
+  nameWithType: IGpuResultObserver<T>
+  fullName: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver<T>
+  nameWithType.vb: IGpuResultObserver(Of T)
+  fullName.vb: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver(Of T)
+  name.vb: IGpuResultObserver(Of T)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver`1
+    name: IGpuResultObserver
+    href: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver`1
+    name: IGpuResultObserver
+    href: Orleans.GpuBridge.Grains.Batch.IGpuResultObserver-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.ProcessBatchAsync*
+  commentId: Overload:Orleans.GpuBridge.Grains.Batch.GpuBatchGrain`2.ProcessBatchAsync
+  href: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain-2.html#Orleans_GpuBridge_Grains_Batch_GpuBatchGrain_2_ProcessBatchAsync_System_Collections_Generic_IReadOnlyList__0__Orleans_GpuBridge_Abstractions_GpuExecutionHints_
+  name: ProcessBatchAsync
+  nameWithType: GpuBatchGrain<TIn, TOut>.ProcessBatchAsync
+  fullName: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain<TIn, TOut>.ProcessBatchAsync
+  nameWithType.vb: GpuBatchGrain(Of TIn, TOut).ProcessBatchAsync
+  fullName.vb: Orleans.GpuBridge.Grains.Batch.GpuBatchGrain(Of TIn, TOut).ProcessBatchAsync
+- uid: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain{{TIn},{TOut}}.ProcessBatchAsync(System.Collections.Generic.IReadOnlyList{{TIn}},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  commentId: M:Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain{`0,`1}.ProcessBatchAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  parent: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain{{TIn},{TOut}}
+  definition: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain`2.ProcessBatchAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  href: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain-2.html#Orleans_GpuBridge_Grains_Batch_IGpuBatchGrain_2_ProcessBatchAsync_System_Collections_Generic_IReadOnlyList__0__Orleans_GpuBridge_Abstractions_GpuExecutionHints_
+  name: ProcessBatchAsync(IReadOnlyList<TIn>, GpuExecutionHints)
+  nameWithType: IGpuBatchGrain<TIn, TOut>.ProcessBatchAsync(IReadOnlyList<TIn>, GpuExecutionHints)
+  fullName: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain<TIn, TOut>.ProcessBatchAsync(System.Collections.Generic.IReadOnlyList<TIn>, Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  nameWithType.vb: IGpuBatchGrain(Of TIn, TOut).ProcessBatchAsync(IReadOnlyList(Of TIn), GpuExecutionHints)
+  fullName.vb: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain(Of TIn, TOut).ProcessBatchAsync(System.Collections.Generic.IReadOnlyList(Of TIn), Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  name.vb: ProcessBatchAsync(IReadOnlyList(Of TIn), GpuExecutionHints)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain{`0,`1}.ProcessBatchAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+    name: ProcessBatchAsync
+    href: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain-2.html#Orleans_GpuBridge_Grains_Batch_IGpuBatchGrain_2_ProcessBatchAsync_System_Collections_Generic_IReadOnlyList__0__Orleans_GpuBridge_Abstractions_GpuExecutionHints_
+  - name: (
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: TIn
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.GpuExecutionHints
+    name: GpuExecutionHints
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain{`0,`1}.ProcessBatchAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+    name: ProcessBatchAsync
+    href: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain-2.html#Orleans_GpuBridge_Grains_Batch_IGpuBatchGrain_2_ProcessBatchAsync_System_Collections_Generic_IReadOnlyList__0__Orleans_GpuBridge_Abstractions_GpuExecutionHints_
+  - name: (
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TIn
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.GpuExecutionHints
+    name: GpuExecutionHints
+  - name: )
+- uid: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain`2.ProcessBatchAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  commentId: M:Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain`2.ProcessBatchAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  isExternal: true
+  href: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain-2.html#Orleans_GpuBridge_Grains_Batch_IGpuBatchGrain_2_ProcessBatchAsync_System_Collections_Generic_IReadOnlyList__0__Orleans_GpuBridge_Abstractions_GpuExecutionHints_
+  name: ProcessBatchAsync(IReadOnlyList<TIn>, GpuExecutionHints)
+  nameWithType: IGpuBatchGrain<TIn, TOut>.ProcessBatchAsync(IReadOnlyList<TIn>, GpuExecutionHints)
+  fullName: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain<TIn, TOut>.ProcessBatchAsync(System.Collections.Generic.IReadOnlyList<TIn>, Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  nameWithType.vb: IGpuBatchGrain(Of TIn, TOut).ProcessBatchAsync(IReadOnlyList(Of TIn), GpuExecutionHints)
+  fullName.vb: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain(Of TIn, TOut).ProcessBatchAsync(System.Collections.Generic.IReadOnlyList(Of TIn), Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+  name.vb: ProcessBatchAsync(IReadOnlyList(Of TIn), GpuExecutionHints)
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain`2.ProcessBatchAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+    name: ProcessBatchAsync
+    href: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain-2.html#Orleans_GpuBridge_Grains_Batch_IGpuBatchGrain_2_ProcessBatchAsync_System_Collections_Generic_IReadOnlyList__0__Orleans_GpuBridge_Abstractions_GpuExecutionHints_
+  - name: (
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: TIn
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.GpuExecutionHints
+    name: GpuExecutionHints
+  - name: )
+  spec.vb:
+  - uid: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain`2.ProcessBatchAsync(System.Collections.Generic.IReadOnlyList{`0},Orleans.GpuBridge.Abstractions.GpuExecutionHints)
+    name: ProcessBatchAsync
+    href: Orleans.GpuBridge.Grains.Batch.IGpuBatchGrain-2.html#Orleans_GpuBridge_Grains_Batch_IGpuBatchGrain_2_ProcessBatchAsync_System_Collections_Generic_IReadOnlyList__0__Orleans_GpuBridge_Abstractions_GpuExecutionHints_
+  - name: (
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TIn
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Abstractions.GpuExecutionHints
+    name: GpuExecutionHints
+  - name: )

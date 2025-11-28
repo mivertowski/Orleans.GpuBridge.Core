@@ -1,0 +1,792 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector
+  commentId: T:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector
+  id: GpuNativePlacementDirector
+  parent: Orleans.GpuBridge.Runtime.Placement
+  children:
+  - Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector},DotCompute.Abstractions.RingKernels.IRingKernelRuntime)
+  - Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector.OnAddActivation(Orleans.Runtime.PlacementStrategy,Orleans.Runtime.Placement.PlacementTarget,Orleans.Runtime.Placement.IPlacementContext)
+  langs:
+  - csharp
+  - vb
+  name: GpuNativePlacementDirector
+  nameWithType: GpuNativePlacementDirector
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementDirector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GpuNativePlacementDirector
+    path: ../src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementDirector.cs
+    startLine: 27
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Placement
+  summary: Placement director for GPU-native grains with ring kernel awareness.
+  remarks: >-
+    <p>
+
+    Implements intelligent placement decisions based on:
+
+    - GPU memory availability
+
+    - Ring kernel queue depth
+
+    - GPU compute unit utilization
+
+    - Device affinity groups
+
+    - Dynamic load balancing
+
+    </p>
+
+    <p>
+
+    The director queries ring kernel runtime for real-time GPU metrics
+
+    and selects the optimal GPU for each grain activation.
+
+    </p>
+  example: []
+  syntax:
+    content: 'public sealed class GpuNativePlacementDirector : IPlacementDirector'
+    content.vb: Public NotInheritable Class GpuNativePlacementDirector Implements IPlacementDirector
+  inheritance:
+  - System.Object
+  implements:
+  - Orleans.Runtime.Placement.IPlacementDirector
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector},DotCompute.Abstractions.RingKernels.IRingKernelRuntime)
+  commentId: M:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector.#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector},DotCompute.Abstractions.RingKernels.IRingKernelRuntime)
+  id: '#ctor(Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector},DotCompute.Abstractions.RingKernels.IRingKernelRuntime)'
+  parent: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector
+  langs:
+  - csharp
+  - vb
+  name: GpuNativePlacementDirector(ILogger<GpuNativePlacementDirector>, IRingKernelRuntime)
+  nameWithType: GpuNativePlacementDirector.GpuNativePlacementDirector(ILogger<GpuNativePlacementDirector>, IRingKernelRuntime)
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector.GpuNativePlacementDirector(Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector>, DotCompute.Abstractions.RingKernels.IRingKernelRuntime)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementDirector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementDirector.cs
+    startLine: 34
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Placement
+  syntax:
+    content: public GpuNativePlacementDirector(ILogger<GpuNativePlacementDirector> logger, IRingKernelRuntime ringKernelRuntime)
+    parameters:
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector}
+    - id: ringKernelRuntime
+      type: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+    content.vb: Public Sub New(logger As ILogger(Of GpuNativePlacementDirector), ringKernelRuntime As IRingKernelRuntime)
+  overload: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector.#ctor*
+  nameWithType.vb: GpuNativePlacementDirector.New(ILogger(Of GpuNativePlacementDirector), IRingKernelRuntime)
+  fullName.vb: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector.New(Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector), DotCompute.Abstractions.RingKernels.IRingKernelRuntime)
+  name.vb: New(ILogger(Of GpuNativePlacementDirector), IRingKernelRuntime)
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector.OnAddActivation(Orleans.Runtime.PlacementStrategy,Orleans.Runtime.Placement.PlacementTarget,Orleans.Runtime.Placement.IPlacementContext)
+  commentId: M:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector.OnAddActivation(Orleans.Runtime.PlacementStrategy,Orleans.Runtime.Placement.PlacementTarget,Orleans.Runtime.Placement.IPlacementContext)
+  id: OnAddActivation(Orleans.Runtime.PlacementStrategy,Orleans.Runtime.Placement.PlacementTarget,Orleans.Runtime.Placement.IPlacementContext)
+  parent: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector
+  langs:
+  - csharp
+  - vb
+  name: OnAddActivation(PlacementStrategy, PlacementTarget, IPlacementContext)
+  nameWithType: GpuNativePlacementDirector.OnAddActivation(PlacementStrategy, PlacementTarget, IPlacementContext)
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector.OnAddActivation(Orleans.Runtime.PlacementStrategy, Orleans.Runtime.Placement.PlacementTarget, Orleans.Runtime.Placement.IPlacementContext)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementDirector.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: OnAddActivation
+    path: ../src/Orleans.GpuBridge.Runtime/Placement/GpuNativePlacementDirector.cs
+    startLine: 45
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Placement
+  summary: Selects optimal GPU-equipped silo for grain activation.
+  example: []
+  syntax:
+    content: public Task<SiloAddress> OnAddActivation(PlacementStrategy strategy, PlacementTarget target, IPlacementContext context)
+    parameters:
+    - id: strategy
+      type: Orleans.Runtime.PlacementStrategy
+    - id: target
+      type: Orleans.Runtime.Placement.PlacementTarget
+    - id: context
+      type: Orleans.Runtime.Placement.IPlacementContext
+    return:
+      type: System.Threading.Tasks.Task{Orleans.Runtime.SiloAddress}
+    content.vb: Public Function OnAddActivation(strategy As PlacementStrategy, target As PlacementTarget, context As IPlacementContext) As Task(Of SiloAddress)
+  overload: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector.OnAddActivation*
+  implements:
+  - Orleans.Runtime.Placement.IPlacementDirector.OnAddActivation(Orleans.Runtime.PlacementStrategy,Orleans.Runtime.Placement.PlacementTarget,Orleans.Runtime.Placement.IPlacementContext)
+references:
+- uid: Orleans.GpuBridge.Runtime.Placement
+  commentId: N:Orleans.GpuBridge.Runtime.Placement
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Placement
+  nameWithType: Orleans.GpuBridge.Runtime.Placement
+  fullName: Orleans.GpuBridge.Runtime.Placement
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Placement
+    name: Placement
+    href: Orleans.GpuBridge.Runtime.Placement.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Placement
+    name: Placement
+    href: Orleans.GpuBridge.Runtime.Placement.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Orleans.Runtime.Placement.IPlacementDirector
+  commentId: T:Orleans.Runtime.Placement.IPlacementDirector
+  parent: Orleans.Runtime.Placement
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.runtime.placement.iplacementdirector
+  name: IPlacementDirector
+  nameWithType: IPlacementDirector
+  fullName: Orleans.Runtime.Placement.IPlacementDirector
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.Runtime.Placement
+  commentId: N:Orleans.Runtime.Placement
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans
+  name: Orleans.Runtime.Placement
+  nameWithType: Orleans.Runtime.Placement
+  fullName: Orleans.Runtime.Placement
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans
+  - name: .
+  - uid: Orleans.Runtime
+    name: Runtime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime
+  - name: .
+  - uid: Orleans.Runtime.Placement
+    name: Placement
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.placement
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans
+  - name: .
+  - uid: Orleans.Runtime
+    name: Runtime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime
+  - name: .
+  - uid: Orleans.Runtime.Placement
+    name: Placement
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.placement
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector.#ctor
+  href: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector.html#Orleans_GpuBridge_Runtime_Placement_GpuNativePlacementDirector__ctor_Microsoft_Extensions_Logging_ILogger_Orleans_GpuBridge_Runtime_Placement_GpuNativePlacementDirector__DotCompute_Abstractions_RingKernels_IRingKernelRuntime_
+  name: GpuNativePlacementDirector
+  nameWithType: GpuNativePlacementDirector.GpuNativePlacementDirector
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector.GpuNativePlacementDirector
+  nameWithType.vb: GpuNativePlacementDirector.New
+  fullName.vb: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector.New
+  name.vb: New
+- uid: Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<GpuNativePlacementDirector>
+  nameWithType: ILogger<GpuNativePlacementDirector>
+  fullName: Microsoft.Extensions.Logging.ILogger<Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector>
+  nameWithType.vb: ILogger(Of GpuNativePlacementDirector)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector)
+  name.vb: ILogger(Of GpuNativePlacementDirector)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector
+    name: GpuNativePlacementDirector
+    href: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector
+    name: GpuNativePlacementDirector
+    href: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector.html
+  - name: )
+- uid: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  commentId: T:DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+  parent: DotCompute.Abstractions.RingKernels
+  isExternal: true
+  name: IRingKernelRuntime
+  nameWithType: IRingKernelRuntime
+  fullName: DotCompute.Abstractions.RingKernels.IRingKernelRuntime
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: DotCompute.Abstractions.RingKernels
+  commentId: N:DotCompute.Abstractions.RingKernels
+  isExternal: true
+  name: DotCompute.Abstractions.RingKernels
+  nameWithType: DotCompute.Abstractions.RingKernels
+  fullName: DotCompute.Abstractions.RingKernels
+  spec.csharp:
+  - uid: DotCompute
+    name: DotCompute
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions
+    name: Abstractions
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions.RingKernels
+    name: RingKernels
+    isExternal: true
+  spec.vb:
+  - uid: DotCompute
+    name: DotCompute
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions
+    name: Abstractions
+    isExternal: true
+  - name: .
+  - uid: DotCompute.Abstractions.RingKernels
+    name: RingKernels
+    isExternal: true
+- uid: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector.OnAddActivation*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector.OnAddActivation
+  href: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector.html#Orleans_GpuBridge_Runtime_Placement_GpuNativePlacementDirector_OnAddActivation_Orleans_Runtime_PlacementStrategy_Orleans_Runtime_Placement_PlacementTarget_Orleans_Runtime_Placement_IPlacementContext_
+  name: OnAddActivation
+  nameWithType: GpuNativePlacementDirector.OnAddActivation
+  fullName: Orleans.GpuBridge.Runtime.Placement.GpuNativePlacementDirector.OnAddActivation
+- uid: Orleans.Runtime.Placement.IPlacementDirector.OnAddActivation(Orleans.Runtime.PlacementStrategy,Orleans.Runtime.Placement.PlacementTarget,Orleans.Runtime.Placement.IPlacementContext)
+  commentId: M:Orleans.Runtime.Placement.IPlacementDirector.OnAddActivation(Orleans.Runtime.PlacementStrategy,Orleans.Runtime.Placement.PlacementTarget,Orleans.Runtime.Placement.IPlacementContext)
+  parent: Orleans.Runtime.Placement.IPlacementDirector
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.runtime.placement.iplacementdirector.onaddactivation
+  name: OnAddActivation(PlacementStrategy, PlacementTarget, IPlacementContext)
+  nameWithType: IPlacementDirector.OnAddActivation(PlacementStrategy, PlacementTarget, IPlacementContext)
+  fullName: Orleans.Runtime.Placement.IPlacementDirector.OnAddActivation(Orleans.Runtime.PlacementStrategy, Orleans.Runtime.Placement.PlacementTarget, Orleans.Runtime.Placement.IPlacementContext)
+  spec.csharp:
+  - uid: Orleans.Runtime.Placement.IPlacementDirector.OnAddActivation(Orleans.Runtime.PlacementStrategy,Orleans.Runtime.Placement.PlacementTarget,Orleans.Runtime.Placement.IPlacementContext)
+    name: OnAddActivation
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.placement.iplacementdirector.onaddactivation
+  - name: (
+  - uid: Orleans.Runtime.PlacementStrategy
+    name: PlacementStrategy
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.placementstrategy
+  - name: ','
+  - name: " "
+  - uid: Orleans.Runtime.Placement.PlacementTarget
+    name: PlacementTarget
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.placement.placementtarget
+  - name: ','
+  - name: " "
+  - uid: Orleans.Runtime.Placement.IPlacementContext
+    name: IPlacementContext
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.placement.iplacementcontext
+  - name: )
+  spec.vb:
+  - uid: Orleans.Runtime.Placement.IPlacementDirector.OnAddActivation(Orleans.Runtime.PlacementStrategy,Orleans.Runtime.Placement.PlacementTarget,Orleans.Runtime.Placement.IPlacementContext)
+    name: OnAddActivation
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.placement.iplacementdirector.onaddactivation
+  - name: (
+  - uid: Orleans.Runtime.PlacementStrategy
+    name: PlacementStrategy
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.placementstrategy
+  - name: ','
+  - name: " "
+  - uid: Orleans.Runtime.Placement.PlacementTarget
+    name: PlacementTarget
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.placement.placementtarget
+  - name: ','
+  - name: " "
+  - uid: Orleans.Runtime.Placement.IPlacementContext
+    name: IPlacementContext
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.placement.iplacementcontext
+  - name: )
+- uid: Orleans.Runtime.PlacementStrategy
+  commentId: T:Orleans.Runtime.PlacementStrategy
+  parent: Orleans.Runtime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.runtime.placementstrategy
+  name: PlacementStrategy
+  nameWithType: PlacementStrategy
+  fullName: Orleans.Runtime.PlacementStrategy
+- uid: Orleans.Runtime.Placement.PlacementTarget
+  commentId: T:Orleans.Runtime.Placement.PlacementTarget
+  parent: Orleans.Runtime.Placement
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.runtime.placement.placementtarget
+  name: PlacementTarget
+  nameWithType: PlacementTarget
+  fullName: Orleans.Runtime.Placement.PlacementTarget
+- uid: Orleans.Runtime.Placement.IPlacementContext
+  commentId: T:Orleans.Runtime.Placement.IPlacementContext
+  parent: Orleans.Runtime.Placement
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans.runtime.placement.iplacementcontext
+  name: IPlacementContext
+  nameWithType: IPlacementContext
+  fullName: Orleans.Runtime.Placement.IPlacementContext
+- uid: System.Threading.Tasks.Task{Orleans.Runtime.SiloAddress}
+  commentId: T:System.Threading.Tasks.Task{Orleans.Runtime.SiloAddress}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<SiloAddress>
+  nameWithType: Task<SiloAddress>
+  fullName: System.Threading.Tasks.Task<Orleans.Runtime.SiloAddress>
+  nameWithType.vb: Task(Of SiloAddress)
+  fullName.vb: System.Threading.Tasks.Task(Of Orleans.Runtime.SiloAddress)
+  name.vb: Task(Of SiloAddress)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Orleans.Runtime.SiloAddress
+    name: SiloAddress
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.siloaddress
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Orleans.Runtime.SiloAddress
+    name: SiloAddress
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime.siloaddress
+  - name: )
+- uid: Orleans.Runtime
+  commentId: N:Orleans.Runtime
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/orleans
+  name: Orleans.Runtime
+  nameWithType: Orleans.Runtime
+  fullName: Orleans.Runtime
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans
+  - name: .
+  - uid: Orleans.Runtime
+    name: Runtime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans
+  - name: .
+  - uid: Orleans.Runtime
+    name: Runtime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/orleans.runtime
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

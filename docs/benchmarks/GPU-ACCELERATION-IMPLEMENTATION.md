@@ -92,7 +92,7 @@ Added dependencies:
 </ItemGroup>
 
 <ItemGroup>
-  <PackageReference Include="DotCompute.Abstractions" Version="0.4.2-rc2" />
+  <PackageReference Include="DotCompute.Abstractions" Version="0.5.1" />
 </ItemGroup>
 ```
 
@@ -281,9 +281,20 @@ The GPU acceleration benchmarks are **fully implemented** and ready for RTX test
 
 **Next Step**: Install `DotCompute.CUDA` package and run benchmarks on RTX hardware to measure actual GPU speedup.
 
+## See Also
+
+- [Ring Kernel Integration](../architecture/RING-KERNEL-INTEGRATION.md) - Persistent kernel architecture
+- [Hybrid Layered Architecture](../architecture/HYBRID-LAYERED-ARCHITECTURE.md) - Layer design patterns
+- [GPU-Native Actors Developer Guide](../developer-guide/GPU-NATIVE-ACTORS.md) - Complete development workflow
+- [GPU Memory Operations](../implementation/GPU-MEMORY-OPERATIONS.md) - Memory management details
+- [Implementation Roadmap](../articles/temporal/IMPLEMENTATION-ROADMAP.md) - Development phases
+
 ---
+
+*GPU Acceleration Benchmarks: Performance validation for Orleans.GpuBridge.Core.*
 
 **Implementation Date**: December 2024
 **Framework**: .NET 9.0
-**GPU Backend**: DotCompute v0.4.2-rc2
-**Status**: ✅ Ready for RTX Testing
+**GPU Backend**: DotCompute v0.5.1
+**Version**: 0.1.0
+**Last Updated**: 2025-11-28

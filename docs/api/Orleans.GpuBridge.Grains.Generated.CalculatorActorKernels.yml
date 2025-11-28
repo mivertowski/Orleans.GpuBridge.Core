@@ -1,0 +1,963 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels
+  commentId: T:Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels
+  id: CalculatorActorKernels
+  parent: Orleans.GpuBridge.Grains.Generated
+  children:
+  - Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Add_Execute(Orleans.GpuBridge.Grains.Generated.AddRequest@,Orleans.GpuBridge.Grains.Generated.AddResponse@,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  - Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Dispatch(System.Int32,System.Void*,System.Void*,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  - Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.DispatchKernelId
+  - Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Factorial_Execute(Orleans.GpuBridge.Grains.Generated.FactorialRequest@,Orleans.GpuBridge.Grains.Generated.FactorialResponse@,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  - Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.GetAccumulator_Execute(Orleans.GpuBridge.Grains.Generated.GetAccumulatorRequest@,Orleans.GpuBridge.Grains.Generated.GetAccumulatorResponse@,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  - Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Multiply_Execute(Orleans.GpuBridge.Grains.Generated.MultiplyRequest@,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  - Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Reset_Execute(Orleans.GpuBridge.Grains.Generated.ResetRequest@,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  - Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Subtract_Execute(Orleans.GpuBridge.Grains.Generated.SubtractRequest@,Orleans.GpuBridge.Grains.Generated.SubtractResponse@,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  langs:
+  - csharp
+  - vb
+  name: CalculatorActorKernels
+  nameWithType: CalculatorActorKernels
+  fullName: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Generated/CalculatorActorKernels.g.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CalculatorActorKernels
+    path: ../src/Orleans.GpuBridge.Grains/Generated/CalculatorActorKernels.g.cs
+    startLine: 43
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Generated
+  summary: >-
+    DotCompute ring kernels for CalculatorActor.
+
+    These kernels run persistently on the GPU in an infinite dispatch loop.
+  remarks: >-
+    <p>
+
+    <strong>Ring Kernel Architecture:</strong>
+
+
+    <pre><code class="lang-csharp">GPU Memory:
+
+    ┌─────────────────────────────────────────────────────────┐
+
+    │ [State: CalculatorActorState]                          │
+
+    │ [Queue: Lock-Free Message Queue (depth=1024)]          │
+
+    │ [Kernel: Infinite Dispatch Loop]                       │
+
+    └─────────────────────────────────────────────────────────┘
+
+
+    Kernel Dispatch Loop (runs forever):
+      while (is_active) {
+          if (queue.TryDequeue(out msg)) {
+              switch (msg.HandlerId) {
+                  case 1: Add_Execute(msg.Payload, ref state); break;
+                  case 2: Subtract_Execute(msg.Payload, ref state); break;
+                  ...
+              }
+          }
+          // Spin for next message (~100ns interval)
+      }</code></pre>
+    </p>
+  example: []
+  syntax:
+    content: public static class CalculatorActorKernels
+    content.vb: Public Module CalculatorActorKernels
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.DispatchKernelId
+  commentId: F:Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.DispatchKernelId
+  id: DispatchKernelId
+  parent: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels
+  langs:
+  - csharp
+  - vb
+  name: DispatchKernelId
+  nameWithType: CalculatorActorKernels.DispatchKernelId
+  fullName: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.DispatchKernelId
+  type: Field
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Generated/CalculatorActorKernels.g.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DispatchKernelId
+    path: ../src/Orleans.GpuBridge.Grains/Generated/CalculatorActorKernels.g.cs
+    startLine: 48
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Generated
+  summary: Kernel ID for the main calculator dispatch kernel.
+  example: []
+  syntax:
+    content: public const string DispatchKernelId = "Orleans.GpuBridge.Grains.Generated.CalculatorActor.Dispatch"
+    return:
+      type: System.String
+    content.vb: Public Const DispatchKernelId As String = "Orleans.GpuBridge.Grains.Generated.CalculatorActor.Dispatch"
+- uid: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Add_Execute(Orleans.GpuBridge.Grains.Generated.AddRequest@,Orleans.GpuBridge.Grains.Generated.AddResponse@,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  commentId: M:Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Add_Execute(Orleans.GpuBridge.Grains.Generated.AddRequest@,Orleans.GpuBridge.Grains.Generated.AddResponse@,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  id: Add_Execute(Orleans.GpuBridge.Grains.Generated.AddRequest@,Orleans.GpuBridge.Grains.Generated.AddResponse@,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  parent: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels
+  langs:
+  - csharp
+  - vb
+  name: Add_Execute(in AddRequest, out AddResponse, ref CalculatorActorState)
+  nameWithType: CalculatorActorKernels.Add_Execute(in AddRequest, out AddResponse, ref CalculatorActorState)
+  fullName: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Add_Execute(in Orleans.GpuBridge.Grains.Generated.AddRequest, out Orleans.GpuBridge.Grains.Generated.AddResponse, ref Orleans.GpuBridge.Grains.Generated.CalculatorActorState)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Generated/CalculatorActorKernels.g.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Add_Execute
+    path: ../src/Orleans.GpuBridge.Grains/Generated/CalculatorActorKernels.g.cs
+    startLine: 58
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Generated
+  summary: GPU kernel for Add operation.
+  example: []
+  syntax:
+    content: >-
+      [RingKernel(KernelId = "Orleans.GpuBridge.Grains.Generated.CalculatorActor.Add")]
+
+      public static void Add_Execute(in AddRequest request, out AddResponse response, ref CalculatorActorState state)
+    parameters:
+    - id: request
+      type: Orleans.GpuBridge.Grains.Generated.AddRequest
+      description: Add request
+    - id: response
+      type: Orleans.GpuBridge.Grains.Generated.AddResponse
+      description: Add response (output)
+    - id: state
+      type: Orleans.GpuBridge.Grains.Generated.CalculatorActorState
+      description: Actor state (ref for updates)
+    content.vb: >-
+      <RingKernel(KernelId:="Orleans.GpuBridge.Grains.Generated.CalculatorActor.Add")>
+
+      Public Shared Sub Add_Execute(request As AddRequest, response As AddResponse, state As CalculatorActorState)
+  overload: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Add_Execute*
+  attributes:
+  - type: DotCompute.Abstractions.Attributes.RingKernelAttribute
+    ctor: DotCompute.Abstractions.Attributes.RingKernelAttribute.#ctor
+    arguments: []
+    namedArguments:
+    - name: KernelId
+      type: System.String
+      value: Orleans.GpuBridge.Grains.Generated.CalculatorActor.Add
+  nameWithType.vb: CalculatorActorKernels.Add_Execute(AddRequest, AddResponse, CalculatorActorState)
+  fullName.vb: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Add_Execute(Orleans.GpuBridge.Grains.Generated.AddRequest, Orleans.GpuBridge.Grains.Generated.AddResponse, Orleans.GpuBridge.Grains.Generated.CalculatorActorState)
+  name.vb: Add_Execute(AddRequest, AddResponse, CalculatorActorState)
+- uid: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Subtract_Execute(Orleans.GpuBridge.Grains.Generated.SubtractRequest@,Orleans.GpuBridge.Grains.Generated.SubtractResponse@,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  commentId: M:Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Subtract_Execute(Orleans.GpuBridge.Grains.Generated.SubtractRequest@,Orleans.GpuBridge.Grains.Generated.SubtractResponse@,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  id: Subtract_Execute(Orleans.GpuBridge.Grains.Generated.SubtractRequest@,Orleans.GpuBridge.Grains.Generated.SubtractResponse@,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  parent: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels
+  langs:
+  - csharp
+  - vb
+  name: Subtract_Execute(in SubtractRequest, out SubtractResponse, ref CalculatorActorState)
+  nameWithType: CalculatorActorKernels.Subtract_Execute(in SubtractRequest, out SubtractResponse, ref CalculatorActorState)
+  fullName: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Subtract_Execute(in Orleans.GpuBridge.Grains.Generated.SubtractRequest, out Orleans.GpuBridge.Grains.Generated.SubtractResponse, ref Orleans.GpuBridge.Grains.Generated.CalculatorActorState)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Generated/CalculatorActorKernels.g.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Subtract_Execute
+    path: ../src/Orleans.GpuBridge.Grains/Generated/CalculatorActorKernels.g.cs
+    startLine: 79
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Generated
+  summary: GPU kernel for Subtract operation.
+  example: []
+  syntax:
+    content: >-
+      [RingKernel(KernelId = "Orleans.GpuBridge.Grains.Generated.CalculatorActor.Subtract")]
+
+      public static void Subtract_Execute(in SubtractRequest request, out SubtractResponse response, ref CalculatorActorState state)
+    parameters:
+    - id: request
+      type: Orleans.GpuBridge.Grains.Generated.SubtractRequest
+      description: Subtract request
+    - id: response
+      type: Orleans.GpuBridge.Grains.Generated.SubtractResponse
+      description: Subtract response (output)
+    - id: state
+      type: Orleans.GpuBridge.Grains.Generated.CalculatorActorState
+      description: Actor state (ref for updates)
+    content.vb: >-
+      <RingKernel(KernelId:="Orleans.GpuBridge.Grains.Generated.CalculatorActor.Subtract")>
+
+      Public Shared Sub Subtract_Execute(request As SubtractRequest, response As SubtractResponse, state As CalculatorActorState)
+  overload: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Subtract_Execute*
+  attributes:
+  - type: DotCompute.Abstractions.Attributes.RingKernelAttribute
+    ctor: DotCompute.Abstractions.Attributes.RingKernelAttribute.#ctor
+    arguments: []
+    namedArguments:
+    - name: KernelId
+      type: System.String
+      value: Orleans.GpuBridge.Grains.Generated.CalculatorActor.Subtract
+  nameWithType.vb: CalculatorActorKernels.Subtract_Execute(SubtractRequest, SubtractResponse, CalculatorActorState)
+  fullName.vb: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Subtract_Execute(Orleans.GpuBridge.Grains.Generated.SubtractRequest, Orleans.GpuBridge.Grains.Generated.SubtractResponse, Orleans.GpuBridge.Grains.Generated.CalculatorActorState)
+  name.vb: Subtract_Execute(SubtractRequest, SubtractResponse, CalculatorActorState)
+- uid: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Multiply_Execute(Orleans.GpuBridge.Grains.Generated.MultiplyRequest@,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  commentId: M:Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Multiply_Execute(Orleans.GpuBridge.Grains.Generated.MultiplyRequest@,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  id: Multiply_Execute(Orleans.GpuBridge.Grains.Generated.MultiplyRequest@,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  parent: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels
+  langs:
+  - csharp
+  - vb
+  name: Multiply_Execute(in MultiplyRequest, ref CalculatorActorState)
+  nameWithType: CalculatorActorKernels.Multiply_Execute(in MultiplyRequest, ref CalculatorActorState)
+  fullName: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Multiply_Execute(in Orleans.GpuBridge.Grains.Generated.MultiplyRequest, ref Orleans.GpuBridge.Grains.Generated.CalculatorActorState)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Generated/CalculatorActorKernels.g.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Multiply_Execute
+    path: ../src/Orleans.GpuBridge.Grains/Generated/CalculatorActorKernels.g.cs
+    startLine: 100
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Generated
+  summary: >-
+    GPU kernel for Multiply operation (fire-and-forget).
+
+    Updates accumulator without returning a response.
+  example: []
+  syntax:
+    content: >-
+      [RingKernel(KernelId = "Orleans.GpuBridge.Grains.Generated.CalculatorActor.Multiply")]
+
+      public static void Multiply_Execute(in MultiplyRequest request, ref CalculatorActorState state)
+    parameters:
+    - id: request
+      type: Orleans.GpuBridge.Grains.Generated.MultiplyRequest
+      description: Multiply request
+    - id: state
+      type: Orleans.GpuBridge.Grains.Generated.CalculatorActorState
+      description: Actor state (ref for updates)
+    content.vb: >-
+      <RingKernel(KernelId:="Orleans.GpuBridge.Grains.Generated.CalculatorActor.Multiply")>
+
+      Public Shared Sub Multiply_Execute(request As MultiplyRequest, state As CalculatorActorState)
+  overload: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Multiply_Execute*
+  attributes:
+  - type: DotCompute.Abstractions.Attributes.RingKernelAttribute
+    ctor: DotCompute.Abstractions.Attributes.RingKernelAttribute.#ctor
+    arguments: []
+    namedArguments:
+    - name: KernelId
+      type: System.String
+      value: Orleans.GpuBridge.Grains.Generated.CalculatorActor.Multiply
+  nameWithType.vb: CalculatorActorKernels.Multiply_Execute(MultiplyRequest, CalculatorActorState)
+  fullName.vb: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Multiply_Execute(Orleans.GpuBridge.Grains.Generated.MultiplyRequest, Orleans.GpuBridge.Grains.Generated.CalculatorActorState)
+  name.vb: Multiply_Execute(MultiplyRequest, CalculatorActorState)
+- uid: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Factorial_Execute(Orleans.GpuBridge.Grains.Generated.FactorialRequest@,Orleans.GpuBridge.Grains.Generated.FactorialResponse@,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  commentId: M:Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Factorial_Execute(Orleans.GpuBridge.Grains.Generated.FactorialRequest@,Orleans.GpuBridge.Grains.Generated.FactorialResponse@,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  id: Factorial_Execute(Orleans.GpuBridge.Grains.Generated.FactorialRequest@,Orleans.GpuBridge.Grains.Generated.FactorialResponse@,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  parent: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels
+  langs:
+  - csharp
+  - vb
+  name: Factorial_Execute(in FactorialRequest, out FactorialResponse, ref CalculatorActorState)
+  nameWithType: CalculatorActorKernels.Factorial_Execute(in FactorialRequest, out FactorialResponse, ref CalculatorActorState)
+  fullName: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Factorial_Execute(in Orleans.GpuBridge.Grains.Generated.FactorialRequest, out Orleans.GpuBridge.Grains.Generated.FactorialResponse, ref Orleans.GpuBridge.Grains.Generated.CalculatorActorState)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Generated/CalculatorActorKernels.g.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Factorial_Execute
+    path: ../src/Orleans.GpuBridge.Grains/Generated/CalculatorActorKernels.g.cs
+    startLine: 125
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Generated
+  summary: GPU kernel for Factorial operation.
+  remarks: >-
+    This kernel demonstrates a compute-intensive operation that
+
+    benefits significantly from GPU parallelization when processing
+
+    batches of factorial requests.
+  example: []
+  syntax:
+    content: >-
+      [RingKernel(KernelId = "Orleans.GpuBridge.Grains.Generated.CalculatorActor.Factorial")]
+
+      public static void Factorial_Execute(in FactorialRequest request, out FactorialResponse response, ref CalculatorActorState state)
+    parameters:
+    - id: request
+      type: Orleans.GpuBridge.Grains.Generated.FactorialRequest
+      description: Factorial request
+    - id: response
+      type: Orleans.GpuBridge.Grains.Generated.FactorialResponse
+      description: Factorial response (output)
+    - id: state
+      type: Orleans.GpuBridge.Grains.Generated.CalculatorActorState
+      description: Actor state (ref for updates)
+    content.vb: >-
+      <RingKernel(KernelId:="Orleans.GpuBridge.Grains.Generated.CalculatorActor.Factorial")>
+
+      Public Shared Sub Factorial_Execute(request As FactorialRequest, response As FactorialResponse, state As CalculatorActorState)
+  overload: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Factorial_Execute*
+  attributes:
+  - type: DotCompute.Abstractions.Attributes.RingKernelAttribute
+    ctor: DotCompute.Abstractions.Attributes.RingKernelAttribute.#ctor
+    arguments: []
+    namedArguments:
+    - name: KernelId
+      type: System.String
+      value: Orleans.GpuBridge.Grains.Generated.CalculatorActor.Factorial
+  nameWithType.vb: CalculatorActorKernels.Factorial_Execute(FactorialRequest, FactorialResponse, CalculatorActorState)
+  fullName.vb: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Factorial_Execute(Orleans.GpuBridge.Grains.Generated.FactorialRequest, Orleans.GpuBridge.Grains.Generated.FactorialResponse, Orleans.GpuBridge.Grains.Generated.CalculatorActorState)
+  name.vb: Factorial_Execute(FactorialRequest, FactorialResponse, CalculatorActorState)
+- uid: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.GetAccumulator_Execute(Orleans.GpuBridge.Grains.Generated.GetAccumulatorRequest@,Orleans.GpuBridge.Grains.Generated.GetAccumulatorResponse@,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  commentId: M:Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.GetAccumulator_Execute(Orleans.GpuBridge.Grains.Generated.GetAccumulatorRequest@,Orleans.GpuBridge.Grains.Generated.GetAccumulatorResponse@,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  id: GetAccumulator_Execute(Orleans.GpuBridge.Grains.Generated.GetAccumulatorRequest@,Orleans.GpuBridge.Grains.Generated.GetAccumulatorResponse@,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  parent: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels
+  langs:
+  - csharp
+  - vb
+  name: GetAccumulator_Execute(in GetAccumulatorRequest, out GetAccumulatorResponse, ref CalculatorActorState)
+  nameWithType: CalculatorActorKernels.GetAccumulator_Execute(in GetAccumulatorRequest, out GetAccumulatorResponse, ref CalculatorActorState)
+  fullName: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.GetAccumulator_Execute(in Orleans.GpuBridge.Grains.Generated.GetAccumulatorRequest, out Orleans.GpuBridge.Grains.Generated.GetAccumulatorResponse, ref Orleans.GpuBridge.Grains.Generated.CalculatorActorState)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Generated/CalculatorActorKernels.g.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetAccumulator_Execute
+    path: ../src/Orleans.GpuBridge.Grains/Generated/CalculatorActorKernels.g.cs
+    startLine: 154
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Generated
+  summary: >-
+    GPU kernel for GetAccumulator operation.
+
+    Returns current accumulator value without modifying state.
+  example: []
+  syntax:
+    content: >-
+      [RingKernel(KernelId = "Orleans.GpuBridge.Grains.Generated.CalculatorActor.GetAccumulator")]
+
+      public static void GetAccumulator_Execute(in GetAccumulatorRequest request, out GetAccumulatorResponse response, ref CalculatorActorState state)
+    parameters:
+    - id: request
+      type: Orleans.GpuBridge.Grains.Generated.GetAccumulatorRequest
+      description: GetAccumulator request
+    - id: response
+      type: Orleans.GpuBridge.Grains.Generated.GetAccumulatorResponse
+      description: GetAccumulator response (output)
+    - id: state
+      type: Orleans.GpuBridge.Grains.Generated.CalculatorActorState
+      description: Actor state (read-only in this case)
+    content.vb: >-
+      <RingKernel(KernelId:="Orleans.GpuBridge.Grains.Generated.CalculatorActor.GetAccumulator")>
+
+      Public Shared Sub GetAccumulator_Execute(request As GetAccumulatorRequest, response As GetAccumulatorResponse, state As CalculatorActorState)
+  overload: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.GetAccumulator_Execute*
+  attributes:
+  - type: DotCompute.Abstractions.Attributes.RingKernelAttribute
+    ctor: DotCompute.Abstractions.Attributes.RingKernelAttribute.#ctor
+    arguments: []
+    namedArguments:
+    - name: KernelId
+      type: System.String
+      value: Orleans.GpuBridge.Grains.Generated.CalculatorActor.GetAccumulator
+  nameWithType.vb: CalculatorActorKernels.GetAccumulator_Execute(GetAccumulatorRequest, GetAccumulatorResponse, CalculatorActorState)
+  fullName.vb: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.GetAccumulator_Execute(Orleans.GpuBridge.Grains.Generated.GetAccumulatorRequest, Orleans.GpuBridge.Grains.Generated.GetAccumulatorResponse, Orleans.GpuBridge.Grains.Generated.CalculatorActorState)
+  name.vb: GetAccumulator_Execute(GetAccumulatorRequest, GetAccumulatorResponse, CalculatorActorState)
+- uid: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Reset_Execute(Orleans.GpuBridge.Grains.Generated.ResetRequest@,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  commentId: M:Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Reset_Execute(Orleans.GpuBridge.Grains.Generated.ResetRequest@,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  id: Reset_Execute(Orleans.GpuBridge.Grains.Generated.ResetRequest@,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  parent: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels
+  langs:
+  - csharp
+  - vb
+  name: Reset_Execute(in ResetRequest, ref CalculatorActorState)
+  nameWithType: CalculatorActorKernels.Reset_Execute(in ResetRequest, ref CalculatorActorState)
+  fullName: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Reset_Execute(in Orleans.GpuBridge.Grains.Generated.ResetRequest, ref Orleans.GpuBridge.Grains.Generated.CalculatorActorState)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Generated/CalculatorActorKernels.g.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Reset_Execute
+    path: ../src/Orleans.GpuBridge.Grains/Generated/CalculatorActorKernels.g.cs
+    startLine: 175
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Generated
+  summary: >-
+    GPU kernel for Reset operation (fire-and-forget).
+
+    Resets all state to initial values.
+  example: []
+  syntax:
+    content: >-
+      [RingKernel(KernelId = "Orleans.GpuBridge.Grains.Generated.CalculatorActor.Reset")]
+
+      public static void Reset_Execute(in ResetRequest request, ref CalculatorActorState state)
+    parameters:
+    - id: request
+      type: Orleans.GpuBridge.Grains.Generated.ResetRequest
+      description: Reset request
+    - id: state
+      type: Orleans.GpuBridge.Grains.Generated.CalculatorActorState
+      description: Actor state (ref for updates)
+    content.vb: >-
+      <RingKernel(KernelId:="Orleans.GpuBridge.Grains.Generated.CalculatorActor.Reset")>
+
+      Public Shared Sub Reset_Execute(request As ResetRequest, state As CalculatorActorState)
+  overload: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Reset_Execute*
+  attributes:
+  - type: DotCompute.Abstractions.Attributes.RingKernelAttribute
+    ctor: DotCompute.Abstractions.Attributes.RingKernelAttribute.#ctor
+    arguments: []
+    namedArguments:
+    - name: KernelId
+      type: System.String
+      value: Orleans.GpuBridge.Grains.Generated.CalculatorActor.Reset
+  nameWithType.vb: CalculatorActorKernels.Reset_Execute(ResetRequest, CalculatorActorState)
+  fullName.vb: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Reset_Execute(Orleans.GpuBridge.Grains.Generated.ResetRequest, Orleans.GpuBridge.Grains.Generated.CalculatorActorState)
+  name.vb: Reset_Execute(ResetRequest, CalculatorActorState)
+- uid: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Dispatch(System.Int32,System.Void*,System.Void*,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  commentId: M:Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Dispatch(System.Int32,System.Void*,System.Void*,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  id: Dispatch(System.Int32,System.Void*,System.Void*,Orleans.GpuBridge.Grains.Generated.CalculatorActorState@)
+  parent: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels
+  langs:
+  - csharp
+  - vb
+  name: Dispatch(int, void*, void*, ref CalculatorActorState)
+  nameWithType: CalculatorActorKernels.Dispatch(int, void*, void*, ref CalculatorActorState)
+  fullName: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Dispatch(int, void*, void*, ref Orleans.GpuBridge.Grains.Generated.CalculatorActorState)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/Generated/CalculatorActorKernels.g.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Dispatch
+    path: ../src/Orleans.GpuBridge.Grains/Generated/CalculatorActorKernels.g.cs
+    startLine: 199
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.Generated
+  summary: >-
+    Main dispatch kernel that routes messages to appropriate handlers.
+
+    This kernel runs in an infinite loop until deactivation.
+  example: []
+  syntax:
+    content: >-
+      [RingKernel(KernelId = "Orleans.GpuBridge.Grains.Generated.CalculatorActor.Dispatch")]
+
+      public static bool Dispatch(int handlerId, void* requestPtr, void* responsePtr, ref CalculatorActorState state)
+    parameters:
+    - id: handlerId
+      type: System.Int32
+      description: Handler ID from message header
+    - id: requestPtr
+      type: System.Void*
+      description: Pointer to request payload
+    - id: responsePtr
+      type: System.Void*
+      description: Pointer to response buffer
+    - id: state
+      type: Orleans.GpuBridge.Grains.Generated.CalculatorActorState
+      description: Actor state reference
+    return:
+      type: System.Boolean
+      description: True if handler produced a response, false for fire-and-forget
+    content.vb: >-
+      <RingKernel(KernelId:="Orleans.GpuBridge.Grains.Generated.CalculatorActor.Dispatch")>
+
+      Public Shared Function Dispatch(handlerId As Integer, requestPtr As Void*, responsePtr As Void*, state As CalculatorActorState) As Boolean
+  overload: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Dispatch*
+  attributes:
+  - type: DotCompute.Abstractions.Attributes.RingKernelAttribute
+    ctor: DotCompute.Abstractions.Attributes.RingKernelAttribute.#ctor
+    arguments: []
+    namedArguments:
+    - name: KernelId
+      type: System.String
+      value: Orleans.GpuBridge.Grains.Generated.CalculatorActor.Dispatch
+  nameWithType.vb: CalculatorActorKernels.Dispatch(Integer, Void*, Void*, CalculatorActorState)
+  fullName.vb: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Dispatch(Integer, Void*, Void*, Orleans.GpuBridge.Grains.Generated.CalculatorActorState)
+  name.vb: Dispatch(Integer, Void*, Void*, CalculatorActorState)
+references:
+- uid: Orleans.GpuBridge.Grains.Generated
+  commentId: N:Orleans.GpuBridge.Grains.Generated
+  href: Orleans.html
+  name: Orleans.GpuBridge.Grains.Generated
+  nameWithType: Orleans.GpuBridge.Grains.Generated
+  fullName: Orleans.GpuBridge.Grains.Generated
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.Generated
+    name: Generated
+    href: Orleans.GpuBridge.Grains.Generated.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.Generated
+    name: Generated
+    href: Orleans.GpuBridge.Grains.Generated.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Add_Execute*
+  commentId: Overload:Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Add_Execute
+  href: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.html#Orleans_GpuBridge_Grains_Generated_CalculatorActorKernels_Add_Execute_Orleans_GpuBridge_Grains_Generated_AddRequest__Orleans_GpuBridge_Grains_Generated_AddResponse__Orleans_GpuBridge_Grains_Generated_CalculatorActorState__
+  name: Add_Execute
+  nameWithType: CalculatorActorKernels.Add_Execute
+  fullName: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Add_Execute
+- uid: Orleans.GpuBridge.Grains.Generated.AddRequest
+  commentId: T:Orleans.GpuBridge.Grains.Generated.AddRequest
+  parent: Orleans.GpuBridge.Grains.Generated
+  href: Orleans.GpuBridge.Grains.Generated.AddRequest.html
+  name: AddRequest
+  nameWithType: AddRequest
+  fullName: Orleans.GpuBridge.Grains.Generated.AddRequest
+- uid: Orleans.GpuBridge.Grains.Generated.AddResponse
+  commentId: T:Orleans.GpuBridge.Grains.Generated.AddResponse
+  parent: Orleans.GpuBridge.Grains.Generated
+  href: Orleans.GpuBridge.Grains.Generated.AddResponse.html
+  name: AddResponse
+  nameWithType: AddResponse
+  fullName: Orleans.GpuBridge.Grains.Generated.AddResponse
+- uid: Orleans.GpuBridge.Grains.Generated.CalculatorActorState
+  commentId: T:Orleans.GpuBridge.Grains.Generated.CalculatorActorState
+  parent: Orleans.GpuBridge.Grains.Generated
+  href: Orleans.GpuBridge.Grains.Generated.CalculatorActorState.html
+  name: CalculatorActorState
+  nameWithType: CalculatorActorState
+  fullName: Orleans.GpuBridge.Grains.Generated.CalculatorActorState
+- uid: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Subtract_Execute*
+  commentId: Overload:Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Subtract_Execute
+  href: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.html#Orleans_GpuBridge_Grains_Generated_CalculatorActorKernels_Subtract_Execute_Orleans_GpuBridge_Grains_Generated_SubtractRequest__Orleans_GpuBridge_Grains_Generated_SubtractResponse__Orleans_GpuBridge_Grains_Generated_CalculatorActorState__
+  name: Subtract_Execute
+  nameWithType: CalculatorActorKernels.Subtract_Execute
+  fullName: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Subtract_Execute
+- uid: Orleans.GpuBridge.Grains.Generated.SubtractRequest
+  commentId: T:Orleans.GpuBridge.Grains.Generated.SubtractRequest
+  parent: Orleans.GpuBridge.Grains.Generated
+  href: Orleans.GpuBridge.Grains.Generated.SubtractRequest.html
+  name: SubtractRequest
+  nameWithType: SubtractRequest
+  fullName: Orleans.GpuBridge.Grains.Generated.SubtractRequest
+- uid: Orleans.GpuBridge.Grains.Generated.SubtractResponse
+  commentId: T:Orleans.GpuBridge.Grains.Generated.SubtractResponse
+  parent: Orleans.GpuBridge.Grains.Generated
+  href: Orleans.GpuBridge.Grains.Generated.SubtractResponse.html
+  name: SubtractResponse
+  nameWithType: SubtractResponse
+  fullName: Orleans.GpuBridge.Grains.Generated.SubtractResponse
+- uid: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Multiply_Execute*
+  commentId: Overload:Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Multiply_Execute
+  href: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.html#Orleans_GpuBridge_Grains_Generated_CalculatorActorKernels_Multiply_Execute_Orleans_GpuBridge_Grains_Generated_MultiplyRequest__Orleans_GpuBridge_Grains_Generated_CalculatorActorState__
+  name: Multiply_Execute
+  nameWithType: CalculatorActorKernels.Multiply_Execute
+  fullName: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Multiply_Execute
+- uid: Orleans.GpuBridge.Grains.Generated.MultiplyRequest
+  commentId: T:Orleans.GpuBridge.Grains.Generated.MultiplyRequest
+  parent: Orleans.GpuBridge.Grains.Generated
+  href: Orleans.GpuBridge.Grains.Generated.MultiplyRequest.html
+  name: MultiplyRequest
+  nameWithType: MultiplyRequest
+  fullName: Orleans.GpuBridge.Grains.Generated.MultiplyRequest
+- uid: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Factorial_Execute*
+  commentId: Overload:Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Factorial_Execute
+  href: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.html#Orleans_GpuBridge_Grains_Generated_CalculatorActorKernels_Factorial_Execute_Orleans_GpuBridge_Grains_Generated_FactorialRequest__Orleans_GpuBridge_Grains_Generated_FactorialResponse__Orleans_GpuBridge_Grains_Generated_CalculatorActorState__
+  name: Factorial_Execute
+  nameWithType: CalculatorActorKernels.Factorial_Execute
+  fullName: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Factorial_Execute
+- uid: Orleans.GpuBridge.Grains.Generated.FactorialRequest
+  commentId: T:Orleans.GpuBridge.Grains.Generated.FactorialRequest
+  parent: Orleans.GpuBridge.Grains.Generated
+  href: Orleans.GpuBridge.Grains.Generated.FactorialRequest.html
+  name: FactorialRequest
+  nameWithType: FactorialRequest
+  fullName: Orleans.GpuBridge.Grains.Generated.FactorialRequest
+- uid: Orleans.GpuBridge.Grains.Generated.FactorialResponse
+  commentId: T:Orleans.GpuBridge.Grains.Generated.FactorialResponse
+  parent: Orleans.GpuBridge.Grains.Generated
+  href: Orleans.GpuBridge.Grains.Generated.FactorialResponse.html
+  name: FactorialResponse
+  nameWithType: FactorialResponse
+  fullName: Orleans.GpuBridge.Grains.Generated.FactorialResponse
+- uid: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.GetAccumulator_Execute*
+  commentId: Overload:Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.GetAccumulator_Execute
+  href: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.html#Orleans_GpuBridge_Grains_Generated_CalculatorActorKernels_GetAccumulator_Execute_Orleans_GpuBridge_Grains_Generated_GetAccumulatorRequest__Orleans_GpuBridge_Grains_Generated_GetAccumulatorResponse__Orleans_GpuBridge_Grains_Generated_CalculatorActorState__
+  name: GetAccumulator_Execute
+  nameWithType: CalculatorActorKernels.GetAccumulator_Execute
+  fullName: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.GetAccumulator_Execute
+- uid: Orleans.GpuBridge.Grains.Generated.GetAccumulatorRequest
+  commentId: T:Orleans.GpuBridge.Grains.Generated.GetAccumulatorRequest
+  parent: Orleans.GpuBridge.Grains.Generated
+  href: Orleans.GpuBridge.Grains.Generated.GetAccumulatorRequest.html
+  name: GetAccumulatorRequest
+  nameWithType: GetAccumulatorRequest
+  fullName: Orleans.GpuBridge.Grains.Generated.GetAccumulatorRequest
+- uid: Orleans.GpuBridge.Grains.Generated.GetAccumulatorResponse
+  commentId: T:Orleans.GpuBridge.Grains.Generated.GetAccumulatorResponse
+  parent: Orleans.GpuBridge.Grains.Generated
+  href: Orleans.GpuBridge.Grains.Generated.GetAccumulatorResponse.html
+  name: GetAccumulatorResponse
+  nameWithType: GetAccumulatorResponse
+  fullName: Orleans.GpuBridge.Grains.Generated.GetAccumulatorResponse
+- uid: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Reset_Execute*
+  commentId: Overload:Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Reset_Execute
+  href: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.html#Orleans_GpuBridge_Grains_Generated_CalculatorActorKernels_Reset_Execute_Orleans_GpuBridge_Grains_Generated_ResetRequest__Orleans_GpuBridge_Grains_Generated_CalculatorActorState__
+  name: Reset_Execute
+  nameWithType: CalculatorActorKernels.Reset_Execute
+  fullName: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Reset_Execute
+- uid: Orleans.GpuBridge.Grains.Generated.ResetRequest
+  commentId: T:Orleans.GpuBridge.Grains.Generated.ResetRequest
+  parent: Orleans.GpuBridge.Grains.Generated
+  href: Orleans.GpuBridge.Grains.Generated.ResetRequest.html
+  name: ResetRequest
+  nameWithType: ResetRequest
+  fullName: Orleans.GpuBridge.Grains.Generated.ResetRequest
+- uid: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Dispatch*
+  commentId: Overload:Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Dispatch
+  href: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.html#Orleans_GpuBridge_Grains_Generated_CalculatorActorKernels_Dispatch_System_Int32_System_Void__System_Void__Orleans_GpuBridge_Grains_Generated_CalculatorActorState__
+  name: Dispatch
+  nameWithType: CalculatorActorKernels.Dispatch
+  fullName: Orleans.GpuBridge.Grains.Generated.CalculatorActorKernels.Dispatch
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Void*
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.void
+  name: void*
+  nameWithType: void*
+  fullName: void*
+  nameWithType.vb: Void*
+  fullName.vb: Void*
+  name.vb: Void*
+  spec.csharp:
+  - uid: System.Void
+    name: void
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.void
+  - name: '*'
+  spec.vb:
+  - uid: System.Void
+    name: Void
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.void
+  - name: '*'
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean

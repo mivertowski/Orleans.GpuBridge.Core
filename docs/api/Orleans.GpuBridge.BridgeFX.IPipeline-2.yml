@@ -1,0 +1,631 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.BridgeFX.IPipeline`2
+  commentId: T:Orleans.GpuBridge.BridgeFX.IPipeline`2
+  id: IPipeline`2
+  parent: Orleans.GpuBridge.BridgeFX
+  children:
+  - Orleans.GpuBridge.BridgeFX.IPipeline`2.ProcessAsync(`0,System.Threading.CancellationToken)
+  - Orleans.GpuBridge.BridgeFX.IPipeline`2.ProcessChannelAsync(System.Threading.Channels.ChannelReader{`0},System.Threading.Channels.ChannelWriter{`1},System.Threading.CancellationToken)
+  - Orleans.GpuBridge.BridgeFX.IPipeline`2.ProcessManyAsync(System.Collections.Generic.IAsyncEnumerable{`0},System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: IPipeline<TInput, TOutput>
+  nameWithType: IPipeline<TInput, TOutput>
+  fullName: Orleans.GpuBridge.BridgeFX.IPipeline<TInput, TOutput>
+  type: Interface
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.BridgeFX/Pipeline/Core/IPipeline.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: IPipeline
+    path: ../src/Orleans.GpuBridge.BridgeFX/Pipeline/Core/IPipeline.cs
+    startLine: 10
+  assemblies:
+  - Orleans.GpuBridge.BridgeFX
+  namespace: Orleans.GpuBridge.BridgeFX
+  summary: Interface for executable pipeline
+  example: []
+  syntax:
+    content: 'public interface IPipeline<TInput, TOutput> where TInput : notnull where TOutput : notnull'
+    typeParameters:
+    - id: TInput
+    - id: TOutput
+    content.vb: Public Interface IPipeline(Of TInput, TOutput)
+  nameWithType.vb: IPipeline(Of TInput, TOutput)
+  fullName.vb: Orleans.GpuBridge.BridgeFX.IPipeline(Of TInput, TOutput)
+  name.vb: IPipeline(Of TInput, TOutput)
+- uid: Orleans.GpuBridge.BridgeFX.IPipeline`2.ProcessAsync(`0,System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.BridgeFX.IPipeline`2.ProcessAsync(`0,System.Threading.CancellationToken)
+  id: ProcessAsync(`0,System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.BridgeFX.IPipeline`2
+  langs:
+  - csharp
+  - vb
+  name: ProcessAsync(TInput, CancellationToken)
+  nameWithType: IPipeline<TInput, TOutput>.ProcessAsync(TInput, CancellationToken)
+  fullName: Orleans.GpuBridge.BridgeFX.IPipeline<TInput, TOutput>.ProcessAsync(TInput, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.BridgeFX/Pipeline/Core/IPipeline.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ProcessAsync
+    path: ../src/Orleans.GpuBridge.BridgeFX/Pipeline/Core/IPipeline.cs
+    startLine: 17
+  assemblies:
+  - Orleans.GpuBridge.BridgeFX
+  namespace: Orleans.GpuBridge.BridgeFX
+  summary: Processes a single item through the pipeline
+  example: []
+  syntax:
+    content: Task<TOutput> ProcessAsync(TInput input, CancellationToken ct = default)
+    parameters:
+    - id: input
+      type: '{TInput}'
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{{TOutput}}
+    content.vb: Function ProcessAsync(input As TInput, ct As CancellationToken = Nothing) As Task(Of TOutput)
+  overload: Orleans.GpuBridge.BridgeFX.IPipeline`2.ProcessAsync*
+  nameWithType.vb: IPipeline(Of TInput, TOutput).ProcessAsync(TInput, CancellationToken)
+  fullName.vb: Orleans.GpuBridge.BridgeFX.IPipeline(Of TInput, TOutput).ProcessAsync(TInput, System.Threading.CancellationToken)
+- uid: Orleans.GpuBridge.BridgeFX.IPipeline`2.ProcessManyAsync(System.Collections.Generic.IAsyncEnumerable{`0},System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.BridgeFX.IPipeline`2.ProcessManyAsync(System.Collections.Generic.IAsyncEnumerable{`0},System.Threading.CancellationToken)
+  id: ProcessManyAsync(System.Collections.Generic.IAsyncEnumerable{`0},System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.BridgeFX.IPipeline`2
+  langs:
+  - csharp
+  - vb
+  name: ProcessManyAsync(IAsyncEnumerable<TInput>, CancellationToken)
+  nameWithType: IPipeline<TInput, TOutput>.ProcessManyAsync(IAsyncEnumerable<TInput>, CancellationToken)
+  fullName: Orleans.GpuBridge.BridgeFX.IPipeline<TInput, TOutput>.ProcessManyAsync(System.Collections.Generic.IAsyncEnumerable<TInput>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.BridgeFX/Pipeline/Core/IPipeline.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ProcessManyAsync
+    path: ../src/Orleans.GpuBridge.BridgeFX/Pipeline/Core/IPipeline.cs
+    startLine: 22
+  assemblies:
+  - Orleans.GpuBridge.BridgeFX
+  namespace: Orleans.GpuBridge.BridgeFX
+  summary: Processes multiple items through the pipeline
+  example: []
+  syntax:
+    content: IAsyncEnumerable<TOutput> ProcessManyAsync(IAsyncEnumerable<TInput> inputs, CancellationToken ct = default)
+    parameters:
+    - id: inputs
+      type: System.Collections.Generic.IAsyncEnumerable{{TInput}}
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Collections.Generic.IAsyncEnumerable{{TOutput}}
+    content.vb: Function ProcessManyAsync(inputs As IAsyncEnumerable(Of TInput), ct As CancellationToken = Nothing) As IAsyncEnumerable(Of TOutput)
+  overload: Orleans.GpuBridge.BridgeFX.IPipeline`2.ProcessManyAsync*
+  nameWithType.vb: IPipeline(Of TInput, TOutput).ProcessManyAsync(IAsyncEnumerable(Of TInput), CancellationToken)
+  fullName.vb: Orleans.GpuBridge.BridgeFX.IPipeline(Of TInput, TOutput).ProcessManyAsync(System.Collections.Generic.IAsyncEnumerable(Of TInput), System.Threading.CancellationToken)
+  name.vb: ProcessManyAsync(IAsyncEnumerable(Of TInput), CancellationToken)
+- uid: Orleans.GpuBridge.BridgeFX.IPipeline`2.ProcessChannelAsync(System.Threading.Channels.ChannelReader{`0},System.Threading.Channels.ChannelWriter{`1},System.Threading.CancellationToken)
+  commentId: M:Orleans.GpuBridge.BridgeFX.IPipeline`2.ProcessChannelAsync(System.Threading.Channels.ChannelReader{`0},System.Threading.Channels.ChannelWriter{`1},System.Threading.CancellationToken)
+  id: ProcessChannelAsync(System.Threading.Channels.ChannelReader{`0},System.Threading.Channels.ChannelWriter{`1},System.Threading.CancellationToken)
+  parent: Orleans.GpuBridge.BridgeFX.IPipeline`2
+  langs:
+  - csharp
+  - vb
+  name: ProcessChannelAsync(ChannelReader<TInput>, ChannelWriter<TOutput>, CancellationToken)
+  nameWithType: IPipeline<TInput, TOutput>.ProcessChannelAsync(ChannelReader<TInput>, ChannelWriter<TOutput>, CancellationToken)
+  fullName: Orleans.GpuBridge.BridgeFX.IPipeline<TInput, TOutput>.ProcessChannelAsync(System.Threading.Channels.ChannelReader<TInput>, System.Threading.Channels.ChannelWriter<TOutput>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.BridgeFX/Pipeline/Core/IPipeline.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ProcessChannelAsync
+    path: ../src/Orleans.GpuBridge.BridgeFX/Pipeline/Core/IPipeline.cs
+    startLine: 29
+  assemblies:
+  - Orleans.GpuBridge.BridgeFX
+  namespace: Orleans.GpuBridge.BridgeFX
+  summary: Processes items from a channel
+  example: []
+  syntax:
+    content: Task ProcessChannelAsync(ChannelReader<TInput> input, ChannelWriter<TOutput> output, CancellationToken ct = default)
+    parameters:
+    - id: input
+      type: System.Threading.Channels.ChannelReader{{TInput}}
+    - id: output
+      type: System.Threading.Channels.ChannelWriter{{TOutput}}
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function ProcessChannelAsync(input As ChannelReader(Of TInput), output As ChannelWriter(Of TOutput), ct As CancellationToken = Nothing) As Task
+  overload: Orleans.GpuBridge.BridgeFX.IPipeline`2.ProcessChannelAsync*
+  nameWithType.vb: IPipeline(Of TInput, TOutput).ProcessChannelAsync(ChannelReader(Of TInput), ChannelWriter(Of TOutput), CancellationToken)
+  fullName.vb: Orleans.GpuBridge.BridgeFX.IPipeline(Of TInput, TOutput).ProcessChannelAsync(System.Threading.Channels.ChannelReader(Of TInput), System.Threading.Channels.ChannelWriter(Of TOutput), System.Threading.CancellationToken)
+  name.vb: ProcessChannelAsync(ChannelReader(Of TInput), ChannelWriter(Of TOutput), CancellationToken)
+references:
+- uid: Orleans.GpuBridge.BridgeFX
+  commentId: N:Orleans.GpuBridge.BridgeFX
+  href: Orleans.html
+  name: Orleans.GpuBridge.BridgeFX
+  nameWithType: Orleans.GpuBridge.BridgeFX
+  fullName: Orleans.GpuBridge.BridgeFX
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.BridgeFX
+    name: BridgeFX
+    href: Orleans.GpuBridge.BridgeFX.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.BridgeFX
+    name: BridgeFX
+    href: Orleans.GpuBridge.BridgeFX.html
+- uid: Orleans.GpuBridge.BridgeFX.IPipeline`2.ProcessAsync*
+  commentId: Overload:Orleans.GpuBridge.BridgeFX.IPipeline`2.ProcessAsync
+  href: Orleans.GpuBridge.BridgeFX.IPipeline-2.html#Orleans_GpuBridge_BridgeFX_IPipeline_2_ProcessAsync__0_System_Threading_CancellationToken_
+  name: ProcessAsync
+  nameWithType: IPipeline<TInput, TOutput>.ProcessAsync
+  fullName: Orleans.GpuBridge.BridgeFX.IPipeline<TInput, TOutput>.ProcessAsync
+  nameWithType.vb: IPipeline(Of TInput, TOutput).ProcessAsync
+  fullName.vb: Orleans.GpuBridge.BridgeFX.IPipeline(Of TInput, TOutput).ProcessAsync
+- uid: '{TInput}'
+  commentId: '!:TInput'
+  definition: TInput
+  name: TInput
+  nameWithType: TInput
+  fullName: TInput
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{{TOutput}}
+  commentId: T:System.Threading.Tasks.Task{`1}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TOutput>
+  nameWithType: Task<TOutput>
+  fullName: System.Threading.Tasks.Task<TOutput>
+  nameWithType.vb: Task(Of TOutput)
+  fullName.vb: System.Threading.Tasks.Task(Of TOutput)
+  name.vb: Task(Of TOutput)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TOutput
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOutput
+  - name: )
+- uid: TInput
+  commentId: '!:TInput'
+  name: TInput
+  nameWithType: TInput
+  fullName: TInput
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Orleans.GpuBridge.BridgeFX.IPipeline`2.ProcessManyAsync*
+  commentId: Overload:Orleans.GpuBridge.BridgeFX.IPipeline`2.ProcessManyAsync
+  href: Orleans.GpuBridge.BridgeFX.IPipeline-2.html#Orleans_GpuBridge_BridgeFX_IPipeline_2_ProcessManyAsync_System_Collections_Generic_IAsyncEnumerable__0__System_Threading_CancellationToken_
+  name: ProcessManyAsync
+  nameWithType: IPipeline<TInput, TOutput>.ProcessManyAsync
+  fullName: Orleans.GpuBridge.BridgeFX.IPipeline<TInput, TOutput>.ProcessManyAsync
+  nameWithType.vb: IPipeline(Of TInput, TOutput).ProcessManyAsync
+  fullName.vb: Orleans.GpuBridge.BridgeFX.IPipeline(Of TInput, TOutput).ProcessManyAsync
+- uid: System.Collections.Generic.IAsyncEnumerable{{TInput}}
+  commentId: T:System.Collections.Generic.IAsyncEnumerable{`0}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IAsyncEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  name: IAsyncEnumerable<TInput>
+  nameWithType: IAsyncEnumerable<TInput>
+  fullName: System.Collections.Generic.IAsyncEnumerable<TInput>
+  nameWithType.vb: IAsyncEnumerable(Of TInput)
+  fullName.vb: System.Collections.Generic.IAsyncEnumerable(Of TInput)
+  name.vb: IAsyncEnumerable(Of TInput)
+  spec.csharp:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: <
+  - name: TInput
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TInput
+  - name: )
+- uid: System.Collections.Generic.IAsyncEnumerable{{TOutput}}
+  commentId: T:System.Collections.Generic.IAsyncEnumerable{`1}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IAsyncEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  name: IAsyncEnumerable<TOutput>
+  nameWithType: IAsyncEnumerable<TOutput>
+  fullName: System.Collections.Generic.IAsyncEnumerable<TOutput>
+  nameWithType.vb: IAsyncEnumerable(Of TOutput)
+  fullName.vb: System.Collections.Generic.IAsyncEnumerable(Of TOutput)
+  name.vb: IAsyncEnumerable(Of TOutput)
+  spec.csharp:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: <
+  - name: TOutput
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOutput
+  - name: )
+- uid: System.Collections.Generic.IAsyncEnumerable`1
+  commentId: T:System.Collections.Generic.IAsyncEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  name: IAsyncEnumerable<T>
+  nameWithType: IAsyncEnumerable<T>
+  fullName: System.Collections.Generic.IAsyncEnumerable<T>
+  nameWithType.vb: IAsyncEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IAsyncEnumerable(Of T)
+  name.vb: IAsyncEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Orleans.GpuBridge.BridgeFX.IPipeline`2.ProcessChannelAsync*
+  commentId: Overload:Orleans.GpuBridge.BridgeFX.IPipeline`2.ProcessChannelAsync
+  href: Orleans.GpuBridge.BridgeFX.IPipeline-2.html#Orleans_GpuBridge_BridgeFX_IPipeline_2_ProcessChannelAsync_System_Threading_Channels_ChannelReader__0__System_Threading_Channels_ChannelWriter__1__System_Threading_CancellationToken_
+  name: ProcessChannelAsync
+  nameWithType: IPipeline<TInput, TOutput>.ProcessChannelAsync
+  fullName: Orleans.GpuBridge.BridgeFX.IPipeline<TInput, TOutput>.ProcessChannelAsync
+  nameWithType.vb: IPipeline(Of TInput, TOutput).ProcessChannelAsync
+  fullName.vb: Orleans.GpuBridge.BridgeFX.IPipeline(Of TInput, TOutput).ProcessChannelAsync
+- uid: System.Threading.Channels.ChannelReader{{TInput}}
+  commentId: T:System.Threading.Channels.ChannelReader{`0}
+  parent: System.Threading.Channels
+  definition: System.Threading.Channels.ChannelReader`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelreader-1
+  name: ChannelReader<TInput>
+  nameWithType: ChannelReader<TInput>
+  fullName: System.Threading.Channels.ChannelReader<TInput>
+  nameWithType.vb: ChannelReader(Of TInput)
+  fullName.vb: System.Threading.Channels.ChannelReader(Of TInput)
+  name.vb: ChannelReader(Of TInput)
+  spec.csharp:
+  - uid: System.Threading.Channels.ChannelReader`1
+    name: ChannelReader
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelreader-1
+  - name: <
+  - name: TInput
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Channels.ChannelReader`1
+    name: ChannelReader
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelreader-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TInput
+  - name: )
+- uid: System.Threading.Channels.ChannelWriter{{TOutput}}
+  commentId: T:System.Threading.Channels.ChannelWriter{`1}
+  parent: System.Threading.Channels
+  definition: System.Threading.Channels.ChannelWriter`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelwriter-1
+  name: ChannelWriter<TOutput>
+  nameWithType: ChannelWriter<TOutput>
+  fullName: System.Threading.Channels.ChannelWriter<TOutput>
+  nameWithType.vb: ChannelWriter(Of TOutput)
+  fullName.vb: System.Threading.Channels.ChannelWriter(Of TOutput)
+  name.vb: ChannelWriter(Of TOutput)
+  spec.csharp:
+  - uid: System.Threading.Channels.ChannelWriter`1
+    name: ChannelWriter
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelwriter-1
+  - name: <
+  - name: TOutput
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Channels.ChannelWriter`1
+    name: ChannelWriter
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelwriter-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOutput
+  - name: )
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Channels.ChannelReader`1
+  commentId: T:System.Threading.Channels.ChannelReader`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelreader-1
+  name: ChannelReader<T>
+  nameWithType: ChannelReader<T>
+  fullName: System.Threading.Channels.ChannelReader<T>
+  nameWithType.vb: ChannelReader(Of T)
+  fullName.vb: System.Threading.Channels.ChannelReader(Of T)
+  name.vb: ChannelReader(Of T)
+  spec.csharp:
+  - uid: System.Threading.Channels.ChannelReader`1
+    name: ChannelReader
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelreader-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Channels.ChannelReader`1
+    name: ChannelReader
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelreader-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Threading.Channels
+  commentId: N:System.Threading.Channels
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Channels
+  nameWithType: System.Threading.Channels
+  fullName: System.Threading.Channels
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Channels
+    name: Channels
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.channels
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Channels
+    name: Channels
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.channels
+- uid: System.Threading.Channels.ChannelWriter`1
+  commentId: T:System.Threading.Channels.ChannelWriter`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelwriter-1
+  name: ChannelWriter<T>
+  nameWithType: ChannelWriter<T>
+  fullName: System.Threading.Channels.ChannelWriter<T>
+  nameWithType.vb: ChannelWriter(Of T)
+  fullName.vb: System.Threading.Channels.ChannelWriter(Of T)
+  name.vb: ChannelWriter(Of T)
+  spec.csharp:
+  - uid: System.Threading.Channels.ChannelWriter`1
+    name: ChannelWriter
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelwriter-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Channels.ChannelWriter`1
+    name: ChannelWriter
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelwriter-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

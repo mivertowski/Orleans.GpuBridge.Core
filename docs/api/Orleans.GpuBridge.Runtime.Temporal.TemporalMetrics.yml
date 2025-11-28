@@ -1,0 +1,1447 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  id: TemporalMetrics
+  parent: Orleans.GpuBridge.Runtime.Temporal
+  children:
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.#ctor(System.Diagnostics.Metrics.IMeterFactory)
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.Dispose
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.MeterName
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.MeterVersion
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordClockDrift(System.Double)
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordClockJump(System.Double)
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordFaultHandlerClockJump
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordFaultHandlerRecovery(System.Boolean,System.Double)
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordHlcNow(System.Double,System.Int64,System.Int64,System.Boolean)
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordHlcUpdate(System.Double,System.Int64,System.Int64)
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordMessageDequeued(System.Double,System.Boolean)
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordMessageEnqueued
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordNetworkRetryAttempt(System.Double)
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordNetworkRetryCompletion(System.Boolean,System.Int32)
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordPtpDeviceFailure
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordPtpSynchronization(System.Boolean,System.Double)
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockConcurrencyDetected
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockIncrement(System.Int32)
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockMerge(System.Double,System.Int32)
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.StartHlcNowTiming
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.StartHlcUpdateTiming
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.StartVectorClockMergeTiming
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.UpdateQueueDepth(System.Int32)
+  langs:
+  - csharp
+  - vb
+  name: TemporalMetrics
+  nameWithType: TemporalMetrics
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TemporalMetrics
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+    startLine: 23
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: >-
+    OpenTelemetry metrics for temporal coordination components.
+
+    Provides comprehensive observability for HLC, Vector Clocks, and fault handling.
+  remarks: >-
+    <p>
+
+    This class implements the .NET Metrics API for OpenTelemetry integration,
+
+    enabling real-time monitoring of temporal coordination performance.
+
+    </p>
+
+    <p>
+
+    Supported exporters include Prometheus, OTLP, and console output.
+
+    Configure via MeterProviderBuilder.AddMeter("Orleans.GpuBridge.Temporal").
+
+    </p>
+  example: []
+  syntax:
+    content: 'public sealed class TemporalMetrics : IDisposable'
+    content.vb: Public NotInheritable Class TemporalMetrics Implements IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.MeterName
+  commentId: F:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.MeterName
+  id: MeterName
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  langs:
+  - csharp
+  - vb
+  name: MeterName
+  nameWithType: TemporalMetrics.MeterName
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.MeterName
+  type: Field
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MeterName
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+    startLine: 28
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Meter name for temporal metrics. Use this when configuring OpenTelemetry.
+  example: []
+  syntax:
+    content: public const string MeterName = "Orleans.GpuBridge.Temporal"
+    return:
+      type: System.String
+    content.vb: Public Const MeterName As String = "Orleans.GpuBridge.Temporal"
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.MeterVersion
+  commentId: F:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.MeterVersion
+  id: MeterVersion
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  langs:
+  - csharp
+  - vb
+  name: MeterVersion
+  nameWithType: TemporalMetrics.MeterVersion
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.MeterVersion
+  type: Field
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MeterVersion
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+    startLine: 33
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Meter version following semantic versioning.
+  example: []
+  syntax:
+    content: public const string MeterVersion = "1.0.0"
+    return:
+      type: System.String
+    content.vb: Public Const MeterVersion As String = "1.0.0"
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.#ctor(System.Diagnostics.Metrics.IMeterFactory)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.#ctor(System.Diagnostics.Metrics.IMeterFactory)
+  id: '#ctor(System.Diagnostics.Metrics.IMeterFactory)'
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  langs:
+  - csharp
+  - vb
+  name: TemporalMetrics(IMeterFactory?)
+  nameWithType: TemporalMetrics.TemporalMetrics(IMeterFactory?)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.TemporalMetrics(System.Diagnostics.Metrics.IMeterFactory?)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+    startLine: 97
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Initializes a new instance of <xref href="Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public TemporalMetrics(IMeterFactory? meterFactory = null)
+    parameters:
+    - id: meterFactory
+      type: System.Diagnostics.Metrics.IMeterFactory
+      description: Optional meter factory for creating the meter.
+    content.vb: Public Sub New(meterFactory As IMeterFactory = Nothing)
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.#ctor*
+  nameWithType.vb: TemporalMetrics.New(IMeterFactory)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.New(System.Diagnostics.Metrics.IMeterFactory)
+  name.vb: New(IMeterFactory)
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordHlcNow(System.Double,System.Int64,System.Int64,System.Boolean)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordHlcNow(System.Double,System.Int64,System.Int64,System.Boolean)
+  id: RecordHlcNow(System.Double,System.Int64,System.Int64,System.Boolean)
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  langs:
+  - csharp
+  - vb
+  name: RecordHlcNow(double, long, long, bool)
+  nameWithType: TemporalMetrics.RecordHlcNow(double, long, long, bool)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordHlcNow(double, long, long, bool)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RecordHlcNow
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+    startLine: 302
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Records a HLC.Now() call with its latency.
+  example: []
+  syntax:
+    content: public void RecordHlcNow(double latencyNs, long physicalTime, long logicalCounter, bool logicalCounterIncremented)
+    parameters:
+    - id: latencyNs
+      type: System.Double
+      description: Latency in nanoseconds.
+    - id: physicalTime
+      type: System.Int64
+      description: Current physical time.
+    - id: logicalCounter
+      type: System.Int64
+      description: Current logical counter.
+    - id: logicalCounterIncremented
+      type: System.Boolean
+      description: Whether the logical counter was incremented.
+    content.vb: Public Sub RecordHlcNow(latencyNs As Double, physicalTime As Long, logicalCounter As Long, logicalCounterIncremented As Boolean)
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordHlcNow*
+  nameWithType.vb: TemporalMetrics.RecordHlcNow(Double, Long, Long, Boolean)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordHlcNow(Double, Long, Long, Boolean)
+  name.vb: RecordHlcNow(Double, Long, Long, Boolean)
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordHlcUpdate(System.Double,System.Int64,System.Int64)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordHlcUpdate(System.Double,System.Int64,System.Int64)
+  id: RecordHlcUpdate(System.Double,System.Int64,System.Int64)
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  langs:
+  - csharp
+  - vb
+  name: RecordHlcUpdate(double, long, long)
+  nameWithType: TemporalMetrics.RecordHlcUpdate(double, long, long)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordHlcUpdate(double, long, long)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RecordHlcUpdate
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+    startLine: 323
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Records a HLC.Update() call with its latency.
+  example: []
+  syntax:
+    content: public void RecordHlcUpdate(double latencyNs, long physicalTime, long logicalCounter)
+    parameters:
+    - id: latencyNs
+      type: System.Double
+      description: Latency in nanoseconds.
+    - id: physicalTime
+      type: System.Int64
+      description: Current physical time after update.
+    - id: logicalCounter
+      type: System.Int64
+      description: Current logical counter after update.
+    content.vb: Public Sub RecordHlcUpdate(latencyNs As Double, physicalTime As Long, logicalCounter As Long)
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordHlcUpdate*
+  nameWithType.vb: TemporalMetrics.RecordHlcUpdate(Double, Long, Long)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordHlcUpdate(Double, Long, Long)
+  name.vb: RecordHlcUpdate(Double, Long, Long)
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordClockDrift(System.Double)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordClockDrift(System.Double)
+  id: RecordClockDrift(System.Double)
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  langs:
+  - csharp
+  - vb
+  name: RecordClockDrift(double)
+  nameWithType: TemporalMetrics.RecordClockDrift(double)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordClockDrift(double)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RecordClockDrift
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+    startLine: 341
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Records observed clock drift.
+  example: []
+  syntax:
+    content: public void RecordClockDrift(double driftNs)
+    parameters:
+    - id: driftNs
+      type: System.Double
+      description: Clock drift in nanoseconds.
+    content.vb: Public Sub RecordClockDrift(driftNs As Double)
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordClockDrift*
+  nameWithType.vb: TemporalMetrics.RecordClockDrift(Double)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordClockDrift(Double)
+  name.vb: RecordClockDrift(Double)
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordClockJump(System.Double)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordClockJump(System.Double)
+  id: RecordClockJump(System.Double)
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  langs:
+  - csharp
+  - vb
+  name: RecordClockJump(double)
+  nameWithType: TemporalMetrics.RecordClockJump(double)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordClockJump(double)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RecordClockJump
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+    startLine: 351
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Records a detected clock jump.
+  example: []
+  syntax:
+    content: public void RecordClockJump(double magnitudeMs)
+    parameters:
+    - id: magnitudeMs
+      type: System.Double
+      description: Jump magnitude in milliseconds (positive = forward, negative = backward).
+    content.vb: Public Sub RecordClockJump(magnitudeMs As Double)
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordClockJump*
+  nameWithType.vb: TemporalMetrics.RecordClockJump(Double)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordClockJump(Double)
+  name.vb: RecordClockJump(Double)
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockIncrement(System.Int32)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockIncrement(System.Int32)
+  id: RecordVectorClockIncrement(System.Int32)
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  langs:
+  - csharp
+  - vb
+  name: RecordVectorClockIncrement(int)
+  nameWithType: TemporalMetrics.RecordVectorClockIncrement(int)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockIncrement(int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RecordVectorClockIncrement
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+    startLine: 375
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Records a vector clock increment operation.
+  example: []
+  syntax:
+    content: public void RecordVectorClockIncrement(int entryCount)
+    parameters:
+    - id: entryCount
+      type: System.Int32
+      description: Current number of entries in the vector clock.
+    content.vb: Public Sub RecordVectorClockIncrement(entryCount As Integer)
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockIncrement*
+  nameWithType.vb: TemporalMetrics.RecordVectorClockIncrement(Integer)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockIncrement(Integer)
+  name.vb: RecordVectorClockIncrement(Integer)
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockMerge(System.Double,System.Int32)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockMerge(System.Double,System.Int32)
+  id: RecordVectorClockMerge(System.Double,System.Int32)
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  langs:
+  - csharp
+  - vb
+  name: RecordVectorClockMerge(double, int)
+  nameWithType: TemporalMetrics.RecordVectorClockMerge(double, int)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockMerge(double, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RecordVectorClockMerge
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+    startLine: 387
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Records a vector clock merge operation.
+  example: []
+  syntax:
+    content: public void RecordVectorClockMerge(double latencyNs, int resultingEntryCount)
+    parameters:
+    - id: latencyNs
+      type: System.Double
+      description: Merge operation latency in nanoseconds.
+    - id: resultingEntryCount
+      type: System.Int32
+      description: Number of entries after merge.
+    content.vb: Public Sub RecordVectorClockMerge(latencyNs As Double, resultingEntryCount As Integer)
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockMerge*
+  nameWithType.vb: TemporalMetrics.RecordVectorClockMerge(Double, Integer)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockMerge(Double, Integer)
+  name.vb: RecordVectorClockMerge(Double, Integer)
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockConcurrencyDetected
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockConcurrencyDetected
+  id: RecordVectorClockConcurrencyDetected
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  langs:
+  - csharp
+  - vb
+  name: RecordVectorClockConcurrencyDetected()
+  nameWithType: TemporalMetrics.RecordVectorClockConcurrencyDetected()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockConcurrencyDetected()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RecordVectorClockConcurrencyDetected
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+    startLine: 398
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Records detection of concurrent events via vector clock comparison.
+  example: []
+  syntax:
+    content: public void RecordVectorClockConcurrencyDetected()
+    content.vb: Public Sub RecordVectorClockConcurrencyDetected()
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockConcurrencyDetected*
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordFaultHandlerClockJump
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordFaultHandlerClockJump
+  id: RecordFaultHandlerClockJump
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  langs:
+  - csharp
+  - vb
+  name: RecordFaultHandlerClockJump()
+  nameWithType: TemporalMetrics.RecordFaultHandlerClockJump()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordFaultHandlerClockJump()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RecordFaultHandlerClockJump
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+    startLine: 411
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Records a clock jump handled by the fault handler.
+  example: []
+  syntax:
+    content: public void RecordFaultHandlerClockJump()
+    content.vb: Public Sub RecordFaultHandlerClockJump()
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordFaultHandlerClockJump*
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordFaultHandlerRecovery(System.Boolean,System.Double)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordFaultHandlerRecovery(System.Boolean,System.Double)
+  id: RecordFaultHandlerRecovery(System.Boolean,System.Double)
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  langs:
+  - csharp
+  - vb
+  name: RecordFaultHandlerRecovery(bool, double)
+  nameWithType: TemporalMetrics.RecordFaultHandlerRecovery(bool, double)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordFaultHandlerRecovery(bool, double)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RecordFaultHandlerRecovery
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+    startLine: 422
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Records a fault recovery attempt with its outcome.
+  example: []
+  syntax:
+    content: public void RecordFaultHandlerRecovery(bool success, double durationMs)
+    parameters:
+    - id: success
+      type: System.Boolean
+      description: Whether recovery was successful.
+    - id: durationMs
+      type: System.Double
+      description: Recovery duration in milliseconds.
+    content.vb: Public Sub RecordFaultHandlerRecovery(success As Boolean, durationMs As Double)
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordFaultHandlerRecovery*
+  nameWithType.vb: TemporalMetrics.RecordFaultHandlerRecovery(Boolean, Double)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordFaultHandlerRecovery(Boolean, Double)
+  name.vb: RecordFaultHandlerRecovery(Boolean, Double)
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordNetworkRetryAttempt(System.Double)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordNetworkRetryAttempt(System.Double)
+  id: RecordNetworkRetryAttempt(System.Double)
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  langs:
+  - csharp
+  - vb
+  name: RecordNetworkRetryAttempt(double)
+  nameWithType: TemporalMetrics.RecordNetworkRetryAttempt(double)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordNetworkRetryAttempt(double)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RecordNetworkRetryAttempt
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+    startLine: 446
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Records a network retry attempt.
+  example: []
+  syntax:
+    content: public void RecordNetworkRetryAttempt(double delayMs)
+    parameters:
+    - id: delayMs
+      type: System.Double
+      description: Delay before retry in milliseconds.
+    content.vb: Public Sub RecordNetworkRetryAttempt(delayMs As Double)
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordNetworkRetryAttempt*
+  nameWithType.vb: TemporalMetrics.RecordNetworkRetryAttempt(Double)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordNetworkRetryAttempt(Double)
+  name.vb: RecordNetworkRetryAttempt(Double)
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordNetworkRetryCompletion(System.Boolean,System.Int32)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordNetworkRetryCompletion(System.Boolean,System.Int32)
+  id: RecordNetworkRetryCompletion(System.Boolean,System.Int32)
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  langs:
+  - csharp
+  - vb
+  name: RecordNetworkRetryCompletion(bool, int)
+  nameWithType: TemporalMetrics.RecordNetworkRetryCompletion(bool, int)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordNetworkRetryCompletion(bool, int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RecordNetworkRetryCompletion
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+    startLine: 458
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Records completion of a retry sequence.
+  example: []
+  syntax:
+    content: public void RecordNetworkRetryCompletion(bool success, int attemptCount)
+    parameters:
+    - id: success
+      type: System.Boolean
+      description: Whether the operation eventually succeeded.
+    - id: attemptCount
+      type: System.Int32
+      description: Total number of attempts.
+    content.vb: Public Sub RecordNetworkRetryCompletion(success As Boolean, attemptCount As Integer)
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordNetworkRetryCompletion*
+  nameWithType.vb: TemporalMetrics.RecordNetworkRetryCompletion(Boolean, Integer)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordNetworkRetryCompletion(Boolean, Integer)
+  name.vb: RecordNetworkRetryCompletion(Boolean, Integer)
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordPtpDeviceFailure
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordPtpDeviceFailure
+  id: RecordPtpDeviceFailure
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  langs:
+  - csharp
+  - vb
+  name: RecordPtpDeviceFailure()
+  nameWithType: TemporalMetrics.RecordPtpDeviceFailure()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordPtpDeviceFailure()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RecordPtpDeviceFailure
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+    startLine: 480
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Records a PTP hardware device failure.
+  example: []
+  syntax:
+    content: public void RecordPtpDeviceFailure()
+    content.vb: Public Sub RecordPtpDeviceFailure()
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordPtpDeviceFailure*
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordPtpSynchronization(System.Boolean,System.Double)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordPtpSynchronization(System.Boolean,System.Double)
+  id: RecordPtpSynchronization(System.Boolean,System.Double)
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  langs:
+  - csharp
+  - vb
+  name: RecordPtpSynchronization(bool, double)
+  nameWithType: TemporalMetrics.RecordPtpSynchronization(bool, double)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordPtpSynchronization(bool, double)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RecordPtpSynchronization
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+    startLine: 491
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Records a PTP synchronization attempt.
+  example: []
+  syntax:
+    content: public void RecordPtpSynchronization(bool success, double offsetNs)
+    parameters:
+    - id: success
+      type: System.Boolean
+      description: Whether synchronization succeeded.
+    - id: offsetNs
+      type: System.Double
+      description: Offset from master clock in nanoseconds.
+    content.vb: Public Sub RecordPtpSynchronization(success As Boolean, offsetNs As Double)
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordPtpSynchronization*
+  nameWithType.vb: TemporalMetrics.RecordPtpSynchronization(Boolean, Double)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordPtpSynchronization(Boolean, Double)
+  name.vb: RecordPtpSynchronization(Boolean, Double)
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordMessageEnqueued
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordMessageEnqueued
+  id: RecordMessageEnqueued
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  langs:
+  - csharp
+  - vb
+  name: RecordMessageEnqueued()
+  nameWithType: TemporalMetrics.RecordMessageEnqueued()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordMessageEnqueued()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RecordMessageEnqueued
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+    startLine: 510
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Records a message being enqueued to the temporal queue.
+  example: []
+  syntax:
+    content: public void RecordMessageEnqueued()
+    content.vb: Public Sub RecordMessageEnqueued()
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordMessageEnqueued*
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordMessageDequeued(System.Double,System.Boolean)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordMessageDequeued(System.Double,System.Boolean)
+  id: RecordMessageDequeued(System.Double,System.Boolean)
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  langs:
+  - csharp
+  - vb
+  name: RecordMessageDequeued(double, bool)
+  nameWithType: TemporalMetrics.RecordMessageDequeued(double, bool)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordMessageDequeued(double, bool)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: RecordMessageDequeued
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+    startLine: 522
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Records a message being dequeued from the temporal queue.
+  example: []
+  syntax:
+    content: public void RecordMessageDequeued(double latencyMs, bool wasReordered)
+    parameters:
+    - id: latencyMs
+      type: System.Double
+      description: End-to-end message latency in milliseconds.
+    - id: wasReordered
+      type: System.Boolean
+      description: Whether the message was reordered for causal consistency.
+    content.vb: Public Sub RecordMessageDequeued(latencyMs As Double, wasReordered As Boolean)
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordMessageDequeued*
+  nameWithType.vb: TemporalMetrics.RecordMessageDequeued(Double, Boolean)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordMessageDequeued(Double, Boolean)
+  name.vb: RecordMessageDequeued(Double, Boolean)
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.UpdateQueueDepth(System.Int32)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.UpdateQueueDepth(System.Int32)
+  id: UpdateQueueDepth(System.Int32)
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  langs:
+  - csharp
+  - vb
+  name: UpdateQueueDepth(int)
+  nameWithType: TemporalMetrics.UpdateQueueDepth(int)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.UpdateQueueDepth(int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: UpdateQueueDepth
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+    startLine: 539
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Updates the current queue depth for observable gauge.
+  example: []
+  syntax:
+    content: public void UpdateQueueDepth(int depth)
+    parameters:
+    - id: depth
+      type: System.Int32
+      description: Current queue depth.
+    content.vb: Public Sub UpdateQueueDepth(depth As Integer)
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.UpdateQueueDepth*
+  nameWithType.vb: TemporalMetrics.UpdateQueueDepth(Integer)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.UpdateQueueDepth(Integer)
+  name.vb: UpdateQueueDepth(Integer)
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.StartHlcNowTiming
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.StartHlcNowTiming
+  id: StartHlcNowTiming
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  langs:
+  - csharp
+  - vb
+  name: StartHlcNowTiming()
+  nameWithType: TemporalMetrics.StartHlcNowTiming()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.StartHlcNowTiming()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: StartHlcNowTiming
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+    startLine: 553
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Creates a scope for timing an HLC.Now() operation.
+  example: []
+  syntax:
+    content: public TemporalMetrics.HlcNowTimingScope StartHlcNowTiming()
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.HlcNowTimingScope
+      description: A disposable timing scope.
+    content.vb: Public Function StartHlcNowTiming() As TemporalMetrics.HlcNowTimingScope
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.StartHlcNowTiming*
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.StartHlcUpdateTiming
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.StartHlcUpdateTiming
+  id: StartHlcUpdateTiming
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  langs:
+  - csharp
+  - vb
+  name: StartHlcUpdateTiming()
+  nameWithType: TemporalMetrics.StartHlcUpdateTiming()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.StartHlcUpdateTiming()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: StartHlcUpdateTiming
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+    startLine: 559
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Creates a scope for timing an HLC.Update() operation.
+  example: []
+  syntax:
+    content: public TemporalMetrics.HlcUpdateTimingScope StartHlcUpdateTiming()
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.HlcUpdateTimingScope
+      description: A disposable timing scope.
+    content.vb: Public Function StartHlcUpdateTiming() As TemporalMetrics.HlcUpdateTimingScope
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.StartHlcUpdateTiming*
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.StartVectorClockMergeTiming
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.StartVectorClockMergeTiming
+  id: StartVectorClockMergeTiming
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  langs:
+  - csharp
+  - vb
+  name: StartVectorClockMergeTiming()
+  nameWithType: TemporalMetrics.StartVectorClockMergeTiming()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.StartVectorClockMergeTiming()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: StartVectorClockMergeTiming
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+    startLine: 565
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Creates a scope for timing a vector clock merge operation.
+  example: []
+  syntax:
+    content: public TemporalMetrics.VectorClockMergeTimingScope StartVectorClockMergeTiming()
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.VectorClockMergeTimingScope
+      description: A disposable timing scope.
+    content.vb: Public Function StartVectorClockMergeTiming() As TemporalMetrics.VectorClockMergeTimingScope
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.StartVectorClockMergeTiming*
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.Dispose
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.Dispose
+  id: Dispose
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: TemporalMetrics.Dispose()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.Dispose()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Dispose
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMetrics.cs
+    startLine: 681
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Disposes the meter and releases resources.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+references:
+- uid: Orleans.GpuBridge.Runtime.Temporal
+  commentId: N:Orleans.GpuBridge.Runtime.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Temporal
+  nameWithType: Orleans.GpuBridge.Runtime.Temporal
+  fullName: Orleans.GpuBridge.Runtime.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html
+  name: TemporalMetrics
+  nameWithType: TemporalMetrics
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.#ctor
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMetrics__ctor_System_Diagnostics_Metrics_IMeterFactory_
+  name: TemporalMetrics
+  nameWithType: TemporalMetrics.TemporalMetrics
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.TemporalMetrics
+  nameWithType.vb: TemporalMetrics.New
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.New
+  name.vb: New
+- uid: System.Diagnostics.Metrics.IMeterFactory
+  commentId: T:System.Diagnostics.Metrics.IMeterFactory
+  parent: System.Diagnostics.Metrics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.diagnostics.metrics.imeterfactory
+  name: IMeterFactory
+  nameWithType: IMeterFactory
+  fullName: System.Diagnostics.Metrics.IMeterFactory
+- uid: System.Diagnostics.Metrics
+  commentId: N:System.Diagnostics.Metrics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Diagnostics.Metrics
+  nameWithType: System.Diagnostics.Metrics
+  fullName: System.Diagnostics.Metrics
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Diagnostics
+    name: Diagnostics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics
+  - name: .
+  - uid: System.Diagnostics.Metrics
+    name: Metrics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.metrics
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Diagnostics
+    name: Diagnostics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics
+  - name: .
+  - uid: System.Diagnostics.Metrics
+    name: Metrics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.metrics
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordHlcNow*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordHlcNow
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMetrics_RecordHlcNow_System_Double_System_Int64_System_Int64_System_Boolean_
+  name: RecordHlcNow
+  nameWithType: TemporalMetrics.RecordHlcNow
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordHlcNow
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordHlcUpdate*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordHlcUpdate
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMetrics_RecordHlcUpdate_System_Double_System_Int64_System_Int64_
+  name: RecordHlcUpdate
+  nameWithType: TemporalMetrics.RecordHlcUpdate
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordHlcUpdate
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordClockDrift*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordClockDrift
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMetrics_RecordClockDrift_System_Double_
+  name: RecordClockDrift
+  nameWithType: TemporalMetrics.RecordClockDrift
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordClockDrift
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordClockJump*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordClockJump
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMetrics_RecordClockJump_System_Double_
+  name: RecordClockJump
+  nameWithType: TemporalMetrics.RecordClockJump
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordClockJump
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockIncrement*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockIncrement
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMetrics_RecordVectorClockIncrement_System_Int32_
+  name: RecordVectorClockIncrement
+  nameWithType: TemporalMetrics.RecordVectorClockIncrement
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockIncrement
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockMerge*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockMerge
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMetrics_RecordVectorClockMerge_System_Double_System_Int32_
+  name: RecordVectorClockMerge
+  nameWithType: TemporalMetrics.RecordVectorClockMerge
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockMerge
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockConcurrencyDetected*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockConcurrencyDetected
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMetrics_RecordVectorClockConcurrencyDetected
+  name: RecordVectorClockConcurrencyDetected
+  nameWithType: TemporalMetrics.RecordVectorClockConcurrencyDetected
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordVectorClockConcurrencyDetected
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordFaultHandlerClockJump*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordFaultHandlerClockJump
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMetrics_RecordFaultHandlerClockJump
+  name: RecordFaultHandlerClockJump
+  nameWithType: TemporalMetrics.RecordFaultHandlerClockJump
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordFaultHandlerClockJump
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordFaultHandlerRecovery*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordFaultHandlerRecovery
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMetrics_RecordFaultHandlerRecovery_System_Boolean_System_Double_
+  name: RecordFaultHandlerRecovery
+  nameWithType: TemporalMetrics.RecordFaultHandlerRecovery
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordFaultHandlerRecovery
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordNetworkRetryAttempt*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordNetworkRetryAttempt
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMetrics_RecordNetworkRetryAttempt_System_Double_
+  name: RecordNetworkRetryAttempt
+  nameWithType: TemporalMetrics.RecordNetworkRetryAttempt
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordNetworkRetryAttempt
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordNetworkRetryCompletion*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordNetworkRetryCompletion
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMetrics_RecordNetworkRetryCompletion_System_Boolean_System_Int32_
+  name: RecordNetworkRetryCompletion
+  nameWithType: TemporalMetrics.RecordNetworkRetryCompletion
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordNetworkRetryCompletion
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordPtpDeviceFailure*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordPtpDeviceFailure
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMetrics_RecordPtpDeviceFailure
+  name: RecordPtpDeviceFailure
+  nameWithType: TemporalMetrics.RecordPtpDeviceFailure
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordPtpDeviceFailure
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordPtpSynchronization*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordPtpSynchronization
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMetrics_RecordPtpSynchronization_System_Boolean_System_Double_
+  name: RecordPtpSynchronization
+  nameWithType: TemporalMetrics.RecordPtpSynchronization
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordPtpSynchronization
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordMessageEnqueued*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordMessageEnqueued
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMetrics_RecordMessageEnqueued
+  name: RecordMessageEnqueued
+  nameWithType: TemporalMetrics.RecordMessageEnqueued
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordMessageEnqueued
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordMessageDequeued*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordMessageDequeued
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMetrics_RecordMessageDequeued_System_Double_System_Boolean_
+  name: RecordMessageDequeued
+  nameWithType: TemporalMetrics.RecordMessageDequeued
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.RecordMessageDequeued
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.UpdateQueueDepth*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.UpdateQueueDepth
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMetrics_UpdateQueueDepth_System_Int32_
+  name: UpdateQueueDepth
+  nameWithType: TemporalMetrics.UpdateQueueDepth
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.UpdateQueueDepth
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.StartHlcNowTiming*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.StartHlcNowTiming
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMetrics_StartHlcNowTiming
+  name: StartHlcNowTiming
+  nameWithType: TemporalMetrics.StartHlcNowTiming
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.StartHlcNowTiming
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.HlcNowTimingScope
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.HlcNowTimingScope
+  parent: Orleans.GpuBridge.Runtime.Temporal
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html
+  name: TemporalMetrics.HlcNowTimingScope
+  nameWithType: TemporalMetrics.HlcNowTimingScope
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.HlcNowTimingScope
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+    name: TemporalMetrics
+    href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.HlcNowTimingScope
+    name: HlcNowTimingScope
+    href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.HlcNowTimingScope.html
+  spec.vb:
+  - uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+    name: TemporalMetrics
+    href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.HlcNowTimingScope
+    name: HlcNowTimingScope
+    href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.HlcNowTimingScope.html
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.StartHlcUpdateTiming*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.StartHlcUpdateTiming
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMetrics_StartHlcUpdateTiming
+  name: StartHlcUpdateTiming
+  nameWithType: TemporalMetrics.StartHlcUpdateTiming
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.StartHlcUpdateTiming
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.HlcUpdateTimingScope
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.HlcUpdateTimingScope
+  parent: Orleans.GpuBridge.Runtime.Temporal
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html
+  name: TemporalMetrics.HlcUpdateTimingScope
+  nameWithType: TemporalMetrics.HlcUpdateTimingScope
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.HlcUpdateTimingScope
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+    name: TemporalMetrics
+    href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.HlcUpdateTimingScope
+    name: HlcUpdateTimingScope
+    href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.HlcUpdateTimingScope.html
+  spec.vb:
+  - uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+    name: TemporalMetrics
+    href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.HlcUpdateTimingScope
+    name: HlcUpdateTimingScope
+    href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.HlcUpdateTimingScope.html
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.StartVectorClockMergeTiming*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.StartVectorClockMergeTiming
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMetrics_StartVectorClockMergeTiming
+  name: StartVectorClockMergeTiming
+  nameWithType: TemporalMetrics.StartVectorClockMergeTiming
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.StartVectorClockMergeTiming
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.VectorClockMergeTimingScope
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.VectorClockMergeTimingScope
+  parent: Orleans.GpuBridge.Runtime.Temporal
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html
+  name: TemporalMetrics.VectorClockMergeTimingScope
+  nameWithType: TemporalMetrics.VectorClockMergeTimingScope
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.VectorClockMergeTimingScope
+  spec.csharp:
+  - uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+    name: TemporalMetrics
+    href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.VectorClockMergeTimingScope
+    name: VectorClockMergeTimingScope
+    href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.VectorClockMergeTimingScope.html
+  spec.vb:
+  - uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics
+    name: TemporalMetrics
+    href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.VectorClockMergeTimingScope
+    name: VectorClockMergeTimingScope
+    href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.VectorClockMergeTimingScope.html
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.Dispose*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.Dispose
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMetrics_Dispose
+  name: Dispose
+  nameWithType: TemporalMetrics.Dispose
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMetrics.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )

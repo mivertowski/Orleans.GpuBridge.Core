@@ -35,6 +35,8 @@ Orleans.GpuBridge.Core enables **GPU-native distributed computing** for Microsof
 | Memory Bandwidth | 200 GB/s | 1,935 GB/s | **10×** |
 | Temporal Ordering | 50ns | 20ns | **2.5×** |
 
+> **Performance Note**: The performance figures above represent targets achievable on **native Linux** with persistent kernel mode. WSL2 environments have limitations due to GPU-PV virtualization that prevent persistent kernels, resulting in higher latencies (~5 seconds in EventDriven mode). For production deployments requiring sub-microsecond latency, use native Linux. See [Implementation Roadmap](articles/temporal/IMPLEMENTATION-ROADMAP.md) for details on WSL2 limitations.
+
 ## Quick Example
 
 ```csharp

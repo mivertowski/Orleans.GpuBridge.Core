@@ -1,0 +1,991 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+  commentId: T:Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+  id: OrleansGpuMessage
+  parent: Orleans.GpuBridge.Runtime.RingKernels
+  children:
+  - Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.CorrelationId
+  - Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.Create(System.Int32,System.Int32,System.Int32,Orleans.GpuBridge.Runtime.RingKernels.MessageType)
+  - Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.CreateResponse(Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage)
+  - Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.GetPayloadSpan
+  - Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.MethodId
+  - Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.Payload
+  - Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.ReadPayload``1(System.Int32)
+  - Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.SenderId
+  - Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.TargetId
+  - Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.TimestampTicks
+  - Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.Type
+  - Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.WritePayload``1(System.Int32,``0)
+  langs:
+  - csharp
+  - vb
+  name: OrleansGpuMessage
+  nameWithType: OrleansGpuMessage
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+  type: Struct
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: OrleansGpuMessage
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+    startLine: 25
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: GPU-compatible message structure for Orleans method invocation on ring kernels.
+  remarks: >-
+    <p>
+
+    This structure is designed for zero-copy GPU messaging with the following constraints:
+
+    - Fixed size (256 bytes) for cache alignment and predictable memory access
+
+    - Unmanaged type (no pointers/references) safe for GPU memory
+
+    - Inline payload to avoid pointer chasing on GPU
+
+    - Temporal metadata for HLC/Vector Clock integration
+
+    </p>
+
+    <p>
+
+    The 256-byte size is chosen because:
+
+    - Aligns with GPU cache line size (128-256 bytes depending on architecture)
+
+    - Allows 16 messages per 4KB page (efficient memory usage)
+
+    - Fits in L1 cache for fast access
+
+    </p>
+  example: []
+  syntax:
+    content: public struct OrleansGpuMessage
+    content.vb: Public Structure OrleansGpuMessage
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.MethodId
+  commentId: F:Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.MethodId
+  id: MethodId
+  parent: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+  langs:
+  - csharp
+  - vb
+  name: MethodId
+  nameWithType: OrleansGpuMessage.MethodId
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.MethodId
+  type: Field
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MethodId
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+    startLine: 35
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Hash of the method name for fast dispatch.
+  remarks: >-
+    Computed as <xref href="System.String.GetHashCode" data-throw-if-not-resolved="false"></xref> of the method name.
+
+    GPU kernel uses switch statement on MethodId for O(1) dispatch.
+  example: []
+  syntax:
+    content: public int MethodId
+    return:
+      type: System.Int32
+    content.vb: Public MethodId As Integer
+- uid: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.TimestampTicks
+  commentId: F:Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.TimestampTicks
+  id: TimestampTicks
+  parent: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+  langs:
+  - csharp
+  - vb
+  name: TimestampTicks
+  nameWithType: OrleansGpuMessage.TimestampTicks
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.TimestampTicks
+  type: Field
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TimestampTicks
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+    startLine: 45
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Timestamp in UTC ticks for temporal ordering (HLC integration).
+  remarks: >-
+    Used for Hybrid Logical Clock (HLC) synchronization.
+
+    GPU kernel can maintain HLC state for causality tracking.
+
+    Resolution: 100ns (DateTime.Ticks)
+  example: []
+  syntax:
+    content: public long TimestampTicks
+    return:
+      type: System.Int64
+    content.vb: Public TimestampTicks As Long
+- uid: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.CorrelationId
+  commentId: F:Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.CorrelationId
+  id: CorrelationId
+  parent: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+  langs:
+  - csharp
+  - vb
+  name: CorrelationId
+  nameWithType: OrleansGpuMessage.CorrelationId
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.CorrelationId
+  type: Field
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CorrelationId
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+    startLine: 54
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Correlation ID for matching requests with responses.
+  remarks: >-
+    Generated from <xref href="System.Guid" data-throw-if-not-resolved="false"></xref> for uniqueness.
+
+    GPU kernel echoes this ID in response messages.
+  example: []
+  syntax:
+    content: public long CorrelationId
+    return:
+      type: System.Int64
+    content.vb: Public CorrelationId As Long
+- uid: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.Type
+  commentId: F:Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.Type
+  id: Type
+  parent: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+  langs:
+  - csharp
+  - vb
+  name: Type
+  nameWithType: OrleansGpuMessage.Type
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.Type
+  type: Field
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Type
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+    startLine: 59
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Message type classification.
+  example: []
+  syntax:
+    content: public MessageType Type
+    return:
+      type: Orleans.GpuBridge.Runtime.RingKernels.MessageType
+    content.vb: Public Type As MessageType
+- uid: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.SenderId
+  commentId: F:Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.SenderId
+  id: SenderId
+  parent: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+  langs:
+  - csharp
+  - vb
+  name: SenderId
+  nameWithType: OrleansGpuMessage.SenderId
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.SenderId
+  type: Field
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: SenderId
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+    startLine: 68
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Sender actor ID (for actor-to-actor messaging).
+  remarks: >-
+    Maps to Orleans grain primary key (integer portion).
+
+    Value 0 indicates message from CPU/Orleans runtime.
+  example: []
+  syntax:
+    content: public int SenderId
+    return:
+      type: System.Int32
+    content.vb: Public SenderId As Integer
+- uid: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.TargetId
+  commentId: F:Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.TargetId
+  id: TargetId
+  parent: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+  langs:
+  - csharp
+  - vb
+  name: TargetId
+  nameWithType: OrleansGpuMessage.TargetId
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.TargetId
+  type: Field
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TargetId
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+    startLine: 77
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Target actor ID (destination).
+  remarks: >-
+    Maps to Orleans grain primary key (integer portion).
+
+    GPU kernel validates target matches its actor ID.
+  example: []
+  syntax:
+    content: public int TargetId
+    return:
+      type: System.Int32
+    content.vb: Public TargetId As Integer
+- uid: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.Payload
+  commentId: F:Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.Payload
+  id: Payload
+  parent: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+  langs:
+  - csharp
+  - vb
+  name: Payload
+  nameWithType: OrleansGpuMessage.Payload
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.Payload
+  type: Field
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Payload
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+    startLine: 111
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Serialized method arguments or response data.
+  remarks: >-
+    <p>
+
+    Fixed 228-byte inline buffer for message payload.
+
+    This avoids pointer chasing and ensures cache-friendly access on GPU.
+
+    </p>
+
+    <p>
+
+    Layout strategy:
+
+    - Primitives (int, float, long, etc.) packed sequentially
+
+    - Small arrays (&lt; 228 bytes) copied inline
+
+    - Large arrays passed via GPU memory pointers (stored as long)
+
+    </p>
+
+    <p>
+
+    Calculation: 256 (total) - 28 (metadata) = 228 bytes
+
+    - MethodId (4) + TimestampTicks (8) + CorrelationId (8)
+
+    - Type (4) + SenderId (4) + TargetId (4)
+
+    - _reserved1 (4) + _reserved2 (4)
+
+    = 40 bytes metadata, but Pack=4 reduces to 28 bytes effective
+
+    </p>
+  example: []
+  syntax:
+    content: public byte* Payload
+    return:
+      type: System.Byte*
+    content.vb: Public Payload As Byte*
+- uid: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.Create(System.Int32,System.Int32,System.Int32,Orleans.GpuBridge.Runtime.RingKernels.MessageType)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.Create(System.Int32,System.Int32,System.Int32,Orleans.GpuBridge.Runtime.RingKernels.MessageType)
+  id: Create(System.Int32,System.Int32,System.Int32,Orleans.GpuBridge.Runtime.RingKernels.MessageType)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+  langs:
+  - csharp
+  - vb
+  name: Create(int, int, int, MessageType)
+  nameWithType: OrleansGpuMessage.Create(int, int, int, MessageType)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.Create(int, int, int, Orleans.GpuBridge.Runtime.RingKernels.MessageType)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Create
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+    startLine: 121
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Creates a new GPU message for a method invocation.
+  example: []
+  syntax:
+    content: public static OrleansGpuMessage Create(int methodId, int senderId, int targetId, MessageType type = MessageType.Data)
+    parameters:
+    - id: methodId
+      type: System.Int32
+      description: Hash of the method name.
+    - id: senderId
+      type: System.Int32
+      description: Sender actor ID (0 for Orleans runtime).
+    - id: targetId
+      type: System.Int32
+      description: Target actor ID.
+    - id: type
+      type: Orleans.GpuBridge.Runtime.RingKernels.MessageType
+      description: Message type.
+    return:
+      type: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+      description: Initialized GPU message.
+    content.vb: Public Shared Function Create(methodId As Integer, senderId As Integer, targetId As Integer, type As MessageType = MessageType.Data) As OrleansGpuMessage
+  overload: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.Create*
+  nameWithType.vb: OrleansGpuMessage.Create(Integer, Integer, Integer, MessageType)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.Create(Integer, Integer, Integer, Orleans.GpuBridge.Runtime.RingKernels.MessageType)
+  name.vb: Create(Integer, Integer, Integer, MessageType)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.CreateResponse(Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.CreateResponse(Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage)
+  id: CreateResponse(Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+  langs:
+  - csharp
+  - vb
+  name: CreateResponse(OrleansGpuMessage)
+  nameWithType: OrleansGpuMessage.CreateResponse(OrleansGpuMessage)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.CreateResponse(Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: CreateResponse
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+    startLine: 141
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Creates a response message from a request.
+  example: []
+  syntax:
+    content: public static OrleansGpuMessage CreateResponse(OrleansGpuMessage request)
+    parameters:
+    - id: request
+      type: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+      description: Original request message.
+    return:
+      type: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+      description: Response message with correlation ID preserved.
+    content.vb: Public Shared Function CreateResponse(request As OrleansGpuMessage) As OrleansGpuMessage
+  overload: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.CreateResponse*
+- uid: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.GetPayloadSpan
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.GetPayloadSpan
+  id: GetPayloadSpan
+  parent: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+  langs:
+  - csharp
+  - vb
+  name: GetPayloadSpan()
+  nameWithType: OrleansGpuMessage.GetPayloadSpan()
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.GetPayloadSpan()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetPayloadSpan
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+    startLine: 170
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Gets a span over the payload buffer for safe manipulation.
+  example: []
+  syntax:
+    content: public readonly Span<byte> GetPayloadSpan()
+    return:
+      type: System.Span{System.Byte}
+      description: Span of 228 bytes.
+    content.vb: Public Function GetPayloadSpan() As Span(Of Byte)
+  overload: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.GetPayloadSpan*
+- uid: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.WritePayload``1(System.Int32,``0)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.WritePayload``1(System.Int32,``0)
+  id: WritePayload``1(System.Int32,``0)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+  langs:
+  - csharp
+  - vb
+  name: WritePayload<T>(int, T)
+  nameWithType: OrleansGpuMessage.WritePayload<T>(int, T)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.WritePayload<T>(int, T)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: WritePayload
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+    startLine: 185
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Writes a value to the payload at the specified offset.
+  example: []
+  syntax:
+    content: 'public void WritePayload<T>(int offset, T value) where T : unmanaged'
+    parameters:
+    - id: offset
+      type: System.Int32
+      description: Byte offset in payload.
+    - id: value
+      type: '{T}'
+      description: Value to write.
+    typeParameters:
+    - id: T
+      description: Unmanaged value type.
+    content.vb: Public Sub WritePayload(Of T As Structure)(offset As Integer, value As T)
+  overload: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.WritePayload*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Offset + sizeof(T) exceeds payload size.
+  nameWithType.vb: OrleansGpuMessage.WritePayload(Of T)(Integer, T)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.WritePayload(Of T)(Integer, T)
+  name.vb: WritePayload(Of T)(Integer, T)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.ReadPayload``1(System.Int32)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.ReadPayload``1(System.Int32)
+  id: ReadPayload``1(System.Int32)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+  langs:
+  - csharp
+  - vb
+  name: ReadPayload<T>(int)
+  nameWithType: OrleansGpuMessage.ReadPayload<T>(int)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.ReadPayload<T>(int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ReadPayload
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/OrleansGpuMessage.cs
+    startLine: 207
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Reads a value from the payload at the specified offset.
+  example: []
+  syntax:
+    content: 'public readonly T ReadPayload<T>(int offset) where T : unmanaged'
+    parameters:
+    - id: offset
+      type: System.Int32
+      description: Byte offset in payload.
+    typeParameters:
+    - id: T
+      description: Unmanaged value type.
+    return:
+      type: '{T}'
+      description: Value read from payload.
+    content.vb: Public Function ReadPayload(Of T As Structure)(offset As Integer) As T
+  overload: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.ReadPayload*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Offset + sizeof(T) exceeds payload size.
+  nameWithType.vb: OrleansGpuMessage.ReadPayload(Of T)(Integer)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.ReadPayload(Of T)(Integer)
+  name.vb: ReadPayload(Of T)(Integer)
+references:
+- uid: Orleans.GpuBridge.Runtime.RingKernels
+  commentId: N:Orleans.GpuBridge.Runtime.RingKernels
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.RingKernels
+  nameWithType: Orleans.GpuBridge.Runtime.RingKernels
+  fullName: Orleans.GpuBridge.Runtime.RingKernels
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.RingKernels
+    name: RingKernels
+    href: Orleans.GpuBridge.Runtime.RingKernels.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.RingKernels
+    name: RingKernels
+    href: Orleans.GpuBridge.Runtime.RingKernels.html
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String.GetHashCode
+  commentId: M:System.String.GetHashCode
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string.gethashcode#system-string-gethashcode
+  name: GetHashCode()
+  nameWithType: string.GetHashCode()
+  fullName: string.GetHashCode()
+  nameWithType.vb: String.GetHashCode()
+  fullName.vb: String.GetHashCode()
+  spec.csharp:
+  - uid: System.String.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string.gethashcode#system-string-gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.String.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string.gethashcode#system-string-gethashcode
+  - name: (
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: Orleans.GpuBridge.Runtime.RingKernels.MessageType
+  commentId: T:Orleans.GpuBridge.Runtime.RingKernels.MessageType
+  parent: Orleans.GpuBridge.Runtime.RingKernels
+  href: Orleans.GpuBridge.Runtime.RingKernels.MessageType.html
+  name: MessageType
+  nameWithType: MessageType
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.MessageType
+- uid: System.Byte*
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.byte
+  name: byte*
+  nameWithType: byte*
+  fullName: byte*
+  nameWithType.vb: Byte*
+  fullName.vb: Byte*
+  name.vb: Byte*
+  spec.csharp:
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '*'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '*'
+- uid: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.Create*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.Create
+  href: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.html#Orleans_GpuBridge_Runtime_RingKernels_OrleansGpuMessage_Create_System_Int32_System_Int32_System_Int32_Orleans_GpuBridge_Runtime_RingKernels_MessageType_
+  name: Create
+  nameWithType: OrleansGpuMessage.Create
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.Create
+- uid: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+  commentId: T:Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+  parent: Orleans.GpuBridge.Runtime.RingKernels
+  href: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.html
+  name: OrleansGpuMessage
+  nameWithType: OrleansGpuMessage
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+- uid: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.CreateResponse*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.CreateResponse
+  href: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.html#Orleans_GpuBridge_Runtime_RingKernels_OrleansGpuMessage_CreateResponse_Orleans_GpuBridge_Runtime_RingKernels_OrleansGpuMessage_
+  name: CreateResponse
+  nameWithType: OrleansGpuMessage.CreateResponse
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.CreateResponse
+- uid: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.GetPayloadSpan*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.GetPayloadSpan
+  href: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.html#Orleans_GpuBridge_Runtime_RingKernels_OrleansGpuMessage_GetPayloadSpan
+  name: GetPayloadSpan
+  nameWithType: OrleansGpuMessage.GetPayloadSpan
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.GetPayloadSpan
+- uid: System.Span{System.Byte}
+  commentId: T:System.Span{System.Byte}
+  parent: System
+  definition: System.Span`1
+  href: https://learn.microsoft.com/dotnet/api/system.span-1
+  name: Span<byte>
+  nameWithType: Span<byte>
+  fullName: System.Span<byte>
+  nameWithType.vb: Span(Of Byte)
+  fullName.vb: System.Span(Of Byte)
+  name.vb: Span(Of Byte)
+  spec.csharp:
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: <
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '>'
+  spec.vb:
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: )
+- uid: System.Span`1
+  commentId: T:System.Span`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.span-1
+  name: Span<T>
+  nameWithType: Span<T>
+  fullName: System.Span<T>
+  nameWithType.vb: Span(Of T)
+  fullName.vb: System.Span(Of T)
+  name.vb: Span(Of T)
+  spec.csharp:
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.ArgumentOutOfRangeException
+  commentId: T:System.ArgumentOutOfRangeException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception
+  name: ArgumentOutOfRangeException
+  nameWithType: ArgumentOutOfRangeException
+  fullName: System.ArgumentOutOfRangeException
+- uid: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.WritePayload*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.WritePayload
+  href: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.html#Orleans_GpuBridge_Runtime_RingKernels_OrleansGpuMessage_WritePayload__1_System_Int32___0_
+  name: WritePayload
+  nameWithType: OrleansGpuMessage.WritePayload
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.WritePayload
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.ReadPayload*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.ReadPayload
+  href: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.html#Orleans_GpuBridge_Runtime_RingKernels_OrleansGpuMessage_ReadPayload__1_System_Int32_
+  name: ReadPayload
+  nameWithType: OrleansGpuMessage.ReadPayload
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.ReadPayload

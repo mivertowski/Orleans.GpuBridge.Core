@@ -1,0 +1,976 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue
+  id: TemporalMessageQueue
+  parent: Orleans.GpuBridge.Runtime.Temporal
+  children:
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.#ctor(Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource,Microsoft.Extensions.Logging.ILogger)
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.Clear
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.Count
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.DependencyWaitCount
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.Enqueue(Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage)
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.EvictExpiredMessages
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.GetStatistics
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.MarkProcessed(System.Guid)
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.ToString
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TotalDequeued
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TotalEnqueued
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TotalExpired
+  - Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TryDequeue(Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage@)
+  langs:
+  - csharp
+  - vb
+  name: TemporalMessageQueue
+  nameWithType: TemporalMessageQueue
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TemporalMessageQueue
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+    startLine: 24
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Priority queue for temporal messages with HLC-based ordering and causal dependency tracking.
+  remarks: >-
+    <p>
+
+    Features:
+
+    </p>
+
+    <ul><li>HLC-ordered processing (total event ordering)</li><li>Causal dependency enforcement (wait for dependencies)</li><li>Priority-based processing (within HLC constraints)</li><li>Deadline tracking and eviction</li><li>Performance: O(log N) enqueue/dequeue, O(1) dependency check</li></ul>
+  example: []
+  syntax:
+    content: public sealed class TemporalMessageQueue
+    content.vb: Public NotInheritable Class TemporalMessageQueue
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.Count
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.Count
+  id: Count
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue
+  langs:
+  - csharp
+  - vb
+  name: Count
+  nameWithType: TemporalMessageQueue.Count
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.Count
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Count
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+    startLine: 42
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Gets the number of messages currently in the queue.
+  example: []
+  syntax:
+    content: public int Count { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property Count As Integer
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.Count*
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.DependencyWaitCount
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.DependencyWaitCount
+  id: DependencyWaitCount
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue
+  langs:
+  - csharp
+  - vb
+  name: DependencyWaitCount
+  nameWithType: TemporalMessageQueue.DependencyWaitCount
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.DependencyWaitCount
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DependencyWaitCount
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+    startLine: 47
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Gets the number of messages waiting for dependencies.
+  example: []
+  syntax:
+    content: public int DependencyWaitCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property DependencyWaitCount As Integer
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.DependencyWaitCount*
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TotalEnqueued
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TotalEnqueued
+  id: TotalEnqueued
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue
+  langs:
+  - csharp
+  - vb
+  name: TotalEnqueued
+  nameWithType: TemporalMessageQueue.TotalEnqueued
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TotalEnqueued
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TotalEnqueued
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+    startLine: 52
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Gets total messages enqueued.
+  example: []
+  syntax:
+    content: public long TotalEnqueued { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public ReadOnly Property TotalEnqueued As Long
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TotalEnqueued*
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TotalDequeued
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TotalDequeued
+  id: TotalDequeued
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue
+  langs:
+  - csharp
+  - vb
+  name: TotalDequeued
+  nameWithType: TemporalMessageQueue.TotalDequeued
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TotalDequeued
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TotalDequeued
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+    startLine: 57
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Gets total messages dequeued.
+  example: []
+  syntax:
+    content: public long TotalDequeued { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public ReadOnly Property TotalDequeued As Long
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TotalDequeued*
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TotalExpired
+  commentId: P:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TotalExpired
+  id: TotalExpired
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue
+  langs:
+  - csharp
+  - vb
+  name: TotalExpired
+  nameWithType: TemporalMessageQueue.TotalExpired
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TotalExpired
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TotalExpired
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+    startLine: 62
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Gets total messages expired.
+  example: []
+  syntax:
+    content: public long TotalExpired { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public ReadOnly Property TotalExpired As Long
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TotalExpired*
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.#ctor(Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource,Microsoft.Extensions.Logging.ILogger)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.#ctor(Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource,Microsoft.Extensions.Logging.ILogger)
+  id: '#ctor(Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource,Microsoft.Extensions.Logging.ILogger)'
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue
+  langs:
+  - csharp
+  - vb
+  name: TemporalMessageQueue(IPhysicalClockSource?, ILogger?)
+  nameWithType: TemporalMessageQueue.TemporalMessageQueue(IPhysicalClockSource?, ILogger?)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TemporalMessageQueue(Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource?, Microsoft.Extensions.Logging.ILogger?)
+  type: Constructor
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: .ctor
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+    startLine: 69
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Creates a new temporal message queue.
+  example: []
+  syntax:
+    content: public TemporalMessageQueue(IPhysicalClockSource? clockSource = null, ILogger? logger = null)
+    parameters:
+    - id: clockSource
+      type: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource
+      description: Physical clock source for deadline tracking
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger
+      description: Optional logger for diagnostics
+    content.vb: Public Sub New(clockSource As IPhysicalClockSource = Nothing, logger As ILogger = Nothing)
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.#ctor*
+  nameWithType.vb: TemporalMessageQueue.New(IPhysicalClockSource, ILogger)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.New(Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource, Microsoft.Extensions.Logging.ILogger)
+  name.vb: New(IPhysicalClockSource, ILogger)
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.Enqueue(Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.Enqueue(Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage)
+  id: Enqueue(Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage)
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue
+  langs:
+  - csharp
+  - vb
+  name: Enqueue(TemporalResidentMessage)
+  nameWithType: TemporalMessageQueue.Enqueue(TemporalResidentMessage)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.Enqueue(Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Enqueue
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+    startLine: 84
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Enqueues a temporal message for processing.
+  remarks: >-
+    The message will be:
+
+    1. Added to HLC-ordered priority queue
+
+    2. Indexed by deadline (if ValidityWindow specified)
+
+    3. Tracked for causal dependencies
+  example: []
+  syntax:
+    content: public void Enqueue(TemporalResidentMessage message)
+    parameters:
+    - id: message
+      type: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage
+    content.vb: Public Sub Enqueue(message As TemporalResidentMessage)
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.Enqueue*
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TryDequeue(Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage@)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TryDequeue(Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage@)
+  id: TryDequeue(Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage@)
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue
+  langs:
+  - csharp
+  - vb
+  name: TryDequeue(out TemporalResidentMessage?)
+  nameWithType: TemporalMessageQueue.TryDequeue(out TemporalResidentMessage?)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TryDequeue(out Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage?)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TryDequeue
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+    startLine: 134
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Attempts to dequeue the next message that is ready for processing.
+  remarks: >-
+    A message is ready if:
+
+    1. All causal dependencies have been processed
+
+    2. The message has not expired
+
+    3. It has the earliest HLC timestamp among ready messages
+  example: []
+  syntax:
+    content: public bool TryDequeue(out TemporalResidentMessage? message)
+    parameters:
+    - id: message
+      type: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage
+      description: The dequeued message, or null if queue is empty
+    return:
+      type: System.Boolean
+      description: True if a message was dequeued
+    content.vb: Public Function TryDequeue(message As TemporalResidentMessage) As Boolean
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TryDequeue*
+  nameWithType.vb: TemporalMessageQueue.TryDequeue(TemporalResidentMessage)
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TryDequeue(Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage)
+  name.vb: TryDequeue(TemporalResidentMessage)
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.MarkProcessed(System.Guid)
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.MarkProcessed(System.Guid)
+  id: MarkProcessed(System.Guid)
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue
+  langs:
+  - csharp
+  - vb
+  name: MarkProcessed(Guid)
+  nameWithType: TemporalMessageQueue.MarkProcessed(Guid)
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.MarkProcessed(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: MarkProcessed
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+    startLine: 176
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Marks a message as processed and releases any dependents.
+  example: []
+  syntax:
+    content: public void MarkProcessed(Guid messageId)
+    parameters:
+    - id: messageId
+      type: System.Guid
+      description: ID of the processed message
+    content.vb: Public Sub MarkProcessed(messageId As Guid)
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.MarkProcessed*
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.EvictExpiredMessages
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.EvictExpiredMessages
+  id: EvictExpiredMessages
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue
+  langs:
+  - csharp
+  - vb
+  name: EvictExpiredMessages()
+  nameWithType: TemporalMessageQueue.EvictExpiredMessages()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.EvictExpiredMessages()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: EvictExpiredMessages
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+    startLine: 208
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Evicts messages that have passed their deadline.
+  example: []
+  syntax:
+    content: public void EvictExpiredMessages()
+    content.vb: Public Sub EvictExpiredMessages()
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.EvictExpiredMessages*
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.GetStatistics
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.GetStatistics
+  id: GetStatistics
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue
+  langs:
+  - csharp
+  - vb
+  name: GetStatistics()
+  nameWithType: TemporalMessageQueue.GetStatistics()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.GetStatistics()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GetStatistics
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+    startLine: 239
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Gets statistics about the queue.
+  example: []
+  syntax:
+    content: public QueueStatistics GetStatistics()
+    return:
+      type: Orleans.GpuBridge.Runtime.Temporal.QueueStatistics
+    content.vb: Public Function GetStatistics() As QueueStatistics
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.GetStatistics*
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.Clear
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.Clear
+  id: Clear
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue
+  langs:
+  - csharp
+  - vb
+  name: Clear()
+  nameWithType: TemporalMessageQueue.Clear()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.Clear()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Clear
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+    startLine: 256
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Clears the queue and resets statistics.
+  example: []
+  syntax:
+    content: public void Clear()
+    content.vb: Public Sub Clear()
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.Clear*
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.ToString
+  commentId: M:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.ToString
+  id: ToString
+  parent: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: TemporalMessageQueue.ToString()
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.ToString()
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: ToString
+    path: ../src/Orleans.GpuBridge.Runtime/Temporal/TemporalMessageQueue.cs
+    startLine: 303
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.Temporal
+  summary: Returns a string that represents the current object.
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+      description: A string that represents the current object.
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.Object.ToString
+  overload: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.ToString*
+references:
+- uid: Orleans.GpuBridge.Runtime.Temporal
+  commentId: N:Orleans.GpuBridge.Runtime.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.Temporal
+  nameWithType: Orleans.GpuBridge.Runtime.Temporal
+  fullName: Orleans.GpuBridge.Runtime.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Runtime.Temporal.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.Count*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.Count
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMessageQueue_Count
+  name: Count
+  nameWithType: TemporalMessageQueue.Count
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.Count
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.DependencyWaitCount*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.DependencyWaitCount
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMessageQueue_DependencyWaitCount
+  name: DependencyWaitCount
+  nameWithType: TemporalMessageQueue.DependencyWaitCount
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.DependencyWaitCount
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TotalEnqueued*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TotalEnqueued
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMessageQueue_TotalEnqueued
+  name: TotalEnqueued
+  nameWithType: TemporalMessageQueue.TotalEnqueued
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TotalEnqueued
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TotalDequeued*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TotalDequeued
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMessageQueue_TotalDequeued
+  name: TotalDequeued
+  nameWithType: TemporalMessageQueue.TotalDequeued
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TotalDequeued
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TotalExpired*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TotalExpired
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMessageQueue_TotalExpired
+  name: TotalExpired
+  nameWithType: TemporalMessageQueue.TotalExpired
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TotalExpired
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.#ctor*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.#ctor
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMessageQueue__ctor_Orleans_GpuBridge_Abstractions_Temporal_IPhysicalClockSource_Microsoft_Extensions_Logging_ILogger_
+  name: TemporalMessageQueue
+  nameWithType: TemporalMessageQueue.TemporalMessageQueue
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TemporalMessageQueue
+  nameWithType.vb: TemporalMessageQueue.New
+  fullName.vb: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.New
+  name.vb: New
+- uid: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource.html
+  name: IPhysicalClockSource
+  nameWithType: IPhysicalClockSource
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.IPhysicalClockSource
+- uid: Microsoft.Extensions.Logging.ILogger
+  commentId: T:Microsoft.Extensions.Logging.ILogger
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  name: ILogger
+  nameWithType: ILogger
+  fullName: Microsoft.Extensions.Logging.ILogger
+- uid: Orleans.GpuBridge.Abstractions.Temporal
+  commentId: N:Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.html
+  name: Orleans.GpuBridge.Abstractions.Temporal
+  nameWithType: Orleans.GpuBridge.Abstractions.Temporal
+  fullName: Orleans.GpuBridge.Abstractions.Temporal
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions
+    name: Abstractions
+    href: Orleans.GpuBridge.Abstractions.html
+  - name: .
+  - uid: Orleans.GpuBridge.Abstractions.Temporal
+    name: Temporal
+    href: Orleans.GpuBridge.Abstractions.Temporal.html
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.Enqueue*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.Enqueue
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMessageQueue_Enqueue_Orleans_GpuBridge_Abstractions_Temporal_TemporalResidentMessage_
+  name: Enqueue
+  nameWithType: TemporalMessageQueue.Enqueue
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.Enqueue
+- uid: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage
+  commentId: T:Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage
+  parent: Orleans.GpuBridge.Abstractions.Temporal
+  href: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage.html
+  name: TemporalResidentMessage
+  nameWithType: TemporalResidentMessage
+  fullName: Orleans.GpuBridge.Abstractions.Temporal.TemporalResidentMessage
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TryDequeue*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TryDequeue
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMessageQueue_TryDequeue_Orleans_GpuBridge_Abstractions_Temporal_TemporalResidentMessage__
+  name: TryDequeue
+  nameWithType: TemporalMessageQueue.TryDequeue
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.TryDequeue
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.MarkProcessed*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.MarkProcessed
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMessageQueue_MarkProcessed_System_Guid_
+  name: MarkProcessed
+  nameWithType: TemporalMessageQueue.MarkProcessed
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.MarkProcessed
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.EvictExpiredMessages*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.EvictExpiredMessages
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMessageQueue_EvictExpiredMessages
+  name: EvictExpiredMessages
+  nameWithType: TemporalMessageQueue.EvictExpiredMessages
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.EvictExpiredMessages
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.GetStatistics*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.GetStatistics
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMessageQueue_GetStatistics
+  name: GetStatistics
+  nameWithType: TemporalMessageQueue.GetStatistics
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.GetStatistics
+- uid: Orleans.GpuBridge.Runtime.Temporal.QueueStatistics
+  commentId: T:Orleans.GpuBridge.Runtime.Temporal.QueueStatistics
+  parent: Orleans.GpuBridge.Runtime.Temporal
+  href: Orleans.GpuBridge.Runtime.Temporal.QueueStatistics.html
+  name: QueueStatistics
+  nameWithType: QueueStatistics
+  fullName: Orleans.GpuBridge.Runtime.Temporal.QueueStatistics
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.Clear*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.Clear
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMessageQueue_Clear
+  name: Clear
+  nameWithType: TemporalMessageQueue.Clear
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.Clear
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.ToString*
+  commentId: Overload:Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.ToString
+  href: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.html#Orleans_GpuBridge_Runtime_Temporal_TemporalMessageQueue_ToString
+  name: ToString
+  nameWithType: TemporalMessageQueue.ToString
+  fullName: Orleans.GpuBridge.Runtime.Temporal.TemporalMessageQueue.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

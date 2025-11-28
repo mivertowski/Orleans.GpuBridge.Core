@@ -1,0 +1,769 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer
+  commentId: T:Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer
+  id: GpuMessageSerializer
+  parent: Orleans.GpuBridge.Runtime.RingKernels
+  children:
+  - Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeFloatArray(System.ReadOnlySpan{System.Byte},System.Int32,System.Int32@)
+  - Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeIntArray(System.ReadOnlySpan{System.Byte},System.Int32,System.Int32@)
+  - Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeString(System.ReadOnlySpan{System.Byte},System.Int32,System.Int32@)
+  - Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.Deserialize``1(Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage)
+  - Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.Serialize(System.String,System.Int32,System.Int32,System.Object[])
+  langs:
+  - csharp
+  - vb
+  name: GpuMessageSerializer
+  nameWithType: GpuMessageSerializer
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/GpuMessageSerializer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GpuMessageSerializer
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/GpuMessageSerializer.cs
+    startLine: 20
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Serializes Orleans method calls to GPU-compatible messages.
+  remarks: >-
+    <p>
+
+    This serializer handles the conversion of .NET method calls to fixed-size GPU messages.
+
+    It supports primitive types, structs, and small arrays that fit within the 228-byte payload.
+
+    </p>
+
+    <p>
+
+    For large data (arrays, strings), the serializer stores GPU memory pointers in the payload
+
+    and manages separate GPU buffer allocations.
+
+    </p>
+  example: []
+  syntax:
+    content: public static class GpuMessageSerializer
+    content.vb: Public Module GpuMessageSerializer
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.Serialize(System.String,System.Int32,System.Int32,System.Object[])
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.Serialize(System.String,System.Int32,System.Int32,System.Object[])
+  id: Serialize(System.String,System.Int32,System.Int32,System.Object[])
+  parent: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer
+  langs:
+  - csharp
+  - vb
+  name: Serialize(string, int, int, params object[])
+  nameWithType: GpuMessageSerializer.Serialize(string, int, int, params object[])
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.Serialize(string, int, int, params object[])
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/GpuMessageSerializer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Serialize
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/GpuMessageSerializer.cs
+    startLine: 31
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Serializes a method invocation to a GPU message.
+  example: []
+  syntax:
+    content: public static OrleansGpuMessage Serialize(string methodName, int senderId, int targetId, params object[] args)
+    parameters:
+    - id: methodName
+      type: System.String
+      description: Name of the method to invoke.
+    - id: senderId
+      type: System.Int32
+      description: Sender actor ID (0 for Orleans runtime).
+    - id: targetId
+      type: System.Int32
+      description: Target actor ID.
+    - id: args
+      type: System.Object[]
+      description: Method arguments to serialize.
+    return:
+      type: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+      description: GPU message ready for queue submission.
+    content.vb: Public Shared Function Serialize(methodName As String, senderId As Integer, targetId As Integer, ParamArray args As Object()) As OrleansGpuMessage
+  overload: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.Serialize*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Arguments too large for inline payload.
+  nameWithType.vb: GpuMessageSerializer.Serialize(String, Integer, Integer, ParamArray Object())
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.Serialize(String, Integer, Integer, ParamArray Object())
+  name.vb: Serialize(String, Integer, Integer, ParamArray Object())
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.Deserialize``1(Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.Deserialize``1(Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage)
+  id: Deserialize``1(Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer
+  langs:
+  - csharp
+  - vb
+  name: Deserialize<T>(OrleansGpuMessage)
+  nameWithType: GpuMessageSerializer.Deserialize<T>(OrleansGpuMessage)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.Deserialize<T>(Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/GpuMessageSerializer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Deserialize
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/GpuMessageSerializer.cs
+    startLine: 60
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Deserializes method arguments from a GPU message payload.
+  example: []
+  syntax:
+    content: 'public static T Deserialize<T>(OrleansGpuMessage message) where T : unmanaged'
+    parameters:
+    - id: message
+      type: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+      description: GPU message containing response.
+    typeParameters:
+    - id: T
+      description: Expected return type.
+    return:
+      type: '{T}'
+      description: Deserialized return value.
+    content.vb: Public Shared Function Deserialize(Of T As Structure)(message As OrleansGpuMessage) As T
+  overload: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.Deserialize*
+  nameWithType.vb: GpuMessageSerializer.Deserialize(Of T)(OrleansGpuMessage)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.Deserialize(Of T)(Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage)
+  name.vb: Deserialize(Of T)(OrleansGpuMessage)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeIntArray(System.ReadOnlySpan{System.Byte},System.Int32,System.Int32@)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeIntArray(System.ReadOnlySpan{System.Byte},System.Int32,System.Int32@)
+  id: DeserializeIntArray(System.ReadOnlySpan{System.Byte},System.Int32,System.Int32@)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer
+  langs:
+  - csharp
+  - vb
+  name: DeserializeIntArray(ReadOnlySpan<byte>, int, out int)
+  nameWithType: GpuMessageSerializer.DeserializeIntArray(ReadOnlySpan<byte>, int, out int)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeIntArray(System.ReadOnlySpan<byte>, int, out int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/GpuMessageSerializer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DeserializeIntArray
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/GpuMessageSerializer.cs
+    startLine: 244
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Deserializes an integer array from the buffer.
+  example: []
+  syntax:
+    content: public static int[] DeserializeIntArray(ReadOnlySpan<byte> buffer, int offset, out int bytesRead)
+    parameters:
+    - id: buffer
+      type: System.ReadOnlySpan{System.Byte}
+      description: Source buffer.
+    - id: offset
+      type: System.Int32
+      description: Starting offset.
+    - id: bytesRead
+      type: System.Int32
+      description: Number of bytes consumed.
+    return:
+      type: System.Int32[]
+      description: Deserialized array.
+    content.vb: Public Shared Function DeserializeIntArray(buffer As ReadOnlySpan(Of Byte), offset As Integer, bytesRead As Integer) As Integer()
+  overload: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeIntArray*
+  nameWithType.vb: GpuMessageSerializer.DeserializeIntArray(ReadOnlySpan(Of Byte), Integer, Integer)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeIntArray(System.ReadOnlySpan(Of Byte), Integer, Integer)
+  name.vb: DeserializeIntArray(ReadOnlySpan(Of Byte), Integer, Integer)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeFloatArray(System.ReadOnlySpan{System.Byte},System.Int32,System.Int32@)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeFloatArray(System.ReadOnlySpan{System.Byte},System.Int32,System.Int32@)
+  id: DeserializeFloatArray(System.ReadOnlySpan{System.Byte},System.Int32,System.Int32@)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer
+  langs:
+  - csharp
+  - vb
+  name: DeserializeFloatArray(ReadOnlySpan<byte>, int, out int)
+  nameWithType: GpuMessageSerializer.DeserializeFloatArray(ReadOnlySpan<byte>, int, out int)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeFloatArray(System.ReadOnlySpan<byte>, int, out int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/GpuMessageSerializer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DeserializeFloatArray
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/GpuMessageSerializer.cs
+    startLine: 265
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Deserializes a float array from the buffer.
+  example: []
+  syntax:
+    content: public static float[] DeserializeFloatArray(ReadOnlySpan<byte> buffer, int offset, out int bytesRead)
+    parameters:
+    - id: buffer
+      type: System.ReadOnlySpan{System.Byte}
+      description: Source buffer.
+    - id: offset
+      type: System.Int32
+      description: Starting offset.
+    - id: bytesRead
+      type: System.Int32
+      description: Number of bytes consumed.
+    return:
+      type: System.Single[]
+      description: Deserialized array.
+    content.vb: Public Shared Function DeserializeFloatArray(buffer As ReadOnlySpan(Of Byte), offset As Integer, bytesRead As Integer) As Single()
+  overload: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeFloatArray*
+  nameWithType.vb: GpuMessageSerializer.DeserializeFloatArray(ReadOnlySpan(Of Byte), Integer, Integer)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeFloatArray(System.ReadOnlySpan(Of Byte), Integer, Integer)
+  name.vb: DeserializeFloatArray(ReadOnlySpan(Of Byte), Integer, Integer)
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeString(System.ReadOnlySpan{System.Byte},System.Int32,System.Int32@)
+  commentId: M:Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeString(System.ReadOnlySpan{System.Byte},System.Int32,System.Int32@)
+  id: DeserializeString(System.ReadOnlySpan{System.Byte},System.Int32,System.Int32@)
+  parent: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer
+  langs:
+  - csharp
+  - vb
+  name: DeserializeString(ReadOnlySpan<byte>, int, out int)
+  nameWithType: GpuMessageSerializer.DeserializeString(ReadOnlySpan<byte>, int, out int)
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeString(System.ReadOnlySpan<byte>, int, out int)
+  type: Method
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Runtime/RingKernels/GpuMessageSerializer.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DeserializeString
+    path: ../src/Orleans.GpuBridge.Runtime/RingKernels/GpuMessageSerializer.cs
+    startLine: 286
+  assemblies:
+  - Orleans.GpuBridge.Runtime
+  namespace: Orleans.GpuBridge.Runtime.RingKernels
+  summary: Deserializes a string from the buffer.
+  example: []
+  syntax:
+    content: public static string DeserializeString(ReadOnlySpan<byte> buffer, int offset, out int bytesRead)
+    parameters:
+    - id: buffer
+      type: System.ReadOnlySpan{System.Byte}
+      description: Source buffer.
+    - id: offset
+      type: System.Int32
+      description: Starting offset.
+    - id: bytesRead
+      type: System.Int32
+      description: Number of bytes consumed.
+    return:
+      type: System.String
+      description: Deserialized string.
+    content.vb: Public Shared Function DeserializeString(buffer As ReadOnlySpan(Of Byte), offset As Integer, bytesRead As Integer) As String
+  overload: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeString*
+  nameWithType.vb: GpuMessageSerializer.DeserializeString(ReadOnlySpan(Of Byte), Integer, Integer)
+  fullName.vb: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeString(System.ReadOnlySpan(Of Byte), Integer, Integer)
+  name.vb: DeserializeString(ReadOnlySpan(Of Byte), Integer, Integer)
+references:
+- uid: Orleans.GpuBridge.Runtime.RingKernels
+  commentId: N:Orleans.GpuBridge.Runtime.RingKernels
+  href: Orleans.html
+  name: Orleans.GpuBridge.Runtime.RingKernels
+  nameWithType: Orleans.GpuBridge.Runtime.RingKernels
+  fullName: Orleans.GpuBridge.Runtime.RingKernels
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.RingKernels
+    name: RingKernels
+    href: Orleans.GpuBridge.Runtime.RingKernels.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime
+    name: Runtime
+    href: Orleans.GpuBridge.Runtime.html
+  - name: .
+  - uid: Orleans.GpuBridge.Runtime.RingKernels
+    name: RingKernels
+    href: Orleans.GpuBridge.Runtime.RingKernels.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.ArgumentException
+  commentId: T:System.ArgumentException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentexception
+  name: ArgumentException
+  nameWithType: ArgumentException
+  fullName: System.ArgumentException
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.Serialize*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.Serialize
+  href: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.html#Orleans_GpuBridge_Runtime_RingKernels_GpuMessageSerializer_Serialize_System_String_System_Int32_System_Int32_System_Object___
+  name: Serialize
+  nameWithType: GpuMessageSerializer.Serialize
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.Serialize
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Object[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object[]
+  nameWithType: object[]
+  fullName: object[]
+  nameWithType.vb: Object()
+  fullName.vb: Object()
+  name.vb: Object()
+  spec.csharp:
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+  commentId: T:Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+  parent: Orleans.GpuBridge.Runtime.RingKernels
+  href: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage.html
+  name: OrleansGpuMessage
+  nameWithType: OrleansGpuMessage
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.OrleansGpuMessage
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.Deserialize*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.Deserialize
+  href: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.html#Orleans_GpuBridge_Runtime_RingKernels_GpuMessageSerializer_Deserialize__1_Orleans_GpuBridge_Runtime_RingKernels_OrleansGpuMessage_
+  name: Deserialize
+  nameWithType: GpuMessageSerializer.Deserialize
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.Deserialize
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeIntArray*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeIntArray
+  href: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.html#Orleans_GpuBridge_Runtime_RingKernels_GpuMessageSerializer_DeserializeIntArray_System_ReadOnlySpan_System_Byte__System_Int32_System_Int32__
+  name: DeserializeIntArray
+  nameWithType: GpuMessageSerializer.DeserializeIntArray
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeIntArray
+- uid: System.ReadOnlySpan{System.Byte}
+  commentId: T:System.ReadOnlySpan{System.Byte}
+  parent: System
+  definition: System.ReadOnlySpan`1
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<byte>
+  nameWithType: ReadOnlySpan<byte>
+  fullName: System.ReadOnlySpan<byte>
+  nameWithType.vb: ReadOnlySpan(Of Byte)
+  fullName.vb: System.ReadOnlySpan(Of Byte)
+  name.vb: ReadOnlySpan(Of Byte)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: )
+- uid: System.Int32[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int[]
+  nameWithType: int[]
+  fullName: int[]
+  nameWithType.vb: Integer()
+  fullName.vb: Integer()
+  name.vb: Integer()
+  spec.csharp:
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: (
+  - name: )
+- uid: System.ReadOnlySpan`1
+  commentId: T:System.ReadOnlySpan`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<T>
+  nameWithType: ReadOnlySpan<T>
+  fullName: System.ReadOnlySpan<T>
+  nameWithType.vb: ReadOnlySpan(Of T)
+  fullName.vb: System.ReadOnlySpan(Of T)
+  name.vb: ReadOnlySpan(Of T)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeFloatArray*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeFloatArray
+  href: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.html#Orleans_GpuBridge_Runtime_RingKernels_GpuMessageSerializer_DeserializeFloatArray_System_ReadOnlySpan_System_Byte__System_Int32_System_Int32__
+  name: DeserializeFloatArray
+  nameWithType: GpuMessageSerializer.DeserializeFloatArray
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeFloatArray
+- uid: System.Single[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float[]
+  nameWithType: float[]
+  fullName: float[]
+  nameWithType.vb: Single()
+  fullName.vb: Single()
+  name.vb: Single()
+  spec.csharp:
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: (
+  - name: )
+- uid: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeString*
+  commentId: Overload:Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeString
+  href: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.html#Orleans_GpuBridge_Runtime_RingKernels_GpuMessageSerializer_DeserializeString_System_ReadOnlySpan_System_Byte__System_Int32_System_Int32__
+  name: DeserializeString
+  nameWithType: GpuMessageSerializer.DeserializeString
+  fullName: Orleans.GpuBridge.Runtime.RingKernels.GpuMessageSerializer.DeserializeString

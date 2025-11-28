@@ -1,0 +1,677 @@
+### YamlMime:ManagedReference
+items:
+- uid: Orleans.GpuBridge.Grains.State.GpuResidentState
+  commentId: T:Orleans.GpuBridge.Grains.State.GpuResidentState
+  id: GpuResidentState
+  parent: Orleans.GpuBridge.Grains.State
+  children:
+  - Orleans.GpuBridge.Grains.State.GpuResidentState.Allocations
+  - Orleans.GpuBridge.Grains.State.GpuResidentState.DeviceIndex
+  - Orleans.GpuBridge.Grains.State.GpuResidentState.LastModified
+  - Orleans.GpuBridge.Grains.State.GpuResidentState.TotalAllocatedBytes
+  langs:
+  - csharp
+  - vb
+  name: GpuResidentState
+  nameWithType: GpuResidentState
+  fullName: Orleans.GpuBridge.Grains.State.GpuResidentState
+  type: Class
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/State/GpuResidentState.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: GpuResidentState
+    path: ../src/Orleans.GpuBridge.Grains/State/GpuResidentState.cs
+    startLine: 8
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.State
+  summary: >-
+    Persistent state for GPU resident memory grain that survives grain activation/deactivation cycles.
+
+    This state is stored in the configured Orleans persistence provider and maintains memory allocation tracking.
+  example: []
+  syntax:
+    content: >-
+      [GenerateSerializer]
+
+      public sealed class GpuResidentState
+    content.vb: >-
+      <GenerateSerializer>
+
+      Public NotInheritable Class GpuResidentState
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  attributes:
+  - type: Orleans.GenerateSerializerAttribute
+    ctor: Orleans.GenerateSerializerAttribute.#ctor
+    arguments: []
+- uid: Orleans.GpuBridge.Grains.State.GpuResidentState.Allocations
+  commentId: P:Orleans.GpuBridge.Grains.State.GpuResidentState.Allocations
+  id: Allocations
+  parent: Orleans.GpuBridge.Grains.State.GpuResidentState
+  langs:
+  - csharp
+  - vb
+  name: Allocations
+  nameWithType: GpuResidentState.Allocations
+  fullName: Orleans.GpuBridge.Grains.State.GpuResidentState.Allocations
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/State/GpuResidentState.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: Allocations
+    path: ../src/Orleans.GpuBridge.Grains/State/GpuResidentState.cs
+    startLine: 17
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.State
+  summary: >-
+    Gets or sets the dictionary of all memory allocations managed by this grain.
+
+    Key: Allocation ID (from GpuMemoryHandle.Id)
+
+    Value: Memory allocation details and cached data
+  example: []
+  syntax:
+    content: >-
+      [Id(0)]
+
+      public Dictionary<string, GpuMemoryAllocation> Allocations { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.Dictionary{System.String,Orleans.GpuBridge.Grains.State.GpuMemoryAllocation}
+      description: A dictionary mapping allocation IDs to <xref href="Orleans.GpuBridge.Grains.State.GpuMemoryAllocation" data-throw-if-not-resolved="false"></xref> instances.
+    content.vb: >-
+      <Id(0)>
+
+      Public Property Allocations As Dictionary(Of String, GpuMemoryAllocation)
+  overload: Orleans.GpuBridge.Grains.State.GpuResidentState.Allocations*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "0"
+- uid: Orleans.GpuBridge.Grains.State.GpuResidentState.TotalAllocatedBytes
+  commentId: P:Orleans.GpuBridge.Grains.State.GpuResidentState.TotalAllocatedBytes
+  id: TotalAllocatedBytes
+  parent: Orleans.GpuBridge.Grains.State.GpuResidentState
+  langs:
+  - csharp
+  - vb
+  name: TotalAllocatedBytes
+  nameWithType: GpuResidentState.TotalAllocatedBytes
+  fullName: Orleans.GpuBridge.Grains.State.GpuResidentState.TotalAllocatedBytes
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/State/GpuResidentState.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: TotalAllocatedBytes
+    path: ../src/Orleans.GpuBridge.Grains/State/GpuResidentState.cs
+    startLine: 25
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.State
+  summary: >-
+    Gets or sets the total amount of GPU memory allocated by this grain in bytes.
+
+    This is the sum of all individual allocation sizes and is used for resource tracking.
+  example: []
+  syntax:
+    content: >-
+      [Id(1)]
+
+      public long TotalAllocatedBytes { get; set; }
+    parameters: []
+    return:
+      type: System.Int64
+      description: The total allocated memory in bytes.
+    content.vb: >-
+      <Id(1)>
+
+      Public Property TotalAllocatedBytes As Long
+  overload: Orleans.GpuBridge.Grains.State.GpuResidentState.TotalAllocatedBytes*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "1"
+- uid: Orleans.GpuBridge.Grains.State.GpuResidentState.LastModified
+  commentId: P:Orleans.GpuBridge.Grains.State.GpuResidentState.LastModified
+  id: LastModified
+  parent: Orleans.GpuBridge.Grains.State.GpuResidentState
+  langs:
+  - csharp
+  - vb
+  name: LastModified
+  nameWithType: GpuResidentState.LastModified
+  fullName: Orleans.GpuBridge.Grains.State.GpuResidentState.LastModified
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/State/GpuResidentState.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: LastModified
+    path: ../src/Orleans.GpuBridge.Grains/State/GpuResidentState.cs
+    startLine: 33
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.State
+  summary: >-
+    Gets or sets the timestamp of the last modification to the grain state.
+
+    This is updated whenever allocations are added, removed, or modified.
+  example: []
+  syntax:
+    content: >-
+      [Id(2)]
+
+      public DateTime LastModified { get; set; }
+    parameters: []
+    return:
+      type: System.DateTime
+      description: The UTC timestamp of the last state modification.
+    content.vb: >-
+      <Id(2)>
+
+      Public Property LastModified As Date
+  overload: Orleans.GpuBridge.Grains.State.GpuResidentState.LastModified*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "2"
+- uid: Orleans.GpuBridge.Grains.State.GpuResidentState.DeviceIndex
+  commentId: P:Orleans.GpuBridge.Grains.State.GpuResidentState.DeviceIndex
+  id: DeviceIndex
+  parent: Orleans.GpuBridge.Grains.State.GpuResidentState
+  langs:
+  - csharp
+  - vb
+  name: DeviceIndex
+  nameWithType: GpuResidentState.DeviceIndex
+  fullName: Orleans.GpuBridge.Grains.State.GpuResidentState.DeviceIndex
+  type: Property
+  source:
+    remote:
+      path: src/Orleans.GpuBridge.Grains/State/GpuResidentState.cs
+      branch: main
+      repo: https://github.com/mivertowski/Orleans.GpuBridge.Core.git
+    id: DeviceIndex
+    path: ../src/Orleans.GpuBridge.Grains/State/GpuResidentState.cs
+    startLine: 41
+  assemblies:
+  - Orleans.GpuBridge.Grains
+  namespace: Orleans.GpuBridge.Grains.State
+  summary: >-
+    Gets or sets the index of the GPU device where this grain's allocations reside.
+
+    A value of -1 indicates no device has been assigned yet.
+  example: []
+  syntax:
+    content: >-
+      [Id(3)]
+
+      public int DeviceIndex { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+      description: The device index, or -1 if no device is assigned.
+    content.vb: >-
+      <Id(3)>
+
+      Public Property DeviceIndex As Integer
+  overload: Orleans.GpuBridge.Grains.State.GpuResidentState.DeviceIndex*
+  attributes:
+  - type: Orleans.IdAttribute
+    ctor: Orleans.IdAttribute.#ctor(System.UInt32)
+    arguments:
+    - type: System.UInt32
+      value: "3"
+references:
+- uid: Orleans.GpuBridge.Grains.State
+  commentId: N:Orleans.GpuBridge.Grains.State
+  href: Orleans.html
+  name: Orleans.GpuBridge.Grains.State
+  nameWithType: Orleans.GpuBridge.Grains.State
+  fullName: Orleans.GpuBridge.Grains.State
+  spec.csharp:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.State
+    name: State
+    href: Orleans.GpuBridge.Grains.State.html
+  spec.vb:
+  - uid: Orleans
+    name: Orleans
+    href: Orleans.html
+  - name: .
+  - uid: Orleans.GpuBridge
+    name: GpuBridge
+    href: Orleans.GpuBridge.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains
+    name: Grains
+    href: Orleans.GpuBridge.Grains.html
+  - name: .
+  - uid: Orleans.GpuBridge.Grains.State
+    name: State
+    href: Orleans.GpuBridge.Grains.State.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Orleans.GpuBridge.Grains.State.GpuMemoryAllocation
+  commentId: T:Orleans.GpuBridge.Grains.State.GpuMemoryAllocation
+  href: Orleans.GpuBridge.Grains.State.GpuMemoryAllocation.html
+  name: GpuMemoryAllocation
+  nameWithType: GpuMemoryAllocation
+  fullName: Orleans.GpuBridge.Grains.State.GpuMemoryAllocation
+- uid: Orleans.GpuBridge.Grains.State.GpuResidentState.Allocations*
+  commentId: Overload:Orleans.GpuBridge.Grains.State.GpuResidentState.Allocations
+  href: Orleans.GpuBridge.Grains.State.GpuResidentState.html#Orleans_GpuBridge_Grains_State_GpuResidentState_Allocations
+  name: Allocations
+  nameWithType: GpuResidentState.Allocations
+  fullName: Orleans.GpuBridge.Grains.State.GpuResidentState.Allocations
+- uid: System.Collections.Generic.Dictionary{System.String,Orleans.GpuBridge.Grains.State.GpuMemoryAllocation}
+  commentId: T:System.Collections.Generic.Dictionary{System.String,Orleans.GpuBridge.Grains.State.GpuMemoryAllocation}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<string, GpuMemoryAllocation>
+  nameWithType: Dictionary<string, GpuMemoryAllocation>
+  fullName: System.Collections.Generic.Dictionary<string, Orleans.GpuBridge.Grains.State.GpuMemoryAllocation>
+  nameWithType.vb: Dictionary(Of String, GpuMemoryAllocation)
+  fullName.vb: System.Collections.Generic.Dictionary(Of String, Orleans.GpuBridge.Grains.State.GpuMemoryAllocation)
+  name.vb: Dictionary(Of String, GpuMemoryAllocation)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Grains.State.GpuMemoryAllocation
+    name: GpuMemoryAllocation
+    href: Orleans.GpuBridge.Grains.State.GpuMemoryAllocation.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: Orleans.GpuBridge.Grains.State.GpuMemoryAllocation
+    name: GpuMemoryAllocation
+    href: Orleans.GpuBridge.Grains.State.GpuMemoryAllocation.html
+  - name: )
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Orleans.GpuBridge.Grains.State.GpuResidentState.TotalAllocatedBytes*
+  commentId: Overload:Orleans.GpuBridge.Grains.State.GpuResidentState.TotalAllocatedBytes
+  href: Orleans.GpuBridge.Grains.State.GpuResidentState.html#Orleans_GpuBridge_Grains_State_GpuResidentState_TotalAllocatedBytes
+  name: TotalAllocatedBytes
+  nameWithType: GpuResidentState.TotalAllocatedBytes
+  fullName: Orleans.GpuBridge.Grains.State.GpuResidentState.TotalAllocatedBytes
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Orleans.GpuBridge.Grains.State.GpuResidentState.LastModified*
+  commentId: Overload:Orleans.GpuBridge.Grains.State.GpuResidentState.LastModified
+  href: Orleans.GpuBridge.Grains.State.GpuResidentState.html#Orleans_GpuBridge_Grains_State_GpuResidentState_LastModified
+  name: LastModified
+  nameWithType: GpuResidentState.LastModified
+  fullName: Orleans.GpuBridge.Grains.State.GpuResidentState.LastModified
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date
+- uid: Orleans.GpuBridge.Grains.State.GpuResidentState.DeviceIndex*
+  commentId: Overload:Orleans.GpuBridge.Grains.State.GpuResidentState.DeviceIndex
+  href: Orleans.GpuBridge.Grains.State.GpuResidentState.html#Orleans_GpuBridge_Grains_State_GpuResidentState_DeviceIndex
+  name: DeviceIndex
+  nameWithType: GpuResidentState.DeviceIndex
+  fullName: Orleans.GpuBridge.Grains.State.GpuResidentState.DeviceIndex
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer

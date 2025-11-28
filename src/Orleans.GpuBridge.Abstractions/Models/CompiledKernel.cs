@@ -59,6 +59,21 @@ public sealed class CompiledKernel : IDisposable
     /// execute the kernel. A value of IntPtr.Zero indicates no native handle.
     /// </value>
     public IntPtr NativeHandle { get; init; }
+
+    /// <summary>
+    /// Gets or sets backend-specific data associated with this compiled kernel.
+    /// </summary>
+    /// <value>
+    /// An object containing backend-specific execution context, such as a DotCompute
+    /// kernel adapter, CUDA module reference, or other runtime-specific data needed
+    /// for kernel execution. The exact type depends on the backend provider.
+    /// </value>
+    /// <remarks>
+    /// This property allows backend providers to attach their specific execution
+    /// context to the compiled kernel without requiring changes to the core abstraction.
+    /// Backend implementations should cast this to their expected type before use.
+    /// </remarks>
+    public object? BackendData { get; init; }
     
     /// <summary>
     /// Gets a value indicating whether this kernel instance has been disposed.
@@ -97,6 +112,16 @@ public sealed class CompiledKernel : IDisposable
                     // Native resources would be handled by backend-specific disposal
                 }
                 
+                // Clean up backend-specific data
+                if (BackendData is IDisposable disposableBackend)
+                {
+                    disposableBackend.Dispose();
+                }
+                else if (BackendData is IAsyncDisposable asyncDisposableBackend)
+                {
+                    asyncDisposableBackend.DisposeAsync().AsTask().GetAwaiter().GetResult();
+                }
+
                 // Clean up metadata resources
                 if (Metadata?.ExtendedMetadata != null)
                 {

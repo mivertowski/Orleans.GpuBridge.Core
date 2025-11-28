@@ -14,6 +14,9 @@ using DotCompute.Runtime.Factories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using DotCompute.Abstractions.Health;
+using DotCompute.Abstractions.Profiling;
+using DotCompute.Abstractions.Recovery;
 using Orleans.GpuBridge.Abstractions.Enums;
 using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Abstractions.Models;
@@ -323,13 +326,13 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
         return selectedDevice;
     }
 
-    // TODO: [DOTCOMPUTE-API] Implement real context creation
-    // When: DotCompute v0.3.0+ context creation pattern is clarified
-    // Integration example:
-    //   var adapter = device as DotComputeAcceleratorAdapter;
-    //   var accelerator = adapter?.Accelerator;
-    //   // Context creation pattern needs investigation in v0.3.0-rc1
-    //   return new DotComputeContextAdapter(accelerator, device, _logger);
+    /// <summary>
+    /// Creates a compute context for the specified device using DotCompute v0.5.1 implicit context management.
+    /// </summary>
+    /// <remarks>
+    /// <para>DotCompute uses implicit context management via <see cref="IAccelerator.Context"/>.</para>
+    /// <para>This method wraps the accelerator's context in an adapter for Orleans compatibility.</para>
+    /// </remarks>
     public Task<IComputeContext> CreateContextAsync(IComputeDevice device, ContextOptions options, CancellationToken cancellationToken = default)
     {
         EnsureInitialized();
@@ -337,28 +340,38 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
         if (device == null)
             throw new ArgumentNullException(nameof(device));
 
-        _logger.LogWarning(
-            "CreateContextAsync not yet implemented for DotCompute v0.3.0-rc1. " +
-            "Context creation pattern needs investigation.");
+        var adapter = device as DotComputeAcceleratorAdapter
+            ?? throw new InvalidOperationException($"Device {device.DeviceId} is not a DotCompute device");
 
-        throw new NotImplementedException(
-            "Context creation not yet implemented in DotCompute backend. " +
-            "DotCompute v0.3.0-rc1 may have implicit context management.");
+        var accelerator = adapter.Accelerator;
+
+        // DotCompute v0.5.1 uses implicit context management via IAccelerator.Context property
+        // The AcceleratorContext is automatically managed and provides execution context
+        var nativeContext = accelerator.Context;
+
+        _logger.LogDebug(
+            "Created compute context for device {DeviceId} using DotCompute implicit context management",
+            device.DeviceId);
+
+        // Create a simple context wrapper for Orleans compatibility
+        // DotCompute v0.5.1 uses implicit context via IAccelerator.Context
+        var contextWrapper = new DotComputeImplicitContext(device, accelerator);
+
+        return Task.FromResult<IComputeContext>(contextWrapper);
     }
 
-    // TODO: [DOTCOMPUTE-API] Gather real metrics via IAccelerator.GetMetricsAsync()
-    // When: DotCompute v0.3.0+ with IDeviceMetrics implementation
-    // Integration example:
-    //   var accelerator = (device as DotComputeAcceleratorAdapter)?.Accelerator;
-    //   var metrics = await accelerator.GetMetricsAsync(cancellationToken);
-    //   return new DeviceMetrics {
-    //       GpuUtilizationPercent = metrics.ComputeUtilization,
-    //       MemoryUtilizationPercent = metrics.MemoryUtilization,
-    //       TemperatureCelsius = metrics.Temperature,
-    //       PowerWatts = metrics.PowerConsumption,
-    //       ...
-    //   };
-    // Current: Simulates concurrent metrics gathering with realistic patterns
+    /// <summary>
+    /// Gets device metrics using DotCompute v0.5.1 health monitoring APIs.
+    /// </summary>
+    /// <remarks>
+    /// <para>Uses real DotCompute APIs for metrics collection:</para>
+    /// <list type="bullet">
+    ///   <item><see cref="IAccelerator.GetHealthSnapshotAsync"/> - overall health score</item>
+    ///   <item><see cref="IAccelerator.GetSensorReadingsAsync"/> - temperature, power, fan</item>
+    ///   <item><see cref="IAccelerator.GetProfilingSnapshotAsync"/> - GPU utilization</item>
+    /// </list>
+    /// <para>Falls back to memory-based metrics if profiling APIs are unavailable.</para>
+    /// </remarks>
     public async Task<GpuBridgeDeviceMetrics> GetDeviceMetricsAsync(IComputeDevice device, CancellationToken cancellationToken = default)
     {
         EnsureInitialized();
@@ -366,70 +379,211 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
         if (device == null)
             throw new ArgumentNullException(nameof(device));
 
-        _logger.LogDebug("Getting metrics for device {DeviceId}", device.DeviceId);
+        var adapter = device as DotComputeAcceleratorAdapter
+            ?? throw new InvalidOperationException($"Device {device.DeviceId} is not a DotCompute device");
 
-        // Simulate realistic concurrent metrics gathering
-        return await Task.Run(async () =>
+        var accelerator = adapter.Accelerator;
+
+        _logger.LogDebug("Getting metrics for device {DeviceId} using DotCompute APIs", device.DeviceId);
+
+        try
         {
-            cancellationToken.ThrowIfCancellationRequested();
+            // Gather metrics concurrently from multiple DotCompute APIs
+            var healthTask = GetHealthSnapshotSafeAsync(accelerator, cancellationToken);
+            var sensorsTask = GetSensorReadingsSafeAsync(accelerator, cancellationToken);
+            var profilingTask = GetProfilingSnapshotSafeAsync(accelerator, cancellationToken);
 
-            // Gather multiple metrics concurrently (realistic pattern)
-            var metricsGatheringTasks = new[]
+            await Task.WhenAll(healthTask, sensorsTask, profilingTask);
+
+            var healthSnapshot = await healthTask;
+            var sensorReadings = await sensorsTask;
+            var profilingSnapshot = await profilingTask;
+
+            // Extract metrics from sensor readings
+            var temperature = ExtractSensorValue(sensorReadings, "Temperature", "GPU_TEMP", "temp");
+            var power = ExtractSensorValue(sensorReadings, "Power", "GPU_POWER", "power");
+            var fanSpeed = ExtractSensorValue(sensorReadings, "FanSpeed", "FAN_SPEED", "fan");
+
+            // Extract utilization from profiling snapshot
+            var gpuUtilization = (float)(profilingSnapshot?.DeviceUtilizationPercent ?? 0.0);
+            var memoryInfo = adapter.GetMemoryInfo();
+            var memoryUtilization = (float)(profilingSnapshot?.MemoryStats?.MemoryUtilizationPercent ?? memoryInfo.UtilizationPercentage);
+
+            // Calculate used memory
+            var usedMemoryBytes = device.TotalMemoryBytes - memoryInfo.FreeMemoryBytes;
+
+            // Extract kernel and transfer stats
+            var kernelsExecuted = profilingSnapshot?.KernelStats?.TotalExecutions ?? 0;
+            var bytesTransferred = (profilingSnapshot?.MemoryStats?.HostToDeviceBytes ?? 0) +
+                                   (profilingSnapshot?.MemoryStats?.DeviceToHostBytes ?? 0);
+
+            var metrics = new GpuBridgeDeviceMetrics
             {
-                GetGpuUtilizationAsync(device, cancellationToken),
-                GetMemoryUtilizationAsync(device, cancellationToken),
-                GetTemperatureAsync(device, cancellationToken),
-                GetPowerConsumptionAsync(device, cancellationToken)
-            };
-
-            var results = await Task.WhenAll(metricsGatheringTasks).ConfigureAwait(false);
-
-            return new GpuBridgeDeviceMetrics
-            {
-                GpuUtilizationPercent = results[0],
-                MemoryUtilizationPercent = results[1],
-                UsedMemoryBytes = (long)(device.TotalMemoryBytes * (results[1] / 100.0)),
-                TemperatureCelsius = results[2],
-                PowerWatts = results[3],
-                FanSpeedPercent = device.Type == DeviceType.GPU ? Random.Shared.Next(60, 85) : 0,
-                KernelsExecuted = 0,
-                BytesTransferred = 0,
+                GpuUtilizationPercent = gpuUtilization,
+                MemoryUtilizationPercent = memoryUtilization,
+                UsedMemoryBytes = usedMemoryBytes,
+                TemperatureCelsius = temperature,
+                PowerWatts = power,
+                FanSpeedPercent = fanSpeed,
+                KernelsExecuted = kernelsExecuted,
+                BytesTransferred = bytesTransferred,
                 Uptime = TimeSpan.FromMilliseconds(Environment.TickCount64)
             };
-        }, cancellationToken).ConfigureAwait(false);
+
+            _logger.LogDebug(
+                "Device {DeviceId} metrics: GPU={GpuUtil:F1}%, Mem={MemUtil:F1}%, Temp={Temp:F0}°C, Power={Power:F0}W",
+                device.DeviceId, gpuUtilization, memoryUtilization, temperature, power);
+
+            return metrics;
+        }
+        catch (Exception ex) when (ex is not OperationCanceledException)
+        {
+            _logger.LogWarning(ex, "Failed to get full metrics for device {DeviceId}, using fallback", device.DeviceId);
+            return GetFallbackMetrics(device, adapter);
+        }
     }
 
-    private async Task<float> GetGpuUtilizationAsync(IComputeDevice device, CancellationToken cancellationToken)
+    /// <summary>
+    /// Safely gets health snapshot with exception handling.
+    /// </summary>
+    private async Task<DeviceHealthSnapshot?> GetHealthSnapshotSafeAsync(IAccelerator accelerator, CancellationToken ct)
     {
-        await Task.Delay(5, cancellationToken).ConfigureAwait(false);
-        return device.Type == DeviceType.GPU ? Random.Shared.Next(30, 95) : Random.Shared.Next(5, 25);
-    }
-    
-    private async Task<float> GetMemoryUtilizationAsync(IComputeDevice device, CancellationToken cancellationToken)
-    {
-        await Task.Delay(3, cancellationToken).ConfigureAwait(false);
-        return Random.Shared.Next(40, 80);
-    }
-    
-    private async Task<float> GetTemperatureAsync(IComputeDevice device, CancellationToken cancellationToken)
-    {
-        await Task.Delay(8, cancellationToken).ConfigureAwait(false);
-        return device.Type == DeviceType.GPU ? Random.Shared.Next(50, 80) : 0;
-    }
-    
-    private async Task<float> GetPowerConsumptionAsync(IComputeDevice device, CancellationToken cancellationToken)
-    {
-        await Task.Delay(4, cancellationToken).ConfigureAwait(false);
-        return device.Type == DeviceType.GPU ? Random.Shared.Next(120, 250) : Random.Shared.Next(45, 95);
+        try
+        {
+            return await accelerator.GetHealthSnapshotAsync(ct);
+        }
+        catch (NotImplementedException)
+        {
+            _logger.LogDebug("GetHealthSnapshotAsync not implemented for {AcceleratorType}", accelerator.Type);
+            return null;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogDebug(ex, "Failed to get health snapshot");
+            return null;
+        }
     }
 
-    // TODO: [DOTCOMPUTE-API] Perform real device reset via IAccelerator.ResetAsync()
-    // When: DotCompute v0.3.0+ with IAccelerator.ResetAsync() implementation
-    // Integration example:
-    //   var accelerator = (device as DotComputeAcceleratorAdapter)?.Accelerator;
-    //   await accelerator.ResetAsync(cancellationToken);
-    //   // Re-initialize contexts and resources after reset
-    // Current: Simulates multi-step device reset with realistic timing
+    /// <summary>
+    /// Safely gets sensor readings with exception handling.
+    /// </summary>
+    private async Task<IReadOnlyList<SensorReading>?> GetSensorReadingsSafeAsync(IAccelerator accelerator, CancellationToken ct)
+    {
+        try
+        {
+            return await accelerator.GetSensorReadingsAsync(ct);
+        }
+        catch (NotImplementedException)
+        {
+            _logger.LogDebug("GetSensorReadingsAsync not implemented for {AcceleratorType}", accelerator.Type);
+            return null;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogDebug(ex, "Failed to get sensor readings");
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Safely gets profiling snapshot with exception handling.
+    /// </summary>
+    private async Task<ProfilingSnapshot?> GetProfilingSnapshotSafeAsync(IAccelerator accelerator, CancellationToken ct)
+    {
+        try
+        {
+            return await accelerator.GetProfilingSnapshotAsync(ct);
+        }
+        catch (NotImplementedException)
+        {
+            _logger.LogDebug("GetProfilingSnapshotAsync not implemented for {AcceleratorType}", accelerator.Type);
+            return null;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogDebug(ex, "Failed to get profiling snapshot");
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Extracts a sensor value by searching for matching sensor names or sensor types.
+    /// </summary>
+    private static float ExtractSensorValue(IReadOnlyList<SensorReading>? readings, params string[] sensorNames)
+    {
+        if (readings == null || readings.Count == 0)
+            return 0f;
+
+        // First try to match by name
+        foreach (var name in sensorNames)
+        {
+            var reading = readings.FirstOrDefault(r =>
+                r.IsAvailable && r.Name?.Contains(name, StringComparison.OrdinalIgnoreCase) == true);
+
+            if (reading != null)
+                return (float)reading.Value;
+        }
+
+        // Try to match by sensor type based on common patterns
+        foreach (var name in sensorNames)
+        {
+            var sensorType = name.ToUpperInvariant() switch
+            {
+                "TEMPERATURE" or "GPU_TEMP" or "TEMP" => SensorType.Temperature,
+                "POWER" or "GPU_POWER" => SensorType.PowerDraw,
+                "FANSPEED" or "FAN_SPEED" or "FAN" => SensorType.FanSpeed,
+                _ => (SensorType?)null
+            };
+
+            if (sensorType.HasValue)
+            {
+                var reading = readings.FirstOrDefault(r =>
+                    r.IsAvailable && r.SensorType == sensorType.Value);
+
+                if (reading != null)
+                    return (float)reading.Value;
+            }
+        }
+
+        return 0f;
+    }
+
+    /// <summary>
+    /// Gets fallback metrics when DotCompute APIs are unavailable.
+    /// </summary>
+    private GpuBridgeDeviceMetrics GetFallbackMetrics(IComputeDevice device, DotComputeAcceleratorAdapter adapter)
+    {
+        var memoryInfo = adapter.GetMemoryInfo();
+        var usedMemoryBytes = device.TotalMemoryBytes - memoryInfo.FreeMemoryBytes;
+
+        return new GpuBridgeDeviceMetrics
+        {
+            GpuUtilizationPercent = 0f, // Unknown
+            MemoryUtilizationPercent = (float)memoryInfo.UtilizationPercentage,
+            UsedMemoryBytes = usedMemoryBytes,
+            TemperatureCelsius = 0f, // Unknown
+            PowerWatts = 0f, // Unknown
+            FanSpeedPercent = 0f, // Unknown
+            KernelsExecuted = 0,
+            BytesTransferred = 0,
+            Uptime = TimeSpan.FromMilliseconds(Environment.TickCount64)
+        };
+    }
+
+    /// <summary>
+    /// Resets the device using DotCompute v0.5.1 <see cref="IAccelerator.ResetAsync"/> API.
+    /// </summary>
+    /// <remarks>
+    /// <para>Uses DotCompute's 5-tier reset strategy based on device state:</para>
+    /// <list type="bullet">
+    ///   <item><b>Soft</b>: Flush queues only (1-10ms)</item>
+    ///   <item><b>Context</b>: Clear caches (10-50ms)</item>
+    ///   <item><b>Hard</b>: Clear memory (50-200ms)</item>
+    ///   <item><b>Full</b>: Complete reinitialization (200-1000ms)</item>
+    ///   <item><b>ErrorRecovery</b>: Aggressive reset for error states</item>
+    /// </list>
+    /// <para>Automatically selects reset strategy based on device health.</para>
+    /// </remarks>
     public async Task ResetDeviceAsync(IComputeDevice device, CancellationToken cancellationToken = default)
     {
         EnsureInitialized();
@@ -437,25 +591,101 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
         if (device == null)
             throw new ArgumentNullException(nameof(device));
 
+        var adapter = device as DotComputeAcceleratorAdapter
+            ?? throw new InvalidOperationException($"Device {device.DeviceId} is not a DotCompute device");
+
+        var accelerator = adapter.Accelerator;
+
         _logger.LogWarning("Resetting device {DeviceId}", device.DeviceId);
 
-        // Simulate realistic device reset procedure
-        await Task.Run(async () =>
+        try
         {
-            // Step 1: Stop device operations (~100ms)
-            _logger.LogDebug("Stopping device operations for {DeviceId}", device.DeviceId);
-            await Task.Delay(100, cancellationToken).ConfigureAwait(false);
+            // Determine reset strategy based on device health
+            var resetOptions = await DetermineResetStrategyAsync(accelerator, cancellationToken);
 
-            // Step 2: Clear device memory (~50ms)
-            _logger.LogDebug("Clearing device memory for {DeviceId}", device.DeviceId);
-            await Task.Delay(50, cancellationToken).ConfigureAwait(false);
+            _logger.LogDebug(
+                "Using {ResetType} reset strategy for device {DeviceId}",
+                resetOptions.ResetType, device.DeviceId);
 
-            // Step 3: Reinitialize device (~75ms)
-            _logger.LogDebug("Reinitializing device {DeviceId}", device.DeviceId);
-            await Task.Delay(75, cancellationToken).ConfigureAwait(false);
+            // Execute reset via DotCompute API
+            var result = await accelerator.ResetAsync(resetOptions, cancellationToken);
 
-            _logger.LogInformation("Device {DeviceId} reset completed", device.DeviceId);
-        }, cancellationToken).ConfigureAwait(false);
+            if (result.Success)
+            {
+                _logger.LogInformation(
+                    "Device {DeviceId} reset completed successfully in {Duration}ms (Type: {ResetType})",
+                    device.DeviceId, result.Duration.TotalMilliseconds, resetOptions.ResetType);
+
+                // Update adapter state after successful reset
+                adapter.SetHealthStatus(true);
+            }
+            else
+            {
+                _logger.LogError(
+                    "Device {DeviceId} reset failed: {Error}",
+                    device.DeviceId, result.ErrorMessage);
+
+                throw new InvalidOperationException(
+                    $"Failed to reset device {device.DeviceId}: {result.ErrorMessage}");
+            }
+        }
+        catch (NotImplementedException)
+        {
+            // DotCompute backend doesn't implement ResetAsync - use fallback
+            _logger.LogWarning(
+                "ResetAsync not implemented for {AcceleratorType}, using synchronization fallback",
+                accelerator.Type);
+
+            await FallbackResetAsync(accelerator, device.DeviceId, cancellationToken);
+        }
+        catch (Exception ex) when (ex is not OperationCanceledException && ex is not InvalidOperationException)
+        {
+            _logger.LogError(ex, "Unexpected error resetting device {DeviceId}", device.DeviceId);
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// Determines the appropriate reset strategy based on device health.
+    /// </summary>
+    private async Task<ResetOptions> DetermineResetStrategyAsync(IAccelerator accelerator, CancellationToken ct)
+    {
+        try
+        {
+            var health = await accelerator.GetHealthSnapshotAsync(ct);
+
+            // Choose reset strategy based on health score
+            return health.HealthScore switch
+            {
+                >= 0.9f => ResetOptions.Soft,           // Healthy - minimal reset
+                >= 0.7f => ResetOptions.Context,        // Minor issues - clear caches
+                >= 0.5f => ResetOptions.Hard,           // Degraded - clear memory
+                >= 0.3f => ResetOptions.Full,           // Severely degraded - full reset
+                _ => ResetOptions.ErrorRecovery         // Critical - aggressive recovery
+            };
+        }
+        catch
+        {
+            // If health check fails, use conservative approach
+            return ResetOptions.Hard;
+        }
+    }
+
+    /// <summary>
+    /// Fallback reset using synchronization when ResetAsync is not implemented.
+    /// </summary>
+    private async Task FallbackResetAsync(IAccelerator accelerator, string deviceId, CancellationToken ct)
+    {
+        _logger.LogDebug("Executing fallback reset for device {DeviceId}", deviceId);
+
+        // Step 1: Synchronize to complete pending operations
+        _logger.LogDebug("Synchronizing device {DeviceId}", deviceId);
+        await accelerator.SynchronizeAsync(ct);
+
+        // Step 2: Wait for GPU to settle
+        await Task.Delay(50, ct);
+
+        _logger.LogInformation("Device {DeviceId} fallback reset completed", deviceId);
     }
 
     public void Dispose()

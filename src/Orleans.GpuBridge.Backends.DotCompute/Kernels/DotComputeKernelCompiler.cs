@@ -41,13 +41,13 @@ internal sealed class DotComputeKernelCompiler : IKernelCompiler
         _nativeKernels = new ConcurrentDictionary<string, object>();
     }
 
-    // TODO: [DOTCOMPUTE-API] Integrate with IUnifiedKernelCompiler for real compilation
-    // When: DotCompute v0.3.0+ with IUnifiedKernelCompiler implementation
-    // Integration example:
-    //   var compiler = _acceleratorManager.GetKernelCompiler(device);
-    //   var compiledKernel = await compiler.CompileAsync(source, options, cancellationToken);
-    //   return new DotComputeCompiledKernelAdapter(compiledKernel, device);
-    // Current: Simulates compilation with caching and realistic timing
+    /// <summary>
+    /// Compiles kernel source to GPU-executable code using DotCompute v0.5.1 NVRTC/CUDA Driver API.
+    /// </summary>
+    /// <remarks>
+    /// <para>Uses real GPU compilation via <see cref="IAccelerator.CompileKernelAsync"/>.</para>
+    /// <para>Compiled kernels are cached for performance.</para>
+    /// </remarks>
     public async Task<CompiledKernel> CompileAsync(
         KernelSource source,
         KernelCompilationOptions options,

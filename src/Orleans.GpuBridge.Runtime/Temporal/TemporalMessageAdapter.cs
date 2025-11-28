@@ -2,7 +2,10 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Buffers;
+using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
+using System.Threading;
 using DotCompute.Abstractions.RingKernels;
 using Orleans.GpuBridge.Abstractions.Temporal;
 
@@ -27,6 +30,29 @@ namespace Orleans.GpuBridge.Runtime.Temporal;
 /// </remarks>
 public static class TemporalMessageAdapter
 {
+    /// <summary>
+    /// Thread-safe buffer pool for large payloads that exceed inline capacity.
+    /// Uses negative handle values to distinguish from inline payloads.
+    /// </summary>
+    private static readonly ConcurrentDictionary<long, byte[]> LargePayloadBuffer = new();
+
+    /// <summary>
+    /// Counter for generating unique payload handles.
+    /// Starts at 1 to reserve 0 for empty/null payloads.
+    /// </summary>
+    private static long _nextPayloadHandle = 1;
+
+    /// <summary>
+    /// Marker bit indicating the payload field contains a handle, not inline data.
+    /// Uses the sign bit (MSB) - negative values indicate handles.
+    /// </summary>
+    private const long HandleMarkerBit = unchecked((long)0x8000_0000_0000_0000);
+
+    /// <summary>
+    /// Maximum size for inline payload embedding (8 bytes = sizeof(long)).
+    /// </summary>
+    private const int MaxInlinePayloadSize = sizeof(long);
+
     /// <summary>
     /// Wraps a typed request into an ActorMessage with HLC timestamp.
     /// </summary>
@@ -57,12 +83,12 @@ public static class TemporalMessageAdapter
         where TRequest : unmanaged
     {
         // For small payloads (8 bytes or less), embed directly
-        // For larger payloads, this would store a GPU memory handle
+        // For larger payloads, store in buffer pool and use handle
         long payloadValue;
         unsafe
         {
             int payloadSize = sizeof(TRequest);
-            if (payloadSize <= sizeof(long))
+            if (payloadSize <= MaxInlinePayloadSize)
             {
                 // Direct embedding for small types - use stackalloc for local buffer
                 byte* buffer = stackalloc byte[sizeof(long)];
@@ -71,11 +97,8 @@ public static class TemporalMessageAdapter
             }
             else
             {
-                // For larger payloads, GPU memory handle would go here
-                // This requires GPU memory management integration (Phase 4)
-                throw new NotImplementedException(
-                    $"Payload type {typeof(TRequest).Name} ({payloadSize} bytes) exceeds inline capacity. " +
-                    "GPU memory management for large payloads is pending Phase 4 implementation.");
+                // Large payload: serialize to buffer and store handle
+                payloadValue = StoreLargePayload(ref request, payloadSize);
             }
         }
 
@@ -111,17 +134,27 @@ public static class TemporalMessageAdapter
         unsafe
         {
             int responseSize = sizeof(TResponse);
-            if (responseSize <= sizeof(long))
+            long payload = message.Payload;
+
+            // Check if this is a handle (negative value = handle marker set)
+            if ((payload & HandleMarkerBit) != 0)
+            {
+                // Large payload: retrieve from buffer and deserialize
+                return RetrieveLargePayload<TResponse>(payload);
+            }
+            else if (responseSize <= MaxInlinePayloadSize)
             {
                 // Direct extraction for small types
-                long payload = message.Payload;
                 return *(TResponse*)&payload;
             }
             else
             {
-                // For larger responses, GPU memory handle extraction would go here
-                throw new NotImplementedException(
-                    $"Response type {typeof(TResponse).Name} ({responseSize} bytes) exceeds inline capacity.");
+                // Large type requested but payload doesn't have handle marker
+                // This could happen if the GPU kernel wrote inline data for a type
+                // that's larger than 8 bytes - treat as inline attempt
+                throw new InvalidOperationException(
+                    $"Response type {typeof(TResponse).Name} ({responseSize} bytes) exceeds inline capacity " +
+                    $"but payload {payload} does not contain a valid handle marker.");
             }
         }
     }
@@ -159,5 +192,128 @@ public static class TemporalMessageAdapter
     public static ActorMessage UpdateTimestamp(ActorMessage message, HybridTimestamp newTimestamp)
     {
         return message with { Timestamp = newTimestamp };
+    }
+
+    /// <summary>
+    /// Stores a large payload in the buffer pool and returns a handle.
+    /// </summary>
+    /// <typeparam name="T">Payload type (unmanaged).</typeparam>
+    /// <param name="payload">Reference to the payload data.</param>
+    /// <param name="payloadSize">Size of the payload in bytes.</param>
+    /// <returns>Handle value with marker bit set (negative value).</returns>
+    private static unsafe long StoreLargePayload<T>(ref T payload, int payloadSize)
+        where T : unmanaged
+    {
+        // Generate unique handle
+        long handle = Interlocked.Increment(ref _nextPayloadHandle);
+
+        // Serialize payload to byte array
+        byte[] buffer = ArrayPool<byte>.Shared.Rent(payloadSize);
+        try
+        {
+            fixed (T* sourcePtr = &payload)
+            fixed (byte* destPtr = buffer)
+            {
+                Buffer.MemoryCopy(sourcePtr, destPtr, payloadSize, payloadSize);
+            }
+
+            // Create exact-size copy for storage (rent may give larger array)
+            byte[] exactBuffer = new byte[payloadSize];
+            Array.Copy(buffer, exactBuffer, payloadSize);
+
+            // Store in buffer pool
+            if (!LargePayloadBuffer.TryAdd(handle, exactBuffer))
+            {
+                throw new InvalidOperationException(
+                    $"Failed to store large payload with handle {handle}. Handle collision detected.");
+            }
+        }
+        finally
+        {
+            ArrayPool<byte>.Shared.Return(buffer);
+        }
+
+        // Return handle with marker bit set (makes it negative)
+        return handle | HandleMarkerBit;
+    }
+
+    /// <summary>
+    /// Retrieves and deserializes a large payload from the buffer pool.
+    /// </summary>
+    /// <typeparam name="T">Expected payload type (unmanaged).</typeparam>
+    /// <param name="handleWithMarker">Handle value with marker bit set.</param>
+    /// <returns>Deserialized payload.</returns>
+    /// <remarks>
+    /// This method removes the payload from the buffer pool after retrieval
+    /// to prevent memory leaks. Each payload can only be retrieved once.
+    /// </remarks>
+    private static unsafe T RetrieveLargePayload<T>(long handleWithMarker)
+        where T : unmanaged
+    {
+        // Extract actual handle by clearing marker bit
+        long handle = handleWithMarker & ~HandleMarkerBit;
+
+        // Remove and retrieve from buffer pool (one-time retrieval)
+        if (!LargePayloadBuffer.TryRemove(handle, out byte[]? buffer))
+        {
+            throw new InvalidOperationException(
+                $"Large payload with handle {handle} not found. " +
+                "It may have already been retrieved or never stored.");
+        }
+
+        // Verify size matches expected type
+        int expectedSize = sizeof(T);
+        if (buffer.Length != expectedSize)
+        {
+            throw new InvalidOperationException(
+                $"Payload size mismatch: stored {buffer.Length} bytes, " +
+                $"but type {typeof(T).Name} requires {expectedSize} bytes.");
+        }
+
+        // Deserialize from byte array
+        T result;
+        fixed (byte* sourcePtr = buffer)
+        {
+            result = *(T*)sourcePtr;
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Gets the number of large payloads currently stored in the buffer pool.
+    /// </summary>
+    /// <remarks>
+    /// Useful for diagnostics and detecting potential memory leaks from
+    /// unretrieved payloads.
+    /// </remarks>
+    public static int PendingLargePayloadCount => LargePayloadBuffer.Count;
+
+    /// <summary>
+    /// Clears all pending large payloads from the buffer pool.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Use with caution - this will invalidate any handles that haven't
+    /// been retrieved yet. Primarily useful for testing and cleanup
+    /// during shutdown.
+    /// </para>
+    /// </remarks>
+    /// <returns>Number of payloads that were cleared.</returns>
+    public static int ClearPendingPayloads()
+    {
+        int count = LargePayloadBuffer.Count;
+        LargePayloadBuffer.Clear();
+        return count;
+    }
+
+    /// <summary>
+    /// Checks if a payload value represents a large payload handle.
+    /// </summary>
+    /// <param name="payloadValue">The payload field value from ActorMessage.</param>
+    /// <returns>True if this is a handle to a large payload; false if inline data.</returns>
+    public static bool IsLargePayloadHandle(long payloadValue)
+    {
+        return (payloadValue & HandleMarkerBit) != 0;
     }
 }

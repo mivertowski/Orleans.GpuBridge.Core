@@ -235,25 +235,61 @@ public static class KernelCodeBuilder
             sb.AppendLine();
         }
 
-        // Generate computation placeholder
+        // Generate handler computation
+        // Note: Actual computation logic should be provided by the user or
+        // extracted from the original handler method via AST analysis.
+        // For v0.1.0, we generate a passthrough that copies input to output.
         sb.AppendLine("        // Execute handler logic");
-        sb.AppendLine($"        // TODO: Implement {handler.MethodName} computation");
+        sb.AppendLine($"        // Handler: {handler.MethodName}");
+        sb.AppendLine($"        // This code is auto-generated. Customize the computation below.");
 
         if (handler.HasReturnValue && handler.ReturnTypeName != "void")
         {
             sb.AppendLine($"        {handler.ReturnTypeName} result = default;");
             sb.AppendLine();
 
-            // Generate placeholder computation based on parameters
+            // Generate computation based on parameters
             if (handler.Parameters.Length >= 2)
             {
                 var p1 = handler.Parameters[0];
                 var p2 = handler.Parameters[1];
                 if (p1.TypeName == handler.ReturnTypeName && p2.TypeName == handler.ReturnTypeName)
                 {
-                    // Simple binary operation placeholder
-                    sb.AppendLine($"        // Example computation:");
-                    sb.AppendLine($"        // result = request.{p1.Name} + request.{p2.Name};");
+                    // Binary operation - generate example computation
+                    sb.AppendLine($"        // Binary operation on {p1.TypeName}");
+                    sb.AppendLine($"        result = request.{p1.Name} + request.{p2.Name};");
+                }
+                else if (handler.Parameters.Length == 1 && handler.Parameters[0].TypeName == handler.ReturnTypeName)
+                {
+                    // Unary passthrough
+                    sb.AppendLine($"        // Passthrough");
+                    sb.AppendLine($"        result = request.{handler.Parameters[0].Name};");
+                }
+                else
+                {
+                    // Generate field copy for first matching parameter
+                    sb.AppendLine($"        // Default computation (customize as needed)");
+                    foreach (var param in handler.Parameters)
+                    {
+                        if (param.TypeName == handler.ReturnTypeName)
+                        {
+                            sb.AppendLine($"        result = request.{param.Name};");
+                            break;
+                        }
+                    }
+                }
+            }
+            else if (handler.Parameters.Length == 1)
+            {
+                var p = handler.Parameters[0];
+                if (p.TypeName == handler.ReturnTypeName)
+                {
+                    sb.AppendLine($"        // Unary passthrough");
+                    sb.AppendLine($"        result = request.{p.Name};");
+                }
+                else
+                {
+                    sb.AppendLine($"        // Default value (customize computation as needed)");
                 }
             }
         }

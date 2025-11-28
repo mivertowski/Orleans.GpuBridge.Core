@@ -174,35 +174,162 @@ public sealed class NtpClockSource : IPhysicalClockSource
 
     private void UpdateWindowsNtpStatus()
     {
-        // On Windows, we can check the Windows Time Service status
-        // For now, use conservative estimates
-        // TODO: Query Windows Time Service via w32tm or WMI
+        // Phase 7.1: Query Windows Time Service status via w32tm command
+        // The w32tm tool is the standard utility for Windows Time Service management
+        try
+        {
+            using var process = new System.Diagnostics.Process();
+            process.StartInfo = new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = "w32tm",
+                Arguments = "/query /status",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
 
-        // Assume NTP is enabled (most Windows systems have it)
-        _isSynchronized = true;
-        _errorBound = 10_000_000; // ±10ms (typical for Windows Time Service)
-        _measuredDrift = 5.0; // 5 PPM (with NTP correction)
+            if (process.Start())
+            {
+                var output = process.StandardOutput.ReadToEnd();
+                process.WaitForExit(1000);
+
+                // Parse output for synchronization status
+                // Example output contains: "Source: time.windows.com" and "Stratum: 4"
+                var isSynced = output.Contains("Source:", StringComparison.OrdinalIgnoreCase) &&
+                               !output.Contains("Local CMOS Clock", StringComparison.OrdinalIgnoreCase);
+
+                if (isSynced)
+                {
+                    _isSynchronized = true;
+                    _errorBound = 10_000_000; // ±10ms (typical for Windows Time Service)
+                    _measuredDrift = 5.0; // 5 PPM (with NTP correction)
+                }
+                else
+                {
+                    // Not synchronized to external source
+                    _isSynchronized = false;
+                    _errorBound = 100_000_000; // ±100ms (unsynchronized)
+                    _measuredDrift = 50.0; // 50 PPM (local clock drift)
+                }
+
+                return;
+            }
+        }
+        catch
+        {
+            // Fall through to conservative defaults
+        }
+
+        // Conservative defaults if w32tm query fails
+        _isSynchronized = true; // Assume synchronized (most Windows systems have it)
+        _errorBound = 10_000_000;
+        _measuredDrift = 5.0;
     }
 
     private void UpdateLinuxNtpStatus()
     {
-        // On Linux, we can check timedatectl or read NTP drift file
-        // For now, use conservative estimates
-        // TODO: Parse output of 'timedatectl show' or read /var/lib/ntp/drift
+        // Phase 7.1: Parse timedatectl output or read NTP drift file
+        try
+        {
+            // First try timedatectl show (works on systemd systems)
+            using var process = new System.Diagnostics.Process();
+            process.StartInfo = new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = "timedatectl",
+                Arguments = "show",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
 
-        // Assume NTP daemon (ntpd or chronyd) is running
-        _isSynchronized = true;
-        _errorBound = 5_000_000; // ±5ms (typical for LAN NTP)
-        _measuredDrift = 2.0; // 2 PPM (with NTP correction)
+            if (process.Start())
+            {
+                var output = process.StandardOutput.ReadToEnd();
+                process.WaitForExit(1000);
+
+                // Parse for NTPSynchronized=yes
+                var isSynced = output.Contains("NTPSynchronized=yes", StringComparison.OrdinalIgnoreCase);
+
+                if (isSynced)
+                {
+                    _isSynchronized = true;
+                    _errorBound = 5_000_000; // ±5ms (typical for LAN NTP)
+                    _measuredDrift = 2.0; // 2 PPM (with NTP correction)
+                    return;
+                }
+            }
+        }
+        catch
+        {
+            // timedatectl not available, try drift file
+        }
+
+        // Try reading NTP drift file (classic ntp daemon)
+        try
+        {
+            const string driftFile = "/var/lib/ntp/drift";
+            if (System.IO.File.Exists(driftFile))
+            {
+                var content = System.IO.File.ReadAllText(driftFile).Trim();
+                if (double.TryParse(content, out var drift))
+                {
+                    // Drift file exists and has valid content - ntpd is managing clock
+                    _isSynchronized = true;
+                    _errorBound = 5_000_000; // ±5ms
+                    _measuredDrift = Math.Abs(drift); // Use actual drift from file
+                    return;
+                }
+            }
+        }
+        catch
+        {
+            // Drift file not accessible
+        }
+
+        // Conservative defaults
+        _isSynchronized = true; // Assume NTP daemon is running
+        _errorBound = 5_000_000;
+        _measuredDrift = 2.0;
     }
 
     private void UpdateMacOsNtpStatus()
     {
-        // On macOS, we can check network time synchronization
-        // For now, use conservative estimates
-        // TODO: Parse output of 'systemsetup -getusingnetworktime'
+        // Phase 7.1: Check macOS network time synchronization via systemsetup
+        try
+        {
+            using var process = new System.Diagnostics.Process();
+            process.StartInfo = new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = "systemsetup",
+                Arguments = "-getusingnetworktime",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
 
-        // Assume NTP is enabled (default on macOS)
+            if (process.Start())
+            {
+                var output = process.StandardOutput.ReadToEnd();
+                process.WaitForExit(1000);
+
+                // Parse for "Network Time: On"
+                var isSynced = output.Contains(": On", StringComparison.OrdinalIgnoreCase);
+
+                _isSynchronized = isSynced;
+                _errorBound = isSynced ? 10_000_000 : 100_000_000; // ±10ms synced, ±100ms unsynced
+                _measuredDrift = isSynced ? 5.0 : 50.0;
+                return;
+            }
+        }
+        catch
+        {
+            // systemsetup not available or failed
+        }
+
+        // Conservative defaults - assume NTP is enabled (default on macOS)
         _isSynchronized = true;
         _errorBound = 10_000_000; // ±10ms
         _measuredDrift = 5.0; // 5 PPM

@@ -1,48 +1,147 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions.Providers;
-using Orleans.GpuBridge.Abstractions.Providers.Execution.Interfaces;
+using Orleans.GpuBridge.Runtime.Providers;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Orleans.GpuBridge.Runtime.Infrastructure;
 
 /// <summary>
-/// Factory for creating and managing backend providers
+/// Factory for creating and managing backend providers.
+/// Handles discovery and initialization of GPU backends with CPU fallback support.
 /// </summary>
 public class BackendProviderFactory
 {
     private readonly IServiceProvider _serviceProvider;
+    private readonly ILoggerFactory _loggerFactory;
     private readonly ILogger<BackendProviderFactory> _logger;
     private IGpuBackendProvider? _primaryProvider;
+    private bool _initialized;
 
-    public BackendProviderFactory(IServiceProvider serviceProvider, ILogger<BackendProviderFactory> logger)
+    /// <summary>
+    /// Creates a new backend provider factory.
+    /// </summary>
+    /// <param name="serviceProvider">Service provider for dependency resolution.</param>
+    /// <param name="loggerFactory">Logger factory for creating loggers.</param>
+    /// <param name="logger">Logger for this factory.</param>
+    public BackendProviderFactory(
+        IServiceProvider serviceProvider,
+        ILoggerFactory loggerFactory,
+        ILogger<BackendProviderFactory> logger)
     {
         _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+        _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     /// <summary>
-    /// Initialize the factory and discover providers
+    /// Initialize the factory and discover providers.
+    /// First attempts to discover GPU providers (DotCompute), then falls back to CPU.
     /// </summary>
     public void Initialize()
     {
+        if (_initialized)
+        {
+            _logger.LogDebug("Backend provider factory already initialized");
+            return;
+        }
+
         _logger.LogInformation("Initializing backend provider factory");
-        
-        // Try to get a CPU fallback provider as primary
-        try
+
+        // Try to get DotCompute provider from DI first
+        _primaryProvider = _serviceProvider.GetService<IGpuBackendProvider>();
+
+        if (_primaryProvider != null)
         {
-            _primaryProvider = new CpuFallbackProvider();
-            _logger.LogInformation("Initialized with CPU fallback provider");
+            _logger.LogInformation(
+                "Found GPU backend provider: {ProviderId} ({DisplayName})",
+                _primaryProvider.ProviderId,
+                _primaryProvider.DisplayName);
+
+            // Initialize the provider asynchronously (blocking call here is intentional for startup)
+            try
+            {
+                _primaryProvider.InitializeAsync(new BackendConfiguration(), CancellationToken.None)
+                    .GetAwaiter().GetResult();
+                _logger.LogInformation("GPU backend provider initialized successfully");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "GPU backend provider initialization failed, falling back to CPU");
+                _primaryProvider = null;
+            }
         }
-        catch (Exception ex)
+
+        // Fall back to CPU provider if no GPU provider available
+        if (_primaryProvider == null)
         {
-            _logger.LogWarning(ex, "Failed to initialize primary provider");
+            _logger.LogInformation("No GPU backend available, initializing CPU fallback provider");
+            _primaryProvider = CreateCpuFallbackProvider();
+
+            _primaryProvider.InitializeAsync(new BackendConfiguration(), CancellationToken.None)
+                .GetAwaiter().GetResult();
+            _logger.LogInformation("CPU fallback provider initialized");
         }
+
+        _initialized = true;
     }
 
     /// <summary>
-    /// Get the primary backend provider
+    /// Initialize the factory asynchronously.
     /// </summary>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    public async Task InitializeAsync(CancellationToken cancellationToken = default)
+    {
+        if (_initialized)
+        {
+            _logger.LogDebug("Backend provider factory already initialized");
+            return;
+        }
+
+        _logger.LogInformation("Initializing backend provider factory (async)");
+
+        // Try to get DotCompute provider from DI first
+        _primaryProvider = _serviceProvider.GetService<IGpuBackendProvider>();
+
+        if (_primaryProvider != null)
+        {
+            _logger.LogInformation(
+                "Found GPU backend provider: {ProviderId} ({DisplayName})",
+                _primaryProvider.ProviderId,
+                _primaryProvider.DisplayName);
+
+            try
+            {
+                await _primaryProvider.InitializeAsync(new BackendConfiguration(), cancellationToken);
+                _logger.LogInformation("GPU backend provider initialized successfully");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "GPU backend provider initialization failed, falling back to CPU");
+                _primaryProvider = null;
+            }
+        }
+
+        // Fall back to CPU provider if no GPU provider available
+        if (_primaryProvider == null)
+        {
+            _logger.LogInformation("No GPU backend available, initializing CPU fallback provider");
+            _primaryProvider = CreateCpuFallbackProvider();
+
+            await _primaryProvider.InitializeAsync(new BackendConfiguration(), cancellationToken);
+            _logger.LogInformation("CPU fallback provider initialized");
+        }
+
+        _initialized = true;
+    }
+
+    /// <summary>
+    /// Get the primary backend provider.
+    /// </summary>
+    /// <returns>The initialized primary backend provider.</returns>
+    /// <exception cref="InvalidOperationException">Thrown if Initialize() has not been called.</exception>
     public IGpuBackendProvider GetPrimaryProvider()
     {
         if (_primaryProvider == null)
@@ -52,53 +151,23 @@ public class BackendProviderFactory
 
         return _primaryProvider;
     }
-}
 
-/// <summary>
-/// Simple CPU fallback provider for testing
-/// </summary>
-internal class CpuFallbackProvider : IGpuBackendProvider
-{
-    public string ProviderId => "CpuFallback";
-    public string DisplayName => "CPU Fallback Provider";
-    public Version Version => new Version(1, 0, 0);
-    public BackendCapabilities Capabilities => BackendCapabilities.CreateCpuFallback();
+    /// <summary>
+    /// Gets a value indicating whether a GPU provider is available.
+    /// </summary>
+    public bool HasGpuProvider => _primaryProvider != null && _primaryProvider.ProviderId != "CPU";
 
-    public bool IsAvailable() => true;
+    /// <summary>
+    /// Gets a value indicating whether the factory has been initialized.
+    /// </summary>
+    public bool IsInitialized => _initialized;
 
-    public Task<bool> IsAvailableAsync(CancellationToken cancellationToken = default) => Task.FromResult(true);
-
-    public Task<object> CreateContext(int deviceIndex = 0) => Task.FromResult<object>(new DisposableStub());
-
-    public void Dispose() { }
-
-    private class DisposableStub : IDisposable
+    /// <summary>
+    /// Creates a CPU fallback provider with proper dependencies.
+    /// </summary>
+    private CpuFallbackProvider CreateCpuFallbackProvider()
     {
-        public void Dispose() { }
-    }
-
-    public Task<IReadOnlyDictionary<string, object>> GetMetricsAsync(CancellationToken cancellationToken = default)
-    {
-        var metrics = new Dictionary<string, object>
-        {
-            ["IsAvailable"] = true,
-            ["Type"] = "CPU"
-        };
-        return Task.FromResult<IReadOnlyDictionary<string, object>>(metrics);
-    }
-
-    public Task InitializeAsync(BackendConfiguration configuration, CancellationToken cancellationToken = default)
-    {
-        return Task.CompletedTask;
-    }
-
-    public Orleans.GpuBridge.Abstractions.Providers.IDeviceManager GetDeviceManager() => throw new NotImplementedException();
-    public Orleans.GpuBridge.Abstractions.Providers.IKernelCompiler GetKernelCompiler() => throw new NotImplementedException();
-    public Orleans.GpuBridge.Abstractions.Providers.Memory.Allocators.IMemoryAllocator GetMemoryAllocator() => throw new NotImplementedException();
-    public Orleans.GpuBridge.Abstractions.Providers.Execution.Interfaces.IKernelExecutor GetKernelExecutor() => throw new NotImplementedException();
-
-    public Task<HealthCheckResult> CheckHealthAsync(CancellationToken cancellationToken = default)
-    {
-        return Task.FromResult(new HealthCheckResult(true, "CPU fallback available"));
+        var logger = _loggerFactory.CreateLogger<CpuFallbackProvider>();
+        return new CpuFallbackProvider(logger, _loggerFactory);
     }
 }

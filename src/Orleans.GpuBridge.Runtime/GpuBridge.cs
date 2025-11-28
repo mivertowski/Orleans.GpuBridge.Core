@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Concurrent;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,7 +21,19 @@ public sealed class GpuBridge : IGpuBridge
     private readonly DeviceBroker _deviceBroker;
     private readonly GpuBridgeOptions _options;
     private readonly IServiceProvider _serviceProvider;
-    
+
+    /// <summary>
+    /// Cache for dynamic kernel execution delegates to avoid repeated reflection.
+    /// Key: (inputType, outputType) tuple.
+    /// </summary>
+    private readonly ConcurrentDictionary<(Type, Type), Func<KernelId, object, CancellationToken, Task<object>>> _dynamicExecutorCache = new();
+
+    /// <summary>
+    /// MethodInfo for the generic ResolveAsync method, cached for performance.
+    /// </summary>
+    private static readonly MethodInfo ResolveAsyncMethod = typeof(KernelCatalog)
+        .GetMethod(nameof(KernelCatalog.ResolveAsync))!;
+
     public GpuBridge(
         ILogger<GpuBridge> logger,
         KernelCatalog kernelCatalog,
@@ -80,21 +94,108 @@ public sealed class GpuBridge : IGpuBridge
         return new ValueTask<IReadOnlyList<GpuDevice>>(devices);
     }
 
-    public ValueTask<object> ExecuteKernelAsync(string kernelId, object input, CancellationToken ct = default)
+    public async ValueTask<object> ExecuteKernelAsync(string kernelId, object input, CancellationToken ct = default)
     {
-        _logger.LogDebug("Executing kernel {KernelId} with dynamic input", kernelId);
+        ArgumentNullException.ThrowIfNull(input);
 
-        // TODO: Implement dynamic kernel execution with proper type resolution
-        // This is a stub implementation that throws NotImplementedException
-        // Full implementation requires:
-        // 1. Runtime type discovery from input object
-        // 2. Dynamic kernel resolution from catalog
-        // 3. Dynamic invocation with reflection or compiled expression trees
-        // 4. Proper error handling for type mismatches
+        _logger.LogDebug("Executing kernel {KernelId} with dynamic input type {InputType}", kernelId, input.GetType().Name);
 
-        throw new NotImplementedException(
-            $"Dynamic kernel execution for kernel '{kernelId}' is not yet implemented. " +
-            "Use strongly-typed GetKernelAsync<TIn, TOut> instead. " +
-            "TODO: Implement runtime type resolution and dynamic invocation.");
+        // Get input type from the runtime object
+        var inputType = input.GetType();
+
+        // For dynamic execution without compile-time output type knowledge,
+        // we use the same type for output as input (common pattern for transforms)
+        // or use 'object' as the output type for maximum flexibility
+        var outputType = inputType;
+
+        // Get or create the dynamic executor for this type combination
+        var executor = _dynamicExecutorCache.GetOrAdd((inputType, outputType), types =>
+            CreateDynamicExecutor(types.Item1, types.Item2));
+
+        try
+        {
+            var result = await executor(new KernelId(kernelId), input, ct);
+            _logger.LogDebug("Kernel {KernelId} executed successfully", kernelId);
+            return result;
+        }
+        catch (Exception ex) when (ex is not OperationCanceledException)
+        {
+            _logger.LogError(ex, "Dynamic kernel execution failed for {KernelId}", kernelId);
+            throw new InvalidOperationException(
+                $"Dynamic kernel execution failed for kernel '{kernelId}': {ex.Message}", ex);
+        }
+    }
+
+    /// <summary>
+    /// Executes a kernel dynamically with specified input and output types.
+    /// </summary>
+    /// <typeparam name="TRequest">The request type.</typeparam>
+    /// <typeparam name="TResponse">The response type.</typeparam>
+    /// <param name="kernelId">The kernel identifier.</param>
+    /// <param name="input">The input object.</param>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns>The execution result.</returns>
+    public async ValueTask<TResponse> ExecuteKernelAsync<TRequest, TResponse>(
+        string kernelId,
+        TRequest input,
+        CancellationToken ct = default)
+        where TRequest : notnull
+        where TResponse : notnull
+    {
+        _logger.LogDebug(
+            "Executing kernel {KernelId} with typed request {RequestType} -> {ResponseType}",
+            kernelId, typeof(TRequest).Name, typeof(TResponse).Name);
+
+        var kernel = await _kernelCatalog.ResolveAsync<TRequest, TResponse>(
+            new KernelId(kernelId),
+            _serviceProvider,
+            ct);
+
+        return await kernel.ExecuteAsync(input, ct);
+    }
+
+    /// <summary>
+    /// Creates a dynamic executor delegate for the specified type combination.
+    /// Uses reflection to invoke the generic ResolveAsync method.
+    /// </summary>
+    private Func<KernelId, object, CancellationToken, Task<object>> CreateDynamicExecutor(Type inputType, Type outputType)
+    {
+        _logger.LogDebug(
+            "Creating dynamic executor for types {InputType} -> {OutputType}",
+            inputType.Name, outputType.Name);
+
+        // Create the generic method for the specific types
+        var genericMethod = ResolveAsyncMethod.MakeGenericMethod(inputType, outputType);
+
+        // Return a delegate that invokes the method dynamically
+        return async (kernelId, input, ct) =>
+        {
+            // Invoke ResolveAsync<TIn, TOut>(kernelId, serviceProvider, ct)
+            var task = (Task)genericMethod.Invoke(
+                _kernelCatalog,
+                new object[] { kernelId, _serviceProvider, ct })!;
+
+            await task;
+
+            // Get the Result property from the generic Task<T>
+            var resultProperty = task.GetType().GetProperty("Result")!;
+            var kernel = resultProperty.GetValue(task)!;
+
+            // Get the ExecuteAsync method from the kernel
+            var executeMethod = kernel.GetType().GetMethod("ExecuteAsync", new[] { inputType, typeof(CancellationToken) });
+            if (executeMethod == null)
+            {
+                throw new InvalidOperationException(
+                    $"Kernel does not have ExecuteAsync method for input type {inputType.Name}");
+            }
+
+            // Invoke ExecuteAsync(input, ct)
+            var executeTask = (Task)executeMethod.Invoke(kernel, new[] { input, ct })!;
+            await executeTask;
+
+            // Get the result from the execute task
+            var executeResultProperty = executeTask.GetType().GetProperty("Result")!;
+            return executeResultProperty.GetValue(executeTask)!;
+        };
     }
 }

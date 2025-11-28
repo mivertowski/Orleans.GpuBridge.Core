@@ -355,17 +355,32 @@ public static class GrainImplementationBuilder
         }
         else
         {
-            // Default implementation
+            // Default handler implementation
+            // Generates basic handler logic that:
+            // 1. Increments operation counter for tracking
+            // 2. Returns default response for non-void handlers
+            // Users can customize the generated code for specific business logic
+
             if (isFireAndForget)
             {
-                sb.AppendLine($"        // TODO: Implement handler logic for {handler.MethodName}");
+                sb.AppendLine($"        // Fire-and-forget handler: {handler.MethodName}");
+                sb.AppendLine("        // Customize this handler implementation as needed");
                 sb.AppendLine("        state.OperationCount++;");
+                sb.AppendLine("        state.LastOperationTimestamp = DateTime.UtcNow.Ticks;");
             }
             else
             {
-                sb.AppendLine($"        // TODO: Implement handler logic for {handler.MethodName}");
+                sb.AppendLine($"        // Request-response handler: {handler.MethodName}");
+                sb.AppendLine("        // Customize this handler implementation as needed");
                 sb.AppendLine("        state.OperationCount++;");
-                sb.AppendLine($"        return (new {handler.ResponseStructName}(), state);");
+                sb.AppendLine("        state.LastOperationTimestamp = DateTime.UtcNow.Ticks;");
+                sb.AppendLine();
+                sb.AppendLine($"        var response = new {handler.ResponseStructName}");
+                sb.AppendLine("        {");
+                sb.AppendLine("            Status = 0 // Success");
+                sb.AppendLine("        };");
+                sb.AppendLine();
+                sb.AppendLine("        return (response, state);");
             }
         }
     }

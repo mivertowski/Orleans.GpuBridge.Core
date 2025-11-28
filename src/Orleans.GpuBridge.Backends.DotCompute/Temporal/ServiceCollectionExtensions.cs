@@ -87,8 +87,11 @@ public static class ServiceCollectionExtensions
             timingOpts.CalibrationSampleCount = options.CalibrationSampleCount;
         });
 
-        // TODO: Add ring kernel manager when implementation is complete
-        // services.TryAddSingleton<RingKernelManager>();
+        // Register ring kernel manager for persistent GPU threads
+        if (options.EnableRingKernels)
+        {
+            services.TryAddSingleton<RingKernelManager>();
+        }
 
         return services;
     }

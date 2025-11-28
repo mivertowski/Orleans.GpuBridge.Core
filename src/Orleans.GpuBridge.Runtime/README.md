@@ -52,11 +52,11 @@ using Microsoft.Extensions.Hosting;
 var builder = Host.CreateDefaultBuilder()
     .ConfigureServices(services =>
     {
+        // Basic GPU Bridge setup
         services.AddGpuBridge(options =>
         {
             options.PreferGpu = true;
-            options.EnableFallback = true;
-            options.MaxQueueDepth = 1000;
+            options.FallbackToCpu = true;
         });
     });
 
@@ -64,248 +64,257 @@ var host = builder.Build();
 await host.RunAsync();
 ```
 
-### Kernel Registration
+### Full Configuration with Ring Kernels
 
 ```csharp
-services.AddGpuBridge()
-    .AddKernel(kernel => kernel
-        .Id("vector_add")
-        .In<float[]>()
-        .Out<float[]>()
-        .FromFactory(sp => new VectorAddKernel()))
-    .AddKernel<MatrixMultiplyKernel>()
-    .AddKernel(kernel => kernel
-        .Id("image_filter")
-        .In<ImageData>()
-        .Out<ImageData>()
-        .FromType<ImageFilterKernel>());
+using Orleans.GpuBridge.Runtime.Extensions;
+using Orleans.GpuBridge.Backends.DotCompute.Extensions;
+
+services.AddGpuBridge(options =>
+{
+    options.PreferGpu = true;
+    options.FallbackToCpu = true;
+    options.MaxConcurrentKernels = 100;
+})
+.AddDotGpuBackend() // Add DotCompute backend
+.Services
+.AddRingKernelSupport(options =>
+{
+    options.DefaultGridSize = 1;
+    options.DefaultBlockSize = 256;
+    options.DefaultQueueCapacity = 256;
+    options.EnableKernelCaching = true;
+    options.DeviceIndex = 0;
+})
+.AddK2KSupport()                    // Enable kernel-to-kernel messaging
+.AddDotComputeRingKernelBridge();   // GPU-accelerated ring kernel bridge
 ```
 
 ## Configuration
 
-### Basic Options
+### GpuBridgeOptions
 
 ```csharp
 services.AddGpuBridge(options =>
 {
-    // Device Selection
+    // GPU preferences
     options.PreferGpu = true;
-    options.EnableFallback = true;
-    options.DeviceSelectionStrategy = DeviceSelectionStrategy.BestFit;
-    
-    // Performance Tuning
-    options.MaxQueueDepth = 1000;
-    options.BatchSize = 64;
-    options.MemoryPoolSize = 1024 * 1024 * 256; // 256MB
-    
-    // Monitoring
-    options.EnableHealthMonitoring = true;
-    options.HealthCheckInterval = TimeSpan.FromSeconds(30);
-    options.LoadBalancingInterval = TimeSpan.FromSeconds(5);
-    
-    // Diagnostics
-    options.EnableDiagnostics = true;
-    options.LogLevel = LogLevel.Information;
+    options.FallbackToCpu = true;
+    options.MaxRetries = 3;
+
+    // Performance tuning
+    options.DefaultMicroBatch = 8192;
+    options.MaxConcurrentKernels = 100;
+    options.MemoryPoolSizeMB = 1024;
+    options.BatchSize = 1024;
+
+    // Device management
+    options.MaxDevices = 4;
+    options.EnableGpuDirectStorage = false;
+
+    // Backend configuration
+    options.DefaultBackend = "DotCompute";
+    options.EnableProviderDiscovery = true;
+
+    // Telemetry
+    options.EnableProfiling = false;
+    options.Telemetry = new TelemetryOptions
+    {
+        EnableMetrics = true,
+        EnableTracing = true,
+        SamplingRate = 0.1
+    };
 });
 ```
 
-### Advanced Configuration
+### RingKernelOptions
 
 ```csharp
-services.AddGpuBridge(options =>
+services.AddRingKernelSupport(options =>
 {
-    // Backend Providers
-    options.EnabledBackends = new[]
-    {
-        GpuBackendType.CUDA,
-        GpuBackendType.OpenCL,
-        GpuBackendType.DirectCompute
-    };
-    
-    // Memory Management
-    options.MemoryStrategy = MemoryStrategy.Pooled;
-    options.MaxConcurrentKernels = 16;
-    options.KernelTimeout = TimeSpan.FromMinutes(5);
-    
-    // Resilience
-    options.RetryPolicy = new ExponentialBackoffRetryPolicy
-    {
-        MaxRetries = 3,
-        BaseDelay = TimeSpan.FromMilliseconds(100)
-    };
-    
-    // Device Filtering
-    options.DeviceFilter = device => 
-        device.TotalMemoryBytes >= 1024 * 1024 * 1024 && // Min 1GB
-        device.ComputeUnits >= 8; // Min 8 compute units
-})
-.AddBackendProvider<CudaBackendProvider>()
-.AddBackendProvider<OpenClBackendProvider>();
+    // Kernel launch configuration
+    options.DefaultGridSize = 1;      // Single block for single-actor
+    options.DefaultBlockSize = 256;   // Optimal for most GPUs
+
+    // Message queue
+    options.DefaultQueueCapacity = 256; // Must be power of 2
+
+    // Compilation
+    options.EnableKernelCaching = true; // Cache compiled kernels
+    options.DeviceIndex = 0;            // First GPU
+});
 ```
 
 ## Key Components
 
-### DeviceBroker
+### IGpuBridge
 
-The `DeviceBroker` manages GPU device discovery and work distribution:
+The primary interface for GPU bridge operations:
 
 ```csharp
-public class DeviceBroker : IDisposable
+public interface IGpuBridge
 {
-    // Device Management
-    public Task InitializeAsync(CancellationToken ct);
-    public IReadOnlyList<GpuDevice> GetDevices();
-    public GpuDevice? GetBestDevice();
-    
-    // Resource Monitoring
-    public int DeviceCount { get; }
-    public long TotalMemoryBytes { get; }
-    public int CurrentQueueDepth { get; }
+    ValueTask<GpuBridgeInfo> GetInfoAsync(CancellationToken ct = default);
+    ValueTask<IGpuKernel<TIn, TOut>> GetKernelAsync<TIn, TOut>(
+        KernelId kernelId, CancellationToken ct = default);
+    ValueTask<IReadOnlyList<GpuDevice>> GetDevicesAsync(CancellationToken ct = default);
+    ValueTask<object> ExecuteKernelAsync(string kernelId, object input, CancellationToken ct = default);
 }
 ```
 
 **Usage Example:**
+```csharp
+var gpuBridge = serviceProvider.GetRequiredService<IGpuBridge>();
+
+// Get bridge info
+var info = await gpuBridge.GetInfoAsync();
+Console.WriteLine($"Backend: {info.BackendName}, Devices: {info.DeviceCount}");
+
+// Get kernel and execute
+var kernel = await gpuBridge.GetKernelAsync<float[], float[]>(new KernelId("vector-add"));
+var result = await kernel.ExecuteAsync(inputData);
+```
+
+### IRingKernelBridge
+
+For GPU-native actors using persistent ring kernels:
+
+```csharp
+public interface IRingKernelBridge
+{
+    bool IsAvailable { get; }
+
+    ValueTask<GpuStateHandle<TState>> AllocateStateAsync<TState>(
+        long actorId, TState initialState, CancellationToken ct = default)
+        where TState : unmanaged;
+
+    ValueTask<TResponse> SendMessageAsync<TState, TRequest, TResponse>(
+        GpuStateHandle<TState> stateHandle, TRequest request, CancellationToken ct = default)
+        where TState : unmanaged where TRequest : unmanaged where TResponse : unmanaged;
+
+    ValueTask<TState> GetStateAsync<TState>(GpuStateHandle<TState> handle, CancellationToken ct = default)
+        where TState : unmanaged;
+
+    ValueTask ReleaseAsync<TState>(GpuStateHandle<TState> handle, CancellationToken ct = default)
+        where TState : unmanaged;
+}
+```
+
+**Usage Example:**
+```csharp
+var bridge = serviceProvider.GetRequiredService<IRingKernelBridge>();
+
+// Allocate GPU state for actor
+var stateHandle = await bridge.AllocateStateAsync(actorId, new CounterState { Value = 0 });
+
+// Send message through GPU ring kernel
+var response = await bridge.SendMessageAsync<CounterState, IncrementMessage, int>(
+    stateHandle, new IncrementMessage { Amount = 5 });
+
+// Get current state
+var state = await bridge.GetStateAsync(stateHandle);
+
+// Release when done
+await bridge.ReleaseAsync(stateHandle);
+```
+
+### DeviceBroker
+
+Manages GPU device discovery and selection:
+
 ```csharp
 var deviceBroker = serviceProvider.GetRequiredService<DeviceBroker>();
 await deviceBroker.InitializeAsync(cancellationToken);
 
-var bestDevice = deviceBroker.GetBestDevice();
 var devices = deviceBroker.GetDevices();
-
-Console.WriteLine($"Found {deviceBroker.DeviceCount} devices");
-Console.WriteLine($"Total memory: {deviceBroker.TotalMemoryBytes:N0} bytes");
-```
-
-### KernelCatalog
-
-Manages kernel registration and execution:
-
-```csharp
-public class KernelCatalog
+foreach (var device in devices)
 {
-    // Kernel Management
-    public void RegisterKernel<TIn, TOut>(string id, IGpuKernel<TIn, TOut> kernel);
-    public Task<TOut> ExecuteAsync<TIn, TOut>(string kernelId, TIn input);
-    
-    // Batch Operations
-    public Task<TOut[]> ExecuteBatchAsync<TIn, TOut>(
-        string kernelId, 
-        TIn[] inputs, 
-        int batchSize = 32);
+    Console.WriteLine($"Device {device.Index}: {device.Name}");
+    Console.WriteLine($"  Memory: {device.TotalMemoryBytes / (1024 * 1024)}MB");
+    Console.WriteLine($"  Compute Units: {device.ComputeUnits}");
 }
-```
-
-**Usage Example:**
-```csharp
-var catalog = serviceProvider.GetRequiredService<KernelCatalog>();
-
-// Execute single operation
-var result = await catalog.ExecuteAsync<float[], float[]>("vector_add", inputData);
-
-// Execute batch operation
-var results = await catalog.ExecuteBatchAsync<ImageData, ImageData>(
-    "image_filter", 
-    imagesBatch, 
-    batchSize: 16);
-```
-
-### Memory Pool Management
-
-Efficient GPU memory pooling:
-
-```csharp
-public interface IGpuMemoryPool<T> where T : unmanaged
-{
-    IGpuMemory<T> Rent(int minimumLength);
-    void Return(IGpuMemory<T> memory);
-    MemoryPoolStats GetStats();
-}
-```
-
-**Usage Example:**
-```csharp
-var memoryPool = serviceProvider.GetRequiredService<IGpuMemoryPool<float>>();
-
-// Rent memory
-using var memory = memoryPool.Rent(1024);
-var span = memory.AsMemory().Span;
-
-// Use the memory
-for (int i = 0; i < span.Length; i++)
-{
-    span[i] = i * 2.0f;
-}
-
-// Memory is automatically returned on disposal
 ```
 
 ### Backend Providers
 
-Support for multiple GPU backends:
+Register GPU backend providers:
 
 ```csharp
-// CUDA Provider
+// DotCompute backend (recommended - cross-platform)
 services.AddGpuBridge()
-    .AddBackendProvider<CudaBackendProvider>();
+    .AddDotGpuBackend();
 
-// OpenCL Provider
+// With custom configuration
 services.AddGpuBridge()
-    .AddBackendProvider<OpenClBackendProvider>();
+    .AddDotGpuBackend(config =>
+    {
+        config.OptimizationLevel = OptimizationLevel.O3;
+        config.MemorySettings.InitialPoolSize = 1024 * 1024 * 1024; // 1 GB
+    });
 
-// Custom Provider
+// With factory for runtime configuration
 services.AddGpuBridge()
-    .AddBackendProvider(sp => new CustomBackendProvider(
-        sp.GetRequiredService<ILogger<CustomBackendProvider>>()));
+    .AddDotGpuBackend(sp =>
+    {
+        var env = sp.GetRequiredService<IHostEnvironment>();
+        var config = new DotGpuBackendConfiguration();
+        config.EnableDebugMode = env.IsDevelopment();
+        return new DotComputeBackendProvider(config, sp.GetRequiredService<ILoggerFactory>());
+    });
 ```
 
 ## Performance Optimization
 
-### Device Selection Strategies
+### Deployment Models
+
+| Model | Latency | Throughput | Use Case |
+|-------|---------|------------|----------|
+| GPU-Offload (GpuGrainBase) | 10-100μs | 15K msg/s | Batch processing, infrequent GPU |
+| GPU-Native (RingKernelGrainBase) | 100-500ns | 2M msg/s | High-frequency messaging |
+
+### K2K Routing Strategies
 
 ```csharp
-public enum DeviceSelectionStrategy
+// Kernel-to-Kernel messaging strategies
+public enum K2KRoutingStrategy
 {
-    FirstAvailable,    // Use first available device
-    BestFit,          // Score-based selection (recommended)
-    RoundRobin,       // Distribute evenly across devices
-    LoadBalanced,     // Dynamic load balancing
-    Custom            // User-defined strategy
+    Direct,      // Point-to-point messaging (100-500ns)
+    Broadcast,   // One-to-many messaging
+    Ring,        // Circular topology for consensus
+    HashRouted   // Consistent hashing for load distribution
 }
 ```
 
-### Batch Processing
+### Grain Base Classes
 
 ```csharp
-// Optimal batch sizes vary by kernel and hardware
-var results = await GpuPipeline<InputData, OutputData>
-    .For(grainFactory, "my_kernel")
-    .WithBatchSize(64)  // Tune based on your data and GPU
-    .WithMemoryStrategy(MemoryStrategy.Pooled)
-    .ExecuteAsync(largeDataSet);
+// For GPU-offload model (batch processing)
+public class MyComputeGrain : GpuGrainBase<MyState>, IMyComputeGrain
+{
+    public async ValueTask<float[]> ProcessAsync(float[] input)
+    {
+        return await InvokeKernelAsync<float[], float[]>("my-kernel", input);
+    }
+}
+
+// For GPU-native model (high-frequency messaging)
+public class MyHighFreqActor : RingKernelGrainBase<MyState, MyMessage>
+{
+    protected override string KernelId => "my-actor-kernel";
+
+    public async ValueTask<int> ProcessAsync(MyMessage msg)
+    {
+        return await InvokeKernelAsync<MyMessage, int>(msg);
+    }
+}
 ```
 
 ### Memory Management Tips
 
-1. **Use Memory Pools**: Always use the provided memory pools for better performance
-2. **Batch Operations**: Group small operations into larger batches
-3. **Minimize Transfers**: Keep data on GPU between operations when possible
-4. **Monitor Memory Usage**: Use diagnostic tools to track memory consumption
-
-```csharp
-// Good: Use pooled memory
-using var memory = memoryPool.Rent(dataSize);
-await kernel.ExecuteAsync(memory.AsMemory());
-
-// Better: Batch multiple operations
-var batchResults = await catalog.ExecuteBatchAsync(kernelId, inputs, batchSize: 32);
-
-// Best: Chain operations on GPU
-var pipeline = GpuPipeline<float[], float[]>
-    .For(grainFactory, "preprocess")
-    .ThenExecute("main_compute")
-    .ThenExecute("postprocess")
-    .WithMemoryStrategy(MemoryStrategy.Persistent);
-```
+1. **Use Ring Kernels for High-Frequency**: For >1000 msg/s, use `RingKernelGrainBase`
+2. **Batch Operations**: For batch processing, use `GpuGrainBase` with large batches
+3. **Enable Memory Pooling**: Set `MemoryPoolSizeMB` appropriately
+4. **Monitor Telemetry**: Enable profiling during development
 
 ## Error Handling and Diagnostics
 

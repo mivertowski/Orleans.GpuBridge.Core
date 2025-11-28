@@ -96,103 +96,192 @@ These capabilities enable entirely new classes of applications:
 dotnet add package Orleans.GpuBridge.Runtime
 dotnet add package Orleans.GpuBridge.Grains
 
-# Install backend (choose one or more)
-dotnet add package Orleans.GpuBridge.Backends.ILGPU
+# Install DotCompute backend for GPU acceleration
 dotnet add package Orleans.GpuBridge.Backends.DotCompute
 ```
 
 ### Minimal Configuration
 
 ```csharp
+using Orleans.GpuBridge.Runtime.Extensions;
+
 var builder = Host.CreateDefaultBuilder(args)
+    .ConfigureServices(services =>
+    {
+        // Register GPU Bridge core services
+        services.AddGpuBridge(options =>
+        {
+            options.PreferGpu = true;
+            options.FallbackToCpu = true;
+            options.MaxConcurrentKernels = 100;
+        });
+
+        // Add Ring Kernel support for GPU-native actors (sub-microsecond messaging)
+        services.AddRingKernelSupport(options =>
+        {
+            options.DefaultGridSize = 1;
+            options.DefaultBlockSize = 256;
+            options.DefaultQueueCapacity = 256;
+        });
+
+        // Add K2K (Kernel-to-Kernel) messaging for GPU-to-GPU communication
+        services.AddK2KSupport();
+    })
     .UseOrleans(siloBuilder =>
     {
-        siloBuilder
-            .UseLocalhostClustering()
-            .AddGpuBridge(options =>
-            {
-                options.PreferGpu = true;
-                options.FallbackToCpu = true;
-            })
-            .AddILGPUBackend(); // Or AddDotComputeBackend()
+        siloBuilder.UseLocalhostClustering();
     });
 
-await builder.RunConsoleAsync();
+await builder.Build().RunAsync();
 ```
 
 ## 💻 Usage Examples
 
-### Basic Kernel Execution
+### GPU-Accelerated Grain (GpuGrainBase)
 
 ```csharp
-[GpuAccelerated]
-public class VectorProcessingGrain : Grain, IVectorProcessingGrain
+using Orleans.GpuBridge.Grains.Base;
+using Orleans.GpuBridge.Abstractions.Kernels;
+
+// Grain with automatic GPU lifecycle management and CPU fallback
+public class VectorProcessingGrain : GpuGrainBase<VectorState>
 {
-    private readonly IGpuBridge _gpuBridge;
-    
-    public VectorProcessingGrain(IGpuBridge gpuBridge)
+    private IGpuKernel<float[], float[]>? _vectorAddKernel;
+
+    public VectorProcessingGrain(IGrainContext grainContext, ILogger<VectorProcessingGrain> logger)
+        : base(grainContext, logger) { }
+
+    protected override async Task ConfigureGpuResourcesAsync(CancellationToken ct)
     {
-        _gpuBridge = gpuBridge;
+        // Initialize GPU kernel during grain activation
+        var kernelFactory = ServiceProvider.GetRequiredService<IKernelFactory>();
+        _vectorAddKernel = await kernelFactory.CreateKernelAsync<float[], float[]>("vector-add", ct);
+        await _vectorAddKernel.InitializeAsync(ct);
     }
-    
-    public async ValueTask<float[]> AddVectorsAsync(float[] a, float[] b)
+
+    public async Task<float[]> AddVectorsAsync(float[] a, float[] b)
     {
-        var input = new VectorPair { A = a, B = b };
-        return await _gpuBridge.ExecuteKernelAsync<VectorPair, float[]>(
-            "vector-add", input);
-    }
-}
-```
-
-### Batch Processing with Pipeline API
-
-```csharp
-public async Task ProcessLargeBatchAsync(float[][] matrices)
-{
-    var results = await GpuPipeline<float[], float[]>
-        .For(GrainFactory, "matrix-multiply")
-        .WithBatchSize(1000)
-        .WithPartitioner(Partitioners.RoundRobin)
-        .WithAggregator(Aggregators.Concatenate)
-        .ExecuteAsync(matrices);
-}
-```
-
-### Custom Kernel Development
-
-```csharp
-[GpuKernel("custom-convolution")]
-public class ConvolutionKernel : IGpuKernel<ImageData, ImageData>
-{
-    public string Id => "custom-convolution";
-    
-    [KernelMethod]
-    public async ValueTask<ImageData> ExecuteAsync(
-        ImageData input, 
-        CancellationToken cancellationToken = default)
-    {
-        // Kernel implementation - automatically compiled to GPU code
-        // Supports CUDA, OpenCL, and other backends
-        return ProcessedImage(input);
+        // Execute with automatic CPU fallback on GPU failure
+        return await ExecuteKernelWithFallbackAsync(
+            _vectorAddKernel!,
+            a,
+            cpuFallback: input => Task.FromResult(CpuVectorAdd(input, b)));
     }
 }
 ```
 
-### Stream Processing
+### GPU-Native Actor (RingKernelGrainBase) - Sub-Microsecond Messaging
 
 ```csharp
-[GpuAccelerated]
-public class StreamProcessingGrain : GpuStreamGrain<float[], float[]>
+using Orleans.GpuBridge.Grains.Base;
+using Orleans.GpuBridge.Abstractions.Temporal;
+
+// Actor lives permanently in GPU memory with 100-500ns message latency
+public class TemporalActorGrain : RingKernelGrainBase<ActorState, ActorMessage>
 {
-    protected override string KernelId => "stream-processor";
-    
-    protected override async ValueTask<float[]> ProcessBatchAsync(
-        float[][] batch,
-        CancellationToken cancellationToken)
+    public TemporalActorGrain(IGrainContext grainContext, ILogger<TemporalActorGrain> logger)
+        : base(grainContext, logger) { }
+
+    protected override Task<RingKernelConfig> ConfigureRingKernelAsync(CancellationToken ct)
     {
-        // Process entire batch on GPU
-        return await base.ProcessBatchAsync(batch, cancellationToken);
+        return Task.FromResult(new RingKernelConfig
+        {
+            QueueDepth = 256,         // Lock-free message queue size
+            EnableHLC = true,          // Hybrid Logical Clock for causal ordering
+            EnableVectorClock = false, // Enable for distributed causality
+            MaxStateSizeBytes = 1024
+        });
     }
+
+    // Compiled to GPU code - runs in ring kernel dispatch loop
+    protected override void ProcessMessageOnGpu(
+        ref ActorState state,
+        in ActorMessage message,
+        ref HybridTimestamp hlc)
+    {
+        // Pure GPU computation - no heap allocations, no exceptions
+        state.Counter += message.Value;
+        state.LastUpdate = hlc.PhysicalTime;
+    }
+
+    public async Task SendEventAsync(int value)
+    {
+        await SendMessageAsync(new ActorMessage { Value = value });
+    }
+}
+```
+
+### GpuNativeGrain with DotCompute Ring Kernels
+
+```csharp
+using DotCompute.Abstractions.RingKernels;
+using Orleans.GpuBridge.Runtime.RingKernels;
+
+// Full DotCompute integration for maximum GPU performance
+public class HighFrequencyGrain : GpuNativeGrain
+{
+    public HighFrequencyGrain(IRingKernelRuntime runtime, ILogger<HighFrequencyGrain> logger)
+        : base(runtime, logger) { }
+
+    protected override (int gridSize, int blockSize) GetKernelConfiguration()
+    {
+        return (gridSize: 1, blockSize: 256); // Customize GPU thread configuration
+    }
+
+    public async Task<ProcessResult> ProcessAsync(InputData input)
+    {
+        // Sub-microsecond GPU message processing with HLC timestamps
+        var timestamp = GetCurrentTimestamp();
+        return await InvokeKernelAsync<InputData, ProcessResult>(input);
+    }
+}
+```
+
+### Custom Kernel Implementation
+
+```csharp
+using Orleans.GpuBridge.Abstractions.Kernels;
+
+public class VectorAddKernel : IGpuKernel<float[], float[]>
+{
+    public string KernelId => "vector-add";
+    public string DisplayName => "Vector Addition";
+    public string BackendProvider => "DotCompute";
+    public bool IsInitialized { get; private set; }
+    public bool IsGpuAccelerated => true;
+
+    public Task InitializeAsync(CancellationToken ct = default)
+    {
+        IsInitialized = true;
+        return Task.CompletedTask;
+    }
+
+    public async Task<float[]> ExecuteAsync(float[] input, CancellationToken ct = default)
+    {
+        // GPU kernel implementation (CPU fallback for dev/test)
+        var result = new float[input.Length];
+        for (int i = 0; i < input.Length; i++)
+            result[i] = input[i] * 2;
+        return result;
+    }
+
+    public async Task<float[][]> ExecuteBatchAsync(float[][] inputs, CancellationToken ct = default)
+    {
+        var results = new float[inputs.Length][];
+        for (int i = 0; i < inputs.Length; i++)
+            results[i] = await ExecuteAsync(inputs[i], ct);
+        return results;
+    }
+
+    public KernelMemoryRequirements GetMemoryRequirements()
+        => new(InputMemoryBytes: 4096, OutputMemoryBytes: 4096, WorkingMemoryBytes: 0, TotalMemoryBytes: 8192);
+
+    public KernelValidationResult ValidateInput(float[] input)
+        => input.Length > 0 ? KernelValidationResult.Valid() : KernelValidationResult.Invalid("Empty input");
+
+    public long GetEstimatedExecutionTimeMicroseconds(int inputSize) => inputSize / 1000;
+    public Task WarmupAsync(CancellationToken ct = default) => Task.CompletedTask;
+    public void Dispose() { }
 }
 ```
 
@@ -256,54 +345,57 @@ public class StreamProcessingGrain : GpuStreamGrain<float[], float[]>
 ## 🔧 Advanced Configuration
 
 ```csharp
+using Orleans.GpuBridge.Runtime.Extensions;
+
 services.AddGpuBridge(options =>
 {
-    // Device Selection
-    options.DeviceSelection = new DeviceSelectionOptions
-    {
-        PreferredVendor = "NVIDIA",
-        MinimumMemory = 4L * 1024 * 1024 * 1024, // 4GB
-        PreferredDeviceTypes = new[] { DeviceType.GPU, DeviceType.Accelerator }
-    };
-    
+    // GPU Execution Preferences
+    options.PreferGpu = true;                    // Prefer GPU over CPU
+    options.FallbackToCpu = true;                // Fall back to CPU on GPU failure
+    options.MaxConcurrentKernels = 100;          // Max concurrent GPU kernels
+    options.MaxDevices = 4;                      // Max GPUs to use
+
+    // Performance Tuning
+    options.DefaultMicroBatch = 8192;            // Default micro-batch size
+    options.BatchSize = 1024;                    // Default batch size
+    options.MaxRetries = 3;                      // Retry attempts on failure
+
     // Memory Management
-    options.MemoryPooling = new MemoryPoolingOptions
-    {
-        Enabled = true,
-        MaxPoolSize = 1024 * 1024 * 512, // 512MB
-        AllocationStrategy = AllocationStrategy.BestFit,
-        EnableMemoryPressureMonitoring = true
-    };
-    
-    // Performance
-    options.Performance = new PerformanceOptions
-    {
-        EnableKernelCaching = true,
-        MaxCachedKernels = 100,
-        EnableAutoTuning = true,
-        BatchSizeOptimization = true,
-        PreferredWarpSize = 32
-    };
-    
-    // Resilience
-    options.Resilience = new ResilienceOptions
-    {
-        EnableCircuitBreaker = true,
-        FailureThreshold = 5,
-        RecoveryTimeout = TimeSpan.FromMinutes(1),
-        EnableHealthChecks = true,
-        RetryPolicy = RetryPolicy.ExponentialBackoff
-    };
-    
+    options.MemoryPoolSizeMB = 1024;             // GPU memory pool size (1GB)
+    options.EnableGpuDirectStorage = false;      // GPUDirect Storage (if supported)
+
+    // Diagnostics and Profiling
+    options.EnableProfiling = false;             // Kernel execution profiling
+
     // Telemetry
     options.Telemetry = new TelemetryOptions
     {
         EnableMetrics = true,
         EnableTracing = true,
-        EnableDetailedMetrics = false,
-        MetricsInterval = TimeSpan.FromSeconds(10)
+        SamplingRate = 0.1
     };
+
+    // Backend Provider Configuration
+    options.DefaultBackend = "DotCompute";
+    options.FallbackChain = new[] { "DotCompute", "CPU" };
+    options.EnableProviderDiscovery = true;
 });
+
+// Ring Kernel Configuration (for GPU-native actors)
+services.AddRingKernelSupport(options =>
+{
+    options.DefaultGridSize = 1;                 // GPU grid size
+    options.DefaultBlockSize = 256;              // GPU block size (threads per block)
+    options.DefaultQueueCapacity = 256;          // Message queue capacity (must be power of 2)
+    options.EnableKernelCaching = true;          // Cache compiled kernels
+    options.DeviceIndex = 0;                     // GPU device to use
+});
+
+// K2K Messaging (GPU-to-GPU communication)
+services.AddK2KSupport();                        // Direct, Broadcast, Ring, HashRouted strategies
+
+// CPU Fallback Bridge (for development/testing)
+services.AddRingKernelBridge();                  // Registers CpuFallbackRingKernelBridge
 ```
 
 ## 📊 Monitoring & Diagnostics

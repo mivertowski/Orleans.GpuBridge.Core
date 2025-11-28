@@ -1,258 +1,296 @@
 # Orleans.GpuBridge.Grains
 
-Pre-built GPU-accelerated Orleans grains for high-performance distributed computing with CUDA/OpenCL support.
+GPU-native Orleans grains for high-performance distributed computing with DotCompute backend support.
 
 ## Overview
 
-Orleans.GpuBridge.Grains provides a collection of production-ready Orleans grains that seamlessly integrate GPU acceleration into your distributed applications. These grains handle the complexities of GPU resource management, memory allocation, and kernel execution while maintaining Orleans' familiar programming model.
+Orleans.GpuBridge.Grains provides production-ready Orleans grain base classes and implementations for GPU acceleration. This package supports two deployment models:
+
+| Model | Base Class | Latency | Throughput | Use Case |
+|-------|-----------|---------|------------|----------|
+| GPU-Offload | `GpuGrainBase<TState>` | 10-100μs | 15K msg/s | Batch processing |
+| GPU-Native | `RingKernelGrainBase<TState, TMessage>` | 100-500ns | 2M msg/s | High-frequency messaging |
 
 ## Features
 
-- **Batch Processing**: High-throughput GPU batch processing with automatic partitioning
-- **Stream Processing**: Real-time GPU-accelerated stream processing with Orleans Streaming
-- **Resident Memory**: Persistent GPU memory management for zero-copy operations
+- **GPU-Offload Model**: Traditional grain pattern with GPU kernel execution
+- **GPU-Native Model**: Actors that live permanently in GPU memory with sub-microsecond latency
+- **Ring Kernels**: Persistent GPU threads processing messages without kernel launch overhead
+- **K2K Messaging**: Kernel-to-Kernel communication for GPU-resident actors
+- **Temporal Alignment**: HLC and Vector Clocks for causal ordering on GPU
+- **Hypergraph Support**: Multi-way relationships with GPU-accelerated pattern matching
 - **Automatic Fallback**: CPU fallback when GPU resources are unavailable
-- **Resource Management**: Automatic GPU resource cleanup and memory management
-- **Placement Strategy**: GPU-aware grain placement for optimal resource utilization
 
-## Available Grain Types
+## Grain Base Classes
 
-### GpuBatchGrain&lt;TIn, TOut&gt;
+### GpuGrainBase&lt;TState&gt;
 
-High-performance batch processing grain that executes GPU kernels on collections of data.
+Base class for Orleans grains with GPU-offload kernel execution.
 
 **Key Features:**
-- Concurrent execution with configurable limits
-- Automatic batch partitioning for optimal GPU utilization
-- Built-in performance monitoring and timing
-- Observer pattern support for real-time updates
+- Familiar Orleans grain pattern with GPU kernel invocation
+- Automatic CPU fallback when GPU unavailable
+- Kernel execution via `InvokeKernelAsync<TIn, TOut>`
+- State management via Orleans persistence
 
 **Use Cases:**
-- Machine learning inference on large datasets
-- Mathematical computations (matrix operations, FFT)
+- Batch processing with large datasets
+- Machine learning inference
 - Image/video processing pipelines
-- Financial calculations and risk analysis
+- Infrequent GPU operations (< 1000 msg/s)
 
-### GpuStreamGrain&lt;TIn, TOut&gt;
+### RingKernelGrainBase&lt;TState, TMessage&gt;
 
-Real-time stream processing grain that processes Orleans streams through GPU kernels.
-
-**Key Features:**
-- Seamless integration with Orleans Streaming
-- Real-time processing statistics and monitoring
-- Configurable processing parameters
-- Start/stop controls for dynamic workloads
-
-**Use Cases:**
-- Real-time analytics and event processing
-- Live video/audio processing
-- IoT sensor data processing
-- Continuous machine learning inference
-
-### GpuResidentGrain&lt;T&gt;
-
-Memory management grain that maintains persistent GPU memory allocations across operations.
+Base class for GPU-native actors using persistent ring kernels.
 
 **Key Features:**
-- Persistent GPU memory allocation
-- Zero-copy kernel execution
-- Multiple memory types (default, pinned, shared)
-- Direct memory read/write operations
-- Comprehensive memory usage tracking
+- Sub-microsecond message latency (100-500ns)
+- State resides in GPU memory
+- Zero kernel launch overhead
+- Lock-free atomic queue operations
+- Automatic CPU fallback
 
 **Use Cases:**
-- Large dataset caching on GPU
-- Persistent model parameters for ML inference
-- Shared data structures across multiple operations
-- High-frequency trading with pre-loaded market data
+- High-frequency messaging (> 1000 msg/s)
+- Real-time trading systems
+- Game server tick processing
+- Digital twin simulations
+
+### Additional Grain Types
+
+- **GpuBatchGrain&lt;TIn, TOut&gt;**: Generic batch processing grain
+- **GpuStreamGrain&lt;TIn, TOut&gt;**: Orleans Streaming with GPU processing
+- **GpuResidentGrain&lt;T&gt;**: Persistent GPU memory management
+- **HypergraphVertexGrain**: Vertex actor for hypergraph structures
+- **HypergraphHyperedgeGrain**: Hyperedge actor for multi-way relationships
+- **PatternDetectorGrain**: Temporal pattern detection grain
+- **TemporalGraphGrain**: Graph with temporal ordering
 
 ## Installation
 
 Add the package reference to your Orleans application:
 
 ```xml
-<PackageReference Include="Orleans.GpuBridge.Grains" Version="1.0.0" />
+<PackageReference Include="Orleans.GpuBridge.Grains" Version="0.1.0" />
 ```
 
 ## Quick Start
 
-### 1. Configure GPU Bridge in Your Silo
+### 1. Configure GPU Bridge with Ring Kernel Support
 
 ```csharp
-var siloBuilder = new SiloBuilder()
-    .UseLocalhostClustering()
+using Orleans.GpuBridge.Runtime.Extensions;
+using Orleans.GpuBridge.Backends.DotCompute.Extensions;
+
+var builder = Host.CreateApplicationBuilder(args);
+
+builder.Services
+    .AddOrleans(orleans =>
+    {
+        orleans.UseLocalhostClustering();
+    });
+
+builder.Services
     .AddGpuBridge(options =>
     {
         options.PreferGpu = true;
         options.FallbackToCpu = true;
-        options.MaxConcurrentKernels = 8;
+        options.MaxConcurrentKernels = 100;
     })
-    .AddKernel(k => k
-        .Id("vector-add")
-        .In<float[]>()
-        .Out<float[]>()
-        .FromFactory<VectorAddKernel>())
-    .ConfigureLogging(builder => builder.AddConsole());
+    .AddDotGpuBackend()
+    .Services
+    .AddRingKernelSupport()
+    .AddK2KSupport()
+    .AddDotComputeRingKernelBridge();
 
-using var silo = siloBuilder.Build();
-await silo.StartAsync();
+var host = builder.Build();
+await host.RunAsync();
 ```
 
-### 2. Using GpuBatchGrain
+### 2. Using GpuGrainBase (GPU-Offload Model)
 
 ```csharp
-// Get grain reference
-var batchGrain = grainFactory.GetGrain<IGpuBatchGrain<float[], float[]>>("vector-add");
+using Orleans.GpuBridge.Grains.Base;
 
-// Prepare data
-var inputBatches = new List<float[]>
+public interface IComputeGrain : IGrainWithGuidKey
 {
-    new float[] { 1.0f, 2.0f, 3.0f },
-    new float[] { 4.0f, 5.0f, 6.0f },
-    new float[] { 7.0f, 8.0f, 9.0f }
-};
+    ValueTask<float[]> ProcessDataAsync(float[] input);
+    ValueTask<ComputeStats> GetStatsAsync();
+}
 
-// Execute batch processing
-var result = await batchGrain.ExecuteAsync(inputBatches, new GpuExecutionHints
+public class ComputeGrain : GpuGrainBase<ComputeState>, IComputeGrain
 {
-    BatchSize = 1024,
-    PreferredDevice = 0
-});
-
-if (result.Success)
-{
-    Console.WriteLine($"Processed {result.Results.Count} batches in {result.ExecutionTime}");
-    foreach (var output in result.Results)
+    public async ValueTask<float[]> ProcessDataAsync(float[] input)
     {
-        Console.WriteLine($"Result: [{string.Join(", ", output)}]");
+        // Execute kernel on GPU (or CPU fallback)
+        var result = await InvokeKernelAsync<float[], float[]>("vector-process", input);
+
+        // Update local state
+        State.ProcessedCount++;
+        State.LastProcessedAt = DateTime.UtcNow;
+
+        return result;
+    }
+
+    public ValueTask<ComputeStats> GetStatsAsync() =>
+        ValueTask.FromResult(new ComputeStats(State.ProcessedCount, State.LastProcessedAt));
+}
+
+public struct ComputeState
+{
+    public int ProcessedCount;
+    public DateTime LastProcessedAt;
+}
+
+public record ComputeStats(int ProcessedCount, DateTime LastProcessedAt);
+```
+
+### 3. Using RingKernelGrainBase (GPU-Native Model)
+
+```csharp
+using Orleans.GpuBridge.Grains.Base;
+using System.Runtime.InteropServices;
+
+public interface IHighFrequencyActor : IGrainWithIntegerKey
+{
+    ValueTask<int> IncrementAsync(int amount);
+    ValueTask<int> GetValueAsync();
+    ValueTask ResetAsync();
+}
+
+public class HighFrequencyActor : RingKernelGrainBase<CounterState, CounterMessage>, IHighFrequencyActor
+{
+    protected override string KernelId => "counters/high-frequency";
+
+    public async ValueTask<int> IncrementAsync(int amount)
+    {
+        // Message processed at 100-500ns latency on GPU
+        var request = new CounterMessage { Operation = CounterOp.Increment, Amount = amount };
+        return await InvokeKernelAsync<CounterMessage, int>(request);
+    }
+
+    public async ValueTask<int> GetValueAsync()
+    {
+        // Read current state from GPU memory
+        var state = await GetGpuStateAsync();
+        return state.Value;
+    }
+
+    public async ValueTask ResetAsync()
+    {
+        var request = new CounterMessage { Operation = CounterOp.Reset, Amount = 0 };
+        await InvokeKernelAsync<CounterMessage, int>(request);
     }
 }
-```
 
-### 3. Using GpuStreamGrain
-
-```csharp
-// Configure streams
-var streamProvider = clusterClient.GetStreamProvider("gpu-streams");
-var inputStream = streamProvider.GetStream<float[]>(StreamId.Create("input", "data"));
-var outputStream = streamProvider.GetStream<float[]>(StreamId.Create("output", "results"));
-
-// Get stream processing grain
-var streamGrain = grainFactory.GetGrain<IGpuStreamGrain<float[], float[]>>("vector-multiply");
-
-// Start processing
-await streamGrain.StartProcessingAsync(
-    inputStream.StreamId,
-    outputStream.StreamId,
-    new GpuExecutionHints { BatchSize = 512 });
-
-// Send data to input stream
-await inputStream.OnNextAsync(new float[] { 1.0f, 2.0f, 3.0f });
-
-// Subscribe to output stream
-var subscription = await outputStream.SubscribeAsync(
-    (data, token) =>
-    {
-        Console.WriteLine($"Processed: [{string.Join(", ", data)}]");
-        return Task.CompletedTask;
-    });
-
-// Monitor processing
-var stats = await streamGrain.GetStatsAsync();
-Console.WriteLine($"Items processed: {stats.ItemsProcessed}, Avg latency: {stats.AverageLatencyMs}ms");
-```
-
-### 4. Using GpuResidentGrain
-
-```csharp
-// Get resident grain
-var residentGrain = grainFactory.GetGrain<IGpuResidentGrain<float>>("model-weights");
-
-// Allocate GPU memory
-var inputHandle = await residentGrain.AllocateAsync(
-    sizeBytes: 1024 * sizeof(float),
-    memoryType: GpuMemoryType.Pinned);
-
-var outputHandle = await residentGrain.AllocateAsync(
-    sizeBytes: 1024 * sizeof(float),
-    memoryType: GpuMemoryType.Default);
-
-// Write data to GPU memory
-await residentGrain.WriteAsync(inputHandle, new float[] { 1.0f, 2.0f, 3.0f, 4.0f });
-
-// Execute kernel on resident data
-var computeResult = await residentGrain.ComputeAsync(
-    KernelId.Parse("neural-network-forward"),
-    inputHandle,
-    outputHandle,
-    new GpuComputeParams
-    {
-        WorkGroupSize = 256,
-        Constants = new Dictionary<string, object> { ["learning_rate"] = 0.001f }
-    });
-
-if (computeResult.Success)
+[StructLayout(LayoutKind.Sequential)]
+public struct CounterState
 {
-    // Read results back
-    var results = await residentGrain.ReadAsync<float>(outputHandle, count: 1024);
-    Console.WriteLine($"Computation completed in {computeResult.ExecutionTime}");
+    public int Value;
+    public long LastUpdated;
+    public long MessageCount;
 }
 
-// Clean up
-await residentGrain.ReleaseAsync(inputHandle);
-await residentGrain.ReleaseAsync(outputHandle);
+[StructLayout(LayoutKind.Sequential)]
+public struct CounterMessage
+{
+    public CounterOp Operation;
+    public int Amount;
+}
+
+public enum CounterOp : int { Increment = 0, Decrement = 1, Reset = 2 }
+```
+
+### 4. Using Hypergraph Grains
+
+```csharp
+using Orleans.GpuBridge.Abstractions.Hypergraph;
+
+// Create a vertex
+var vertex = grainFactory.GetGrain<IHypergraphVertex>("user-123");
+await vertex.InitializeAsync(new VertexInitRequest
+{
+    EntityType = "User",
+    InitialProperties = new Dictionary<string, object>
+    {
+        ["name"] = "Alice",
+        ["score"] = 100
+    }
+});
+
+// Create a hyperedge connecting multiple vertices
+var hyperedge = grainFactory.GetGrain<IHypergraphHyperedge>("friendship-group-1");
+await hyperedge.InitializeAsync(new HyperedgeInitRequest
+{
+    RelationType = "FriendshipGroup",
+    Members = new[]
+    {
+        new HyperedgeMemberInit { VertexId = "user-123", Role = "Admin" },
+        new HyperedgeMemberInit { VertexId = "user-456", Role = "Member" },
+        new HyperedgeMemberInit { VertexId = "user-789", Role = "Member" }
+    }
+});
 ```
 
 ## Configuration
 
-### GPU Bridge Options
+### GpuBridgeOptions
 
 ```csharp
 services.AddGpuBridge(options =>
 {
     // GPU preferences
-    options.PreferGpu = true;              // Prefer GPU over CPU when available
-    options.FallbackToCpu = true;          // Fall back to CPU if GPU fails
-    options.MaxConcurrentKernels = 8;      // Maximum concurrent GPU kernels
-    
-    // Memory management
-    options.MaxGpuMemoryMB = 2048;         // Maximum GPU memory allocation
-    options.EnableMemoryPooling = true;    // Enable memory pool for reuse
-    
+    options.PreferGpu = true;
+    options.FallbackToCpu = true;
+    options.MaxRetries = 3;
+
     // Performance tuning
-    options.DefaultBatchSize = 1024;       // Default batch size for operations
-    options.KernelTimeout = TimeSpan.FromSeconds(30); // Kernel execution timeout
-    
-    // Diagnostics
-    options.EnableProfiling = true;        // Enable GPU profiling
-    options.LogKernelExecutions = false;   // Log individual kernel executions
+    options.DefaultMicroBatch = 8192;
+    options.MaxConcurrentKernels = 100;
+    options.MemoryPoolSizeMB = 1024;
+    options.BatchSize = 1024;
+
+    // Device management
+    options.MaxDevices = 4;
+    options.EnableGpuDirectStorage = false;
+
+    // Backend configuration
+    options.DefaultBackend = "DotCompute";
+    options.EnableProviderDiscovery = true;
+
+    // Telemetry
+    options.EnableProfiling = false;
+    options.Telemetry = new TelemetryOptions
+    {
+        EnableMetrics = true,
+        EnableTracing = true,
+        SamplingRate = 0.1
+    };
 });
 ```
 
-### Grain-Specific Configuration
+### RingKernelOptions
 
 ```csharp
-// Batch grain with observer callbacks
-var result = await batchGrain.ExecuteWithCallbackAsync(
-    inputBatches,
-    new ProgressObserver<float[]>(), // Custom observer implementation
-    new GpuExecutionHints
-    {
-        BatchSize = 2048,
-        PreferredDevice = 1,
-        EnableProfiling = true
-    });
+services.AddRingKernelSupport(options =>
+{
+    options.DefaultGridSize = 1;        // Single block for single-actor
+    options.DefaultBlockSize = 256;     // Optimal for most GPUs
+    options.DefaultQueueCapacity = 256; // Message queue size (power of 2)
+    options.EnableKernelCaching = true; // Cache compiled kernels
+    options.DeviceIndex = 0;            // GPU device to use
+});
+```
 
-// Stream grain with custom parameters
-await streamGrain.StartProcessingAsync(
-    inputStreamId,
-    outputStreamId,
-    new GpuExecutionHints
-    {
-        BatchSize = 512,
-        MaxLatencyMs = 100, // Maximum acceptable latency
-        EnableBackpressure = true
-    });
+### GpuExecutionHints
+
+```csharp
+// For GpuBatchGrain operations
+var result = await batchGrain.ExecuteAsync(inputBatches, new GpuExecutionHints(
+    PreferGpu: true,
+    BatchSize: 1024,
+    DeviceId: 0,
+    Timeout: TimeSpan.FromSeconds(30)));
 ```
 
 ## Performance Characteristics

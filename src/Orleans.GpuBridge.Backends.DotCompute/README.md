@@ -87,6 +87,7 @@ dotnet add package Orleans.GpuBridge.Backends.DotCompute
 Register the DotCompute backend with default settings:
 
 ```csharp
+using Orleans.GpuBridge.Runtime.Extensions;
 using Orleans.GpuBridge.Backends.DotCompute.Extensions;
 
 // Configure Orleans with GPU Bridge and DotCompute backend
@@ -96,11 +97,14 @@ builder.Services
     .AddOrleans(orleans =>
     {
         orleans.UseLocalhostClustering();
-    })
+    });
+
+// Add GPU Bridge with DotCompute backend
+builder.Services
     .AddGpuBridge(options =>
     {
         options.PreferGpu = true;
-        options.EnableDiagnostics = true;
+        options.FallbackToCpu = true;
     })
     .AddDotGpuBackend(); // Add DotCompute backend with defaults
 
@@ -108,42 +112,49 @@ var host = builder.Build();
 await host.RunAsync();
 ```
 
-### Custom Configuration
+### Full GPU-Native Actor Configuration
 
-Configure the backend with specific optimization settings:
+Configure the backend with Ring Kernel support for GPU-native actors:
 
 ```csharp
+using Orleans.GpuBridge.Runtime.Extensions;
+using Orleans.GpuBridge.Backends.DotCompute.Extensions;
+
 builder.Services
-    .AddGpuBridge(options => options.PreferGpu = true)
+    .AddGpuBridge(options =>
+    {
+        options.PreferGpu = true;
+        options.FallbackToCpu = true;
+        options.MaxConcurrentKernels = 100;
+        options.MemoryPoolSizeMB = 1024;
+    })
     .AddDotGpuBackend(config =>
     {
         // Compilation settings
         config.OptimizationLevel = OptimizationLevel.O3;
         config.EnableDebugMode = false;
         config.EnableDiskCache = true;
-        
-        // Platform preferences (in order of preference)
-        config.PreferredPlatforms.Clear();
-        config.PreferredPlatforms.Add(GpuBackend.CUDA);
-        config.PreferredPlatforms.Add(GpuBackend.OpenCL);
-        config.PreferredPlatforms.Add(GpuBackend.DirectCompute);
-        
+
         // Memory management
         config.MemorySettings.InitialPoolSize = 512 * 1024 * 1024; // 512 MB
         config.MemorySettings.MaxPoolSize = 4L * 1024 * 1024 * 1024; // 4 GB
         config.MemorySettings.EnableDefragmentation = true;
-        config.MemorySettings.DefragmentationThreshold = 0.3;
-        
-        // Language preferences
-        config.LanguageSettings.EnableLanguageTranslation = true;
-        config.LanguageSettings.PreferredLanguages[GpuBackend.CUDA] = KernelLanguage.CUDA;
-        config.LanguageSettings.PreferredLanguages[GpuBackend.OpenCL] = KernelLanguage.OpenCL;
-    });
+    })
+    .Services
+    .AddRingKernelSupport(options =>
+    {
+        options.DefaultGridSize = 1;
+        options.DefaultBlockSize = 256;
+        options.DefaultQueueCapacity = 256;
+        options.EnableKernelCaching = true;
+    })
+    .AddK2KSupport()                    // Enable kernel-to-kernel messaging
+    .AddDotComputeRingKernelBridge();   // GPU-accelerated ring kernel bridge
 ```
 
 ### Advanced Factory Configuration
 
-Use a custom factory for complex initialization scenarios:
+Use a custom factory for runtime configuration:
 
 ```csharp
 builder.Services
@@ -151,10 +162,10 @@ builder.Services
     .AddDotGpuBackend(serviceProvider =>
     {
         var environment = serviceProvider.GetRequiredService<IHostEnvironment>();
-        var logger = serviceProvider.GetRequiredService<ILoggerFactory>();
-        
+        var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+
         var config = new DotGpuBackendConfiguration();
-        
+
         if (environment.IsDevelopment())
         {
             config.EnableDebugMode = true;
@@ -165,10 +176,9 @@ builder.Services
         {
             config.OptimizationLevel = OptimizationLevel.O3;
             config.MemorySettings.InitialPoolSize = 2L * 1024 * 1024 * 1024; // 2 GB
-            config.EnableKernelProfiling = false; // Disable profiling in production
         }
-        
-        return new DotGpuBackendProvider(logger);
+
+        return new DotComputeBackendProvider(config, loggerFactory);
     });
 ```
 
@@ -282,51 +292,97 @@ public static void Convolution2D(
 }
 ```
 
-### Using Kernels in Orleans Grains
+### Using GPU Grains with DotCompute Backend
 
-Execute kernels within Orleans grains:
+#### GPU-Offload Model (GpuGrainBase)
+
+For batch processing and infrequent GPU access:
+
+```csharp
+using Orleans.GpuBridge.Grains.Base;
+
+public class ComputeGrain : GpuGrainBase<ComputeState>, IComputeGrain
+{
+    public async ValueTask<float[]> ProcessVectorsAsync(float[] input)
+    {
+        // Execute kernel on GPU with automatic fallback to CPU
+        return await InvokeKernelAsync<float[], float[]>("vector-add", input);
+    }
+}
+
+public struct ComputeState
+{
+    public int ProcessedCount;
+}
+```
+
+#### GPU-Native Model (RingKernelGrainBase)
+
+For high-frequency messaging with sub-microsecond latency:
+
+```csharp
+using Orleans.GpuBridge.Grains.Base;
+using System.Runtime.InteropServices;
+
+public class HighFrequencyActor : RingKernelGrainBase<CounterState, CounterMessage>
+{
+    protected override string KernelId => "counters/high-frequency";
+
+    public async ValueTask<int> IncrementAsync(int amount)
+    {
+        var request = new CounterMessage { Amount = amount };
+        return await InvokeKernelAsync<CounterMessage, int>(request);
+    }
+
+    public async ValueTask<int> GetValueAsync()
+    {
+        var state = await GetGpuStateAsync();
+        return state.Value;
+    }
+}
+
+[StructLayout(LayoutKind.Sequential)]
+public struct CounterState
+{
+    public int Value;
+    public long LastUpdated;
+}
+
+[StructLayout(LayoutKind.Sequential)]
+public struct CounterMessage
+{
+    public int Amount;
+}
+```
+
+#### Using IGpuBridge Directly
+
+For direct kernel access:
 
 ```csharp
 using Orleans.GpuBridge.Abstractions;
 
-public class ComputeGrain : Grain, IComputeGrain
+public class DirectKernelGrain : Grain, IDirectKernelGrain
 {
     private readonly IGpuBridge _gpuBridge;
-    
-    public ComputeGrain(IGpuBridge gpuBridge)
+
+    public DirectKernelGrain(IGpuBridge gpuBridge)
     {
         _gpuBridge = gpuBridge;
     }
-    
-    public async Task<float[]> ProcessVectorsAsync(float[] a, float[] b)
+
+    public async ValueTask<float[]> ProcessAsync(float[] input)
     {
-        var result = new float[a.Length];
-        
-        // Execute kernel on GPU with automatic memory management
-        await _gpuBridge.ExecuteKernelAsync(
-            "math/vector_add",
-            (ReadOnlySpan<float>)a,
-            (ReadOnlySpan<float>)b,
-            (Span<float>)result,
-            a.Length);
-            
-        return result;
-    }
-    
-    public async Task<float[]> MatrixMultiplyAsync(
-        float[] matrixA, float[] matrixB, 
-        int m, int n, int k)
-    {
-        var result = new float[m * n];
-        
-        // Use pipeline API for advanced memory and execution control
-        var pipeline = GpuPipeline<(float[], float[], int, int, int), float[]>
-            .For(_gpuBridge, "blas/gemm")
-            .WithBatchSize(1024)
-            .WithMemoryStrategy(MemoryStrategy.ZeroCopy);
-            
-        var results = await pipeline.ExecuteAsync([(matrixA, matrixB, m, n, k)]);
-        return results.First();
+        // Get typed kernel
+        var kernel = await _gpuBridge.GetKernelAsync<float[], float[]>(
+            new KernelId("vector-process"));
+
+        // Execute with validation
+        var validation = kernel.ValidateInput(input);
+        if (!validation.IsValid)
+            throw new ArgumentException(validation.ErrorMessage);
+
+        return await kernel.ExecuteAsync(input);
     }
 }
 ```

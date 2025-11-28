@@ -25,7 +25,7 @@ RUN dotnet test -c Release --no-build --verbosity normal
 RUN dotnet publish src/Orleans.GpuBridge.Runtime/Orleans.GpuBridge.Runtime.csproj -c Release -o /app/publish --no-restore
 
 # Runtime stage
-FROM mcr.microsoft.com/dotnet/runtime:9.0 AS runtime
+FROM mcr.microsoft.com/dotnet/runtime:10.0 AS runtime
 WORKDIR /app
 
 # Install GPU drivers and dependencies

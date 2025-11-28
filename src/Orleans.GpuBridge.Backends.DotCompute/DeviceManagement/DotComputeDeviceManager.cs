@@ -24,8 +24,8 @@ using GpuBridgeDeviceMetrics = Orleans.GpuBridge.Abstractions.Models.DeviceMetri
 namespace Orleans.GpuBridge.Backends.DotCompute.DeviceManagement;
 
 /// <summary>
-/// DotCompute device manager implementation with real DotCompute v0.4.0-rc2 API integration
-/// Uses IUnifiedAcceleratorFactory pattern for reliable device discovery
+/// DotCompute device manager implementation with real DotCompute v0.5.1 API integration.
+/// Uses IUnifiedAcceleratorFactory pattern for reliable device discovery.
 /// </summary>
 internal sealed class DotComputeDeviceManager : IDeviceManager
 {
@@ -49,7 +49,7 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
 
         try
         {
-            _logger.LogInformation("Initializing DotCompute device manager with unified DI API (v0.4.1-rc2)");
+            _logger.LogInformation("Initializing DotCompute device manager with unified DI API (v0.5.1)");
 
             // ✅ NEW API: Use Host.CreateApplicationBuilder with AddDotComputeRuntime()
             var hostBuilder = Host.CreateApplicationBuilder();
@@ -64,8 +64,8 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
             // Configure DotCompute runtime options (optional, set before AddDotComputeRuntime)
             hostBuilder.Services.Configure<DotComputeRuntimeOptions>(options =>
             {
-                // CRITICAL: Disable capability validation for WSL2 compatibility
-                options.ValidateCapabilities = false;
+                // DotCompute 0.5.1+ handles WSL2 compatibility internally
+                options.ValidateCapabilities = true;
                 options.AcceleratorLifetime = global::DotCompute.Runtime.Configuration.ServiceLifetime.Transient;
             });
 

@@ -6,6 +6,7 @@
 #pragma warning disable CS1998 // Async method lacks 'await' operators
 
 using DotCompute.Abstractions;
+using DotCompute.Abstractions.Accelerators;
 using DotCompute.Core.Compute;
 
 namespace Orleans.GpuBridge.Backends.DotCompute.DeviceManagement;
@@ -28,7 +29,7 @@ namespace Orleans.GpuBridge.Backends.DotCompute.DeviceManagement;
 /// ✅ IUnifiedMemoryManager.TotalAvailableMemory - AVAILABLE
 /// ✅ IUnifiedMemoryManager.CurrentAllocatedMemory - AVAILABLE
 /// ✅ IUnifiedMemoryManager.Statistics - AVAILABLE (synchronous property)
-/// ❌ AcceleratorFeature type - NOT FOUND (namespace issue or not yet available)
+/// ✅ AcceleratorFeature type - AVAILABLE (DotCompute 0.5.1+)
 /// ❌ IAccelerator.CreateContextAsync() - NOT AVAILABLE (method doesn't exist)
 /// </remarks>
 internal static class ApiCompilationTest
@@ -60,10 +61,8 @@ internal static class ApiCompilationTest
             // ✅ Extensions collection
             IReadOnlyCollection<string>? extensions = info.Extensions;
 
-            // ❌ Features property - AcceleratorFeature type not found
-            // IReadOnlyCollection<AcceleratorFeature>? features = info.Features;
-            // Workaround: Use object type or skip for now
-            var featuresRaw = info.Features; // Type inference should work
+            // ✅ Features property - AcceleratorFeature type now available (DotCompute 0.5.1+)
+            IReadOnlyCollection<AcceleratorFeature>? features = info.Features;
 
             // ✅ TEST 5: Memory manager APIs
             IUnifiedMemoryManager memory = accelerator.Memory;

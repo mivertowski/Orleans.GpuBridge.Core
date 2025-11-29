@@ -523,22 +523,6 @@ To request improved GPU memory coherence in WSL2:
 | Documentation | ✅ Complete | Yes |
 | Test Coverage | 🚧 85% | Almost |
 
-## 🛣️ Roadmap
-
-### Q1 2025
-- [ ] Additional backend implementations (Vulkan, DirectML)
-- [ ] Enhanced auto-tuning capabilities
-- [ ] Distributed training support
-
-### Q2 2025
-- [ ] Graph-based kernel composition
-- [ ] Automatic kernel fusion
-- [ ] Enhanced profiling tools
-
-### Q3 2025
-- [ ] Visual kernel designer
-- [ ] Cloud GPU support (Azure, AWS, GCP)
-- [ ] Mobile GPU support (Android, iOS)
 
 ## 🤝 Contributing
 
@@ -612,6 +596,8 @@ This project is licensed under the Apache License, Version 2.0. See [LICENSE](LI
 
 Copyright (c) 2025 Michael Ivertowski
 
+If you need different license / SLA / MSA  --> reach out!
+
 ## 🙏 Acknowledgments
 
 - [Microsoft Orleans](https://github.com/dotnet/orleans) - The distributed actor framework
@@ -621,14 +607,10 @@ Copyright (c) 2025 Michael Ivertowski
 
 ## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/Orleans.GpuBridge.Core/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/Orleans.GpuBridge.Core/discussions)
-- **Documentation**: [Full Documentation](https://orleans-gpubridge.dev)
-- **Email**: support@orleans-gpubridge.dev
+- **Issues**: [GitHub Issues](https://github.com/mivertowski/Orleans.GpuBridge.Core/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/mivertowski/Orleans.GpuBridge.Core/discussions)
 
-## 🌟 Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=yourusername/Orleans.GpuBridge.Core&type=Date)](https://star-history.com/#yourusername/Orleans.GpuBridge.Core&Date)
 
 ---
 

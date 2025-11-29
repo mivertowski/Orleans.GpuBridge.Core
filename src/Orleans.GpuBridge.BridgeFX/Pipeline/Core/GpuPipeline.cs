@@ -21,13 +21,18 @@ public sealed class GpuPipeline
     private readonly List<IPipelineStage> _stages = new();
     private readonly ILogger<GpuPipeline> _logger;
     private readonly IGpuBridge _bridge;
-    
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GpuPipeline"/> class.
+    /// </summary>
+    /// <param name="bridge">The GPU bridge instance.</param>
+    /// <param name="logger">The logger instance.</param>
     public GpuPipeline(IGpuBridge bridge, ILogger<GpuPipeline> logger)
     {
         _bridge = bridge;
         _logger = logger;
     }
-    
+
     /// <summary>
     /// Creates a typed GPU pipeline for a specific kernel
     /// </summary>
@@ -37,7 +42,7 @@ public sealed class GpuPipeline
     {
         return new GpuPipelineBuilder<TIn, TOut>(grainFactory, new KernelId(kernelId));
     }
-    
+
     /// <summary>
     /// Adds a kernel stage to the pipeline
     /// </summary>
@@ -50,7 +55,7 @@ public sealed class GpuPipeline
         _stages.Add(new KernelStage<TIn, TOut>(kernelId, _bridge, filter));
         return this;
     }
-    
+
     /// <summary>
     /// Adds a transform stage to the pipeline
     /// </summary>
@@ -74,7 +79,7 @@ public sealed class GpuPipeline
         _stages.Add(new AsyncTransformStage<TIn, TOut>(asyncTransform));
         return this;
     }
-    
+
     /// <summary>
     /// Adds a batch stage to the pipeline
     /// </summary>
@@ -84,7 +89,7 @@ public sealed class GpuPipeline
         _stages.Add(new BatchStage<T>(batchSize, timeout ?? TimeSpan.FromMilliseconds(100)));
         return this;
     }
-    
+
     /// <summary>
     /// Adds a parallel stage to the pipeline
     /// </summary>
@@ -98,7 +103,7 @@ public sealed class GpuPipeline
         _stages.Add(new ParallelStage<TIn, TOut>(processor, concurrency));
         return this;
     }
-    
+
     /// <summary>
     /// Adds a filter stage to the pipeline
     /// </summary>
@@ -108,7 +113,7 @@ public sealed class GpuPipeline
         _stages.Add(new FilterStage<T>(predicate));
         return this;
     }
-    
+
     /// <summary>
     /// Adds a tap stage for side effects
     /// </summary>
@@ -118,7 +123,7 @@ public sealed class GpuPipeline
         _stages.Add(new TapStage<T>(action));
         return this;
     }
-    
+
     /// <summary>
     /// Builds and returns an executable pipeline
     /// </summary>
@@ -148,6 +153,11 @@ public sealed class GpuPipelineBuilder<TIn, TOut>
     /// <summary>Base delay for exponential backoff (100ms)</summary>
     private static readonly TimeSpan BaseRetryDelay = TimeSpan.FromMilliseconds(100);
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GpuPipelineBuilder{TIn, TOut}"/> class.
+    /// </summary>
+    /// <param name="grainFactory">The Orleans grain factory.</param>
+    /// <param name="kernelId">The kernel identifier.</param>
     public GpuPipelineBuilder(IGrainFactory grainFactory, KernelId kernelId)
     {
         _grainFactory = grainFactory;

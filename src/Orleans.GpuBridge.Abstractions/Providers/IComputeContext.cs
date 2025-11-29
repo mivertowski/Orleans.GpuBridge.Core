@@ -17,20 +17,20 @@ public interface IComputeContext : IDisposable
     /// This is the device on which all operations within this context will be executed.
     /// </summary>
     IComputeDevice Device { get; }
-    
+
     /// <summary>
     /// Gets the unique identifier for this context.
     /// This ID can be used for debugging, logging, and context management operations.
     /// </summary>
     string ContextId { get; }
-    
+
     /// <summary>
     /// Makes this context current for the calling thread.
     /// This is required for certain backend APIs that maintain thread-local context state.
     /// After calling this method, subsequent operations on the current thread will use this context.
     /// </summary>
     void MakeCurrent();
-    
+
     /// <summary>
     /// Synchronizes all pending operations in this context.
     /// This method blocks until all previously submitted work to this context has completed,
@@ -39,7 +39,7 @@ public interface IComputeContext : IDisposable
     /// <param name="cancellationToken">Token to cancel the synchronization operation.</param>
     /// <returns>A task that completes when all operations in the context have finished.</returns>
     Task SynchronizeAsync(CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Creates a command queue (also known as a stream) for this context.
     /// Command queues allow asynchronous submission of work to the device and can be used

@@ -49,7 +49,7 @@ public sealed class GpuStreamGrainEnhanced<TIn, TOut> : Grain, IGpuStreamGrain<T
     private IKernelExecutor? _kernelExecutor;
     private IMemoryAllocator? _memoryAllocator;
     private IKernelCompiler? _kernelCompiler;
-    private CompiledKernel? _compiledKernel;
+    private CompiledKernel? _compiledKernel = null;
     private IComputeDevice? _primaryDevice;
 
     // Stream processing components

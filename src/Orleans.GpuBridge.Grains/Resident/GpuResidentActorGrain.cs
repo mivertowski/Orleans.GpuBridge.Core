@@ -116,18 +116,18 @@ public sealed class GpuResidentActorGrain : Grain, IGpuResidentActorGrain
     /// <summary>
     /// Queries actor state (read-only operation).
     /// </summary>
-    public async Task<ActorStateSnapshot> QueryStateAsync()
+    public Task<ActorStateSnapshot> QueryStateAsync()
     {
         // TODO: Read actor state from GPU memory when DotCompute API is available
         // For now, return local snapshot
 
-        return new ActorStateSnapshot
+        return Task.FromResult(new ActorStateSnapshot
         {
             ActorId = _actorId,
             LastTimestamp = _lastTimestamp,
             MessageCount = _messageCount,
             IsGpuResident = _ringKernelManager.IsRunning
-        };
+        });
     }
 
     /// <summary>

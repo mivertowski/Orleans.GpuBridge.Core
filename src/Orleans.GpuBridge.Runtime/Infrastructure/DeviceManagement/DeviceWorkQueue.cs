@@ -19,10 +19,10 @@ internal sealed class DeviceWorkQueue
     private long _processedItems;
     private long _failedItems;
     private bool _shutdown;
-    
+
     public GpuDevice Device => _device;
     public int QueuedItems => _queue.Count;
-    
+
     public DeviceWorkQueue(GpuDevice device)
     {
         _device = device;
@@ -31,7 +31,7 @@ internal sealed class DeviceWorkQueue
         _cts = new CancellationTokenSource();
         _processingTask = ProcessQueueAsync(_cts.Token);
     }
-    
+
     public Task<WorkHandle> EnqueueAsync(
         Func<CancellationToken, Task> work,
         CancellationToken ct = default)
@@ -40,7 +40,7 @@ internal sealed class DeviceWorkQueue
         {
             throw new InvalidOperationException("Queue is shutting down");
         }
-        
+
         var item = new WorkItem
         {
             Id = Guid.NewGuid().ToString(),
@@ -48,13 +48,13 @@ internal sealed class DeviceWorkQueue
             CompletionSource = new TaskCompletionSource(),
             EnqueuedAt = DateTime.UtcNow
         };
-        
+
         _queue.Enqueue(item);
         _semaphore.Release();
-        
+
         return Task.FromResult(new WorkHandle(item.Id, item.CompletionSource.Task));
     }
-    
+
     private async Task ProcessQueueAsync(CancellationToken ct)
     {
         while (!ct.IsCancellationRequested)
@@ -62,7 +62,7 @@ internal sealed class DeviceWorkQueue
             try
             {
                 await _semaphore.WaitAsync(ct);
-                
+
                 if (_queue.TryDequeue(out var item))
                 {
                     try
@@ -84,13 +84,13 @@ internal sealed class DeviceWorkQueue
             }
         }
     }
-    
+
     public DeviceWorkQueueMetrics GetMetrics()
     {
         var processed = Interlocked.Read(ref _processedItems);
         var failed = Interlocked.Read(ref _failedItems);
         var total = processed + failed;
-        
+
         return new DeviceWorkQueueMetrics
         {
             QueuedItems = _queue.Count,
@@ -99,12 +99,12 @@ internal sealed class DeviceWorkQueue
             ErrorRate = total > 0 ? failed / (double)total : 0
         };
     }
-    
+
     public async Task ShutdownAsync(CancellationToken ct)
     {
         _shutdown = true;
         _cts.Cancel();
-        
+
         try
         {
             await _processingTask.WaitAsync(ct);
@@ -113,14 +113,14 @@ internal sealed class DeviceWorkQueue
         {
             // Expected
         }
-        
+
         // Complete remaining items with cancellation
         while (_queue.TryDequeue(out var item))
         {
             item.CompletionSource.SetCanceled();
         }
     }
-    
+
     private sealed class WorkItem
     {
         public string Id { get; init; } = default!;

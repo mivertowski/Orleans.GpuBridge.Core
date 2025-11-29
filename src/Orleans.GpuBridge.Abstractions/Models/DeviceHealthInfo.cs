@@ -76,8 +76,8 @@ public sealed record DeviceHealthInfo
     /// <summary>
     /// Whether the device is considered healthy
     /// </summary>
-    public bool IsHealthy => HealthScore >= 0.7 && 
-                            Status == DeviceStatus.Available && 
+    public bool IsHealthy => HealthScore >= 0.7 &&
+                            Status == DeviceStatus.Available &&
                             ConsecutiveFailures < 3;
 
     /// <summary>
@@ -272,7 +272,7 @@ public sealed record DeviceCapabilityCache
     /// <summary>
     /// Cached capabilities dictionary
     /// </summary>
-    public IReadOnlyDictionary<string, object> Capabilities { get; init; } = 
+    public IReadOnlyDictionary<string, object> Capabilities { get; init; } =
         new Dictionary<string, object>();
 
     /// <summary>

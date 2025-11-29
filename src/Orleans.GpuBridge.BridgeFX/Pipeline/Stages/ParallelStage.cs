@@ -14,23 +14,23 @@ internal sealed class ParallelStage<TIn, TOut> : IPipelineStage
 {
     private readonly Func<TIn, Task<TOut>> _processor;
     private readonly SemaphoreSlim _semaphore;
-    
+
     public Type InputType => typeof(TIn);
     public Type OutputType => typeof(TOut);
-    
+
     public ParallelStage(Func<TIn, Task<TOut>> processor, int maxConcurrency)
     {
         _processor = processor;
         _semaphore = new SemaphoreSlim(maxConcurrency, maxConcurrency);
     }
-    
+
     public async Task<object?> ProcessAsync(object input, CancellationToken ct)
     {
         if (input is not TIn typedInput)
         {
             throw new ArgumentException($"Expected {typeof(TIn)}, got {input.GetType()}");
         }
-        
+
         await _semaphore.WaitAsync(ct);
         try
         {

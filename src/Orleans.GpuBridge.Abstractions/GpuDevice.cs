@@ -21,12 +21,12 @@ public sealed record GpuDevice(
     /// Unique identifier for the device (derived from Index for compatibility)
     /// </summary>
     public string Id => $"device_{Index}";
-    
+
     /// <summary>
     /// Current memory utilization as a percentage (0.0 to 1.0)
     /// </summary>
-    public double MemoryUtilization => TotalMemoryBytes > 0 
-        ? (TotalMemoryBytes - AvailableMemoryBytes) / (double)TotalMemoryBytes 
+    public double MemoryUtilization => TotalMemoryBytes > 0
+        ? (TotalMemoryBytes - AvailableMemoryBytes) / (double)TotalMemoryBytes
         : 0;
 
     /// <summary>
@@ -107,7 +107,7 @@ public sealed record GpuDevice(
     {
         foreach (var capability in Capabilities ?? [])
         {
-            if (capability.StartsWith("Clock:") && 
+            if (capability.StartsWith("Clock:") &&
                 capability.Contains("MHz") &&
                 int.TryParse(capability.Split(':')[1].Replace("MHz", "").Trim(), out int clockRate))
             {
@@ -133,11 +133,11 @@ public sealed record GpuDevice(
     private DeviceFeatures ParseSupportedFeatures()
     {
         var features = DeviceFeatures.None;
-        
+
         foreach (var capability in Capabilities ?? [])
         {
             var cap = capability.ToUpperInvariant();
-            
+
             if (cap.Contains("TENSOR")) features |= DeviceFeatures.TensorCores;
             if (cap.Contains("RT") || cap.Contains("RAYTRACING")) features |= DeviceFeatures.RayTracing;
             if (cap.Contains("UNIFIED") || cap.Contains("UMA")) features |= DeviceFeatures.UnifiedMemory;
@@ -150,7 +150,7 @@ public sealed record GpuDevice(
 
         // Set baseline features based on device type
         features |= DeviceFeatures.Atomics | DeviceFeatures.SharedMemory;
-        
+
         if (Type == DeviceType.CUDA || Type == DeviceType.OpenCL || Type == DeviceType.Metal)
         {
             features |= DeviceFeatures.DoublePrecision;
@@ -168,8 +168,8 @@ public sealed record GpuDevice(
             if (capability.StartsWith("Compute ") && capability.Contains('.'))
             {
                 var parts = capability.Replace("Compute ", "").Split('.');
-                if (parts.Length == 2 && 
-                    int.TryParse(parts[0], out int major) && 
+                if (parts.Length == 2 &&
+                    int.TryParse(parts[0], out int major) &&
                     int.TryParse(parts[1], out int minor))
                 {
                     return new ComputeCapability(major, minor);

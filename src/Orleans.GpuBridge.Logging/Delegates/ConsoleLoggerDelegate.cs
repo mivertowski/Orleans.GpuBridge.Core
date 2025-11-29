@@ -12,17 +12,39 @@ public sealed class ConsoleLoggerDelegate : IStructuredLoggerDelegate
     private readonly ConsoleLoggerOptions _options;
     private readonly object _lock = new();
 
+    /// <summary>
+    /// Gets the delegate name.
+    /// </summary>
     public string Name => "Console";
+
+    /// <summary>
+    /// Gets the minimum log level that will be processed.
+    /// </summary>
     public LogLevel MinimumLevel { get; }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ConsoleLoggerDelegate"/> class.
+    /// </summary>
+    /// <param name="options">Configuration options for console logging.</param>
     public ConsoleLoggerDelegate(ConsoleLoggerOptions? options = null)
     {
         _options = options ?? new ConsoleLoggerOptions();
         MinimumLevel = _options.MinimumLevel;
     }
 
+    /// <summary>
+    /// Determines whether logging is enabled for the specified log level.
+    /// </summary>
+    /// <param name="logLevel">The log level to check.</param>
+    /// <returns>true if logging is enabled for the level; otherwise, false.</returns>
     public bool IsEnabled(LogLevel logLevel) => logLevel >= MinimumLevel;
 
+    /// <summary>
+    /// Writes a log entry to the console.
+    /// </summary>
+    /// <param name="entry">The log entry to write.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public Task WriteAsync(LogEntry entry, CancellationToken cancellationToken = default)
     {
         if (!IsEnabled(entry.Level) || cancellationToken.IsCancellationRequested)
@@ -39,6 +61,12 @@ public sealed class ConsoleLoggerDelegate : IStructuredLoggerDelegate
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Enriches a log entry with additional context information.
+    /// </summary>
+    /// <param name="entry">The log entry to enrich.</param>
+    /// <param name="context">Optional log context to use for enrichment.</param>
+    /// <returns>The enriched log entry.</returns>
     public LogEntry EnrichEntry(LogEntry entry, LogContext? context = null)
     {
         var enrichedProperties = new Dictionary<string, object?>(entry.Properties);
@@ -64,10 +92,10 @@ public sealed class ConsoleLoggerDelegate : IStructuredLoggerDelegate
         {
             if (entry.Metrics.Duration.HasValue)
                 enrichedProperties["Duration"] = $"{entry.Metrics.Duration.Value.TotalMilliseconds:F2}ms";
-            
+
             if (entry.Metrics.MemoryUsage.HasValue)
                 enrichedProperties["Memory"] = $"{entry.Metrics.MemoryUsage.Value / 1024.0:F1}KB";
-            
+
             foreach (var counter in entry.Metrics.Counters)
             {
                 enrichedProperties[$"Metric.{counter.Key}"] = counter.Value;
@@ -77,12 +105,22 @@ public sealed class ConsoleLoggerDelegate : IStructuredLoggerDelegate
         return entry.WithProperties(enrichedProperties);
     }
 
+    /// <summary>
+    /// Flushes any buffered log entries.
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public Task FlushAsync(CancellationToken cancellationToken = default)
     {
         // Console output is immediately flushed
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Disposes the console logger delegate asynchronously.
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A value task representing the asynchronous operation.</returns>
     public ValueTask DisposeAsync(CancellationToken cancellationToken = default)
     {
         // Nothing to dispose for console output
@@ -102,8 +140,8 @@ public sealed class ConsoleLoggerDelegate : IStructuredLoggerDelegate
 
         var levelText = GetLevelText(entry.Level);
         var category = _options.IncludeCategory ? $"[{entry.Category}] " : "";
-        var correlationId = !string.IsNullOrEmpty(entry.CorrelationId) && _options.IncludeCorrelationId 
-            ? $"({entry.CorrelationId[..8]}) " 
+        var correlationId = !string.IsNullOrEmpty(entry.CorrelationId) && _options.IncludeCorrelationId
+            ? $"({entry.CorrelationId[..8]}) "
             : "";
 
         var message = $"{timestamp}{levelText} {category}{correlationId}{entry.Message}";
@@ -117,7 +155,7 @@ public sealed class ConsoleLoggerDelegate : IStructuredLoggerDelegate
         // Add structured properties
         if (entry.Properties.Count > 0 && _options.IncludeProperties)
         {
-            var properties = string.Join(", ", 
+            var properties = string.Join(", ",
                 entry.Properties.Select(kvp => $"{kvp.Key}={FormatValue(kvp.Value)}"));
             message += Environment.NewLine + $"Properties: {properties}";
         }
@@ -144,7 +182,7 @@ public sealed class ConsoleLoggerDelegate : IStructuredLoggerDelegate
         }
 
         var originalColor = Console.ForegroundColor;
-        
+
         try
         {
             Console.ForegroundColor = GetLevelColor(level);
@@ -256,8 +294,23 @@ public sealed class ConsoleLoggerOptions
 /// </summary>
 public enum ConsoleTimestampFormat
 {
+    /// <summary>
+    /// No timestamp is displayed.
+    /// </summary>
     None,
+
+    /// <summary>
+    /// Local time with HH:mm:ss.fff format.
+    /// </summary>
     Local,
+
+    /// <summary>
+    /// UTC time with HH:mm:ss.fff format.
+    /// </summary>
     Utc,
+
+    /// <summary>
+    /// Full date and time with yyyy-MM-dd HH:mm:ss.fff format.
+    /// </summary>
     Full
 }

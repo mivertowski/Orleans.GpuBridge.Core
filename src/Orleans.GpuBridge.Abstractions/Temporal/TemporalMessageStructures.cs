@@ -49,6 +49,10 @@ public struct ActorMessage
     /// </summary>
     public byte Priority;
 
+    /// <summary>
+    /// Returns a string representation of the message showing ID, source, target, type, and sequence.
+    /// </summary>
+    /// <returns>A formatted string describing the message.</returns>
     public override string ToString() =>
         $"Message(Id={MessageId}, From={SourceActorId}, To={TargetActorId}, Type={Type}, Seq={SequenceNumber})";
 }
@@ -58,10 +62,29 @@ public struct ActorMessage
 /// </summary>
 public enum MessageType : byte
 {
+    /// <summary>
+    /// State update message.
+    /// </summary>
     StateUpdate = 0,
+
+    /// <summary>
+    /// Query message requesting information.
+    /// </summary>
     Query = 1,
+
+    /// <summary>
+    /// Command message requesting an action.
+    /// </summary>
     Command = 2,
+
+    /// <summary>
+    /// Event notification message.
+    /// </summary>
     Event = 3,
+
+    /// <summary>
+    /// Response message to a query or command.
+    /// </summary>
     Response = 4
 }
 
@@ -111,6 +134,10 @@ public struct ActorState
     /// </summary>
     public long Reserved;
 
+    /// <summary>
+    /// Returns a string representation of the actor state showing ID, HLC, message count, and status.
+    /// </summary>
+    /// <returns>A formatted string describing the actor state.</returns>
     public override string ToString() =>
         $"ActorState(Id={ActorId}, HLC=({HLCPhysical},{HLCLogical}), Messages={MessageCount}, Status={Status})";
 }
@@ -121,9 +148,24 @@ public struct ActorState
 [Flags]
 public enum ActorStatusFlags : byte
 {
+    /// <summary>
+    /// Actor is active and ready to process messages.
+    /// </summary>
     Active = 0x01,
+
+    /// <summary>
+    /// Actor is currently processing a message.
+    /// </summary>
     Processing = 0x02,
+
+    /// <summary>
+    /// Actor is blocked waiting for a resource or condition.
+    /// </summary>
     Blocked = 0x04,
+
+    /// <summary>
+    /// Actor encountered an error during processing.
+    /// </summary>
     Error = 0x08
 }
 
@@ -133,21 +175,66 @@ public enum ActorStatusFlags : byte
 [StructLayout(LayoutKind.Sequential)]
 public struct TemporalEvent
 {
+    /// <summary>
+    /// Unique identifier for this event.
+    /// </summary>
     public Guid EventId;
+
+    /// <summary>
+    /// Actor that generated this event.
+    /// </summary>
     public ulong ActorId;
+
+    /// <summary>
+    /// HLC timestamp when event occurred.
+    /// </summary>
     public HybridTimestamp Timestamp;
+
+    /// <summary>
+    /// Physical time in nanoseconds when event occurred.
+    /// </summary>
     public long PhysicalTimeNanos;
+
+    /// <summary>
+    /// Type of event.
+    /// </summary>
     public EventType Type;
+
+    /// <summary>
+    /// Event value or payload.
+    /// </summary>
     public long Value;
 
+    /// <summary>
+    /// Returns a string representation of the event showing ID, actor, type, and time.
+    /// </summary>
+    /// <returns>A formatted string describing the event.</returns>
     public override string ToString() =>
         $"Event(Id={EventId}, Actor={ActorId}, Type={Type}, Time={PhysicalTimeNanos}ns)";
 }
 
+/// <summary>
+/// Event type enumeration.
+/// </summary>
 public enum EventType : byte
 {
+    /// <summary>
+    /// Transaction event.
+    /// </summary>
     Transaction = 0,
+
+    /// <summary>
+    /// State change event.
+    /// </summary>
     StateChange = 1,
+
+    /// <summary>
+    /// Query event.
+    /// </summary>
     Query = 2,
+
+    /// <summary>
+    /// Alert event.
+    /// </summary>
     Alert = 3
 }

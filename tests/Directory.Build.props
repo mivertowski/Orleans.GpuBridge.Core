@@ -1,0 +1,15 @@
+<Project>
+  <PropertyGroup>
+    <!-- Disable XML documentation for test projects -->
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+
+    <!-- Suppress warnings in tests that are acceptable for test code -->
+    <!-- CS1591: Missing XML documentation (not required for tests) -->
+    <!-- CS1570: XML comment has badly formed XML -->
+    <!-- CS1998: Async method without await (common in test stubs) -->
+    <!-- CS0649: Field never assigned (common with mock setups) -->
+    <!-- CS8602: Dereference of possibly null reference (test assertions handle null) -->
+    <!-- xUnit1031: Test method uses blocking operations (acceptable in some test scenarios) -->
+    <NoWarn>$(NoWarn);CS1591;CS1570;CS1998;CS0649;CS8602;xUnit1031</NoWarn>
+  </PropertyGroup>
+</Project>

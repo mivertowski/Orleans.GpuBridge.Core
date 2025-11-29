@@ -19,40 +19,40 @@ public interface IBackendProvider : IDisposable
     /// Gets the display name of this backend provider
     /// </summary>
     string Name { get; }
-    
+
     /// <summary>
     /// Gets the backend type identifier
     /// </summary>
     GpuBackend Type { get; }
-    
+
     /// <summary>
     /// Gets a value indicating whether this backend is currently available
     /// </summary>
     bool IsAvailable { get; }
-    
+
     /// <summary>
     /// Gets the number of available devices for this backend
     /// </summary>
     int DeviceCount { get; }
-    
+
     /// <summary>
     /// Initializes the backend provider
     /// </summary>
     /// <returns>true if initialization was successful; otherwise, false</returns>
     bool Initialize();
-    
+
     /// <summary>
     /// Shuts down the backend provider and releases resources
     /// </summary>
     void Shutdown();
-    
+
     /// <summary>
     /// Creates a compute context for the specified device
     /// </summary>
     /// <param name="deviceIndex">The index of the device to create a context for</param>
     /// <returns>A compute context for the specified device</returns>
     IComputeContext CreateContext(int deviceIndex = 0);
-    
+
     /// <summary>
     /// Gets information about all available devices for this backend
     /// </summary>

@@ -16,67 +16,67 @@ public interface IGpuBackendProvider : IDisposable
     /// Unique identifier for this backend provider
     /// </summary>
     string ProviderId { get; }
-    
+
     /// <summary>
     /// Display name for this backend provider
     /// </summary>
     string DisplayName { get; }
-    
+
     /// <summary>
     /// Version of the backend provider
     /// </summary>
     Version Version { get; }
-    
+
     /// <summary>
     /// Gets the capabilities of this backend provider
     /// </summary>
     BackendCapabilities Capabilities { get; }
-    
+
     /// <summary>
     /// Initializes the backend provider
     /// </summary>
     Task InitializeAsync(BackendConfiguration configuration, CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Checks if the backend is available on this system
     /// </summary>
     Task<bool> IsAvailableAsync(CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Checks if the backend is available on this system (synchronous version)
     /// </summary>
     bool IsAvailable();
-    
+
     /// <summary>
     /// Gets the device manager for this backend
     /// </summary>
     IDeviceManager GetDeviceManager();
-    
+
     /// <summary>
     /// Gets the kernel compiler for this backend
     /// </summary>
     IKernelCompiler GetKernelCompiler();
-    
+
     /// <summary>
     /// Gets the memory allocator for this backend
     /// </summary>
     IMemoryAllocator GetMemoryAllocator();
-    
+
     /// <summary>
     /// Gets the kernel executor for this backend
     /// </summary>
     IKernelExecutor GetKernelExecutor();
-    
+
     /// <summary>
     /// Gets backend-specific metrics
     /// </summary>
     Task<IReadOnlyDictionary<string, object>> GetMetricsAsync(CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Performs a health check on the backend
     /// </summary>
     Task<HealthCheckResult> CheckHealthAsync(CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Creates a compute context for the specified device
     /// </summary>

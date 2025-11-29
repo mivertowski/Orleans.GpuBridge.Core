@@ -233,7 +233,7 @@ internal sealed class DotComputeUnifiedMemory : IUnifiedMemory
     {
         if (hostPointer == IntPtr.Zero)
             throw new ArgumentException("Host pointer cannot be zero", nameof(hostPointer));
-        
+
         // In a real DotCompute implementation, this would use DotCompute APIs
         unsafe
         {
@@ -248,7 +248,7 @@ internal sealed class DotComputeUnifiedMemory : IUnifiedMemory
     {
         if (hostPointer == IntPtr.Zero)
             throw new ArgumentException("Host pointer cannot be zero", nameof(hostPointer));
-            
+
         unsafe
         {
             var sourcePtr = (byte*)(DevicePointer + (int)offsetBytes);
@@ -262,38 +262,38 @@ internal sealed class DotComputeUnifiedMemory : IUnifiedMemory
     {
         // For unified memory, device-to-device copy can be implemented as memory copy
         // since both source and destination are accessible from both CPU and GPU
-        
+
         if (source is not IDeviceMemory sourceDeviceMemory)
         {
             throw new ArgumentException("Source must be device memory", nameof(source));
         }
-        
+
         if (sourceOffset < 0 || destinationOffset < 0 || sizeBytes <= 0)
         {
             throw new ArgumentException("Invalid copy parameters");
         }
-        
-        if (sourceOffset + sizeBytes > sourceDeviceMemory.SizeBytes || 
+
+        if (sourceOffset + sizeBytes > sourceDeviceMemory.SizeBytes ||
             destinationOffset + sizeBytes > SizeBytes)
         {
             throw new ArgumentException("Copy would exceed buffer bounds");
         }
-        
+
         try
         {
             // For unified memory, we can perform the copy directly
             var srcPtr = sourceDeviceMemory.DevicePointer + (int)sourceOffset;
             var dstPtr = DevicePointer + (int)destinationOffset;
-            
+
             // Use async memory copy to avoid blocking
-            await Task.Run(() => 
+            await Task.Run(() =>
             {
                 unsafe
                 {
                     Buffer.MemoryCopy(
-                        srcPtr.ToPointer(), 
-                        dstPtr.ToPointer(), 
-                        sizeBytes, 
+                        srcPtr.ToPointer(),
+                        dstPtr.ToPointer(),
+                        sizeBytes,
                         sizeBytes);
                 }
             }, cancellationToken);
@@ -327,7 +327,7 @@ internal sealed class DotComputeUnifiedMemory : IUnifiedMemory
     public void Dispose()
     {
         if (_disposed) return;
-        
+
         try
         {
             _logger.LogTrace("Disposing DotCompute unified memory");

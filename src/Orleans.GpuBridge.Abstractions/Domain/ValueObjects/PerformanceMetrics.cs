@@ -18,14 +18,14 @@ public sealed record PerformanceMetrics(
     /// <summary>
     /// Power efficiency metric (operations per watt estimate)
     /// </summary>
-    public double PowerEfficiency => PowerUsageWatts > 0 
-        ? UtilizationPercent / PowerUsageWatts 
+    public double PowerEfficiency => PowerUsageWatts > 0
+        ? UtilizationPercent / PowerUsageWatts
         : 0.0;
 
     /// <summary>
     /// Overall device health score (0.0 to 1.0)
     /// </summary>
-    public double HealthScore => Math.Max(0.0, Math.Min(1.0, 
+    public double HealthScore => Math.Max(0.0, Math.Min(1.0,
         (1.0 - Math.Max(0, UtilizationPercent - 80) / 20.0) * // Penalize high utilization
         (PowerUsageWatts > 0 ? Math.Min(1.0, 100.0 / PowerUsageWatts) : 1.0))); // Reward efficiency
 }

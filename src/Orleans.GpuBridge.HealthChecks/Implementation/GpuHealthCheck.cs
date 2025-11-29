@@ -38,7 +38,7 @@ public class GpuHealthCheck : IHealthCheck
     private readonly IGpuBridge _gpuBridge;
     private readonly IGpuMetricsCollector _metricsCollector;
     private readonly GpuHealthCheckOptions _options;
-    
+
     /// <summary>
     /// Initializes a new instance of the <see cref="GpuHealthCheck"/> class.
     /// </summary>
@@ -57,7 +57,7 @@ public class GpuHealthCheck : IHealthCheck
         _metricsCollector = metricsCollector;
         _options = options ?? new GpuHealthCheckOptions();
     }
-    
+
     /// <summary>
     /// Performs a comprehensive health assessment of the GPU system.
     /// This method evaluates device availability, hardware metrics, memory utilization,
@@ -77,11 +77,11 @@ public class GpuHealthCheck : IHealthCheck
             var data = new Dictionary<string, object>();
             var unhealthyReasons = new List<string>();
             var degradedReasons = new List<string>();
-            
+
             // Phase 1: Check GPU device availability
             var devices = await _gpuBridge.GetDevicesAsync();
             data["device_count"] = devices.Count;
-            
+
             if (devices.Count == 0)
             {
                 if (_options.RequireGpu)
@@ -95,12 +95,12 @@ public class GpuHealthCheck : IHealthCheck
                     degradedReasons.Add("No GPU devices available (CPU fallback active)");
                 }
             }
-            
+
             // Phase 2: Evaluate individual device health metrics
             var healthyDevices = 0;
             var totalMemoryMB = 0L;
             var usedMemoryMB = 0L;
-            
+
             foreach (var device in devices)
             {
                 try
@@ -109,17 +109,17 @@ public class GpuHealthCheck : IHealthCheck
                     var utilization = await _metricsCollector.GetUtilizationAsync(device.Index, cancellationToken);
                     var temperature = await _metricsCollector.GetTemperatureAsync(device.Index, cancellationToken);
                     var power = await _metricsCollector.GetPowerConsumptionAsync(device.Index, cancellationToken);
-                    
+
                     // Record device information in health check data
                     data[$"device_{device.Index}_name"] = memoryInfo.DeviceName;
                     data[$"device_{device.Index}_utilization"] = $"{utilization.GpuUtilizationPercentage:F1}%";
                     data[$"device_{device.Index}_memory"] = $"{memoryInfo.AllocatedMemoryBytes / (1024 * 1024)}/{memoryInfo.TotalMemoryBytes / (1024 * 1024)} MB";
                     data[$"device_{device.Index}_temperature"] = $"{temperature:F1}°C";
                     data[$"device_{device.Index}_power"] = $"{power:F1}W";
-                    
+
                     totalMemoryMB += memoryInfo.TotalMemoryBytes / (1024 * 1024);
                     usedMemoryMB += memoryInfo.AllocatedMemoryBytes / (1024 * 1024);
-                    
+
                     // Evaluate temperature thresholds
                     if (temperature > _options.MaxTemperatureCelsius)
                     {
@@ -129,7 +129,7 @@ public class GpuHealthCheck : IHealthCheck
                     {
                         degradedReasons.Add($"Device {device.Index} temperature elevated: {temperature:F1}°C (warn: {_options.WarnTemperatureCelsius:F1}°C)");
                     }
-                    
+
                     // Evaluate memory utilization thresholds
                     var memoryUsagePercent = memoryInfo.UtilizationPercentage;
                     if (memoryUsagePercent > _options.MaxMemoryUsagePercent)
@@ -140,13 +140,13 @@ public class GpuHealthCheck : IHealthCheck
                     {
                         degradedReasons.Add($"Device {device.Index} memory pressure: {memoryUsagePercent:F1}% (warn: {_options.WarnMemoryUsagePercent:F1}%)");
                     }
-                    
+
                     // Evaluate utilization efficiency
                     if (utilization.GpuUtilizationPercentage < _options.MinUtilizationPercent)
                     {
                         degradedReasons.Add($"Device {device.Index} underutilized: {utilization.GpuUtilizationPercentage:F1}% (min: {_options.MinUtilizationPercent:F1}%)");
                     }
-                    
+
                     healthyDevices++;
                 }
                 catch (Exception ex)
@@ -155,12 +155,12 @@ public class GpuHealthCheck : IHealthCheck
                     degradedReasons.Add($"Device {device.Index} metrics unavailable: {ex.Message}");
                 }
             }
-            
+
             // Record aggregate system information
             data["healthy_devices"] = healthyDevices;
             data["total_memory_gb"] = Math.Round(totalMemoryMB / 1024.0, 2);
             data["used_memory_gb"] = Math.Round(usedMemoryMB / 1024.0, 2);
-            
+
             // Phase 3: Optional functional testing
             if (_options.TestKernelExecution && devices.Count > 0)
             {
@@ -168,7 +168,7 @@ public class GpuHealthCheck : IHealthCheck
                 {
                     var testResult = await TestKernelExecutionAsync(cancellationToken);
                     data["kernel_test"] = testResult ? "passed" : "failed";
-                    
+
                     if (!testResult)
                     {
                         degradedReasons.Add("Kernel execution test failed - compute functionality may be impaired");
@@ -180,7 +180,7 @@ public class GpuHealthCheck : IHealthCheck
                     degradedReasons.Add($"Kernel test error: {ex.Message}");
                 }
             }
-            
+
             // Phase 4: Determine overall health status based on collected issues
             if (unhealthyReasons.Count > 0)
             {
@@ -188,14 +188,14 @@ public class GpuHealthCheck : IHealthCheck
                     string.Join("; ", unhealthyReasons),
                     data: data);
             }
-            
+
             if (degradedReasons.Count > 0)
             {
                 return HealthCheckResult.Degraded(
                     string.Join("; ", degradedReasons),
                     data: data);
             }
-            
+
             return HealthCheckResult.Healthy(
                 $"{healthyDevices} GPU device(s) operational, {totalMemoryMB / 1024.0:F1} GB total memory",
                 data: data);
@@ -203,7 +203,7 @@ public class GpuHealthCheck : IHealthCheck
         catch (Exception ex)
         {
             _logger.LogError(ex, "GPU health check failed with unexpected error");
-            
+
             return HealthCheckResult.Unhealthy(
                 "GPU health check encountered an error",
                 exception: ex,
@@ -214,7 +214,7 @@ public class GpuHealthCheck : IHealthCheck
                 });
         }
     }
-    
+
     /// <summary>
     /// Performs functional testing by executing a simple kernel to verify GPU compute capability.
     /// This test validates that the GPU can successfully execute kernels and return correct results.
@@ -238,7 +238,7 @@ public class GpuHealthCheck : IHealthCheck
             // Create simple test data for kernel execution verification
             var testData = new float[] { 1.0f, 2.0f, 3.0f, 4.0f };
             var expectedSum = testData.Sum(); // Expected result: 10.0f
-            
+
             // Attempt to get and execute a test kernel
             var kernel = await _gpuBridge.GetKernelAsync<float[], float>(
                 new KernelId("test/sum"));
@@ -248,18 +248,18 @@ public class GpuHealthCheck : IHealthCheck
 
             // Retrieve and validate results
             var result = results.FirstOrDefault();
-            
+
             // Verify that the computed result matches expected value
             var tolerance = 0.001f; // Allow for small floating-point precision differences
             var resultValid = Math.Abs(result - expectedSum) < tolerance;
-            
+
             if (!resultValid)
             {
                 _logger.LogWarning(
                     "Kernel execution test failed: expected {Expected}, got {Actual}",
                     expectedSum, result);
             }
-            
+
             return resultValid;
         }
         catch (Exception ex)

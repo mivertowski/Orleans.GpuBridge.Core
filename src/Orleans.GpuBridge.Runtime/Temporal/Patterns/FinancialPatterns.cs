@@ -132,12 +132,30 @@ public sealed class CircularFlowPattern : TemporalPatternBase
     private readonly int _minimumHops;
     private readonly int _maximumHops;
 
+    /// <summary>
+    /// Gets the unique identifier for the circular flow pattern.
+    /// </summary>
     public override string PatternId => "circular-flow";
+
+    /// <summary>
+    /// Gets the human-readable name of the pattern.
+    /// </summary>
     public override string Name => "Circular Money Flow";
+
+    /// <summary>
+    /// Gets a description of what this pattern detects.
+    /// </summary>
     public override string Description =>
         "Detects when money travels in a circle back to the origin account";
 
+    /// <summary>
+    /// Gets the time window size for pattern detection in nanoseconds.
+    /// </summary>
     public override long WindowSizeNanos { get; }
+
+    /// <summary>
+    /// Gets the severity level of this pattern (Critical).
+    /// </summary>
     public override PatternSeverity Severity => PatternSeverity.Critical;
 
     /// <summary>
@@ -156,6 +174,13 @@ public sealed class CircularFlowPattern : TemporalPatternBase
         _maximumHops = maximumHops;
     }
 
+    /// <summary>
+    /// Asynchronously searches for circular money flow patterns in the provided events.
+    /// </summary>
+    /// <param name="events">The events to analyze</param>
+    /// <param name="graph">Temporal graph for path-based pattern matching</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns>A collection of pattern matches found</returns>
     public override async Task<IEnumerable<PatternMatch>> MatchAsync(
         IReadOnlyList<TemporalEvent> events,
         TemporalGraphStorage? graph,
@@ -243,12 +268,30 @@ public sealed class HighFrequencyPattern : TemporalPatternBase
     private readonly int _minimumTransactions;
     private readonly double _minimumTotalAmount;
 
+    /// <summary>
+    /// Gets the unique identifier for the high-frequency pattern.
+    /// </summary>
     public override string PatternId => "high-frequency";
+
+    /// <summary>
+    /// Gets the human-readable name of the pattern.
+    /// </summary>
     public override string Name => "High-Frequency Transactions";
+
+    /// <summary>
+    /// Gets a description of what this pattern detects.
+    /// </summary>
     public override string Description =>
         "Detects unusually high transaction frequency from a single source";
 
+    /// <summary>
+    /// Gets the time window size for pattern detection in nanoseconds.
+    /// </summary>
     public override long WindowSizeNanos { get; }
+
+    /// <summary>
+    /// Gets the severity level of this pattern (Medium).
+    /// </summary>
     public override PatternSeverity Severity => PatternSeverity.Medium;
 
     /// <summary>
@@ -267,6 +310,13 @@ public sealed class HighFrequencyPattern : TemporalPatternBase
         _minimumTotalAmount = minimumTotalAmount;
     }
 
+    /// <summary>
+    /// Asynchronously searches for high-frequency transaction patterns in the provided events.
+    /// </summary>
+    /// <param name="events">The events to analyze</param>
+    /// <param name="graph">Optional temporal graph (not used by this pattern)</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns>A collection of pattern matches found</returns>
     public override async Task<IEnumerable<PatternMatch>> MatchAsync(
         IReadOnlyList<TemporalEvent> events,
         TemporalGraphStorage? graph,
@@ -350,14 +400,38 @@ public sealed class VelocityChangePattern : TemporalPatternBase
     private readonly double _thresholdAmount;
     private readonly long _inactivityPeriod;
 
+    /// <summary>
+    /// Gets the unique identifier for the velocity change pattern.
+    /// </summary>
     public override string PatternId => "velocity-change";
+
+    /// <summary>
+    /// Gets the human-readable name of the pattern.
+    /// </summary>
     public override string Name => "Transaction Velocity Change";
+
+    /// <summary>
+    /// Gets a description of what this pattern detects.
+    /// </summary>
     public override string Description =>
         "Detects sudden large transactions after period of inactivity";
 
+    /// <summary>
+    /// Gets the time window size for pattern detection in nanoseconds.
+    /// </summary>
     public override long WindowSizeNanos { get; }
+
+    /// <summary>
+    /// Gets the severity level of this pattern (High).
+    /// </summary>
     public override PatternSeverity Severity => PatternSeverity.High;
 
+    /// <summary>
+    /// Creates a new velocity change pattern detector.
+    /// </summary>
+    /// <param name="windowSizeNanos">Time window for detection (default: 1 hour)</param>
+    /// <param name="thresholdAmount">Minimum transaction amount to trigger (default: 50,000)</param>
+    /// <param name="inactivityPeriod">Minimum inactivity period before large transaction (default: 30 minutes)</param>
     public VelocityChangePattern(
         long windowSizeNanos = 3600_000_000_000, // 1 hour
         double thresholdAmount = 50_000.0,
@@ -368,6 +442,13 @@ public sealed class VelocityChangePattern : TemporalPatternBase
         _inactivityPeriod = inactivityPeriod;
     }
 
+    /// <summary>
+    /// Asynchronously searches for velocity change patterns in the provided events.
+    /// </summary>
+    /// <param name="events">The events to analyze</param>
+    /// <param name="graph">Optional temporal graph (not used by this pattern)</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns>A collection of pattern matches found</returns>
     public override async Task<IEnumerable<PatternMatch>> MatchAsync(
         IReadOnlyList<TemporalEvent> events,
         TemporalGraphStorage? graph,

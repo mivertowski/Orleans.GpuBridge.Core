@@ -59,12 +59,12 @@ public static class TelemetryExtensions
     {
         var options = new GpuTelemetryOptions();
         configure?.Invoke(options);
-        
+
         // Register core telemetry services
         services.AddSingleton<IGpuTelemetry, GpuTelemetry>();
         services.AddSingleton<IGpuMetricsCollector, GpuMetricsCollector>();
         services.AddHostedService<GpuMetricsCollector>();
-        
+
         // Configure metrics collection options
         services.Configure<GpuMetricsOptions>(opt =>
         {
@@ -74,7 +74,7 @@ public static class TelemetryExtensions
             opt.EnableDetailedLogging = options.EnableDetailedLogging;
             opt.MaxDevices = options.MaxDevices;
         });
-        
+
         // Configure OpenTelemetry
         services.AddOpenTelemetry()
             .ConfigureResource(resource =>
@@ -98,13 +98,13 @@ public static class TelemetryExtensions
                     .AddRuntimeInstrumentation()
                     .AddProcessInstrumentation()
                     .AddAspNetCoreInstrumentation();
-                
+
                 // Add exporters based on configuration
                 if (options.EnablePrometheusExporter)
                 {
                     metrics.AddPrometheusExporter();
                 }
-                
+
                 if (!string.IsNullOrEmpty(options.OtlpEndpoint))
                 {
                     metrics.AddOtlpExporter(otlp =>
@@ -113,12 +113,12 @@ public static class TelemetryExtensions
                         otlp.Protocol = options.OtlpProtocol;
                     });
                 }
-                
+
                 if (options.EnableConsoleExporter)
                 {
                     metrics.AddConsoleExporter();
                 }
-                
+
                 // Configure views for histograms
                 metrics.AddView(
                     instrumentName: "gpu.kernel.latency",
@@ -126,7 +126,7 @@ public static class TelemetryExtensions
                     {
                         Boundaries = new double[] { 0.1, 0.5, 1, 5, 10, 50, 100, 500, 1000, 5000 }
                     });
-                
+
                 metrics.AddView(
                     instrumentName: "gpu.transfer.throughput",
                     new ExplicitBucketHistogramConfiguration
@@ -141,7 +141,7 @@ public static class TelemetryExtensions
                     .AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
                     .SetSampler(new TraceIdRatioBasedSampler(options.TracingSamplingRatio));
-                
+
                 // Add exporters
                 if (!string.IsNullOrEmpty(options.OtlpEndpoint))
                 {
@@ -151,7 +151,7 @@ public static class TelemetryExtensions
                         otlp.Protocol = options.OtlpProtocol;
                     });
                 }
-                
+
                 if (!string.IsNullOrEmpty(options.JaegerEndpoint))
                 {
                     tracing.AddJaegerExporter(jaeger =>
@@ -160,16 +160,16 @@ public static class TelemetryExtensions
                         jaeger.AgentPort = new Uri(options.JaegerEndpoint).Port;
                     });
                 }
-                
+
                 if (options.EnableConsoleExporter)
                 {
                     tracing.AddConsoleExporter();
                 }
             });
-        
+
         return services;
     }
-    
+
     /// <summary>
     /// Configures GPU telemetry for the host builder, integrating with the application's service configuration.
     /// This extension method provides a convenient way to add GPU observability to hosted applications
@@ -214,53 +214,53 @@ public static class TelemetryExtensions
 public class GpuTelemetryOptions
 {
     #region Service Identification
-    
+
     /// <summary>
     /// Gets or sets the service name used for OpenTelemetry resource identification.
     /// This name appears in telemetry data and dashboards to identify the application.
     /// </summary>
     /// <value>The service name. Default is "Orleans.GpuBridge".</value>
     public string ServiceName { get; set; } = "Orleans.GpuBridge";
-    
+
     /// <summary>
     /// Gets or sets the service version for telemetry resource attributes.
     /// This helps track performance changes across application versions.
     /// </summary>
     /// <value>The service version. Default is "1.0.0".</value>
     public string ServiceVersion { get; set; } = "1.0.0";
-    
+
     /// <summary>
     /// Gets or sets the unique service instance identifier.
     /// When not specified, the machine name is used as the instance identifier.
     /// </summary>
     /// <value>The service instance ID, or <c>null</c> to use machine name.</value>
     public string? ServiceInstanceId { get; set; }
-    
+
     /// <summary>
     /// Gets or sets the deployment environment identifier (e.g., "development", "staging", "production").
     /// This attribute helps filter and organize telemetry data by environment.
     /// </summary>
     /// <value>The environment name. Default is "production".</value>
     public string Environment { get; set; } = "production";
-    
+
     #endregion
-    
+
     #region Metrics Configuration
-    
+
     /// <summary>
     /// Gets or sets a value indicating whether GPU-specific metrics collection is enabled.
     /// When <c>true</c>, collects detailed GPU performance metrics, utilization, and hardware statistics.
     /// </summary>
     /// <value><c>true</c> to enable GPU metrics; otherwise, <c>false</c>. Default is <c>true</c>.</value>
     public bool EnableGpuMetrics { get; set; } = true;
-    
+
     /// <summary>
     /// Gets or sets a value indicating whether system-level metrics collection is enabled.
     /// When <c>true</c>, collects runtime, process, and system performance metrics.
     /// </summary>
     /// <value><c>true</c> to enable system metrics; otherwise, <c>false</c>. Default is <c>true</c>.</value>
     public bool EnableSystemMetrics { get; set; } = true;
-    
+
     /// <summary>
     /// Gets or sets the interval for collecting GPU hardware metrics from devices.
     /// This controls how frequently GPU utilization, temperature, and memory usage are sampled.
@@ -271,25 +271,25 @@ public class GpuTelemetryOptions
     /// Typical values: 5-30 seconds depending on monitoring requirements.
     /// </remarks>
     public TimeSpan MetricsCollectionInterval { get; set; } = TimeSpan.FromSeconds(10);
-    
+
     /// <summary>
     /// Gets or sets the maximum number of GPU devices to monitor.
     /// This limits resource usage in systems with many GPUs.
     /// </summary>
     /// <value>The maximum device count. Default is 8.</value>
     public int MaxDevices { get; set; } = 8;
-    
+
     /// <summary>
     /// Gets or sets a value indicating whether detailed diagnostic logging is enabled.
     /// When <c>true</c>, provides verbose logging of telemetry operations for troubleshooting.
     /// </summary>
     /// <value><c>true</c> to enable detailed logging; otherwise, <c>false</c>. Default is <c>false</c>.</value>
     public bool EnableDetailedLogging { get; set; } = false;
-    
+
     #endregion
-    
+
     #region Tracing Configuration
-    
+
     /// <summary>
     /// Gets or sets the sampling ratio for distributed tracing (0.0 to 1.0).
     /// This controls what percentage of operations are traced to manage overhead and storage costs.
@@ -300,25 +300,25 @@ public class GpuTelemetryOptions
     /// Higher sampling provides more detailed tracing but increases overhead and storage requirements.
     /// </remarks>
     public double TracingSamplingRatio { get; set; } = 0.1;
-    
+
     #endregion
-    
+
     #region Exporters Configuration
-    
+
     /// <summary>
     /// Gets or sets a value indicating whether the Prometheus metrics exporter is enabled.
     /// When <c>true</c>, exposes metrics in Prometheus format for scraping by Prometheus servers.
     /// </summary>
     /// <value><c>true</c> to enable Prometheus export; otherwise, <c>false</c>. Default is <c>true</c>.</value>
     public bool EnablePrometheusExporter { get; set; } = true;
-    
+
     /// <summary>
     /// Gets or sets a value indicating whether console exporters are enabled for development/debugging.
     /// When <c>true</c>, outputs metrics and traces to the console for local development.
     /// </summary>
     /// <value><c>true</c> to enable console export; otherwise, <c>false</c>. Default is <c>false</c>.</value>
     public bool EnableConsoleExporter { get; set; } = false;
-    
+
     /// <summary>
     /// Gets or sets the OTLP (OpenTelemetry Protocol) collector endpoint URL.
     /// When specified, exports both metrics and traces to the OTLP collector.
@@ -326,14 +326,14 @@ public class GpuTelemetryOptions
     /// <value>The OTLP endpoint URL, or <c>null</c> to disable OTLP export.</value>
     /// <example>http://otel-collector:4317 or https://api.honeycomb.io</example>
     public string? OtlpEndpoint { get; set; }
-    
+
     /// <summary>
     /// Gets or sets the protocol used for OTLP export (gRPC or HTTP/protobuf).
     /// This should match the protocol supported by the target OTLP collector.
     /// </summary>
     /// <value>The OTLP export protocol. Default is gRPC.</value>
     public OpenTelemetry.Exporter.OtlpExportProtocol OtlpProtocol { get; set; } = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
-    
+
     /// <summary>
     /// Gets or sets the Jaeger agent endpoint URL for distributed tracing.
     /// When specified, exports trace data to Jaeger for visualization and analysis.
@@ -341,6 +341,6 @@ public class GpuTelemetryOptions
     /// <value>The Jaeger endpoint URL, or <c>null</c> to disable Jaeger export.</value>
     /// <example>http://jaeger-agent:14268</example>
     public string? JaegerEndpoint { get; set; }
-    
+
     #endregion
 }

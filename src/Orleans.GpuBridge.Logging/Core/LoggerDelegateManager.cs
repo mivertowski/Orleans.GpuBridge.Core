@@ -48,6 +48,9 @@ public sealed class LoggerDelegateManager : IAsyncDisposable
     /// </summary>
     public bool DropOnQueueFull { get; set; } = true;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LoggerDelegateManager"/> class.
+    /// </summary>
     public LoggerDelegateManager()
     {
         _processingTask = ProcessLogEntriesAsync(_shutdownTokenSource.Token);
@@ -178,10 +181,53 @@ public sealed class LoggerDelegateManager : IAsyncDisposable
         };
     }
 
+    /// <summary>
+    /// Disposes the logger delegate manager asynchronously, processing remaining entries and disposing all delegates.
+    /// </summary>
+    public async ValueTask DisposeAsync()
+    {
+        if (_disposed)
+            return;
+
+        _disposed = true;
+
+        // Stop processing
+        await _shutdownTokenSource.CancelAsync();
+
+        try
+        {
+            await _processingTask;
+        }
+        catch (OperationCanceledException)
+        {
+            // Expected during shutdown
+        }
+
+        // Process remaining entries
+        var remainingEntries = new List<LogEntry>();
+        while (_logQueue.TryDequeue(out var entry))
+        {
+            remainingEntries.Add(entry);
+        }
+
+        if (remainingEntries.Count > 0)
+        {
+            await ProcessBatch(remainingEntries, CancellationToken.None);
+        }
+
+        // Dispose all delegates
+        var disposeTasks = _delegates.Values.Select(d => d.DisposeAsync().AsTask());
+        await Task.WhenAll(disposeTasks);
+
+        _delegates.Clear();
+        _flushSemaphore.Dispose();
+        _shutdownTokenSource.Dispose();
+    }
+
     private async Task ProcessLogEntriesAsync(CancellationToken cancellationToken)
     {
         var batch = new List<LogEntry>(1000);
-        
+
         while (!cancellationToken.IsCancellationRequested)
         {
             try
@@ -189,7 +235,7 @@ public sealed class LoggerDelegateManager : IAsyncDisposable
                 // Collect batch
                 batch.Clear();
                 var batchStartTime = Stopwatch.GetTimestamp();
-                
+
                 while (_logQueue.TryDequeue(out var entry) && batch.Count < 1000)
                 {
                     batch.Add(entry);
@@ -198,7 +244,7 @@ public sealed class LoggerDelegateManager : IAsyncDisposable
                 if (batch.Count > 0)
                 {
                     await ProcessBatch(batch, cancellationToken);
-                    
+
                     var elapsed = Stopwatch.GetElapsedTime(batchStartTime);
                     if (elapsed > ProcessingInterval)
                     {
@@ -285,7 +331,7 @@ public sealed class LoggerDelegateManager : IAsyncDisposable
         }
     }
 
-    private async Task WriteBatchToDelegate(IBatchLoggerDelegate @delegate, IReadOnlyCollection<LogEntry> entries, 
+    private async Task WriteBatchToDelegate(IBatchLoggerDelegate @delegate, IReadOnlyCollection<LogEntry> entries,
         CancellationToken cancellationToken)
     {
         try
@@ -302,46 +348,6 @@ public sealed class LoggerDelegateManager : IAsyncDisposable
     {
         LoggingError?.Invoke(this, args);
     }
-
-    public async ValueTask DisposeAsync()
-    {
-        if (_disposed)
-            return;
-
-        _disposed = true;
-
-        // Stop processing
-        await _shutdownTokenSource.CancelAsync();
-
-        try
-        {
-            await _processingTask;
-        }
-        catch (OperationCanceledException)
-        {
-            // Expected during shutdown
-        }
-
-        // Process remaining entries
-        var remainingEntries = new List<LogEntry>();
-        while (_logQueue.TryDequeue(out var entry))
-        {
-            remainingEntries.Add(entry);
-        }
-
-        if (remainingEntries.Count > 0)
-        {
-            await ProcessBatch(remainingEntries, CancellationToken.None);
-        }
-
-        // Dispose all delegates
-        var disposeTasks = _delegates.Values.Select(d => d.DisposeAsync().AsTask());
-        await Task.WhenAll(disposeTasks);
-
-        _delegates.Clear();
-        _flushSemaphore.Dispose();
-        _shutdownTokenSource.Dispose();
-    }
 }
 
 /// <summary>
@@ -349,10 +355,26 @@ public sealed class LoggerDelegateManager : IAsyncDisposable
 /// </summary>
 public sealed class LoggingErrorEventArgs : EventArgs
 {
+    /// <summary>
+    /// Gets the error message.
+    /// </summary>
     public string Message { get; }
+
+    /// <summary>
+    /// Gets the exception if one occurred.
+    /// </summary>
     public Exception? Exception { get; }
+
+    /// <summary>
+    /// Gets the timestamp when the error occurred.
+    /// </summary>
     public DateTimeOffset Timestamp { get; } = DateTimeOffset.UtcNow;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LoggingErrorEventArgs"/> class.
+    /// </summary>
+    /// <param name="message">The error message.</param>
+    /// <param name="exception">The exception if one occurred.</param>
     public LoggingErrorEventArgs(string message, Exception? exception = null)
     {
         Message = message ?? throw new ArgumentNullException(nameof(message));
@@ -365,9 +387,28 @@ public sealed class LoggingErrorEventArgs : EventArgs
 /// </summary>
 public sealed record LoggingStatistics
 {
+    /// <summary>
+    /// Gets the number of registered delegates.
+    /// </summary>
     public int RegisteredDelegates { get; init; }
+
+    /// <summary>
+    /// Gets the number of pending log entries in the queue.
+    /// </summary>
     public int PendingEntries { get; init; }
+
+    /// <summary>
+    /// Gets the maximum queue size.
+    /// </summary>
     public int MaxQueueSize { get; init; }
+
+    /// <summary>
+    /// Gets the batch processing interval.
+    /// </summary>
     public TimeSpan ProcessingInterval { get; init; }
+
+    /// <summary>
+    /// Gets a value indicating whether the processing task is active.
+    /// </summary>
     public bool IsProcessing { get; init; }
 }

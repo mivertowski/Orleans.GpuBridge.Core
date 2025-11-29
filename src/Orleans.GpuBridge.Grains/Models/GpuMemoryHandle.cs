@@ -36,7 +36,7 @@ public sealed record GpuMemoryHandle(
             deviceIndex,
             DateTime.UtcNow);
     }
-    
+
     /// <summary>
     /// Creates a new GPU memory handle with a specific ID
     /// </summary>
@@ -49,7 +49,7 @@ public sealed record GpuMemoryHandle(
             0,
             DateTime.UtcNow);
     }
-    
+
     /// <summary>
     /// Empty GPU memory handle
     /// </summary>

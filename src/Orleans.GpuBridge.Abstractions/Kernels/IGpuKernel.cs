@@ -112,7 +112,18 @@ public sealed record KernelValidationResult(
     string? ErrorMessage = null,
     string[]? ValidationErrors = null)
 {
+    /// <summary>
+    /// Creates a valid result indicating the input passed validation.
+    /// </summary>
+    /// <returns>A validation result with IsValid set to true.</returns>
     public static KernelValidationResult Valid() => new(true);
+
+    /// <summary>
+    /// Creates an invalid result with error details.
+    /// </summary>
+    /// <param name="errorMessage">The primary error message.</param>
+    /// <param name="validationErrors">Additional validation error details.</param>
+    /// <returns>A validation result with IsValid set to false and error information.</returns>
     public static KernelValidationResult Invalid(string errorMessage, params string[] validationErrors) =>
         new(false, errorMessage, validationErrors);
 }

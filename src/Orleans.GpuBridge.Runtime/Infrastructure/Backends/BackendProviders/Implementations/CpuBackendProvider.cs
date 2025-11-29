@@ -112,7 +112,7 @@ internal class CpuBackendProvider : IBackendProvider
     {
         return Array.Empty<DeviceInfo>();
     }
-    
+
     /// <summary>
     /// Disposes resources used by this backend provider
     /// </summary>

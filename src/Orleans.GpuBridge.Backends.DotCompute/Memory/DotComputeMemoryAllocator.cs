@@ -61,7 +61,7 @@ internal sealed class DotComputeMemoryAllocator : IMemoryAllocator
 
             // Select device for allocation
             var device = SelectDeviceForAllocation(options);
-            
+
             // Implement actual DotCompute memory allocation
             // This would use DotCompute's memory management APIs
             var deviceMemory = await AllocateDotComputeMemoryAsync(device, sizeBytes, options, cancellationToken);
@@ -107,7 +107,7 @@ internal sealed class DotComputeMemoryAllocator : IMemoryAllocator
 
             // Select device for allocation
             var device = SelectDeviceForAllocation(options);
-            
+
             // Allocate typed memory
             var deviceMemory = await AllocateDotComputeTypedMemoryAsync<T>(device, elementCount, options, cancellationToken);
 
@@ -125,8 +125,8 @@ internal sealed class DotComputeMemoryAllocator : IMemoryAllocator
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, 
-                "Failed to allocate {ElementCount} elements of type {TypeName}", 
+            _logger.LogError(ex,
+                "Failed to allocate {ElementCount} elements of type {TypeName}",
                 elementCount, typeof(T).Name);
             throw;
         }
@@ -172,7 +172,7 @@ internal sealed class DotComputeMemoryAllocator : IMemoryAllocator
 
             // Check if any device supports unified memory
             var devices = _deviceManager.GetDevices();
-            var unifiedMemoryDevice = devices.FirstOrDefault(d => 
+            var unifiedMemoryDevice = devices.FirstOrDefault(d =>
                 d.Type == DeviceType.GPU); // Simplified check
 
             if (unifiedMemoryDevice == null)
@@ -212,8 +212,8 @@ internal sealed class DotComputeMemoryAllocator : IMemoryAllocator
         var totalInUse = Interlocked.Read(ref _totalBytesInUse);
         var allocationCount = _allocationCount;
 
-        var fragmentationPercent = totalAllocated > 0 
-            ? ((totalAllocated - totalInUse) / (double)totalAllocated) * 100 
+        var fragmentationPercent = totalAllocated > 0
+            ? ((totalAllocated - totalInUse) / (double)totalAllocated) * 100
             : 0;
 
         var largestFreeBlock = 0L;

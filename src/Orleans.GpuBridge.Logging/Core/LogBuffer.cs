@@ -39,6 +39,10 @@ public sealed class LogBuffer : IAsyncDisposable
     /// </summary>
     public BufferStatistics Statistics { get; private set; } = new();
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LogBuffer"/> class.
+    /// </summary>
+    /// <param name="options">Buffer configuration options.</param>
     public LogBuffer(LogBufferOptions? options = null)
     {
         _options = options ?? new LogBufferOptions();
@@ -187,6 +191,9 @@ public sealed class LogBuffer : IAsyncDisposable
         };
     }
 
+    /// <summary>
+    /// Disposes the log buffer asynchronously, flushing all remaining entries.
+    /// </summary>
     public async ValueTask DisposeAsync()
     {
         if (_disposed)

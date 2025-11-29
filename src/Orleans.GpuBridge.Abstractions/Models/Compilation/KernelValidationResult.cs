@@ -90,7 +90,7 @@ public sealed record KernelValidationResult(
     /// <c>true</c> if there are one or more warnings; otherwise, <c>false</c>.
     /// </value>
     public bool HasWarnings => Warnings?.Any() == true;
-    
+
     /// <summary>
     /// Gets a value indicating whether the validation result identifies unsupported features.
     /// </summary>
@@ -98,7 +98,7 @@ public sealed record KernelValidationResult(
     /// <c>true</c> if there are one or more unsupported features identified; otherwise, <c>false</c>.
     /// </value>
     public bool HasUnsupportedFeatures => UnsupportedFeatures?.Any() == true;
-    
+
     /// <summary>
     /// Gets the total number of issues (warnings + unsupported features) identified.
     /// </summary>

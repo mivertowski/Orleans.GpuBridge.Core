@@ -6,7 +6,7 @@ namespace Orleans.GpuBridge.Runtime.BackendProviders.Interfaces;
 public interface IComputeKernel : IDisposable
 {
     string Name { get; }
-    
+
     void SetArgument(int index, IComputeBuffer<float> buffer);
     void SetArgument(int index, IComputeBuffer<double> buffer);
     void SetArgument(int index, IComputeBuffer<int> buffer);

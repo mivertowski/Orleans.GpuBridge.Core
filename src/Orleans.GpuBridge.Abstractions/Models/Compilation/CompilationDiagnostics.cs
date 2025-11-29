@@ -115,7 +115,7 @@ public sealed record CompilationDiagnostics(
     /// <c>true</c> if intermediate code is available; otherwise, <c>false</c>.
     /// </value>
     public bool HasIntermediateCode => !string.IsNullOrEmpty(IntermediateCode);
-    
+
     /// <summary>
     /// Gets a value indicating whether this diagnostic instance contains assembly code information.
     /// </summary>
@@ -123,7 +123,7 @@ public sealed record CompilationDiagnostics(
     /// <c>true</c> if assembly code is available; otherwise, <c>false</c>.
     /// </value>
     public bool HasAssemblyCode => !string.IsNullOrEmpty(AssemblyCode);
-    
+
     /// <summary>
     /// Gets a value indicating whether this diagnostic instance contains an optimization report.
     /// </summary>
@@ -131,7 +131,7 @@ public sealed record CompilationDiagnostics(
     /// <c>true</c> if an optimization report is available; otherwise, <c>false</c>.
     /// </value>
     public bool HasOptimizationReport => !string.IsNullOrEmpty(OptimizationReport);
-    
+
     /// <summary>
     /// Gets a value indicating whether this diagnostic instance contains additional backend-specific information.
     /// </summary>

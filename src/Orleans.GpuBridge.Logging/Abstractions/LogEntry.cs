@@ -62,7 +62,7 @@ public sealed record LogEntry
     /// <summary>
     /// Structured properties associated with this log entry.
     /// </summary>
-    public IReadOnlyDictionary<string, object?> Properties { get; init; } = 
+    public IReadOnlyDictionary<string, object?> Properties { get; init; } =
         new Dictionary<string, object?>();
 
     /// <summary>
@@ -107,7 +107,7 @@ public sealed record LogEntry
     /// <summary>
     /// Creates a new log entry with structured properties.
     /// </summary>
-    public static LogEntry CreateWithProperties(LogLevel level, string category, string message, 
+    public static LogEntry CreateWithProperties(LogLevel level, string category, string message,
         IReadOnlyDictionary<string, object?> properties)
     {
         return Create(level, category, message) with { Properties = properties };
@@ -123,7 +123,7 @@ public sealed record LogEntry
         {
             mergedProperties[kvp.Key] = kvp.Value;
         }
-        
+
         return this with { Properties = mergedProperties };
     }
 
@@ -132,8 +132,8 @@ public sealed record LogEntry
     /// </summary>
     public LogEntry WithCorrelation(string correlationId, string? operationId = null)
     {
-        return this with 
-        { 
+        return this with
+        {
             CorrelationId = correlationId,
             OperationId = operationId ?? OperationId
         };

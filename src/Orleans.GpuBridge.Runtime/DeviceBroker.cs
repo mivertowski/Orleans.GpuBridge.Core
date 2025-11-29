@@ -38,11 +38,11 @@ public sealed partial class DeviceBroker : IDisposable
     private readonly Timer _loadBalancingTimer;
     private bool _initialized;
     private bool _disposed;
-    
+
     public int DeviceCount => _devices.Count;
     public long TotalMemoryBytes => _devices.Sum(d => d.TotalMemoryBytes);
     public int CurrentQueueDepth => _workQueues.Values.Sum(q => q.QueuedItems);
-    
+
     public DeviceBroker(
         [NotNull] ILogger<DeviceBroker> logger,
         [NotNull] IOptions<GpuBridgeOptions> options)
@@ -57,14 +57,14 @@ public sealed partial class DeviceBroker : IDisposable
         _deviceHealth = new ConcurrentDictionary<string, DeviceHealthInfo>();
         _deviceLoad = new ConcurrentDictionary<string, DeviceLoadInfo>();
         _initLock = new SemaphoreSlim(1, 1);
-        
+
         // Start monitoring timer for device health
         _monitoringTimer = new Timer(
             MonitorDeviceHealth,
             null,
             TimeSpan.FromSeconds(30),
             TimeSpan.FromSeconds(30));
-        
+
         // Initialize production timers with proper async handling
         _healthMonitorTimer = new Timer(
             _ => Task.Run(async () => await MonitorDeviceHealthAsync().ConfigureAwait(false)),
@@ -78,7 +78,7 @@ public sealed partial class DeviceBroker : IDisposable
             TimeSpan.FromSeconds(5),
             TimeSpan.FromSeconds(5));
     }
-    
+
     public async Task InitializeAsync(CancellationToken ct)
     {
         var operationName = "DeviceBrokerInitialization";
@@ -129,39 +129,39 @@ public sealed partial class DeviceBroker : IDisposable
             throw new InvalidOperationException($"Device broker initialization failed: {operationName}", ex);
         }
     }
-    
+
     public async Task ShutdownAsync(CancellationToken ct)
     {
         _logger.LogInformation("Shutting down device broker");
-        
+
         // Stop all work queues
         var shutdownTasks = _workQueues.Values
             .Select(q => q.ShutdownAsync(ct))
             .ToArray();
-        
+
         await Task.WhenAll(shutdownTasks).ConfigureAwait(false);
-        
+
         _workQueues.Clear();
         _devices.Clear();
         _initialized = false;
     }
-    
+
     public IReadOnlyList<GpuDevice> GetDevices()
     {
         EnsureInitialized();
         return _devices.AsReadOnly();
     }
-    
+
     public GpuDevice? GetDevice(int index)
     {
         EnsureInitialized();
         return _devices.FirstOrDefault(d => d.Index == index);
     }
-    
+
     public GpuDevice? GetBestDevice()
     {
         EnsureInitialized();
-        
+
         // Score devices based on availability and performance
         return _devices
             .Select(d => new
@@ -173,26 +173,26 @@ public sealed partial class DeviceBroker : IDisposable
             .Select(x => x.Device)
             .FirstOrDefault();
     }
-    
+
     private double CalculateDeviceScore(GpuDevice device)
     {
         var queue = _workQueues.GetValueOrDefault(device.Index);
         if (queue == null) return 0;
-        
+
         var metrics = queue.GetMetrics();
-        
+
         // Calculate score based on multiple factors
         double score = 0;
-        
+
         // Memory availability (40% weight)
         score += (device.AvailableMemoryBytes / (double)device.TotalMemoryBytes) * 40;
-        
+
         // Queue depth (30% weight) - lower is better
         score += Math.Max(0, 30 - (metrics.QueuedItems / 10.0));
-        
+
         // Success rate (20% weight)
         score += (1 - metrics.ErrorRate) * 20;
-        
+
         // Device type preference (10% weight)
         score += device.Type switch
         {
@@ -203,14 +203,14 @@ public sealed partial class DeviceBroker : IDisposable
             DeviceType.CPU => 5,
             _ => 0
         };
-        
+
         return score;
     }
-    
+
     private void MonitorDeviceHealth(object? state)
     {
         if (_disposed) return;
-        
+
         try
         {
             foreach (var queue in _workQueues.Values)
@@ -222,7 +222,7 @@ public sealed partial class DeviceBroker : IDisposable
                         "Device {Index} has high error rate: {ErrorRate:P}",
                         queue.Device.Index, metrics.ErrorRate);
                 }
-                
+
                 if (metrics.QueuedItems > 1000)
                 {
                     _logger.LogWarning(
@@ -243,11 +243,11 @@ public sealed partial class DeviceBroker : IDisposable
     private async Task MonitorDeviceHealthAsync(CancellationToken cancellationToken = default)
     {
         if (_disposed) return;
-        
+
         try
         {
             _logger.LogDebug("Starting async device health monitoring cycle");
-            
+
             // Monitor all devices in parallel for better performance
             var monitoringTasks = _workQueues.Values.Select(async queue =>
             {
@@ -260,9 +260,9 @@ public sealed partial class DeviceBroker : IDisposable
                     _logger.LogError(ex, "Error monitoring device {DeviceIndex}", queue.Device.Index);
                 }
             });
-            
+
             await Task.WhenAll(monitoringTasks).ConfigureAwait(false);
-            
+
             _logger.LogDebug("Completed async device health monitoring cycle");
         }
         catch (Exception ex)
@@ -270,79 +270,79 @@ public sealed partial class DeviceBroker : IDisposable
             _logger.LogError(ex, "Error during async device health monitoring");
         }
     }
-    
+
     /// <summary>
     /// Monitors a single device's health asynchronously
     /// </summary>
     private async Task MonitorSingleDeviceAsync(DeviceWorkQueue queue, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        
+
         // Get metrics asynchronously to avoid blocking
         var metrics = await Task.Run(() => queue.GetMetrics(), cancellationToken).ConfigureAwait(false);
-        
+
         // Check error rate
         if (metrics.ErrorRate > 0.1) // More than 10% errors
         {
             _logger.LogWarning(
                 "Device {Index} has high error rate: {ErrorRate:P} (Async monitoring)",
                 queue.Device.Index, metrics.ErrorRate);
-                
+
             // Potentially trigger device health recovery
             await TriggerDeviceRecoveryAsync(queue, cancellationToken).ConfigureAwait(false);
         }
-        
+
         // Check queue depth
         if (metrics.QueuedItems > 1000)
         {
             _logger.LogWarning(
                 "Device {Index} has large queue: {Items} items (Async monitoring)",
                 queue.Device.Index, metrics.QueuedItems);
-                
+
             // Potentially trigger load balancing
             await TriggerLoadBalancingAsync(queue, cancellationToken).ConfigureAwait(false);
         }
-        
+
         // Check memory usage if available
         await CheckDeviceMemoryUsageAsync(queue, cancellationToken).ConfigureAwait(false);
     }
-    
+
     /// <summary>
     /// Triggers device recovery operations asynchronously
     /// </summary>
     private async Task TriggerDeviceRecoveryAsync(DeviceWorkQueue queue, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Triggering recovery for device {DeviceIndex}", queue.Device.Index);
-        
+
         // Simulate device recovery operations
         await Task.Delay(100, cancellationToken).ConfigureAwait(false);
-        
+
         // In a real implementation, this might:
         // - Reset device context
         // - Clear error states
         // - Redistribute work
-        
+
         _logger.LogDebug("Device recovery completed for device {DeviceIndex}", queue.Device.Index);
     }
-    
+
     /// <summary>
     /// Triggers load balancing operations asynchronously
     /// </summary>
     private async Task TriggerLoadBalancingAsync(DeviceWorkQueue queue, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Triggering load balancing for device {DeviceIndex}", queue.Device.Index);
-        
+
         // Simulate load balancing operations
         await Task.Delay(50, cancellationToken).ConfigureAwait(false);
-        
+
         // In a real implementation, this might:
         // - Redistribute queued work
         // - Adjust device priorities
         // - Scale resources
-        
+
         _logger.LogDebug("Load balancing completed for device {DeviceIndex}", queue.Device.Index);
     }
-    
+
     /// <summary>
     /// Checks device memory usage asynchronously
     /// </summary>
@@ -358,7 +358,7 @@ public sealed partial class DeviceBroker : IDisposable
                 var availableMemory = queue.Device.AvailableMemoryBytes;
                 return totalMemory > 0 ? (double)(totalMemory - availableMemory) / totalMemory : 0.0;
             }, cancellationToken).ConfigureAwait(false);
-            
+
             if (memoryUsage > 0.9) // More than 90% memory usage
             {
                 _logger.LogWarning(
@@ -371,18 +371,18 @@ public sealed partial class DeviceBroker : IDisposable
             _logger.LogDebug(ex, "Error checking memory usage for device {DeviceIndex}", queue.Device.Index);
         }
     }
-    
+
     /// <summary>
     /// Updates load balancing parameters asynchronously
     /// </summary>
     private async Task UpdateLoadBalancingAsync(CancellationToken cancellationToken = default)
     {
         if (_disposed) return;
-        
+
         try
         {
             _logger.LogDebug("Starting async load balancing update");
-            
+
             // Update load balancing for all devices in parallel
             var loadBalancingTasks = _workQueues.Values.Select(async queue =>
             {
@@ -395,9 +395,9 @@ public sealed partial class DeviceBroker : IDisposable
                     _logger.LogError(ex, "Error updating load balance for device {DeviceIndex}", queue.Device.Index);
                 }
             });
-            
+
             await Task.WhenAll(loadBalancingTasks).ConfigureAwait(false);
-            
+
             _logger.LogDebug("Completed async load balancing update");
         }
         catch (Exception ex)
@@ -405,31 +405,31 @@ public sealed partial class DeviceBroker : IDisposable
             _logger.LogError(ex, "Error during async load balancing update");
         }
     }
-    
+
     /// <summary>
     /// Updates load balance for a single device asynchronously
     /// </summary>
     private async Task UpdateDeviceLoadBalanceAsync(DeviceWorkQueue queue, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        
+
         // Simulate load balancing calculations
         await Task.Run(() =>
         {
             var metrics = queue.GetMetrics();
-            
+
             // Calculate new load balancing parameters
             // In a real implementation, this would adjust:
             // - Queue priorities
             // - Work distribution weights
             // - Resource allocation
-            
+
             _logger.LogTrace(
                 "Updated load balance for device {DeviceIndex}: Queue={QueuedItems}, ErrorRate={ErrorRate:P}",
                 queue.Device.Index, metrics.QueuedItems, metrics.ErrorRate);
         }, cancellationToken).ConfigureAwait(false);
     }
-    
+
     private void EnsureInitialized()
     {
         if (!_initialized)
@@ -437,7 +437,7 @@ public sealed partial class DeviceBroker : IDisposable
             throw new InvalidOperationException("Device broker not initialized");
         }
     }
-    
+
     /// <summary>
     /// Gets a CPU fallback device for when no GPU devices are available
     /// </summary>
@@ -454,7 +454,7 @@ public sealed partial class DeviceBroker : IDisposable
             Capabilities: new[] { "cpu", "fallback" }
         );
     }
-    
+
     /// <summary>
     /// Checks if device meets basic selection criteria
     /// </summary>
@@ -462,23 +462,23 @@ public sealed partial class DeviceBroker : IDisposable
     {
         if (criteria.PreferredType.HasValue && device.Type != criteria.PreferredType.Value)
             return false;
-            
+
         if (device.MemoryBytes < criteria.MinimumMemoryBytes)
             return false;
-            
+
         return true;
     }
-    
+
     public void Dispose()
     {
         if (_disposed) return;
-        
+
         _disposed = true;
         _monitoringTimer?.Dispose();
         _healthMonitorTimer?.Dispose();
         _loadBalancingTimer?.Dispose();
         _initLock?.Dispose();
-        
+
         // Shutdown all queues
         var shutdownTask = ShutdownAsync(CancellationToken.None);
         shutdownTask.GetAwaiter().GetResult();
@@ -497,14 +497,14 @@ public sealed partial class DeviceBroker : IDisposable
             await foreach (var device in EnumerateGpuDevicesAsync(cancellationToken).ConfigureAwait(false))
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                
+
                 _devices.Add(device);
                 _availableDevices.Add(device);
-                
+
                 _logger.LogInformation("Detected GPU device: {DeviceName} ({DeviceType}) with {Memory:N0} bytes",
                     device.Name, device.Type, device.TotalMemoryBytes);
             }
-            
+
             if (_devices.Count == 0)
             {
                 _logger.LogWarning("No GPU devices detected, system will use CPU fallback only");
@@ -527,39 +527,39 @@ public sealed partial class DeviceBroker : IDisposable
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         _logger.LogDebug("Starting async GPU device enumeration");
-        
+
         // Simulate detection latency
         await Task.Delay(50, cancellationToken).ConfigureAwait(false);
-        
+
         // In a production implementation, this would:
         // 1. Query CUDA devices via CUDA Runtime API
         // 2. Query OpenCL devices via OpenCL API
         // 3. Query DirectCompute devices via DirectX
         // 4. Query Metal devices on macOS
         // 5. Query Vulkan compute devices
-        
+
         // For now, we'll simulate the detection process
         var detectionMethods = new[]
         {
             "CUDA Detection",
-            "OpenCL Detection", 
+            "OpenCL Detection",
             "DirectCompute Detection",
             "Vulkan Detection"
         };
-        
+
         foreach (var method in detectionMethods)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            
+
             _logger.LogTrace("Running {DetectionMethod}", method);
             await Task.Delay(25, cancellationToken).ConfigureAwait(false);
-            
+
             // Simulate finding devices via this method
             // In production, each method would query its respective API
         }
-        
+
         _logger.LogDebug("Async GPU device enumeration completed");
-        
+
         // Return empty enumerable for now since this is a stub
         yield break;
     }
@@ -572,7 +572,7 @@ public sealed partial class DeviceBroker : IDisposable
         var cpuDevice = GetCpuFallbackDevice();
         _devices.Add(cpuDevice);
         _availableDevices.Add(cpuDevice);
-        
+
         _logger.LogInformation(
             "Added CPU fallback device: {Name} with {Memory:N0} bytes",
             cpuDevice.Name, cpuDevice.TotalMemoryBytes);

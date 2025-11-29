@@ -22,7 +22,7 @@ public interface IKernelExecutor
         CompiledKernel kernel,
         KernelExecutionParameters parameters,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Executes a kernel asynchronously (non-blocking)
     /// </summary>
@@ -30,7 +30,7 @@ public interface IKernelExecutor
         CompiledKernel kernel,
         KernelExecutionParameters parameters,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Executes multiple kernels in a batch
     /// </summary>
@@ -38,12 +38,12 @@ public interface IKernelExecutor
         IReadOnlyList<KernelBatchItem> batch,
         BatchExecutionOptions options,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Creates a kernel execution graph for optimized execution
     /// </summary>
     IKernelGraph CreateGraph(string graphName);
-    
+
     /// <summary>
     /// Profiles kernel execution
     /// </summary>
@@ -52,12 +52,12 @@ public interface IKernelExecutor
         KernelExecutionParameters parameters,
         int iterations = 100,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Gets execution statistics
     /// </summary>
     ExecutionStatistics GetStatistics();
-    
+
     /// <summary>
     /// Resets execution statistics
     /// </summary>

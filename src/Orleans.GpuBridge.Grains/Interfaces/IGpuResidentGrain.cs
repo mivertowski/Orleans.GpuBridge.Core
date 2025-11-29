@@ -28,7 +28,7 @@ public interface IGpuResidentGrain<T> : IGrainWithStringKey where T : unmanaged
     Task<GpuMemoryHandle> AllocateAsync(
         long sizeBytes,
         GpuMemoryType memoryType = GpuMemoryType.Default);
-    
+
     /// <summary>
     /// Writes data to a previously allocated resident memory buffer.
     /// The data is transferred to GPU memory and becomes available for kernel operations.
@@ -44,7 +44,7 @@ public interface IGpuResidentGrain<T> : IGrainWithStringKey where T : unmanaged
         GpuMemoryHandle handle,
         TData[] data,
         int offset = 0) where TData : unmanaged;
-    
+
     /// <summary>
     /// Reads data from a resident memory buffer back to host memory.
     /// This operation transfers data from GPU memory to a host-accessible array.
@@ -60,7 +60,7 @@ public interface IGpuResidentGrain<T> : IGrainWithStringKey where T : unmanaged
         GpuMemoryHandle handle,
         int count,
         int offset = 0) where TData : unmanaged;
-    
+
     /// <summary>
     /// Executes a GPU kernel using resident memory buffers as input and output.
     /// This enables high-performance computation without memory transfer overhead.
@@ -76,7 +76,7 @@ public interface IGpuResidentGrain<T> : IGrainWithStringKey where T : unmanaged
         GpuMemoryHandle input,
         GpuMemoryHandle output,
         GpuComputeParams? parameters = null);
-    
+
     /// <summary>
     /// Releases a previously allocated memory buffer, freeing GPU memory resources.
     /// After this operation, the memory handle becomes invalid and cannot be used.
@@ -84,7 +84,7 @@ public interface IGpuResidentGrain<T> : IGrainWithStringKey where T : unmanaged
     /// <param name="handle">The memory handle to release.</param>
     /// <returns>A task representing the asynchronous release operation.</returns>
     Task ReleaseAsync(GpuMemoryHandle handle);
-    
+
     /// <summary>
     /// Retrieves information about all currently allocated memory buffers.
     /// This includes total memory usage, allocation count, and individual allocation details.
@@ -93,7 +93,7 @@ public interface IGpuResidentGrain<T> : IGrainWithStringKey where T : unmanaged
     /// A task that resolves to a <see cref="GpuMemoryInfo"/> containing comprehensive memory usage information.
     /// </returns>
     Task<GpuMemoryInfo> GetMemoryInfoAsync();
-    
+
     /// <summary>
     /// Releases all allocated memory buffers and clears the resident state.
     /// This operation frees all GPU memory associated with this grain instance.

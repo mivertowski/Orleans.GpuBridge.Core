@@ -108,7 +108,7 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
     public IComputeDevice GetDefaultDevice()
     {
         EnsureInitialized();
-        
+
         // Prefer GPU devices over CPU
         var gpuDevice = _devices.Values.FirstOrDefault(d => d.Type != DeviceType.CPU);
         if (gpuDevice != null)
@@ -299,30 +299,30 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
     public IComputeDevice SelectDevice(DeviceSelectionCriteria criteria)
     {
         EnsureInitialized();
-        
+
         var availableDevices = _devices.Values.Where(d => d.IsHealthy);
-        
+
         if (criteria.PreferredType.HasValue)
         {
             availableDevices = availableDevices.Where(d => d.Type == criteria.PreferredType.Value);
         }
-        
+
         if (criteria.MinimumMemoryBytes > 0)
         {
             availableDevices = availableDevices.Where(d => d.AvailableMemoryBytes >= criteria.MinimumMemoryBytes);
         }
-        
+
         if (criteria.MinComputeUnits > 0)
         {
             availableDevices = availableDevices.Where(d => d.ComputeUnits >= criteria.MinComputeUnits);
         }
-        
+
         var selectedDevice = availableDevices.FirstOrDefault();
         if (selectedDevice == null)
         {
             throw new InvalidOperationException("No devices match the specified criteria");
         }
-        
+
         return selectedDevice;
     }
 
@@ -726,7 +726,7 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
 
         _disposed = true;
     }
-    
+
     private void DisposeSynchronously()
     {
         foreach (var device in _devices.Values)
@@ -742,10 +742,10 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
         }
         _devices.Clear();
     }
-    
+
     private async ValueTask DisposeAsyncCore()
     {
-        var disposeTasks = _devices.Values.Select(device => 
+        var disposeTasks = _devices.Values.Select(device =>
             Task.Run(() =>
             {
                 try
@@ -758,12 +758,12 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
                 }
             })
         ).ToArray();
-        
+
         if (disposeTasks.Length > 0)
         {
             await Task.WhenAll(disposeTasks).ConfigureAwait(false);
         }
-        
+
         _devices.Clear();
     }
 }

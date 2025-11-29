@@ -202,7 +202,7 @@ public sealed class GpuBackendRegistry : IGpuBackendRegistry
 
         // Get all available providers and find the best match
         var availableProviders = await GetAvailableProvidersAsync(cancellationToken);
-        
+
         // Filter by exclusions
         if (criteria.ExcludeProviders?.Count > 0)
         {
@@ -228,7 +228,7 @@ public sealed class GpuBackendRegistry : IGpuBackendRegistry
 
         // Select best provider based on priority and preferences
         var selectedProvider = SelectBestProvider(compatibleProviders, criteria);
-        
+
         if (selectedProvider != null)
         {
             _logger.LogInformation("Selected GPU backend provider: {ProviderId}", selectedProvider.ProviderId);
@@ -252,7 +252,7 @@ public sealed class GpuBackendRegistry : IGpuBackendRegistry
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex, "Failed to discover providers from assembly {AssemblyName}", 
+                _logger.LogWarning(ex, "Failed to discover providers from assembly {AssemblyName}",
                     assembly.FullName);
             }
         }
@@ -272,7 +272,7 @@ public sealed class GpuBackendRegistry : IGpuBackendRegistry
             {
                 // Try to get provider ID from attribute or use type name
                 var providerId = GetProviderIdFromType(providerType);
-                
+
                 var registration = new BackendRegistration(
                     ProviderId: providerId,
                     DisplayName: providerType.Name,
@@ -315,7 +315,7 @@ public sealed class GpuBackendRegistry : IGpuBackendRegistry
             {
                 var provider = (IGpuBackendProvider?)ActivatorUtilities.CreateInstance(
                     _serviceProvider, registration.ProviderType);
-                    
+
                 if (provider != null)
                 {
                     await provider.InitializeAsync(new BackendConfiguration(), cancellationToken);
@@ -359,7 +359,7 @@ public sealed class GpuBackendRegistry : IGpuBackendRegistry
             return Task.FromResult(false);
 
         // Check preferred backend
-        if (criteria.PreferredBackend.HasValue && 
+        if (criteria.PreferredBackend.HasValue &&
             !capabilities.SupportedBackends.Contains(criteria.PreferredBackend.Value))
             return Task.FromResult(false);
 

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Orleans.GpuBridge.Abstractions.Kernels;
@@ -40,5 +41,7 @@ public interface IGpuBridge
     /// compile-time type information is not available. Use with caution.
     /// TODO: Implement full dynamic kernel execution support
     /// </remarks>
+    [RequiresDynamicCode("Dynamic kernel execution uses runtime reflection to create generic method calls.")]
+    [RequiresUnreferencedCode("Dynamic kernel execution uses reflection which may not work with trimming.")]
     ValueTask<object> ExecuteKernelAsync(string kernelId, object input, CancellationToken ct = default);
 }

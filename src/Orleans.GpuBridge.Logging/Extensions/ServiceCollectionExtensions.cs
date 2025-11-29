@@ -21,7 +21,7 @@ public static class ServiceCollectionExtensions
     /// <param name="services">Service collection</param>
     /// <param name="configuration">Configuration section</param>
     /// <returns>Service collection for chaining</returns>
-    public static IServiceCollection AddGpuBridgeLogging(this IServiceCollection services, 
+    public static IServiceCollection AddGpuBridgeLogging(this IServiceCollection services,
         IConfiguration configuration)
     {
         return services.AddGpuBridgeLogging(options =>
@@ -159,7 +159,7 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    private static void ConfigureDelegates(Core.LoggerFactory factory, 
+    private static void ConfigureDelegates(Core.LoggerFactory factory,
         GpuBridgeLoggingOptions options, IServiceProvider provider)
     {
         // Configure console delegate
@@ -176,7 +176,7 @@ public static class ServiceCollectionExtensions
                 IncludeThreadId = options.Console.IncludeThreadId,
                 IncludeContext = options.Console.IncludeContext,
                 IncludeMetrics = options.Console.IncludeMetrics,
-                TimestampFormat = Enum.TryParse<ConsoleTimestampFormat>(options.Console.TimestampFormat, out var tsFormat) 
+                TimestampFormat = Enum.TryParse<ConsoleTimestampFormat>(options.Console.TimestampFormat, out var tsFormat)
                     ? tsFormat : ConsoleTimestampFormat.Local
             };
 
@@ -241,7 +241,7 @@ internal sealed class GpuBridgeLoggerProvider : ILoggerProvider
     private readonly GpuBridgeLoggingOptions _options;
     private bool _disposed;
 
-    public GpuBridgeLoggerProvider(Core.LoggerFactory loggerFactory, 
+    public GpuBridgeLoggerProvider(Core.LoggerFactory loggerFactory,
         IOptions<GpuBridgeLoggingOptions> options)
     {
         _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
@@ -275,9 +275,9 @@ internal sealed class GpuBridgeLoggingOptionsValidator : IValidateOptions<GpuBri
     public ValidateOptionsResult Validate(string? name, GpuBridgeLoggingOptions options)
     {
         var validation = options.ValidateConfiguration();
-        
-        return validation.IsValid 
-            ? ValidateOptionsResult.Success 
+
+        return validation.IsValid
+            ? ValidateOptionsResult.Success
             : ValidateOptionsResult.Fail(validation.Errors);
     }
 }

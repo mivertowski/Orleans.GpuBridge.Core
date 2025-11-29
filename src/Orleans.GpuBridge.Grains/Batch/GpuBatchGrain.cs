@@ -27,7 +27,7 @@ public sealed class GpuBatchGrain<TIn, TOut> : Grain, IGpuBatchGrain<TIn, TOut>
     private IGpuBridge _bridge = default!;
     private IGpuKernel<TIn, TOut> _kernel = default!;
     private KernelId _kernelId = default!;
-    
+
     public GpuBatchGrain(ILogger<GpuBatchGrain<TIn, TOut>> logger)
     {
         _logger = logger;
@@ -35,7 +35,7 @@ public sealed class GpuBatchGrain<TIn, TOut> : Grain, IGpuBatchGrain<TIn, TOut>
             Environment.ProcessorCount * 2,
             Environment.ProcessorCount * 2);
     }
-    
+
     public override async Task OnActivateAsync(CancellationToken ct)
     {
         // Extract kernelId from compound primary key (format: "guid+kernelId" or just "kernelId")
@@ -54,7 +54,7 @@ public sealed class GpuBatchGrain<TIn, TOut> : Grain, IGpuBatchGrain<TIn, TOut>
 
         await base.OnActivateAsync(ct);
     }
-    
+
     public async Task<GpuBatchResult<TOut>> ExecuteAsync(
         IReadOnlyList<TIn> batch,
         GpuExecutionHints? hints = null)
@@ -196,7 +196,7 @@ public sealed class GpuBatchGrain<TIn, TOut> : Grain, IGpuBatchGrain<TIn, TOut>
             return estimatedInputSize + estimatedOutputSize;
         }
     }
-    
+
     public async Task<GpuBatchResult<TOut>> ExecuteWithCallbackAsync(
         IReadOnlyList<TIn> batch,
         IGpuResultObserver<TOut> observer,
@@ -205,7 +205,7 @@ public sealed class GpuBatchGrain<TIn, TOut> : Grain, IGpuBatchGrain<TIn, TOut>
         try
         {
             var result = await ExecuteAsync(batch, hints);
-            
+
             if (result.Success)
             {
                 // Stream results to observer
@@ -220,7 +220,7 @@ public sealed class GpuBatchGrain<TIn, TOut> : Grain, IGpuBatchGrain<TIn, TOut>
                 await observer.OnErrorAsync(
                     new Exception(result.Error));
             }
-            
+
             return result;
         }
         catch (Exception ex)
@@ -229,7 +229,7 @@ public sealed class GpuBatchGrain<TIn, TOut> : Grain, IGpuBatchGrain<TIn, TOut>
             throw;
         }
     }
-    
+
     public Task<GpuBatchResult<TOut>> ProcessBatchAsync(
         IReadOnlyList<TIn> batch,
         GpuExecutionHints? hints = null)

@@ -10,7 +10,7 @@ public interface IComputeContext : IDisposable
 {
     GpuBackend Backend { get; }
     int DeviceIndex { get; }
-    
+
     IComputeBuffer<T> CreateBuffer<T>(int size, BufferUsage usage) where T : unmanaged;
     IComputeKernel CompileKernel(string source, string entryPoint);
     void Execute(IComputeKernel kernel, int workSize);

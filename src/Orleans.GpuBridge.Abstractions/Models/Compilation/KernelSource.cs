@@ -56,7 +56,7 @@ namespace Orleans.GpuBridge.Abstractions.Models.Compilation;
 ///     SourceCode: @"
 ///         __global__ void vectorAdd(float* a, float* b, float* result, int n) {
 ///             int idx = blockIdx.x * blockDim.x + threadIdx.x;
-///             if (idx < n) {
+///             if (idx &lt; n) {
 ///                 result[idx] = a[idx] + b[idx];
 ///             }
 ///         }",
@@ -74,7 +74,7 @@ namespace Orleans.GpuBridge.Abstractions.Models.Compilation;
 ///             int row = get_global_id(0);
 ///             int col = get_global_id(1);
 ///             float sum = 0.0f;
-///             for (int k = 0; k < N; k++) {
+///             for (int k = 0; k &lt; N; k++) {
 ///                 sum += A[row * N + k] * B[k * N + col];
 ///             }
 ///             C[row * N + col] = sum;
@@ -120,19 +120,19 @@ public sealed record KernelSource(
         hash.Add(SourceCode);
         hash.Add(Language);
         hash.Add(EffectiveEntryPoint);
-        
+
         if (IncludePaths != null)
         {
             foreach (var path in IncludePaths)
                 hash.Add(path);
         }
-        
+
         if (Dependencies != null)
         {
             foreach (var dependency in Dependencies)
                 hash.Add(dependency);
         }
-        
+
         return hash.ToHashCode();
     }
 }

@@ -47,7 +47,7 @@ public sealed class GpuMetricsCollector : BackgroundService,
     private readonly Timer _collectionTimer;
     private readonly Dictionary<int, GpuDeviceMetrics> _currentMetrics = new();
     private readonly object _metricsLock = new();
-    
+
     /// <summary>
     /// Initializes a new instance of the <see cref="GpuMetricsCollector"/> class.
     /// </summary>
@@ -71,7 +71,7 @@ public sealed class GpuMetricsCollector : BackgroundService,
             TimeSpan.Zero,
             _options.CollectionInterval);
     }
-    
+
     /// <summary>
     /// Executes the background metrics collection service.
     /// </summary>
@@ -85,7 +85,7 @@ public sealed class GpuMetricsCollector : BackgroundService,
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation("GPU metrics collector started");
-        
+
         while (!stoppingToken.IsCancellationRequested)
         {
             try
@@ -104,14 +104,14 @@ public sealed class GpuMetricsCollector : BackgroundService,
                 await Task.Delay(TimeSpan.FromSeconds(30), stoppingToken);
             }
         }
-        
+
         _logger.LogInformation("GPU metrics collector stopped");
     }
-    
+
     private async Task CollectAllMetricsAsync()
     {
         var tasks = new List<Task>();
-        
+
         if (_options.EnableGpuMetrics)
         {
             for (int i = 0; i < _options.MaxDevices; i++)
@@ -138,28 +138,28 @@ public sealed class GpuMetricsCollector : BackgroundService,
                 }));
             }
         }
-        
+
         if (_options.EnableSystemMetrics)
         {
             tasks.Add(CollectSystemMetricsAsync());
         }
-        
+
         await Task.WhenAll(tasks);
     }
-    
+
     private async Task<GpuDeviceMetrics?> CollectDeviceMetricsAsync(int deviceIndex)
     {
         try
         {
             // Try NVIDIA first
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || 
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ||
                 RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 var nvidiaMetrics = await CollectNvidiaMetricsAsync(deviceIndex);
                 if (nvidiaMetrics != null)
                     return nvidiaMetrics;
             }
-            
+
             // Try AMD
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
@@ -167,7 +167,7 @@ public sealed class GpuMetricsCollector : BackgroundService,
                 if (amdMetrics != null)
                     return amdMetrics;
             }
-            
+
             // Try Intel
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
@@ -175,7 +175,7 @@ public sealed class GpuMetricsCollector : BackgroundService,
                 if (intelMetrics != null)
                     return intelMetrics;
             }
-            
+
             return null;
         }
         catch (Exception ex)
@@ -184,7 +184,7 @@ public sealed class GpuMetricsCollector : BackgroundService,
             return null;
         }
     }
-    
+
     private async Task<GpuDeviceMetrics?> CollectNvidiaMetricsAsync(int deviceIndex)
     {
         try
@@ -201,11 +201,11 @@ public sealed class GpuMetricsCollector : BackgroundService,
                     CreateNoWindow = true
                 }
             };
-            
+
             process.Start();
             var output = await process.StandardOutput.ReadToEndAsync();
             await process.WaitForExitAsync();
-            
+
             if (process.ExitCode == 0 && !string.IsNullOrWhiteSpace(output))
             {
                 var parts = output.Trim().Split(',').Select(p => p.Trim()).ToArray();
@@ -231,10 +231,10 @@ public sealed class GpuMetricsCollector : BackgroundService,
         {
             // nvidia-smi not available or failed
         }
-        
+
         return null;
     }
-    
+
     private async Task<GpuDeviceMetrics?> CollectAmdMetricsAsync(int deviceIndex)
     {
         try
@@ -251,11 +251,11 @@ public sealed class GpuMetricsCollector : BackgroundService,
                     CreateNoWindow = true
                 }
             };
-            
+
             process.Start();
             var output = await process.StandardOutput.ReadToEndAsync();
             await process.WaitForExitAsync();
-            
+
             if (process.ExitCode == 0 && !string.IsNullOrWhiteSpace(output))
             {
                 // Parse JSON output (simplified for example)
@@ -278,17 +278,17 @@ public sealed class GpuMetricsCollector : BackgroundService,
         {
             // rocm-smi not available or failed
         }
-        
+
         return null;
     }
-    
+
     private async Task<GpuDeviceMetrics?> CollectIntelMetricsAsync(int deviceIndex)
     {
         // Intel GPU metrics collection (placeholder)
         await Task.CompletedTask;
         return null;
     }
-    
+
     private async Task CollectSystemMetricsAsync()
     {
         try
@@ -302,7 +302,7 @@ public sealed class GpuMetricsCollector : BackgroundService,
                 HandleCount = process.HandleCount,
                 Timestamp = DateTimeOffset.UtcNow
             };
-            
+
             if (_options.EnableDetailedLogging)
             {
                 _logger.LogDebug(
@@ -314,10 +314,10 @@ public sealed class GpuMetricsCollector : BackgroundService,
         {
             _logger.LogError(ex, "Failed to collect system metrics");
         }
-        
+
         await Task.CompletedTask;
     }
-    
+
     private void UpdateMetrics(int deviceIndex, GpuDeviceMetrics metrics)
     {
         lock (_metricsLock)
@@ -325,7 +325,7 @@ public sealed class GpuMetricsCollector : BackgroundService,
             _currentMetrics[deviceIndex] = metrics;
         }
     }
-    
+
     private void UpdateTelemetry(int deviceIndex, GpuDeviceMetrics metrics)
     {
         if (_telemetry is GpuTelemetry telemetry)
@@ -337,7 +337,7 @@ public sealed class GpuMetricsCollector : BackgroundService,
                 metrics.PowerUsageWatts);
         }
     }
-    
+
     private void CollectMetrics(object? state)
     {
         _ = Task.Run(async () =>
@@ -352,7 +352,7 @@ public sealed class GpuMetricsCollector : BackgroundService,
             }
         });
     }
-    
+
     /// <summary>
     /// Retrieves performance metrics for a specific GPU device.
     /// </summary>
@@ -378,7 +378,7 @@ public sealed class GpuMetricsCollector : BackgroundService,
                 return metrics;
             }
         }
-        
+
         // Try to collect fresh metrics
         var freshMetrics = await CollectDeviceMetricsAsync(deviceIndex);
         if (freshMetrics != null)
@@ -386,10 +386,10 @@ public sealed class GpuMetricsCollector : BackgroundService,
             UpdateMetrics(deviceIndex, freshMetrics);
             return freshMetrics;
         }
-        
+
         throw new InvalidOperationException($"No metrics available for device {deviceIndex}");
     }
-    
+
     /// <summary>
     /// Retrieves current system performance metrics for the host process.
     /// </summary>
@@ -413,7 +413,7 @@ public sealed class GpuMetricsCollector : BackgroundService,
             Timestamp = DateTimeOffset.UtcNow
         };
     }
-    
+
     /// <summary>
     /// Retrieves performance metrics for all available GPU devices.
     /// </summary>
@@ -428,13 +428,13 @@ public sealed class GpuMetricsCollector : BackgroundService,
     public async Task<IReadOnlyList<GpuDeviceMetrics>> GetAllDeviceMetricsAsync()
     {
         await CollectAllMetricsAsync();
-        
+
         lock (_metricsLock)
         {
             return _currentMetrics.Values.ToList();
         }
     }
-    
+
     /// <summary>
     /// Releases all resources used by the GpuMetricsCollector.
     /// </summary>
@@ -551,7 +551,7 @@ public sealed class GpuMetricsCollector : BackgroundService,
         var memoryInfo = await ((Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector)this).GetMemoryInfoAsync(deviceIndex, cancellationToken);
         var utilization = await ((Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector)this).GetUtilizationAsync(deviceIndex, cancellationToken);
         var clockSpeeds = await ((Orleans.GpuBridge.Abstractions.Metrics.IGpuMetricsCollector)this).GetClockSpeedsAsync(deviceIndex, cancellationToken);
-        
+
         return new Orleans.GpuBridge.Abstractions.Metrics.DeviceMetrics
         {
             MemoryInfo = memoryInfo,

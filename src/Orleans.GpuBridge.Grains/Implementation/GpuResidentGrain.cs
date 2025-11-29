@@ -35,7 +35,7 @@ public sealed class GpuResidentGrain<T> : Grain, IGpuResidentGrain<T> where T : 
     private readonly Dictionary<string, object> _liveAllocations = new();
     private IGpuBridge _bridge = default!;
     private DeviceBroker _deviceBroker = default!;
-    
+
     /// <summary>
     /// Initializes a new instance of the <see cref="GpuResidentGrain{T}"/> class.
     /// </summary>
@@ -48,7 +48,7 @@ public sealed class GpuResidentGrain<T> : Grain, IGpuResidentGrain<T> where T : 
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _state = state ?? throw new ArgumentNullException(nameof(state));
     }
-    
+
     /// <summary>
     /// Called when the grain is activated. Restores any existing GPU memory allocations
     /// from persistent state and reinitializes live allocation tracking.
@@ -59,7 +59,7 @@ public sealed class GpuResidentGrain<T> : Grain, IGpuResidentGrain<T> where T : 
     {
         _bridge = ServiceProvider.GetRequiredService<IGpuBridge>();
         _deviceBroker = ServiceProvider.GetRequiredService<DeviceBroker>();
-        
+
         // Restore allocations if any exist in persistent state
         if (_state.State.Allocations.Any())
         {
@@ -67,7 +67,7 @@ public sealed class GpuResidentGrain<T> : Grain, IGpuResidentGrain<T> where T : 
                 "Restoring {Count} GPU memory allocations, {Bytes:N0} bytes total",
                 _state.State.Allocations.Count,
                 _state.State.TotalAllocatedBytes);
-            
+
             // Re-allocate memory on GPU using available compute backends
             // This implementation provides CPU fallback while attempting GPU allocation
             foreach (var allocation in _state.State.Allocations.Values)
@@ -75,10 +75,10 @@ public sealed class GpuResidentGrain<T> : Grain, IGpuResidentGrain<T> where T : 
                 _liveAllocations[allocation.Handle.Id] = new byte[allocation.Handle.SizeBytes];
             }
         }
-        
+
         await base.OnActivateAsync(ct);
     }
-    
+
     /// <summary>
     /// Called when the grain is being deactivated. Caches GPU memory data to persistent state
     /// to enable restoration on future activations.
@@ -93,7 +93,7 @@ public sealed class GpuResidentGrain<T> : Grain, IGpuResidentGrain<T> where T : 
             _logger.LogInformation(
                 "Deactivating with {Count} live allocations",
                 _liveAllocations.Count);
-            
+
             // Cache data before deactivation to preserve state
             foreach (var (id, allocation) in _liveAllocations)
             {
@@ -105,13 +105,13 @@ public sealed class GpuResidentGrain<T> : Grain, IGpuResidentGrain<T> where T : 
                     stateAlloc.CachedData = Array.Empty<byte>();
                 }
             }
-            
+
             await _state.WriteStateAsync();
         }
-        
+
         await base.OnDeactivateAsync(reason, ct);
     }
-    
+
     /// <inheritdoc />
     public async Task<GpuMemoryHandle> AllocateAsync(
         long sizeBytes,
@@ -128,42 +128,42 @@ public sealed class GpuResidentGrain<T> : Grain, IGpuResidentGrain<T> where T : 
         _logger.LogDebug(
             "Allocating {Bytes:N0} bytes of {Type} memory",
             sizeBytes, memoryType);
-        
+
         // Select the best available GPU device for allocation
         var device = _deviceBroker.GetBestDevice();
         if (device == null)
         {
             throw new InvalidOperationException("No GPU devices available for memory allocation");
         }
-        
+
         // Create a unique handle for this allocation
         var handle = GpuMemoryHandle.Create(sizeBytes, memoryType, device.Index);
-        
+
         // Create allocation state for persistence
         var allocation = new GpuMemoryAllocation
         {
             Handle = handle,
             IsPinned = memoryType == GpuMemoryType.Pinned
         };
-        
+
         // Update persistent state
         _state.State.Allocations[handle.Id] = allocation;
         _state.State.TotalAllocatedBytes += sizeBytes;
         _state.State.LastModified = DateTime.UtcNow;
         _state.State.DeviceIndex = device.Index;
-        
+
         // Create live allocation (CPU-based placeholder until GPU integration is complete)
         _liveAllocations[handle.Id] = new byte[sizeBytes];
-        
+
         await _state.WriteStateAsync();
-        
+
         _logger.LogInformation(
             "Allocated {Bytes:N0} bytes on device {Device}, handle {Handle}",
             sizeBytes, device.Index, handle.Id);
-        
+
         return handle;
     }
-    
+
     /// <inheritdoc />
     public async Task WriteAsync<TData>(
         GpuMemoryHandle handle,
@@ -174,33 +174,33 @@ public sealed class GpuResidentGrain<T> : Grain, IGpuResidentGrain<T> where T : 
         {
             throw new ArgumentException($"Memory handle {handle.Id} not found", nameof(handle));
         }
-        
+
         _logger.LogDebug(
             "Writing {Count} items to handle {Handle} at offset {Offset}",
             data.Length, handle.Id, offset);
-        
+
         // Update element type metadata
         allocation.ElementType = typeof(T);
-        
+
         // Get live allocation object
         if (!_liveAllocations.TryGetValue(handle.Id, out var memory))
         {
             throw new InvalidOperationException($"Live allocation {handle.Id} not found. Allocation may have been released or grain may need reactivation.");
         }
-        
+
         // Perform data write with bounds checking
         unsafe
         {
             var elementSize = sizeof(TData);
             var totalBytes = data.Length * elementSize;
-            
+
             if (offset + totalBytes > handle.SizeBytes)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(offset),
                     $"Write operation would exceed allocated memory bounds. Requested: {offset + totalBytes} bytes, Available: {handle.SizeBytes} bytes");
             }
-            
+
             // Copy data to GPU memory through the abstraction layer
             // Provides CPU fallback when GPU memory is not available
             // For now, simulate GPU memory with CPU buffer
@@ -209,11 +209,11 @@ public sealed class GpuResidentGrain<T> : Grain, IGpuResidentGrain<T> where T : 
                 (byte[])memory, offset,
                 totalBytes);
         }
-        
+
         _state.State.LastModified = DateTime.UtcNow;
         await _state.WriteStateAsync();
     }
-    
+
     /// <inheritdoc />
     public Task<TData[]> ReadAsync<TData>(
         GpuMemoryHandle handle,
@@ -224,32 +224,32 @@ public sealed class GpuResidentGrain<T> : Grain, IGpuResidentGrain<T> where T : 
         {
             throw new ArgumentException($"Memory handle {handle.Id} not found", nameof(handle));
         }
-        
+
         _logger.LogDebug(
             "Reading {Count} items from handle {Handle} at offset {Offset}",
             count, handle.Id, offset);
-        
+
         // Get live allocation object
         if (!_liveAllocations.TryGetValue(handle.Id, out var memory))
         {
             throw new InvalidOperationException($"Live allocation {handle.Id} not found. Allocation may have been released or grain may need reactivation.");
         }
-        
+
         // Perform data read with bounds checking
         unsafe
         {
             var elementSize = sizeof(TData);
             var totalBytes = count * elementSize;
-            
+
             if (offset + totalBytes > handle.SizeBytes)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(offset),
                     $"Read operation would exceed allocated memory bounds. Requested: {offset + totalBytes} bytes, Available: {handle.SizeBytes} bytes");
             }
-            
+
             var result = new TData[count];
-            
+
             // Copy data from GPU memory through the abstraction layer
             // Provides CPU fallback when GPU memory is not available
             // For now, simulate GPU memory read from CPU buffer
@@ -257,11 +257,11 @@ public sealed class GpuResidentGrain<T> : Grain, IGpuResidentGrain<T> where T : 
                 (byte[])memory, offset,
                 result, 0,
                 totalBytes);
-            
+
             return Task.FromResult(result);
         }
     }
-    
+
     /// <inheritdoc />
     public async Task<GpuComputeResult> ComputeAsync(
         KernelId kernelId,
@@ -272,33 +272,33 @@ public sealed class GpuResidentGrain<T> : Grain, IGpuResidentGrain<T> where T : 
         _logger.LogDebug(
             "Computing with kernel {Kernel}, input {Input}, output {Output}",
             kernelId, input.Id, output.Id);
-        
+
         // Validate that both input and output handles exist
         if (!_state.State.Allocations.ContainsKey(input.Id))
         {
             throw new ArgumentException($"Input handle {input.Id} not found", nameof(input));
         }
-        
+
         if (!_state.State.Allocations.ContainsKey(output.Id))
         {
             throw new ArgumentException($"Output handle {output.Id} not found", nameof(output));
         }
-        
+
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        
+
         try
         {
             // Execute kernel on GPU with resident memory through the bridge abstraction
             // Uses CPU fallback when GPU execution is not available
             // For now, simulate kernel execution with a small delay
             await Task.Delay(10);
-            
+
             stopwatch.Stop();
-            
+
             _logger.LogInformation(
                 "Computed with kernel {Kernel} in {ElapsedMs}ms",
                 kernelId, stopwatch.ElapsedMilliseconds);
-            
+
             return new GpuComputeResult(
                 Success: true,
                 ExecutionTime: stopwatch.Elapsed);
@@ -306,18 +306,18 @@ public sealed class GpuResidentGrain<T> : Grain, IGpuResidentGrain<T> where T : 
         catch (Exception ex)
         {
             stopwatch.Stop();
-            
+
             _logger.LogError(ex,
                 "Failed to compute with kernel {Kernel}",
                 kernelId);
-            
+
             return new GpuComputeResult(
                 Success: false,
                 ExecutionTime: stopwatch.Elapsed,
                 Error: ex.Message);
         }
     }
-    
+
     /// <inheritdoc />
     public async Task ReleaseAsync(GpuMemoryHandle handle)
     {
@@ -326,26 +326,26 @@ public sealed class GpuResidentGrain<T> : Grain, IGpuResidentGrain<T> where T : 
             _logger.LogWarning("Attempted to release unknown handle {Handle}", handle.Id);
             return;
         }
-        
+
         _logger.LogDebug(
             "Releasing handle {Handle}, {Bytes:N0} bytes",
             handle.Id, handle.SizeBytes);
-        
+
         // Remove from persistent state
         _state.State.Allocations.Remove(handle.Id);
         _state.State.TotalAllocatedBytes -= handle.SizeBytes;
         _state.State.LastModified = DateTime.UtcNow;
-        
+
         // Remove from live allocations
         _liveAllocations.Remove(handle.Id);
-        
+
         await _state.WriteStateAsync();
-        
+
         _logger.LogInformation(
             "Released handle {Handle}, {Bytes:N0} bytes freed",
             handle.Id, handle.SizeBytes);
     }
-    
+
     /// <inheritdoc />
     public Task<GpuMemoryInfo> GetMemoryInfoAsync()
     {
@@ -354,10 +354,10 @@ public sealed class GpuResidentGrain<T> : Grain, IGpuResidentGrain<T> where T : 
             allocatedBytes: _state.State.TotalAllocatedBytes,
             deviceIndex: 0,
             deviceName: "GPU Resident Memory");
-        
+
         return Task.FromResult(info);
     }
-    
+
     /// <inheritdoc />
     public async Task ClearAsync()
     {

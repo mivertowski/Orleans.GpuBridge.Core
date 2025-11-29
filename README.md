@@ -596,9 +596,11 @@ This project is licensed under the Apache License, Version 2.0. See [LICENSE](LI
 
 **Commercial licensing** is available for organizations requiring custom SLA/MSA terms - contact the author for details.
 
-Copyright (c) 2025 Michael Ivertowski
+**Commercial support** is available for organisations requiring support, managed services and consulting - contact the author for details.
 
-If you need different license / SLA / MSA  --> reach out!
+**Commercial kernel and actor network blueprints** are available for the following domains: Accounting, Banking, Behavioral Analytics, Clearing, Compliance, Financial Audit, Financial Services, Graph Analytics, Order Matching, Payment Processing, Process Intelligence, Risk Analytics, Statistical ML, Temporal Analysis and Treasury Management - contact the author for details.
+
+Copyright (c) 2025 Michael Ivertowski
 
 ## 🙏 Acknowledgments
 
@@ -611,9 +613,3 @@ If you need different license / SLA / MSA  --> reach out!
 
 - **Issues**: [GitHub Issues](https://github.com/mivertowski/Orleans.GpuBridge.Core/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/mivertowski/Orleans.GpuBridge.Core/discussions)
-
-
-
----
-
-**Built with ❤️ for the Orleans and GPU computing communities**

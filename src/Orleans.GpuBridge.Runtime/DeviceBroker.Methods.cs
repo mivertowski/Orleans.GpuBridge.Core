@@ -37,8 +37,8 @@ public sealed partial class DeviceBroker
 
                     // Evaluate device health and take appropriate actions
                     await EvaluateDeviceHealth(device, healthInfo);
-                    
-                    _logger.LogDebug("Health info collected for device {DeviceId}. Health Score: {HealthScore:F2}, Status: {Status}", 
+
+                    _logger.LogDebug("Health info collected for device {DeviceId}. Health Score: {HealthScore:F2}, Status: {Status}",
                         device.Id, healthInfo.HealthScore, healthInfo.IsHealthy ? "Healthy" : "Unhealthy");
                 }
                 catch (Exception ex)
@@ -156,8 +156,8 @@ public sealed partial class DeviceBroker
         {
             var metrics = queue.GetMetrics();
             currentQueueDepth = metrics.QueuedItems;
-            successRatePercent = metrics.ProcessedItems > 0 
-                ? (1.0 - metrics.ErrorRate) * 100.0 
+            successRatePercent = metrics.ProcessedItems > 0
+                ? (1.0 - metrics.ErrorRate) * 100.0
                 : 100.0;
         }
 
@@ -202,14 +202,14 @@ public sealed partial class DeviceBroker
                 // Apply health score to weight calculation
                 var healthMultiplier = Math.Max(0.1, healthInfo.HealthScore);
                 weight *= healthMultiplier;
-                
+
                 // Additional penalty for unhealthy devices
                 if (!healthInfo.IsHealthy)
                 {
                     weight *= 0.5; // Significant penalty for unhealthy devices
                 }
-                
-                _logger.LogTrace("Applied health multiplier {HealthMultiplier:F2} to device {DeviceId}", 
+
+                _logger.LogTrace("Applied health multiplier {HealthMultiplier:F2} to device {DeviceId}",
                     healthMultiplier, device.Id);
             }
 
@@ -226,7 +226,7 @@ public sealed partial class DeviceBroker
             };
             _deviceLoad[device.Id] = updatedLoadInfo;
 
-            _logger.LogTrace("Updated selection weight for device {DeviceId}: {Weight:F3}", 
+            _logger.LogTrace("Updated selection weight for device {DeviceId}: {Weight:F3}",
                 device.Id, weight);
         }
         catch (Exception ex)
@@ -287,7 +287,7 @@ public sealed partial class DeviceBroker
             return true;
 
         var deviceCapabilities = device.Capabilities ?? Array.Empty<string>();
-        return requiredFeatures.All(required => 
+        return requiredFeatures.All(required =>
             deviceCapabilities.Any(cap => cap.Contains(required, StringComparison.OrdinalIgnoreCase)));
     }
 
@@ -314,7 +314,7 @@ public sealed partial class DeviceBroker
                 _logger.LogError("Device {DeviceId} is thermal throttling at {Temperature}°C. " +
                     "Max safe temperature: {MaxTemperature}°C",
                     device.Id, healthInfo.TemperatureCelsius, healthInfo.MaxTemperatureCelsius);
-                
+
                 // Could implement cooling strategies or reduce workload here
                 await ImplementThermalThrottleResponse(device, healthInfo).ConfigureAwait(false);
             }
@@ -325,7 +325,7 @@ public sealed partial class DeviceBroker
                 _logger.LogError("Device {DeviceId} has {ErrorCount} errors. " +
                     "Consider device reset or removal from service",
                     device.Id, healthInfo.ErrorCount);
-                    
+
                 await HandleExcessiveErrors(device, healthInfo).ConfigureAwait(false);
             }
 
@@ -335,7 +335,7 @@ public sealed partial class DeviceBroker
                 _logger.LogError("Device {DeviceId} has {ConsecutiveFailures} consecutive failures. " +
                     "Temporarily removing from load balancing",
                     device.Id, healthInfo.ConsecutiveFailures);
-                    
+
                 await HandleConsecutiveFailures(device, healthInfo).ConfigureAwait(false);
             }
 
@@ -367,11 +367,11 @@ public sealed partial class DeviceBroker
             var throttledWeight = Math.Min(0.1, loadInfo.SelectionWeight * 0.5);
             var updatedLoadInfo = loadInfo with { SelectionWeight = throttledWeight };
             _deviceLoad[device.Id] = updatedLoadInfo;
-            
+
             _logger.LogInformation("Reduced selection weight for thermally throttling device {DeviceId} to {Weight:F3}",
                 device.Id, throttledWeight);
         }
-        
+
         return Task.CompletedTask;
     }
 
@@ -385,7 +385,7 @@ public sealed partial class DeviceBroker
         {
             _logger.LogError("Disabling device {DeviceId} due to excessive errors: {ErrorCount}",
                 device.Id, healthInfo.ErrorCount);
-            
+
             // Set weight to minimum to avoid selection
             if (_deviceLoad.TryGetValue(device.Id, out var loadInfo))
             {
@@ -393,7 +393,7 @@ public sealed partial class DeviceBroker
                 _deviceLoad[device.Id] = disabledLoadInfo;
             }
         }
-        
+
         return Task.CompletedTask;
     }
 
@@ -407,18 +407,18 @@ public sealed partial class DeviceBroker
         {
             var quarantinedWeight = 0.01; // Very low weight
             var quarantineTime = DateTime.UtcNow.AddMinutes(5 * healthInfo.ConsecutiveFailures); // Escalating quarantine
-            
-            var quarantinedLoadInfo = loadInfo with 
-            { 
+
+            var quarantinedLoadInfo = loadInfo with
+            {
                 SelectionWeight = quarantinedWeight,
                 ThrottleUntil = quarantineTime
             };
             _deviceLoad[device.Id] = quarantinedLoadInfo;
-            
+
             _logger.LogWarning("Quarantined device {DeviceId} until {QuarantineTime} due to {ConsecutiveFailures} consecutive failures",
                 device.Id, quarantineTime, healthInfo.ConsecutiveFailures);
         }
-        
+
         return Task.CompletedTask;
     }
 
@@ -429,7 +429,7 @@ public sealed partial class DeviceBroker
     {
         // This would typically update device status in persistent storage
         // For now, we'll just log status changes
-        
+
         if (healthInfo.HealthScore < 0.3)
         {
             _logger.LogError("Device {DeviceId} health score critically low: {HealthScore:F2}",
@@ -440,7 +440,7 @@ public sealed partial class DeviceBroker
             _logger.LogWarning("Device {DeviceId} health score degraded: {HealthScore:F2}",
                 device.Id, healthInfo.HealthScore);
         }
-        
+
         return Task.CompletedTask;
     }
 }

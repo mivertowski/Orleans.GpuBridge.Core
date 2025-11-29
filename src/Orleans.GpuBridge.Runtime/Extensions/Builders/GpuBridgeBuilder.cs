@@ -12,24 +12,24 @@ namespace Orleans.GpuBridge.Runtime.Builders;
 internal class GpuBridgeBuilder : IGpuBridgeBuilder
 {
     public IServiceCollection Services { get; }
-    
+
     public GpuBridgeBuilder(IServiceCollection services)
     {
         Services = services;
     }
-    
+
     public IGpuBridgeBuilder AddKernel(Action<KernelDescriptorBuilder> configure)
     {
         var builder = new KernelDescriptorBuilder();
         configure(builder);
         var descriptor = builder.Build();
-        
+
         Services.PostConfigure<KernelCatalogOptions>(options =>
             options.Descriptors.Add(descriptor));
-        
+
         return this;
     }
-    
+
     public IGpuBridgeBuilder AddKernel<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TKernel>() where TKernel : class
     {
         Services.AddTransient<TKernel>();
@@ -37,26 +37,26 @@ internal class GpuBridgeBuilder : IGpuBridgeBuilder
         // This would scan assemblies for [GpuAccelerated] attributes and register kernels automatically
         return this;
     }
-    
+
     public IGpuBridgeBuilder ConfigureOptions(Action<GpuBridgeOptions> configure)
     {
         Services.Configure(configure);
         return this;
     }
-    
+
     public IGpuBridgeBuilder AddBackendProvider<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TProvider>() where TProvider : class, IGpuBackendProvider
     {
         Services.AddSingleton<TProvider>();
         Services.AddSingleton<IGpuBackendProvider>(sp => sp.GetRequiredService<TProvider>());
         return this;
     }
-    
+
     public IGpuBridgeBuilder AddBackendProvider<TProvider>(TProvider provider) where TProvider : class, IGpuBackendProvider
     {
         Services.AddSingleton<IGpuBackendProvider>(provider);
         return this;
     }
-    
+
     public IGpuBridgeBuilder AddBackendProvider<TProvider>(Func<IServiceProvider, TProvider> factory) where TProvider : class, IGpuBackendProvider
     {
         Services.AddSingleton<IGpuBackendProvider>(factory);

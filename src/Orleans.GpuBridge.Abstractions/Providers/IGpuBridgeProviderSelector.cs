@@ -14,21 +14,21 @@ public interface IGpuBridgeProviderSelector
     /// Initializes the provider selector
     /// </summary>
     Task InitializeAsync(CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Selects the best available provider for execution
     /// </summary>
     Task<IGpuBackendProvider> SelectProviderAsync(
-        ProviderSelectionCriteria criteria, 
+        ProviderSelectionCriteria criteria,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Gets a provider by name
     /// </summary>
     Task<IGpuBackendProvider?> GetProviderByNameAsync(
-        string providerName, 
+        string providerName,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Gets all available providers
     /// </summary>

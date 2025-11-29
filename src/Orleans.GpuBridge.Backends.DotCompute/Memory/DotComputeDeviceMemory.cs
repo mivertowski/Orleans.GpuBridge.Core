@@ -489,16 +489,16 @@ internal sealed class DotComputeDeviceMemoryWrapper<T> : DotComputeDeviceMemoryW
     {
         if (hostData == null)
             throw new ArgumentNullException(nameof(hostData));
-            
+
         if (sourceOffset < 0 || sourceOffset >= hostData.Length)
             throw new ArgumentOutOfRangeException(nameof(sourceOffset));
-            
+
         if (destinationOffset < 0 || destinationOffset >= ElementCount)
             throw new ArgumentOutOfRangeException(nameof(destinationOffset));
-            
+
         if (elementCount <= 0 || sourceOffset + elementCount > hostData.Length || destinationOffset + elementCount > ElementCount)
             throw new ArgumentOutOfRangeException(nameof(elementCount));
-            
+
         var span = new ReadOnlySpan<T>(hostData, sourceOffset, elementCount);
         return CopyFromHostAsync(span, destinationOffset, cancellationToken);
     }
@@ -507,16 +507,16 @@ internal sealed class DotComputeDeviceMemoryWrapper<T> : DotComputeDeviceMemoryW
     {
         if (hostData == null)
             throw new ArgumentNullException(nameof(hostData));
-            
+
         if (sourceOffset < 0 || sourceOffset >= ElementCount)
             throw new ArgumentOutOfRangeException(nameof(sourceOffset));
-            
+
         if (destinationOffset < 0 || destinationOffset >= hostData.Length)
             throw new ArgumentOutOfRangeException(nameof(destinationOffset));
-            
+
         if (elementCount <= 0 || sourceOffset + elementCount > ElementCount || destinationOffset + elementCount > hostData.Length)
             throw new ArgumentOutOfRangeException(nameof(elementCount));
-            
+
         var span = new Span<T>(hostData, destinationOffset, elementCount);
         return CopyToHostAsync(span, sourceOffset, cancellationToken);
     }
@@ -525,14 +525,14 @@ internal sealed class DotComputeDeviceMemoryWrapper<T> : DotComputeDeviceMemoryW
     {
         if (startIndex < 0 || startIndex >= ElementCount)
             throw new ArgumentOutOfRangeException(nameof(startIndex));
-            
+
         if (elementCount <= 0 || startIndex + elementCount > ElementCount)
             throw new ArgumentOutOfRangeException(nameof(elementCount));
-            
+
         // Fill operation: create array with the value and copy to device
         var fillArray = new T[elementCount];
         Array.Fill(fillArray, value);
-        
+
         var span = new ReadOnlySpan<T>(fillArray);
         return CopyFromHostAsync(span, startIndex, cancellationToken);
     }

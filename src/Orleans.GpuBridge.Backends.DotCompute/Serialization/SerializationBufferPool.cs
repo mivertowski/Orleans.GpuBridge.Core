@@ -70,7 +70,7 @@ public sealed class SerializationBufferPool
             case LargeSize:
                 _largeBuffers.Add(buffer);
                 break;
-            // Don't pool non-standard sizes
+                // Don't pool non-standard sizes
         }
     }
 

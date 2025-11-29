@@ -49,7 +49,7 @@ public sealed partial class GpuBatchGrainEnhanced<TIn, TOut> : Grain, IGpuBatchG
     private IKernelExecutor? _kernelExecutor;
     private IMemoryAllocator? _memoryAllocator;
     private IKernelCompiler? _kernelCompiler;
-    private CompiledKernel? _compiledKernel;
+    private CompiledKernel? _compiledKernel = null;
 
     // Kernel identity and configuration
     private KernelId _kernelId = default!;

@@ -12,12 +12,12 @@ public interface IGraphNode
     /// Node ID
     /// </summary>
     string NodeId { get; }
-    
+
     /// <summary>
     /// Node type
     /// </summary>
     GraphNodeType Type { get; }
-    
+
     /// <summary>
     /// Dependencies
     /// </summary>

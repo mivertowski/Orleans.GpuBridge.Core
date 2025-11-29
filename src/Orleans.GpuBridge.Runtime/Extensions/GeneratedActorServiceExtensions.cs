@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions;
@@ -216,7 +217,7 @@ public interface IHandlerDispatcher
     /// <param name="kernelId">Kernel ID</param>
     /// <param name="request">Request payload</param>
     /// <returns>Response</returns>
-    TResponse Dispatch<TRequest, TResponse>(string kernelId, TRequest request)
+    TResponse Dispatch<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.NonPublicFields)] TRequest, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.NonPublicFields | DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] TResponse>(string kernelId, TRequest request)
         where TRequest : struct
         where TResponse : struct;
 }
@@ -251,7 +252,7 @@ internal sealed class HandlerDispatcher : IHandlerDispatcher
         _serviceProvider = serviceProvider;
     }
 
-    public TResponse Dispatch<TRequest, TResponse>(string kernelId, TRequest request)
+    public TResponse Dispatch<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.NonPublicFields)] TRequest, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.NonPublicFields | DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] TResponse>(string kernelId, TRequest request)
         where TRequest : struct
         where TResponse : struct
     {
@@ -294,7 +295,7 @@ internal sealed class HandlerDispatcher : IHandlerDispatcher
     /// <summary>
     /// Executes the handler on GPU using the backend provider.
     /// </summary>
-    private TResponse ExecuteOnGpu<TRequest, TResponse>(
+    private TResponse ExecuteOnGpu<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.NonPublicFields)] TRequest, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.NonPublicFields | DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] TResponse>(
         string kernelId,
         GeneratedKernelInfo kernel,
         TRequest request)
@@ -419,7 +420,7 @@ internal sealed class HandlerDispatcher : IHandlerDispatcher
     /// <summary>
     /// Converts a struct to byte array for GPU transfer.
     /// </summary>
-    private static byte[] StructToBytes<T>(T value) where T : struct
+    private static byte[] StructToBytes<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.NonPublicFields)] T>(T value) where T : struct
     {
         var size = System.Runtime.InteropServices.Marshal.SizeOf<T>();
         var bytes = new byte[size];
@@ -438,7 +439,7 @@ internal sealed class HandlerDispatcher : IHandlerDispatcher
     /// <summary>
     /// Converts a byte array back to a struct.
     /// </summary>
-    private static T BytesToStruct<T>(byte[] bytes) where T : struct
+    private static T BytesToStruct<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.NonPublicFields | DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] T>(byte[] bytes) where T : struct
     {
         if (bytes.Length < System.Runtime.InteropServices.Marshal.SizeOf<T>())
         {

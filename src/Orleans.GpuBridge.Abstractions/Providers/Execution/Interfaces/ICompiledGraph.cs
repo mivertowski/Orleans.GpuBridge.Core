@@ -15,7 +15,7 @@ public interface ICompiledGraph : IDisposable
     /// Executes the compiled graph
     /// </summary>
     Task<GraphExecutionResult> ExecuteAsync(CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Updates kernel parameters without recompiling
     /// </summary>

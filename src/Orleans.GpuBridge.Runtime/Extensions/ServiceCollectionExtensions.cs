@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using DotCompute.Abstractions.RingKernels;
 using DotCompute.Backends.CUDA.Compilation;
 using DotCompute.Backends.CUDA.RingKernels;
@@ -25,7 +26,7 @@ public static class ServiceCollectionExtensions
     /// Adds GPU Bridge services to the service collection
     /// </summary>
     public static IGpuBridgeBuilder AddGpuBridge(
-        this IServiceCollection services, 
+        this IServiceCollection services,
         Action<GpuBridgeOptions>? configure = null)
     {
         // Configure options
@@ -37,21 +38,21 @@ public static class ServiceCollectionExtensions
         {
             services.Configure<GpuBridgeOptions>(_ => { });
         }
-        
+
         // Backend provider system
         services.TryAddSingleton<IGpuBackendRegistry, GpuBackendRegistry>();
         services.TryAddSingleton<GpuBridgeProviderSelector>();
-        
+
         // Core services
         services.TryAddSingleton<IGpuBridge, GpuBridge>();
         services.TryAddSingleton<KernelCatalog>();
         services.TryAddSingleton<DeviceBroker>();
         services.TryAddSingleton<PersistentKernelHost>();
         services.TryAddSingleton<GpuDiagnostics>();
-        
+
         // Hosted service
         services.AddHostedService<GpuHostFeature>();
-        
+
         // Memory management (placeholder for now)
         services.TryAddSingleton(typeof(IGpuMemoryPool<>), typeof(CpuMemoryPool<>));
 
@@ -251,7 +252,7 @@ public static class ServiceCollectionExtensions
     /// Use this to register a custom <see cref="IRingKernelBridge"/> implementation.
     /// This replaces any previously registered bridge.
     /// </remarks>
-    public static IServiceCollection AddRingKernelBridge<TBridge>(this IServiceCollection services)
+    public static IServiceCollection AddRingKernelBridge<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TBridge>(this IServiceCollection services)
         where TBridge : class, IRingKernelBridge
     {
         // Replace any existing registration

@@ -21,7 +21,7 @@ public sealed partial class DeviceBroker
     private async Task<TimeSpan> BenchmarkVectorCompute(GpuDevice device, CancellationToken ct)
     {
         var stopwatch = Stopwatch.StartNew();
-        
+
         try
         {
             // Create test vectors (1M elements)
@@ -29,7 +29,7 @@ public sealed partial class DeviceBroker
             var a = new float[vectorSize];
             var b = new float[vectorSize];
             var c = new float[vectorSize];
-            
+
             // Initialize with test data
             var random = new Random(42);
             for (int i = 0; i < vectorSize; i++)
@@ -37,7 +37,7 @@ public sealed partial class DeviceBroker
                 a[i] = (float)random.NextDouble();
                 b[i] = (float)random.NextDouble();
             }
-            
+
             // Simulate GPU vector addition
             // In real implementation, this would use the actual GPU device
             await Task.Run(() =>
@@ -47,16 +47,16 @@ public sealed partial class DeviceBroker
                     c[i] = a[i] + b[i];
                 }
             }, ct);
-            
+
             stopwatch.Stop();
-            
+
             // Verify results for accuracy
             var sum = 0.0;
             for (int i = 0; i < Math.Min(1000, vectorSize); i++)
             {
                 sum += c[i];
             }
-            
+
             _logger.LogDebug("Vector compute benchmark for {DeviceId}: {Time}ms, Checksum: {Sum:F2}",
                 device.Index, stopwatch.ElapsedMilliseconds, sum);
         }
@@ -66,7 +66,7 @@ public sealed partial class DeviceBroker
             stopwatch.Stop();
             return TimeSpan.FromMilliseconds(10000); // Penalty for failure
         }
-        
+
         return stopwatch.Elapsed;
     }
 
@@ -76,33 +76,33 @@ public sealed partial class DeviceBroker
     private async Task<TimeSpan> BenchmarkMemoryBandwidth(GpuDevice device, CancellationToken ct)
     {
         var stopwatch = Stopwatch.StartNew();
-        
+
         try
         {
             // Test memory transfer (100MB)
             const int dataSize = 100 * 1024 * 1024 / sizeof(float);
             var sourceData = new float[dataSize];
             var destData = new float[dataSize];
-            
+
             // Initialize source data
             var random = new Random(42);
             for (int i = 0; i < Math.Min(1000, dataSize); i++)
             {
                 sourceData[i] = (float)random.NextDouble();
             }
-            
+
             // Simulate GPU memory transfer
             await Task.Run(() =>
             {
                 Array.Copy(sourceData, destData, dataSize);
             }, ct);
-            
+
             stopwatch.Stop();
-            
+
             // Calculate bandwidth (GB/s)
             var bytesTransferred = dataSize * sizeof(float);
             var bandwidthGBs = bytesTransferred / (stopwatch.Elapsed.TotalSeconds * 1024 * 1024 * 1024);
-            
+
             _logger.LogDebug("Memory bandwidth benchmark for {DeviceId}: {Time}ms, Bandwidth: {Bandwidth:F2} GB/s",
                 device.Index, stopwatch.ElapsedMilliseconds, bandwidthGBs);
         }
@@ -112,7 +112,7 @@ public sealed partial class DeviceBroker
             stopwatch.Stop();
             return TimeSpan.FromMilliseconds(5000); // Penalty for failure
         }
-        
+
         return stopwatch.Elapsed;
     }
 
@@ -122,19 +122,19 @@ public sealed partial class DeviceBroker
     private async Task<TimeSpan> BenchmarkLatency(GpuDevice device, CancellationToken ct)
     {
         var stopwatch = Stopwatch.StartNew();
-        
+
         try
         {
             const int iterations = 100;
             var latencies = new TimeSpan[iterations];
-            
+
             // Multiple small kernel launches to measure latency
             for (int i = 0; i < iterations; i++)
             {
                 if (ct.IsCancellationRequested) break;
-                
+
                 var kernelTimer = Stopwatch.StartNew();
-                
+
                 // Simulate minimal kernel launch
                 await Task.Run(() =>
                 {
@@ -142,13 +142,13 @@ public sealed partial class DeviceBroker
                     var result = Math.Sin(i * 0.1) + Math.Cos(i * 0.1);
                     _ = result; // Prevent optimization
                 }, ct);
-                
+
                 kernelTimer.Stop();
                 latencies[i] = kernelTimer.Elapsed;
             }
-            
+
             stopwatch.Stop();
-            
+
             // Calculate average latency
             var totalLatency = TimeSpan.Zero;
             for (int i = 0; i < iterations; i++)
@@ -156,7 +156,7 @@ public sealed partial class DeviceBroker
                 totalLatency += latencies[i];
             }
             var avgLatency = new TimeSpan(totalLatency.Ticks / iterations);
-            
+
             _logger.LogDebug("Latency benchmark for {DeviceId}: Avg latency: {Latency:F3}ms",
                 device.Index, avgLatency.TotalMilliseconds);
         }
@@ -166,7 +166,7 @@ public sealed partial class DeviceBroker
             stopwatch.Stop();
             return TimeSpan.FromMilliseconds(1000); // Penalty for failure
         }
-        
+
         return stopwatch.Elapsed;
     }
 
@@ -177,13 +177,13 @@ public sealed partial class DeviceBroker
     {
         // Base weight starts at 1.0
         double weight = 1.0;
-        
+
         // Reduce weight based on utilization (more utilized = less weight)
         weight *= Math.Max(0.1, 1.0 - (utilization / 100.0));
-        
+
         // Reduce weight based on queue depth
         weight *= Math.Max(0.2, 1.0 - (queueDepth / 20.0));
-        
+
         // Ensure weight is always positive
         return Math.Max(0.05, weight);
     }
@@ -195,12 +195,12 @@ public sealed partial class DeviceBroker
     {
         // Maintain a rolling window of performance history
         const int historySize = 60; // Last 60 measurements
-        
+
         var history = loadInfo.PerformanceHistory;
-        
+
         // Add new value to history
         history.Add(currentUtilization);
-        
+
         // Maintain rolling window
         while (history.Count > historySize)
         {
@@ -217,19 +217,19 @@ public sealed partial class DeviceBroker
         {
             return; // Need more data for prediction
         }
-        
+
         try
         {
             // Simple linear trend analysis
             var history = loadInfo.PerformanceHistory;
             var recentHistory = history.Skip(history.Count - 10).ToArray();
-            
+
             // Calculate trend (positive = increasing load, negative = decreasing load)
             var trend = CalculateLinearTrend(recentHistory);
-            
+
             // Adjust selection weight based on predicted future load
             var futurePrediction = recentHistory.Last() + (trend * 5); // Predict 5 periods ahead
-            
+
             if (futurePrediction > 80.0)
             {
                 // Predicted high load, reduce weight
@@ -242,7 +242,7 @@ public sealed partial class DeviceBroker
                 loadInfo.SelectionWeight *= 1.1;
                 _logger.LogTrace("Increased selection weight for {DeviceId} due to predicted low load", device.Index);
             }
-            
+
             await Task.CompletedTask;
         }
         catch (Exception ex)
@@ -257,13 +257,13 @@ public sealed partial class DeviceBroker
     private double CalculateLinearTrend(double[] values)
     {
         if (values.Length < 2) return 0.0;
-        
+
         var n = values.Length;
         var sumX = 0.0;
         var sumY = 0.0;
         var sumXY = 0.0;
         var sumX2 = 0.0;
-        
+
         for (int i = 0; i < n; i++)
         {
             sumX += i;
@@ -271,7 +271,7 @@ public sealed partial class DeviceBroker
             sumXY += i * values[i];
             sumX2 += i * i;
         }
-        
+
         // Linear regression slope calculation
         var slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
         return slope;
@@ -283,18 +283,18 @@ public sealed partial class DeviceBroker
     private async Task TriggerMemoryCleanup(GpuDevice device, CancellationToken ct)
     {
         _logger.LogInformation("Triggering memory cleanup for device {DeviceId}", device.Index);
-        
+
         try
         {
             // Force garbage collection
             GC.Collect();
             GC.WaitForPendingFinalizers();
             GC.Collect();
-            
+
             // Device-specific memory cleanup would go here
             // For now, just wait a bit to simulate cleanup time
             await Task.Delay(1000, ct);
-            
+
             _logger.LogInformation("Memory cleanup completed for device {DeviceId}", device.Index);
         }
         catch (Exception ex)
@@ -309,7 +309,7 @@ public sealed partial class DeviceBroker
     private async Task<Dictionary<string, object>> GetDeviceCapabilities(GpuDevice device, CancellationToken ct)
     {
         var capabilities = new Dictionary<string, object>();
-        
+
         try
         {
             // Standard capabilities from GpuDevice record
@@ -319,12 +319,12 @@ public sealed partial class DeviceBroker
             capabilities["memory_utilization"] = device.MemoryUtilization;
             capabilities["device_name"] = device.Name;
             capabilities["device_type"] = device.Type.ToString();
-            
+
             // Capabilities from device capabilities list
             if (device.Capabilities != null)
             {
                 capabilities["supported_features"] = string.Join(", ", device.Capabilities);
-                
+
                 // Parse specific capabilities if available
                 foreach (var capability in device.Capabilities)
                 {
@@ -338,31 +338,31 @@ public sealed partial class DeviceBroker
                     }
                 }
             }
-            
+
             // Device type specific capabilities
             switch (device.Type)
             {
                 case DeviceType.CUDA:
                     capabilities["estimated_cuda_cores"] = EstimateCudaCores(device);
                     break;
-                    
+
                 case DeviceType.OpenCL:
                     capabilities["opencl_version"] = "unknown"; // Would query from device
                     break;
-                    
+
                 case DeviceType.Metal:
                     capabilities["metal_version"] = "unknown"; // Would query from device
                     break;
             }
-            
-            _logger.LogDebug("Cached capabilities for device {DeviceId}: {Count} properties", 
+
+            _logger.LogDebug("Cached capabilities for device {DeviceId}: {Count} properties",
                 device.Index, capabilities.Count);
         }
         catch (Exception ex)
         {
             _logger.LogWarning(ex, "Failed to get capabilities for device {DeviceId}", device.Index);
         }
-        
+
         await Task.CompletedTask;
         return capabilities;
     }
@@ -375,13 +375,13 @@ public sealed partial class DeviceBroker
         // Try to extract from capabilities if available
         foreach (var capability in device.Capabilities ?? Array.Empty<string>())
         {
-            if (capability.StartsWith("CUDA Cores:") && 
+            if (capability.StartsWith("CUDA Cores:") &&
                 int.TryParse(capability.Split(':')[1].Trim(), out int cores))
             {
                 return cores;
             }
         }
-        
+
         // Fallback estimation based on device name patterns
         var name = device.Name.ToUpperInvariant();
         return name switch

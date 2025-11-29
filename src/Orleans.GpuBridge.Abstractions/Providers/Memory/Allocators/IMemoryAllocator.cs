@@ -19,7 +19,7 @@ public interface IMemoryAllocator : IDisposable
         long sizeBytes,
         MemoryAllocationOptions options,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Allocates memory for a specific type
     /// </summary>
@@ -27,14 +27,14 @@ public interface IMemoryAllocator : IDisposable
         int elementCount,
         MemoryAllocationOptions options,
         CancellationToken cancellationToken = default) where T : unmanaged;
-    
+
     /// <summary>
     /// Allocates pinned host memory for efficient transfers
     /// </summary>
     Task<IPinnedMemory> AllocatePinnedAsync(
         long sizeBytes,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Allocates unified memory accessible from both host and device
     /// </summary>
@@ -42,17 +42,17 @@ public interface IMemoryAllocator : IDisposable
         long sizeBytes,
         UnifiedMemoryOptions options,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Gets memory pool statistics
     /// </summary>
     MemoryPoolStatistics GetPoolStatistics();
-    
+
     /// <summary>
     /// Compacts the memory pool to reduce fragmentation
     /// </summary>
     Task CompactAsync(CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Resets the memory pool, freeing all allocations
     /// </summary>

@@ -126,8 +126,14 @@ public static class MessagePassingTest
                     Priority = 128,  // Normal priority
                     VectorLength = 4,
                     OperationType = opType,  // 0=Add, 1=Sub, 2=Mul, 3=Div
-                    A0 = a.Item1, A1 = a.Item2, A2 = a.Item3, A3 = a.Item4,
-                    B0 = b.Item1, B1 = b.Item2, B2 = b.Item3, B3 = b.Item4
+                    A0 = a.Item1,
+                    A1 = a.Item2,
+                    A2 = a.Item3,
+                    A3 = a.Item4,
+                    B0 = b.Item1,
+                    B1 = b.Item2,
+                    B2 = b.Item3,
+                    B3 = b.Item4
                 };
 
                 // Send message using named message queue API

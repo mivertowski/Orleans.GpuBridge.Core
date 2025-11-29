@@ -13,12 +13,12 @@ public interface IDeviceMemory<T> : IDeviceMemory where T : unmanaged
     /// Number of elements
     /// </summary>
     int Length { get; }
-    
+
     /// <summary>
     /// Gets a span view of the memory (if accessible from host)
     /// </summary>
     Span<T> AsSpan();
-    
+
     /// <summary>
     /// Copies data from host array to device
     /// </summary>
@@ -28,7 +28,7 @@ public interface IDeviceMemory<T> : IDeviceMemory where T : unmanaged
         int destinationOffset,
         int count,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Copies data from device to host array
     /// </summary>
@@ -38,7 +38,7 @@ public interface IDeviceMemory<T> : IDeviceMemory where T : unmanaged
         int destinationOffset,
         int count,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Fills the memory with a value
     /// </summary>

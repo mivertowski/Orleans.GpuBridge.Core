@@ -59,7 +59,7 @@ public sealed class CudaComputeContext : IComputeContext
         }
 
         _logger.LogDebug("Executing CUDA kernel with work size {WorkSize}", workSize);
-        
+
         // CUDA kernel execution would go here
         // For now, provide CPU fallback
     }
@@ -72,7 +72,7 @@ public sealed class CudaComputeContext : IComputeContext
         }
 
         _logger.LogTrace("Synchronizing CUDA context");
-        
+
         // CUDA synchronization would go here
     }
 
@@ -86,9 +86,9 @@ public sealed class CudaComputeContext : IComputeContext
         try
         {
             _logger.LogInformation("Disposing CUDA compute context");
-            
+
             // CUDA cleanup would go here
-            
+
             _disposed = true;
         }
         catch (Exception ex)
@@ -225,7 +225,7 @@ public sealed class CudaComputeKernel : IComputeKernel
         {
             throw new ObjectDisposedException(nameof(CudaComputeKernel));
         }
-        
+
         _logger.LogTrace("Setting CUDA kernel argument {Index} to float buffer", index);
     }
 
@@ -235,7 +235,7 @@ public sealed class CudaComputeKernel : IComputeKernel
         {
             throw new ObjectDisposedException(nameof(CudaComputeKernel));
         }
-        
+
         _logger.LogTrace("Setting CUDA kernel argument {Index} to double buffer", index);
     }
 
@@ -245,7 +245,7 @@ public sealed class CudaComputeKernel : IComputeKernel
         {
             throw new ObjectDisposedException(nameof(CudaComputeKernel));
         }
-        
+
         _logger.LogTrace("Setting CUDA kernel argument {Index} to int buffer", index);
     }
 
@@ -255,7 +255,7 @@ public sealed class CudaComputeKernel : IComputeKernel
         {
             throw new ObjectDisposedException(nameof(CudaComputeKernel));
         }
-        
+
         _logger.LogTrace("Setting CUDA kernel argument {Index} to float value {Value}", index, value);
     }
 
@@ -265,7 +265,7 @@ public sealed class CudaComputeKernel : IComputeKernel
         {
             throw new ObjectDisposedException(nameof(CudaComputeKernel));
         }
-        
+
         _logger.LogTrace("Setting CUDA kernel argument {Index} to double value {Value}", index, value);
     }
 
@@ -275,7 +275,7 @@ public sealed class CudaComputeKernel : IComputeKernel
         {
             throw new ObjectDisposedException(nameof(CudaComputeKernel));
         }
-        
+
         _logger.LogTrace("Setting CUDA kernel argument {Index} to int value {Value}", index, value);
     }
 

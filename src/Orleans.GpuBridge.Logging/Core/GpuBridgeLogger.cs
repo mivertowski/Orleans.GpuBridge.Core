@@ -16,6 +16,12 @@ public sealed class GpuBridgeLogger : ILogger
     private readonly LogLevel _minimumLevel;
     private readonly ConcurrentStack<LogScope> _scopes = new();
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GpuBridgeLogger"/> class.
+    /// </summary>
+    /// <param name="categoryName">The category name for the logger.</param>
+    /// <param name="buffer">The log buffer for batching entries.</param>
+    /// <param name="minimumLevel">The minimum log level to process.</param>
     public GpuBridgeLogger(string categoryName, LogBuffer buffer, LogLevel minimumLevel)
     {
         _categoryName = categoryName ?? throw new ArgumentNullException(nameof(categoryName));
@@ -23,6 +29,12 @@ public sealed class GpuBridgeLogger : ILogger
         _minimumLevel = minimumLevel;
     }
 
+    /// <summary>
+    /// Begins a logical operation scope.
+    /// </summary>
+    /// <typeparam name="TState">The type of the state to begin scope for.</typeparam>
+    /// <param name="state">The identifier for the scope.</param>
+    /// <returns>An IDisposable that ends the logical operation scope on dispose.</returns>
     public IDisposable BeginScope<TState>(TState state) where TState : notnull
     {
         // state is constrained to notnull, so ToString() cannot return null
@@ -34,9 +46,23 @@ public sealed class GpuBridgeLogger : ILogger
         return new ScopeDisposable(_scopes);
     }
 
+    /// <summary>
+    /// Checks if the given logLevel is enabled.
+    /// </summary>
+    /// <param name="logLevel">Level to be checked.</param>
+    /// <returns>true if enabled; otherwise, false.</returns>
     public bool IsEnabled(LogLevel logLevel) => logLevel >= _minimumLevel;
 
-    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, 
+    /// <summary>
+    /// Writes a log entry.
+    /// </summary>
+    /// <typeparam name="TState">The type of the object to be written.</typeparam>
+    /// <param name="logLevel">Entry will be written on this level.</param>
+    /// <param name="eventId">Id of the event.</param>
+    /// <param name="state">The entry to be written.</param>
+    /// <param name="exception">The exception related to this entry.</param>
+    /// <param name="formatter">Function to create a string message of the state and exception.</param>
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception,
         Func<TState, Exception?, string> formatter)
     {
         if (!IsEnabled(logLevel))
@@ -105,7 +131,7 @@ public sealed class GpuBridgeLogger : ILogger
     /// <summary>
     /// Logs GPU operation with specific context.
     /// </summary>
-    public void LogGpuOperation(LogLevel logLevel, string operation, string? kernelId = null, 
+    public void LogGpuOperation(LogLevel logLevel, string operation, string? kernelId = null,
         TimeSpan? duration = null, long? memoryUsage = null, Exception? exception = null)
     {
         if (!IsEnabled(logLevel))
@@ -148,7 +174,7 @@ public sealed class GpuBridgeLogger : ILogger
     /// <summary>
     /// Logs Orleans grain operation.
     /// </summary>
-    public void LogGrainOperation(LogLevel logLevel, string grainType, string method, 
+    public void LogGrainOperation(LogLevel logLevel, string grainType, string method,
         string? grainId = null, TimeSpan? duration = null, Exception? exception = null)
     {
         if (!IsEnabled(logLevel))
@@ -230,7 +256,7 @@ public sealed class GpuBridgeLogger : ILogger
             var timestamp = entry.Timestamp.ToString("HH:mm:ss.fff");
             var level = entry.Level.ToString().ToUpperInvariant();
             var message = $"[{timestamp}] {level} [{entry.Category}] {entry.Message}";
-            
+
             if (entry.Exception != null)
             {
                 message += Environment.NewLine + entry.Exception.ToString();
@@ -273,7 +299,7 @@ public static class GpuBridgeLoggerExtensions
     /// <summary>
     /// Logs GPU kernel execution.
     /// </summary>
-    public static void LogKernelExecution(this ILogger logger, string kernelId, 
+    public static void LogKernelExecution(this ILogger logger, string kernelId,
         TimeSpan duration, long inputSize, long outputSize, bool success = true)
     {
         if (logger is GpuBridgeLogger gpuLogger)
@@ -297,7 +323,7 @@ public static class GpuBridgeLoggerExtensions
         }
         else
         {
-            logger.LogInformation("Kernel {KernelId} executed in {Duration}ms", 
+            logger.LogInformation("Kernel {KernelId} executed in {Duration}ms",
                 kernelId, duration.TotalMilliseconds);
         }
     }
@@ -305,17 +331,17 @@ public static class GpuBridgeLoggerExtensions
     /// <summary>
     /// Logs GPU memory operations.
     /// </summary>
-    public static void LogMemoryOperation(this ILogger logger, string operation, 
+    public static void LogMemoryOperation(this ILogger logger, string operation,
         long bytes, TimeSpan duration)
     {
         if (logger is GpuBridgeLogger gpuLogger)
         {
-            gpuLogger.LogGpuOperation(LogLevel.Debug, $"Memory {operation}", 
+            gpuLogger.LogGpuOperation(LogLevel.Debug, $"Memory {operation}",
                 null, duration, bytes);
         }
         else
         {
-            logger.LogDebug("GPU Memory {Operation}: {Bytes} bytes in {Duration}ms", 
+            logger.LogDebug("GPU Memory {Operation}: {Bytes} bytes in {Duration}ms",
                 operation, bytes, duration.TotalMilliseconds);
         }
     }
@@ -323,7 +349,7 @@ public static class GpuBridgeLoggerExtensions
     /// <summary>
     /// Logs grain activation/deactivation.
     /// </summary>
-    public static void LogGrainLifecycle(this ILogger logger, string grainType, 
+    public static void LogGrainLifecycle(this ILogger logger, string grainType,
         string grainId, string operation)
     {
         if (logger is GpuBridgeLogger gpuLogger)
@@ -332,7 +358,7 @@ public static class GpuBridgeLoggerExtensions
         }
         else
         {
-            logger.LogDebug("Grain {GrainType} ({GrainId}) {Operation}", 
+            logger.LogDebug("Grain {GrainType} ({GrainId}) {Operation}",
                 grainType, grainId, operation);
         }
     }
@@ -340,7 +366,7 @@ public static class GpuBridgeLoggerExtensions
     /// <summary>
     /// Logs with correlation context.
     /// </summary>
-    public static void LogWithCorrelation(this ILogger logger, LogLevel level, 
+    public static void LogWithCorrelation(this ILogger logger, LogLevel level,
         string message, string correlationId, params object?[] args)
     {
         using var context = new LogContext(correlationId).Push();
@@ -368,7 +394,7 @@ public static class GpuBridgeLoggerExtensions
         }
         else
         {
-            logger.LogInformation("Performance: {Operation} completed in {Duration}ms", 
+            logger.LogInformation("Performance: {Operation} completed in {Duration}ms",
                 operation, duration.TotalMilliseconds);
         }
     }

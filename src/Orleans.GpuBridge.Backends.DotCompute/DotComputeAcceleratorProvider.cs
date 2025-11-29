@@ -243,7 +243,8 @@ public sealed class DotComputeAcceleratorProvider : IDisposable
     public GpuBridgeInfo GetBridgeInfo()
     {
         var totalMemory = _accelerators.Values
-            .Sum(a => {
+            .Sum(a =>
+            {
                 try
                 {
                     var health = a.GetHealthSnapshotAsync().AsTask().Result;

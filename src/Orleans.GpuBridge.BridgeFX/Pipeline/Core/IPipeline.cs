@@ -16,14 +16,14 @@ public interface IPipeline<TInput, TOutput>
     /// Processes a single item through the pipeline
     /// </summary>
     Task<TOutput> ProcessAsync(TInput input, CancellationToken ct = default);
-    
+
     /// <summary>
     /// Processes multiple items through the pipeline
     /// </summary>
     IAsyncEnumerable<TOutput> ProcessManyAsync(
         IAsyncEnumerable<TInput> inputs,
         CancellationToken ct = default);
-    
+
     /// <summary>
     /// Processes items from a channel
     /// </summary>

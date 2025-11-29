@@ -34,7 +34,7 @@ public sealed class GpuStreamGrain<TIn, TOut> : Grain, IGpuStreamGrain<TIn, TOut
     private Task? _processingTask;
     private StreamProcessingStatus _status = StreamProcessingStatus.Idle;
     private readonly StreamProcessingStatsTracker _stats = new();
-    
+
     public GpuStreamGrain(ILogger<GpuStreamGrain<TIn, TOut>> logger)
     {
         _logger = logger;
@@ -45,7 +45,7 @@ public sealed class GpuStreamGrain<TIn, TOut> : Grain, IGpuStreamGrain<TIn, TOut
                 SingleWriter = false
             });
     }
-    
+
     public async Task StartProcessingAsync(
         StreamId inputStream,
         StreamId outputStream,
@@ -55,35 +55,35 @@ public sealed class GpuStreamGrain<TIn, TOut> : Grain, IGpuStreamGrain<TIn, TOut
         {
             throw new InvalidOperationException("Already processing");
         }
-        
+
         _status = StreamProcessingStatus.Starting;
-        
+
         try
         {
             // Get kernel
             var kernelId = KernelId.Parse(this.GetPrimaryKeyString());
             var bridge = ServiceProvider.GetRequiredService<IGpuBridge>();
             _kernel = await bridge.GetKernelAsync<TIn, TOut>(kernelId);
-            
+
             // Get streams
             var streamProvider = this.GetStreamProvider("Default");
             _inputStream = streamProvider.GetStream<TIn>(inputStream);
             _outputStream = streamProvider.GetStream<TOut>(outputStream);
-            
+
             // Subscribe to input stream
             _subscription = await _inputStream.SubscribeAsync(
                 async (item, token) =>
                 {
                     await _buffer.Writer.WriteAsync(item);
                 });
-            
+
             // Start processing loop
             _cts = new CancellationTokenSource();
             _processingTask = ProcessStreamAsync(hints, _cts.Token);
-            
+
             _status = StreamProcessingStatus.Processing;
             _stats.Start();
-            
+
             _logger.LogInformation(
                 "Started stream processing from {Input} to {Output}",
                 inputStream, outputStream);
@@ -95,16 +95,16 @@ public sealed class GpuStreamGrain<TIn, TOut> : Grain, IGpuStreamGrain<TIn, TOut
             throw;
         }
     }
-    
+
     public async Task StopProcessingAsync()
     {
         if (_status != StreamProcessingStatus.Processing)
         {
             return;
         }
-        
+
         _status = StreamProcessingStatus.Stopping;
-        
+
         try
         {
             // Unsubscribe from input
@@ -113,21 +113,21 @@ public sealed class GpuStreamGrain<TIn, TOut> : Grain, IGpuStreamGrain<TIn, TOut
                 await _subscription.UnsubscribeAsync();
                 _subscription = null;
             }
-            
+
             // Signal completion
             _buffer.Writer.TryComplete();
-            
+
             // Cancel processing
             _cts?.Cancel();
-            
+
             // Wait for processing to complete
             if (_processingTask != null)
             {
                 await _processingTask;
             }
-            
+
             _status = StreamProcessingStatus.Stopped;
-            
+
             _logger.LogInformation(
                 "Stopped stream processing. Processed {Count} items",
                 _stats.ItemsProcessed);
@@ -138,12 +138,12 @@ public sealed class GpuStreamGrain<TIn, TOut> : Grain, IGpuStreamGrain<TIn, TOut
             _status = StreamProcessingStatus.Failed;
         }
     }
-    
+
     public Task<StreamProcessingStatus> GetStatusAsync()
     {
         return Task.FromResult(_status);
     }
-    
+
     public Task<StreamProcessingStats> GetStatsAsync()
     {
         return Task.FromResult(_stats.GetStats());
@@ -340,7 +340,7 @@ public sealed class GpuStreamGrain<TIn, TOut> : Grain, IGpuStreamGrain<TIn, TOut
         var batchSize = hints?.MaxMicroBatch ?? defaultBatchSize;
         var batch = new List<TIn>(batchSize);
         var timer = new PeriodicTimer(TimeSpan.FromMilliseconds(100));
-        
+
         try
         {
             while (!ct.IsCancellationRequested)
@@ -351,13 +351,13 @@ public sealed class GpuStreamGrain<TIn, TOut> : Grain, IGpuStreamGrain<TIn, TOut
                 {
                     batch.Add(item);
                 }
-                
+
                 // Process if we have items or timeout
                 if (batch.Count > 0)
                 {
                     var shouldProcess = batch.Count >= batchSize ||
                                        await timer.WaitForNextTickAsync(ct);
-                    
+
                     if (shouldProcess)
                     {
                         await ProcessBatchAsync(batch, hints, ct);
@@ -385,14 +385,14 @@ public sealed class GpuStreamGrain<TIn, TOut> : Grain, IGpuStreamGrain<TIn, TOut
             timer.Dispose();
         }
     }
-    
+
     private async Task ProcessBatchAsync(
         List<TIn> batch,
         GpuExecutionHints? hints,
         CancellationToken ct)
     {
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        
+
         try
         {
             var batchArray = batch.ToArray();
@@ -405,7 +405,7 @@ public sealed class GpuStreamGrain<TIn, TOut> : Grain, IGpuStreamGrain<TIn, TOut
 
             stopwatch.Stop();
             _stats.RecordSuccess(batch.Count, stopwatch.Elapsed);
-            
+
             _logger.LogDebug(
                 "Processed batch of {Count} items in {ElapsedMs}ms",
                 batch.Count, stopwatch.ElapsedMilliseconds);

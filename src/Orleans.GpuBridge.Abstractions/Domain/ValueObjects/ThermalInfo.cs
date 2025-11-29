@@ -12,8 +12,8 @@ public sealed record ThermalInfo(
     /// <summary>
     /// Temperature utilization as percentage of max safe temperature
     /// </summary>
-    public double TemperatureUtilization => MaxTemperatureCelsius > 0 
-        ? Math.Min(1.0, TemperatureCelsius / (double)MaxTemperatureCelsius) 
+    public double TemperatureUtilization => MaxTemperatureCelsius > 0
+        ? Math.Min(1.0, TemperatureCelsius / (double)MaxTemperatureCelsius)
         : 0.0;
 
     /// <summary>

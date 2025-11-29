@@ -17,30 +17,30 @@ internal sealed class BatchStage<T> : IPipelineStage
     private readonly TimeSpan _timeout;
     private readonly List<T> _buffer = new();
     private DateTime _lastFlush = DateTime.UtcNow;
-    
+
     public Type InputType => typeof(T);
     public Type OutputType => typeof(IReadOnlyList<T>);
-    
+
     public BatchStage(int batchSize, TimeSpan timeout)
     {
         _batchSize = batchSize;
         _timeout = timeout;
     }
-    
+
     public Task<object?> ProcessAsync(object input, CancellationToken ct)
     {
         if (input is not T typedInput)
         {
             throw new ArgumentException($"Expected {typeof(T)}, got {input.GetType()}");
         }
-        
+
         lock (_buffer)
         {
             _buffer.Add(typedInput);
-            
+
             var shouldFlush = _buffer.Count >= _batchSize ||
                              DateTime.UtcNow - _lastFlush >= _timeout;
-            
+
             if (shouldFlush)
             {
                 var batch = _buffer.ToList();
@@ -49,7 +49,7 @@ internal sealed class BatchStage<T> : IPipelineStage
                 return Task.FromResult<object?>(batch);
             }
         }
-        
+
         return Task.FromResult<object?>(null);
     }
 }

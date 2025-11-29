@@ -30,7 +30,7 @@ public class GpuHealthCheckOptions
     /// Set to <c>false</c> for applications that can gracefully degrade to CPU execution.
     /// </remarks>
     public bool RequireGpu { get; set; } = false;
-    
+
     /// <summary>
     /// Gets or sets a value indicating whether to perform functional kernel execution testing.
     /// When enabled, the health check will execute a simple test kernel to verify GPU compute functionality.
@@ -42,7 +42,7 @@ public class GpuHealthCheckOptions
     /// Disable this in environments where kernel testing may interfere with critical workloads.
     /// </remarks>
     public bool TestKernelExecution { get; set; } = true;
-    
+
     /// <summary>
     /// Gets or sets the maximum acceptable GPU temperature in Celsius before reporting unhealthy status.
     /// Temperatures at or above this threshold indicate thermal issues that could damage hardware
@@ -61,7 +61,7 @@ public class GpuHealthCheckOptions
     /// - Specialized cooling: 75-80°C
     /// </remarks>
     public double MaxTemperatureCelsius { get; set; } = 85.0;
-    
+
     /// <summary>
     /// Gets or sets the temperature threshold in Celsius for reporting degraded status.
     /// Temperatures at or above this threshold indicate elevated thermal conditions
@@ -74,7 +74,7 @@ public class GpuHealthCheckOptions
     /// Typically set 10-15°C below the maximum temperature threshold.
     /// </remarks>
     public double WarnTemperatureCelsius { get; set; } = 75.0;
-    
+
     /// <summary>
     /// Gets or sets the maximum acceptable GPU memory utilization percentage before reporting unhealthy status.
     /// Memory usage at or above this threshold indicates memory exhaustion conditions
@@ -93,7 +93,7 @@ public class GpuHealthCheckOptions
     /// - Need for memory headroom during processing spikes
     /// </remarks>
     public double MaxMemoryUsagePercent { get; set; } = 95.0;
-    
+
     /// <summary>
     /// Gets or sets the memory utilization percentage threshold for reporting degraded status.
     /// Memory usage at or above this threshold indicates memory pressure conditions
@@ -106,7 +106,7 @@ public class GpuHealthCheckOptions
     /// or workload redistribution before reaching critical levels.
     /// </remarks>
     public double WarnMemoryUsagePercent { get; set; } = 80.0;
-    
+
     /// <summary>
     /// Gets or sets the minimum expected GPU utilization percentage for optimal operation.
     /// Utilization below this threshold indicates potential underutilization or performance issues

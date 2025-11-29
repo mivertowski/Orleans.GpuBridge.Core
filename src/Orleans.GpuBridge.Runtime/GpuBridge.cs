@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -47,12 +48,12 @@ public sealed class GpuBridge : IGpuBridge
         _options = options.Value;
         _serviceProvider = serviceProvider;
     }
-    
+
     public ValueTask<GpuBridgeInfo> GetInfoAsync(CancellationToken ct = default)
     {
         var assembly = Assembly.GetExecutingAssembly();
         var version = assembly.GetName().Version?.ToString() ?? "1.0.0";
-        
+
         var info = new GpuBridgeInfo(
             Version: version,
             DeviceCount: _deviceBroker.DeviceCount,
@@ -65,10 +66,10 @@ public sealed class GpuBridge : IGpuBridge
                 ["MemoryPoolSizeMB"] = _options.MemoryPoolSizeMB,
                 ["EnableProfiling"] = _options.EnableProfiling
             });
-        
+
         return new ValueTask<GpuBridgeInfo>(info);
     }
-    
+
     public async ValueTask<IGpuKernel<TIn, TOut>> GetKernelAsync<TIn, TOut>(
         KernelId kernelId,
         CancellationToken ct = default)
@@ -76,24 +77,26 @@ public sealed class GpuBridge : IGpuBridge
         where TOut : notnull
     {
         _logger.LogDebug("Getting kernel {KernelId}", kernelId);
-        
+
         var kernel = await _kernelCatalog.ResolveAsync<TIn, TOut>(kernelId, _serviceProvider);
-        
+
         if (kernel == null)
         {
             _logger.LogWarning("Kernel {KernelId} not found, using CPU passthrough", kernelId);
             kernel = new CpuPassthroughKernel<TIn, TOut>();
         }
-        
+
         return kernel;
     }
-    
+
     public ValueTask<IReadOnlyList<GpuDevice>> GetDevicesAsync(CancellationToken ct = default)
     {
         var devices = _deviceBroker.GetDevices();
         return new ValueTask<IReadOnlyList<GpuDevice>>(devices);
     }
 
+    [RequiresDynamicCode("Dynamic kernel execution uses runtime reflection to create generic method calls.")]
+    [RequiresUnreferencedCode("Dynamic kernel execution uses reflection which may not work with trimming.")]
     public async ValueTask<object> ExecuteKernelAsync(string kernelId, object input, CancellationToken ct = default)
     {
         ArgumentNullException.ThrowIfNull(input);
@@ -158,6 +161,7 @@ public sealed class GpuBridge : IGpuBridge
     /// Creates a dynamic executor delegate for the specified type combination.
     /// Uses reflection to invoke the generic ResolveAsync method.
     /// </summary>
+    [RequiresDynamicCode("Calls System.Reflection.MethodInfo.MakeGenericMethod(params Type[])")]
     private Func<KernelId, object, CancellationToken, Task<object>> CreateDynamicExecutor(Type inputType, Type outputType)
     {
         _logger.LogDebug(

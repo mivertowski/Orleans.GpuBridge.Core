@@ -149,37 +149,73 @@ public readonly struct HybridTimestamp : IComparable<HybridTimestamp>, IEquatabl
         return NodeId.CompareTo(other.NodeId);
     }
 
+    /// <summary>
+    /// Determines whether this timestamp equals another timestamp.
+    /// </summary>
+    /// <param name="other">The timestamp to compare with.</param>
+    /// <returns>True if timestamps are equal; otherwise, false.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Equals(HybridTimestamp other) =>
         PhysicalTime == other.PhysicalTime &&
         LogicalCounter == other.LogicalCounter &&
         NodeId == other.NodeId;
 
+    /// <summary>
+    /// Determines whether this timestamp equals another object.
+    /// </summary>
+    /// <param name="obj">The object to compare with.</param>
+    /// <returns>True if the object is a HybridTimestamp and equals this timestamp; otherwise, false.</returns>
     public override bool Equals(object? obj) =>
         obj is HybridTimestamp timestamp && Equals(timestamp);
 
+    /// <summary>
+    /// Returns a hash code for this timestamp.
+    /// </summary>
+    /// <returns>A hash code combining physical time, logical counter, and node ID.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override int GetHashCode() =>
         HashCode.Combine(PhysicalTime, LogicalCounter, NodeId);
 
+    /// <summary>
+    /// Returns a string representation of the timestamp showing physical time, logical counter, and node ID.
+    /// </summary>
+    /// <returns>A formatted string like "HLC(12345, 2, Node=1)".</returns>
     public override string ToString() =>
         $"HLC({PhysicalTime}, {LogicalCounter}, Node={NodeId})";
 
+    /// <summary>
+    /// Determines whether two timestamps are equal.
+    /// </summary>
     public static bool operator ==(HybridTimestamp left, HybridTimestamp right) =>
         left.Equals(right);
 
+    /// <summary>
+    /// Determines whether two timestamps are not equal.
+    /// </summary>
     public static bool operator !=(HybridTimestamp left, HybridTimestamp right) =>
         !left.Equals(right);
 
+    /// <summary>
+    /// Determines whether one timestamp is less than another.
+    /// </summary>
     public static bool operator <(HybridTimestamp left, HybridTimestamp right) =>
         left.CompareTo(right) < 0;
 
+    /// <summary>
+    /// Determines whether one timestamp is less than or equal to another.
+    /// </summary>
     public static bool operator <=(HybridTimestamp left, HybridTimestamp right) =>
         left.CompareTo(right) <= 0;
 
+    /// <summary>
+    /// Determines whether one timestamp is greater than another.
+    /// </summary>
     public static bool operator >(HybridTimestamp left, HybridTimestamp right) =>
         left.CompareTo(right) > 0;
 
+    /// <summary>
+    /// Determines whether one timestamp is greater than or equal to another.
+    /// </summary>
     public static bool operator >=(HybridTimestamp left, HybridTimestamp right) =>
         left.CompareTo(right) >= 0;
 

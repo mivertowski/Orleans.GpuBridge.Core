@@ -133,7 +133,7 @@ public sealed class BackendProviderFactory
     {
         if (_primaryProvider == null)
             throw new InvalidOperationException("No backend provider available");
-        
+
         return _primaryProvider;
     }
 

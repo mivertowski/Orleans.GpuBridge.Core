@@ -23,7 +23,7 @@ public sealed class RingBufferManager : IDisposable
     private readonly ConcurrentDictionary<string, RingBuffer> _buffers;
     private readonly int _defaultBufferSize;
     private bool _disposed;
-    
+
     public RingBufferManager(
         ILogger<RingBufferManager> logger,
         int defaultBufferSize = 1024 * 1024 * 16) // 16MB default
@@ -32,7 +32,7 @@ public sealed class RingBufferManager : IDisposable
         _defaultBufferSize = defaultBufferSize;
         _buffers = new ConcurrentDictionary<string, RingBuffer>();
     }
-    
+
     /// <summary>
     /// Creates a new ring buffer for kernel I/O
     /// </summary>
@@ -40,20 +40,20 @@ public sealed class RingBufferManager : IDisposable
     {
         var size = bufferSize ?? _defaultBufferSize;
         var buffer = new RingBuffer(kernelId, size, _logger);
-        
+
         if (!_buffers.TryAdd(kernelId, buffer))
         {
             buffer.Dispose();
             throw new InvalidOperationException($"Buffer already exists for kernel {kernelId}");
         }
-        
+
         _logger.LogInformation(
             "Created ring buffer for kernel {KernelId} with size {Size:N0} bytes",
             kernelId, size);
-        
+
         return buffer;
     }
-    
+
     /// <summary>
     /// Gets an existing ring buffer
     /// </summary>
@@ -61,7 +61,7 @@ public sealed class RingBufferManager : IDisposable
     {
         return _buffers.TryGetValue(kernelId, out var buffer) ? buffer : null;
     }
-    
+
     /// <summary>
     /// Removes and disposes a ring buffer
     /// </summary>
@@ -73,32 +73,32 @@ public sealed class RingBufferManager : IDisposable
             _logger.LogInformation("Removed ring buffer for kernel {KernelId}", kernelId);
         }
     }
-    
+
     /// <summary>
     /// Gets statistics for all buffers
     /// </summary>
     public Dictionary<string, RingBufferStats> GetStatistics()
     {
         var stats = new Dictionary<string, RingBufferStats>();
-        
+
         foreach (var (kernelId, buffer) in _buffers)
         {
             stats[kernelId] = buffer.GetStats();
         }
-        
+
         return stats;
     }
-    
+
     public void Dispose()
     {
         if (_disposed) return;
         _disposed = true;
-        
+
         foreach (var buffer in _buffers.Values)
         {
             buffer.Dispose();
         }
-        
+
         _buffers.Clear();
     }
 }
@@ -122,33 +122,33 @@ public sealed class RingBuffer : IDisposable
     private long _totalWrites;
     private long _totalReads;
     private bool _disposed;
-    
+
     public IntPtr BufferPointer { get; }
     public int Size => _size;
     public bool IsPinned => _handle.IsAllocated;
-    
+
     public RingBuffer(string kernelId, int size, ILogger logger)
     {
         _kernelId = kernelId;
         _size = size;
         _logger = logger;
         _buffer = new byte[size];
-        
+
         // Pin the buffer for direct GPU access
         _handle = GCHandle.Alloc(_buffer, GCHandleType.Pinned);
         BufferPointer = _handle.AddrOfPinnedObject();
-        
+
         // Create channels for async data flow
         var channelOptions = new UnboundedChannelOptions
         {
             SingleReader = false,
             SingleWriter = false
         };
-        
+
         _inputChannel = Channel.CreateUnbounded<DataBatch>(channelOptions);
         _outputChannel = Channel.CreateUnbounded<DataBatch>(channelOptions);
     }
-    
+
     /// <summary>
     /// Writes data to the ring buffer
     /// </summary>
@@ -161,17 +161,17 @@ public sealed class RingBuffer : IDisposable
                 data.Length, _size);
             return false;
         }
-        
+
         // Wait for space to be available
         while (!TryWrite(data))
         {
             await Task.Delay(1, ct);
             if (ct.IsCancellationRequested) return false;
         }
-        
+
         return true;
     }
-    
+
     /// <summary>
     /// Tries to write data without waiting
     /// </summary>
@@ -180,20 +180,20 @@ public sealed class RingBuffer : IDisposable
         var dataSize = data.Length;
         var currentWrite = Volatile.Read(ref _writePosition);
         var currentRead = Volatile.Read(ref _readPosition);
-        
+
         // Calculate available space
-        var available = currentRead <= currentWrite 
+        var available = currentRead <= currentWrite
             ? _size - (currentWrite - currentRead)
             : currentRead - currentWrite;
-        
+
         if (available < dataSize + sizeof(int)) // Need space for size header
             return false;
-        
+
         // Write size header
         var newWritePos = currentWrite;
         WriteInt32(_buffer, newWritePos, dataSize);
         newWritePos = (newWritePos + sizeof(int)) % _size;
-        
+
         // Write data (handle wrap-around)
         if (newWritePos + dataSize <= _size)
         {
@@ -205,19 +205,19 @@ public sealed class RingBuffer : IDisposable
             data.Span[..firstChunk].CopyTo(_buffer.AsSpan(newWritePos));
             data.Span[firstChunk..].CopyTo(_buffer.AsSpan(0));
         }
-        
+
         newWritePos = (newWritePos + dataSize) % _size;
-        
+
         // Update position atomically
         Volatile.Write(ref _writePosition, newWritePos);
-        
+
         // Update statistics
         Interlocked.Add(ref _totalBytesWritten, dataSize);
         Interlocked.Increment(ref _totalWrites);
-        
+
         return true;
     }
-    
+
     /// <summary>
     /// Reads data from the ring buffer
     /// </summary>
@@ -228,13 +228,13 @@ public sealed class RingBuffer : IDisposable
             var result = TryRead();
             if (result.HasValue)
                 return result;
-            
+
             await Task.Delay(1, ct);
             if (ct.IsCancellationRequested)
                 return null;
         }
     }
-    
+
     /// <summary>
     /// Tries to read data without waiting
     /// </summary>
@@ -242,17 +242,17 @@ public sealed class RingBuffer : IDisposable
     {
         var currentRead = Volatile.Read(ref _readPosition);
         var currentWrite = Volatile.Read(ref _writePosition);
-        
+
         if (currentRead == currentWrite)
             return null; // Buffer is empty
-        
+
         // Read size header
         var dataSize = ReadInt32(_buffer, currentRead);
         var newReadPos = (currentRead + sizeof(int)) % _size;
-        
+
         // Allocate result buffer
         var result = new byte[dataSize];
-        
+
         // Read data (handle wrap-around)
         if (newReadPos + dataSize <= _size)
         {
@@ -264,19 +264,19 @@ public sealed class RingBuffer : IDisposable
             _buffer.AsSpan(newReadPos, firstChunk).CopyTo(result.AsSpan(0, firstChunk));
             _buffer.AsSpan(0, dataSize - firstChunk).CopyTo(result.AsSpan(firstChunk));
         }
-        
+
         newReadPos = (newReadPos + dataSize) % _size;
-        
+
         // Update position atomically
         Volatile.Write(ref _readPosition, newReadPos);
-        
+
         // Update statistics
         Interlocked.Add(ref _totalBytesRead, dataSize);
         Interlocked.Increment(ref _totalReads);
-        
+
         return result;
     }
-    
+
     /// <summary>
     /// Submits a batch for processing
     /// </summary>
@@ -284,7 +284,7 @@ public sealed class RingBuffer : IDisposable
     {
         await _inputChannel.Writer.WriteAsync(batch);
     }
-    
+
     /// <summary>
     /// Retrieves processed results
     /// </summary>
@@ -296,7 +296,7 @@ public sealed class RingBuffer : IDisposable
             yield return batch;
         }
     }
-    
+
     /// <summary>
     /// Gets buffer statistics
     /// </summary>
@@ -304,11 +304,11 @@ public sealed class RingBuffer : IDisposable
     {
         var currentRead = Volatile.Read(ref _readPosition);
         var currentWrite = Volatile.Read(ref _writePosition);
-        
+
         var used = currentWrite >= currentRead
             ? currentWrite - currentRead
             : _size - (currentRead - currentWrite);
-        
+
         return new RingBufferStats
         {
             KernelId = _kernelId,
@@ -322,25 +322,25 @@ public sealed class RingBuffer : IDisposable
             UtilizationPercent = (used / (double)_size) * 100
         };
     }
-    
+
     private static void WriteInt32(byte[] buffer, int position, int value)
     {
         BitConverter.GetBytes(value).CopyTo(buffer, position);
     }
-    
+
     private static int ReadInt32(byte[] buffer, int position)
     {
         return BitConverter.ToInt32(buffer, position);
     }
-    
+
     public void Dispose()
     {
         if (_disposed) return;
         _disposed = true;
-        
+
         _inputChannel.Writer.TryComplete();
         _outputChannel.Writer.TryComplete();
-        
+
         if (_handle.IsAllocated)
         {
             _handle.Free();
@@ -374,7 +374,7 @@ public sealed class RingBufferStats
     public long TotalWrites { get; init; }
     public long TotalReads { get; init; }
     public double UtilizationPercent { get; init; }
-    public double WriteThroughputMBps => TotalWrites > 0 
+    public double WriteThroughputMBps => TotalWrites > 0
         ? (TotalBytesWritten / 1024.0 / 1024.0) / (TotalWrites / 1000.0)
         : 0;
     public double ReadThroughputMBps => TotalReads > 0

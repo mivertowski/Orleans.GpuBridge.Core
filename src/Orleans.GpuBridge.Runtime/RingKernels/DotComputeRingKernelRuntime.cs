@@ -1,6 +1,7 @@
 // Copyright (c) 2025 Michael Ivertowski
 // Licensed under the Apache License, Version 2.0. See LICENSE file for details.
 
+using System.Diagnostics.CodeAnalysis;
 using DotCompute.Abstractions.RingKernels;
 using DotCompute.Backends.CUDA.RingKernels;
 using Microsoft.Extensions.Logging;
@@ -54,6 +55,8 @@ public sealed class DotComputeRingKernelRuntime : IRingKernelRuntime
     }
 
     /// <inheritdoc/>
+    [RequiresDynamicCode("Ring kernel launch uses reflection for queue creation.")]
+    [RequiresUnreferencedCode("Ring kernel runtime requires reflection to detect message types.")]
     public async Task LaunchAsync(
         string kernelId,
         int gridSize,

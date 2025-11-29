@@ -34,7 +34,7 @@ public static class BackendProviderExtensions
             builder.Services.AddSingleton(typeof(IGpuBackendProvider), dotComputeProviderType);
             return builder;
         }
-        
+
         throw new InvalidOperationException(
             "DotCompute backend provider not found. Ensure Orleans.GpuBridge.Backends.DotCompute package is installed.");
     }
@@ -46,12 +46,12 @@ public static class BackendProviderExtensions
     public static IGpuBridgeBuilder AddAllAvailableBackends(this IGpuBridgeBuilder builder)
     {
         var providerTypes = ScanForBackendProviders();
-        
+
         foreach (var providerType in providerTypes)
         {
             builder.Services.AddSingleton(typeof(IGpuBackendProvider), providerType);
         }
-        
+
         return builder;
     }
 
@@ -76,14 +76,14 @@ public static class BackendProviderExtensions
             foreach (var assembly in assemblies)
             {
                 var providerType = assembly.GetTypes()
-                    .FirstOrDefault(t => 
-                        t.Name == "DotComputeBackendProvider" && 
+                    .FirstOrDefault(t =>
+                        t.Name == "DotComputeBackendProvider" &&
                         t.IsAssignableTo(typeof(IGpuBackendProvider)));
-                        
+
                 if (providerType != null)
                     return providerType;
             }
-            
+
             return null;
         }
         catch
@@ -96,7 +96,7 @@ public static class BackendProviderExtensions
     private static IEnumerable<Type> ScanForBackendProviders()
     {
         var providerTypes = new List<Type>();
-        
+
         try
         {
             var assemblies = System.AppDomain.CurrentDomain.GetAssemblies();
@@ -105,12 +105,12 @@ public static class BackendProviderExtensions
                 try
                 {
                     var types = assembly.GetTypes()
-                        .Where(t => 
-                            t.IsClass && 
-                            !t.IsAbstract && 
+                        .Where(t =>
+                            t.IsClass &&
+                            !t.IsAbstract &&
                             t.IsAssignableTo(typeof(IGpuBackendProvider)))
                         .ToList();
-                    
+
                     providerTypes.AddRange(types);
                 }
                 catch
@@ -125,7 +125,7 @@ public static class BackendProviderExtensions
             // If assembly scanning fails, just return CPU fallback
             providerTypes.Add(typeof(CpuFallbackProvider));
         }
-        
+
         return providerTypes;
     }
 }

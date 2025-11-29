@@ -61,7 +61,7 @@ public enum GpuHandlerMode
 /// </summary>
 /// <remarks>
 /// <para>
-/// This interface is decorated with <see cref="GpuNativeActorAttribute"/> to trigger
+/// This interface is decorated with <see cref="Orleans.GpuBridge.Runtime.RingKernels.GpuNativeActorAttribute"/> to trigger
 /// the GpuNativeActorGenerator source generator, which produces:
 /// </para>
 /// <list type="bullet">

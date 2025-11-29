@@ -13,21 +13,21 @@ public enum TransferDirection
     /// Common scenarios include uploading textures, vertex data, or computation input arrays.
     /// </summary>
     HostToDevice,
-    
+
     /// <summary>
     /// Data transfer from device (GPU) memory to host (CPU) memory.
     /// This represents downloading processed results from GPU back to CPU memory.
     /// Common scenarios include reading computation results, rendered images, or processed data arrays.
     /// </summary>
     DeviceToHost,
-    
+
     /// <summary>
     /// Data transfer between different memory regions on the same GPU device.
     /// This includes transfers between different memory types (e.g., global to shared memory)
     /// or memory-to-memory copy operations within the same device.
     /// </summary>
     DeviceToDevice,
-    
+
     /// <summary>
     /// Data transfer between different GPU devices (peer-to-peer transfer).
     /// This represents direct GPU-to-GPU transfers in multi-GPU systems,

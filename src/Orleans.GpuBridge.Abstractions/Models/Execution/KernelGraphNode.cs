@@ -47,8 +47,8 @@ public sealed class KernelGraphNode
     /// Thrown when <paramref name="nodeId"/> is empty or whitespace.
     /// </exception>
     public KernelGraphNode(
-        string nodeId, 
-        CompiledKernel kernel, 
+        string nodeId,
+        CompiledKernel kernel,
         KernelExecutionParameters parameters,
         ICollection<string>? dependencies = null)
     {

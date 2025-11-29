@@ -288,17 +288,51 @@ public sealed class TemporalPatternDetector
 /// </summary>
 public sealed record PatternDetectionStatistics
 {
+    /// <summary>
+    /// Gets the total number of events processed.
+    /// </summary>
     public long TotalEventsProcessed { get; init; }
+
+    /// <summary>
+    /// Gets the total number of patterns detected.
+    /// </summary>
     public long TotalPatternsDetected { get; init; }
+
+    /// <summary>
+    /// Gets the total number of pattern checks performed.
+    /// </summary>
     public long TotalPatternChecks { get; init; }
+
+    /// <summary>
+    /// Gets the number of currently registered patterns.
+    /// </summary>
     public int RegisteredPatternCount { get; init; }
+
+    /// <summary>
+    /// Gets the current number of events in the sliding window.
+    /// </summary>
     public int CurrentWindowSize { get; init; }
+
+    /// <summary>
+    /// Gets the number of recent pattern matches.
+    /// </summary>
     public int RecentMatchCount { get; init; }
+
+    /// <summary>
+    /// Gets statistics for individual patterns.
+    /// </summary>
     public List<PatternStatistics> PatternStatistics { get; init; } = new();
 
+    /// <summary>
+    /// Gets the detection rate (ratio of patterns detected to checks performed).
+    /// </summary>
     public double DetectionRate =>
         TotalPatternChecks > 0 ? (double)TotalPatternsDetected / TotalPatternChecks : 0;
 
+    /// <summary>
+    /// Returns a string representation of the statistics.
+    /// </summary>
+    /// <returns>A formatted string containing key statistics</returns>
     public override string ToString()
     {
         return $"PatternStats(Processed={TotalEventsProcessed}, " +
@@ -312,8 +346,23 @@ public sealed record PatternDetectionStatistics
 /// </summary>
 public sealed record PatternStatistics
 {
+    /// <summary>
+    /// Gets the unique identifier of the pattern.
+    /// </summary>
     public required string PatternId { get; init; }
+
+    /// <summary>
+    /// Gets the human-readable name of the pattern.
+    /// </summary>
     public required string PatternName { get; init; }
+
+    /// <summary>
+    /// Gets the number of times this pattern has been matched.
+    /// </summary>
     public int MatchCount { get; init; }
+
+    /// <summary>
+    /// Gets the severity level of this pattern.
+    /// </summary>
     public PatternSeverity Severity { get; init; }
 }

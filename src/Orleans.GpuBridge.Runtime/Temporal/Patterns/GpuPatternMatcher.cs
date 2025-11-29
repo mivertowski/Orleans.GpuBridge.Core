@@ -468,19 +468,53 @@ public sealed record GpuPatternMatcherOptions
 /// </summary>
 public sealed record GpuPatternMatcherStatistics
 {
+    /// <summary>
+    /// Gets the total number of events processed.
+    /// </summary>
     public long TotalEventsProcessed { get; init; }
+
+    /// <summary>
+    /// Gets the total number of pattern checks performed.
+    /// </summary>
     public long TotalPatternsChecked { get; init; }
+
+    /// <summary>
+    /// Gets the total number of pattern matches found.
+    /// </summary>
     public long TotalMatchesFound { get; init; }
+
+    /// <summary>
+    /// Gets the total number of GPU batches processed.
+    /// </summary>
     public long TotalGpuBatchesProcessed { get; init; }
+
+    /// <summary>
+    /// Gets the total number of CPU fallback executions.
+    /// </summary>
     public long TotalCpuFallbacks { get; init; }
+
+    /// <summary>
+    /// Gets the total processing time in nanoseconds.
+    /// </summary>
     public long TotalProcessingTimeNanos { get; init; }
+
+    /// <summary>
+    /// Gets the average number of events processed per second.
+    /// </summary>
     public double AverageEventsPerSecond { get; init; }
 
+    /// <summary>
+    /// Gets the percentage of batches processed on GPU versus CPU.
+    /// </summary>
     public double GpuUtilizationPercent =>
         TotalGpuBatchesProcessed + TotalCpuFallbacks > 0
             ? (double)TotalGpuBatchesProcessed / (TotalGpuBatchesProcessed + TotalCpuFallbacks) * 100
             : 0;
 
+    /// <summary>
+    /// Returns a string representation of the statistics.
+    /// </summary>
+    /// <returns>A formatted string containing key statistics</returns>
     public override string ToString()
     {
         return $"GpuPatternMatcherStats(" +

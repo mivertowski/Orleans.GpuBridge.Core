@@ -1,6 +1,7 @@
 // Copyright (c) 2025 Michael Ivertowski
 // Licensed under the Apache License, Version 2.0. See LICENSE file for details.
 
+using System.Diagnostics.CodeAnalysis;
 using DotCompute.Abstractions.RingKernels;
 using Microsoft.Extensions.Logging;
 using Orleans.Runtime;
@@ -101,6 +102,10 @@ public abstract class GpuNativeGrain : Grain, IGrainWithIntegerKey, IAsyncDispos
     /// Launches the persistent ring kernel on GPU.
     /// </summary>
     /// <param name="cancellationToken">Cancellation token.</param>
+    /// <remarks>
+    /// This method uses reflection for ring kernel queue creation and message type detection.
+    /// AOT compilation may require additional configuration for proper operation.
+    /// </remarks>
     public override async Task OnActivateAsync(CancellationToken cancellationToken)
     {
         await base.OnActivateAsync(cancellationToken);

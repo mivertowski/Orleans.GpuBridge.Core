@@ -18,14 +18,14 @@ public interface IGpuMetricsCollector
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>GPU memory information</returns>
     Task<GpuMemoryInfo> GetMemoryInfoAsync(int deviceIndex = 0, CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Gets memory information for all available GPU devices
     /// </summary>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Collection of GPU memory information for all devices</returns>
     Task<IReadOnlyList<GpuMemoryInfo>> GetAllMemoryInfoAsync(CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Gets GPU utilization metrics
     /// </summary>
@@ -33,7 +33,7 @@ public interface IGpuMetricsCollector
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>GPU utilization metrics</returns>
     Task<GpuUtilizationMetrics> GetUtilizationAsync(int deviceIndex = 0, CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Gets performance counters for the GPU
     /// </summary>
@@ -41,9 +41,9 @@ public interface IGpuMetricsCollector
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Dictionary of performance counter names and values</returns>
     Task<IReadOnlyDictionary<string, double>> GetPerformanceCountersAsync(
-        int deviceIndex = 0, 
+        int deviceIndex = 0,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Gets temperature information for the GPU
     /// </summary>
@@ -51,7 +51,7 @@ public interface IGpuMetricsCollector
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Temperature in Celsius</returns>
     Task<double> GetTemperatureAsync(int deviceIndex = 0, CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Gets power consumption information for the GPU
     /// </summary>
@@ -59,7 +59,7 @@ public interface IGpuMetricsCollector
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Power consumption in watts</returns>
     Task<double> GetPowerConsumptionAsync(int deviceIndex = 0, CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Gets clock speeds for the GPU
     /// </summary>
@@ -67,19 +67,19 @@ public interface IGpuMetricsCollector
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Clock speed information</returns>
     Task<GpuClockSpeeds> GetClockSpeedsAsync(int deviceIndex = 0, CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Starts continuous metric collection
     /// </summary>
     /// <param name="interval">Collection interval</param>
     /// <param name="cancellationToken">Cancellation token</param>
     Task StartCollectionAsync(TimeSpan interval, CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Stops continuous metric collection
     /// </summary>
     Task StopCollectionAsync();
-    
+
     /// <summary>
     /// Gets aggregated metrics over a time period
     /// </summary>
@@ -91,7 +91,7 @@ public interface IGpuMetricsCollector
         TimeSpan duration,
         int deviceIndex = 0,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Gets comprehensive device metrics for a specific GPU device
     /// </summary>
@@ -113,25 +113,25 @@ public sealed record GpuUtilizationMetrics
     /// </summary>
     [Id(0)]
     public double GpuUtilizationPercentage { get; init; }
-    
+
     /// <summary>
     /// Gets the memory controller utilization percentage (0-100)
     /// </summary>
     [Id(1)]
     public double MemoryUtilizationPercentage { get; init; }
-    
+
     /// <summary>
     /// Gets the encoder utilization percentage (0-100)
     /// </summary>
     [Id(2)]
     public double EncoderUtilizationPercentage { get; init; }
-    
+
     /// <summary>
     /// Gets the decoder utilization percentage (0-100)
     /// </summary>
     [Id(3)]
     public double DecoderUtilizationPercentage { get; init; }
-    
+
     /// <summary>
     /// Gets the timestamp when these metrics were captured
     /// </summary>
@@ -151,25 +151,25 @@ public sealed record GpuClockSpeeds
     /// </summary>
     [Id(0)]
     public int GraphicsClockMHz { get; init; }
-    
+
     /// <summary>
     /// Gets the current memory clock speed in MHz
     /// </summary>
     [Id(1)]
     public int MemoryClockMHz { get; init; }
-    
+
     /// <summary>
     /// Gets the maximum graphics clock speed in MHz
     /// </summary>
     [Id(2)]
     public int MaxGraphicsClockMHz { get; init; }
-    
+
     /// <summary>
     /// Gets the maximum memory clock speed in MHz
     /// </summary>
     [Id(3)]
     public int MaxMemoryClockMHz { get; init; }
-    
+
     /// <summary>
     /// Gets the timestamp when these speeds were captured
     /// </summary>
@@ -189,67 +189,67 @@ public sealed record AggregatedGpuMetrics
     /// </summary>
     [Id(0)]
     public double AverageGpuUtilization { get; init; }
-    
+
     /// <summary>
     /// Gets the peak GPU utilization percentage
     /// </summary>
     [Id(1)]
     public double PeakGpuUtilization { get; init; }
-    
+
     /// <summary>
     /// Gets the average memory utilization percentage
     /// </summary>
     [Id(2)]
     public double AverageMemoryUtilization { get; init; }
-    
+
     /// <summary>
     /// Gets the peak memory utilization percentage
     /// </summary>
     [Id(3)]
     public double PeakMemoryUtilization { get; init; }
-    
+
     /// <summary>
     /// Gets the average temperature in Celsius
     /// </summary>
     [Id(4)]
     public double AverageTemperature { get; init; }
-    
+
     /// <summary>
     /// Gets the peak temperature in Celsius
     /// </summary>
     [Id(5)]
     public double PeakTemperature { get; init; }
-    
+
     /// <summary>
     /// Gets the average power consumption in watts
     /// </summary>
     [Id(6)]
     public double AveragePowerConsumption { get; init; }
-    
+
     /// <summary>
     /// Gets the total energy consumed in watt-hours
     /// </summary>
     [Id(7)]
     public double TotalEnergyConsumed { get; init; }
-    
+
     /// <summary>
     /// Gets the number of samples collected
     /// </summary>
     [Id(8)]
     public int SampleCount { get; init; }
-    
+
     /// <summary>
     /// Gets the duration of the aggregation period
     /// </summary>
     [Id(9)]
     public TimeSpan Duration { get; init; }
-    
+
     /// <summary>
     /// Gets the start time of the aggregation period
     /// </summary>
     [Id(10)]
     public DateTime StartTime { get; init; }
-    
+
     /// <summary>
     /// Gets the end time of the aggregation period
     /// </summary>
@@ -269,43 +269,43 @@ public sealed record DeviceMetrics
     /// </summary>
     [Id(0)]
     public GpuMemoryInfo MemoryInfo { get; init; } = default!;
-    
+
     /// <summary>
     /// Gets the GPU utilization metrics
     /// </summary>
     [Id(1)]
     public GpuUtilizationMetrics Utilization { get; init; } = default!;
-    
+
     /// <summary>
     /// Gets the GPU clock speeds
     /// </summary>
     [Id(2)]
     public GpuClockSpeeds ClockSpeeds { get; init; } = default!;
-    
+
     /// <summary>
     /// Gets the temperature in Celsius
     /// </summary>
     [Id(3)]
     public double Temperature { get; init; }
-    
+
     /// <summary>
     /// Gets the power consumption in watts
     /// </summary>
     [Id(4)]
     public double PowerConsumption { get; init; }
-    
+
     /// <summary>
     /// Gets the performance counters
     /// </summary>
     [Id(5)]
     public IReadOnlyDictionary<string, double> PerformanceCounters { get; init; } = new Dictionary<string, double>();
-    
+
     /// <summary>
     /// Gets the device index
     /// </summary>
     [Id(6)]
     public int DeviceIndex { get; init; }
-    
+
     /// <summary>
     /// Gets the timestamp when these metrics were captured
     /// </summary>

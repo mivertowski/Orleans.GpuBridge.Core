@@ -17,8 +17,14 @@ public sealed record ProviderSelectionCriteria(
     IReadOnlyList<string>? ExcludeProviders = null,
     bool PreferGpu = true)
 {
+    /// <summary>
+    /// Gets the default provider selection criteria with GPU preference enabled.
+    /// </summary>
     public static ProviderSelectionCriteria Default => new();
 
+    /// <summary>
+    /// Gets provider selection criteria that prefers the DotCompute backend with JIT compilation.
+    /// </summary>
     public static ProviderSelectionCriteria PreferDotCompute => new(
         PreferredProviderId: "DotCompute",
         RequireJitCompilation: true);

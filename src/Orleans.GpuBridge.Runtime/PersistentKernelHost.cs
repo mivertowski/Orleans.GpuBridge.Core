@@ -25,7 +25,7 @@ public sealed class PersistentKernelHost : IHostedService, IDisposable
     private readonly KernelCatalog _kernelCatalog;
     private readonly Dictionary<string, PersistentKernelInstance> _runningKernels;
     private bool _disposed;
-    
+
     public PersistentKernelHost(
         ILogger<PersistentKernelHost> logger,
         IServiceProvider serviceProvider,
@@ -37,21 +37,21 @@ public sealed class PersistentKernelHost : IHostedService, IDisposable
         _options = options.Value;
         _kernelCatalog = kernelCatalog;
         _runningKernels = new Dictionary<string, PersistentKernelInstance>();
-        
+
         // Create managers
         _ringBufferManager = new RingBufferManager(
             serviceProvider.GetRequiredService<ILogger<RingBufferManager>>(),
             _options.DefaultRingBufferSize);
-        
+
         _lifecycleManager = new KernelLifecycleManager(
             serviceProvider.GetRequiredService<ILogger<KernelLifecycleManager>>());
     }
-    
+
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Starting persistent kernel host with {Count} configured kernels", 
+        _logger.LogInformation("Starting persistent kernel host with {Count} configured kernels",
             _options.KernelConfigurations.Count);
-        
+
         foreach (var config in _options.KernelConfigurations)
         {
             try
@@ -61,34 +61,34 @@ public sealed class PersistentKernelHost : IHostedService, IDisposable
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to start kernel {KernelId}", config.KernelId);
-                
+
                 if (!_options.ContinueOnKernelFailure)
                 {
                     throw;
                 }
             }
         }
-        
+
         _logger.LogInformation("Persistent kernel host started with {Count} running kernels",
             _runningKernels.Count);
     }
-    
+
     private async Task StartKernelAsync(
         PersistentKernelConfiguration config,
         CancellationToken cancellationToken)
     {
         _logger.LogInformation("Starting persistent kernel {KernelId}", config.KernelId);
-        
+
         // Resolve kernel from catalog
         var kernel = await _kernelCatalog.ResolveAsync<byte[], byte[]>(
             new KernelId(config.KernelId),
             _serviceProvider);
-        
+
         // Create ring buffer for this kernel
         var ringBuffer = _ringBufferManager.CreateBuffer(
             config.KernelId,
             config.RingBufferSize ?? _options.DefaultRingBufferSize);
-        
+
         // Configure kernel options
         var kernelOptions = new PersistentKernelOptions
         {
@@ -97,34 +97,34 @@ public sealed class PersistentKernelHost : IHostedService, IDisposable
             RestartOnError = config.RestartOnError ?? true,
             MaxRetries = config.MaxRetries ?? 3
         };
-        
+
         // Start kernel instance
         var instance = await _lifecycleManager.StartKernelAsync(
             new KernelId(config.KernelId),
             kernel,
             kernelOptions,
             cancellationToken);
-        
+
         _runningKernels[config.KernelId] = instance;
-        
+
         _logger.LogInformation("Started persistent kernel {KernelId} successfully", config.KernelId);
     }
-    
+
     public async Task StopAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("Stopping persistent kernel host");
-        
+
         var stopTasks = _runningKernels.Values
             .Select(k => _lifecycleManager.StopKernelAsync(k.InstanceId, cancellationToken))
             .ToList();
-        
+
         await Task.WhenAll(stopTasks);
-        
+
         _runningKernels.Clear();
-        
+
         _logger.LogInformation("Persistent kernel host stopped");
     }
-    
+
     /// <summary>
     /// Gets the status of all running kernels
     /// </summary>
@@ -132,7 +132,7 @@ public sealed class PersistentKernelHost : IHostedService, IDisposable
     {
         return _lifecycleManager.GetAllStatuses();
     }
-    
+
     /// <summary>
     /// Gets ring buffer statistics
     /// </summary>
@@ -140,7 +140,7 @@ public sealed class PersistentKernelHost : IHostedService, IDisposable
     {
         return _ringBufferManager.GetStatistics();
     }
-    
+
     /// <summary>
     /// Restarts a specific kernel
     /// </summary>
@@ -155,12 +155,12 @@ public sealed class PersistentKernelHost : IHostedService, IDisposable
             throw new InvalidOperationException($"Kernel {kernelId} is not running");
         }
     }
-    
+
     public void Dispose()
     {
         if (_disposed) return;
         _disposed = true;
-        
+
         _lifecycleManager?.Dispose();
         _ringBufferManager?.Dispose();
     }

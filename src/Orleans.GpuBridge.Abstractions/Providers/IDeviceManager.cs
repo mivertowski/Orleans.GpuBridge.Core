@@ -23,7 +23,7 @@ public interface IDeviceManager : IDisposable
     /// <param name="cancellationToken">Token to cancel the initialization operation.</param>
     /// <returns>A task that completes when initialization is finished.</returns>
     Task InitializeAsync(CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Gets all available compute devices discovered by the device manager.
     /// This list represents all devices that are currently available for use,
@@ -31,14 +31,14 @@ public interface IDeviceManager : IDisposable
     /// </summary>
     /// <returns>A read-only list of all discovered compute devices.</returns>
     IReadOnlyList<IComputeDevice> GetDevices();
-    
+
     /// <summary>
     /// Gets a specific device by its index in the device enumeration.
     /// </summary>
     /// <param name="deviceIndex">The zero-based index of the device to retrieve.</param>
     /// <returns>The device at the specified index, or null if the index is invalid.</returns>
     IComputeDevice? GetDevice(int deviceIndex);
-    
+
     /// <summary>
     /// Gets the default device for computation.
     /// This is typically the most capable device available, or the device
@@ -46,7 +46,7 @@ public interface IDeviceManager : IDisposable
     /// </summary>
     /// <returns>The default compute device for the system.</returns>
     IComputeDevice GetDefaultDevice();
-    
+
     /// <summary>
     /// Selects the best device based on the specified requirements and preferences.
     /// This method evaluates all available devices against the provided criteria
@@ -55,7 +55,7 @@ public interface IDeviceManager : IDisposable
     /// <param name="criteria">The selection criteria and preferences for device selection.</param>
     /// <returns>The device that best matches the specified criteria.</returns>
     IComputeDevice SelectDevice(DeviceSelectionCriteria criteria);
-    
+
     /// <summary>
     /// Creates a compute context on the specified device.
     /// A compute context represents an execution environment where kernels can be
@@ -69,7 +69,7 @@ public interface IDeviceManager : IDisposable
         IComputeDevice device,
         ContextOptions options,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Gets current utilization and performance metrics for the specified device.
     /// This information can be used for monitoring, load balancing, and performance
@@ -81,7 +81,7 @@ public interface IDeviceManager : IDisposable
     Task<DeviceMetrics> GetDeviceMetricsAsync(
         IComputeDevice device,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Resets the specified device, clearing its memory and resetting its state.
     /// This operation will invalidate all existing contexts and resources associated

@@ -113,6 +113,10 @@ public readonly struct ClockCalibration
         return age > maxAgeNanos || Math.Abs(DriftPPM) > 1000.0;
     }
 
+    /// <summary>
+    /// Returns a string representation of the calibration showing offset, drift, error bounds, and sample count.
+    /// </summary>
+    /// <returns>A formatted string describing the calibration.</returns>
     public override string ToString() =>
         $"Calibration(Offset={OffsetNanos}ns, Drift={DriftPPM:F3}ppm, Error=±{ErrorBoundNanos}ns, Samples={SampleCount})";
 }

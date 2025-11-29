@@ -17,6 +17,10 @@ public sealed class LoggerFactory : IAsyncDisposable
     private readonly LoggerFactoryOptions _options;
     private bool _disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LoggerFactory"/> class.
+    /// </summary>
+    /// <param name="options">Configuration options for the logger factory.</param>
     public LoggerFactory(LoggerFactoryOptions? options = null)
     {
         _options = options ?? new LoggerFactoryOptions();
@@ -98,6 +102,9 @@ public sealed class LoggerFactory : IAsyncDisposable
         await _delegateManager.FlushAsync(cancellationToken).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Disposes the logger factory asynchronously, flushing all pending logs and disposing all resources.
+    /// </summary>
     public async ValueTask DisposeAsync()
     {
         if (_disposed)

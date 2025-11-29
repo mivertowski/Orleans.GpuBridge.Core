@@ -59,7 +59,7 @@ public sealed class CpuComputeContext : IComputeContext
         }
 
         _logger.LogDebug("Executing CPU kernel with work size {WorkSize}", workSize);
-        
+
         // CPU kernel execution implementation
         cpuKernel.Execute(workSize);
     }
@@ -72,7 +72,7 @@ public sealed class CpuComputeContext : IComputeContext
         }
 
         _logger.LogTrace("Synchronizing CPU context");
-        
+
         // CPU synchronization is typically a no-op as CPU execution is synchronous
     }
 
@@ -86,9 +86,9 @@ public sealed class CpuComputeContext : IComputeContext
         try
         {
             _logger.LogInformation("Disposing CPU compute context");
-            
+
             // CPU cleanup is minimal
-            
+
             _disposed = true;
         }
         catch (Exception ex)
@@ -225,7 +225,7 @@ public sealed class CpuComputeKernel : IComputeKernel
         {
             throw new ObjectDisposedException(nameof(CpuComputeKernel));
         }
-        
+
         _logger.LogTrace("Setting CPU kernel argument {Index} to float buffer", index);
     }
 
@@ -235,7 +235,7 @@ public sealed class CpuComputeKernel : IComputeKernel
         {
             throw new ObjectDisposedException(nameof(CpuComputeKernel));
         }
-        
+
         _logger.LogTrace("Setting CPU kernel argument {Index} to double buffer", index);
     }
 
@@ -245,7 +245,7 @@ public sealed class CpuComputeKernel : IComputeKernel
         {
             throw new ObjectDisposedException(nameof(CpuComputeKernel));
         }
-        
+
         _logger.LogTrace("Setting CPU kernel argument {Index} to int buffer", index);
     }
 
@@ -255,7 +255,7 @@ public sealed class CpuComputeKernel : IComputeKernel
         {
             throw new ObjectDisposedException(nameof(CpuComputeKernel));
         }
-        
+
         _logger.LogTrace("Setting CPU kernel argument {Index} to float value {Value}", index, value);
     }
 
@@ -265,7 +265,7 @@ public sealed class CpuComputeKernel : IComputeKernel
         {
             throw new ObjectDisposedException(nameof(CpuComputeKernel));
         }
-        
+
         _logger.LogTrace("Setting CPU kernel argument {Index} to double value {Value}", index, value);
     }
 
@@ -275,7 +275,7 @@ public sealed class CpuComputeKernel : IComputeKernel
         {
             throw new ObjectDisposedException(nameof(CpuComputeKernel));
         }
-        
+
         _logger.LogTrace("Setting CPU kernel argument {Index} to int value {Value}", index, value);
     }
 
@@ -285,9 +285,9 @@ public sealed class CpuComputeKernel : IComputeKernel
         {
             throw new ObjectDisposedException(nameof(CpuComputeKernel));
         }
-        
+
         _logger.LogTrace("Executing CPU kernel {Name} with work size {WorkSize}", Name, workSize);
-        
+
         // CPU kernel execution implementation would go here
         // For now, this is a placeholder
     }

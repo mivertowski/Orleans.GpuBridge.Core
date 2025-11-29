@@ -27,7 +27,7 @@ public static class SampleKernels
             result[i] = a[i] + b[i];
         }
     }
-    
+
     /// <summary>
     /// Vector multiplication kernel
     /// </summary>
@@ -43,7 +43,7 @@ public static class SampleKernels
             result[i] = a[i] * b[i];
         }
     }
-    
+
     /// <summary>
     /// Matrix multiplication kernel
     /// </summary>
@@ -71,7 +71,7 @@ public static class SampleKernels
             }
         }
     }
-    
+
     /// <summary>
     /// Reduction kernel (sum)
     /// </summary>
@@ -88,7 +88,7 @@ public static class SampleKernels
         }
         output[0] = sum;
     }
-    
+
     /// <summary>
     /// Convolution kernel
     /// </summary>
@@ -110,27 +110,27 @@ public static class SampleKernels
             for (int x = 0; x < outputWidth; x++)
             {
                 float sum = 0.0f;
-                
+
                 for (int ky = 0; ky < kernelHeight; ky++)
                 {
                     for (int kx = 0; kx < kernelWidth; kx++)
                     {
                         int inputY = y + ky;
                         int inputX = x + kx;
-                        
+
                         if (inputY < inputHeight && inputX < inputWidth)
                         {
-                            sum += input[inputY * inputWidth + inputX] * 
+                            sum += input[inputY * inputWidth + inputX] *
                                    kernel[ky * kernelWidth + kx];
                         }
                     }
                 }
-                
+
                 output[y * outputWidth + x] = sum;
             }
         }
     }
-    
+
     /// <summary>
     /// Softmax kernel
     /// </summary>
@@ -146,7 +146,7 @@ public static class SampleKernels
         {
             if (input[i] > max) max = input[i];
         }
-        
+
         // Compute exp and sum
         float sum = 0.0f;
         for (int i = 0; i < size; i++)
@@ -154,14 +154,14 @@ public static class SampleKernels
             output[i] = MathF.Exp(input[i] - max);
             sum += output[i];
         }
-        
+
         // Normalize
         for (int i = 0; i < size; i++)
         {
             output[i] /= sum;
         }
     }
-    
+
     /// <summary>
     /// ReLU activation kernel
     /// </summary>
@@ -177,7 +177,7 @@ public static class SampleKernels
             output[i] = MathF.Max(0.0f, input[i]);
         }
     }
-    
+
     /// <summary>
     /// Batch normalization kernel
     /// </summary>
@@ -195,12 +195,12 @@ public static class SampleKernels
         float epsilon = 1e-5f)
     {
         int totalSize = batchSize * channels * spatialSize;
-        
+
         for (int idx = 0; idx < totalSize; idx++)
         {
             int c = (idx / spatialSize) % channels;
-            
-            float normalized = (input[idx] - mean[c]) / 
+
+            float normalized = (input[idx] - mean[c]) /
                               MathF.Sqrt(variance[c] + epsilon);
             output[idx] = gamma[c] * normalized + beta[c];
         }
@@ -227,12 +227,12 @@ public static class ImageKernels
             byte r = rgb[idx];
             byte g = rgb[idx + 1];
             byte b = rgb[idx + 2];
-            
+
             // Standard grayscale conversion
             gray[i] = (byte)(0.299f * r + 0.587f * g + 0.114f * b);
         }
     }
-    
+
     /// <summary>
     /// Gaussian blur kernel
     /// </summary>
@@ -250,13 +250,13 @@ public static class ImageKernels
             { 0.125f,  0.25f,  0.125f },
             { 0.0625f, 0.125f, 0.0625f }
         };
-        
+
         for (int y = 1; y < height - 1; y++)
         {
             for (int x = 1; x < width - 1; x++)
             {
                 float sum = 0.0f;
-                
+
                 for (int ky = -1; ky <= 1; ky++)
                 {
                     for (int kx = -1; kx <= 1; kx++)
@@ -265,12 +265,12 @@ public static class ImageKernels
                         sum += input[idx] * kernel[ky + 1, kx + 1];
                     }
                 }
-                
+
                 output[y * width + x] = sum;
             }
         }
     }
-    
+
     /// <summary>
     /// Edge detection kernel (Sobel)
     /// </summary>
@@ -287,20 +287,20 @@ public static class ImageKernels
             { -2, 0, 2 },
             { -1, 0, 1 }
         };
-        
+
         int[,] sobelY = {
             { -1, -2, -1 },
             {  0,  0,  0 },
             {  1,  2,  1 }
         };
-        
+
         for (int y = 1; y < height - 1; y++)
         {
             for (int x = 1; x < width - 1; x++)
             {
                 float gx = 0.0f;
                 float gy = 0.0f;
-                
+
                 for (int ky = -1; ky <= 1; ky++)
                 {
                     for (int kx = -1; kx <= 1; kx++)
@@ -310,7 +310,7 @@ public static class ImageKernels
                         gy += input[idx] * sobelY[ky + 1, kx + 1];
                     }
                 }
-                
+
                 output[y * width + x] = MathF.Sqrt(gx * gx + gy * gy);
             }
         }

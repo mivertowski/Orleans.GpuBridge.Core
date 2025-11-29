@@ -90,7 +90,7 @@ public sealed class LogContext
     public LogContext(string correlationId)
     {
         CorrelationId = correlationId ?? throw new ArgumentNullException(nameof(correlationId));
-        
+
         // Initialize with current Activity information if available
         var activity = Activity.Current;
         if (activity != null)
@@ -118,8 +118,8 @@ public sealed class LogContext
     /// <returns>Property value or null if not found</returns>
     public T? GetProperty<T>(string key)
     {
-        return _properties.TryGetValue(key, out var value) && value is T typedValue 
-            ? typedValue 
+        return _properties.TryGetValue(key, out var value) && value is T typedValue
+            ? typedValue
             : default;
     }
 
@@ -169,16 +169,16 @@ public sealed class LogContext
     {
         var activity = Activity.Current;
         var correlationId = activity?.Id ?? GenerateCorrelationId();
-        
+
         var context = new LogContext(correlationId);
-        
+
         if (activity != null)
         {
             context.OperationId = activity.SpanId.ToString();
             context.SetProperty("TraceId", activity.TraceId.ToString());
             context.SetProperty("SpanId", activity.SpanId.ToString());
             context.SetProperty("ParentId", activity.ParentId);
-            
+
             // Copy Activity tags
             foreach (var tag in activity.Tags)
             {
@@ -218,7 +218,7 @@ public sealed class LogContext
         return dict;
     }
 
-    private static string GenerateCorrelationId() => 
+    private static string GenerateCorrelationId() =>
         Guid.NewGuid().ToString("N")[..12];
 
     private sealed class ContextScope : IDisposable

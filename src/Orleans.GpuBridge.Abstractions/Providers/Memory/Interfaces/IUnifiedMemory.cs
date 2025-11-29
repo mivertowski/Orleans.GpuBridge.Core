@@ -15,14 +15,14 @@ public interface IUnifiedMemory : IDeviceMemory
     /// Host pointer to the unified memory
     /// </summary>
     IntPtr HostPointer { get; }
-    
+
     /// <summary>
     /// Prefetches the memory to a specific device
     /// </summary>
     Task PrefetchAsync(
         IComputeDevice device,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Advises the runtime about memory usage patterns
     /// </summary>
@@ -30,7 +30,7 @@ public interface IUnifiedMemory : IDeviceMemory
         MemoryAdvice advice,
         IComputeDevice? device = null,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Gets a span view of the memory from the host
     /// </summary>

@@ -17,7 +17,7 @@ public sealed class GpuResidentState
     /// <value>A dictionary mapping allocation IDs to <see cref="GpuMemoryAllocation"/> instances.</value>
     [Id(0)]
     public Dictionary<string, GpuMemoryAllocation> Allocations { get; set; } = new();
-    
+
     /// <summary>
     /// Gets or sets the total amount of GPU memory allocated by this grain in bytes.
     /// This is the sum of all individual allocation sizes and is used for resource tracking.
@@ -25,7 +25,7 @@ public sealed class GpuResidentState
     /// <value>The total allocated memory in bytes.</value>
     [Id(1)]
     public long TotalAllocatedBytes { get; set; }
-    
+
     /// <summary>
     /// Gets or sets the timestamp of the last modification to the grain state.
     /// This is updated whenever allocations are added, removed, or modified.
@@ -33,7 +33,7 @@ public sealed class GpuResidentState
     /// <value>The UTC timestamp of the last state modification.</value>
     [Id(2)]
     public DateTime LastModified { get; set; }
-    
+
     /// <summary>
     /// Gets or sets the index of the GPU device where this grain's allocations reside.
     /// A value of -1 indicates no device has been assigned yet.

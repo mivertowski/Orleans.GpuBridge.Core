@@ -9,12 +9,12 @@ public interface IGpuMemoryPool<T> where T : unmanaged
     /// Rents memory from the pool
     /// </summary>
     IGpuMemory<T> Rent(int minimumLength);
-    
+
     /// <summary>
     /// Returns memory to the pool
     /// </summary>
     void Return(IGpuMemory<T> memory);
-    
+
     /// <summary>
     /// Gets pool statistics
     /// </summary>

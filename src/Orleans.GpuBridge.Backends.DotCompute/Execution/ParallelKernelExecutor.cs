@@ -34,7 +34,7 @@ public class ParallelKernelExecutor
         CancellationToken cancellationToken = default)
     {
         await Task.Delay(1, cancellationToken); // Simulate async work
-        
+
         return operation switch
         {
             VectorOperation.Add => input.Select(x => x + parameters[0]).ToArray(),
@@ -62,7 +62,7 @@ public class ParallelKernelExecutor
         };
 
         var result = new TOut[input.Length];
-        
+
         await Task.Run(() =>
         {
             Parallel.For(0, input.Length, parallelOptions, i =>

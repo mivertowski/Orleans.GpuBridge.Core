@@ -240,12 +240,12 @@ public readonly record struct AggregatedQueueMetrics
     public required double P99ProcessingLatencyNanos { get; init; }
 
     /// <summary>
-    /// Indicates whether load is balanced (stddev < 0.1).
+    /// Indicates whether load is balanced (stddev &lt; 0.1).
     /// </summary>
     public bool IsLoadBalanced => StdDevQueueUtilization < 0.1;
 
     /// <summary>
-    /// Indicates whether any kernel is overloaded (max > 0.9).
+    /// Indicates whether any kernel is overloaded (max &gt; 0.9).
     /// </summary>
     public bool HasOverloadedKernel => MaxQueueUtilization > 0.9;
 }

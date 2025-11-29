@@ -20,30 +20,56 @@ public sealed class FileLoggerDelegate : IBatchLoggerDelegate, IStructuredLogger
     private long _currentFileSize;
     private bool _disposed;
 
+    /// <summary>
+    /// Gets the delegate name.
+    /// </summary>
     public string Name => "File";
+
+    /// <summary>
+    /// Gets the minimum log level that will be processed.
+    /// </summary>
     public LogLevel MinimumLevel { get; }
+
+    /// <summary>
+    /// Gets the maximum batch size for batch writes.
+    /// </summary>
     public int MaxBatchSize => _options.MaxBatchSize;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FileLoggerDelegate"/> class.
+    /// </summary>
+    /// <param name="options">Configuration options for file logging.</param>
     public FileLoggerDelegate(FileLoggerOptions options)
     {
         _options = options ?? throw new ArgumentNullException(nameof(options));
         MinimumLevel = _options.MinimumLevel;
-        
+
         // Ensure directory exists
         Directory.CreateDirectory(_options.LogDirectory);
-        
+
         // Initialize current log file
         _currentLogFile = GetLogFileName();
         InitializeLogFile();
-        
+
         // Setup rotation timer if needed
-        _rotationTimer = _options.RotationInterval.HasValue 
+        _rotationTimer = _options.RotationInterval.HasValue
             ? new Timer(RotateLogFile, null, _options.RotationInterval.Value, _options.RotationInterval.Value)
             : new Timer(_ => { }, null, Timeout.Infinite, Timeout.Infinite);
     }
 
+    /// <summary>
+    /// Determines whether logging is enabled for the specified log level.
+    /// </summary>
+    /// <param name="logLevel">The log level to check.</param>
+    /// <returns>true if logging is enabled for the level; otherwise, false.</returns>
     public bool IsEnabled(LogLevel logLevel) => logLevel >= MinimumLevel;
 
+    /// <summary>
+    /// Writes a log entry to the file.
+    /// </summary>
+    /// <param name="entry">The log entry to write.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task WriteAsync(LogEntry entry, CancellationToken cancellationToken = default)
     {
         if (!IsEnabled(entry.Level) || _disposed)
@@ -64,6 +90,12 @@ public sealed class FileLoggerDelegate : IBatchLoggerDelegate, IStructuredLogger
         }
     }
 
+    /// <summary>
+    /// Writes a batch of log entries to the file.
+    /// </summary>
+    /// <param name="entries">The log entries to write.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task WriteBatchAsync(IReadOnlyCollection<LogEntry> entries, CancellationToken cancellationToken = default)
     {
         if (entries.Count == 0 || _disposed)
@@ -95,6 +127,12 @@ public sealed class FileLoggerDelegate : IBatchLoggerDelegate, IStructuredLogger
         }
     }
 
+    /// <summary>
+    /// Enriches a log entry with additional context information.
+    /// </summary>
+    /// <param name="entry">The log entry to enrich.</param>
+    /// <param name="context">Optional log context to use for enrichment.</param>
+    /// <returns>The enriched log entry.</returns>
     public LogEntry EnrichEntry(LogEntry entry, LogContext? context = null)
     {
         var enrichedProperties = new Dictionary<string, object?>(entry.Properties);
@@ -117,6 +155,11 @@ public sealed class FileLoggerDelegate : IBatchLoggerDelegate, IStructuredLogger
         return entry.WithProperties(enrichedProperties);
     }
 
+    /// <summary>
+    /// Flushes any buffered log entries to disk.
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task FlushAsync(CancellationToken cancellationToken = default)
     {
         if (_disposed)
@@ -137,8 +180,17 @@ public sealed class FileLoggerDelegate : IBatchLoggerDelegate, IStructuredLogger
         }
     }
 
+    /// <summary>
+    /// Disposes the file logger delegate asynchronously.
+    /// </summary>
+    /// <returns>A value task representing the asynchronous operation.</returns>
     ValueTask IAsyncDisposable.DisposeAsync() => DisposeAsync(CancellationToken.None);
 
+    /// <summary>
+    /// Disposes the file logger delegate asynchronously, flushing and closing the current log file.
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A value task representing the asynchronous operation.</returns>
     public async ValueTask DisposeAsync(CancellationToken cancellationToken = default)
     {
         if (_disposed)
@@ -147,7 +199,7 @@ public sealed class FileLoggerDelegate : IBatchLoggerDelegate, IStructuredLogger
         _disposed = true;
 
         await _rotationTimer.DisposeAsync();
-        
+
         await _writeSemaphore.WaitAsync(cancellationToken);
         try
         {
@@ -156,7 +208,7 @@ public sealed class FileLoggerDelegate : IBatchLoggerDelegate, IStructuredLogger
                 await _currentWriter.DisposeAsync();
                 _currentWriter = null;
             }
-            
+
             if (_currentStream != null)
             {
                 await _currentStream.DisposeAsync();
@@ -218,7 +270,7 @@ public sealed class FileLoggerDelegate : IBatchLoggerDelegate, IStructuredLogger
         _currentStream = new FileStream(_currentLogFile, FileMode.Append, FileAccess.Write, FileShare.Read,
             bufferSize: _options.BufferSize, useAsync: true);
         _currentWriter = new StreamWriter(_currentStream, Encoding.UTF8);
-        
+
         _currentFileSize = _currentStream.Length;
     }
 

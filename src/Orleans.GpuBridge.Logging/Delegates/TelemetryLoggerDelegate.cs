@@ -22,36 +22,63 @@ public sealed class TelemetryLoggerDelegate : IBatchLoggerDelegate, IStructuredL
     // OpenTelemetry integration
     private readonly ILogger<TelemetryLoggerDelegate>? _otlpLogger;
 
+    /// <summary>
+    /// Gets the delegate name.
+    /// </summary>
     public string Name => "Telemetry";
+
+    /// <summary>
+    /// Gets the minimum log level that will be processed.
+    /// </summary>
     public LogLevel MinimumLevel { get; }
+
+    /// <summary>
+    /// Gets the maximum batch size for batch writes.
+    /// </summary>
     public int MaxBatchSize => _options.MaxBatchSize;
 
-    public TelemetryLoggerDelegate(TelemetryLoggerOptions options, 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TelemetryLoggerDelegate"/> class.
+    /// </summary>
+    /// <param name="options">Configuration options for telemetry logging.</param>
+    /// <param name="otlpLogger">Optional OTLP logger for forwarding entries.</param>
+    public TelemetryLoggerDelegate(TelemetryLoggerOptions options,
         ILogger<TelemetryLoggerDelegate>? otlpLogger = null)
     {
         _options = options ?? throw new ArgumentNullException(nameof(options));
         _otlpLogger = otlpLogger;
         MinimumLevel = _options.MinimumLevel;
-        
+
         _activitySource = new ActivitySource(_options.ServiceName, _options.ServiceVersion);
-        
+
         // Setup periodic flush timer
-        _flushTimer = new Timer(FlushTelemetryQueue, null, 
+        _flushTimer = new Timer(FlushTelemetryQueue, null,
             _options.FlushInterval, _options.FlushInterval);
     }
 
+    /// <summary>
+    /// Determines whether logging is enabled for the specified log level.
+    /// </summary>
+    /// <param name="logLevel">The log level to check.</param>
+    /// <returns>true if logging is enabled for the level; otherwise, false.</returns>
     public bool IsEnabled(LogLevel logLevel) => logLevel >= MinimumLevel;
 
+    /// <summary>
+    /// Writes a log entry to telemetry.
+    /// </summary>
+    /// <param name="entry">The log entry to write.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task WriteAsync(LogEntry entry, CancellationToken cancellationToken = default)
     {
         if (!IsEnabled(entry.Level) || _disposed)
             return;
 
         var enrichedEntry = EnrichEntry(entry);
-        
+
         // Queue for batched telemetry processing
         _telemetryQueue.Enqueue(enrichedEntry);
-        
+
         // Create OpenTelemetry activity for critical events
         if (entry.Level >= LogLevel.Warning || _options.TraceAllLevels)
         {
@@ -71,6 +98,12 @@ public sealed class TelemetryLoggerDelegate : IBatchLoggerDelegate, IStructuredL
         }
     }
 
+    /// <summary>
+    /// Writes a batch of log entries to telemetry.
+    /// </summary>
+    /// <param name="entries">The log entries to write.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task WriteBatchAsync(IReadOnlyCollection<LogEntry> entries, CancellationToken cancellationToken = default)
     {
         if (entries.Count == 0 || _disposed)
@@ -81,12 +114,12 @@ public sealed class TelemetryLoggerDelegate : IBatchLoggerDelegate, IStructuredL
             return;
 
         var hasErrors = false;
-        
+
         foreach (var entry in filteredEntries)
         {
             var enrichedEntry = EnrichEntry(entry);
             _telemetryQueue.Enqueue(enrichedEntry);
-            
+
             if (entry.Level >= LogLevel.Error)
                 hasErrors = true;
 
@@ -110,6 +143,12 @@ public sealed class TelemetryLoggerDelegate : IBatchLoggerDelegate, IStructuredL
         }
     }
 
+    /// <summary>
+    /// Enriches a log entry with OpenTelemetry trace information and service context.
+    /// </summary>
+    /// <param name="entry">The log entry to enrich.</param>
+    /// <param name="context">Optional log context to use for enrichment.</param>
+    /// <returns>The enriched log entry.</returns>
     public LogEntry EnrichEntry(LogEntry entry, LogContext? context = null)
     {
         var enrichedProperties = new Dictionary<string, object?>(entry.Properties);
@@ -126,7 +165,7 @@ public sealed class TelemetryLoggerDelegate : IBatchLoggerDelegate, IStructuredL
             enrichedProperties["TraceId"] = activity.TraceId.ToString();
             enrichedProperties["SpanId"] = activity.SpanId.ToString();
             enrichedProperties["TraceFlags"] = activity.ActivityTraceFlags.ToString();
-            
+
             // Copy activity tags
             foreach (var tag in activity.Tags)
             {
@@ -145,7 +184,7 @@ public sealed class TelemetryLoggerDelegate : IBatchLoggerDelegate, IStructuredL
             enrichedProperties["Telemetry.TenantId"] = context.TenantId;
             enrichedProperties["Telemetry.Component"] = context.Component;
             enrichedProperties["Telemetry.Environment"] = context.Environment;
-            
+
             // Add custom context properties
             foreach (var kvp in context.Properties)
             {
@@ -165,7 +204,7 @@ public sealed class TelemetryLoggerDelegate : IBatchLoggerDelegate, IStructuredL
             enrichedProperties["Performance.Duration"] = entry.Metrics.Duration?.TotalMilliseconds;
             enrichedProperties["Performance.Memory"] = entry.Metrics.MemoryUsage;
             enrichedProperties["Performance.CPU"] = entry.Metrics.CpuUsage;
-            
+
             foreach (var counter in entry.Metrics.Counters)
             {
                 enrichedProperties[$"Performance.{counter.Key}"] = counter.Value;
@@ -175,6 +214,11 @@ public sealed class TelemetryLoggerDelegate : IBatchLoggerDelegate, IStructuredL
         return entry.WithProperties(enrichedProperties);
     }
 
+    /// <summary>
+    /// Flushes any buffered telemetry entries.
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task FlushAsync(CancellationToken cancellationToken = default)
     {
         if (_disposed)
@@ -183,8 +227,17 @@ public sealed class TelemetryLoggerDelegate : IBatchLoggerDelegate, IStructuredL
         await ProcessTelemetryQueue(cancellationToken);
     }
 
+    /// <summary>
+    /// Disposes the telemetry logger delegate asynchronously.
+    /// </summary>
+    /// <returns>A value task representing the asynchronous operation.</returns>
     ValueTask IAsyncDisposable.DisposeAsync() => DisposeAsync(CancellationToken.None);
 
+    /// <summary>
+    /// Disposes the telemetry logger delegate asynchronously, processing remaining telemetry.
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A value task representing the asynchronous operation.</returns>
     public async ValueTask DisposeAsync(CancellationToken cancellationToken = default)
     {
         if (_disposed)
@@ -193,10 +246,10 @@ public sealed class TelemetryLoggerDelegate : IBatchLoggerDelegate, IStructuredL
         _disposed = true;
 
         await _flushTimer.DisposeAsync();
-        
+
         // Process remaining telemetry
         await ProcessTelemetryQueue(cancellationToken);
-        
+
         _activitySource.Dispose();
         _processingLock.Dispose();
     }
@@ -204,7 +257,7 @@ public sealed class TelemetryLoggerDelegate : IBatchLoggerDelegate, IStructuredL
     private async Task CreateTelemetryActivity(LogEntry entry, CancellationToken cancellationToken)
     {
         using var activity = _activitySource.StartActivity($"Log.{entry.Level}");
-        
+
         if (activity == null)
             return;
 
@@ -213,10 +266,10 @@ public sealed class TelemetryLoggerDelegate : IBatchLoggerDelegate, IStructuredL
         activity.SetTag("log.category", entry.Category);
         activity.SetTag("log.message", entry.Message);
         activity.SetTag("log.timestamp", entry.Timestamp.ToString("O"));
-        
+
         if (!string.IsNullOrEmpty(entry.CorrelationId))
             activity.SetTag("log.correlation_id", entry.CorrelationId);
-        
+
         if (!string.IsNullOrEmpty(entry.OperationId))
             activity.SetTag("log.operation_id", entry.OperationId);
 
@@ -246,7 +299,7 @@ public sealed class TelemetryLoggerDelegate : IBatchLoggerDelegate, IStructuredL
             activity.SetTag("exception.type", entry.Exception.GetType().FullName);
             activity.SetTag("exception.message", entry.Exception.Message);
             activity.SetTag("exception.stack_trace", entry.Exception.StackTrace);
-            
+
             // Note: RecordException is not available in basic Activity, would need OpenTelemetry.Api
             // activity.RecordException(entry.Exception);
         }
@@ -255,13 +308,13 @@ public sealed class TelemetryLoggerDelegate : IBatchLoggerDelegate, IStructuredL
         if (entry.Metrics != null)
         {
             var tags = new ActivityTagsCollection();
-            
+
             if (entry.Metrics.Duration.HasValue)
                 tags.Add("duration_ms", entry.Metrics.Duration.Value.TotalMilliseconds);
-            
+
             if (entry.Metrics.MemoryUsage.HasValue)
                 tags.Add("memory_bytes", entry.Metrics.MemoryUsage.Value);
-            
+
             if (entry.Metrics.CpuUsage.HasValue)
                 tags.Add("cpu_usage", entry.Metrics.CpuUsage.Value);
 
@@ -324,7 +377,7 @@ public sealed class TelemetryLoggerDelegate : IBatchLoggerDelegate, IStructuredL
         try
         {
             var batch = new List<LogEntry>();
-            
+
             // Collect batch
             while (_telemetryQueue.TryDequeue(out var entry) && batch.Count < _options.MaxBatchSize)
             {
@@ -379,7 +432,7 @@ public sealed class TelemetryLoggerDelegate : IBatchLoggerDelegate, IStructuredL
         // For high-priority telemetry, we might want to send to external systems
         // This is a placeholder for actual telemetry processing
         await Task.Delay(1, cancellationToken);
-        
+
         // Log statistics
         Console.WriteLine($"Processed {entries.Count} high-priority telemetry entries");
     }

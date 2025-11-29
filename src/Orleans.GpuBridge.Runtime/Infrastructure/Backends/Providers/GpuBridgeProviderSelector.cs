@@ -15,7 +15,7 @@ namespace Orleans.GpuBridge.Runtime.Providers;
 /// <summary>
 /// Selects the appropriate GPU backend provider for kernel execution
 /// </summary>
-public sealed class GpuBridgeProviderSelector : IGpuBridgeProviderSelector 
+public sealed class GpuBridgeProviderSelector : IGpuBridgeProviderSelector
 {
     private readonly ILogger<GpuBridgeProviderSelector> _logger;
     private readonly IGpuBackendRegistry _registry;
@@ -220,9 +220,9 @@ public sealed class GpuBridgeProviderSelector : IGpuBridgeProviderSelector
         {
             // Create CPU provider directly as last resort
             var loggerFactory = _serviceProvider.GetService<ILoggerFactory>();
-            var logger = loggerFactory?.CreateLogger<CpuFallbackProvider>() ?? 
+            var logger = loggerFactory?.CreateLogger<CpuFallbackProvider>() ??
                         Microsoft.Extensions.Logging.Abstractions.NullLogger<CpuFallbackProvider>.Instance;
-            
+
             cpuProvider = new CpuFallbackProvider(logger, loggerFactory!);
 
             await cpuProvider.InitializeAsync(

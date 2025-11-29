@@ -19,7 +19,7 @@ public interface IKernelGraph : IDisposable
     /// Graph name
     /// </summary>
     string Name { get; }
-    
+
     /// <summary>
     /// Adds a kernel node to the graph
     /// </summary>
@@ -27,7 +27,7 @@ public interface IKernelGraph : IDisposable
         CompiledKernel kernel,
         KernelExecutionParameters parameters,
         IReadOnlyList<IGraphNode>? dependencies = null);
-    
+
     /// <summary>
     /// Adds a memory copy node to the graph
     /// </summary>
@@ -36,17 +36,17 @@ public interface IKernelGraph : IDisposable
         IDeviceMemory destination,
         long sizeBytes,
         IReadOnlyList<IGraphNode>? dependencies = null);
-    
+
     /// <summary>
     /// Adds a synchronization barrier
     /// </summary>
     IGraphNode AddBarrier(IReadOnlyList<IGraphNode> dependencies);
-    
+
     /// <summary>
     /// Compiles the graph for execution
     /// </summary>
     Task<ICompiledGraph> CompileAsync(CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Validates the graph structure
     /// </summary>

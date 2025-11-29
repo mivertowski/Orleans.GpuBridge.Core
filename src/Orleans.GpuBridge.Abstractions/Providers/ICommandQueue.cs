@@ -17,13 +17,13 @@ public interface ICommandQueue : IDisposable
     /// This ID can be used for debugging, profiling, and queue management operations.
     /// </summary>
     string QueueId { get; }
-    
+
     /// <summary>
     /// Gets the associated compute context that owns this command queue.
     /// All operations submitted to this queue will execute within the scope of this context.
     /// </summary>
     IComputeContext Context { get; }
-    
+
     /// <summary>
     /// Enqueues a compiled kernel for asynchronous execution on the device.
     /// The kernel will be executed with the specified launch parameters,
@@ -37,7 +37,7 @@ public interface ICommandQueue : IDisposable
         CompiledKernel kernel,
         KernelLaunchParameters parameters,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Enqueues a memory copy operation for asynchronous execution.
     /// This allows for efficient data transfer between host and device memory,
@@ -53,7 +53,7 @@ public interface ICommandQueue : IDisposable
         IntPtr destination,
         long sizeBytes,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Waits for all previously enqueued operations in this queue to complete.
     /// This method blocks until all kernels, memory operations, and other commands
@@ -62,7 +62,7 @@ public interface ICommandQueue : IDisposable
     /// <param name="cancellationToken">Token to cancel the flush operation.</param>
     /// <returns>A task that completes when all enqueued operations have finished.</returns>
     Task FlushAsync(CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Inserts a synchronization barrier in the command queue.
     /// This ensures that all operations enqueued before this barrier complete

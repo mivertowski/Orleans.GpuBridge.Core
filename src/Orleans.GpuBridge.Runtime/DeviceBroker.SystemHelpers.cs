@@ -23,7 +23,7 @@ public sealed partial class DeviceBroker
     private async Task<List<CudaDeviceInfo>> GetCudaDevicesFromSystem(CancellationToken ct)
     {
         var devices = new List<CudaDeviceInfo>();
-        
+
         try
         {
             // Try nvidia-smi for device enumeration
@@ -35,13 +35,13 @@ public sealed partial class DeviceBroker
                 RedirectStandardOutput = true,
                 CreateNoWindow = true
             };
-            
+
             using var process = Process.Start(processInfo);
             if (process != null)
             {
                 var output = await process.StandardOutput.ReadToEndAsync();
                 await process.WaitForExitAsync(ct);
-                
+
                 if (process.ExitCode == 0)
                 {
                     devices.AddRange(ParseNvidiaSmiOutput(output));
@@ -52,13 +52,13 @@ public sealed partial class DeviceBroker
         {
             _logger.LogDebug(ex, "nvidia-smi not available, falling back to system detection");
         }
-        
+
         // Fallback to system detection if nvidia-smi fails
         if (devices.Count == 0)
         {
             devices.AddRange(await DetectCudaDevicesManually(ct));
         }
-        
+
         return devices;
     }
 
@@ -68,7 +68,7 @@ public sealed partial class DeviceBroker
     private async Task<List<OpenClDeviceInfo>> GetOpenClDevicesFromSystem(CancellationToken ct)
     {
         var devices = new List<OpenClDeviceInfo>();
-        
+
         try
         {
             // Use clinfo if available
@@ -80,13 +80,13 @@ public sealed partial class DeviceBroker
                 RedirectStandardOutput = true,
                 CreateNoWindow = true
             };
-            
+
             using var process = Process.Start(processInfo);
             if (process != null)
             {
                 var output = await process.StandardOutput.ReadToEndAsync();
                 await process.WaitForExitAsync(ct);
-                
+
                 if (process.ExitCode == 0)
                 {
                     devices.AddRange(ParseCliInfoOutput(output));
@@ -97,13 +97,13 @@ public sealed partial class DeviceBroker
         {
             _logger.LogDebug(ex, "clinfo not available, using manual detection");
         }
-        
+
         // Fallback to manual detection
         if (devices.Count == 0)
         {
             devices.AddRange(await DetectOpenClDevicesManually(ct));
         }
-        
+
         return devices;
     }
 
@@ -113,11 +113,11 @@ public sealed partial class DeviceBroker
     private async Task<List<GpuDevice>> GetLevelZeroDevices(CancellationToken ct)
     {
         var devices = new List<GpuDevice>();
-        
+
         // This would require Intel Level Zero API integration
         // For now, return empty list and fall back to OpenCL
         await Task.CompletedTask;
-        
+
         return devices;
     }
 
@@ -127,12 +127,12 @@ public sealed partial class DeviceBroker
     private async Task<List<MetalDeviceInfo>> GetMetalDevicesFromSystem(CancellationToken ct)
     {
         var devices = new List<MetalDeviceInfo>();
-        
+
         if (!OperatingSystem.IsMacOS())
         {
             return devices;
         }
-        
+
         try
         {
             // Use system_profiler on macOS
@@ -144,13 +144,13 @@ public sealed partial class DeviceBroker
                 RedirectStandardOutput = true,
                 CreateNoWindow = true
             };
-            
+
             using var process = Process.Start(processInfo);
             if (process != null)
             {
                 var output = await process.StandardOutput.ReadToEndAsync();
                 await process.WaitForExitAsync(ct);
-                
+
                 if (process.ExitCode == 0)
                 {
                     devices.AddRange(ParseMetalDevicesFromJson(output));
@@ -161,7 +161,7 @@ public sealed partial class DeviceBroker
         {
             _logger.LogWarning(ex, "Failed to detect Metal devices through system_profiler");
         }
-        
+
         return devices;
     }
 
@@ -175,7 +175,7 @@ public sealed partial class DeviceBroker
             DeviceId = device.Id,
             LastCheckTime = DateTime.UtcNow
         };
-        
+
         try
         {
             // Check device availability
@@ -183,7 +183,7 @@ public sealed partial class DeviceBroker
             {
                 return health;
             }
-            
+
             // Get temperature and power info
             var thermalInfo = await GetDeviceThermalInfo(device, ct);
             health = health with
@@ -191,10 +191,10 @@ public sealed partial class DeviceBroker
                 TemperatureCelsius = thermalInfo.Temperature,
                 PowerUsageWatts = thermalInfo.PowerUsage
             };
-            
+
             // Get memory utilization
             health = health with { MemoryUtilizationPercent = await GetDeviceMemoryUtilization(device, ct) };
-            
+
             // Health thresholds
             if (health.TemperatureCelsius > 95)
             {
@@ -210,7 +210,7 @@ public sealed partial class DeviceBroker
             _logger.LogWarning(ex, "Health check failed for device {DeviceId}", device.Index);
             return health;
         }
-        
+
         return health;
     }
 
@@ -224,25 +224,25 @@ public sealed partial class DeviceBroker
             DeviceId = device.Id,
             LastUpdateTime = DateTime.UtcNow
         };
-        
+
         try
         {
             // Get current utilization
             loadInfo = loadInfo with { CurrentUtilization = await GetDeviceUtilization(device, ct) };
-            
+
             // Get queue depth from active work items
-            loadInfo = loadInfo with 
-            { 
-                QueueDepth = _workQueues.TryGetValue(device.Index, out var queue) 
-                    ? queue.QueuedItems : 0 
+            loadInfo = loadInfo with
+            {
+                QueueDepth = _workQueues.TryGetValue(device.Index, out var queue)
+                    ? queue.QueuedItems : 0
             };
-            
+
             // Calculate selection weight based on load
-            loadInfo = loadInfo with 
-            { 
-                SelectionWeight = CalculateSelectionWeight(loadInfo.CurrentUtilization, loadInfo.QueueDepth) 
+            loadInfo = loadInfo with
+            {
+                SelectionWeight = CalculateSelectionWeight(loadInfo.CurrentUtilization, loadInfo.QueueDepth)
             };
-            
+
             // Update performance history
             UpdatePerformanceHistory(loadInfo, loadInfo.CurrentUtilization);
         }
@@ -255,7 +255,7 @@ public sealed partial class DeviceBroker
                 SelectionWeight = 0.1
             };
         }
-        
+
         return loadInfo;
     }
 
@@ -266,19 +266,19 @@ public sealed partial class DeviceBroker
     {
         vendor = vendor.ToLowerInvariant();
         type = type.ToLowerInvariant();
-        
+
         if (vendor.Contains("nvidia") || vendor.Contains("cuda"))
             return DeviceType.CUDA;
-        
+
         if (vendor.Contains("amd") || vendor.Contains("advanced micro"))
             return DeviceType.OpenCL;
-        
+
         if (vendor.Contains("intel"))
             return DeviceType.OpenCL;
-        
+
         if (type.Contains("cpu"))
             return DeviceType.CPU;
-        
+
         return DeviceType.OpenCL;
     }
 
@@ -289,7 +289,7 @@ public sealed partial class DeviceBroker
     {
         var devices = new List<CudaDeviceInfo>();
         var lines = output.Split('\n', StringSplitOptions.RemoveEmptyEntries);
-        
+
         foreach (var line in lines)
         {
             var parts = line.Split(',').Select(p => p.Trim()).ToArray();
@@ -306,35 +306,35 @@ public sealed partial class DeviceBroker
                 });
             }
         }
-        
+
         return devices;
     }
 
     // Helper method stubs for completion
-    private Task<List<CudaDeviceInfo>> DetectCudaDevicesManually(CancellationToken ct) => 
+    private Task<List<CudaDeviceInfo>> DetectCudaDevicesManually(CancellationToken ct) =>
         Task.FromResult(new List<CudaDeviceInfo>());
-        
-    private Task<List<OpenClDeviceInfo>> DetectOpenClDevicesManually(CancellationToken ct) => 
+
+    private Task<List<OpenClDeviceInfo>> DetectOpenClDevicesManually(CancellationToken ct) =>
         Task.FromResult(new List<OpenClDeviceInfo>());
-        
+
     private List<OpenClDeviceInfo> ParseCliInfoOutput(string output) => new();
-    
+
     private List<MetalDeviceInfo> ParseMetalDevicesFromJson(string json) => new();
-    
-    private Task<bool> IsDeviceAccessible(GpuDevice device, CancellationToken ct) => 
+
+    private Task<bool> IsDeviceAccessible(GpuDevice device, CancellationToken ct) =>
         Task.FromResult(true);
-    
+
     private async Task<(int Temperature, double PowerUsage)> GetDeviceThermalInfo(GpuDevice device, CancellationToken ct)
     {
         // Placeholder implementation - would use device-specific APIs
         await Task.CompletedTask;
         return (45, 50.0);
     }
-    
-    private Task<double> GetDeviceMemoryUtilization(GpuDevice device, CancellationToken ct) => 
+
+    private Task<double> GetDeviceMemoryUtilization(GpuDevice device, CancellationToken ct) =>
         Task.FromResult(25.0);
-    
-    private Task<double> GetDeviceUtilization(GpuDevice device, CancellationToken ct) => 
+
+    private Task<double> GetDeviceUtilization(GpuDevice device, CancellationToken ct) =>
         Task.FromResult(30.0);
 }
 

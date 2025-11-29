@@ -16,13 +16,13 @@ public sealed record GraphValidationResult(
     /// </summary>
     public static GraphValidationResult Success(IReadOnlyList<string>? warnings = null, bool hasCycles = false) =>
         new(IsValid: true, Warnings: warnings, HasCycles: hasCycles);
-        
+
     /// <summary>
     /// Creates an error validation result
     /// </summary>
     public static GraphValidationResult Error(string error, IReadOnlyList<string>? warnings = null, bool hasCycles = false) =>
         new(IsValid: false, Errors: new[] { error }, Warnings: warnings, HasCycles: hasCycles);
-        
+
     /// <summary>
     /// Creates an error validation result with multiple errors
     /// </summary>

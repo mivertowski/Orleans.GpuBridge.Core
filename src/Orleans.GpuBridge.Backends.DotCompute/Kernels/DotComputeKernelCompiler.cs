@@ -275,7 +275,7 @@ internal sealed class DotComputeKernelCompiler : IKernelCompiler
             }
 
             var isValid = errors.Count == 0;
-            
+
             return await Task.FromResult(new KernelValidationResult(
                 IsValid: isValid,
                 ErrorMessage: errors.Count > 0 ? string.Join("; ", errors) : null,
@@ -572,8 +572,8 @@ __kernel void {method.Name}(/* parameters would be analyzed and converted */)
     {
         // Simplified parameter type validation
         // In a real implementation, this would check against supported GPU types
-        return parameterType.IsPrimitive || 
-               parameterType.IsArray || 
+        return parameterType.IsPrimitive ||
+               parameterType.IsArray ||
                parameterType == typeof(string) ||
                parameterType.IsValueType;
     }
@@ -622,7 +622,7 @@ internal sealed class DotComputeCompiledKernel : IDisposable
     {
         _nativeKernel = nativeKernel ?? throw new ArgumentNullException(nameof(nativeKernel));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        
+
         // Create CompiledKernel with simulated binary code
         var simulatedBinaryCode = System.Text.Encoding.UTF8.GetBytes($"DotComputeKernel_{kernelId}");
         var kernelMetadata = new KernelMetadata(

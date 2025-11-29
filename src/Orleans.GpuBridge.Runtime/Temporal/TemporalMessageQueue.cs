@@ -352,17 +352,50 @@ internal readonly struct MessageOrderingKey : IComparable<MessageOrderingKey>
 /// </summary>
 public sealed record QueueStatistics
 {
+    /// <summary>
+    /// Number of messages currently in the queue.
+    /// </summary>
     public int MessagesInQueue { get; init; }
+
+    /// <summary>
+    /// Number of messages waiting for dependencies.
+    /// </summary>
     public int MessagesWaitingDependencies { get; init; }
+
+    /// <summary>
+    /// Total messages enqueued since creation.
+    /// </summary>
     public long TotalEnqueued { get; init; }
+
+    /// <summary>
+    /// Total messages dequeued since creation.
+    /// </summary>
     public long TotalDequeued { get; init; }
+
+    /// <summary>
+    /// Total messages expired without processing.
+    /// </summary>
     public long TotalExpired { get; init; }
+
+    /// <summary>
+    /// Total times messages waited on dependencies.
+    /// </summary>
     public long TotalDependencyWaits { get; init; }
+
+    /// <summary>
+    /// Number of successfully processed messages.
+    /// </summary>
     public int ProcessedMessages { get; init; }
 
+    /// <summary>
+    /// Average ratio of messages waiting vs processed.
+    /// </summary>
     public double AverageWaitRatio =>
         TotalEnqueued > 0 ? (double)TotalDependencyWaits / TotalEnqueued : 0;
 
+    /// <summary>
+    /// Ratio of expired to total messages.
+    /// </summary>
     public double ExpiredRatio =>
         TotalEnqueued > 0 ? (double)TotalExpired / TotalEnqueued : 0;
 }

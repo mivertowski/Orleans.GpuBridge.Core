@@ -89,7 +89,7 @@ public interface IKernelCompiler
         [NotNull] MethodInfo method,
         [NotNull] KernelCompilationOptions options,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Compiles a GPU kernel from source code in a specified language.
     /// </summary>
@@ -142,7 +142,7 @@ public interface IKernelCompiler
         KernelLanguage language,
         [NotNull] KernelCompilationOptions options,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Compiles a GPU kernel from .NET assembly intermediate language (IL).
     /// </summary>
@@ -193,7 +193,7 @@ public interface IKernelCompiler
         [NotNull] string methodName,
         [NotNull] KernelCompilationOptions options,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Validates whether a C# method can be successfully compiled as a GPU kernel.
     /// </summary>
@@ -227,7 +227,7 @@ public interface IKernelCompiler
     Task<KernelValidationResult> ValidateMethodAsync(
         [NotNull] MethodInfo method,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Retrieves detailed compilation diagnostics for a compiled kernel.
     /// </summary>
@@ -263,7 +263,7 @@ public interface IKernelCompiler
     Task<CompilationDiagnostics> GetDiagnosticsAsync(
         [NotNull] CompiledKernel kernel,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Clears the internal compilation cache to free memory and force recompilation.
     /// </summary>

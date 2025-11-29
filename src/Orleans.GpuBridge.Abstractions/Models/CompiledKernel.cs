@@ -22,7 +22,7 @@ public sealed class CompiledKernel : IDisposable
     /// throughout the kernel's lifetime.
     /// </value>
     public string KernelId { get; init; } = string.Empty;
-    
+
     /// <summary>
     /// Gets the human-readable name of the kernel.
     /// </summary>
@@ -31,7 +31,7 @@ public sealed class CompiledKernel : IDisposable
     /// method or function name. Used for debugging and logging purposes.
     /// </value>
     public string Name { get; init; } = string.Empty;
-    
+
     /// <summary>
     /// Gets the compiled binary code for the kernel.
     /// </summary>
@@ -40,7 +40,7 @@ public sealed class CompiledKernel : IDisposable
     /// SPIR-V for OpenCL/Vulkan) that can be loaded and executed by the GPU driver.
     /// </value>
     public byte[] CompiledCode { get; init; } = Array.Empty<byte>();
-    
+
     /// <summary>
     /// Gets the metadata associated with the compiled kernel.
     /// </summary>
@@ -49,7 +49,7 @@ public sealed class CompiledKernel : IDisposable
     /// and optimization information used for efficient kernel scheduling and execution.
     /// </value>
     public KernelMetadata Metadata { get; init; } = new();
-    
+
     /// <summary>
     /// Gets the native handle to the kernel object in the GPU driver.
     /// </summary>
@@ -74,7 +74,7 @@ public sealed class CompiledKernel : IDisposable
     /// Backend implementations should cast this to their expected type before use.
     /// </remarks>
     public object? BackendData { get; init; }
-    
+
     /// <summary>
     /// Gets a value indicating whether this kernel instance has been disposed.
     /// </summary>
@@ -83,7 +83,7 @@ public sealed class CompiledKernel : IDisposable
     /// otherwise, <c>false</c>. Once disposed, the kernel cannot be used for execution.
     /// </value>
     public bool IsDisposed { get; private set; }
-    
+
     /// <summary>
     /// Releases all resources used by the <see cref="CompiledKernel"/>.
     /// </summary>
@@ -102,7 +102,7 @@ public sealed class CompiledKernel : IDisposable
             // Implement proper cleanup of native GPU resources
             // This includes releasing driver handles, freeing GPU memory,
             // and any other platform-specific cleanup operations
-            
+
             try
             {
                 // Clean up compiled code resources
@@ -111,7 +111,7 @@ public sealed class CompiledKernel : IDisposable
                     // For managed byte arrays, no explicit cleanup needed
                     // Native resources would be handled by backend-specific disposal
                 }
-                
+
                 // Clean up backend-specific data
                 if (BackendData is IDisposable disposableBackend)
                 {
@@ -133,7 +133,7 @@ public sealed class CompiledKernel : IDisposable
                         }
                     }
                 }
-                
+
                 // Log disposal for debugging
                 System.Diagnostics.Debug.WriteLine($"Disposed CompiledKernel: {Name} (ID: {KernelId})");
             }
@@ -142,7 +142,7 @@ public sealed class CompiledKernel : IDisposable
                 // Log disposal errors but don't throw from Dispose
                 System.Diagnostics.Debug.WriteLine($"Error disposing CompiledKernel {KernelId}: {ex.Message}");
             }
-            
+
             IsDisposed = true;
             GC.SuppressFinalize(this);
         }

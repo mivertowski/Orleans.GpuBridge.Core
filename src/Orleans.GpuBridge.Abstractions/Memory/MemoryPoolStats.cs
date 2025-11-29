@@ -11,7 +11,10 @@ public sealed record MemoryPoolStats(
     int RentCount,
     int ReturnCount)
 {
-    public double UtilizationPercent => TotalAllocated > 0 
-        ? (InUse / (double)TotalAllocated) * 100 
+    /// <summary>
+    /// Gets the utilization percentage of the memory pool (0-100).
+    /// </summary>
+    public double UtilizationPercent => TotalAllocated > 0
+        ? (InUse / (double)TotalAllocated) * 100
         : 0;
 }

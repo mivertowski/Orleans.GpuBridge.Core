@@ -14,17 +14,17 @@ public interface IDeviceMemory : IDisposable
     /// Size of the allocation in bytes
     /// </summary>
     long SizeBytes { get; }
-    
+
     /// <summary>
     /// Device pointer to the memory
     /// </summary>
     IntPtr DevicePointer { get; }
-    
+
     /// <summary>
     /// Associated device
     /// </summary>
     IComputeDevice Device { get; }
-    
+
     /// <summary>
     /// Copies data from host to device
     /// </summary>
@@ -33,7 +33,7 @@ public interface IDeviceMemory : IDisposable
         long offsetBytes,
         long sizeBytes,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Copies data from device to host
     /// </summary>
@@ -42,7 +42,7 @@ public interface IDeviceMemory : IDisposable
         long offsetBytes,
         long sizeBytes,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Copies data between device allocations
     /// </summary>
@@ -52,7 +52,7 @@ public interface IDeviceMemory : IDisposable
         long destinationOffset,
         long sizeBytes,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Fills the memory with a byte value
     /// </summary>
@@ -61,7 +61,7 @@ public interface IDeviceMemory : IDisposable
         long offsetBytes,
         long sizeBytes,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Creates a view into a portion of this memory
     /// </summary>

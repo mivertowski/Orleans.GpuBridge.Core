@@ -7,6 +7,9 @@ namespace Orleans.GpuBridge.Logging.Configuration;
 /// </summary>
 public sealed class GpuBridgeLoggingOptions
 {
+    /// <summary>
+    /// The configuration section name for GPU Bridge logging options.
+    /// </summary>
     public const string SectionName = "GpuBridgeLogging";
 
     /// <summary>
@@ -57,5 +60,5 @@ public sealed class GpuBridgeLoggingOptions
     /// <summary>
     /// Category-specific log levels.
     /// </summary>
-    public Dictionary<string, LogLevel> CategoryLevels { get; set; } = new();
+    public Dictionary<string, LogLevel> CategoryLevels { get; set; } = [];
 }

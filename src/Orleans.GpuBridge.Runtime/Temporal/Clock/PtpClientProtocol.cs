@@ -12,30 +12,36 @@ namespace Orleans.GpuBridge.Runtime.Temporal.Clock;
 /// Implements IEEE 1588 PTP (Precision Time Protocol) client for software-based clock synchronization.
 /// </summary>
 /// <remarks>
-/// PTP Message Exchange:
-///
+/// <para>
+/// <strong>PTP Message Exchange:</strong>
+/// </para>
+/// <code>
 /// Master                    Client
 ///   |                         |
-///   |-------- SYNC -------->  | (t1: master TX time)
+///   |-------- SYNC -------&gt;  | (t1: master TX time)
 ///   |                         | (t2: client RX time)
 ///   |                         |
-///   |---- FOLLOW_UP -------->| (precise t1 timestamp)
+///   |---- FOLLOW_UP ------&gt;  | (precise t1 timestamp)
 ///   |                         |
-///   |  <---- DELAY_REQ ------| (t3: client TX time)
+///   |  &lt;---- DELAY_REQ ------| (t3: client TX time)
 ///   |                         |
-///   |---- DELAY_RESP ------->| (t4: master RX time)
+///   |---- DELAY_RESP -----&gt;  | (t4: master RX time)
 ///   |                         |
-///
-/// Offset Calculation:
-/// offset = ((t2 - t1) - (t4 - t3)) / 2
-///
-/// Round-Trip Delay:
-/// delay = (t2 - t1) + (t4 - t3)
-///
-/// Assumptions:
-/// - Symmetric network paths (forward delay ≈ reverse delay)
-/// - Minimal packet loss and jitter
-/// - NTP-style timestamp format (seconds + fractional nanoseconds)
+/// </code>
+/// <para>
+/// <strong>Offset Calculation:</strong> offset = ((t2 - t1) - (t4 - t3)) / 2
+/// </para>
+/// <para>
+/// <strong>Round-Trip Delay:</strong> delay = (t2 - t1) + (t4 - t3)
+/// </para>
+/// <para>
+/// <strong>Assumptions:</strong>
+/// <list type="bullet">
+/// <item><description>Symmetric network paths (forward delay approximately equals reverse delay)</description></item>
+/// <item><description>Minimal packet loss and jitter</description></item>
+/// <item><description>NTP-style timestamp format (seconds + fractional nanoseconds)</description></item>
+/// </list>
+/// </para>
 /// </remarks>
 public sealed class PtpClientProtocol : IDisposable
 {

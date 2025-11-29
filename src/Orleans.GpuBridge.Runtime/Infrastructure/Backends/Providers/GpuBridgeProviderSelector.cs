@@ -25,6 +25,13 @@ public sealed class GpuBridgeProviderSelector : IGpuBridgeProviderSelector
     private readonly SemaphoreSlim _cacheLock;
     private IGpuBackendProvider? _defaultProvider;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GpuBridgeProviderSelector"/> class.
+    /// </summary>
+    /// <param name="logger">The logger for diagnostic output.</param>
+    /// <param name="registry">The GPU backend registry for provider management.</param>
+    /// <param name="options">The GPU bridge configuration options.</param>
+    /// <param name="serviceProvider">The service provider for dependency resolution.</param>
     public GpuBridgeProviderSelector(
         ILogger<GpuBridgeProviderSelector> logger,
         IGpuBackendRegistry registry,
@@ -239,18 +246,36 @@ public sealed class GpuBridgeProviderSelector : IGpuBridgeProviderSelector
 /// </summary>
 public static class GpuBridgeOptionsExtensions
 {
+    /// <summary>
+    /// Sets the default backend provider for GPU operations.
+    /// </summary>
+    /// <param name="options">The options instance.</param>
+    /// <param name="backend">The backend provider identifier.</param>
+    /// <returns>The options instance for method chaining.</returns>
     public static GpuBridgeOptions WithBackendProvider(this GpuBridgeOptions options, string backend)
     {
         options.DefaultBackend = backend;
         return options;
     }
 
+    /// <summary>
+    /// Sets the fallback chain for backend provider selection.
+    /// </summary>
+    /// <param name="options">The options instance.</param>
+    /// <param name="backends">The ordered list of backend providers to try.</param>
+    /// <returns>The options instance for method chaining.</returns>
     public static GpuBridgeOptions WithFallbackChain(this GpuBridgeOptions options, params string[] backends)
     {
         options.FallbackChain = backends;
         return options;
     }
 
+    /// <summary>
+    /// Enables or disables automatic provider discovery via reflection.
+    /// </summary>
+    /// <param name="options">The options instance.</param>
+    /// <param name="enable">Whether to enable provider discovery.</param>
+    /// <returns>The options instance for method chaining.</returns>
     public static GpuBridgeOptions EnableProviderDiscovery(this GpuBridgeOptions options, bool enable = true)
     {
         options.EnableProviderDiscovery = enable;

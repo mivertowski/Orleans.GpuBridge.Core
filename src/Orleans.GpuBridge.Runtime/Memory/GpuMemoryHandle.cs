@@ -269,6 +269,10 @@ public readonly struct GpuMemoryStats
         ? (double)InUseBytes / TotalAllocatedBytes
         : 0.0;
 
+    /// <summary>
+    /// Returns a string representation of the GPU memory statistics.
+    /// </summary>
+    /// <returns>A formatted string containing memory statistics.</returns>
     public override string ToString() =>
         $"GpuMemoryStats(Total={TotalAllocatedBytes / (1024 * 1024)}MB, " +
         $"InUse={InUseBytes / (1024 * 1024)}MB, " +

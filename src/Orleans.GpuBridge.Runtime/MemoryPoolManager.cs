@@ -21,6 +21,11 @@ public sealed class MemoryPoolManager : IDisposable
     private long _currentTotalUsage;
     private bool _disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MemoryPoolManager"/> class.
+    /// </summary>
+    /// <param name="loggerFactory">The logger factory for creating diagnostic loggers.</param>
+    /// <param name="options">Optional memory pool configuration options.</param>
     public MemoryPoolManager(
         ILoggerFactory loggerFactory,
         MemoryPoolOptions? options = null)
@@ -36,6 +41,11 @@ public sealed class MemoryPoolManager : IDisposable
             _totalMemoryLimit);
     }
 
+    /// <summary>
+    /// Gets or creates a memory pool for the specified element type.
+    /// </summary>
+    /// <typeparam name="T">The unmanaged element type.</typeparam>
+    /// <returns>A memory pool for the specified type.</returns>
     public IGpuMemoryPool<T> GetPool<T>() where T : unmanaged
     {
         return (IGpuMemoryPool<T>)_pools.GetOrAdd(
@@ -53,6 +63,12 @@ public sealed class MemoryPoolManager : IDisposable
             });
     }
 
+    /// <summary>
+    /// Attempts to allocate the specified number of bytes from the total memory pool.
+    /// </summary>
+    /// <param name="requestedBytes">The number of bytes to allocate.</param>
+    /// <param name="reason">If allocation fails, contains the reason for failure.</param>
+    /// <returns>True if allocation succeeded; otherwise, false.</returns>
     public bool TryAllocate(long requestedBytes, out string? reason)
     {
         reason = null;
@@ -72,11 +88,19 @@ public sealed class MemoryPoolManager : IDisposable
         return true;
     }
 
+    /// <summary>
+    /// Releases a previously allocated number of bytes back to the pool.
+    /// </summary>
+    /// <param name="bytes">The number of bytes to release.</param>
     public void ReleaseAllocation(long bytes)
     {
         Interlocked.Add(ref _currentTotalUsage, -bytes);
     }
 
+    /// <summary>
+    /// Gets statistics for all memory pools.
+    /// </summary>
+    /// <returns>A dictionary mapping element types to their pool statistics.</returns>
     public Dictionary<Type, MemoryPoolStats> GetAllStats()
     {
         var stats = new Dictionary<Type, MemoryPoolStats>();
@@ -96,6 +120,10 @@ public sealed class MemoryPoolManager : IDisposable
         return stats;
     }
 
+    /// <summary>
+    /// Gets the current health status of the memory pool system.
+    /// </summary>
+    /// <returns>The health status information.</returns>
     public MemoryPoolHealth GetHealthStatus()
     {
         var usage = Interlocked.Read(ref _currentTotalUsage);
@@ -125,6 +153,10 @@ public sealed class MemoryPoolManager : IDisposable
         };
     }
 
+    /// <summary>
+    /// Updates the total memory limit for all pools.
+    /// </summary>
+    /// <param name="newTotalLimit">The new total memory limit in bytes.</param>
     public void UpdateLimits(long newTotalLimit)
     {
         _totalMemoryLimit = newTotalLimit;
@@ -133,6 +165,7 @@ public sealed class MemoryPoolManager : IDisposable
             newTotalLimit);
     }
 
+    /// <inheritdoc/>
     public void Dispose()
     {
         if (_disposed) return;

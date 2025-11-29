@@ -26,6 +26,11 @@ public sealed class GpuBackendRegistry : IGpuBackendRegistry
     private volatile bool _discoveryCompleted;
     private volatile bool _disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GpuBackendRegistry"/> class.
+    /// </summary>
+    /// <param name="serviceProvider">The service provider for dependency resolution.</param>
+    /// <param name="logger">The logger for diagnostic output.</param>
     public GpuBackendRegistry(
         IServiceProvider serviceProvider,
         ILogger<GpuBackendRegistry> logger)
@@ -381,6 +386,7 @@ public sealed class GpuBackendRegistry : IGpuBackendRegistry
             throw new ObjectDisposedException(nameof(GpuBackendRegistry));
     }
 
+    /// <inheritdoc/>
     public void Dispose()
     {
         if (_disposed)

@@ -18,12 +18,16 @@ public sealed class CpuMemoryPool<T> : IGpuMemoryPool<T> where T : unmanaged
     private int _rentCount;
     private int _returnCount;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CpuMemoryPool{T}"/> class.
+    /// </summary>
     public CpuMemoryPool()
     {
         _arrayPool = ArrayPool<T>.Create();
         _pool = new ConcurrentBag<CpuMemory<T>>();
     }
 
+    /// <inheritdoc/>
     public IGpuMemory<T> Rent(int minimumLength)
     {
         if (_pool.TryTake(out var memory) && memory.Length >= minimumLength)
@@ -43,6 +47,7 @@ public sealed class CpuMemoryPool<T> : IGpuMemoryPool<T> where T : unmanaged
         return cpuMemory;
     }
 
+    /// <inheritdoc/>
     public void Return(IGpuMemory<T> memory)
     {
         if (memory is not CpuMemory<T> cpuMemory)
@@ -65,6 +70,7 @@ public sealed class CpuMemoryPool<T> : IGpuMemoryPool<T> where T : unmanaged
         }
     }
 
+    /// <inheritdoc/>
     public MemoryPoolStats GetStats()
     {
         return new MemoryPoolStats(

@@ -43,13 +43,13 @@ jobs:
           ${{ runner.os }}-nuget-
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore Orleans.GpuBridge.sln
 
     - name: Build
-      run: dotnet build --configuration Release --no-restore /p:TreatWarningsAsErrors=true
+      run: dotnet build Orleans.GpuBridge.sln --configuration Release --no-restore /p:TreatWarningsAsErrors=true
 
     - name: Run tests
-      run: dotnet test --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+      run: dotnet test Orleans.GpuBridge.sln --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
 
     - name: Upload coverage to Codecov
       if: matrix.os == 'ubuntu-latest'
@@ -95,7 +95,7 @@ jobs:
         dotnet tool install --global security-scan
 
     - name: Check code formatting
-      run: dotnet format --verify-no-changes --verbosity diagnostic
+      run: dotnet format Orleans.GpuBridge.sln --verify-no-changes --verbosity diagnostic
 
     - name: Security scan
       run: security-scan ./Orleans.GpuBridge.sln --excl-proj "**/*Tests.csproj"
@@ -109,7 +109,7 @@ jobs:
       run: |
         dotnet tool install --global dotnet-sonarscanner
         dotnet sonarscanner begin /k:"Orleans.GpuBridge" /o:"orleans-gpubridge" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-        dotnet build
+        dotnet build Orleans.GpuBridge.sln
         dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
       continue-on-error: true
 
@@ -170,7 +170,7 @@ jobs:
       run: |
         dotnet pack ./src/Orleans.GpuBridge.Abstractions/Orleans.GpuBridge.Abstractions.csproj --configuration Release --output ./artifacts /p:PackageVersion=${{ steps.version.outputs.VERSION }}
         dotnet pack ./src/Orleans.GpuBridge.Runtime/Orleans.GpuBridge.Runtime.csproj --configuration Release --output ./artifacts /p:PackageVersion=${{ steps.version.outputs.VERSION }}
-        dotnet pack ./src/Orleans.GpuBridge.DotCompute/Orleans.GpuBridge.DotCompute.csproj --configuration Release --output ./artifacts /p:PackageVersion=${{ steps.version.outputs.VERSION }}
+        dotnet pack ./src/Orleans.GpuBridge.Backends.DotCompute/Orleans.GpuBridge.Backends.DotCompute.csproj --configuration Release --output ./artifacts /p:PackageVersion=${{ steps.version.outputs.VERSION }}
         dotnet pack ./src/Orleans.GpuBridge.Grains/Orleans.GpuBridge.Grains.csproj --configuration Release --output ./artifacts /p:PackageVersion=${{ steps.version.outputs.VERSION }}
         dotnet pack ./src/Orleans.GpuBridge.BridgeFX/Orleans.GpuBridge.BridgeFX.csproj --configuration Release --output ./artifacts /p:PackageVersion=${{ steps.version.outputs.VERSION }}
 

@@ -42,12 +42,10 @@ jobs:
       run: dotnet tool install -g docfx
 
     - name: Restore dependencies
-      run: dotnet restore
-      working-directory: ./src
+      run: dotnet restore Orleans.GpuBridge.sln
 
     - name: Build projects (for XML documentation)
-      run: dotnet build --configuration Release --no-restore /p:GenerateDocumentationFile=true /p:TreatWarningsAsErrors=false
-      working-directory: ./src
+      run: dotnet build Orleans.GpuBridge.sln --configuration Release --no-restore /p:GenerateDocumentationFile=true /p:TreatWarningsAsErrors=false
 
     - name: Build DocFX site
       run: docfx docs/docfx.json

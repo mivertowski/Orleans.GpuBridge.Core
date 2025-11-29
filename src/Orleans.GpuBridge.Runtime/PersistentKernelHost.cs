@@ -26,6 +26,13 @@ public sealed class PersistentKernelHost : IHostedService, IDisposable
     private readonly Dictionary<string, PersistentKernelInstance> _runningKernels;
     private bool _disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PersistentKernelHost"/> class.
+    /// </summary>
+    /// <param name="logger">The logger for diagnostic output.</param>
+    /// <param name="serviceProvider">The service provider for dependency resolution.</param>
+    /// <param name="options">The host options configuration.</param>
+    /// <param name="kernelCatalog">The kernel catalog for resolving kernels.</param>
     public PersistentKernelHost(
         ILogger<PersistentKernelHost> logger,
         IServiceProvider serviceProvider,
@@ -47,6 +54,7 @@ public sealed class PersistentKernelHost : IHostedService, IDisposable
             serviceProvider.GetRequiredService<ILogger<KernelLifecycleManager>>());
     }
 
+    /// <inheritdoc/>
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("Starting persistent kernel host with {Count} configured kernels",
@@ -110,6 +118,7 @@ public sealed class PersistentKernelHost : IHostedService, IDisposable
         _logger.LogInformation("Started persistent kernel {KernelId} successfully", config.KernelId);
     }
 
+    /// <inheritdoc/>
     public async Task StopAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("Stopping persistent kernel host");
@@ -156,6 +165,7 @@ public sealed class PersistentKernelHost : IHostedService, IDisposable
         }
     }
 
+    /// <inheritdoc/>
     public void Dispose()
     {
         if (_disposed) return;
@@ -167,29 +177,83 @@ public sealed class PersistentKernelHost : IHostedService, IDisposable
 }
 
 /// <summary>
-/// Options for the persistent kernel host
+/// Options for the persistent kernel host.
 /// </summary>
 public sealed class PersistentKernelHostOptions
 {
+    /// <summary>
+    /// Gets the list of kernel configurations to start.
+    /// </summary>
     public List<PersistentKernelConfiguration> KernelConfigurations { get; } = new();
+
+    /// <summary>
+    /// Gets or sets the default ring buffer size in bytes. Default is 16MB.
+    /// </summary>
     public int DefaultRingBufferSize { get; set; } = 16 * 1024 * 1024; // 16MB
+
+    /// <summary>
+    /// Gets or sets the default batch size for processing. Default is 100.
+    /// </summary>
     public int DefaultBatchSize { get; set; } = 100;
+
+    /// <summary>
+    /// Gets or sets the default maximum time to wait before flushing a partial batch. Default is 100ms.
+    /// </summary>
     public TimeSpan DefaultMaxBatchWaitTime { get; set; } = TimeSpan.FromMilliseconds(100);
+
+    /// <summary>
+    /// Gets or sets whether to continue starting other kernels if one fails. Default is true.
+    /// </summary>
     public bool ContinueOnKernelFailure { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets whether health monitoring is enabled. Default is true.
+    /// </summary>
     public bool EnableHealthMonitoring { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets the interval between health checks. Default is 30 seconds.
+    /// </summary>
     public TimeSpan HealthCheckInterval { get; set; } = TimeSpan.FromSeconds(30);
 }
 
 /// <summary>
-/// Configuration for a persistent kernel
+/// Configuration for a persistent kernel.
 /// </summary>
 public sealed class PersistentKernelConfiguration
 {
+    /// <summary>
+    /// Gets or sets the kernel identifier.
+    /// </summary>
     public string KernelId { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the ring buffer size in bytes. Uses host default if null.
+    /// </summary>
     public int? RingBufferSize { get; set; }
+
+    /// <summary>
+    /// Gets or sets the batch size for processing. Uses host default if null.
+    /// </summary>
     public int? BatchSize { get; set; }
+
+    /// <summary>
+    /// Gets or sets the maximum time to wait before flushing a partial batch. Uses host default if null.
+    /// </summary>
     public TimeSpan? MaxBatchWaitTime { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether to restart the kernel on error. Default is true if null.
+    /// </summary>
     public bool? RestartOnError { get; set; }
+
+    /// <summary>
+    /// Gets or sets the maximum number of restart retries. Default is 3 if null.
+    /// </summary>
     public int? MaxRetries { get; set; }
+
+    /// <summary>
+    /// Gets or sets additional kernel parameters.
+    /// </summary>
     public Dictionary<string, object>? Parameters { get; set; }
 }

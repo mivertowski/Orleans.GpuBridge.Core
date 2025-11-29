@@ -23,6 +23,10 @@ public sealed class KernelLifecycleManager : IDisposable
     private readonly Timer _healthCheckTimer;
     private bool _disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="KernelLifecycleManager"/> class.
+    /// </summary>
+    /// <param name="logger">The logger for diagnostic output.</param>
     public KernelLifecycleManager(ILogger<KernelLifecycleManager> logger)
     {
         _logger = logger;
@@ -194,6 +198,7 @@ public sealed class KernelLifecycleManager : IDisposable
         }
     }
 
+    /// <inheritdoc/>
     public void Dispose()
     {
         if (_disposed) return;

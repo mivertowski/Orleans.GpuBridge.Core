@@ -32,9 +32,24 @@ public sealed class PersistentKernelInstance : IDisposable
     private Exception? _lastError;
     private bool _disposed;
 
+    /// <summary>
+    /// Gets the unique identifier for this kernel instance.
+    /// </summary>
     public string InstanceId { get; }
+
+    /// <summary>
+    /// Gets the kernel identifier.
+    /// </summary>
     public KernelId KernelId { get; }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PersistentKernelInstance"/> class.
+    /// </summary>
+    /// <param name="instanceId">The unique instance identifier.</param>
+    /// <param name="kernelId">The kernel identifier.</param>
+    /// <param name="kernel">The GPU kernel to execute.</param>
+    /// <param name="options">The execution options.</param>
+    /// <param name="logger">The logger for diagnostic output.</param>
     public PersistentKernelInstance(
         string instanceId,
         KernelId kernelId,
@@ -52,6 +67,11 @@ public sealed class PersistentKernelInstance : IDisposable
         _lastActivity = DateTime.UtcNow;
     }
 
+    /// <summary>
+    /// Starts the kernel instance.
+    /// </summary>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task StartAsync(CancellationToken ct = default)
     {
         if (_state == KernelState.Running)
@@ -83,6 +103,11 @@ public sealed class PersistentKernelInstance : IDisposable
         }
     }
 
+    /// <summary>
+    /// Stops the kernel instance.
+    /// </summary>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task StopAsync(CancellationToken ct = default)
     {
         if (_state != KernelState.Running && _state != KernelState.Starting)
@@ -111,6 +136,11 @@ public sealed class PersistentKernelInstance : IDisposable
         _lastActivity = DateTime.UtcNow;
     }
 
+    /// <summary>
+    /// Restarts the kernel instance by stopping and starting it.
+    /// </summary>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task RestartAsync(CancellationToken ct = default)
     {
         await StopAsync(ct);
@@ -214,6 +244,10 @@ public sealed class PersistentKernelInstance : IDisposable
         }
     }
 
+    /// <summary>
+    /// Gets the current status of the kernel instance.
+    /// </summary>
+    /// <returns>The kernel instance status.</returns>
     public KernelInstanceStatus GetStatus()
     {
         return new KernelInstanceStatus
@@ -234,6 +268,7 @@ public sealed class PersistentKernelInstance : IDisposable
         };
     }
 
+    /// <inheritdoc/>
     public void Dispose()
     {
         if (_disposed) return;

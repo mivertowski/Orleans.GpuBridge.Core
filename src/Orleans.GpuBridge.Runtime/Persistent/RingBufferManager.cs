@@ -24,6 +24,11 @@ public sealed class RingBufferManager : IDisposable
     private readonly int _defaultBufferSize;
     private bool _disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RingBufferManager"/> class.
+    /// </summary>
+    /// <param name="logger">The logger for diagnostic output.</param>
+    /// <param name="defaultBufferSize">The default buffer size in bytes. Default is 16MB.</param>
     public RingBufferManager(
         ILogger<RingBufferManager> logger,
         int defaultBufferSize = 1024 * 1024 * 16) // 16MB default
@@ -89,6 +94,7 @@ public sealed class RingBufferManager : IDisposable
         return stats;
     }
 
+    /// <inheritdoc/>
     public void Dispose()
     {
         if (_disposed) return;
@@ -123,10 +129,27 @@ public sealed class RingBuffer : IDisposable
     private long _totalReads;
     private bool _disposed;
 
+    /// <summary>
+    /// Gets the pointer to the pinned buffer memory for direct GPU access.
+    /// </summary>
     public IntPtr BufferPointer { get; }
+
+    /// <summary>
+    /// Gets the total size of the buffer in bytes.
+    /// </summary>
     public int Size => _size;
+
+    /// <summary>
+    /// Gets a value indicating whether the buffer is pinned in memory.
+    /// </summary>
     public bool IsPinned => _handle.IsAllocated;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RingBuffer"/> class.
+    /// </summary>
+    /// <param name="kernelId">The kernel identifier this buffer is associated with.</param>
+    /// <param name="size">The size of the buffer in bytes.</param>
+    /// <param name="logger">The logger for diagnostic output.</param>
     public RingBuffer(string kernelId, int size, ILogger logger)
     {
         _kernelId = kernelId;
@@ -333,6 +356,7 @@ public sealed class RingBuffer : IDisposable
         return BitConverter.ToInt32(buffer, position);
     }
 
+    /// <inheritdoc/>
     public void Dispose()
     {
         if (_disposed) return;
@@ -349,34 +373,96 @@ public sealed class RingBuffer : IDisposable
 }
 
 /// <summary>
-/// Represents a batch of data for kernel processing
+/// Represents a batch of data for kernel processing.
 /// </summary>
 public sealed class DataBatch
 {
+    /// <summary>
+    /// Gets the unique identifier for this batch.
+    /// </summary>
     public string Id { get; init; } = Guid.NewGuid().ToString();
+
+    /// <summary>
+    /// Gets the data payload for this batch.
+    /// </summary>
     public Memory<byte> Data { get; init; }
+
+    /// <summary>
+    /// Gets optional metadata associated with this batch.
+    /// </summary>
     public Dictionary<string, object>? Metadata { get; init; }
+
+    /// <summary>
+    /// Gets the timestamp when the batch was submitted.
+    /// </summary>
     public DateTime SubmittedAt { get; init; } = DateTime.UtcNow;
+
+    /// <summary>
+    /// Gets or sets the timestamp when the batch processing completed.
+    /// </summary>
     public DateTime? CompletedAt { get; set; }
 }
 
 /// <summary>
-/// Ring buffer statistics
+/// Ring buffer statistics for monitoring and diagnostics.
 /// </summary>
 public sealed class RingBufferStats
 {
+    /// <summary>
+    /// Gets the kernel identifier this buffer is associated with.
+    /// </summary>
     public string KernelId { get; init; } = string.Empty;
+
+    /// <summary>
+    /// Gets the total buffer size in bytes.
+    /// </summary>
     public int BufferSize { get; init; }
+
+    /// <summary>
+    /// Gets the number of bytes currently used in the buffer.
+    /// </summary>
     public int UsedBytes { get; init; }
+
+    /// <summary>
+    /// Gets the number of bytes available in the buffer.
+    /// </summary>
     public int AvailableBytes { get; init; }
+
+    /// <summary>
+    /// Gets the total number of bytes written to the buffer.
+    /// </summary>
     public long TotalBytesWritten { get; init; }
+
+    /// <summary>
+    /// Gets the total number of bytes read from the buffer.
+    /// </summary>
     public long TotalBytesRead { get; init; }
+
+    /// <summary>
+    /// Gets the total number of write operations performed.
+    /// </summary>
     public long TotalWrites { get; init; }
+
+    /// <summary>
+    /// Gets the total number of read operations performed.
+    /// </summary>
     public long TotalReads { get; init; }
+
+    /// <summary>
+    /// Gets the buffer utilization as a percentage (0-100).
+    /// </summary>
     public double UtilizationPercent { get; init; }
+
+    /// <summary>
+    /// Gets the write throughput in megabytes per second.
+    /// </summary>
     public double WriteThroughputMBps => TotalWrites > 0
         ? (TotalBytesWritten / 1024.0 / 1024.0) / (TotalWrites / 1000.0)
         : 0;
+
+    /// <summary>
+    /// Gets the read throughput in megabytes per second.
+    /// </summary>
     public double ReadThroughputMBps => TotalReads > 0
         ? (TotalBytesRead / 1024.0 / 1024.0) / (TotalReads / 1000.0)
         : 0;

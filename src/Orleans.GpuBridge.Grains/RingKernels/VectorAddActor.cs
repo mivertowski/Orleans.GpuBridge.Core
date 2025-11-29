@@ -1,5 +1,5 @@
 // Copyright (c) 2025 Michael Ivertowski
-// Licensed under the MIT License.
+// Licensed under the Apache License, Version 2.0. See LICENSE file for details.
 
 using DotCompute.Abstractions.RingKernels;
 using Microsoft.Extensions.Logging;

@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+// Copyright (c) 2025 Michael Ivertowski
+// Licensed under the Apache License, Version 2.0. See LICENSE file for details.
 
 using Microsoft.Extensions.Logging;
 

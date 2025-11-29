@@ -10,7 +10,7 @@
     <Authors>Michael Ivertowski</Authors>
     <Company>Orleans.GpuBridge</Company>
     <Copyright>Copyright © 2025 Michael Ivertowski</Copyright>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/mivertowski/Orleans.GpuBridge.Core</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mivertowski/Orleans.GpuBridge.Core</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -20,13 +20,16 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
     <!-- Resolve Microsoft.CodeAnalysis version conflict -->
-    <!-- Pin to 4.5.0 to match Microsoft.CodeAnalysis.Workspaces.Common requirement -->
-    <MicrosoftCodeAnalysisVersion>4.5.0</MicrosoftCodeAnalysisVersion>
+    <!-- Pin to 4.14.0 to match resolved version and eliminate NU1608 warnings -->
+    <MicrosoftCodeAnalysisVersion>4.14.0</MicrosoftCodeAnalysisVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Force consistent Microsoft.CodeAnalysis versions across solution -->
+    <!-- Force consistent Microsoft.CodeAnalysis versions across solution via Update -->
+    <!-- Projects with explicit references will use these versions -->
     <PackageReference Update="Microsoft.CodeAnalysis.Common" Version="$(MicrosoftCodeAnalysisVersion)" />
     <PackageReference Update="Microsoft.CodeAnalysis.CSharp" Version="$(MicrosoftCodeAnalysisVersion)" />
+    <PackageReference Update="Microsoft.CodeAnalysis.Workspaces.Common" Version="$(MicrosoftCodeAnalysisVersion)" />
+    <PackageReference Update="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(MicrosoftCodeAnalysisVersion)" />
   </ItemGroup>
 </Project>

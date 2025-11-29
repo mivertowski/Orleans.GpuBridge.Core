@@ -11,7 +11,7 @@ namespace Orleans.GpuBridge.Runtime.RingKernels;
 /// <remarks>
 /// <para>
 /// This attribute configures how the grain's ring kernel is compiled and executed on GPU.
-/// It maps to DotCompute's <see cref="RingKernelAttribute"/> for kernel compilation.
+/// It maps to DotCompute's RingKernelAttribute for kernel compilation.
 /// </para>
 /// <para>
 /// Example usage:

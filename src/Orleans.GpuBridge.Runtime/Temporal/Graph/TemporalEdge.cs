@@ -165,7 +165,20 @@ public readonly struct TemporalEdge : IEquatable<TemporalEdge>, IComparable<Temp
         return $"Edge({SourceId}→{TargetId}, {ValidFrom}ns-{ValidTo}ns, {duration:F1}ms, weight={Weight})";
     }
 
+    /// <summary>
+    /// Determines whether two temporal edges are equal.
+    /// </summary>
+    /// <param name="left">The first edge to compare.</param>
+    /// <param name="right">The second edge to compare.</param>
+    /// <returns>True if the edges are equal; otherwise, false.</returns>
     public static bool operator ==(TemporalEdge left, TemporalEdge right) => left.Equals(right);
+
+    /// <summary>
+    /// Determines whether two temporal edges are not equal.
+    /// </summary>
+    /// <param name="left">The first edge to compare.</param>
+    /// <param name="right">The second edge to compare.</param>
+    /// <returns>True if the edges are not equal; otherwise, false.</returns>
     public static bool operator !=(TemporalEdge left, TemporalEdge right) => !left.Equals(right);
 }
 

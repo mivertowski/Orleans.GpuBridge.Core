@@ -593,6 +593,13 @@ public sealed class AdaptiveLoadBalancer : IAdaptiveLoadBalancer, IDisposable
         }
     }
 
+    /// <summary>
+    /// Releases resources used by the load balancer.
+    /// </summary>
+    /// <remarks>
+    /// Marks the load balancer as disposed and prevents further operations.
+    /// Event subscriptions are automatically cleaned up.
+    /// </remarks>
     public void Dispose()
     {
         _disposed = true;

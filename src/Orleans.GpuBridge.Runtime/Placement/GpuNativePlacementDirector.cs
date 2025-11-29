@@ -32,6 +32,12 @@ public sealed class GpuNativePlacementDirector : IPlacementDirector
     private readonly Dictionary<string, List<SiloAddress>> _affinityGroups = new();
     private readonly object _affinityLock = new();
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GpuNativePlacementDirector"/> class.
+    /// </summary>
+    /// <param name="logger">Logger for diagnostic output.</param>
+    /// <param name="ringKernelRuntime">Ring kernel runtime for GPU metrics.</param>
+    /// <exception cref="ArgumentNullException">Thrown when logger or ringKernelRuntime is null.</exception>
     public GpuNativePlacementDirector(
         ILogger<GpuNativePlacementDirector> logger,
         IRingKernelRuntime ringKernelRuntime)

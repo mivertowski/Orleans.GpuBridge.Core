@@ -447,6 +447,7 @@ public sealed class QueueDepthMonitor : IQueueDepthMonitor, IDisposable
             TotalMemoryBytes = 8L * 1024 * 1024 * 1024
         };
 
+    /// <inheritdoc/>
     public void Dispose()
     {
         if (_disposed) return;
@@ -461,6 +462,12 @@ public sealed class QueueDepthMonitor : IQueueDepthMonitor, IDisposable
         private readonly double _threshold;
         private readonly Action<QueueDepthAlert> _callback;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AlertSubscription"/> class.
+        /// </summary>
+        /// <param name="monitor">Queue depth monitor instance.</param>
+        /// <param name="threshold">Alert threshold value.</param>
+        /// <param name="callback">Callback to invoke on alert.</param>
         public AlertSubscription(QueueDepthMonitor monitor, double threshold, Action<QueueDepthAlert> callback)
         {
             _monitor = monitor;
@@ -468,6 +475,7 @@ public sealed class QueueDepthMonitor : IQueueDepthMonitor, IDisposable
             _callback = callback;
         }
 
+        /// <inheritdoc/>
         public void Dispose() => _monitor.UnsubscribeFromAlerts(_threshold, _callback);
     }
 }

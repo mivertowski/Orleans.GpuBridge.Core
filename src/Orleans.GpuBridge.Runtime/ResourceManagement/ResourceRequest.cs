@@ -10,8 +10,23 @@ namespace Orleans.GpuBridge.Runtime.ResourceManagement;
 /// </summary>
 public sealed class ResourceRequest
 {
+    /// <summary>
+    /// Gets or sets the amount of GPU memory requested in bytes.
+    /// </summary>
     public long RequestedMemoryBytes { get; set; }
+
+    /// <summary>
+    /// Gets or sets the number of GPU kernels requested for execution.
+    /// </summary>
     public int RequestedKernels { get; set; }
+
+    /// <summary>
+    /// Gets or sets the size of the batch to be processed by the kernels.
+    /// </summary>
     public int BatchSize { get; set; }
+
+    /// <summary>
+    /// Gets or sets the estimated duration for completing the resource request.
+    /// </summary>
     public TimeSpan EstimatedDuration { get; set; }
 }

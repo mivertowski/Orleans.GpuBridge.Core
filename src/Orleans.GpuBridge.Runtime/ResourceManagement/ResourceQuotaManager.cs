@@ -25,6 +25,11 @@ public sealed class ResourceQuotaManager : IDisposable
     private readonly Timer _resetTimer;
     private bool _disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ResourceQuotaManager"/> class.
+    /// </summary>
+    /// <param name="logger">The logger instance for diagnostic output.</param>
+    /// <param name="options">The configuration options for resource quotas.</param>
     public ResourceQuotaManager(
         ILogger<ResourceQuotaManager> logger,
         IOptions<ResourceQuotaOptions> options)
@@ -232,6 +237,9 @@ public sealed class ResourceQuotaManager : IDisposable
         }
     }
 
+    /// <summary>
+    /// Releases all resources used by the <see cref="ResourceQuotaManager"/>.
+    /// </summary>
     public void Dispose()
     {
         if (_disposed) return;

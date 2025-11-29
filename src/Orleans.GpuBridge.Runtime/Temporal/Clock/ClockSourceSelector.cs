@@ -136,18 +136,19 @@ public sealed class ClockSourceSelector
         return best;
     }
 
-    private async Task TryInitializeGpsClock(CancellationToken ct)
+    private Task TryInitializeGpsClock(CancellationToken ct)
     {
         try
         {
             // GPS clock requires hardware receiver - typically not available
             // Placeholder for future GPS support
             _logger.LogDebug("GPS clock not implemented - skipping");
-            return;
+            return Task.CompletedTask;
         }
         catch (Exception ex)
         {
             _logger.LogDebug(ex, "GPS clock not available");
+            return Task.CompletedTask;
         }
     }
 

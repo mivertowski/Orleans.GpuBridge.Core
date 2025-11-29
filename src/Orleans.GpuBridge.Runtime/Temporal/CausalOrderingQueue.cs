@@ -89,6 +89,7 @@ public sealed class CausalOrderingQueue
     /// Enqueues a message for causal delivery.
     /// </summary>
     /// <param name="message">Message to enqueue</param>
+    /// <param name="ct">Cancellation token to cancel the operation</param>
     /// <returns>
     /// List of messages ready for delivery (may include this message and others
     /// that were waiting for dependencies).
@@ -381,18 +382,52 @@ public sealed class CausalMessage : IPendingMessage
 /// </summary>
 public sealed record CausalQueueStatistics
 {
+    /// <summary>
+    /// Gets the total number of messages enqueued.
+    /// </summary>
     public long TotalEnqueued { get; init; }
+
+    /// <summary>
+    /// Gets the total number of messages delivered.
+    /// </summary>
     public long TotalDelivered { get; init; }
+
+    /// <summary>
+    /// Gets the total number of messages that timed out before delivery.
+    /// </summary>
     public long TotalTimedOut { get; init; }
+
+    /// <summary>
+    /// Gets the total number of causal ordering violations detected.
+    /// </summary>
     public long TotalCausalViolations { get; init; }
+
+    /// <summary>
+    /// Gets the current number of pending messages awaiting delivery.
+    /// </summary>
     public int PendingCount { get; init; }
+
+    /// <summary>
+    /// Gets the number of delivered messages retained in history.
+    /// </summary>
     public int DeliveredCount { get; init; }
+
+    /// <summary>
+    /// Gets the current vector clock state.
+    /// </summary>
     public required VectorClock CurrentVectorClock { get; init; }
 
+    /// <summary>
+    /// Gets the delivery success rate (delivered / enqueued).
+    /// </summary>
     public double DeliveryRate => TotalEnqueued > 0
         ? (double)TotalDelivered / TotalEnqueued
         : 0.0;
 
+    /// <summary>
+    /// Returns a string representation of the statistics.
+    /// </summary>
+    /// <returns>A formatted string containing key statistics.</returns>
     public override string ToString()
     {
         return $"CausalQueueStats(Enqueued={TotalEnqueued}, " +

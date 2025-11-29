@@ -24,12 +24,30 @@ public sealed class RapidSplitPattern : TemporalPatternBase
     private readonly int _minimumSplits;
     private readonly double _minimumAmount;
 
+    /// <summary>
+    /// Gets the unique identifier for the rapid split pattern.
+    /// </summary>
     public override string PatternId => "rapid-split";
+
+    /// <summary>
+    /// Gets the human-readable name of the pattern.
+    /// </summary>
     public override string Name => "Rapid Transaction Split";
+
+    /// <summary>
+    /// Gets a description of what this pattern detects.
+    /// </summary>
     public override string Description =>
         "Detects when an account receives money and quickly splits it to multiple recipients";
 
+    /// <summary>
+    /// Gets the time window size for pattern detection in nanoseconds.
+    /// </summary>
     public override long WindowSizeNanos { get; }
+
+    /// <summary>
+    /// Gets the severity level of this pattern (High).
+    /// </summary>
     public override PatternSeverity Severity => PatternSeverity.High;
 
     /// <summary>
@@ -48,6 +66,13 @@ public sealed class RapidSplitPattern : TemporalPatternBase
         _minimumAmount = minimumAmount;
     }
 
+    /// <summary>
+    /// Asynchronously searches for rapid split patterns in the provided events.
+    /// </summary>
+    /// <param name="events">The events to analyze</param>
+    /// <param name="graph">Optional temporal graph (not used by this pattern)</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns>A collection of pattern matches found</returns>
     public override async Task<IEnumerable<PatternMatch>> MatchAsync(
         IReadOnlyList<TemporalEvent> events,
         TemporalGraphStorage? graph,

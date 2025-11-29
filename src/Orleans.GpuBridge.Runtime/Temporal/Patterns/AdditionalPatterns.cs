@@ -32,12 +32,30 @@ public sealed class TemporalClusterPattern : TemporalPatternBase
     private readonly double _clusterRatio;
     private readonly string? _eventTypeFilter;
 
+    /// <summary>
+    /// Gets the unique identifier for the temporal cluster pattern.
+    /// </summary>
     public override string PatternId => "temporal-cluster";
+
+    /// <summary>
+    /// Gets the human-readable name of the pattern.
+    /// </summary>
     public override string Name => "Temporal Event Clustering";
+
+    /// <summary>
+    /// Gets a description of what this pattern detects.
+    /// </summary>
     public override string Description =>
         "Detects statistically abnormal clustering of events in time";
 
+    /// <summary>
+    /// Gets the time window size for pattern detection in nanoseconds.
+    /// </summary>
     public override long WindowSizeNanos { get; }
+
+    /// <summary>
+    /// Gets the severity level of this pattern (High).
+    /// </summary>
     public override PatternSeverity Severity => PatternSeverity.High;
 
     /// <summary>
@@ -64,6 +82,13 @@ public sealed class TemporalClusterPattern : TemporalPatternBase
         _eventTypeFilter = eventTypeFilter;
     }
 
+    /// <summary>
+    /// Asynchronously searches for temporal clustering patterns in the provided events.
+    /// </summary>
+    /// <param name="events">The events to analyze</param>
+    /// <param name="graph">Optional temporal graph (not used by this pattern)</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns>A collection of pattern matches found</returns>
     public override async Task<IEnumerable<PatternMatch>> MatchAsync(
         IReadOnlyList<TemporalEvent> events,
         TemporalGraphStorage? graph,
@@ -161,12 +186,30 @@ public sealed class StructuringPattern : TemporalPatternBase
     private readonly double _marginPercent;
     private readonly int _minimumCount;
 
+    /// <summary>
+    /// Gets the unique identifier for the structuring pattern.
+    /// </summary>
     public override string PatternId => "structuring";
+
+    /// <summary>
+    /// Gets the human-readable name of the pattern.
+    /// </summary>
     public override string Name => "Transaction Structuring";
+
+    /// <summary>
+    /// Gets a description of what this pattern detects.
+    /// </summary>
     public override string Description =>
         "Detects transactions structured just below reporting thresholds";
 
+    /// <summary>
+    /// Gets the time window size for pattern detection in nanoseconds.
+    /// </summary>
     public override long WindowSizeNanos { get; }
+
+    /// <summary>
+    /// Gets the severity level of this pattern (Critical).
+    /// </summary>
     public override PatternSeverity Severity => PatternSeverity.Critical;
 
     /// <summary>
@@ -188,6 +231,13 @@ public sealed class StructuringPattern : TemporalPatternBase
         _minimumCount = minimumCount;
     }
 
+    /// <summary>
+    /// Asynchronously searches for transaction structuring patterns in the provided events.
+    /// </summary>
+    /// <param name="events">The events to analyze</param>
+    /// <param name="graph">Optional temporal graph (not used by this pattern)</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns>A collection of pattern matches found</returns>
     public override async Task<IEnumerable<PatternMatch>> MatchAsync(
         IReadOnlyList<TemporalEvent> events,
         TemporalGraphStorage? graph,
@@ -258,14 +308,38 @@ public sealed class FanOutPattern : TemporalPatternBase
     private readonly int _minimumTargets;
     private readonly double _minimumTotalAmount;
 
+    /// <summary>
+    /// Gets the unique identifier for the fan-out pattern.
+    /// </summary>
     public override string PatternId => "fan-out";
+
+    /// <summary>
+    /// Gets the human-readable name of the pattern.
+    /// </summary>
     public override string Name => "Fan-Out Distribution";
+
+    /// <summary>
+    /// Gets a description of what this pattern detects.
+    /// </summary>
     public override string Description =>
         "Detects rapid distribution from single source to multiple targets";
 
+    /// <summary>
+    /// Gets the time window size for pattern detection in nanoseconds.
+    /// </summary>
     public override long WindowSizeNanos { get; }
+
+    /// <summary>
+    /// Gets the severity level of this pattern (Medium).
+    /// </summary>
     public override PatternSeverity Severity => PatternSeverity.Medium;
 
+    /// <summary>
+    /// Creates a new fan-out pattern detector.
+    /// </summary>
+    /// <param name="windowSizeNanos">Time window for fan-out detection (default: 5 minutes)</param>
+    /// <param name="minimumTargets">Minimum number of unique targets to trigger detection (default: 5)</param>
+    /// <param name="minimumTotalAmount">Minimum total transaction amount to trigger detection (default: $10,000)</param>
     public FanOutPattern(
         long windowSizeNanos = 300_000_000_000, // 5 minutes
         int minimumTargets = 5,
@@ -276,6 +350,13 @@ public sealed class FanOutPattern : TemporalPatternBase
         _minimumTotalAmount = minimumTotalAmount;
     }
 
+    /// <summary>
+    /// Asynchronously searches for fan-out patterns in the provided events.
+    /// </summary>
+    /// <param name="events">The events to analyze</param>
+    /// <param name="graph">Optional temporal graph (not used by this pattern)</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns>A collection of pattern matches found</returns>
     public override async Task<IEnumerable<PatternMatch>> MatchAsync(
         IReadOnlyList<TemporalEvent> events,
         TemporalGraphStorage? graph,
@@ -350,14 +431,38 @@ public sealed class FanInPattern : TemporalPatternBase
     private readonly int _minimumSources;
     private readonly double _minimumTotalAmount;
 
+    /// <summary>
+    /// Gets the unique identifier for the fan-in pattern.
+    /// </summary>
     public override string PatternId => "fan-in";
+
+    /// <summary>
+    /// Gets the human-readable name of the pattern.
+    /// </summary>
     public override string Name => "Fan-In Aggregation";
+
+    /// <summary>
+    /// Gets a description of what this pattern detects.
+    /// </summary>
     public override string Description =>
         "Detects rapid aggregation from multiple sources to single target";
 
+    /// <summary>
+    /// Gets the time window size for pattern detection in nanoseconds.
+    /// </summary>
     public override long WindowSizeNanos { get; }
+
+    /// <summary>
+    /// Gets the severity level of this pattern (Medium).
+    /// </summary>
     public override PatternSeverity Severity => PatternSeverity.Medium;
 
+    /// <summary>
+    /// Creates a new fan-in pattern detector.
+    /// </summary>
+    /// <param name="windowSizeNanos">Time window for fan-in detection (default: 5 minutes)</param>
+    /// <param name="minimumSources">Minimum number of unique sources to trigger detection (default: 5)</param>
+    /// <param name="minimumTotalAmount">Minimum total transaction amount to trigger detection (default: $10,000)</param>
     public FanInPattern(
         long windowSizeNanos = 300_000_000_000, // 5 minutes
         int minimumSources = 5,
@@ -368,6 +473,13 @@ public sealed class FanInPattern : TemporalPatternBase
         _minimumTotalAmount = minimumTotalAmount;
     }
 
+    /// <summary>
+    /// Asynchronously searches for fan-in patterns in the provided events.
+    /// </summary>
+    /// <param name="events">The events to analyze</param>
+    /// <param name="graph">Optional temporal graph (not used by this pattern)</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns>A collection of pattern matches found</returns>
     public override async Task<IEnumerable<PatternMatch>> MatchAsync(
         IReadOnlyList<TemporalEvent> events,
         TemporalGraphStorage? graph,
@@ -442,14 +554,38 @@ public sealed class RoundTripPattern : TemporalPatternBase
     private readonly double _minimumAmount;
     private readonly double _tolerancePercent;
 
+    /// <summary>
+    /// Gets the unique identifier for the round-trip pattern.
+    /// </summary>
     public override string PatternId => "round-trip";
+
+    /// <summary>
+    /// Gets the human-readable name of the pattern.
+    /// </summary>
     public override string Name => "Round-Trip Transaction";
+
+    /// <summary>
+    /// Gets a description of what this pattern detects.
+    /// </summary>
     public override string Description =>
         "Detects money sent and returned between same accounts";
 
+    /// <summary>
+    /// Gets the time window size for pattern detection in nanoseconds.
+    /// </summary>
     public override long WindowSizeNanos { get; }
+
+    /// <summary>
+    /// Gets the severity level of this pattern (High).
+    /// </summary>
     public override PatternSeverity Severity => PatternSeverity.High;
 
+    /// <summary>
+    /// Creates a new round-trip pattern detector.
+    /// </summary>
+    /// <param name="windowSizeNanos">Time window for round-trip detection (default: 1 hour)</param>
+    /// <param name="minimumAmount">Minimum transaction amount to trigger detection (default: $5,000)</param>
+    /// <param name="tolerancePercent">Percentage tolerance for amount matching (default: 5%)</param>
     public RoundTripPattern(
         long windowSizeNanos = 3600_000_000_000, // 1 hour
         double minimumAmount = 5_000.0,
@@ -460,6 +596,13 @@ public sealed class RoundTripPattern : TemporalPatternBase
         _tolerancePercent = tolerancePercent;
     }
 
+    /// <summary>
+    /// Asynchronously searches for round-trip patterns in the provided events.
+    /// </summary>
+    /// <param name="events">The events to analyze</param>
+    /// <param name="graph">Optional temporal graph (not used by this pattern)</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns>A collection of pattern matches found</returns>
     public override async Task<IEnumerable<PatternMatch>> MatchAsync(
         IReadOnlyList<TemporalEvent> events,
         TemporalGraphStorage? graph,

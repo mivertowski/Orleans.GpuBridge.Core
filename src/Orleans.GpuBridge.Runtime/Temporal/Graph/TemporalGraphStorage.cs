@@ -464,15 +464,45 @@ public sealed class TemporalGraphStorage
 /// </summary>
 public sealed record GraphStatistics
 {
+    /// <summary>
+    /// Gets the total number of nodes in the graph.
+    /// </summary>
     public int NodeCount { get; init; }
+
+    /// <summary>
+    /// Gets the total number of edges in the graph.
+    /// </summary>
     public long EdgeCount { get; init; }
+
+    /// <summary>
+    /// Gets the earliest edge start time (ValidFrom) in nanoseconds.
+    /// </summary>
     public long MinTime { get; init; }
+
+    /// <summary>
+    /// Gets the latest edge end time (ValidTo) in nanoseconds.
+    /// </summary>
     public long MaxTime { get; init; }
+
+    /// <summary>
+    /// Gets the total time span covered by the graph in nanoseconds.
+    /// </summary>
     public long TimeSpanNanos { get; init; }
+
+    /// <summary>
+    /// Gets the average number of outgoing edges per node.
+    /// </summary>
     public double AverageDegree { get; init; }
 
+    /// <summary>
+    /// Gets the total time span covered by the graph in seconds.
+    /// </summary>
     public double TimeSpanSeconds => TimeSpanNanos / 1_000_000_000.0;
 
+    /// <summary>
+    /// Returns a string representation of the graph statistics.
+    /// </summary>
+    /// <returns>A formatted string containing node count, edge count, time span, and average degree.</returns>
     public override string ToString()
     {
         return $"Graph({NodeCount} nodes, {EdgeCount} edges, " +

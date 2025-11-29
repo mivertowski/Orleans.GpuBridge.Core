@@ -247,6 +247,7 @@ public sealed class PtpHardwareMonitor : IDisposable
     /// Attempts to recover a failed PTP device.
     /// </summary>
     /// <param name="devicePath">Path to PTP device.</param>
+    /// <param name="ct">Cancellation token to cancel the recovery operation.</param>
     /// <returns>True if recovery was successful; false otherwise.</returns>
     public async Task<bool> TryRecoverDeviceAsync(string devicePath, CancellationToken ct = default)
     {

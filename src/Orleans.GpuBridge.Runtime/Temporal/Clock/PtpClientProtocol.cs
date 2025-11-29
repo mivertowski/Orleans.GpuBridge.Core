@@ -50,6 +50,11 @@ public sealed class PtpClientProtocol : IDisposable
     private const int PtpEventPort = 319;
     private const int PtpGeneralPort = 320;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PtpClientProtocol"/> class.
+    /// </summary>
+    /// <param name="logger">Logger instance for diagnostic messages.</param>
+    /// <exception cref="ArgumentNullException">Thrown when logger is null.</exception>
     public PtpClientProtocol(ILogger logger)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -221,6 +226,9 @@ public sealed class PtpClientProtocol : IDisposable
         return DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() * 1_000_000;
     }
 
+    /// <summary>
+    /// Releases all resources used by the PTP client protocol.
+    /// </summary>
     public void Dispose()
     {
         _udpClient?.Dispose();

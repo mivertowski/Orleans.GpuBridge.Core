@@ -97,8 +97,9 @@ public static class GpuMessageSerializer
         {
             if (arg == null)
             {
-                // Null argument - write sentinel value
-                MemoryMarshal.Write(buffer.Slice(offset, 4), ref offset);
+                // Null argument - write sentinel value (use length -1 to indicate null)
+                int nullSentinel = -1;
+                MemoryMarshal.Write(buffer.Slice(offset, 4), in nullSentinel);
                 offset += 4;
                 continue;
             }
@@ -106,22 +107,22 @@ public static class GpuMessageSerializer
             switch (arg)
             {
                 case int intVal:
-                    MemoryMarshal.Write(buffer.Slice(offset, 4), ref intVal);
+                    MemoryMarshal.Write(buffer.Slice(offset, 4), in intVal);
                     offset += 4;
                     break;
 
                 case long longVal:
-                    MemoryMarshal.Write(buffer.Slice(offset, 8), ref longVal);
+                    MemoryMarshal.Write(buffer.Slice(offset, 8), in longVal);
                     offset += 8;
                     break;
 
                 case float floatVal:
-                    MemoryMarshal.Write(buffer.Slice(offset, 4), ref floatVal);
+                    MemoryMarshal.Write(buffer.Slice(offset, 4), in floatVal);
                     offset += 4;
                     break;
 
                 case double doubleVal:
-                    MemoryMarshal.Write(buffer.Slice(offset, 8), ref doubleVal);
+                    MemoryMarshal.Write(buffer.Slice(offset, 8), in doubleVal);
                     offset += 8;
                     break;
 
@@ -167,7 +168,7 @@ public static class GpuMessageSerializer
     {
         // Write array length (4 bytes)
         int length = array.Length;
-        MemoryMarshal.Write(buffer, ref length);
+        MemoryMarshal.Write(buffer, in length);
 
         // Write array data
         var arrayBytes = MemoryMarshal.AsBytes(array.AsSpan());
@@ -191,7 +192,7 @@ public static class GpuMessageSerializer
     {
         // Write array length (4 bytes)
         int length = array.Length;
-        MemoryMarshal.Write(buffer, ref length);
+        MemoryMarshal.Write(buffer, in length);
 
         // Write array data
         var arrayBytes = MemoryMarshal.AsBytes(array.AsSpan());
@@ -217,13 +218,13 @@ public static class GpuMessageSerializer
         {
             // Write length = 0
             int zero = 0;
-            MemoryMarshal.Write(buffer, ref zero);
+            MemoryMarshal.Write(buffer, in zero);
             return 4;
         }
 
         // Write string length
         int byteCount = System.Text.Encoding.UTF8.GetByteCount(str);
-        MemoryMarshal.Write(buffer, ref byteCount);
+        MemoryMarshal.Write(buffer, in byteCount);
 
         // Write UTF8 bytes
         if (4 + byteCount > buffer.Length)

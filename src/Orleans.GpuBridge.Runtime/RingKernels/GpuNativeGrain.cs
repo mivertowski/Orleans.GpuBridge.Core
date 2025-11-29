@@ -106,6 +106,10 @@ public abstract class GpuNativeGrain : Grain, IGrainWithIntegerKey, IAsyncDispos
     /// This method uses reflection for ring kernel queue creation and message type detection.
     /// AOT compilation may require additional configuration for proper operation.
     /// </remarks>
+    [UnconditionalSuppressMessage("AOT", "IL2026:RequiresUnreferencedCode",
+        Justification = "DotCompute ring kernel runtime uses reflection for queue creation. AOT scenarios require pre-generated message types.")]
+    [UnconditionalSuppressMessage("AOT", "IL3050:RequiresDynamicCode",
+        Justification = "DotCompute ring kernel runtime uses reflection for queue creation. AOT scenarios require pre-generated message types.")]
     public override async Task OnActivateAsync(CancellationToken cancellationToken)
     {
         await base.OnActivateAsync(cancellationToken);
@@ -160,6 +164,10 @@ public abstract class GpuNativeGrain : Grain, IGrainWithIntegerKey, IAsyncDispos
     /// </summary>
     /// <param name="reason">Deactivation reason.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
+    [UnconditionalSuppressMessage("AOT", "IL2026:RequiresUnreferencedCode",
+        Justification = "DotCompute ring kernel runtime uses reflection for queue management. AOT scenarios require pre-generated message types.")]
+    [UnconditionalSuppressMessage("AOT", "IL3050:RequiresDynamicCode",
+        Justification = "DotCompute ring kernel runtime uses reflection for queue management. AOT scenarios require pre-generated message types.")]
     public override async Task OnDeactivateAsync(DeactivationReason reason, CancellationToken cancellationToken)
     {
         _logger.LogInformation(

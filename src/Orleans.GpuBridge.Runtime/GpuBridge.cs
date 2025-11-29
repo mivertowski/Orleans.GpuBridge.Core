@@ -162,6 +162,7 @@ public sealed class GpuBridge : IGpuBridge
     /// Uses reflection to invoke the generic ResolveAsync method.
     /// </summary>
     [RequiresDynamicCode("Calls System.Reflection.MethodInfo.MakeGenericMethod(params Type[])")]
+    [RequiresUnreferencedCode("Uses reflection to access properties and methods dynamically.")]
     private Func<KernelId, object, CancellationToken, Task<object>> CreateDynamicExecutor(Type inputType, Type outputType)
     {
         _logger.LogDebug(

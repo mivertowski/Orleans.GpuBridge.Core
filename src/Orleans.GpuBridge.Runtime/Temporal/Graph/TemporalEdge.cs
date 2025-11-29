@@ -447,7 +447,7 @@ internal sealed class TemporalEdgeList
     }
 
     /// <summary>
-    /// Binary search to find the largest index where key[index] <= target.
+    /// Binary search to find the largest index where key[index] is less than or equal to target.
     /// </summary>
     private static int BinarySearchFloor(IList<long> keys, long target)
     {

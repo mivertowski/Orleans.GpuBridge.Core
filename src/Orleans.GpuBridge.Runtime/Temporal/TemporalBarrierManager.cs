@@ -322,7 +322,7 @@ public sealed class TemporalBarrierManager : ITemporalBarrierManager
 /// <summary>
 /// Internal implementation of <see cref="ITemporalBarrier"/>.
 /// </summary>
-internal sealed class TemporalBarrierImpl : ITemporalBarrier
+internal sealed class TemporalBarrierImpl : ITemporalBarrier, IDisposable
 {
     private int _arrivedThreadCount;
     private bool _isComplete;
@@ -371,8 +371,10 @@ internal sealed class TemporalBarrierImpl : ITemporalBarrier
     /// Increments the arrived thread count.
     /// </summary>
     /// <returns>The new arrived count.</returns>
+    /// <exception cref="ObjectDisposedException">Thrown if the barrier has been disposed.</exception>
     public int IncrementArrivedCount()
     {
+        ObjectDisposedException.ThrowIf(_disposed, this);
         return Interlocked.Increment(ref _arrivedThreadCount);
     }
 

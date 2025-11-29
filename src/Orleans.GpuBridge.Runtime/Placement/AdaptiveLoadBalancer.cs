@@ -38,7 +38,7 @@ public sealed class AdaptiveLoadBalancer : IAdaptiveLoadBalancer, IDisposable
     private int _roundRobinIndex;
     private long _totalDecisions;
     private long _fallbackCount;
-    private long _rebalanceCount;
+    private long _rebalanceCount = 0;
     private long _backpressureEvents;
     private long _totalDecisionTimeNanos;
     private bool _disposed;

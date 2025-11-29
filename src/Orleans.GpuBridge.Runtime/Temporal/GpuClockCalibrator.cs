@@ -33,7 +33,7 @@ public sealed class GpuClockCalibrator : IDisposable
     private readonly IGpuTimingProvider? _timingProvider;
     private ClockCalibration? _currentCalibration;
     private readonly SemaphoreSlim _calibrationLock = new(1, 1);
-    private bool _disposed;
+    private bool _disposed = false;
 
     /// <summary>
     /// Default calibration interval (5 minutes).
@@ -340,8 +340,10 @@ public sealed class GpuClockCalibrator : IDisposable
         return (long)(3.0 * stdDev);
     }
 
+    /// <inheritdoc/>
     public void Dispose()
     {
+        _disposed = true;
         _calibrationLock.Dispose();
     }
 }

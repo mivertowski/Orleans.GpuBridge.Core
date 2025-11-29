@@ -39,10 +39,26 @@ public sealed partial class DeviceBroker : IDisposable
     private bool _initialized;
     private bool _disposed;
 
+    /// <summary>
+    /// Gets the total number of available devices
+    /// </summary>
     public int DeviceCount => _devices.Count;
+
+    /// <summary>
+    /// Gets the total memory across all devices in bytes
+    /// </summary>
     public long TotalMemoryBytes => _devices.Sum(d => d.TotalMemoryBytes);
+
+    /// <summary>
+    /// Gets the current queue depth across all devices
+    /// </summary>
     public int CurrentQueueDepth => _workQueues.Values.Sum(q => q.QueuedItems);
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DeviceBroker"/> class
+    /// </summary>
+    /// <param name="logger">Logger instance for diagnostics</param>
+    /// <param name="options">GPU bridge configuration options</param>
     public DeviceBroker(
         [NotNull] ILogger<DeviceBroker> logger,
         [NotNull] IOptions<GpuBridgeOptions> options)
@@ -79,6 +95,10 @@ public sealed partial class DeviceBroker : IDisposable
             TimeSpan.FromSeconds(5));
     }
 
+    /// <summary>
+    /// Initializes the device broker and detects available GPUs
+    /// </summary>
+    /// <param name="ct">Cancellation token</param>
     public async Task InitializeAsync(CancellationToken ct)
     {
         var operationName = "DeviceBrokerInitialization";
@@ -130,6 +150,10 @@ public sealed partial class DeviceBroker : IDisposable
         }
     }
 
+    /// <summary>
+    /// Shuts down the device broker and stops all work queues
+    /// </summary>
+    /// <param name="ct">Cancellation token</param>
     public async Task ShutdownAsync(CancellationToken ct)
     {
         _logger.LogInformation("Shutting down device broker");
@@ -146,18 +170,31 @@ public sealed partial class DeviceBroker : IDisposable
         _initialized = false;
     }
 
+    /// <summary>
+    /// Gets all available GPU devices
+    /// </summary>
+    /// <returns>A read-only list of GPU devices</returns>
     public IReadOnlyList<GpuDevice> GetDevices()
     {
         EnsureInitialized();
         return _devices.AsReadOnly();
     }
 
+    /// <summary>
+    /// Gets a specific GPU device by index
+    /// </summary>
+    /// <param name="index">Device index</param>
+    /// <returns>The GPU device, or null if not found</returns>
     public GpuDevice? GetDevice(int index)
     {
         EnsureInitialized();
         return _devices.FirstOrDefault(d => d.Index == index);
     }
 
+    /// <summary>
+    /// Gets the best available GPU device based on current load and capabilities
+    /// </summary>
+    /// <returns>The best GPU device, or null if none available</returns>
     public GpuDevice? GetBestDevice()
     {
         EnsureInitialized();
@@ -469,6 +506,9 @@ public sealed partial class DeviceBroker : IDisposable
         return true;
     }
 
+    /// <summary>
+    /// Disposes the device broker and releases all resources
+    /// </summary>
     public void Dispose()
     {
         if (_disposed) return;

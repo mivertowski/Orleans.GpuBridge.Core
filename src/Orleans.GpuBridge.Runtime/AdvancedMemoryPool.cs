@@ -32,6 +32,12 @@ public sealed class AdvancedMemoryPool<T> : IGpuMemoryPool<T>, IDisposable
     private long _peakUsage;
     private bool _disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AdvancedMemoryPool{T}"/> class
+    /// </summary>
+    /// <param name="logger">Logger instance for diagnostics</param>
+    /// <param name="maxBufferSize">Maximum size of buffers in the pool (default: 16MB)</param>
+    /// <param name="maxPooledBuffers">Maximum number of buffers to maintain in the pool (default: 100)</param>
     public AdvancedMemoryPool(
         ILogger<AdvancedMemoryPool<T>> logger,
         int maxBufferSize = 1024 * 1024 * 16, // 16MB for T
@@ -52,6 +58,11 @@ public sealed class AdvancedMemoryPool<T> : IGpuMemoryPool<T>, IDisposable
             TimeSpan.FromMinutes(1));
     }
 
+    /// <summary>
+    /// Rents a memory segment from the pool with at least the specified size
+    /// </summary>
+    /// <param name="minSize">Minimum size of the memory segment in elements</param>
+    /// <returns>A pooled GPU memory instance</returns>
     public IGpuMemory<T> Rent(int minSize)
     {
         if (_disposed)
@@ -109,6 +120,10 @@ public sealed class AdvancedMemoryPool<T> : IGpuMemoryPool<T>, IDisposable
         return memory;
     }
 
+    /// <summary>
+    /// Returns a memory segment to the pool for reuse
+    /// </summary>
+    /// <param name="memory">The memory instance to return</param>
     public void Return(IGpuMemory<T> memory)
     {
         if (_disposed)
@@ -221,6 +236,10 @@ public sealed class AdvancedMemoryPool<T> : IGpuMemoryPool<T>, IDisposable
         }
     }
 
+    /// <summary>
+    /// Gets current statistics about the memory pool
+    /// </summary>
+    /// <returns>Memory pool statistics including allocation and usage information</returns>
     public MemoryPoolStats GetStats()
     {
         var totalAllocated = Interlocked.Read(ref _totalAllocated);
@@ -237,6 +256,9 @@ public sealed class AdvancedMemoryPool<T> : IGpuMemoryPool<T>, IDisposable
         );
     }
 
+    /// <summary>
+    /// Disposes the memory pool and releases all resources
+    /// </summary>
     public void Dispose()
     {
         if (_disposed) return;

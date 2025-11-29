@@ -339,43 +339,100 @@ public sealed partial class DeviceBroker
 }
 
 /// <summary>
-/// Device information structures
+/// CUDA device information structure
 /// </summary>
 public sealed class CudaDeviceInfo
 {
+    /// <summary>Gets or sets the device index</summary>
     public int Index { get; set; }
+
+    /// <summary>Gets or sets the device name</summary>
     public string Name { get; set; } = "";
+
+    /// <summary>Gets or sets the PCI bus ID</summary>
     public string PciBusId { get; set; } = "";
+
+    /// <summary>Gets or sets the total memory in bytes</summary>
     public long TotalMemory { get; set; }
+
+    /// <summary>Gets or sets the compute capability major version</summary>
     public int ComputeCapabilityMajor { get; set; }
+
+    /// <summary>Gets or sets the compute capability minor version</summary>
     public int ComputeCapabilityMinor { get; set; }
+
+    /// <summary>Gets or sets the maximum threads per block</summary>
     public int MaxThreadsPerBlock { get; set; } = 1024;
+
+    /// <summary>Gets or sets the shared memory per block in bytes</summary>
     public int SharedMemoryPerBlock { get; set; } = 49152;
+
+    /// <summary>Gets or sets the warp size</summary>
     public int WarpSize { get; set; } = 32;
+
+    /// <summary>Gets or sets the maximum grid size</summary>
     public int MaxGridSize { get; set; } = 65536;
+
+    /// <summary>Gets or sets the clock rate in kHz</summary>
     public int ClockRate { get; set; } = 1000000;
+
+    /// <summary>Gets or sets the memory clock rate in kHz</summary>
     public int MemoryClockRate { get; set; } = 2000000;
 }
 
+/// <summary>
+/// OpenCL device information structure
+/// </summary>
 public sealed class OpenClDeviceInfo
 {
+    /// <summary>Gets or sets the platform index</summary>
     public int PlatformIndex { get; set; }
+
+    /// <summary>Gets or sets the device index</summary>
     public int DeviceIndex { get; set; }
+
+    /// <summary>Gets or sets the device name</summary>
     public string Name { get; set; } = "";
+
+    /// <summary>Gets or sets the device vendor</summary>
     public string Vendor { get; set; } = "";
+
+    /// <summary>Gets or sets the device type</summary>
     public string Type { get; set; } = "";
+
+    /// <summary>Gets or sets the PCI bus ID</summary>
     public string PciBusId { get; set; } = "";
+
+    /// <summary>Gets or sets the global memory size in bytes</summary>
     public long GlobalMemorySize { get; set; }
+
+    /// <summary>Gets or sets the local memory size in bytes</summary>
     public long LocalMemorySize { get; set; }
+
+    /// <summary>Gets or sets the maximum work group size</summary>
     public long MaxWorkGroupSize { get; set; }
+
+    /// <summary>Gets or sets the maximum clock frequency in MHz</summary>
     public long MaxClockFrequency { get; set; }
+
+    /// <summary>Gets or sets the supported extensions</summary>
     public string Extensions { get; set; } = "";
 }
 
+/// <summary>
+/// Metal device information structure (macOS only)
+/// </summary>
 public sealed class MetalDeviceInfo
 {
+    /// <summary>Gets or sets the device index</summary>
     public int Index { get; set; }
+
+    /// <summary>Gets or sets the device name</summary>
     public string Name { get; set; } = "";
+
+    /// <summary>Gets or sets the recommended maximum working set size in bytes</summary>
     public long RecommendedMaxWorkingSetSize { get; set; }
+
+    /// <summary>Gets or sets whether this is Apple Silicon</summary>
     public bool IsAppleSilicon { get; set; }
 }

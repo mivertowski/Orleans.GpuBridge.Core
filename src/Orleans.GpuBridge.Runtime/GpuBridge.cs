@@ -35,6 +35,14 @@ public sealed class GpuBridge : IGpuBridge
     private static readonly MethodInfo ResolveAsyncMethod = typeof(KernelCatalog)
         .GetMethod(nameof(KernelCatalog.ResolveAsync))!;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GpuBridge"/> class
+    /// </summary>
+    /// <param name="logger">Logger instance</param>
+    /// <param name="kernelCatalog">Kernel catalog for kernel management</param>
+    /// <param name="deviceBroker">Device broker for GPU management</param>
+    /// <param name="options">GPU bridge configuration options</param>
+    /// <param name="serviceProvider">Service provider for dependency injection</param>
     public GpuBridge(
         ILogger<GpuBridge> logger,
         KernelCatalog kernelCatalog,
@@ -49,6 +57,7 @@ public sealed class GpuBridge : IGpuBridge
         _serviceProvider = serviceProvider;
     }
 
+    /// <inheritdoc/>
     public ValueTask<GpuBridgeInfo> GetInfoAsync(CancellationToken ct = default)
     {
         var assembly = Assembly.GetExecutingAssembly();
@@ -70,6 +79,7 @@ public sealed class GpuBridge : IGpuBridge
         return new ValueTask<GpuBridgeInfo>(info);
     }
 
+    /// <inheritdoc/>
     public async ValueTask<IGpuKernel<TIn, TOut>> GetKernelAsync<TIn, TOut>(
         KernelId kernelId,
         CancellationToken ct = default)
@@ -89,12 +99,20 @@ public sealed class GpuBridge : IGpuBridge
         return kernel;
     }
 
+    /// <inheritdoc/>
     public ValueTask<IReadOnlyList<GpuDevice>> GetDevicesAsync(CancellationToken ct = default)
     {
         var devices = _deviceBroker.GetDevices();
         return new ValueTask<IReadOnlyList<GpuDevice>>(devices);
     }
 
+    /// <summary>
+    /// Executes a kernel with dynamic type resolution (non-generic overload)
+    /// </summary>
+    /// <param name="kernelId">Kernel identifier</param>
+    /// <param name="input">Input data (type will be inferred)</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns>Kernel execution result</returns>
     [RequiresDynamicCode("Dynamic kernel execution uses runtime reflection to create generic method calls.")]
     [RequiresUnreferencedCode("Dynamic kernel execution uses reflection which may not work with trimming.")]
     public async ValueTask<object> ExecuteKernelAsync(string kernelId, object input, CancellationToken ct = default)

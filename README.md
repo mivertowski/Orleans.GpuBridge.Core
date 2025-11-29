@@ -6,6 +6,10 @@
 [![Orleans](https://img.shields.io/badge/Orleans-9.2.1-green)](https://dotnet.github.io/orleans/)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/mivertowski/Orleans.GpuBridge.Core)
 
+##Remark##
+
+Consider version 0.1.0 as preview version meant for evaluation purpose. However, the API will stay stable.
+
 ## Overview
 
 Orleans.GpuBridge.Core is a comprehensive GPU acceleration framework for Microsoft Orleans, enabling distributed GPU computing across Orleans clusters. This project bridges the gap between Orleans' powerful distributed actor model and modern GPU computing capabilities, allowing developers to seamlessly integrate GPU acceleration into their Orleans-based applications.

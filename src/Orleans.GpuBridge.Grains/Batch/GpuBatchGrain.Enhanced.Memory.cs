@@ -36,13 +36,13 @@ public sealed partial class GpuBatchGrainEnhanced<TIn, TOut>
             var inputMemory = await _memoryAllocator!.AllocateAsync(
                 inputSize,
                 allocOptions,
-                CancellationToken.None).ConfigureAwait(false);
+                CancellationToken.None);
 
             // Allocate output buffer
             var outputMemory = await _memoryAllocator.AllocateAsync(
                 outputSize,
                 allocOptions,
-                CancellationToken.None).ConfigureAwait(false);
+                CancellationToken.None);
 
             // Copy input data to GPU
             var inputBytes = MemoryMarshal.AsBytes(batch.ToArray().AsSpan()).ToArray();
@@ -53,7 +53,7 @@ public sealed partial class GpuBatchGrainEnhanced<TIn, TOut>
                     pinnedInputBytes.AddrOfPinnedObject(),
                     0,
                     inputSize,
-                    CancellationToken.None).ConfigureAwait(false);
+                    CancellationToken.None);
             }
             finally
             {
@@ -96,7 +96,7 @@ public sealed partial class GpuBatchGrainEnhanced<TIn, TOut>
                     pinnedOutputBuffer.AddrOfPinnedObject(),
                     0,
                     outputSize,
-                    CancellationToken.None).ConfigureAwait(false);
+                    CancellationToken.None);
             }
             finally
             {

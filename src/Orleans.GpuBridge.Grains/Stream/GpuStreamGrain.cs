@@ -230,7 +230,7 @@ public sealed class GpuStreamGrain<TIn, TOut> : Grain, IGpuStreamGrain<TIn, TOut
             }
 
             // Wait for processing task to drain the buffer
-            await Task.Delay(50).ConfigureAwait(false);
+            await Task.Delay(50);
             attempts++;
         }
 

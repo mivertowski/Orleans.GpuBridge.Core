@@ -113,9 +113,9 @@ public sealed partial class GpuBatchGrainEnhanced<TIn, TOut>
 
             if (backendRegistry != null)
             {
-                _backendProvider = await backendRegistry.GetProviderAsync("DotCompute", ct).ConfigureAwait(false);
+                _backendProvider = await backendRegistry.GetProviderAsync("DotCompute", ct);
 
-                if (_backendProvider != null && await _backendProvider.IsAvailableAsync(ct).ConfigureAwait(false))
+                if (_backendProvider != null && await _backendProvider.IsAvailableAsync(ct))
                 {
                     _deviceManager = _backendProvider.GetDeviceManager();
                     _kernelExecutor = _backendProvider.GetKernelExecutor();
@@ -170,10 +170,10 @@ public sealed partial class GpuBatchGrainEnhanced<TIn, TOut>
                 _kernelId);
 
             // TODO: Implement kernel loading and compilation
-            // var kernelSource = await LoadKernelSourceAsync(_kernelId, ct).ConfigureAwait(false);
-            // _compiledKernel = await _kernelCompiler.CompileAsync(kernelSource, options, ct).ConfigureAwait(false);
+            // var kernelSource = await LoadKernelSourceAsync(_kernelId, ct);
+            // _compiledKernel = await _kernelCompiler.CompileAsync(kernelSource, options, ct);
 
-            await Task.CompletedTask.ConfigureAwait(false);
+            await Task.CompletedTask;
         }
         catch (Exception ex)
         {

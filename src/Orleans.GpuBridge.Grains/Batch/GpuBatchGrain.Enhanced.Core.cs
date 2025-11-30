@@ -88,12 +88,12 @@ public sealed partial class GpuBatchGrainEnhanced<TIn, TOut> : Grain, IGpuBatchG
         try
         {
             // Initialize DotCompute backend
-            await InitializeBackendAsync(ct).ConfigureAwait(false);
+            await InitializeBackendAsync(ct);
 
             // Compile kernel if backend is available
             if (_backendProvider != null && _kernelCompiler != null)
             {
-                await CompileKernelAsync(ct).ConfigureAwait(false);
+                await CompileKernelAsync(ct);
             }
             else
             {
@@ -115,6 +115,6 @@ public sealed partial class GpuBatchGrainEnhanced<TIn, TOut> : Grain, IGpuBatchG
             // Continue with CPU fallback
         }
 
-        await base.OnActivateAsync(ct).ConfigureAwait(false);
+        await base.OnActivateAsync(ct);
     }
 }

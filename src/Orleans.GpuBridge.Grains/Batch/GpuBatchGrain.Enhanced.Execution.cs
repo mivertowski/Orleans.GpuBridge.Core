@@ -29,7 +29,7 @@ public sealed partial class GpuBatchGrainEnhanced<TIn, TOut>
                 Error: "Empty batch provided");
         }
 
-        await _concurrencyLimit.WaitAsync().ConfigureAwait(false);
+        await _concurrencyLimit.WaitAsync();
         try
         {
             var stopwatch = Stopwatch.StartNew();
@@ -41,7 +41,7 @@ public sealed partial class GpuBatchGrainEnhanced<TIn, TOut>
             // GPU execution path
             if (_kernelExecutor != null && _compiledKernel != null && _memoryAllocator != null)
             {
-                return await ExecuteOnGpuAsync(batch, hints, stopwatch).ConfigureAwait(false);
+                return await ExecuteOnGpuAsync(batch, hints, stopwatch);
             }
             // CPU fallback path
             else
@@ -49,7 +49,7 @@ public sealed partial class GpuBatchGrainEnhanced<TIn, TOut>
                 _logger.LogInformation(
                     "Executing batch on CPU (GPU unavailable) for kernel {KernelId}",
                     _kernelId);
-                return await ExecuteOnCpuAsync(batch, stopwatch).ConfigureAwait(false);
+                return await ExecuteOnCpuAsync(batch, stopwatch);
             }
         }
         catch (Exception ex)
@@ -78,28 +78,28 @@ public sealed partial class GpuBatchGrainEnhanced<TIn, TOut>
     {
         try
         {
-            var result = await ExecuteAsync(batch, hints).ConfigureAwait(false);
+            var result = await ExecuteAsync(batch, hints);
 
             if (result.Success)
             {
                 // Stream results to observer
                 foreach (var item in result.Results)
                 {
-                    await observer.OnNextAsync(item).ConfigureAwait(false);
+                    await observer.OnNextAsync(item);
                 }
-                await observer.OnCompletedAsync().ConfigureAwait(false);
+                await observer.OnCompletedAsync();
             }
             else
             {
                 await observer.OnErrorAsync(
-                    new Exception(result.Error)).ConfigureAwait(false);
+                    new Exception(result.Error));
             }
 
             return result;
         }
         catch (Exception ex)
         {
-            await observer.OnErrorAsync(ex).ConfigureAwait(false);
+            await observer.OnErrorAsync(ex);
             throw;
         }
     }
@@ -137,7 +137,7 @@ public sealed partial class GpuBatchGrainEnhanced<TIn, TOut>
             try
             {
                 // Allocate GPU memory
-                var (inputMemory, outputMemory, allocTime) = await AllocateGpuMemoryAsync(subBatch).ConfigureAwait(false);
+                var (inputMemory, outputMemory, allocTime) = await AllocateGpuMemoryAsync(subBatch);
 
                 // Prepare execution parameters
                 var execParams = PrepareExecutionParameters(inputMemory, outputMemory, subBatch.Count);
@@ -147,13 +147,13 @@ public sealed partial class GpuBatchGrainEnhanced<TIn, TOut>
                 var kernelResult = await _kernelExecutor!.ExecuteAsync(
                     _compiledKernel!,
                     execParams,
-                    CancellationToken.None).ConfigureAwait(false);
+                    CancellationToken.None);
                 kernelStopwatch.Stop();
 
                 if (kernelResult.Success)
                 {
                     // Read results from GPU memory
-                    var (results, readTime) = await ReadResultsFromGpuAsync(outputMemory, subBatch.Count).ConfigureAwait(false);
+                    var (results, readTime) = await ReadResultsFromGpuAsync(outputMemory, subBatch.Count);
                     allResults.AddRange(results);
 
                     // Timing may be null even on success in some backends
@@ -177,14 +177,14 @@ public sealed partial class GpuBatchGrainEnhanced<TIn, TOut>
                         kernelResult.ErrorMessage);
 
                     // Free memory even on failure
-                    await FreeGpuMemoryAsync(inputMemory, outputMemory).ConfigureAwait(false);
+                    await FreeGpuMemoryAsync(inputMemory, outputMemory);
 
                     throw new InvalidOperationException(
                         $"Kernel execution failed: {kernelResult.ErrorMessage}");
                 }
 
                 // Free GPU memory
-                await FreeGpuMemoryAsync(inputMemory, outputMemory).ConfigureAwait(false);
+                await FreeGpuMemoryAsync(inputMemory, outputMemory);
             }
             catch (Exception ex)
             {

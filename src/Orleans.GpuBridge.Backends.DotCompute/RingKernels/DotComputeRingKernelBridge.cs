@@ -3,6 +3,7 @@
 
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using DotComputeRingKernels = DotCompute.Abstractions.RingKernels;
@@ -12,6 +13,7 @@ using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Allocators;
 using Orleans.GpuBridge.Abstractions.Providers.Memory.Options;
 using Orleans.GpuBridge.Backends.DotCompute.Memory;
+using Orleans.GpuBridge.Backends.DotCompute.RingKernels.CpuFallbackHandlers;
 
 namespace Orleans.GpuBridge.Backends.DotCompute.RingKernels;
 
@@ -44,12 +46,15 @@ public sealed class DotComputeRingKernelBridge : IRingKernelBridge
     private readonly DotComputeBackendProvider _backendProvider;
     private readonly DotComputeRingKernels.IRingKernelRuntime? _ringKernelRuntime;
     private readonly ConcurrentDictionary<string, StateHandleInfo> _stateHandles;
+    private readonly CpuFallbackHandlerRegistry _cpuFallbackRegistry;
     private readonly object _telemetryLock = new();
 
     // Telemetry counters
     private long _totalExecutions;
     private long _gpuExecutions;
     private long _cpuFallbackExecutions;
+    private long _cpuFallbackRegistryHits;
+    private long _cpuFallbackRegistryMisses;
     private long _bytesToGpu;
     private long _bytesFromGpu;
     private long _totalLatencyNs;
@@ -60,17 +65,64 @@ public sealed class DotComputeRingKernelBridge : IRingKernelBridge
     /// <param name="logger">Logger for bridge operations.</param>
     /// <param name="backendProvider">DotCompute backend provider.</param>
     /// <param name="ringKernelRuntime">Optional ring kernel runtime for persistent kernel mode.</param>
+    /// <param name="cpuFallbackRegistry">Optional CPU fallback handler registry.</param>
     public DotComputeRingKernelBridge(
         ILogger<DotComputeRingKernelBridge> logger,
         DotComputeBackendProvider backendProvider,
-        DotComputeRingKernels.IRingKernelRuntime? ringKernelRuntime = null)
+        DotComputeRingKernels.IRingKernelRuntime? ringKernelRuntime = null,
+        CpuFallbackHandlerRegistry? cpuFallbackRegistry = null)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _backendProvider = backendProvider ?? throw new ArgumentNullException(nameof(backendProvider));
         _ringKernelRuntime = ringKernelRuntime;
         _stateHandles = new ConcurrentDictionary<string, StateHandleInfo>();
 
-        _logger.LogInformation("Initialized DotCompute ring kernel bridge");
+        // Initialize or create CPU fallback registry with built-in handlers
+        _cpuFallbackRegistry = cpuFallbackRegistry ?? new CpuFallbackHandlerRegistry();
+        RegisterBuiltInCpuFallbackHandlers();
+
+        _logger.LogInformation(
+            "Initialized DotCompute ring kernel bridge with {HandlerCount} CPU fallback handlers",
+            _cpuFallbackRegistry.HandlerCount);
+    }
+
+    /// <summary>
+    /// Gets the CPU fallback handler registry.
+    /// </summary>
+    /// <remarks>
+    /// Use this to register custom CPU fallback handlers for ring kernels.
+    /// </remarks>
+    public CpuFallbackHandlerRegistry CpuFallbackRegistry => _cpuFallbackRegistry;
+
+    /// <summary>
+    /// Registers the built-in CPU fallback handlers for DotCompute ring kernels.
+    /// </summary>
+    private void RegisterBuiltInCpuFallbackHandlers()
+    {
+        // Register VectorAdd CPU handler
+        var vectorAddHandler = new VectorAddCpuHandler();
+        _cpuFallbackRegistry.RegisterHandler<
+            Temporal.VectorAddProcessorRingRequest,
+            Temporal.VectorAddProcessorRingResponse,
+            EmptyState>(
+            vectorAddHandler.KernelId,
+            vectorAddHandler.HandlerId,
+            (request, state) => (vectorAddHandler.Execute(request), state),
+            vectorAddHandler.Description);
+
+        // Register PatternMatch CPU handler
+        var patternMatchHandler = new PatternMatchCpuHandler();
+        _cpuFallbackRegistry.RegisterHandler<
+            Temporal.PatternMatchRingRequest,
+            Temporal.PatternMatchRingResponse,
+            EmptyState>(
+            patternMatchHandler.KernelId,
+            patternMatchHandler.HandlerId,
+            (request, state) => (patternMatchHandler.Execute(request), state),
+            patternMatchHandler.Description);
+
+        _logger.LogDebug(
+            "Registered built-in CPU fallback handlers: VectorAdd, PatternMatch");
     }
 
     /// <inheritdoc/>
@@ -277,6 +329,7 @@ public sealed class DotComputeRingKernelBridge : IRingKernelBridge
             {
                 // CPU fallback execution
                 (response, newState) = ExecuteOnCpu<TRequest, TResponse, TState>(
+                    kernelId,
                     handlerId,
                     request,
                     stateHandle.ShadowState);
@@ -352,6 +405,7 @@ public sealed class DotComputeRingKernelBridge : IRingKernelBridge
             {
                 // CPU fallback
                 newState = ExecuteFireAndForgetOnCpu<TRequest, TState>(
+                    kernelId,
                     handlerId,
                     request,
                     stateHandle.ShadowState);
@@ -502,6 +556,32 @@ public sealed class DotComputeRingKernelBridge : IRingKernelBridge
         }
     }
 
+    /// <summary>
+    /// Gets extended telemetry including CPU fallback handler statistics.
+    /// </summary>
+    /// <returns>Extended telemetry data.</returns>
+    public DotComputeExtendedTelemetry GetExtendedTelemetry()
+    {
+        lock (_telemetryLock)
+        {
+            var baseTelemetry = GetTelemetry();
+            var registryHits = Interlocked.Read(ref _cpuFallbackRegistryHits);
+            var registryMisses = Interlocked.Read(ref _cpuFallbackRegistryMisses);
+
+            return new DotComputeExtendedTelemetry
+            {
+                BaseTelemetry = baseTelemetry,
+                CpuFallbackRegistryHits = registryHits,
+                CpuFallbackRegistryMisses = registryMisses,
+                RegisteredHandlerCount = _cpuFallbackRegistry.HandlerCount,
+                RegisteredHandlers = _cpuFallbackRegistry.RegisteredHandlers,
+                FallbackHandlerHitRate = registryHits + registryMisses > 0
+                    ? (double)registryHits / (registryHits + registryMisses)
+                    : 0.0
+            };
+        }
+    }
+
     #region GPU Execution
 
     private async Task<(TResponse response, TState newState)> ExecuteOnGpuAsync<TRequest, TResponse, TState>(
@@ -568,7 +648,8 @@ public sealed class DotComputeRingKernelBridge : IRingKernelBridge
 
     #region CPU Fallback Execution
 
-    private static (TResponse response, TState newState) ExecuteOnCpu<TRequest, TResponse, TState>(
+    private (TResponse response, TState newState) ExecuteOnCpu<TRequest, TResponse, TState>(
+        string kernelId,
         int handlerId,
         TRequest request,
         TState currentState)
@@ -576,20 +657,65 @@ public sealed class DotComputeRingKernelBridge : IRingKernelBridge
         where TResponse : unmanaged
         where TState : unmanaged
     {
-        // CPU fallback: execute handler logic directly
-        // This is a generic implementation - specific handlers override this
-        // For now, return defaults and preserve state
+        // Try to find a registered CPU fallback handler
+        var result = _cpuFallbackRegistry.ExecuteHandler<TRequest, TResponse, TState>(
+            kernelId,
+            handlerId,
+            request,
+            currentState);
+
+        if (result.HasValue)
+        {
+            Interlocked.Increment(ref _cpuFallbackRegistryHits);
+            _logger.LogTrace(
+                "CPU fallback handler executed for kernel {KernelId} handler {HandlerId}",
+                kernelId,
+                handlerId);
+            return result.Value;
+        }
+
+        // No handler registered - log and return defaults
+        Interlocked.Increment(ref _cpuFallbackRegistryMisses);
+        _logger.LogDebug(
+            "No CPU fallback handler registered for kernel {KernelId} handler {HandlerId}, returning defaults",
+            kernelId,
+            handlerId);
+
         return (default, currentState);
     }
 
-    private static TState ExecuteFireAndForgetOnCpu<TRequest, TState>(
+    private TState ExecuteFireAndForgetOnCpu<TRequest, TState>(
+        string kernelId,
         int handlerId,
         TRequest request,
         TState currentState)
         where TRequest : unmanaged
         where TState : unmanaged
     {
-        // CPU fallback: fire-and-forget just returns current state
+        // Try to find a registered CPU fallback fire-and-forget handler
+        var result = _cpuFallbackRegistry.ExecuteFireAndForgetHandler<TRequest, TState>(
+            kernelId,
+            handlerId,
+            request,
+            currentState);
+
+        if (result.HasValue)
+        {
+            Interlocked.Increment(ref _cpuFallbackRegistryHits);
+            _logger.LogTrace(
+                "CPU fallback fire-and-forget handler executed for kernel {KernelId} handler {HandlerId}",
+                kernelId,
+                handlerId);
+            return result.Value;
+        }
+
+        // No handler registered - return current state unchanged
+        Interlocked.Increment(ref _cpuFallbackRegistryMisses);
+        _logger.LogDebug(
+            "No CPU fallback fire-and-forget handler registered for kernel {KernelId} handler {HandlerId}",
+            kernelId,
+            handlerId);
+
         return currentState;
     }
 
@@ -601,4 +727,57 @@ public sealed class DotComputeRingKernelBridge : IRingKernelBridge
     private sealed record StateHandleInfo(
         Abstractions.Providers.Memory.Interfaces.IDeviceMemory? DeviceMemory,
         long SizeBytes);
+}
+
+/// <summary>
+/// Empty state struct for stateless handlers.
+/// </summary>
+/// <remarks>
+/// Used when handlers don't need to track state between invocations.
+/// </remarks>
+public readonly struct EmptyState
+{
+    /// <summary>
+    /// Gets the singleton empty state instance.
+    /// </summary>
+    public static readonly EmptyState Instance = default;
+}
+
+/// <summary>
+/// Extended telemetry data for DotCompute ring kernel bridge.
+/// </summary>
+/// <remarks>
+/// Includes CPU fallback handler statistics in addition to base telemetry.
+/// </remarks>
+public sealed record DotComputeExtendedTelemetry
+{
+    /// <summary>
+    /// Base ring kernel telemetry.
+    /// </summary>
+    public required RingKernelTelemetry BaseTelemetry { get; init; }
+
+    /// <summary>
+    /// Number of times a registered CPU fallback handler was found and executed.
+    /// </summary>
+    public required long CpuFallbackRegistryHits { get; init; }
+
+    /// <summary>
+    /// Number of times no CPU fallback handler was registered (defaults returned).
+    /// </summary>
+    public required long CpuFallbackRegistryMisses { get; init; }
+
+    /// <summary>
+    /// Number of CPU fallback handlers currently registered.
+    /// </summary>
+    public required int RegisteredHandlerCount { get; init; }
+
+    /// <summary>
+    /// Information about registered handlers.
+    /// </summary>
+    public required IReadOnlyCollection<CpuFallbackHandlerInfo> RegisteredHandlers { get; init; }
+
+    /// <summary>
+    /// CPU fallback handler hit rate (0.0 to 1.0).
+    /// </summary>
+    public required double FallbackHandlerHitRate { get; init; }
 }

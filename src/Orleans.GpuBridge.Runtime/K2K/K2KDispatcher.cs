@@ -25,6 +25,16 @@ public sealed class K2KDispatcher : IK2KDispatcher, IDisposable
     private bool _disposed;
 
     /// <summary>
+    /// Completion flag value indicating response is ready.
+    /// </summary>
+    private const int ResponseReady = 1;
+
+    /// <summary>
+    /// Completion flag value indicating response is pending.
+    /// </summary>
+    private const int ResponsePending = 0;
+
+    /// <summary>
     /// Initializes a new instance of the K2K dispatcher.
     /// </summary>
     public K2KDispatcher(ILogger<K2KDispatcher> logger)
@@ -88,23 +98,30 @@ public sealed class K2KDispatcher : IK2KDispatcher, IDisposable
             return default;
         }
 
-        // For request-response, we need to set up a response channel
-        // This is a simplified implementation - production would use GPU-side completion
-        var responseBuffer = new TResponse[1];
-        var responseHandle = GCHandle.Alloc(responseBuffer, GCHandleType.Pinned);
+        // Allocate response slot: [CompletionFlag:4 bytes][Response:sizeof(TResponse)]
+        var responseSlotSize = 4 + Unsafe.SizeOf<TResponse>();
+        var responseSlot = new byte[responseSlotSize];
+        var responseHandle = GCHandle.Alloc(responseSlot, GCHandleType.Pinned);
 
         try
         {
-            // Enqueue request with response pointer
-            EnqueueRequestToGpuQueue(queuePtr, ref request, responseHandle.AddrOfPinnedObject());
+            var responsePtr = responseHandle.AddrOfPinnedObject();
 
-            // Wait for response (in production, this would use GPU events)
-            // For now, use a simple spin-wait with yield
+            // Initialize completion flag to pending (0)
+            unsafe
+            {
+                *(int*)responsePtr = ResponsePending;
+            }
+
+            // Enqueue request with response pointer
+            EnqueueRequestToGpuQueue(queuePtr, ref request, responsePtr);
+
+            // Wait for response using completion flag
             var spinWait = new SpinWait();
             var startTime = Environment.TickCount64;
             const int timeoutMs = 5000;
 
-            while (!HasResponse(responseHandle.AddrOfPinnedObject()))
+            while (!HasResponse(responsePtr))
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
@@ -125,7 +142,12 @@ public sealed class K2KDispatcher : IK2KDispatcher, IDisposable
                 }
             }
 
-            return responseBuffer[0];
+            // Read response from slot (after completion flag)
+            unsafe
+            {
+                var responseDataPtr = (byte*)responsePtr + 4;
+                return Unsafe.ReadUnaligned<TResponse>(responseDataPtr);
+            }
         }
         finally
         {
@@ -335,19 +357,73 @@ public sealed class K2KDispatcher : IK2KDispatcher, IDisposable
         IntPtr responsePtr)
         where TRequest : unmanaged
     {
-        // Similar to EnqueueToGpuQueue but includes response pointer in message header
-        EnqueueToGpuQueue(queuePtr, ref request);
+        // Create a request envelope that includes the response pointer
+        // The GPU kernel will write the response to this address when complete
+        var envelope = new K2KRequestEnvelope
+        {
+            ResponsePtr = (long)responsePtr,
+            RequestSize = sizeof(TRequest)
+        };
 
-        // In production, the response pointer would be part of the message envelope
-        // The GPU kernel would write the response to this address
+        // Write envelope to queue first (includes response pointer for GPU kernel)
+        EnqueueToGpuQueue(queuePtr, ref envelope);
+
+        // Then write the actual request data
+        EnqueueToGpuQueue(queuePtr, ref request);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static unsafe bool HasResponse(IntPtr responsePtr)
     {
-        // Check if response has been written (simplified)
-        // In production, this would check a completion flag
-        return false; // Placeholder - actual implementation checks GPU memory
+        // Response slot layout: [CompletionFlag:4 bytes][Response data...]
+        // Check if completion flag has been set to ResponseReady (1)
+        var completionFlag = Volatile.Read(ref *(int*)responsePtr);
+        return completionFlag == ResponseReady;
+    }
+
+    /// <summary>
+    /// Writes a response to a K2K response slot.
+    /// Called by GPU kernel (via CPU fallback) or ring kernel runtime.
+    /// </summary>
+    /// <typeparam name="TResponse">The response type.</typeparam>
+    /// <param name="responsePtr">Pointer to the response slot.</param>
+    /// <param name="response">The response data.</param>
+    public static unsafe void WriteResponse<TResponse>(IntPtr responsePtr, TResponse response)
+        where TResponse : unmanaged
+    {
+        // Response slot layout: [CompletionFlag:4 bytes][Response data...]
+        var dataPtr = (byte*)responsePtr + 4;
+
+        // Write response data first
+        Unsafe.WriteUnaligned(dataPtr, response);
+
+        // Memory barrier to ensure response data is visible before completion flag
+        Thread.MemoryBarrier();
+
+        // Set completion flag to signal response is ready
+        Volatile.Write(ref *(int*)responsePtr, ResponseReady);
+    }
+
+    /// <summary>
+    /// Envelope for K2K request messages that include response pointer.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 8)]
+    private struct K2KRequestEnvelope
+    {
+        /// <summary>
+        /// Pointer to the response slot where GPU kernel should write the response.
+        /// </summary>
+        public long ResponsePtr;
+
+        /// <summary>
+        /// Size of the request data that follows this envelope.
+        /// </summary>
+        public int RequestSize;
+
+        /// <summary>
+        /// Reserved for alignment.
+        /// </summary>
+        private int _reserved;
     }
 
     /// <inheritdoc />

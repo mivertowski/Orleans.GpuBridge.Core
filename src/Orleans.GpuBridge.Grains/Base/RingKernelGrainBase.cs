@@ -139,6 +139,15 @@ public abstract class RingKernelGrainBase<TState, TMessage> : Grain, IGrainBase
             // Allocate GPU memory for actor state
             await AllocateGpuStateMemoryAsync(cancellationToken);
 
+            // Restore state from Orleans persistent storage to GPU memory (if available)
+            var restoredState = await RestorePersistedStateAsync(cancellationToken);
+            if (restoredState.HasValue)
+            {
+                State = restoredState.Value;
+                await CopyStateToGpuAsync(cancellationToken);
+                _logger.LogDebug("Restored persisted state to GPU memory for {GrainType}", GetType().Name);
+            }
+
             // Allocate GPU message queue
             await AllocateGpuMessageQueueAsync(cancellationToken);
 
@@ -160,12 +169,13 @@ public abstract class RingKernelGrainBase<TState, TMessage> : Grain, IGrainBase
 
             _logger.LogInformation(
                 "Ring kernel grain {GrainType} activated successfully on GPU {DeviceId} " +
-                "(Queue depth: {QueueDepth}, HLC: {HLC}, VectorClock: {VectorClock})",
+                "(Queue depth: {QueueDepth}, HLC: {HLC}, VectorClock: {VectorClock}, StateRestored: {StateRestored})",
                 GetType().Name,
                 GpuDeviceId,
                 _config.QueueDepth,
                 _config.EnableHLC,
-                _config.EnableVectorClock);
+                _config.EnableVectorClock,
+                restoredState.HasValue);
         }
         catch (Exception ex)
         {
@@ -202,6 +212,9 @@ public abstract class RingKernelGrainBase<TState, TMessage> : Grain, IGrainBase
 
                 // Synchronize final state from GPU to CPU
                 await SynchronizeStateFromGpuAsync(cancellationToken);
+
+                // Persist synchronized state to Orleans storage
+                await PersistStateAsync(cancellationToken);
 
                 // Free GPU resources
                 await FreeGpuResourcesAsync(cancellationToken);
@@ -280,6 +293,75 @@ public abstract class RingKernelGrainBase<TState, TMessage> : Grain, IGrainBase
         // Default: GPU device 0
         // TODO: Implement queue-depth aware placement
         return Task.FromResult(0);
+    }
+
+    /// <summary>
+    /// Restores the actor state from Orleans persistent storage.
+    /// Override in derived classes that use IPersistentState to restore from storage.
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The restored state if available, or null if no state exists.</returns>
+    /// <remarks>
+    /// This method enables the two-layer persistence model:
+    /// 1. Orleans persists state to storage (SQL, Azure Blob, etc.)
+    /// 2. GPU memory holds the active working state
+    ///
+    /// On activation, state flows: Storage → CPU → GPU
+    /// On deactivation, state flows: GPU → CPU → Storage
+    /// </remarks>
+    protected virtual Task<TState?> RestorePersistedStateAsync(CancellationToken cancellationToken)
+    {
+        // Default implementation returns null (no persisted state)
+        // Derived classes with IPersistentState should override this
+        return Task.FromResult<TState?>(null);
+    }
+
+    /// <summary>
+    /// Persists the current actor state to Orleans storage.
+    /// Override in derived classes that use IPersistentState.
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Task representing the persistence operation.</returns>
+    protected virtual Task PersistStateAsync(CancellationToken cancellationToken)
+    {
+        // Default implementation does nothing
+        // Derived classes with IPersistentState should override this
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Copies the current CPU state to GPU memory.
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Task representing the copy operation.</returns>
+    protected async Task CopyStateToGpuAsync(CancellationToken cancellationToken)
+    {
+        if (_gpuStateMemory == null)
+        {
+            _logger.LogDebug("No GPU state memory allocated, skipping state copy to GPU");
+            return;
+        }
+
+        var stateSize = Unsafe.SizeOf<TState>();
+        var stateBytes = new byte[stateSize];
+
+        // Serialize state to bytes
+        var state = State;
+        MemoryMarshal.Write(stateBytes, in state);
+
+        // Copy to GPU memory
+        var handle = GCHandle.Alloc(stateBytes, GCHandleType.Pinned);
+        try
+        {
+            var ptr = handle.AddrOfPinnedObject();
+            await _gpuStateMemory.CopyFromHostAsync(ptr, 0, stateSize, cancellationToken);
+        }
+        finally
+        {
+            handle.Free();
+        }
+
+        _logger.LogDebug("Copied {StateSize} bytes from CPU to GPU state memory", stateSize);
     }
 
     #region GPU Resource Management

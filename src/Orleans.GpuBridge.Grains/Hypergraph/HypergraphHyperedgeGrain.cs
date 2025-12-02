@@ -28,62 +28,81 @@ namespace Orleans.GpuBridge.Grains.Hypergraph;
 /// <item><description>Temporal ordering for event sequences</description></item>
 /// </list>
 /// </para>
+/// <para>
+/// <strong>Persistence:</strong>
+/// State is persisted using Orleans grain storage, surviving grain deactivation
+/// and silo restarts. Configure a storage provider named "HypergraphStore" or "Default".
+/// </para>
 /// </remarks>
 public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
 {
     private readonly ILogger<HypergraphHyperedgeGrain> _logger;
     private readonly IGrainFactory _grainFactory;
     private readonly GpuClockCalibrator _clockCalibrator;
+    private readonly IPersistentState<HypergraphHyperedgeState> _state;
 
-    // Hyperedge state
+    // Hyperedge ID (derived from grain key)
     private string _hyperedgeId = string.Empty;
-    private string _hyperedgeType = string.Empty;
-    private long _version;
-    private Dictionary<string, object> _properties = new();
-    private Dictionary<string, HyperedgeMemberInfo> _members = new();
-    private int _minCardinality = 2;
-    private int _maxCardinality;
-    private bool _isDirected;
-    private string? _affinityGroup;
 
-    // Temporal state
-    private long _createdAtNanos;
-    private long _modifiedAtNanos;
-    private HybridTimestamp _hlcTimestamp;
-
-    // History
-    private readonly List<HyperedgeHistoryEvent> _history = new();
-    private const int MaxHistorySize = 1000;
-
-    // Metrics
-    private long _messagesBroadcast;
-    private long _membershipChanges;
-    private long _totalBroadcastLatencyNanos;
-    private long _aggregationsPerformed;
+    // GPU memory tracking (not persisted - computed at runtime)
     private long _gpuMemoryBytes;
 
+    /// <summary>
+    /// Creates a new hypergraph hyperedge grain with persistence support.
+    /// </summary>
     public HypergraphHyperedgeGrain(
         ILogger<HypergraphHyperedgeGrain> logger,
         IGrainFactory grainFactory,
-        GpuClockCalibrator clockCalibrator)
+        GpuClockCalibrator clockCalibrator,
+        [PersistentState("hyperedge", "HypergraphStore")]
+        IPersistentState<HypergraphHyperedgeState> state)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _grainFactory = grainFactory ?? throw new ArgumentNullException(nameof(grainFactory));
         _clockCalibrator = clockCalibrator ?? throw new ArgumentNullException(nameof(clockCalibrator));
+        _state = state ?? throw new ArgumentNullException(nameof(state));
     }
 
+    /// <inheritdoc />
     public override Task OnActivateAsync(CancellationToken cancellationToken)
     {
         _hyperedgeId = this.GetPrimaryKeyString();
-        _hlcTimestamp = HybridTimestamp.Now();
-        _createdAtNanos = GetNanoseconds();
-        _modifiedAtNanos = _createdAtNanos;
+
+        // If state was persisted, restore from it; otherwise initialize defaults
+        if (!_state.State.IsInitialized)
+        {
+            // New hyperedge - initialize temporal state
+            var now = GetNanoseconds();
+            _state.State.HlcTimestamp = HybridTimestamp.Now();
+            _state.State.CreatedAtNanos = now;
+            _state.State.ModifiedAtNanos = now;
+        }
+
+        // Compute runtime metrics
+        _gpuMemoryBytes = EstimateGpuMemoryUsage();
 
         _logger.LogInformation(
-            "Hypergraph hyperedge {HyperedgeId} activated",
-            _hyperedgeId);
+            "Hypergraph hyperedge {HyperedgeId} activated (IsNew={IsNew}, Version={Version})",
+            _hyperedgeId,
+            !_state.State.IsInitialized,
+            _state.State.Version);
 
         return Task.CompletedTask;
+    }
+
+    /// <inheritdoc />
+    public override async Task OnDeactivateAsync(DeactivationReason reason, CancellationToken cancellationToken)
+    {
+        // Ensure state is persisted on deactivation
+        if (_state.State.IsInitialized)
+        {
+            await _state.WriteStateAsync();
+            _logger.LogDebug(
+                "Hypergraph hyperedge {HyperedgeId} deactivated (Reason={Reason}, Version={Version})",
+                _hyperedgeId,
+                reason.ReasonCode,
+                _state.State.Version);
+        }
     }
 
     /// <inheritdoc />
@@ -93,15 +112,15 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
 
         try
         {
-            if (_version > 0)
+            if (_state.State.Version > 0)
             {
                 return new HyperedgeInitResult
                 {
                     Success = false,
                     HyperedgeId = _hyperedgeId,
-                    Version = _version,
-                    MemberCount = _members.Count,
-                    CreatedAtNanos = _createdAtNanos,
+                    Version = _state.State.Version,
+                    MemberCount = _state.State.Members.Count,
+                    CreatedAtNanos = _state.State.CreatedAtNanos,
                     ErrorMessage = "Hyperedge already initialized"
                 };
             }
@@ -133,24 +152,25 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
                 };
             }
 
-            _hyperedgeType = request.HyperedgeType;
-            _properties = new Dictionary<string, object>(request.Properties);
-            _minCardinality = request.MinCardinality;
-            _maxCardinality = request.MaxCardinality;
-            _isDirected = request.IsDirected;
-            _affinityGroup = request.AffinityGroup;
+            _state.State.HyperedgeType = request.HyperedgeType;
+            _state.State.Properties = new Dictionary<string, object>(request.Properties);
+            _state.State.MinCardinality = request.MinCardinality;
+            _state.State.MaxCardinality = request.MaxCardinality;
+            _state.State.IsDirected = request.IsDirected;
+            _state.State.AffinityGroup = request.AffinityGroup;
 
             var now = GetNanoseconds();
-            _createdAtNanos = now;
-            _modifiedAtNanos = now;
-            _hlcTimestamp = _hlcTimestamp.Increment(now);
-            _version = 1;
+            _state.State.CreatedAtNanos = now;
+            _state.State.ModifiedAtNanos = now;
+            _state.State.HlcTimestamp = _state.State.HlcTimestamp.Increment(now);
+            _state.State.Version = 1;
+            _state.State.IsInitialized = true;
 
             // Add initial members
             int position = 0;
             foreach (var memberInit in request.InitialMembers)
             {
-                _members[memberInit.VertexId] = new HyperedgeMemberInfo
+                _state.State.Members[memberInit.VertexId] = new HyperedgeMemberState
                 {
                     VertexId = memberInit.VertexId,
                     Role = memberInit.Role,
@@ -163,8 +183,8 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
             // Record creation event
             AddHistoryEvent(HyperedgeEventType.Created, new Dictionary<string, object>
             {
-                ["initial_member_count"] = _members.Count,
-                ["hyperedge_type"] = _hyperedgeType
+                ["initial_member_count"] = _state.State.Members.Count,
+                ["hyperedge_type"] = _state.State.HyperedgeType
             });
 
             // Notify vertices they've been added
@@ -172,19 +192,22 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
 
             _gpuMemoryBytes = EstimateGpuMemoryUsage();
 
+            // Persist state
+            await _state.WriteStateAsync();
+
             _logger.LogInformation(
                 "Hypergraph hyperedge {HyperedgeId} initialized (Type={Type}, Members={Count})",
                 _hyperedgeId,
-                _hyperedgeType,
-                _members.Count);
+                _state.State.HyperedgeType,
+                _state.State.Members.Count);
 
             return new HyperedgeInitResult
             {
                 Success = true,
                 HyperedgeId = _hyperedgeId,
-                Version = _version,
-                MemberCount = _members.Count,
-                CreatedAtNanos = _createdAtNanos
+                Version = _state.State.Version,
+                MemberCount = _state.State.Members.Count,
+                CreatedAtNanos = _state.State.CreatedAtNanos
             };
         }
         catch (Exception ex)
@@ -205,7 +228,7 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
     /// <inheritdoc />
     public Task<HyperedgeState> GetStateAsync()
     {
-        var members = _members.Values
+        var members = _state.State.Members.Values
             .OrderBy(m => m.Position)
             .Select(m => new HyperedgeMember
             {
@@ -220,56 +243,56 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
         return Task.FromResult(new HyperedgeState
         {
             HyperedgeId = _hyperedgeId,
-            HyperedgeType = _hyperedgeType,
-            Version = _version,
-            Properties = new Dictionary<string, object>(_properties),
+            HyperedgeType = _state.State.HyperedgeType,
+            Version = _state.State.Version,
+            Properties = new Dictionary<string, object>(_state.State.Properties),
             Members = members,
-            MinCardinality = _minCardinality,
-            MaxCardinality = _maxCardinality,
-            IsDirected = _isDirected,
-            CreatedAtNanos = _createdAtNanos,
-            ModifiedAtNanos = _modifiedAtNanos,
-            HlcTimestamp = _hlcTimestamp.ToInt64()
+            MinCardinality = _state.State.MinCardinality,
+            MaxCardinality = _state.State.MaxCardinality,
+            IsDirected = _state.State.IsDirected,
+            CreatedAtNanos = _state.State.CreatedAtNanos,
+            ModifiedAtNanos = _state.State.ModifiedAtNanos,
+            HlcTimestamp = _state.State.HlcTimestamp.ToInt64()
         });
     }
 
     /// <inheritdoc />
-    public Task<HyperedgeMutationResult> AddVertexAsync(string vertexId, string? role = null)
+    public async Task<HyperedgeMutationResult> AddVertexAsync(string vertexId, string? role = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(vertexId);
 
         var now = GetNanoseconds();
 
-        if (_members.ContainsKey(vertexId))
+        if (_state.State.Members.ContainsKey(vertexId))
         {
-            return Task.FromResult(new HyperedgeMutationResult
+            return new HyperedgeMutationResult
             {
                 Success = false,
                 Operation = "Add",
                 VertexId = vertexId,
-                NewVersion = _version,
-                CurrentCardinality = _members.Count,
+                NewVersion = _state.State.Version,
+                CurrentCardinality = _state.State.Members.Count,
                 TimestampNanos = now,
                 ErrorMessage = "Vertex is already a member"
-            });
+            };
         }
 
-        if (_maxCardinality > 0 && _members.Count >= _maxCardinality)
+        if (_state.State.MaxCardinality > 0 && _state.State.Members.Count >= _state.State.MaxCardinality)
         {
-            return Task.FromResult(new HyperedgeMutationResult
+            return new HyperedgeMutationResult
             {
                 Success = false,
                 Operation = "Add",
                 VertexId = vertexId,
-                NewVersion = _version,
-                CurrentCardinality = _members.Count,
+                NewVersion = _state.State.Version,
+                CurrentCardinality = _state.State.Members.Count,
                 TimestampNanos = now,
-                ErrorMessage = $"Maximum cardinality ({_maxCardinality}) reached"
-            });
+                ErrorMessage = $"Maximum cardinality ({_state.State.MaxCardinality}) reached"
+            };
         }
 
-        int nextPosition = _members.Count > 0 ? _members.Values.Max(m => m.Position ?? 0) + 1 : 0;
-        _members[vertexId] = new HyperedgeMemberInfo
+        int nextPosition = _state.State.Members.Count > 0 ? _state.State.Members.Values.Max(m => m.Position ?? 0) + 1 : 0;
+        _state.State.Members[vertexId] = new HyperedgeMemberState
         {
             VertexId = vertexId,
             Role = role,
@@ -278,10 +301,10 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
             MembershipProperties = null
         };
 
-        _version++;
-        _modifiedAtNanos = now;
-        _hlcTimestamp = _hlcTimestamp.Increment(now);
-        _membershipChanges++;
+        _state.State.Version++;
+        _state.State.ModifiedAtNanos = now;
+        _state.State.HlcTimestamp = _state.State.HlcTimestamp.Increment(now);
+        _state.State.Metrics.MembershipChanges++;
         _gpuMemoryBytes = EstimateGpuMemoryUsage();
 
         AddHistoryEvent(HyperedgeEventType.VertexAdded, new Dictionary<string, object>
@@ -291,64 +314,67 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
             ["position"] = nextPosition
         }, vertexId);
 
+        // Persist state
+        await _state.WriteStateAsync();
+
         _logger.LogInformation(
             "Vertex {VertexId} added to hyperedge {HyperedgeId} (Role={Role}, Members={Count})",
             vertexId,
             _hyperedgeId,
             role ?? "none",
-            _members.Count);
+            _state.State.Members.Count);
 
-        return Task.FromResult(new HyperedgeMutationResult
+        return new HyperedgeMutationResult
         {
             Success = true,
             Operation = "Add",
             VertexId = vertexId,
-            NewVersion = _version,
-            CurrentCardinality = _members.Count,
+            NewVersion = _state.State.Version,
+            CurrentCardinality = _state.State.Members.Count,
             TimestampNanos = now
-        });
+        };
     }
 
     /// <inheritdoc />
-    public Task<HyperedgeMutationResult> RemoveVertexAsync(string vertexId)
+    public async Task<HyperedgeMutationResult> RemoveVertexAsync(string vertexId)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(vertexId);
 
         var now = GetNanoseconds();
 
-        if (!_members.ContainsKey(vertexId))
+        if (!_state.State.Members.ContainsKey(vertexId))
         {
-            return Task.FromResult(new HyperedgeMutationResult
+            return new HyperedgeMutationResult
             {
                 Success = false,
                 Operation = "Remove",
                 VertexId = vertexId,
-                NewVersion = _version,
-                CurrentCardinality = _members.Count,
+                NewVersion = _state.State.Version,
+                CurrentCardinality = _state.State.Members.Count,
                 TimestampNanos = now,
                 ErrorMessage = "Vertex is not a member"
-            });
+            };
         }
 
-        if (_members.Count <= _minCardinality)
+        if (_state.State.Members.Count <= _state.State.MinCardinality)
         {
-            return Task.FromResult(new HyperedgeMutationResult
+            return new HyperedgeMutationResult
             {
                 Success = false,
                 Operation = "Remove",
                 VertexId = vertexId,
-                NewVersion = _version,
-                CurrentCardinality = _members.Count,
+                NewVersion = _state.State.Version,
+                CurrentCardinality = _state.State.Members.Count,
                 TimestampNanos = now,
-                ErrorMessage = $"Cannot remove - would violate minimum cardinality ({_minCardinality})"
-            });
+                ErrorMessage = $"Cannot remove - would violate minimum cardinality ({_state.State.MinCardinality})"
+            };
         }
 
-        _members.Remove(vertexId);
-        _version++;
-        _modifiedAtNanos = now;
-        _hlcTimestamp = _hlcTimestamp.Increment(now);
-        _membershipChanges++;
+        _state.State.Members.Remove(vertexId);
+        _state.State.Version++;
+        _state.State.ModifiedAtNanos = now;
+        _state.State.HlcTimestamp = _state.State.HlcTimestamp.Increment(now);
+        _state.State.Metrics.MembershipChanges++;
         _gpuMemoryBytes = EstimateGpuMemoryUsage();
 
         AddHistoryEvent(HyperedgeEventType.VertexRemoved, new Dictionary<string, object>
@@ -356,27 +382,30 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
             ["vertex_id"] = vertexId
         }, vertexId);
 
+        // Persist state
+        await _state.WriteStateAsync();
+
         _logger.LogInformation(
             "Vertex {VertexId} removed from hyperedge {HyperedgeId} (Members={Count})",
             vertexId,
             _hyperedgeId,
-            _members.Count);
+            _state.State.Members.Count);
 
-        return Task.FromResult(new HyperedgeMutationResult
+        return new HyperedgeMutationResult
         {
             Success = true,
             Operation = "Remove",
             VertexId = vertexId,
-            NewVersion = _version,
-            CurrentCardinality = _members.Count,
+            NewVersion = _state.State.Version,
+            CurrentCardinality = _state.State.Members.Count,
             TimestampNanos = now
-        });
+        };
     }
 
     /// <inheritdoc />
     public Task<IReadOnlyList<HyperedgeMember>> GetMembersAsync()
     {
-        var members = _members.Values
+        var members = _state.State.Members.Values
             .OrderBy(m => m.Position)
             .Select(m => new HyperedgeMember
             {
@@ -392,7 +421,7 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
     }
 
     /// <inheritdoc />
-    public Task<HyperedgeUpdateResult> UpdatePropertiesAsync(IReadOnlyDictionary<string, object> properties)
+    public async Task<HyperedgeUpdateResult> UpdatePropertiesAsync(IReadOnlyDictionary<string, object> properties)
     {
         ArgumentNullException.ThrowIfNull(properties);
 
@@ -401,38 +430,41 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
 
         foreach (var (key, value) in properties)
         {
-            if (!_properties.TryGetValue(key, out var existing) || !Equals(existing, value))
+            if (!_state.State.Properties.TryGetValue(key, out var existing) || !Equals(existing, value))
             {
-                _properties[key] = value;
+                _state.State.Properties[key] = value;
                 changedProperties.Add(key);
             }
         }
 
         if (changedProperties.Count > 0)
         {
-            _version++;
-            _modifiedAtNanos = now;
-            _hlcTimestamp = _hlcTimestamp.Increment(now);
+            _state.State.Version++;
+            _state.State.ModifiedAtNanos = now;
+            _state.State.HlcTimestamp = _state.State.HlcTimestamp.Increment(now);
 
             AddHistoryEvent(HyperedgeEventType.PropertiesUpdated, new Dictionary<string, object>
             {
                 ["changed_properties"] = changedProperties
             });
+
+            // Persist state
+            await _state.WriteStateAsync();
         }
 
         _logger.LogDebug(
             "Hyperedge {HyperedgeId} properties updated (Changed={Count}, Version={Version})",
             _hyperedgeId,
             changedProperties.Count,
-            _version);
+            _state.State.Version);
 
-        return Task.FromResult(new HyperedgeUpdateResult
+        return new HyperedgeUpdateResult
         {
             Success = true,
-            NewVersion = _version,
+            NewVersion = _state.State.Version,
             ChangedProperties = changedProperties,
             TimestampNanos = now
-        });
+        };
     }
 
     /// <inheritdoc />
@@ -443,12 +475,12 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
         var sw = Stopwatch.StartNew();
 
         // Determine target vertices
-        var targetVertexIds = _members.Keys.ToList();
+        var targetVertexIds = _state.State.Members.Keys.ToList();
 
         // Filter by roles if specified
         if (message.TargetRoles is { Count: > 0 })
         {
-            targetVertexIds = _members.Values
+            targetVertexIds = _state.State.Members.Values
                 .Where(m => m.Role != null && message.TargetRoles.Contains(m.Role))
                 .Select(m => m.VertexId)
                 .ToList();
@@ -473,7 +505,7 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
             ViaHyperedgeId = _hyperedgeId,
             MessageType = message.MessageType,
             Payload = message.Payload,
-            HlcTimestamp = _hlcTimestamp.ToInt64()
+            HlcTimestamp = _state.State.HlcTimestamp.ToInt64()
         };
 
         // Broadcast to all target vertices in parallel
@@ -499,8 +531,8 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
 
         sw.Stop();
         var latencyNanos = sw.ElapsedTicks * 100;
-        _totalBroadcastLatencyNanos += latencyNanos;
-        _messagesBroadcast++;
+        _state.State.Metrics.TotalBroadcastLatencyNanos += latencyNanos;
+        _state.State.Metrics.MessagesBroadcast++;
 
         AddHistoryEvent(HyperedgeEventType.MessageBroadcast, new Dictionary<string, object>
         {
@@ -539,7 +571,7 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
         try
         {
             // Determine which members to include
-            var targetMembers = _members.Values.ToList();
+            var targetMembers = _state.State.Members.Values.ToList();
             if (aggregation.IncludeRoles is { Count: > 0 })
             {
                 targetMembers = targetMembers
@@ -571,7 +603,7 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
 
             // Include hyperedge properties if requested
             if (aggregation.IncludeHyperedgeProperties &&
-                _properties.TryGetValue(aggregation.PropertyName, out var hyperedgeValue))
+                _state.State.Properties.TryGetValue(aggregation.PropertyName, out var hyperedgeValue))
             {
                 var value = ExtractDoubleValue(hyperedgeValue);
                 if (value.HasValue)
@@ -591,7 +623,7 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
             };
 
             sw.Stop();
-            _aggregationsPerformed++;
+            _state.State.Metrics.AggregationsPerformed++;
 
             return new HyperedgeAggregationResult
             {
@@ -620,6 +652,8 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
     {
         ArgumentNullException.ThrowIfNull(constraint);
 
+        _state.State.Metrics.ConstraintChecks++;
+
         bool satisfies = constraint.Type switch
         {
             HyperedgeConstraintType.Cardinality => CheckCardinalityConstraint(constraint),
@@ -645,23 +679,25 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
             var otherMembers = await otherHyperedge.GetMembersAsync();
 
             int membersAdded = 0;
-            int nextPosition = _members.Count > 0 ? _members.Values.Max(m => m.Position ?? 0) + 1 : 0;
+            int nextPosition = _state.State.Members.Count > 0 ? _state.State.Members.Values.Max(m => m.Position ?? 0) + 1 : 0;
 
             foreach (var member in otherMembers)
             {
-                if (!_members.ContainsKey(member.VertexId))
+                if (!_state.State.Members.ContainsKey(member.VertexId))
                 {
                     // Check max cardinality
-                    if (_maxCardinality > 0 && _members.Count >= _maxCardinality)
+                    if (_state.State.MaxCardinality > 0 && _state.State.Members.Count >= _state.State.MaxCardinality)
                         break;
 
-                    _members[member.VertexId] = new HyperedgeMemberInfo
+                    _state.State.Members[member.VertexId] = new HyperedgeMemberState
                     {
                         VertexId = member.VertexId,
                         Role = member.Role,
                         Position = nextPosition++,
                         JoinedAtNanos = now,
-                        MembershipProperties = member.MembershipProperties
+                        MembershipProperties = member.MembershipProperties != null
+                            ? new Dictionary<string, object>(member.MembershipProperties)
+                            : null
                     };
                     membersAdded++;
                 }
@@ -669,10 +705,11 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
 
             if (membersAdded > 0)
             {
-                _version++;
-                _modifiedAtNanos = now;
-                _hlcTimestamp = _hlcTimestamp.Increment(now);
-                _membershipChanges += membersAdded;
+                _state.State.Version++;
+                _state.State.ModifiedAtNanos = now;
+                _state.State.HlcTimestamp = _state.State.HlcTimestamp.Increment(now);
+                _state.State.Metrics.MembershipChanges += membersAdded;
+                _state.State.Metrics.MergeOperations++;
                 _gpuMemoryBytes = EstimateGpuMemoryUsage();
 
                 AddHistoryEvent(HyperedgeEventType.Merged, new Dictionary<string, object>
@@ -680,6 +717,9 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
                     ["other_hyperedge_id"] = otherHyperedgeId,
                     ["members_added"] = membersAdded
                 });
+
+                // Persist state
+                await _state.WriteStateAsync();
             }
 
             _logger.LogInformation(
@@ -687,14 +727,14 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
                 _hyperedgeId,
                 otherHyperedgeId,
                 membersAdded,
-                _members.Count);
+                _state.State.Members.Count);
 
             return new HyperedgeMergeResult
             {
                 Success = true,
-                NewCardinality = _members.Count,
+                NewCardinality = _state.State.Members.Count,
                 MembersAdded = membersAdded,
-                NewVersion = _version,
+                NewVersion = _state.State.Version,
                 TimestampNanos = now
             };
         }
@@ -704,9 +744,9 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
             return new HyperedgeMergeResult
             {
                 Success = false,
-                NewCardinality = _members.Count,
+                NewCardinality = _state.State.Members.Count,
                 MembersAdded = 0,
-                NewVersion = _version,
+                NewVersion = _state.State.Version,
                 TimestampNanos = now,
                 ErrorMessage = ex.Message
             };
@@ -723,11 +763,11 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
         try
         {
             // Determine which members to move to new hyperedge
-            var membersToMove = new List<HyperedgeMemberInfo>();
+            var membersToMove = new List<HyperedgeMemberState>();
 
             if (splitPredicate.SplitRoles is { Count: > 0 })
             {
-                membersToMove = _members.Values
+                membersToMove = _state.State.Members.Values
                     .Where(m => m.Role != null && splitPredicate.SplitRoles.Contains(m.Role))
                     .ToList();
             }
@@ -735,12 +775,12 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
             {
                 // Split by property value would require querying vertex states
                 // For now, split evenly
-                membersToMove = _members.Values.Take(_members.Count / 2).ToList();
+                membersToMove = _state.State.Members.Values.Take(_state.State.Members.Count / 2).ToList();
             }
             else
             {
                 // Default: split evenly
-                membersToMove = _members.Values.Take(_members.Count / 2).ToList();
+                membersToMove = _state.State.Members.Values.Take(_state.State.Members.Count / 2).ToList();
             }
 
             // Validate split
@@ -751,35 +791,35 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
                     Success = false,
                     NewHyperedgeId = string.Empty,
                     MembersMoved = 0,
-                    MembersRemaining = _members.Count,
+                    MembersRemaining = _state.State.Members.Count,
                     TimestampNanos = now,
                     ErrorMessage = "No members match split criteria"
                 };
             }
 
-            if (_members.Count - membersToMove.Count < _minCardinality)
+            if (_state.State.Members.Count - membersToMove.Count < _state.State.MinCardinality)
             {
                 return new HyperedgeSplitResult
                 {
                     Success = false,
                     NewHyperedgeId = string.Empty,
                     MembersMoved = 0,
-                    MembersRemaining = _members.Count,
+                    MembersRemaining = _state.State.Members.Count,
                     TimestampNanos = now,
-                    ErrorMessage = $"Split would violate minimum cardinality ({_minCardinality})"
+                    ErrorMessage = $"Split would violate minimum cardinality ({_state.State.MinCardinality})"
                 };
             }
 
-            if (membersToMove.Count < _minCardinality)
+            if (membersToMove.Count < _state.State.MinCardinality)
             {
                 return new HyperedgeSplitResult
                 {
                     Success = false,
                     NewHyperedgeId = string.Empty,
                     MembersMoved = 0,
-                    MembersRemaining = _members.Count,
+                    MembersRemaining = _state.State.Members.Count,
                     TimestampNanos = now,
-                    ErrorMessage = $"New hyperedge would have insufficient members ({membersToMove.Count} < {_minCardinality})"
+                    ErrorMessage = $"New hyperedge would have insufficient members ({membersToMove.Count} < {_state.State.MinCardinality})"
                 };
             }
 
@@ -789,18 +829,18 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
 
             var initRequest = new HyperedgeInitRequest
             {
-                HyperedgeType = _hyperedgeType,
-                Properties = new Dictionary<string, object>(_properties),
+                HyperedgeType = _state.State.HyperedgeType,
+                Properties = new Dictionary<string, object>(_state.State.Properties),
                 InitialMembers = membersToMove.Select(m => new HyperedgeMemberInit
                 {
                     VertexId = m.VertexId,
                     Role = m.Role,
                     Position = m.Position
                 }).ToList(),
-                MinCardinality = _minCardinality,
-                MaxCardinality = _maxCardinality,
-                IsDirected = _isDirected,
-                AffinityGroup = _affinityGroup
+                MinCardinality = _state.State.MinCardinality,
+                MaxCardinality = _state.State.MaxCardinality,
+                IsDirected = _state.State.IsDirected,
+                AffinityGroup = _state.State.AffinityGroup
             };
 
             var initResult = await newHyperedge.InitializeAsync(initRequest);
@@ -812,7 +852,7 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
                     Success = false,
                     NewHyperedgeId = string.Empty,
                     MembersMoved = 0,
-                    MembersRemaining = _members.Count,
+                    MembersRemaining = _state.State.Members.Count,
                     TimestampNanos = now,
                     ErrorMessage = $"Failed to create new hyperedge: {initResult.ErrorMessage}"
                 };
@@ -821,13 +861,14 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
             // Remove moved members from this hyperedge
             foreach (var member in membersToMove)
             {
-                _members.Remove(member.VertexId);
+                _state.State.Members.Remove(member.VertexId);
             }
 
-            _version++;
-            _modifiedAtNanos = now;
-            _hlcTimestamp = _hlcTimestamp.Increment(now);
-            _membershipChanges += membersToMove.Count;
+            _state.State.Version++;
+            _state.State.ModifiedAtNanos = now;
+            _state.State.HlcTimestamp = _state.State.HlcTimestamp.Increment(now);
+            _state.State.Metrics.MembershipChanges += membersToMove.Count;
+            _state.State.Metrics.SplitOperations++;
             _gpuMemoryBytes = EstimateGpuMemoryUsage();
 
             AddHistoryEvent(HyperedgeEventType.Split, new Dictionary<string, object>
@@ -836,19 +877,22 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
                 ["members_moved"] = membersToMove.Count
             });
 
+            // Persist state
+            await _state.WriteStateAsync();
+
             _logger.LogInformation(
                 "Hyperedge {HyperedgeId} split (NewId={NewId}, Moved={Moved}, Remaining={Remaining})",
                 _hyperedgeId,
                 newHyperedgeId,
                 membersToMove.Count,
-                _members.Count);
+                _state.State.Members.Count);
 
             return new HyperedgeSplitResult
             {
                 Success = true,
                 NewHyperedgeId = newHyperedgeId,
                 MembersMoved = membersToMove.Count,
-                MembersRemaining = _members.Count,
+                MembersRemaining = _state.State.Members.Count,
                 TimestampNanos = now
             };
         }
@@ -860,7 +904,7 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
                 Success = false,
                 NewHyperedgeId = string.Empty,
                 MembersMoved = 0,
-                MembersRemaining = _members.Count,
+                MembersRemaining = _state.State.Members.Count,
                 TimestampNanos = now,
                 ErrorMessage = ex.Message
             };
@@ -870,7 +914,7 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
     /// <inheritdoc />
     public Task<HyperedgeHistory> GetHistoryAsync(long? since = null, int maxEvents = 100)
     {
-        IEnumerable<HyperedgeHistoryEvent> events = _history;
+        IEnumerable<HyperedgeHistoryEvent> events = _state.State.History;
 
         if (since.HasValue)
         {
@@ -893,19 +937,19 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
     /// <inheritdoc />
     public Task<HyperedgeMetrics> GetMetricsAsync()
     {
-        double avgBroadcastLatency = _messagesBroadcast > 0
-            ? (double)_totalBroadcastLatencyNanos / _messagesBroadcast
+        double avgBroadcastLatency = _state.State.Metrics.MessagesBroadcast > 0
+            ? (double)_state.State.Metrics.TotalBroadcastLatencyNanos / _state.State.Metrics.MessagesBroadcast
             : 0;
 
         return Task.FromResult(new HyperedgeMetrics
         {
             HyperedgeId = _hyperedgeId,
-            Cardinality = _members.Count,
-            MessagesBroadcast = _messagesBroadcast,
-            MembershipChanges = _membershipChanges,
+            Cardinality = _state.State.Members.Count,
+            MessagesBroadcast = _state.State.Metrics.MessagesBroadcast,
+            MembershipChanges = _state.State.Metrics.MembershipChanges,
             AvgBroadcastLatencyNanos = avgBroadcastLatency,
             GpuMemoryBytes = _gpuMemoryBytes,
-            AggregationsPerformed = _aggregationsPerformed
+            AggregationsPerformed = _state.State.Metrics.AggregationsPerformed
         });
     }
 
@@ -931,10 +975,10 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
 
     private bool CheckCardinalityConstraint(HyperedgeConstraint constraint)
     {
-        if (constraint.MinCardinality.HasValue && _members.Count < constraint.MinCardinality.Value)
+        if (constraint.MinCardinality.HasValue && _state.State.Members.Count < constraint.MinCardinality.Value)
             return false;
 
-        if (constraint.MaxCardinality.HasValue && _members.Count > constraint.MaxCardinality.Value)
+        if (constraint.MaxCardinality.HasValue && _state.State.Members.Count > constraint.MaxCardinality.Value)
             return false;
 
         return true;
@@ -945,7 +989,7 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
         if (constraint.RequiredRoles is null || constraint.RequiredRoles.Count == 0)
             return true;
 
-        var presentRoles = _members.Values
+        var presentRoles = _state.State.Members.Values
             .Where(m => m.Role != null)
             .Select(m => m.Role!)
             .ToHashSet();
@@ -960,7 +1004,7 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
 
         foreach (var (key, expectedValue) in constraint.PropertyConstraints)
         {
-            if (!_properties.TryGetValue(key, out var actualValue) || !Equals(actualValue, expectedValue))
+            if (!_state.State.Properties.TryGetValue(key, out var actualValue) || !Equals(actualValue, expectedValue))
                 return false;
         }
 
@@ -983,18 +1027,18 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
         {
             EventType = eventType,
             TimestampNanos = now,
-            HlcTimestamp = _hlcTimestamp.ToInt64(),
-            Version = _version,
+            HlcTimestamp = _state.State.HlcTimestamp.ToInt64(),
+            Version = _state.State.Version,
             VertexId = vertexId,
             Details = details
         };
 
-        _history.Add(historyEvent);
+        _state.State.History.Add(historyEvent);
 
         // Trim history if too large
-        if (_history.Count > MaxHistorySize)
+        if (_state.State.History.Count > _state.State.MaxHistorySize)
         {
-            _history.RemoveRange(0, _history.Count - MaxHistorySize);
+            _state.State.History.RemoveRange(0, _state.State.History.Count - _state.State.MaxHistorySize);
         }
     }
 
@@ -1021,9 +1065,9 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
     private long EstimateGpuMemoryUsage()
     {
         // Estimate memory: members + properties + history + overhead
-        long membersSize = _members.Count * 64; // Rough estimate per member
-        long propertiesSize = _properties.Count * 64; // Rough estimate per property
-        long historySize = _history.Count * 128; // Rough estimate per event
+        long membersSize = _state.State.Members.Count * 64; // Rough estimate per member
+        long propertiesSize = _state.State.Properties.Count * 64; // Rough estimate per property
+        long historySize = _state.State.History.Count * 128; // Rough estimate per event
         long overhead = 512; // Fixed overhead for hyperedge metadata
         return membersSize + propertiesSize + historySize + overhead;
     }
@@ -1038,15 +1082,4 @@ public sealed class HypergraphHyperedgeGrain : Grain, IHypergraphHyperedge
         return Math.Sqrt(sumSquares / (values.Count - 1));
     }
 
-    /// <summary>
-    /// Internal class for tracking hyperedge member information.
-    /// </summary>
-    private sealed class HyperedgeMemberInfo
-    {
-        public required string VertexId { get; init; }
-        public string? Role { get; init; }
-        public int? Position { get; init; }
-        public required long JoinedAtNanos { get; init; }
-        public IReadOnlyDictionary<string, object>? MembershipProperties { get; init; }
-    }
 }

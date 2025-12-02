@@ -270,7 +270,7 @@ public class ConcurrentAccessTests
         _output.WriteLine($"  Data consistency: VERIFIED");
     }
 
-    [Fact(Skip = "IntervalTree is not thread-safe by design - use TemporalGraphStorage for concurrent access")]
+    [Fact]
     public async Task IntervalTree_ConcurrentOperations()
     {
         // Arrange: Multiple threads accessing IntervalTree

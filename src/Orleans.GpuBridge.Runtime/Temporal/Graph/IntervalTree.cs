@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Orleans.GpuBridge.Runtime.Temporal.Graph;
 
 /// <summary>
-/// Interval tree for efficient temporal range queries.
+/// Thread-safe interval tree for efficient temporal range queries.
 /// </summary>
 /// <typeparam name="TKey">The interval boundary type (typically long for nanosecond timestamps)</typeparam>
 /// <typeparam name="TValue">The value type stored in intervals</typeparam>
@@ -21,22 +22,45 @@ namespace Orleans.GpuBridge.Runtime.Temporal.Graph;
 /// - Space: O(N)
 /// </para>
 /// <para>
+/// Thread Safety:
+/// - Uses ReaderWriterLockSlim for concurrent read access and exclusive write access
+/// - Multiple readers can query simultaneously
+/// - Writers get exclusive access for Add/Clear operations
+/// </para>
+/// <para>
 /// Use cases:
 /// - Find all temporal edges active during a time range
 /// - Find all events that occurred in a time window
 /// - Detect overlapping time intervals
 /// </para>
 /// </remarks>
-public sealed class IntervalTree<TKey, TValue> where TKey : IComparable<TKey>
+public sealed class IntervalTree<TKey, TValue> : IDisposable where TKey : IComparable<TKey>
 {
+    private readonly ReaderWriterLockSlim _lock = new(LockRecursionPolicy.NoRecursion);
     private IntervalNode? _root;
     private int _count;
     private long _insertionSequence; // Monotonic counter for guaranteed uniqueness
+    private bool _disposed;
 
     /// <summary>
     /// Gets the number of intervals in the tree.
     /// </summary>
-    public int Count => _count;
+    public int Count
+    {
+        get
+        {
+            ThrowIfDisposed();
+            _lock.EnterReadLock();
+            try
+            {
+                return _count;
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+        }
+    }
 
     /// <summary>
     /// Adds an interval to the tree.
@@ -46,13 +70,23 @@ public sealed class IntervalTree<TKey, TValue> where TKey : IComparable<TKey>
     /// <param name="value">Value associated with the interval</param>
     public void Add(TKey start, TKey end, TValue value)
     {
+        ThrowIfDisposed();
+
         if (start.CompareTo(end) > 0)
             throw new ArgumentException("Start must be <= End");
 
-        var insertionId = _insertionSequence++;
-        var interval = new Interval(start, end, value, insertionId);
-        _root = Insert(_root, interval);
-        _count++;
+        _lock.EnterWriteLock();
+        try
+        {
+            var insertionId = _insertionSequence++;
+            var interval = new Interval(start, end, value, insertionId);
+            _root = Insert(_root, interval);
+            _count++;
+        }
+        finally
+        {
+            _lock.ExitWriteLock();
+        }
     }
 
     /// <summary>
@@ -63,12 +97,22 @@ public sealed class IntervalTree<TKey, TValue> where TKey : IComparable<TKey>
     /// <returns>Values of all overlapping intervals</returns>
     public IEnumerable<TValue> Query(TKey start, TKey end)
     {
+        ThrowIfDisposed();
+
         if (start.CompareTo(end) > 0)
             throw new ArgumentException("Start must be <= End");
 
-        var results = new List<TValue>();
-        QueryInternal(_root, start, end, results);
-        return results;
+        _lock.EnterReadLock();
+        try
+        {
+            var results = new List<TValue>();
+            QueryInternal(_root, start, end, results);
+            return results;
+        }
+        finally
+        {
+            _lock.ExitReadLock();
+        }
     }
 
     /// <summary>
@@ -84,8 +128,18 @@ public sealed class IntervalTree<TKey, TValue> where TKey : IComparable<TKey>
     /// </summary>
     public void Clear()
     {
-        _root = null;
-        _count = 0;
+        ThrowIfDisposed();
+
+        _lock.EnterWriteLock();
+        try
+        {
+            _root = null;
+            _count = 0;
+        }
+        finally
+        {
+            _lock.ExitWriteLock();
+        }
     }
 
     /// <summary>
@@ -93,9 +147,19 @@ public sealed class IntervalTree<TKey, TValue> where TKey : IComparable<TKey>
     /// </summary>
     public IEnumerable<(TKey start, TKey end, TValue value)> GetAll()
     {
-        var results = new List<(TKey, TKey, TValue)>();
-        GetAllInternal(_root, results);
-        return results;
+        ThrowIfDisposed();
+
+        _lock.EnterReadLock();
+        try
+        {
+            var results = new List<(TKey, TKey, TValue)>();
+            GetAllInternal(_root, results);
+            return results;
+        }
+        finally
+        {
+            _lock.ExitReadLock();
+        }
     }
 
     /// <summary>
@@ -371,7 +435,34 @@ public sealed class IntervalTree<TKey, TValue> where TKey : IComparable<TKey>
     /// <inheritdoc/>
     public override string ToString()
     {
-        return $"IntervalTree({_count} intervals)";
+        var count = 0;
+        _lock.EnterReadLock();
+        try
+        {
+            count = _count;
+        }
+        finally
+        {
+            _lock.ExitReadLock();
+        }
+        return $"IntervalTree({count} intervals)";
+    }
+
+    /// <summary>
+    /// Disposes the interval tree and releases the lock resources.
+    /// </summary>
+    public void Dispose()
+    {
+        if (_disposed)
+            return;
+
+        _disposed = true;
+        _lock.Dispose();
+    }
+
+    private void ThrowIfDisposed()
+    {
+        ObjectDisposedException.ThrowIf(_disposed, this);
     }
 }
 

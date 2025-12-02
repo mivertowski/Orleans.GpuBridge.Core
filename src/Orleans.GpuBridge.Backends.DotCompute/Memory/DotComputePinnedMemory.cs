@@ -231,6 +231,8 @@ internal sealed class DotComputeUnifiedMemory : IUnifiedMemory
     // IDeviceMemory interface implementations
     public async Task CopyFromHostAsync(IntPtr hostPointer, long offsetBytes, long sizeBytes, CancellationToken cancellationToken = default)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+
         if (hostPointer == IntPtr.Zero)
             throw new ArgumentException("Host pointer cannot be zero", nameof(hostPointer));
 
@@ -246,6 +248,8 @@ internal sealed class DotComputeUnifiedMemory : IUnifiedMemory
 
     public async Task CopyToHostAsync(IntPtr hostPointer, long offsetBytes, long sizeBytes, CancellationToken cancellationToken = default)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+
         if (hostPointer == IntPtr.Zero)
             throw new ArgumentException("Host pointer cannot be zero", nameof(hostPointer));
 
@@ -260,6 +264,8 @@ internal sealed class DotComputeUnifiedMemory : IUnifiedMemory
 
     public async Task CopyFromAsync(IDeviceMemory source, long sourceOffset, long destinationOffset, long sizeBytes, CancellationToken cancellationToken = default)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+
         // For unified memory, device-to-device copy can be implemented as memory copy
         // since both source and destination are accessible from both CPU and GPU
 
@@ -307,6 +313,8 @@ internal sealed class DotComputeUnifiedMemory : IUnifiedMemory
 
     public async Task FillAsync(byte value, long offsetBytes, long sizeBytes, CancellationToken cancellationToken = default)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+
         unsafe
         {
             var ptr = (byte*)(DevicePointer + (int)offsetBytes);

@@ -1,740 +1,160 @@
-# Claude Code Configuration - SPARC Development Environment
-
-## 🚨 CRITICAL: CONCURRENT EXECUTION & FILE MANAGEMENT
-
-**ABSOLUTE RULES**:
-1. ALL operations MUST be concurrent/parallel in a single message
-2. **NEVER save working files, text/mds and tests to the root folder**
-3. ALWAYS organize files in appropriate subdirectories
-4. **USE CLAUDE CODE'S TASK TOOL** for spawning agents concurrently, not just MCP
-
-### ⚡ GOLDEN RULE: "1 MESSAGE = ALL RELATED OPERATIONS"
-
-**MANDATORY PATTERNS:**
-- **TodoWrite**: ALWAYS batch ALL todos in ONE call (5-10+ todos minimum)
-- **Task tool (Claude Code)**: ALWAYS spawn ALL agents in ONE message with full instructions
-- **File operations**: ALWAYS batch ALL reads/writes/edits in ONE message
-- **Bash commands**: ALWAYS batch ALL terminal operations in ONE message
-- **Memory operations**: ALWAYS batch ALL memory store/retrieve in ONE message
-
-### 🎯 CRITICAL: Claude Code Task Tool for Agent Execution
-
-**Claude Code's Task tool is the PRIMARY way to spawn agents:**
-```javascript
-// ✅ CORRECT: Use Claude Code's Task tool for parallel agent execution
-[Single Message]:
-  Task("Research agent", "Analyze requirements and patterns...", "researcher")
-  Task("Coder agent", "Implement core features...", "coder")
-  Task("Tester agent", "Create comprehensive tests...", "tester")
-  Task("Reviewer agent", "Review code quality...", "reviewer")
-  Task("Architect agent", "Design system architecture...", "system-architect")
-```
-
-**MCP tools are ONLY for coordination setup:**
-- `mcp__claude-flow__swarm_init` - Initialize coordination topology
-- `mcp__claude-flow__agent_spawn` - Define agent types for coordination
-- `mcp__claude-flow__task_orchestrate` - Orchestrate high-level workflows
-
-### 📁 File Organization Rules
-
-**NEVER save to root folder. Use these directories:**
-- `/src` - Source code files
-- `/tests` - Test files
-- `/docs` - Documentation and markdown files
-- `/config` - Configuration files
-- `/scripts` - Utility scripts
-- `/examples` - Example code
+# Orleans.GpuBridge.Core - Claude Code Configuration
 
 ## Project Overview
 
-This project uses SPARC (Specification, Pseudocode, Architecture, Refinement, Completion) methodology with Claude-Flow orchestration for systematic Test-Driven Development.
-
-## SPARC Commands
-
-### Core Commands
-- `npx claude-flow sparc modes` - List available modes
-- `npx claude-flow sparc run <mode> "<task>"` - Execute specific mode
-- `npx claude-flow sparc tdd "<feature>"` - Run complete TDD workflow
-- `npx claude-flow sparc info <mode>` - Get mode details
-
-### Batchtools Commands
-- `npx claude-flow sparc batch <modes> "<task>"` - Parallel execution
-- `npx claude-flow sparc pipeline "<task>"` - Full pipeline processing
-- `npx claude-flow sparc concurrent <mode> "<tasks-file>"` - Multi-task processing
-
-### Build Commands
-- `npm run build` - Build project
-- `npm run test` - Run tests
-- `npm run lint` - Linting
-- `npm run typecheck` - Type checking
-
-## SPARC Workflow Phases
-
-1. **Specification** - Requirements analysis (`sparc run spec-pseudocode`)
-2. **Pseudocode** - Algorithm design (`sparc run spec-pseudocode`)
-3. **Architecture** - System design (`sparc run architect`)
-4. **Refinement** - TDD implementation (`sparc tdd`)
-5. **Completion** - Integration (`sparc run integration`)
-
-## Code Style & Best Practices
-
-- **Modular Design**: Files under 500 lines
-- **Environment Safety**: Never hardcode secrets
-- **Test-First**: Write tests before implementation
-- **Clean Architecture**: Separate concerns
-- **Documentation**: Keep updated
-
-## 🚀 Available Agents (54 Total)
-
-### Core Development
-`coder`, `reviewer`, `tester`, `planner`, `researcher`
-
-### Swarm Coordination
-`hierarchical-coordinator`, `mesh-coordinator`, `adaptive-coordinator`, `collective-intelligence-coordinator`, `swarm-memory-manager`
-
-### Consensus & Distributed
-`byzantine-coordinator`, `raft-manager`, `gossip-coordinator`, `consensus-builder`, `crdt-synchronizer`, `quorum-manager`, `security-manager`
-
-### Performance & Optimization
-`perf-analyzer`, `performance-benchmarker`, `task-orchestrator`, `memory-coordinator`, `smart-agent`
-
-### GitHub & Repository
-`github-modes`, `pr-manager`, `code-review-swarm`, `issue-tracker`, `release-manager`, `workflow-automation`, `project-board-sync`, `repo-architect`, `multi-repo-swarm`
-
-### SPARC Methodology
-`sparc-coord`, `sparc-coder`, `specification`, `pseudocode`, `architecture`, `refinement`
-
-### Specialized Development
-`backend-dev`, `mobile-dev`, `ml-developer`, `cicd-engineer`, `api-docs`, `system-architect`, `code-analyzer`, `base-template-generator`
-
-### Testing & Validation
-`tdd-london-swarm`, `production-validator`
-
-### Migration & Planning
-`migration-planner`, `swarm-init`
-
-## 🎯 Claude Code vs MCP Tools
-
-### Claude Code Handles ALL EXECUTION:
-- **Task tool**: Spawn and run agents concurrently for actual work
-- File operations (Read, Write, Edit, MultiEdit, Glob, Grep)
-- Code generation and programming
-- Bash commands and system operations
-- Implementation work
-- Project navigation and analysis
-- TodoWrite and task management
-- Git operations
-- Package management
-- Testing and debugging
-
-### MCP Tools ONLY COORDINATE:
-- Swarm initialization (topology setup)
-- Agent type definitions (coordination patterns)
-- Task orchestration (high-level planning)
-- Memory management
-- Neural features
-- Performance tracking
-- GitHub integration
-
-**KEY**: MCP coordinates the strategy, Claude Code's Task tool executes with real agents.
-
-## 🚀 Quick Setup
-
-```bash
-# Add MCP servers (Claude Flow required, others optional)
-claude mcp add claude-flow npx claude-flow@alpha mcp start
-claude mcp add ruv-swarm npx ruv-swarm mcp start  # Optional: Enhanced coordination
-claude mcp add flow-nexus npx flow-nexus@latest mcp start  # Optional: Cloud features
-```
-
-## MCP Tool Categories
-
-### Coordination
-`swarm_init`, `agent_spawn`, `task_orchestrate`
-
-### Monitoring
-`swarm_status`, `agent_list`, `agent_metrics`, `task_status`, `task_results`
-
-### Memory & Neural
-`memory_usage`, `neural_status`, `neural_train`, `neural_patterns`
-
-### GitHub Integration
-`github_swarm`, `repo_analyze`, `pr_enhance`, `issue_triage`, `code_review`
-
-### System
-`benchmark_run`, `features_detect`, `swarm_monitor`
-
-### Flow-Nexus MCP Tools (Optional Advanced Features)
-Flow-Nexus extends MCP capabilities with 70+ cloud-based orchestration tools:
-
-**Key MCP Tool Categories:**
-- **Swarm & Agents**: `swarm_init`, `swarm_scale`, `agent_spawn`, `task_orchestrate`
-- **Sandboxes**: `sandbox_create`, `sandbox_execute`, `sandbox_upload` (cloud execution)
-- **Templates**: `template_list`, `template_deploy` (pre-built project templates)
-- **Neural AI**: `neural_train`, `neural_patterns`, `seraphina_chat` (AI assistant)
-- **GitHub**: `github_repo_analyze`, `github_pr_manage` (repository management)
-- **Real-time**: `execution_stream_subscribe`, `realtime_subscribe` (live monitoring)
-- **Storage**: `storage_upload`, `storage_list` (cloud file management)
-
-**Authentication Required:**
-- Register: `mcp__flow-nexus__user_register` or `npx flow-nexus@latest register`
-- Login: `mcp__flow-nexus__user_login` or `npx flow-nexus@latest login`
-- Access 70+ specialized MCP tools for advanced orchestration
-
-## 🚀 Agent Execution Flow with Claude Code
-
-### The Correct Pattern:
-
-1. **Optional**: Use MCP tools to set up coordination topology
-2. **REQUIRED**: Use Claude Code's Task tool to spawn agents that do actual work
-3. **REQUIRED**: Each agent runs hooks for coordination
-4. **REQUIRED**: Batch all operations in single messages
-
-### Example Full-Stack Development:
-
-```javascript
-// Single message with all agent spawning via Claude Code's Task tool
-[Parallel Agent Execution]:
-  Task("Backend Developer", "Build REST API with Express. Use hooks for coordination.", "backend-dev")
-  Task("Frontend Developer", "Create React UI. Coordinate with backend via memory.", "coder")
-  Task("Database Architect", "Design PostgreSQL schema. Store schema in memory.", "code-analyzer")
-  Task("Test Engineer", "Write Jest tests. Check memory for API contracts.", "tester")
-  Task("DevOps Engineer", "Setup Docker and CI/CD. Document in memory.", "cicd-engineer")
-  Task("Security Auditor", "Review authentication. Report findings via hooks.", "reviewer")
-  
-  // All todos batched together
-  TodoWrite { todos: [...8-10 todos...] }
-  
-  // All file operations together
-  Write "backend/server.js"
-  Write "frontend/App.jsx"
-  Write "database/schema.sql"
-```
-
-## 📋 Agent Coordination Protocol
-
-### Every Agent Spawned via Task Tool MUST:
-
-**1️⃣ BEFORE Work:**
-```bash
-npx claude-flow@alpha hooks pre-task --description "[task]"
-npx claude-flow@alpha hooks session-restore --session-id "swarm-[id]"
-```
-
-**2️⃣ DURING Work:**
-```bash
-npx claude-flow@alpha hooks post-edit --file "[file]" --memory-key "swarm/[agent]/[step]"
-npx claude-flow@alpha hooks notify --message "[what was done]"
-```
-
-**3️⃣ AFTER Work:**
-```bash
-npx claude-flow@alpha hooks post-task --task-id "[task]"
-npx claude-flow@alpha hooks session-end --export-metrics true
-```
-
-## 🎯 Concurrent Execution Examples
-
-### ✅ CORRECT WORKFLOW: MCP Coordinates, Claude Code Executes
-
-```javascript
-// Step 1: MCP tools set up coordination (optional, for complex tasks)
-[Single Message - Coordination Setup]:
-  mcp__claude-flow__swarm_init { topology: "mesh", maxAgents: 6 }
-  mcp__claude-flow__agent_spawn { type: "researcher" }
-  mcp__claude-flow__agent_spawn { type: "coder" }
-  mcp__claude-flow__agent_spawn { type: "tester" }
-
-// Step 2: Claude Code Task tool spawns ACTUAL agents that do the work
-[Single Message - Parallel Agent Execution]:
-  // Claude Code's Task tool spawns real agents concurrently
-  Task("Research agent", "Analyze API requirements and best practices. Check memory for prior decisions.", "researcher")
-  Task("Coder agent", "Implement REST endpoints with authentication. Coordinate via hooks.", "coder")
-  Task("Database agent", "Design and implement database schema. Store decisions in memory.", "code-analyzer")
-  Task("Tester agent", "Create comprehensive test suite with 90% coverage.", "tester")
-  Task("Reviewer agent", "Review code quality and security. Document findings.", "reviewer")
-  
-  // Batch ALL todos in ONE call
-  TodoWrite { todos: [
-    {id: "1", content: "Research API patterns", status: "in_progress", priority: "high"},
-    {id: "2", content: "Design database schema", status: "in_progress", priority: "high"},
-    {id: "3", content: "Implement authentication", status: "pending", priority: "high"},
-    {id: "4", content: "Build REST endpoints", status: "pending", priority: "high"},
-    {id: "5", content: "Write unit tests", status: "pending", priority: "medium"},
-    {id: "6", content: "Integration tests", status: "pending", priority: "medium"},
-    {id: "7", content: "API documentation", status: "pending", priority: "low"},
-    {id: "8", content: "Performance optimization", status: "pending", priority: "low"}
-  ]}
-  
-  // Parallel file operations
-  Bash "mkdir -p app/{src,tests,docs,config}"
-  Write "app/package.json"
-  Write "app/src/server.js"
-  Write "app/tests/server.test.js"
-  Write "app/docs/API.md"
-```
-
-### ❌ WRONG (Multiple Messages):
-```javascript
-Message 1: mcp__claude-flow__swarm_init
-Message 2: Task("agent 1")
-Message 3: TodoWrite { todos: [single todo] }
-Message 4: Write "file.js"
-// This breaks parallel coordination!
-```
-
-## Performance Benefits
-
-- **84.8% SWE-Bench solve rate**
-- **32.3% token reduction**
-- **2.8-4.4x speed improvement**
-- **27+ neural models**
-
-## Hooks Integration
-
-### Pre-Operation
-- Auto-assign agents by file type
-- Validate commands for safety
-- Prepare resources automatically
-- Optimize topology by complexity
-- Cache searches
-
-### Post-Operation
-- Auto-format code
-- Train neural patterns
-- Update memory
-- Analyze performance
-- Track token usage
-
-### Session Management
-- Generate summaries
-- Persist state
-- Track metrics
-- Restore context
-- Export workflows
-
-## Advanced Features (v2.0.0)
-
-- 🚀 Automatic Topology Selection
-- ⚡ Parallel Execution (2.8-4.4x speed)
-- 🧠 Neural Training
-- 📊 Bottleneck Analysis
-- 🤖 Smart Auto-Spawning
-- 🛡️ Self-Healing Workflows
-- 💾 Cross-Session Memory
-- 🔗 GitHub Integration
-
-## Integration Tips
-
-1. Start with basic swarm init
-2. Scale agents gradually
-3. Use memory for context
-4. Monitor progress regularly
-5. Train patterns from success
-6. Enable hooks automation
-7. Use GitHub tools first
-
-## Support
-
-- Documentation: https://github.com/ruvnet/claude-flow
-- Issues: https://github.com/ruvnet/claude-flow/issues
-- Flow-Nexus Platform: https://flow-nexus.ruv.io (registration required for cloud features)
-
----
-
-Remember: **Claude Flow coordinates, Claude Code creates!**
-
-# important-instruction-reminders
-Do what has been asked; nothing more, nothing less.
-NEVER create files unless they're absolutely necessary for achieving your goal.
-ALWAYS prefer editing an existing file to creating a new one.
-NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.
-Never save working files, text/mds and tests to the root folder.
-## Project Overview
-
-Orleans.GpuBridge.Core is a .NET library that enables **GPU-native distributed computing** for Microsoft Orleans. This project represents a **paradigm shift** from traditional CPU-based actor systems to actors that live permanently on the GPU.
-
-### The GPU-Native Actor Paradigm
-
-**Revolutionary Concept**: Instead of CPU actors that offload work to GPU, Orleans.GpuBridge.Core enables actors that **reside entirely in GPU memory** and process messages at sub-microsecond latencies.
-
-**Key Technologies**:
-- **Ring Kernels**: Persistent GPU kernels running infinite dispatch loops (launched once, run forever)
-- **Temporal Alignment on GPU**: HLC and Vector Clocks maintained entirely on GPU (20ns vs 50ns CPU)
-- **GPU-to-GPU Messaging**: Actors communicate without CPU involvement (100-500ns latency)
+Orleans.GpuBridge.Core is a .NET 9 library enabling **GPU-native distributed computing** for Microsoft Orleans. This project represents a paradigm shift from traditional CPU-based actor systems to actors that can live permanently on the GPU.
+
+### Key Technologies
+- **Ring Kernels**: Persistent GPU kernels running infinite dispatch loops
+- **Temporal Alignment**: HLC and Vector Clocks for distributed ordering
+- **GPU-to-GPU Messaging**: Actors communicate at 100-500ns latency (datacenter GPUs)
 - **Hypergraph Actors**: Multi-way relationships with GPU-accelerated pattern matching
-- **Knowledge Organisms**: Emergent intelligence from actor interactions
+- **DotCompute Backend**: .NET-native GPU compute abstraction
 
-**Performance Breakthrough**:
-- Message latency: 100-500ns (GPU-native) vs 10-100μs (CPU actors) = **20-200× faster**
-- Throughput: 2M messages/s/actor vs 15K messages/s = **133× improvement**
-- Memory bandwidth: 1,935 GB/s (on-die GPU) vs 200 GB/s (CPU) = **10× improvement**
-- Temporal ordering: 20ns (GPU) vs 50ns (CPU) = **2.5× faster**
+## Build Commands
 
-This enables entirely new application classes:
-- Real-time hypergraph analytics (<100μs pattern detection)
-- Digital twins as living entities (physics-accurate at 100-500ns latency)
-- Temporal pattern detection (fraud detection with causal ordering)
-- Knowledge organisms (emergent intelligence from distributed actors)
-
-## Architecture Overview
-
-### Core Components
-
-1. **Orleans.GpuBridge.Abstractions** - Defines core interfaces and contracts:
-   - `IGpuBridge` - Main bridge interface for GPU operations
-   - `IGpuKernel<TIn,TOut>` - Kernel execution contract
-   - `[GpuAccelerated]` attribute for grain marking
-   - Configuration via `GpuBridgeOptions`
-   - Temporal clock interfaces (HLC, Vector Clocks)
-
-2. **Orleans.GpuBridge.Runtime** - Runtime implementation:
-   - `KernelCatalog` - Manages kernel registration and execution
-   - `DeviceBroker` - GPU device management
-   - DI integration via `AddGpuBridge()` extension method
-   - Placement strategies for GPU-aware grain placement
-   - Ring kernel lifecycle management
-
-3. **Orleans.GpuBridge.BridgeFX** - High-level pipeline API:
-   - `GpuPipeline<TIn,TOut>` - Fluent API for batch processing
-   - Automatic partitioning and result aggregation
-   - Temporal pattern detection pipelines
-
-4. **Orleans.GpuBridge.Grains** - Orleans grain implementations:
-   - `GpuBatchGrain` - Batch processing grain (GPU-offload model)
-   - `GpuResidentGrain` - GPU-resident data grain (GPU-native model)
-   - `GpuStreamGrain` - Stream processing grain
-   - `HypergraphVertexGrain` - Vertex actor with GPU-native state
-   - `HypergraphHyperedgeGrain` - Hyperedge actor for multi-way relationships
-
-5. **GPU-Native Actor Components**:
-   - Ring kernel dispatch loops (persistent GPU threads)
-   - GPU-resident message queues (lock-free on GPU)
-   - Temporal clock state (HLC/Vector Clocks in GPU memory)
-   - Hypergraph structures (CSR format in GPU memory)
-
-### Key Design Patterns
-
-**Service Registration Pattern:**
-```csharp
-services.AddGpuBridge(options => options.PreferGpu = true)
-        .AddKernel(k => k.Id("kernels/VectorAdd")
-                        .In<float[]>().Out<float>()
-                        .FromFactory(sp => new CustomKernel()));
-```
-
-**Pipeline Execution Pattern:**
-```csharp
-var results = await GpuPipeline<TIn,TOut>
-    .For(grainFactory, "kernel-id")
-    .WithBatchSize(batchSize)
-    .ExecuteAsync(data);
-```
-
-## Development Commands
-
-Since the project currently lacks build configuration files, you'll need to create them first:
-
-### Initial Setup (Required)
-```bash
-# Create solution file
-dotnet new sln -n Orleans.GpuBridge.Core
-
-# Create project files for each component
-cd src/Orleans.GpuBridge.Abstractions
-dotnet new classlib -n Orleans.GpuBridge.Abstractions -f net9.0
-cd ../Orleans.GpuBridge.Runtime
-dotnet new classlib -n Orleans.GpuBridge.Runtime -f net9.0
-cd ../Orleans.GpuBridge.BridgeFX
-dotnet new classlib -n Orleans.GpuBridge.BridgeFX -f net9.0
-cd ../Orleans.GpuBridge.Grains
-dotnet new classlib -n Orleans.GpuBridge.Grains -f net9.0
-
-# Add projects to solution
-cd ../..
-dotnet sln add src/**/*.csproj
-```
-
-### Standard Commands (after setup)
 ```bash
 # Build the solution
 dotnet build
 
-# Run tests (when added)
+# Run all tests
 dotnet test
+
+# Run specific test project
+dotnet test tests/Orleans.GpuBridge.Runtime.Tests
+dotnet test tests/Orleans.GpuBridge.Temporal.Tests
+
+# Build in release mode
+dotnet build -c Release
 
 # Create NuGet packages
 dotnet pack
-
-# Clean build artifacts
-dotnet clean
 ```
 
-## Project Status and Implementation Notes
+## Test Suite Status (as of December 2024)
 
-### Current State
-- **Core abstractions**: Complete
-- **Runtime infrastructure**: Basic implementation with CPU fallbacks
-- **GPU execution**: Not yet implemented (all kernels use CPU fallback)
-- **Testing**: No test projects exist yet
-- **Build configuration**: Missing .csproj and .sln files
+| Project | Passed | Skipped | Total |
+|---------|--------|---------|-------|
+| Abstractions.Tests | 242 | 0 | 242 |
+| Runtime.Tests | 202 | 0 | 202 |
+| Temporal.Tests | 286 | 6 | 292 |
+| Grains.Tests | 98 | 0 | 98 |
+| Generators.Tests | 22 | 0 | 22 |
+| Hardware.Tests | 34 | 3 | 37 |
+| Backends.DotCompute.Tests | 58 | 0 | 58 |
+| Performance.Tests | 0 | 5 | 5 |
+| Integration.Tests | 19 | 3 | 22 |
+| **Total** | **961** | **17** | **978** |
 
-### CPU Fallback System
-All GPU kernels currently fall back to CPU implementations. The `KernelCatalog` manages this through:
-```csharp
-public async Task<TOut> ExecuteAsync<TIn, TOut>(string kernelId, TIn input)
-{
-    // Currently always uses CPU fallback
-    var kernel = ResolveKernel<TIn, TOut>(kernelId);
-    return await kernel.ExecuteAsync(input);
-}
+### Skipped Tests (with valid reasons)
+- **ConcurrentAccessTests**: IntervalTree thread-safety - requires implementation changes
+- **RingKernelIntegrationTests**: Requires GPU with `hostNativeAtomicSupported`
+- **Hardware CUDA tests**: GPU-dependent integration tests
+- **Performance tests**: Require GPU and Orleans silo infrastructure
+- **Integration tests**: Require full Orleans silo + GPU setup
+
+## Architecture
+
+### Core Components
+
+1. **Orleans.GpuBridge.Abstractions** - Interfaces and contracts
+2. **Orleans.GpuBridge.Runtime** - Runtime implementation, placement strategies
+3. **Orleans.GpuBridge.Grains** - Orleans grain implementations
+4. **Orleans.GpuBridge.Backends.DotCompute** - DotCompute GPU backend
+5. **Orleans.GpuBridge.BridgeFX** - High-level pipeline API
+
+### Implementation Status
+- ✅ Ring kernel infrastructure
+- ✅ GPU-resident message queues
+- ✅ Temporal alignment (HLC, Vector Clocks)
+- ✅ Hypergraph actors
+- ✅ Queue-depth aware placement
+- ✅ Adaptive load balancing
+- 🚧 DotCompute backend (EventDriven mode working)
+- 📋 GPUDirect Storage (planned)
+
+## Development Guidelines
+
+### Code Quality Requirements
+- .NET 9 patterns only
+- Production-grade code quality
+- Fix all build errors and warnings
+- No warning suppression unless absolutely necessary
+
+### Orleans-Specific Rules
+- **NO `.ConfigureAwait(false)`** in grain context
+- Respect grain single-threaded execution model
+- Use grain state and activation lifecycle properly
+- All GPU operations must be async
+
+### Testing Requirements
+- Write tests before implementation (TDD)
+- Maintain CPU fallbacks for all GPU operations
+- Use FluentAssertions for readable assertions
+- Use Moq for mocking
+
+## GPU Hardware Considerations
+
+### Current Development System
 ```
-
-### GPU-Native Actor Implementation
-The project implements two deployment models:
-
-**GPU-Offload Model** (Traditional):
-- CPU actors offload compute to GPU
-- Kernel launch overhead: ~10-50μs
-- Best for: Batch processing, infrequent GPU usage
-
-**GPU-Native Model** (Revolutionary):
-- Actors live permanently in GPU memory
-- Ring kernels process messages on GPU
-- Zero kernel launch overhead
-- Sub-microsecond latency: 100-500ns
-- Best for: High-frequency messaging, temporal graphs, real-time analytics
-
-**Implementation Status**:
-- Ring kernel infrastructure: ✅ Implemented
-- GPU-resident message queues: ✅ Implemented
-- Temporal alignment on GPU: ✅ Implemented (HLC, Vector Clocks)
-- Hypergraph actors: ✅ Implemented
-- DotCompute backend: 🚧 In progress
-- Queue-depth aware placement: 🚧 In progress
-- GPUDirect Storage: 📋 Planned
-
-## Key Files to Understand
-
-### Service Registration and DI
-- `src/Orleans.GpuBridge.Runtime/ServiceCollectionExtensions.cs` - Entry point for service configuration
-- `src/Orleans.GpuBridge.Runtime/KernelCatalog.cs` - Kernel registration and resolution
-
-### Core Interfaces
-- `src/Orleans.GpuBridge.Abstractions/IGpuBridge.cs` - Main bridge contract
-- `src/Orleans.GpuBridge.Abstractions/IGpuKernel.cs` - Kernel execution interface
-
-### High-Level API
-- `src/Orleans.GpuBridge.BridgeFX/GpuPipeline.cs` - Fluent pipeline API implementation
-
-### Orleans Integration
-- `src/Orleans.GpuBridge.Grains/GpuBatchGrain.cs` - Primary grain for batch processing
-- `src/Orleans.GpuBridge.Runtime/Placement/*.cs` - GPU-aware placement strategies
-
-## Development Priorities
-
-When implementing new features:
-
-1. **Maintain CPU fallback**: Always provide CPU implementations for GPU kernels
-2. **Follow Orleans patterns**: Use grain state, activation lifecycle properly
-3. **Async throughout**: All GPU operations should be async
-4. **Batch optimization**: Design for batch processing efficiency
-5. **Resource management**: Proper GPU resource cleanup in `Dispose()` methods
-
-## Testing Strategy
-
-When adding tests:
-```bash
-# Create test projects
-dotnet new xunit -n Orleans.GpuBridge.Abstractions.Tests
-dotnet new xunit -n Orleans.GpuBridge.Runtime.Tests
-
-# Add Orleans TestingHost for grain testing
-dotnet add package Microsoft.Orleans.TestingHost
-```
-
-Test priorities:
-1. Kernel registration and resolution
-2. CPU fallback execution
-3. Pipeline batch processing
-4. Grain activation and placement
-5. Resource cleanup
-
-## Documentation Structure
-
-- `docs/starter-kit/DESIGN.md` - Core architecture overview
-- `docs/starter-kit/ABSTRACTION.md` - BridgeFX pipeline details
-- `docs/starter-kit/KERNELS.md` - Kernel implementation guide
-- `docs/starter-kit/OPERATIONS.md` - Operational considerations
-- `docs/starter-kit/ROADMAP.md` - Future development plans
-
-## Dependencies
-
-Key NuGet packages to add when creating .csproj files:
-- Microsoft.Orleans.Core
-- Microsoft.Orleans.Runtime
-- Microsoft.Extensions.DependencyInjection
-- Microsoft.Extensions.Hosting
-- Microsoft.Extensions.Logging
-- Microsoft.Extensions.Options
-
-## Important Implementation Considerations
-
-1. **Thread Safety**: All kernel implementations must be thread-safe
-2. **Memory Management**: GPU memory must be properly managed and released
-3. **Error Handling**: GPU operations can fail - proper fallback to CPU required
-4. **Performance**: Batch size optimization is critical for GPU efficiency
-5. **Orleans Constraints**: Respect grain single-threaded execution model
-
-QUALITY CODE USING LATEST .NET 9 PATTERNS ONLY. NO SHORT CUTS. NO COMPROMISES. ALWAYS PRODUCTION GRADE CODE! QUALITY IS KEY. FIX ALL BUILD ERRORS. FIX ALL BUILD WARNINGS. NO SUPRESSION OF WARNINGS (EXCEPT IT REALLY DOESNT MAKE SENSE). THIS SYSTEM IS EQUIPPED WITH A RTX CARD THAT CAN BE USED FOR GPU TESTING.
-
-DOTCOMPUTE IS MAINTAINED AND DEVELOPED FROM US. IF YOU NEED TO SEARCH FOR THE DOTCOMPUTE SOURCE CODE -> \home\mivertowski\DotCompute\DotCompute
-
-DOTCOMPUTE FEATURE REQUESTS: CREATE A DOCUMENT WITH THE REQUEST AND INFORM THE USER.
-
-NO .ConfigureAwait(false) calls in grain context.
-
-When testing cuda runtime related features on this machine (WSL2 with RTX installed) -> set export LD_LIBRARY_PATH="/usr/lib/wsl/lib:$LD_LIBRARY_PATH"
-
-## ⚠️ GPU CPU-GPU Atomic Coherence Requirements (CRITICAL KNOWLEDGE)
-
-### The Fundamental Problem
-
-Persistent kernel mode with CPU-GPU message passing requires **fine-grained atomic coherence** between CPU and GPU. This is a hardware capability that varies by GPU:
-
-```bash
-# Check your GPU's capabilities
-nvidia-smi -q | grep -E "Product Name"
-# Then run a CUDA program to check:
-# cudaDeviceProp.hostNativeAtomicSupported
-# cudaDeviceProp.directManagedMemAccessFromHost
+GPU: RTX 2000 Ada Laptop
+Compute Capability: 8.9
+hostNativeAtomicSupported: 0 (No CPU-GPU atomic coherence)
 ```
 
 ### GPU Categories for Ring Kernel Support
 
-1. **Full Coherence GPUs** (`hostNativeAtomicSupported=1`):
-   - NVIDIA A100, H100, datacenter GPUs
-   - True system-scope atomics work
-   - Persistent kernels can poll CPU-written memory
+1. **Full Coherence GPUs** (A100, H100, Grace Hopper)
+   - `hostNativeAtomicSupported=1`
+   - Persistent kernels work
    - Target latency: 100-500ns
 
-2. **Partial Coherence GPUs** (`concurrentManagedAccess=1`, `hostNativeAtomicSupported=0`):
-   - Most consumer/laptop GPUs (RTX 2000/3000/4000 series)
-   - CPU and GPU can access same memory, but NO atomic coherence
-   - Persistent kernels CANNOT see CPU writes in real-time
-   - Must use EventDriven mode (kernel launch per batch)
+2. **Partial Coherence GPUs** (RTX 2000/3000/4000 series)
+   - `concurrentManagedAccess=1`, `hostNativeAtomicSupported=0`
+   - Must use EventDriven mode
+   - Latency: 1-10ms (batched)
 
-3. **No Coherence** (WSL2, older GPUs):
-   - WSL2's GPU-PV layer
-   - Pre-Pascal GPUs
+3. **WSL2/Limited GPUs**
    - Most limited, EventDriven only
+   - Development use only
 
-### Current System: RTX 2000 Ada Laptop GPU
-
-```
-Compute Capability: 8.9
-Concurrent Managed Access: 1
-hostNativeAtomicSupported: 0      ❌ No CPU-GPU atomic coherence
-directManagedMemAccessFromHost: 0 ❌ No direct managed access
+### CUDA Testing on WSL2
+```bash
+export LD_LIBRARY_PATH="/usr/lib/wsl/lib:$LD_LIBRARY_PATH"
 ```
 
-**This GPU does NOT support persistent kernel polling mode.**
+## DotCompute Integration
 
-### What Doesn't Work (Without `hostNativeAtomicSupported`)
-
-1. **System-Scope Atomics for CPU→GPU signaling**
-   ```cuda
-   // GPU kernel code - system atomics compile but don't see CPU writes
-   using system_atomic = cuda::atomic<uint, cuda::thread_scope_system>;
-   system_atomic* tail;  // GPU never sees CPU writes to this!
-   tail->load();         // Always returns stale value
-   ```
-
-2. **Persistent Kernel Mode**
-   ```cuda
-   // This pattern FAILS without hostNativeAtomicSupported:
-   __global__ void PersistentKernel(MessageQueue* queue) {
-       while (is_active) {
-           // CPU advances queue->tail, but GPU NEVER sees it change
-           if (!queue->is_empty()) {  // Always returns true (empty)
-               process(queue->dequeue());
-           }
-       }
-   }
-   ```
-
-### What DOES Work on All GPUs
-
-1. **EventDriven Mode**: Kernel starts → processes available messages → terminates
-2. **Batch Processing**: Enqueue N messages, launch kernel, process all, terminate
-3. **Host-side Control**: All queue state set BEFORE kernel launch
-
-### Recommended Implementation Strategy
-
-For GPUs without `hostNativeAtomicSupported`:
-
-```csharp
-// EventDriven pattern
-while (!shutdown)
-{
-    // 1. CPU accumulates messages in host queue
-    while (hostQueue.HasMessages && batchSize < MaxBatch)
-    {
-        gpuBuffer.WriteMessage(hostQueue.Dequeue());
-        batchSize++;
-    }
-
-    // 2. Launch short-lived kernel to process batch
-    if (batchSize > 0)
-    {
-        kernel.Launch(gpuBuffer, batchSize);
-        kernel.WaitForCompletion();
-        ProcessOutputs();
-    }
-
-    // 3. Small delay to batch more messages
-    await Task.Delay(1); // ~1ms batching window
-}
+DotCompute source code location:
+```
+/home/mivertowski/DotCompute/DotCompute
 ```
 
-**Expected latency**: 1-10ms (batching overhead) instead of 100-500ns
+For DotCompute feature requests, create a document in `docs/dotcompute-feature-requests.md`.
 
-### Performance Comparison by GPU Type
+## File Organization
 
-| Metric | Full Coherence GPU | Partial Coherence | WSL2 |
-|--------|-------------------|-------------------|------|
-| Persistent kernel | ✅ Works | ❌ Fails | ❌ Fails |
-| Message latency | 100-500ns | 1-10ms (batched) | ~5s (workaround) |
-| System atomics | ✅ Reliable | ❌ CPU→GPU broken | ❌ Unreliable |
-| Kernel launches | 1 (persistent) | Many (per batch) | Many |
-| Use case | Production HFT | Production general | Development |
+```
+/src                    - Source code
+/tests                  - Test projects
+/docs                   - Documentation
+```
 
-### Where to Find Full Coherence GPUs
+**Never save working files to the root folder.**
 
-**Datacenter GPUs with `hostNativeAtomicSupported=1`:**
-- NVIDIA A100 (Ampere datacenter)
-- NVIDIA H100 (Hopper)
-- NVIDIA Grace Hopper Superchip
+## Key Files
 
-**Consumer GPUs typically lack this feature** due to cost/complexity.
+### Service Registration
+- `src/Orleans.GpuBridge.Runtime/ServiceCollectionExtensions.cs`
 
-### WSL2-Specific Limitations (Additional)
+### Placement Strategies
+- `src/Orleans.GpuBridge.Runtime/Placement/QueueDepthPlacementDirector.cs`
+- `src/Orleans.GpuBridge.Runtime/Placement/AdaptiveLoadBalancer.cs`
 
-WSL2's GPU-PV layer has additional limitations beyond the hardware:
-- Unified memory spill to system RAM doesn't work
-- Page faulting not supported
+### Temporal Infrastructure
+- `src/Orleans.GpuBridge.Runtime/Temporal/Clock/HybridLogicalClock.cs`
+- `src/Orleans.GpuBridge.Runtime/Temporal/Network/NetworkLatencyCompensator.cs`
 
-**Microsoft WSL Issues:**
-- [Issue #7198](https://github.com/microsoft/wslg/issues/357) - Shared memory between system and VRAM
-- [Issue #8447](https://github.com/microsoft/WSL/issues/8447) - CUDA out of memory issues
-
-### Key Insight for Architecture
-
-The GPU-native actor paradigm (100-500ns latency, 2M msgs/s) requires:
-- True CPU-GPU memory coherence (`hostNativeAtomicSupported=1`)
-- Persistent kernel mode (kernel runs forever, polls for messages)
-
-**Most consumer/laptop GPUs cannot achieve this.** Design for:
-1. EventDriven mode as the default
-2. Persistent mode as an optimization for capable hardware
-3. Runtime detection of GPU capabilities
+### Ring Kernel Infrastructure
+- `src/Orleans.GpuBridge.Runtime/RingKernel/RingKernelManager.cs`
+- `src/Orleans.GpuBridge.Runtime/RingKernel/IRingKernelRuntime.cs`

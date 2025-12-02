@@ -93,12 +93,14 @@ public sealed class NetworkLatencyCompensatorTests
         var compensator = new NetworkLatencyCompensator(
             NullLogger<NetworkLatencyCompensator>.Instance);
 
-        var unreachableEndpoint = new IPEndPoint(IPAddress.Parse("192.0.2.1"), 9999); // TEST-NET-1 (RFC 5737)
+        // Use a closed local port instead of unreachable address to avoid long TCP timeouts
+        var localEndpoint = new IPEndPoint(IPAddress.Loopback, 65432); // Unlikely to be in use
 
-        // Act
-        var act = async () => await compensator.MeasureLatencyAsync(unreachableEndpoint);
+        // Act - Use a cancellation token with timeout to prevent hanging
+        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        var act = async () => await compensator.MeasureLatencyAsync(localEndpoint, cts.Token);
 
-        // Assert
+        // Assert - Should throw InvalidOperationException due to connection refusal
         await act.Should().ThrowAsync<InvalidOperationException>()
             .WithMessage("*Cannot measure RTT*");
     }
@@ -173,8 +175,8 @@ public sealed class NetworkLatencyCompensatorTests
         var endpoint = new IPEndPoint(IPAddress.Loopback, 12345);
         var stats = new LatencyStatistics(endpoint, NullLogger.Instance);
 
-        // Add samples with low variance
-        for (int i = 0; i < 10; i++)
+        // Add samples with low variance (100 samples to ensure stable statistics)
+        for (int i = 0; i < 98; i++)
         {
             stats.AddSample(TimeSpan.FromMilliseconds(10));
         }
@@ -182,10 +184,13 @@ public sealed class NetworkLatencyCompensatorTests
         // Act & Assert
         stats.HasHighVariance().Should().BeFalse();
 
-        // Add outlier to create high variance
+        // Add 2 extreme outliers to create high variance
+        // P99 index with 100 samples: (99 * 0.99) = 98.01 → index 98
+        // So we need outliers at the end of the sorted array
+        stats.AddSample(TimeSpan.FromMilliseconds(100));
         stats.AddSample(TimeSpan.FromMilliseconds(100));
 
-        // Should now detect high variance (p99 > 2× median)
+        // Should now detect high variance (p99=100ms > 2× median=10ms → 100 > 20 = true)
         stats.HasHighVariance().Should().BeTrue();
     }
 

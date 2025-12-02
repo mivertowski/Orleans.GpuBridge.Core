@@ -224,30 +224,54 @@ public sealed class QueueDepthMonitorTests : IDisposable
         metrics.TotalThroughput.Should().Be(6000);
     }
 
-    [Fact(Skip = "P99 latency calculation not yet implemented in QueueDepthMonitor aggregation")]
+    [Fact]
     public async Task GetAggregatedMetricsAsync_CalculatesP99LatencyCorrectly()
     {
-        // Arrange
-        var kernelIds = Enumerable.Range(0, 100).Select(i => $"kernel-{i}").ToList();
+        // Arrange - Use 10 kernels with increasing latencies to verify P99 calculation
+        // P99 of 10 items = index 9 (last item = highest latency)
+        var kernelIds = new List<string>
+        {
+            "kernel-0", "kernel-1", "kernel-2", "kernel-3", "kernel-4",
+            "kernel-5", "kernel-6", "kernel-7", "kernel-8", "kernel-9"
+        };
         _mockRuntime.Setup(r => r.ListKernelsAsync())
             .ReturnsAsync(kernelIds);
 
-        for (int i = 0; i < 100; i++)
-        {
-            var latencyMs = (i + 1) * 0.1; // 0.1ms to 10ms
-            _mockRuntime.Setup(r => r.GetMetricsAsync($"kernel-{i}", It.IsAny<CancellationToken>()))
-                .ReturnsAsync(CreateMockMetrics(0.5, 0.5, 100, 50, latencyMs));
-        }
+        // Latencies: 1ms, 2ms, 3ms, 4ms, 5ms, 6ms, 7ms, 8ms, 9ms, 10ms
+        // Avg = 5.5ms, P99 = 10ms (last element)
+        _mockRuntime.Setup(r => r.GetMetricsAsync("kernel-0", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(CreateMockMetrics(0.5, 0.5, 100, 50, 1.0));
+        _mockRuntime.Setup(r => r.GetMetricsAsync("kernel-1", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(CreateMockMetrics(0.5, 0.5, 100, 50, 2.0));
+        _mockRuntime.Setup(r => r.GetMetricsAsync("kernel-2", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(CreateMockMetrics(0.5, 0.5, 100, 50, 3.0));
+        _mockRuntime.Setup(r => r.GetMetricsAsync("kernel-3", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(CreateMockMetrics(0.5, 0.5, 100, 50, 4.0));
+        _mockRuntime.Setup(r => r.GetMetricsAsync("kernel-4", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(CreateMockMetrics(0.5, 0.5, 100, 50, 5.0));
+        _mockRuntime.Setup(r => r.GetMetricsAsync("kernel-5", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(CreateMockMetrics(0.5, 0.5, 100, 50, 6.0));
+        _mockRuntime.Setup(r => r.GetMetricsAsync("kernel-6", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(CreateMockMetrics(0.5, 0.5, 100, 50, 7.0));
+        _mockRuntime.Setup(r => r.GetMetricsAsync("kernel-7", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(CreateMockMetrics(0.5, 0.5, 100, 50, 8.0));
+        _mockRuntime.Setup(r => r.GetMetricsAsync("kernel-8", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(CreateMockMetrics(0.5, 0.5, 100, 50, 9.0));
+        _mockRuntime.Setup(r => r.GetMetricsAsync("kernel-9", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(CreateMockMetrics(0.5, 0.5, 100, 50, 10.0));
 
         // Act
         var metrics = await _monitor.GetAggregatedMetricsAsync();
 
         // Assert
-        // P99 should be near 99th percentile
+        // P99 should be the highest latency (10ms = 10_000_000 ns)
+        // Avg should be 5.5ms = 5_500_000 ns
         metrics.P99ProcessingLatencyNanos.Should().BeGreaterThan(metrics.AvgProcessingLatencyNanos);
+        metrics.P99ProcessingLatencyNanos.Should().Be(10_000_000); // 10ms in nanoseconds
+        metrics.AvgProcessingLatencyNanos.Should().BeApproximately(5_500_000, 100); // 5.5ms in nanoseconds
     }
 
-    [Fact(Skip = "Load imbalance detection (StdDev) not yet implemented in QueueDepthMonitor aggregation")]
+    [Fact]
     public async Task GetAggregatedMetricsAsync_DetectsLoadImbalance()
     {
         // Arrange
@@ -255,11 +279,11 @@ public sealed class QueueDepthMonitorTests : IDisposable
         _mockRuntime.Setup(r => r.ListKernelsAsync())
             .ReturnsAsync(kernelIds);
 
-        // Very unbalanced load
+        // Very unbalanced load - kernel-2 at 0.95 to trigger HasOverloadedKernel (> 0.9)
         _mockRuntime.Setup(r => r.GetMetricsAsync("kernel-1", It.IsAny<CancellationToken>()))
             .ReturnsAsync(CreateMockMetrics(0.1, 0.1, 1000, 20));
         _mockRuntime.Setup(r => r.GetMetricsAsync("kernel-2", It.IsAny<CancellationToken>()))
-            .ReturnsAsync(CreateMockMetrics(0.9, 0.9, 9000, 90));
+            .ReturnsAsync(CreateMockMetrics(0.95, 0.95, 9000, 90));
 
         // Act
         var metrics = await _monitor.GetAggregatedMetricsAsync();
@@ -267,7 +291,7 @@ public sealed class QueueDepthMonitorTests : IDisposable
         // Assert
         metrics.StdDevQueueUtilization.Should().BeGreaterThan(0.1);
         metrics.IsLoadBalanced.Should().BeFalse();
-        metrics.HasOverloadedKernel.Should().BeTrue();
+        metrics.HasOverloadedKernel.Should().BeTrue(); // MaxQueueUtilization (0.95) > 0.9
     }
 
     #endregion
@@ -549,12 +573,12 @@ public sealed class QueueDepthMonitorTests : IDisposable
 
     #region QueueDepthHistory Tests
 
-    [Fact(Skip = "Duration calculation requires timestamp implementation in QueueDepthHistory")]
+    [Fact]
     public void QueueDepthHistory_CalculatesDurationCorrectly()
     {
         // Arrange
-        var startNanos = 1000_000_000_000L; // 1 second
-        var endNanos = 6000_000_000_000L;   // 6 seconds
+        var startNanos = 1_000_000_000L; // 1 second (1 billion nanoseconds)
+        var endNanos = 6_000_000_000L;   // 6 seconds (6 billion nanoseconds)
 
         var history = new QueueDepthHistory
         {

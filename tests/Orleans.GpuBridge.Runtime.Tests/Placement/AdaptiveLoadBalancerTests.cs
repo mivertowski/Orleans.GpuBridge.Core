@@ -407,11 +407,23 @@ public sealed class AdaptiveLoadBalancerTests : IDisposable
         recommendation.Urgency.Should().Be(RebalanceUrgency.None);
     }
 
-    [Fact(Skip = "Rebalance detection not yet fully implemented in AdaptiveLoadBalancer")]
+    [Fact]
     public async Task EvaluateRebalanceAsync_WithImbalancedLoad_RecommendsMigration()
     {
         // Arrange
-        SetupVariedSnapshots(device0Util: 0.1, device1Util: 0.9, device2Util: 0.5);
+        // LoadScore = QueueUtil * 0.4 + GpuUtil * 0.3 + MemUtil * 0.3
+        // Need loadDiff > 0.4 to trigger High urgency
+        // Device 0: Q=0.0, GPU=0.2, Mem=0.2 → LoadScore = 0.0 + 0.06 + 0.06 = 0.12
+        // Device 1: Q=1.0, GPU=0.8, Mem=0.8 → LoadScore = 0.4 + 0.24 + 0.24 = 0.88
+        // Device 2: Q=0.5, GPU=0.5, Mem=0.5 → LoadScore = 0.2 + 0.15 + 0.15 = 0.50
+        // loadDiff = 0.88 - 0.12 = 0.76 > 0.4 ✓
+        _mockMonitor.Setup(m => m.GetQueueDepthAsync(null, 0, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(CreateSnapshot(0, 0.0, gpuUtil: 0.2, availableMemory: 6_400_000_000)); // 80% memory free = 20% used
+        _mockMonitor.Setup(m => m.GetQueueDepthAsync(null, 1, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(CreateSnapshot(1, 1.0, gpuUtil: 0.8, availableMemory: 1_600_000_000)); // 20% memory free = 80% used
+        _mockMonitor.Setup(m => m.GetQueueDepthAsync(null, 2, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(CreateSnapshot(2, 0.5, gpuUtil: 0.5, availableMemory: 4_000_000_000)); // 50% memory free = 50% used
+        SetupDefaultHistory();
 
         // Act
         var recommendation = await _balancer.EvaluateRebalanceAsync();
@@ -422,11 +434,20 @@ public sealed class AdaptiveLoadBalancerTests : IDisposable
         recommendation.Migrations.Should().NotBeEmpty();
     }
 
-    [Fact(Skip = "Critical urgency detection not yet fully implemented in AdaptiveLoadBalancer")]
+    [Fact]
     public async Task EvaluateRebalanceAsync_WithOverloadedDevice_ReturnsCriticalUrgency()
     {
         // Arrange
-        SetupVariedSnapshots(device0Util: 0.3, device1Util: 0.95, device2Util: 0.3);
+        // LoadScore = QueueUtil * 0.4 + GpuUtil * 0.3 + MemUtil * 0.3
+        // Need maxLoad > 0.9 to trigger Critical urgency
+        // Device 1: Q=1.0, GPU=1.0, Mem=1.0 → LoadScore = 0.4 + 0.3 + 0.3 = 1.0 > 0.9 ✓
+        _mockMonitor.Setup(m => m.GetQueueDepthAsync(null, 0, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(CreateSnapshot(0, 0.3, gpuUtil: 0.3, availableMemory: 5_600_000_000)); // 70% memory free
+        _mockMonitor.Setup(m => m.GetQueueDepthAsync(null, 1, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(CreateSnapshot(1, 1.0, gpuUtil: 1.0, availableMemory: 0)); // 100% memory used, 100% GPU, 100% queue
+        _mockMonitor.Setup(m => m.GetQueueDepthAsync(null, 2, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(CreateSnapshot(2, 0.3, gpuUtil: 0.3, availableMemory: 5_600_000_000)); // 70% memory free
+        SetupDefaultHistory();
 
         // Act
         var recommendation = await _balancer.EvaluateRebalanceAsync();

@@ -116,7 +116,7 @@ public class ConcurrentAccessTests
         _output.WriteLine($"  Thread-safety: VERIFIED");
     }
 
-    [Fact(Skip = "IntervalTree in TemporalGraphStorage needs synchronization for concurrent edge insertion")]
+    [Fact]
     public async Task TemporalGraph_ConcurrentEdgeInsertion()
     {
         // Arrange: Multiple threads inserting edges concurrently
@@ -155,7 +155,7 @@ public class ConcurrentAccessTests
         _output.WriteLine($"  Data integrity: VERIFIED");
     }
 
-    [Fact(Skip = "IntervalTree in TemporalGraphStorage needs synchronization - queries during insertions")]
+    [Fact]
     public async Task TemporalGraph_ConcurrentQueries()
     {
         // Arrange: Populate graph
@@ -210,7 +210,7 @@ public class ConcurrentAccessTests
         _output.WriteLine($"  Query consistency: VERIFIED");
     }
 
-    [Fact(Skip = "IntervalTree in TemporalGraphStorage needs synchronization for concurrent mixed operations")]
+    [Fact]
     public async Task TemporalGraph_ConcurrentMixedOperations()
     {
         // Arrange: Mix of insertions and queries
@@ -320,7 +320,7 @@ public class ConcurrentAccessTests
         _output.WriteLine($"  AVL tree balance: MAINTAINED");
     }
 
-    [Fact(Skip = "IntervalTree/TemporalGraphStorage is not thread-safe - concurrent writes cause stack overflow from tree corruption")]
+    [Fact]
     public async Task StressTest_HighContentionScenario()
     {
         // Arrange: Extreme contention scenario

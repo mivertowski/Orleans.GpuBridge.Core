@@ -13,7 +13,8 @@
     <!-- CS8669: Source generator doesn't emit #nullable directive (known DotCompute generator issue) -->
     <!-- CS1591: Source generator doesn't create XML comments for generated code -->
     <!-- IL2095: DotCompute message queue AOT trim analysis - will be fixed in DotCompute source -->
-    <NoWarn>$(NoWarn);CS8669;CS1591;DC002;DC004;DC005;DC009;DC010;DC011;DC0004;DC0005;IL2095</NoWarn>
+    <!-- CS9057: Analyzer version mismatch - DotCompute.Generators requires newer compiler -->
+    <NoWarn>$(NoWarn);CS8669;CS1591;CS9057;DC002;DC004;DC005;DC009;DC010;DC011;DC0004;DC0005;IL2095</NoWarn>
     <!-- Disable DotCompute CUDA serialization generation - we use CustomRingKernelRuntimeFactory instead -->
     <DotComputeGenerateCudaSerialization>false</DotComputeGenerateCudaSerialization>
   </PropertyGroup>
@@ -46,16 +47,17 @@
 
   <ItemGroup>
     <!-- DotCompute Framework v0.5.1 (Stable NuGet Release) -->
-    <!-- Features: Message queues, Timing API, Ring Kernels, Barriers, Memory Ordering -->
-    <PackageReference Include="DotCompute.Abstractions" Version="0.5.1" />
-    <PackageReference Include="DotCompute.Core" Version="0.5.1" />
-    <PackageReference Include="DotCompute.Runtime" Version="0.5.1" />
-    <PackageReference Include="DotCompute.Backends.CPU" Version="0.5.1" />
-    <PackageReference Include="DotCompute.Backends.CUDA" Version="0.5.1" />
+    <!-- DotCompute Project References - Using local source for development/debugging -->
+    <!-- Switch back to PackageReferences for production builds -->
+    <ProjectReference Include="/home/michael/DEV/Repos/DotCompute/DotCompute/src/Core/DotCompute.Abstractions/DotCompute.Abstractions.csproj" />
+    <ProjectReference Include="/home/michael/DEV/Repos/DotCompute/DotCompute/src/Core/DotCompute.Core/DotCompute.Core.csproj" />
+    <ProjectReference Include="/home/michael/DEV/Repos/DotCompute/DotCompute/src/Runtime/DotCompute.Runtime/DotCompute.Runtime.csproj" />
+    <ProjectReference Include="/home/michael/DEV/Repos/DotCompute/DotCompute/src/Backends/DotCompute.Backends.CPU/DotCompute.Backends.CPU.csproj" />
+    <ProjectReference Include="/home/michael/DEV/Repos/DotCompute/DotCompute/src/Backends/DotCompute.Backends.CUDA/DotCompute.Backends.CUDA.csproj" />
 
     <!-- DotCompute Source Generators -->
     <!-- Note: RingKernelRuntimeFactory.g.cs is excluded because we use CustomRingKernelRuntimeFactory instead -->
-    <PackageReference Include="DotCompute.Generators" Version="0.5.1" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
+    <ProjectReference Include="/home/michael/DEV/Repos/DotCompute/DotCompute/src/Runtime/DotCompute.Generators/DotCompute.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 
     <!-- Orleans Dependencies -->
     <PackageReference Include="Microsoft.Orleans.Core" Version="9.2.1" />

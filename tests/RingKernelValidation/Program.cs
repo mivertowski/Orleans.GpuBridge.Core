@@ -5,10 +5,10 @@ using DotCompute.Abstractions.RingKernels;
 using DotCompute.Backends.CUDA.Compilation;
 using DotCompute.Backends.CUDA.RingKernels;
 using DotCompute.Core.Messaging;
-using DotCompute.Generated;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Orleans.GpuBridge.Backends.DotCompute.Temporal;
+using Orleans.GpuBridge.Backends.DotCompute.Generated;
 
 namespace RingKernelValidation;
 
@@ -107,7 +107,7 @@ class Program
         {
             // Step 1: Create CPU ring kernel runtime
             logger.LogInformation("Step 1: Creating CPU ring kernel runtime...");
-            var runtime = RingKernelRuntimeFactory.CreateRuntime("CPU", loggerFactory);
+            var runtime = CustomRingKernelRuntimeFactory.CreateRuntime("CPU", loggerFactory);
             logger.LogInformation("✓ Runtime created successfully");
             Console.WriteLine();
 

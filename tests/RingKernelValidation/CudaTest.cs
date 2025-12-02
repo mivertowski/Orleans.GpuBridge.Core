@@ -5,7 +5,6 @@ using DotCompute.Abstractions.RingKernels;
 using DotCompute.Backends.CUDA.Compilation;
 using DotCompute.Backends.CUDA.RingKernels;
 using DotCompute.Core.Messaging;
-using DotCompute.Generated;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Orleans.GpuBridge.Backends.DotCompute.Temporal;
@@ -60,11 +59,15 @@ public static class CudaTest
 
             // Step 2: Create CUDA ring kernel runtime directly
             logger.LogInformation("Step 2: Creating CUDA ring kernel runtime...");
+            // IMPORTANT: Include RingKernelHandlerTranslator to enable Strategy 2 (unified API translation)
+            // This avoids the DotCompute.Generators.dll dependency issue
+            var handlerTranslator = new RingKernelHandlerTranslator(NullLogger<RingKernelHandlerTranslator>.Instance);
             var compiler = new CudaRingKernelCompiler(
                 NullLogger<CudaRingKernelCompiler>.Instance,
                 new RingKernelDiscovery(NullLogger<RingKernelDiscovery>.Instance),
                 new CudaRingKernelStubGenerator(NullLogger<CudaRingKernelStubGenerator>.Instance),
-                new CudaMemoryPackSerializerGenerator(NullLogger<CudaMemoryPackSerializerGenerator>.Instance));
+                new CudaMemoryPackSerializerGenerator(NullLogger<CudaMemoryPackSerializerGenerator>.Instance),
+                handlerTranslator); // Pass the translator!
             var registry = new MessageQueueRegistry(NullLogger<MessageQueueRegistry>.Instance);
             var runtime = new CudaRingKernelRuntime(
                 NullLogger<CudaRingKernelRuntime>.Instance,

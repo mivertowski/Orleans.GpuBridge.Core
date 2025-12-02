@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE file for details.
 
 using System;
+using System.Runtime.InteropServices;
 using DotCompute.Abstractions.Messaging;
 using MemoryPack;
 
@@ -42,6 +43,7 @@ public enum VectorOperation
 /// </para>
 /// </remarks>
 [MemoryPackable]
+[StructLayout(LayoutKind.Sequential, Pack = 1)] // Force packed layout for CUDA compatibility
 public partial struct VectorAddProcessorRingRequest : IRingKernelMessage
 {
     // Message metadata
@@ -87,6 +89,7 @@ public partial struct VectorAddProcessorRingRequest : IRingKernelMessage
 /// Uses ONLY primitives for CUDA serialization compatibility.
 /// </remarks>
 [MemoryPackable]
+[StructLayout(LayoutKind.Sequential, Pack = 1)] // Force packed layout for CUDA compatibility
 public partial struct VectorAddProcessorRingResponse : IRingKernelMessage
 {
     // Message metadata

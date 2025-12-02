@@ -596,96 +596,145 @@ NO .ConfigureAwait(false) calls in grain context.
 
 When testing cuda runtime related features on this machine (WSL2 with RTX installed) -> set export LD_LIBRARY_PATH="/usr/lib/wsl/lib:$LD_LIBRARY_PATH"
 
-## ⚠️ WSL2 GPU Memory Limitations (CRITICAL KNOWLEDGE)
+## ⚠️ GPU CPU-GPU Atomic Coherence Requirements (CRITICAL KNOWLEDGE)
 
 ### The Fundamental Problem
 
-WSL2's GPU virtualization layer (GPU-PV) does NOT support true unified memory coherence between CPU and GPU. This has major implications for GPU-native actors.
+Persistent kernel mode with CPU-GPU message passing requires **fine-grained atomic coherence** between CPU and GPU. This is a hardware capability that varies by GPU:
 
-### What Doesn't Work in WSL2
+```bash
+# Check your GPU's capabilities
+nvidia-smi -q | grep -E "Product Name"
+# Then run a CUDA program to check:
+# cudaDeviceProp.hostNativeAtomicSupported
+# cudaDeviceProp.directManagedMemAccessFromHost
+```
 
-1. **System-Scope Atomics Are Unreliable**
+### GPU Categories for Ring Kernel Support
+
+1. **Full Coherence GPUs** (`hostNativeAtomicSupported=1`):
+   - NVIDIA A100, H100, datacenter GPUs
+   - True system-scope atomics work
+   - Persistent kernels can poll CPU-written memory
+   - Target latency: 100-500ns
+
+2. **Partial Coherence GPUs** (`concurrentManagedAccess=1`, `hostNativeAtomicSupported=0`):
+   - Most consumer/laptop GPUs (RTX 2000/3000/4000 series)
+   - CPU and GPU can access same memory, but NO atomic coherence
+   - Persistent kernels CANNOT see CPU writes in real-time
+   - Must use EventDriven mode (kernel launch per batch)
+
+3. **No Coherence** (WSL2, older GPUs):
+   - WSL2's GPU-PV layer
+   - Pre-Pascal GPUs
+   - Most limited, EventDriven only
+
+### Current System: RTX 2000 Ada Laptop GPU
+
+```
+Compute Capability: 8.9
+Concurrent Managed Access: 1
+hostNativeAtomicSupported: 0      ❌ No CPU-GPU atomic coherence
+directManagedMemAccessFromHost: 0 ❌ No direct managed access
+```
+
+**This GPU does NOT support persistent kernel polling mode.**
+
+### What Doesn't Work (Without `hostNativeAtomicSupported`)
+
+1. **System-Scope Atomics for CPU→GPU signaling**
    ```cuda
-   // These DON'T work reliably in WSL2:
-   cuda::atomic_ref<int, cuda::memory_scope_system> is_active(...);
-   __threadfence_system();
+   // GPU kernel code - system atomics compile but don't see CPU writes
+   using system_atomic = cuda::atomic<uint, cuda::thread_scope_system>;
+   system_atomic* tail;  // GPU never sees CPU writes to this!
+   tail->load();         // Always returns stale value
    ```
-   - GPU kernel cannot see host memory writes in real-time
-   - Host writes to `is_active` flag are never visible to running kernel
 
-2. **Persistent Kernel Mode Fails**
+2. **Persistent Kernel Mode**
    ```cuda
-   // This pattern FAILS in WSL2:
-   __global__ void PersistentKernel(int* is_active, MessageQueue* queue) {
-       while (*is_active) {  // Kernel NEVER sees is_active change!
-           if (queue->try_dequeue(&msg)) {
-               process(msg);
+   // This pattern FAILS without hostNativeAtomicSupported:
+   __global__ void PersistentKernel(MessageQueue* queue) {
+       while (is_active) {
+           // CPU advances queue->tail, but GPU NEVER sees it change
+           if (!queue->is_empty()) {  // Always returns true (empty)
+               process(queue->dequeue());
            }
        }
    }
    ```
 
-3. **Unified Memory Spill Doesn't Work**
-   - `cudaMallocManaged` memory cannot spill from VRAM to system RAM
-   - Datasets larger than VRAM fail instead of using host memory
+### What DOES Work on All GPUs
 
-### What DOES Work in WSL2
+1. **EventDriven Mode**: Kernel starts → processes available messages → terminates
+2. **Batch Processing**: Enqueue N messages, launch kernel, process all, terminate
+3. **Host-side Control**: All queue state set BEFORE kernel launch
 
-1. **Basic CUDA Kernels**: Launch, execute, return - all work fine
-2. **EventDriven Mode**: Kernel starts, processes available messages, terminates
-3. **Host-side Control**: All signaling done before kernel launch, not during
+### Recommended Implementation Strategy
 
-### The Workarounds We Implemented
+For GPUs without `hostNativeAtomicSupported`:
 
-1. **Start-Active Pattern**
-   ```csharp
-   // WSL2: Start kernel with is_active=1 already set
-   var controlBlock = state.AsyncControlBlock != null
-       ? RingKernelControlBlock.CreateActive()   // is_active=1 at launch
-       : RingKernelControlBlock.CreateInactive(); // Native Linux mode
-   ```
+```csharp
+// EventDriven pattern
+while (!shutdown)
+{
+    // 1. CPU accumulates messages in host queue
+    while (hostQueue.HasMessages && batchSize < MaxBatch)
+    {
+        gpuBuffer.WriteMessage(hostQueue.Dequeue());
+        batchSize++;
+    }
 
-2. **EventDriven Instead of Persistent**
-   - Kernel launched → processes messages → terminates (HasTerminated=2)
-   - Host relaunches kernel when new messages arrive
-   - ~5 second latency instead of sub-millisecond
+    // 2. Launch short-lived kernel to process batch
+    if (batchSize > 0)
+    {
+        kernel.Launch(gpuBuffer, batchSize);
+        kernel.WaitForCompletion();
+        ProcessOutputs();
+    }
 
-3. **Bridge SpinWait+Yield Polling**
-   ```csharp
-   // High-performance polling replaces Task.Delay(1) which has 15ms resolution
-   if (consecutiveEmptyPolls < SpinIterationsBeforeYield) {
-       Thread.SpinWait(10);  // Sub-microsecond
-   } else {
-       Thread.Yield();       // Cooperative
-   }
-   ```
+    // 3. Small delay to batch more messages
+    await Task.Delay(1); // ~1ms batching window
+}
+```
 
-### Performance Comparison
+**Expected latency**: 1-10ms (batching overhead) instead of 100-500ns
 
-| Metric | Native Linux | WSL2 |
-|--------|-------------|------|
-| Persistent kernel | ✅ Works | ❌ Fails |
-| Message latency | 100-500ns | ~5 seconds |
-| System atomics | ✅ Reliable | ❌ Unreliable |
-| Use case | Production | Development |
+### Performance Comparison by GPU Type
 
-### Where to Request WSL2 Improvements
+| Metric | Full Coherence GPU | Partial Coherence | WSL2 |
+|--------|-------------------|-------------------|------|
+| Persistent kernel | ✅ Works | ❌ Fails | ❌ Fails |
+| Message latency | 100-500ns | 1-10ms (batched) | ~5s (workaround) |
+| System atomics | ✅ Reliable | ❌ CPU→GPU broken | ❌ Unreliable |
+| Kernel launches | 1 (persistent) | Many (per batch) | Many |
+| Use case | Production HFT | Production general | Development |
 
-**Microsoft WSL Repository**: https://github.com/microsoft/WSL/issues
+### Where to Find Full Coherence GPUs
+
+**Datacenter GPUs with `hostNativeAtomicSupported=1`:**
+- NVIDIA A100 (Ampere datacenter)
+- NVIDIA H100 (Hopper)
+- NVIDIA Grace Hopper Superchip
+
+**Consumer GPUs typically lack this feature** due to cost/complexity.
+
+### WSL2-Specific Limitations (Additional)
+
+WSL2's GPU-PV layer has additional limitations beyond the hardware:
+- Unified memory spill to system RAM doesn't work
+- Page faulting not supported
+
+**Microsoft WSL Issues:**
 - [Issue #7198](https://github.com/microsoft/wslg/issues/357) - Shared memory between system and VRAM
 - [Issue #8447](https://github.com/microsoft/WSL/issues/8447) - CUDA out of memory issues
-- [Issue #3789](https://github.com/Microsoft/WSL/issues/3789) - OpenCL/CUDA feature request
 
-**Microsoft WSLg Repository** (GPU-specific): https://github.com/microsoft/wslg/issues
-
-**NVIDIA CUDA on WSL Documentation**: https://docs.nvidia.com/cuda/wsl-user-guide/
-
-### Key Insight for Future Development
+### Key Insight for Architecture
 
 The GPU-native actor paradigm (100-500ns latency, 2M msgs/s) requires:
-- True CPU-GPU memory coherence (system-scope atomics)
+- True CPU-GPU memory coherence (`hostNativeAtomicSupported=1`)
 - Persistent kernel mode (kernel runs forever, polls for messages)
 
-**WSL2 cannot achieve this** due to virtualization limitations. For production:
-- Deploy on native Linux (bare metal or VM with GPU passthrough)
-- WSL2 is suitable only for development and functional testing
+**Most consumer/laptop GPUs cannot achieve this.** Design for:
+1. EventDriven mode as the default
+2. Persistent mode as an optimization for capable hardware
+3. Runtime detection of GPU capabilities

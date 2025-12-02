@@ -54,8 +54,10 @@ public static class VectorAddRingKernel
         OutputMessageType = typeof(VectorAddProcessorRingResponse))]
     public static void ProcessVectorOperation(RingKernelContext ctx, VectorAddProcessorRingRequest request)
     {
-        // Synchronize before processing
-        ctx.SyncThreads();
+        // NOTE: Don't use ctx.SyncThreads() in ring kernel handlers!
+        // Ring kernel message handlers are executed by a SINGLE thread (thread 0, block 0).
+        // __syncthreads() requires ALL threads in the block to reach it, causing a deadlock.
+        // For synchronization within handlers, use __threadfence() instead.
 
         // Get operation parameters
         int operationType = request.OperationType;

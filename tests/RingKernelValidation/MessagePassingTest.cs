@@ -2,13 +2,14 @@
 // Licensed under the MIT License.
 
 using DotCompute.Abstractions.RingKernels;
+using DotCompute.Backends.CPU.RingKernels;
 using DotCompute.Backends.CUDA.Compilation;
 using DotCompute.Backends.CUDA.RingKernels;
 using DotCompute.Core.Messaging;
-using DotCompute.Generated;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Orleans.GpuBridge.Backends.DotCompute.Temporal;
+using Orleans.GpuBridge.Backends.DotCompute.Generated;
 
 namespace RingKernelValidation;
 
@@ -65,7 +66,11 @@ public static class MessagePassingTest
             }
             else
             {
-                runtime = RingKernelRuntimeFactory.CreateRuntime(backend, loggerFactory);
+                // Create CPU runtime
+                // Note: CPU backend doesn't support RegisterAssembly() - this is a DotCompute SDK limitation
+                // Message passing tests will fail on CPU backend until this is fixed
+                var cpuRuntime = new CpuRingKernelRuntime(loggerFactory.CreateLogger<CpuRingKernelRuntime>());
+                runtime = cpuRuntime;
             }
 
             logger.LogInformation("✓ Runtime created and assembly registered");

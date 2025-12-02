@@ -7,10 +7,12 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions;
 using Orleans.GpuBridge.Abstractions.Memory;
+using Orleans.GpuBridge.Abstractions.Placement;
 using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Abstractions.RingKernels;
 using Orleans.GpuBridge.Runtime.Builders;
 using Orleans.GpuBridge.Runtime.K2K;
+using Orleans.GpuBridge.Runtime.Placement;
 using Orleans.GpuBridge.Runtime.Providers;
 using Orleans.GpuBridge.Runtime.RingKernels;
 using Orleans.GpuBridge.Runtime.Routing;
@@ -328,4 +330,126 @@ public sealed class RingKernelOptions
     /// Default: 0 (first GPU).
     /// </remarks>
     public int DeviceIndex { get; set; } = 0;
+}
+
+/// <summary>
+/// Extension methods for GPU-native placement and migration services.
+/// </summary>
+public static class PlacementServiceCollectionExtensions
+{
+    /// <summary>
+    /// Adds GPU-native placement and load balancing services.
+    /// </summary>
+    /// <param name="services">Service collection.</param>
+    /// <param name="configure">Optional configuration for placement options.</param>
+    /// <returns>Service collection for chaining.</returns>
+    /// <remarks>
+    /// <para>
+    /// This registers the following services:
+    /// <list type="bullet">
+    /// <item><description><see cref="IQueueDepthMonitor"/>: Monitors GPU queue depths</description></item>
+    /// <item><description><see cref="IAdaptiveLoadBalancer"/>: Adaptive load balancing</description></item>
+    /// <item><description><see cref="IGrainMigrator"/>: Grain migration between devices</description></item>
+    /// </list>
+    /// </para>
+    /// <para>
+    /// Usage:
+    /// <code>
+    /// services.AddGpuBridge()
+    ///         .AddRingKernelSupport()
+    ///         .AddGpuNativePlacement();
+    /// </code>
+    /// </para>
+    /// </remarks>
+    public static IServiceCollection AddGpuNativePlacement(
+        this IServiceCollection services,
+        Action<GpuNativePlacementOptions>? configure = null)
+    {
+        // Configure options
+        if (configure != null)
+        {
+            services.Configure(configure);
+        }
+        else
+        {
+            services.Configure<GpuNativePlacementOptions>(_ => { });
+        }
+
+        // Queue depth monitoring
+        services.TryAddSingleton<IQueueDepthMonitor>(sp =>
+        {
+            var runtime = sp.GetRequiredService<IRingKernelRuntime>();
+            var logger = sp.GetRequiredService<ILogger<QueueDepthMonitor>>();
+            return new QueueDepthMonitor(runtime, logger);
+        });
+
+        // Adaptive load balancer
+        services.TryAddSingleton<IAdaptiveLoadBalancer>(sp =>
+        {
+            var queueDepthMonitor = sp.GetRequiredService<IQueueDepthMonitor>();
+            var logger = sp.GetRequiredService<ILogger<AdaptiveLoadBalancer>>();
+            var options = sp.GetService<Microsoft.Extensions.Options.IOptions<GpuNativePlacementOptions>>();
+            return new AdaptiveLoadBalancer(
+                queueDepthMonitor,
+                logger,
+                options?.Value.DeviceCount ?? 1);
+        });
+
+        // Grain migrator
+        services.TryAddSingleton<IGrainMigrator>(sp =>
+        {
+            var grainFactory = sp.GetRequiredService<IGrainFactory>();
+            var loadBalancer = sp.GetRequiredService<IAdaptiveLoadBalancer>();
+            var logger = sp.GetRequiredService<ILogger<GrainMigrator>>();
+            return new GrainMigrator(logger, grainFactory, loadBalancer);
+        });
+
+        return services;
+    }
+}
+
+/// <summary>
+/// Configuration options for GPU-native placement.
+/// </summary>
+public sealed class GpuNativePlacementOptions
+{
+    /// <summary>
+    /// Gets or sets the number of GPU devices available.
+    /// </summary>
+    /// <remarks>
+    /// Default: 1 (single GPU).
+    /// </remarks>
+    public int DeviceCount { get; set; } = 1;
+
+    /// <summary>
+    /// Gets or sets the rebalance check interval.
+    /// </summary>
+    /// <remarks>
+    /// Default: 30 seconds.
+    /// </remarks>
+    public TimeSpan RebalanceInterval { get; set; } = TimeSpan.FromSeconds(30);
+
+    /// <summary>
+    /// Gets or sets whether to automatically execute rebalance suggestions.
+    /// </summary>
+    /// <remarks>
+    /// Default: false (manual rebalancing).
+    /// </remarks>
+    public bool AutoRebalance { get; set; } = false;
+
+    /// <summary>
+    /// Gets or sets the minimum urgency level to trigger auto-rebalance.
+    /// </summary>
+    /// <remarks>
+    /// Default: High (only auto-rebalance for high/critical urgency).
+    /// </remarks>
+    public RebalanceUrgency MinAutoRebalanceUrgency { get; set; } = RebalanceUrgency.High;
+
+    /// <summary>
+    /// Gets or sets the maximum concurrent migrations allowed.
+    /// </summary>
+    /// <remarks>
+    /// Default: 10.
+    /// </remarks>
+    public int MaxConcurrentMigrations { get; set; } = 10;
 }

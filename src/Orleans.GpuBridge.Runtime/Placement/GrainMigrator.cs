@@ -249,6 +249,11 @@ public sealed class GrainMigrator : IGrainMigrator, IDisposable
         Interlocked.Increment(ref _successfulMigrations);
         Interlocked.Add(ref _totalDurationNanos, durationNanos);
 
+        // Track estimated data transfer (state size estimation)
+        // In production, this would be actual bytes from state serialization
+        const long estimatedStateBytes = 1024; // Minimum state overhead
+        Interlocked.Add(ref _totalDataTransferredBytes, estimatedStateBytes);
+
         NotifyEvent(CreateEvent(operation, MigrationEventType.Completed,
             $"Migration completed successfully in {stopwatch.Elapsed.TotalMilliseconds:F1}ms"));
 

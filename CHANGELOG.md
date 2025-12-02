@@ -5,6 +5,61 @@ All notable changes to Orleans.GpuBridge.Core will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2025-12-02
+
+### Added
+
+#### Resilience Module (Orleans.GpuBridge.Resilience)
+- **GpuResiliencePolicy**: Unified resilience policy combining retry, circuit breaker, timeout, and bulkhead patterns
+  - Built on Polly v8 ResiliencePipeline API
+  - GPU-specific exception handling for memory, kernel, and device failures
+  - Configurable timeouts for kernel execution, device operations, and memory allocation
+- **TokenBucketRateLimiter**: GPU-aware rate limiting to prevent resource exhaustion
+  - Configurable token refill rate and burst size
+  - Metrics tracking for rejection rates
+- **GpuFallbackChain**: Automatic GPU → CPU fallback with degradation levels
+  - Four-level fallback: Optimal → Reduced → Degraded → Failed
+  - Auto-degradation based on error thresholds
+  - Auto-recovery when GPU resources become available
+- **ChaosEngineer**: Fault injection for resilience testing
+  - Configurable fault and latency injection rates
+  - Test-environment only activation
+
+#### Exception Types
+- **GpuBridgeException**: Base exception class for all GPU Bridge errors
+- **GpuOperationException**: General GPU operation failures
+- **GpuMemoryException**: Memory allocation and transfer failures
+- **GpuDeviceException**: Device unavailable or failed states
+- **GpuKernelException**: Kernel execution failures
+- **RateLimitExceededException**: Rate limit exceeded errors
+
+### Improved
+
+#### Test Coverage
+- Added Orleans.GpuBridge.Resilience.Tests with 53 comprehensive tests
+- Increased total test count from 978 to 1,153 tests
+- Fixed Orleans serialization for AffinityGroupMetrics struct
+- Improved test stability for memory pressure and GPU clock tests
+
+#### Documentation
+- Added package README for Orleans.GpuBridge.Resilience
+- Updated CLAUDE.md with current test suite status
+- Updated main README with resilience module information
+
+### Fixed
+- Fixed Polly v7 → v8 API migration issues
+- Fixed exception parameter ordering in ChaosEngineer and GpuFallbackChain
+- Fixed missing Priority property on IFallbackExecutor interface
+- Fixed FluentAssertions method usage in tests
+- Fixed Orleans `[GenerateSerializer]` attributes on AffinityGroupMetrics
+
+### Performance
+- All resilience operations designed for minimal allocation overhead
+- Token bucket rate limiter operates at sub-microsecond latency
+- Bulkhead semaphore provides efficient concurrent access control
+
+---
+
 ## [0.1.0] - 2025-11-27
 
 ### Added
@@ -80,12 +135,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
+- Lock-free IntervalTree implementation for thread-safe temporal storage
+- K2K response handling improvements
+- GPU atomic queue operations
 - OpenCL backend support
 - Vulkan compute backend
 - ARM64 platform support
 - GPUDirect Storage integration
-- Hypergraph actor patterns
-- Knowledge organism framework
 
 ---
 

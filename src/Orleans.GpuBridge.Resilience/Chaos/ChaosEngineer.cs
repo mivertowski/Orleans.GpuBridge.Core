@@ -273,22 +273,22 @@ public sealed class ChaosEngineer : IChaosEngineer, IDisposable
     {
         return exceptionTypeName switch
         {
-            var name when name.Contains("GpuOperationException") => 
-                new GpuOperationException($"[CHAOS] Injected fault in operation: {operationName}", operationName),
-            
-            var name when name.Contains("GpuMemoryException") => 
-                new GpuMemoryException($"[CHAOS] Injected memory fault in operation: {operationName}", operationName, 1024, 512, 2048),
-            
-            var name when name.Contains("GpuKernelException") => 
+            var name when name.Contains("GpuOperationException") =>
+                new GpuOperationException(operationName, $"[CHAOS] Injected fault in operation: {operationName}"),
+
+            var name when name.Contains("GpuMemoryException") =>
+                new GpuMemoryException($"[CHAOS] Injected memory fault in operation: {operationName}", 1024, 512),
+
+            var name when name.Contains("GpuKernelException") =>
                 new GpuKernelException($"[CHAOS] Injected kernel fault in operation: {operationName}", "chaos-kernel", operationName),
-            
-            var name when name.Contains("GpuDeviceException") => 
+
+            var name when name.Contains("GpuDeviceException") =>
                 new GpuDeviceException($"[CHAOS] Injected device fault in operation: {operationName}", -1, "chaos-device", "faulted", operationName),
-            
-            var name when name.Contains("TimeoutException") => 
+
+            var name when name.Contains("TimeoutException") =>
                 new TimeoutException($"[CHAOS] Injected timeout in operation: {operationName}"),
-            
-            _ => new GpuOperationException($"[CHAOS] Injected unknown fault in operation: {operationName}", operationName)
+
+            _ => new GpuOperationException(operationName, $"[CHAOS] Injected unknown fault in operation: {operationName}")
         };
     }
 

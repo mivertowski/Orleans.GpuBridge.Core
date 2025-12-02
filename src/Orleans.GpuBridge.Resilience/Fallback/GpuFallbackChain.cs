@@ -133,8 +133,9 @@ public sealed class GpuFallbackChain<TIn, TOut> : IDisposable
 
             // All executors failed
             var totalDuration = DateTimeOffset.UtcNow - startTime;
-            var lastException = attempts.LastOrDefault()?.Exception ??
-                new GpuOperationException("All fallback executors failed", operationName);
+            var lastAttempt = attempts.LastOrDefault();
+            var lastException = lastAttempt.Exception ??
+                new GpuOperationException(operationName, "All fallback executors failed");
 
             _metricsCollector.RecordTotalFailure(totalDuration);
 

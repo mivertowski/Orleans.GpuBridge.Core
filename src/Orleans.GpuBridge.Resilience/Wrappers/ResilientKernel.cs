@@ -1,12 +1,11 @@
+// Orleans.GpuBridge - GPU-native distributed computing for Microsoft Orleans
+// Copyright (c) 2025 Michael Ivertowski
+
 using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Orleans.GpuBridge.Abstractions;
 using Orleans.GpuBridge.Abstractions.Kernels;
-using Orleans.GpuBridge.Abstractions.Exceptions;
 using Orleans.GpuBridge.Resilience.Policies;
 using Orleans.GpuBridge.Resilience.Telemetry;
 using Orleans.GpuBridge.Resilience.Chaos;
@@ -14,9 +13,11 @@ using Orleans.GpuBridge.Resilience.Chaos;
 namespace Orleans.GpuBridge.Resilience.Wrappers;
 
 /// <summary>
-/// Resilient wrapper for GPU kernels with comprehensive error handling, retries, and fallback
+/// Resilient wrapper for GPU kernels with comprehensive error handling, retries, and fallback.
 /// </summary>
-public sealed class ResilientKernel<TIn, TOut> : IGpuKernel<TIn, TOut>, IDisposable
+/// <typeparam name="TIn">Input type for the kernel.</typeparam>
+/// <typeparam name="TOut">Output type for the kernel.</typeparam>
+public sealed class ResilientKernel<TIn, TOut> : IGpuKernel<TIn, TOut>
     where TIn : notnull
     where TOut : notnull
 {
@@ -28,6 +29,14 @@ public sealed class ResilientKernel<TIn, TOut> : IGpuKernel<TIn, TOut>, IDisposa
     private readonly SemaphoreSlim _executionSemaphore;
     private bool _disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ResilientKernel{TIn, TOut}"/> class.
+    /// </summary>
+    /// <param name="innerKernel">The inner kernel to wrap.</param>
+    /// <param name="resiliencePolicy">The resilience policy to apply.</param>
+    /// <param name="telemetryCollector">The telemetry collector.</param>
+    /// <param name="logger">The logger.</param>
+    /// <param name="chaosEngineer">Optional chaos engineer for testing.</param>
     public ResilientKernel(
         IGpuKernel<TIn, TOut> innerKernel,
         GpuResiliencePolicy resiliencePolicy,
@@ -45,229 +54,190 @@ public sealed class ResilientKernel<TIn, TOut> : IGpuKernel<TIn, TOut>, IDisposa
         _logger.LogDebug("ResilientKernel wrapper created for {KernelType}", _innerKernel.GetType().Name);
     }
 
-    /// <summary>
-    /// Submits a batch for execution with comprehensive resilience patterns
-    /// </summary>
-    public async ValueTask<KernelHandle> SubmitBatchAsync(
-        IReadOnlyList<TIn> items,
-        GpuExecutionHints? hints = null,
-        CancellationToken ct = default)
+    /// <inheritdoc />
+    public string KernelId => _innerKernel.KernelId;
+
+    /// <inheritdoc />
+    public string DisplayName => _innerKernel.DisplayName;
+
+    /// <inheritdoc />
+    public string BackendProvider => _innerKernel.BackendProvider;
+
+    /// <inheritdoc />
+    public bool IsInitialized => _innerKernel.IsInitialized;
+
+    /// <inheritdoc />
+    public bool IsGpuAccelerated => _innerKernel.IsGpuAccelerated;
+
+    /// <inheritdoc />
+    public async Task InitializeAsync(CancellationToken cancellationToken = default)
     {
-        var operationName = $"SubmitBatch_{typeof(TIn).Name}_{items.Count}items";
+        const string operationName = "Initialize";
         var startTime = DateTimeOffset.UtcNow;
 
         try
         {
-            // Apply chaos engineering if enabled
-            if (_chaosEngineer != null)
-            {
-                return await _chaosEngineer.ExecuteWithChaosAsync(
-                    async (cancellationToken) => await ExecuteSubmitBatchInternalAsync(items, hints, operationName, cancellationToken),
-                    operationName,
-                    ct);
-            }
-            else
-            {
-                return await ExecuteSubmitBatchInternalAsync(items, hints, operationName, ct);
-            }
-        }
-        catch (Exception ex) when (!(ex is OperationCanceledException))
-        {
-            var duration = DateTimeOffset.UtcNow - startTime;
-            _telemetryCollector.RecordOperation(operationName, duration, false, ex.GetType().Name);
-            
-            _logger.LogError(ex, 
-                "Batch submission failed for {ItemCount} items after {Duration}ms: {ErrorType}",
-                items.Count, duration.TotalMilliseconds, ex.GetType().Name);
-            
-            throw;
-        }
-    }
-
-    /// <summary>
-    /// Reads results with resilience patterns
-    /// </summary>
-    public async IAsyncEnumerable<TOut> ReadResultsAsync(
-        KernelHandle handle,
-        [EnumeratorCancellation] CancellationToken ct = default)
-    {
-        var operationName = $"ReadResults_{handle.Id}";
-        var startTime = DateTimeOffset.UtcNow;
-        var resultCount = 0;
-
-        try
-        {
-            await foreach (var result in ExecuteReadResultsInternalAsync(handle, operationName, ct))
-            {
-                resultCount++;
-                yield return result;
-            }
-
-            var duration = DateTimeOffset.UtcNow - startTime;
-            _telemetryCollector.RecordOperation(operationName, duration, true);
-            
-            _logger.LogDebug(
-                "Successfully read {ResultCount} results from handle {HandleId} in {Duration}ms",
-                resultCount, handle.Id, duration.TotalMilliseconds);
-        }
-        catch (Exception ex) when (!(ex is OperationCanceledException))
-        {
-            var duration = DateTimeOffset.UtcNow - startTime;
-            _telemetryCollector.RecordOperation(operationName, duration, false, ex.GetType().Name);
-            
-            _logger.LogError(ex,
-                "Failed to read results from handle {HandleId} after {Duration}ms (read {ResultCount} results): {ErrorType}",
-                handle.Id, duration.TotalMilliseconds, resultCount, ex.GetType().Name);
-            
-            throw;
-        }
-    }
-
-    /// <summary>
-    /// Gets kernel information with resilience
-    /// </summary>
-    public async ValueTask<KernelInfo> GetInfoAsync(CancellationToken ct = default)
-    {
-        var operationName = "GetKernelInfo";
-        var startTime = DateTimeOffset.UtcNow;
-
-        try
-        {
-            return await _resiliencePolicy.ExecuteKernelOperationAsync(
-                async (cancellationToken) =>
+            await ExecuteWithResilienceAsync(
+                async ct =>
                 {
-                    var info = await _innerKernel.GetInfoAsync(cancellationToken);
-                    
-                    _logger.LogDebug("Retrieved kernel info: {KernelId} - {Description}", 
-                        info.Id.Value, info.Description);
-                    
-                    return info;
+                    await _innerKernel.InitializeAsync(ct);
+                    return true;
                 },
                 operationName,
-                ct);
+                cancellationToken);
+
+            var duration = DateTimeOffset.UtcNow - startTime;
+            _telemetryCollector.RecordOperation(operationName, duration, true);
+            _logger.LogDebug("Kernel initialized successfully in {Duration}ms", duration.TotalMilliseconds);
         }
-        catch (Exception ex) when (!(ex is OperationCanceledException))
+        catch (Exception ex) when (ex is not OperationCanceledException)
         {
             var duration = DateTimeOffset.UtcNow - startTime;
             _telemetryCollector.RecordOperation(operationName, duration, false, ex.GetType().Name);
-            
-            _logger.LogError(ex, "Failed to get kernel info after {Duration}ms: {ErrorType}",
-                duration.TotalMilliseconds, ex.GetType().Name);
-            
+            _logger.LogError(ex, "Kernel initialization failed after {Duration}ms", duration.TotalMilliseconds);
             throw;
         }
-        finally
+    }
+
+    /// <inheritdoc />
+    public async Task<TOut> ExecuteAsync(TIn input, CancellationToken cancellationToken = default)
+    {
+        var operationName = $"Execute_{typeof(TIn).Name}";
+        var startTime = DateTimeOffset.UtcNow;
+
+        try
         {
+            var result = await ExecuteWithResilienceAsync(
+                async ct =>
+                {
+                    await _executionSemaphore.WaitAsync(ct);
+                    try
+                    {
+                        return await _innerKernel.ExecuteAsync(input, ct);
+                    }
+                    finally
+                    {
+                        _executionSemaphore.Release();
+                    }
+                },
+                operationName,
+                cancellationToken);
+
             var duration = DateTimeOffset.UtcNow - startTime;
             _telemetryCollector.RecordOperation(operationName, duration, true);
-        }
-    }
+            _logger.LogDebug("Kernel executed successfully in {Duration}ms", duration.TotalMilliseconds);
 
-    /// <summary>
-    /// Internal batch submission with resilience
-    /// </summary>
-    private async Task<KernelHandle> ExecuteSubmitBatchInternalAsync(
-        IReadOnlyList<TIn> items,
-        GpuExecutionHints? hints,
-        string operationName,
-        CancellationToken ct)
-    {
-        return await _resiliencePolicy.ExecuteKernelOperationAsync(
-            async (cancellationToken) =>
-            {
-                await _executionSemaphore.WaitAsync(cancellationToken);
-                try
-                {
-                    _logger.LogDebug("Submitting batch of {ItemCount} items to kernel", items.Count);
-                    
-                    var handle = await _innerKernel.SubmitBatchAsync(items, hints, cancellationToken);
-                    
-                    _logger.LogDebug("Batch submitted successfully with handle {HandleId}", handle.Id);
-                    return handle;
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogWarning(ex, 
-                        "Batch submission attempt failed for {ItemCount} items: {ErrorMessage}",
-                        items.Count, ex.Message);
-                    throw;
-                }
-                finally
-                {
-                    _executionSemaphore.Release();
-                }
-            },
-            operationName,
-            ct);
-    }
-
-    /// <summary>
-    /// Internal result reading with resilience
-    /// </summary>
-    private async IAsyncEnumerable<TOut> ExecuteReadResultsInternalAsync(
-        KernelHandle handle,
-        string operationName,
-        [EnumeratorCancellation] CancellationToken ct)
-    {
-        var resultEnumerator = _innerKernel.ReadResultsAsync(handle, ct).GetAsyncEnumerator(ct);
-        var resultCount = 0;
-        
-        try
-        {
-            while (await _resiliencePolicy.ExecuteKernelOperationAsync(
-                async (cancellationToken) => await resultEnumerator.MoveNextAsync(cancellationToken).ConfigureAwait(false),
-                $"{operationName}_MoveNext",
-                ct))
-            {
-                var result = resultEnumerator.Current;
-                resultCount++;
-                
-                _logger.LogTrace("Read result {ResultIndex} from handle {HandleId}", 
-                    resultCount, handle.Id);
-                
-                yield return result;
-            }
+            return result;
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OperationCanceledException)
         {
-            _logger.LogWarning(ex, 
-                "Error reading results from handle {HandleId} after {ResultCount} results: {ErrorMessage}",
-                handle.Id, resultCount, ex.Message);
+            var duration = DateTimeOffset.UtcNow - startTime;
+            _telemetryCollector.RecordOperation(operationName, duration, false, ex.GetType().Name);
+            _logger.LogError(ex, "Kernel execution failed after {Duration}ms", duration.TotalMilliseconds);
             throw;
         }
-        finally
+    }
+
+    /// <inheritdoc />
+    public async Task<TOut[]> ExecuteBatchAsync(TIn[] inputs, CancellationToken cancellationToken = default)
+    {
+        var operationName = $"ExecuteBatch_{typeof(TIn).Name}_{inputs.Length}items";
+        var startTime = DateTimeOffset.UtcNow;
+
+        try
         {
-            if (resultEnumerator != null)
-            {
-                try
+            var result = await ExecuteWithResilienceAsync(
+                async ct =>
                 {
-                    await resultEnumerator.DisposeAsync();
-                }
-                catch (Exception ex)
+                    await _executionSemaphore.WaitAsync(ct);
+                    try
+                    {
+                        _logger.LogDebug("Executing batch of {ItemCount} items", inputs.Length);
+                        return await _innerKernel.ExecuteBatchAsync(inputs, ct);
+                    }
+                    finally
+                    {
+                        _executionSemaphore.Release();
+                    }
+                },
+                operationName,
+                cancellationToken);
+
+            var duration = DateTimeOffset.UtcNow - startTime;
+            _telemetryCollector.RecordOperation(operationName, duration, true);
+            _logger.LogDebug("Batch execution completed: {InputCount} inputs -> {OutputCount} outputs in {Duration}ms",
+                inputs.Length, result.Length, duration.TotalMilliseconds);
+
+            return result;
+        }
+        catch (Exception ex) when (ex is not OperationCanceledException)
+        {
+            var duration = DateTimeOffset.UtcNow - startTime;
+            _telemetryCollector.RecordOperation(operationName, duration, false, ex.GetType().Name);
+            _logger.LogError(ex, "Batch execution failed for {ItemCount} items after {Duration}ms",
+                inputs.Length, duration.TotalMilliseconds);
+            throw;
+        }
+    }
+
+    /// <inheritdoc />
+    public long GetEstimatedExecutionTimeMicroseconds(int inputSize)
+    {
+        return _innerKernel.GetEstimatedExecutionTimeMicroseconds(inputSize);
+    }
+
+    /// <inheritdoc />
+    public KernelMemoryRequirements GetMemoryRequirements()
+    {
+        return _innerKernel.GetMemoryRequirements();
+    }
+
+    /// <inheritdoc />
+    public KernelValidationResult ValidateInput(TIn input)
+    {
+        return _innerKernel.ValidateInput(input);
+    }
+
+    /// <inheritdoc />
+    public async Task WarmupAsync(CancellationToken cancellationToken = default)
+    {
+        const string operationName = "Warmup";
+        var startTime = DateTimeOffset.UtcNow;
+
+        try
+        {
+            await ExecuteWithResilienceAsync(
+                async ct =>
                 {
-                    _logger.LogWarning(ex, "Error disposing result enumerator for handle {HandleId}", handle.Id);
-                }
-            }
+                    await _innerKernel.WarmupAsync(ct);
+                    return true;
+                },
+                operationName,
+                cancellationToken);
+
+            var duration = DateTimeOffset.UtcNow - startTime;
+            _telemetryCollector.RecordOperation(operationName, duration, true);
+            _logger.LogDebug("Kernel warmup completed in {Duration}ms", duration.TotalMilliseconds);
+        }
+        catch (Exception ex) when (ex is not OperationCanceledException)
+        {
+            var duration = DateTimeOffset.UtcNow - startTime;
+            _telemetryCollector.RecordOperation(operationName, duration, false, ex.GetType().Name);
+            _logger.LogError(ex, "Kernel warmup failed after {Duration}ms", duration.TotalMilliseconds);
+            throw;
         }
     }
 
     /// <summary>
-    /// Gets resilience metrics for this kernel
+    /// Performs health check on the kernel.
     /// </summary>
-    public BulkheadMetrics GetBulkheadMetrics()
-    {
-        return _resiliencePolicy.GetBulkheadMetrics();
-    }
-
-    /// <summary>
-    /// Performs health check on the kernel
-    /// </summary>
-    public async Task<bool> HealthCheckAsync(CancellationToken ct = default)
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>True if the kernel is healthy.</returns>
+    public async Task<bool> HealthCheckAsync(CancellationToken cancellationToken = default)
     {
         try
         {
-            var info = await GetInfoAsync(ct);
-            return !string.IsNullOrEmpty(info.Id.Value);
+            return _innerKernel.IsInitialized && await Task.FromResult(_innerKernel.IsGpuAccelerated || true);
         }
         catch (Exception ex)
         {
@@ -277,35 +247,58 @@ public sealed class ResilientKernel<TIn, TOut> : IGpuKernel<TIn, TOut>, IDisposa
     }
 
     /// <summary>
-    /// Disposes the resilient kernel wrapper
+    /// Gets bulkhead metrics for this kernel.
     /// </summary>
+    /// <returns>The bulkhead metrics.</returns>
+    public BulkheadMetrics GetBulkheadMetrics()
+    {
+        return _resiliencePolicy.GetBulkheadMetrics();
+    }
+
+    private async Task<TResult> ExecuteWithResilienceAsync<TResult>(
+        Func<CancellationToken, Task<TResult>> operation,
+        string operationName,
+        CancellationToken cancellationToken)
+    {
+        if (_chaosEngineer != null)
+        {
+            return await _chaosEngineer.ExecuteWithChaosAsync(
+                async ct => await _resiliencePolicy.ExecuteKernelOperationAsync(operation, operationName, ct),
+                operationName,
+                cancellationToken);
+        }
+
+        return await _resiliencePolicy.ExecuteKernelOperationAsync(operation, operationName, cancellationToken);
+    }
+
+    /// <inheritdoc />
     public void Dispose()
     {
         if (_disposed) return;
-        
+
         _disposed = true;
-        
+
         try
         {
             _executionSemaphore?.Dispose();
-            
+
             if (_innerKernel is IDisposable disposableKernel)
             {
                 disposableKernel.Dispose();
             }
-            
+
             _logger.LogDebug("ResilientKernel disposed for {KernelType}", _innerKernel.GetType().Name);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error disposing ResilientKernel: {ErrorMessage}", ex.Message);
         }
-        
+
         GC.SuppressFinalize(this);
     }
 
     /// <summary>
-    /// Finalizer for cleanup
+    /// Finalizer for cleanup.
     /// </summary>
     ~ResilientKernel()
     {

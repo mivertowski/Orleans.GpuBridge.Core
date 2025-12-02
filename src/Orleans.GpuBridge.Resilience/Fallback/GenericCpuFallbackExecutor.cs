@@ -14,6 +14,8 @@ internal sealed class GenericCpuFallbackExecutor : IFallbackExecutor<object, obj
 
     public FallbackLevel Level => FallbackLevel.Degraded;
 
+    public int Priority => (int)FallbackLevel.Degraded;
+
     public GenericCpuFallbackExecutor(ILogger<GenericCpuFallbackExecutor> logger)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));

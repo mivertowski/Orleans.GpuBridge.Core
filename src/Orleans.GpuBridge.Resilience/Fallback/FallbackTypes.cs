@@ -1,3 +1,6 @@
+// Orleans.GpuBridge - GPU-native distributed computing for Microsoft Orleans
+// Copyright (c) 2025 Michael Ivertowski
+
 using System;
 using System.Collections.Generic;
 using Orleans.GpuBridge.Abstractions.Exceptions;

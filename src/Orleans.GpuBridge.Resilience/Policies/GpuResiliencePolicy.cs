@@ -1,3 +1,6 @@
+// Orleans.GpuBridge - GPU-native distributed computing for Microsoft Orleans
+// Copyright (c) 2025 Michael Ivertowski
+
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -5,27 +8,32 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Polly;
 using Polly.CircuitBreaker;
-using Polly.Extensions.Http;
+using Polly.Retry;
 using Polly.Timeout;
 using Orleans.GpuBridge.Abstractions.Exceptions;
 
 namespace Orleans.GpuBridge.Resilience.Policies;
 
 /// <summary>
-/// Comprehensive resilience policy for GPU operations with Polly integration
+/// Comprehensive resilience policy for GPU operations with Polly integration.
 /// </summary>
 public sealed class GpuResiliencePolicy : IDisposable
 {
     private readonly ILogger<GpuResiliencePolicy> _logger;
     private readonly GpuResiliencePolicyOptions _options;
-    private readonly ResilienceStrategy _kernelExecutionStrategy;
-    private readonly ResilienceStrategy _deviceOperationStrategy;
-    private readonly ResilienceStrategy _memoryAllocationStrategy;
-    private readonly ResilienceStrategy _compilationStrategy;
+    private readonly ResiliencePipeline _kernelExecutionPipeline;
+    private readonly ResiliencePipeline _deviceOperationPipeline;
+    private readonly ResiliencePipeline _memoryAllocationPipeline;
+    private readonly ResiliencePipeline _compilationPipeline;
     private readonly SemaphoreSlim _bulkheadSemaphore;
     private readonly CancellationTokenSource _shutdownTokenSource;
     private bool _disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GpuResiliencePolicy"/> class.
+    /// </summary>
+    /// <param name="logger">The logger.</param>
+    /// <param name="options">The policy options.</param>
     public GpuResiliencePolicy(
         ILogger<GpuResiliencePolicy> logger,
         IOptions<GpuResiliencePolicyOptions> options)
@@ -33,24 +41,29 @@ public sealed class GpuResiliencePolicy : IDisposable
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
         _shutdownTokenSource = new CancellationTokenSource();
-        
+
         // Initialize bulkhead semaphore for resource isolation
         _bulkheadSemaphore = new SemaphoreSlim(
             _options.BulkheadOptions.MaxConcurrentOperations,
             _options.BulkheadOptions.MaxConcurrentOperations);
 
-        // Build resilience strategies
-        _kernelExecutionStrategy = BuildKernelExecutionStrategy();
-        _deviceOperationStrategy = BuildDeviceOperationStrategy();
-        _memoryAllocationStrategy = BuildMemoryAllocationStrategy();
-        _compilationStrategy = BuildCompilationStrategy();
+        // Build resilience pipelines
+        _kernelExecutionPipeline = BuildKernelExecutionPipeline();
+        _deviceOperationPipeline = BuildDeviceOperationPipeline();
+        _memoryAllocationPipeline = BuildMemoryAllocationPipeline();
+        _compilationPipeline = BuildCompilationPipeline();
 
         _logger.LogInformation("GpuResiliencePolicy initialized with comprehensive resilience patterns");
     }
 
     /// <summary>
-    /// Executes a kernel operation with full resilience patterns
+    /// Executes a kernel operation with full resilience patterns.
     /// </summary>
+    /// <typeparam name="TResult">The result type.</typeparam>
+    /// <param name="operation">The operation to execute.</param>
+    /// <param name="operationName">The operation name for logging.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The operation result.</returns>
     public async Task<TResult> ExecuteKernelOperationAsync<TResult>(
         Func<CancellationToken, Task<TResult>> operation,
         string operationName,
@@ -59,22 +72,28 @@ public sealed class GpuResiliencePolicy : IDisposable
         using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(
             cancellationToken, _shutdownTokenSource.Token);
 
-        return await _kernelExecutionStrategy.ExecuteAsync(
-            async (context) =>
+        return await _kernelExecutionPipeline.ExecuteAsync(
+            async ct =>
             {
                 _logger.LogDebug("Executing kernel operation: {OperationName}", operationName);
-                
-                var result = await operation(linkedCts.Token);
-                
+
+                var result = await operation(ct);
+
                 _logger.LogDebug("Kernel operation completed successfully: {OperationName}", operationName);
                 return result;
             },
-            new ResilienceContext(operationName));
+            linkedCts.Token);
     }
 
     /// <summary>
-    /// Executes a device operation with circuit breaker and retry logic
+    /// Executes a device operation with circuit breaker and retry logic.
     /// </summary>
+    /// <typeparam name="TResult">The result type.</typeparam>
+    /// <param name="operation">The operation to execute.</param>
+    /// <param name="deviceName">The device name.</param>
+    /// <param name="operationName">The operation name for logging.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The operation result.</returns>
     public async Task<TResult> ExecuteDeviceOperationAsync<TResult>(
         Func<CancellationToken, Task<TResult>> operation,
         string deviceName,
@@ -84,24 +103,29 @@ public sealed class GpuResiliencePolicy : IDisposable
         using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(
             cancellationToken, _shutdownTokenSource.Token);
 
-        return await _deviceOperationStrategy.ExecuteAsync(
-            async (context) =>
+        return await _deviceOperationPipeline.ExecuteAsync(
+            async ct =>
             {
-                _logger.LogDebug("Executing device operation: {DeviceName}.{OperationName}", 
+                _logger.LogDebug("Executing device operation: {DeviceName}.{OperationName}",
                     deviceName, operationName);
-                
-                var result = await operation(linkedCts.Token);
-                
-                _logger.LogDebug("Device operation completed successfully: {DeviceName}.{OperationName}", 
+
+                var result = await operation(ct);
+
+                _logger.LogDebug("Device operation completed successfully: {DeviceName}.{OperationName}",
                     deviceName, operationName);
                 return result;
             },
-            new ResilienceContext($"{deviceName}.{operationName}"));
+            linkedCts.Token);
     }
 
     /// <summary>
-    /// Executes memory allocation with bulkhead isolation
+    /// Executes memory allocation with bulkhead isolation.
     /// </summary>
+    /// <typeparam name="TResult">The result type.</typeparam>
+    /// <param name="operation">The operation to execute.</param>
+    /// <param name="requestedBytes">The requested bytes.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The operation result.</returns>
     public async Task<TResult> ExecuteMemoryAllocationAsync<TResult>(
         Func<CancellationToken, Task<TResult>> operation,
         long requestedBytes,
@@ -110,18 +134,18 @@ public sealed class GpuResiliencePolicy : IDisposable
         using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(
             cancellationToken, _shutdownTokenSource.Token);
 
-        return await _memoryAllocationStrategy.ExecuteAsync(
-            async (context) =>
+        return await _memoryAllocationPipeline.ExecuteAsync(
+            async ct =>
             {
-                await _bulkheadSemaphore.WaitAsync(linkedCts.Token);
-                
+                await _bulkheadSemaphore.WaitAsync(ct);
+
                 try
                 {
                     _logger.LogDebug("Executing memory allocation: {RequestedBytes:N0} bytes", requestedBytes);
-                    
-                    var result = await operation(linkedCts.Token);
-                    
-                    _logger.LogDebug("Memory allocation completed successfully: {RequestedBytes:N0} bytes", 
+
+                    var result = await operation(ct);
+
+                    _logger.LogDebug("Memory allocation completed successfully: {RequestedBytes:N0} bytes",
                         requestedBytes);
                     return result;
                 }
@@ -130,12 +154,17 @@ public sealed class GpuResiliencePolicy : IDisposable
                     _bulkheadSemaphore.Release();
                 }
             },
-            new ResilienceContext($"memory-allocation-{requestedBytes}"));
+            linkedCts.Token);
     }
 
     /// <summary>
-    /// Executes kernel compilation with extended timeouts and fallback strategies
+    /// Executes kernel compilation with extended timeouts and fallback strategies.
     /// </summary>
+    /// <typeparam name="TResult">The result type.</typeparam>
+    /// <param name="operation">The operation to execute.</param>
+    /// <param name="kernelName">The kernel name.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The operation result.</returns>
     public async Task<TResult> ExecuteCompilationAsync<TResult>(
         Func<CancellationToken, Task<TResult>> operation,
         string kernelName,
@@ -144,30 +173,30 @@ public sealed class GpuResiliencePolicy : IDisposable
         using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(
             cancellationToken, _shutdownTokenSource.Token);
 
-        return await _compilationStrategy.ExecuteAsync(
-            async (context) =>
+        return await _compilationPipeline.ExecuteAsync(
+            async ct =>
             {
                 _logger.LogDebug("Executing kernel compilation: {KernelName}", kernelName);
-                
-                var result = await operation(linkedCts.Token);
-                
+
+                var result = await operation(ct);
+
                 _logger.LogDebug("Kernel compilation completed successfully: {KernelName}", kernelName);
                 return result;
             },
-            new ResilienceContext($"compilation-{kernelName}"));
+            linkedCts.Token);
     }
 
     /// <summary>
-    /// Builds the kernel execution resilience strategy
+    /// Builds the kernel execution resilience pipeline.
     /// </summary>
-    private ResilienceStrategy BuildKernelExecutionStrategy()
+    private ResiliencePipeline BuildKernelExecutionPipeline()
     {
-        return new ResilienceStrategyBuilder()
+        return new ResiliencePipelineBuilder()
             .AddRetry(new RetryStrategyOptions
             {
                 MaxRetryAttempts = _options.RetryOptions.MaxAttempts,
                 BackoffType = DelayBackoffType.Exponential,
-                BaseDelay = _options.RetryOptions.BaseDelay,
+                Delay = _options.RetryOptions.BaseDelay,
                 MaxDelay = _options.RetryOptions.MaxDelay,
                 UseJitter = true,
                 ShouldHandle = new PredicateBuilder()
@@ -195,7 +224,7 @@ public sealed class GpuResiliencePolicy : IDisposable
                     .Handle<GpuOperationException>(),
                 OnOpened = args =>
                 {
-                    _logger.LogError("Kernel execution circuit breaker opened: {Exception}", 
+                    _logger.LogError("Kernel execution circuit breaker opened: {Exception}",
                         args.Outcome.Exception?.Message);
                     return ValueTask.CompletedTask;
                 },
@@ -215,16 +244,16 @@ public sealed class GpuResiliencePolicy : IDisposable
     }
 
     /// <summary>
-    /// Builds the device operation resilience strategy
+    /// Builds the device operation resilience pipeline.
     /// </summary>
-    private ResilienceStrategy BuildDeviceOperationStrategy()
+    private ResiliencePipeline BuildDeviceOperationPipeline()
     {
-        return new ResilienceStrategyBuilder()
+        return new ResiliencePipelineBuilder()
             .AddRetry(new RetryStrategyOptions
             {
-                MaxRetryAttempts = _options.RetryOptions.MaxAttempts / 2, // Fewer retries for device ops
+                MaxRetryAttempts = _options.RetryOptions.MaxAttempts / 2,
                 BackoffType = DelayBackoffType.Linear,
-                BaseDelay = _options.RetryOptions.BaseDelay,
+                Delay = _options.RetryOptions.BaseDelay,
                 MaxDelay = TimeSpan.FromSeconds(5),
                 UseJitter = true,
                 ShouldHandle = new PredicateBuilder()
@@ -242,7 +271,7 @@ public sealed class GpuResiliencePolicy : IDisposable
             })
             .AddCircuitBreaker(new CircuitBreakerStrategyOptions
             {
-                FailureRatio = 0.3, // More sensitive for device operations
+                FailureRatio = 0.3,
                 SamplingDuration = TimeSpan.FromMinutes(1),
                 MinimumThroughput = 5,
                 BreakDuration = TimeSpan.FromMinutes(2),
@@ -251,7 +280,7 @@ public sealed class GpuResiliencePolicy : IDisposable
                     .Handle<GpuOperationException>(),
                 OnOpened = args =>
                 {
-                    _logger.LogError("Device operation circuit breaker opened: {Exception}", 
+                    _logger.LogError("Device operation circuit breaker opened: {Exception}",
                         args.Outcome.Exception?.Message);
                     return ValueTask.CompletedTask;
                 }
@@ -261,16 +290,16 @@ public sealed class GpuResiliencePolicy : IDisposable
     }
 
     /// <summary>
-    /// Builds the memory allocation resilience strategy
+    /// Builds the memory allocation resilience pipeline.
     /// </summary>
-    private ResilienceStrategy BuildMemoryAllocationStrategy()
+    private ResiliencePipeline BuildMemoryAllocationPipeline()
     {
-        return new ResilienceStrategyBuilder()
+        return new ResiliencePipelineBuilder()
             .AddRetry(new RetryStrategyOptions
             {
-                MaxRetryAttempts = 2, // Limited retries for memory operations
+                MaxRetryAttempts = 2,
                 BackoffType = DelayBackoffType.Linear,
-                BaseDelay = TimeSpan.FromMilliseconds(100),
+                Delay = TimeSpan.FromMilliseconds(100),
                 MaxDelay = TimeSpan.FromSeconds(1),
                 ShouldHandle = new PredicateBuilder()
                     .Handle<GpuMemoryException>()
@@ -289,16 +318,16 @@ public sealed class GpuResiliencePolicy : IDisposable
     }
 
     /// <summary>
-    /// Builds the compilation resilience strategy
+    /// Builds the compilation resilience pipeline.
     /// </summary>
-    private ResilienceStrategy BuildCompilationStrategy()
+    private ResiliencePipeline BuildCompilationPipeline()
     {
-        return new ResilienceStrategyBuilder()
+        return new ResiliencePipelineBuilder()
             .AddRetry(new RetryStrategyOptions
             {
-                MaxRetryAttempts = 1, // Single retry for compilation
+                MaxRetryAttempts = 1,
                 BackoffType = DelayBackoffType.Constant,
-                BaseDelay = TimeSpan.FromSeconds(1),
+                Delay = TimeSpan.FromSeconds(1),
                 ShouldHandle = new PredicateBuilder()
                     .Handle<GpuKernelException>()
                     .Handle<InvalidOperationException>(),
@@ -315,8 +344,9 @@ public sealed class GpuResiliencePolicy : IDisposable
     }
 
     /// <summary>
-    /// Gets current bulkhead utilization metrics
+    /// Gets current bulkhead utilization metrics.
     /// </summary>
+    /// <returns>The bulkhead metrics.</returns>
     public BulkheadMetrics GetBulkheadMetrics()
     {
         var available = _bulkheadSemaphore.CurrentCount;
@@ -331,17 +361,19 @@ public sealed class GpuResiliencePolicy : IDisposable
     }
 
     /// <summary>
-    /// Initiates graceful shutdown of resilience policies
+    /// Initiates graceful shutdown of resilience policies.
     /// </summary>
+    /// <param name="timeout">The shutdown timeout.</param>
+    /// <returns>A task representing the shutdown operation.</returns>
     public async Task ShutdownAsync(TimeSpan timeout = default)
     {
         if (timeout == default)
             timeout = TimeSpan.FromSeconds(30);
 
         _logger.LogInformation("Initiating graceful shutdown of resilience policies");
-        
+
         _shutdownTokenSource.Cancel();
-        
+
         // Wait for bulkhead to drain
         var deadline = DateTime.UtcNow.Add(timeout);
         while (DateTime.UtcNow < deadline && _bulkheadSemaphore.CurrentCount < _options.BulkheadOptions.MaxConcurrentOperations)
@@ -352,21 +384,22 @@ public sealed class GpuResiliencePolicy : IDisposable
         _logger.LogInformation("Resilience policy shutdown completed");
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         if (_disposed) return;
-        
+
         _disposed = true;
         _shutdownTokenSource?.Cancel();
         _shutdownTokenSource?.Dispose();
         _bulkheadSemaphore?.Dispose();
-        
+
         GC.SuppressFinalize(this);
     }
 }
 
 /// <summary>
-/// Metrics for bulkhead isolation monitoring
+/// Metrics for bulkhead isolation monitoring.
 /// </summary>
 public readonly record struct BulkheadMetrics(
     int TotalSlots,

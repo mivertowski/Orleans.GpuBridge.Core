@@ -70,7 +70,8 @@ public static class ServiceCollectionExtensions
         // Bind configuration if provided
         if (configuration != null)
         {
-            optionsBuilder.Bind(configuration.GetSection(GpuResiliencePolicyOptions.SectionName));
+            services.Configure<GpuResiliencePolicyOptions>(
+                configuration.GetSection(GpuResiliencePolicyOptions.SectionName));
         }
 
         // Apply custom configuration

@@ -36,18 +36,20 @@ dotnet pack
 | Project | Passed | Skipped | Total |
 |---------|--------|---------|-------|
 | Abstractions.Tests | 242 | 0 | 242 |
-| Runtime.Tests | 202 | 0 | 202 |
-| Temporal.Tests | 286 | 6 | 292 |
+| Runtime.Tests | 206 | 0 | 206 |
+| Temporal.Tests | 290 | 1 | 292 |
 | Grains.Tests | 98 | 0 | 98 |
 | Generators.Tests | 22 | 0 | 22 |
 | Hardware.Tests | 34 | 3 | 37 |
-| Backends.DotCompute.Tests | 58 | 0 | 58 |
-| Performance.Tests | 0 | 5 | 5 |
-| Integration.Tests | 19 | 3 | 22 |
-| **Total** | **961** | **17** | **978** |
+| Backends.DotCompute.Tests | 56 | 0 | 56 |
+| RingKernelTests | 85 | 6 | 92 |
+| Performance.Tests | 15 | 5 | 20 |
+| Integration.Tests | 32 | 3 | 35 |
+| Resilience.Tests | 53 | 0 | 53 |
+| **Total** | **1,133** | **18** | **1,153** |
 
 ### Skipped Tests (with valid reasons)
-- **ConcurrentAccessTests**: IntervalTree thread-safety - requires implementation changes
+- **ConcurrentAccessTests**: IntervalTree thread-safety - requires lock-free implementation
 - **RingKernelIntegrationTests**: Requires GPU with `hostNativeAtomicSupported`
 - **Hardware CUDA tests**: GPU-dependent integration tests
 - **Performance tests**: Require GPU and Orleans silo infrastructure
@@ -62,6 +64,9 @@ dotnet pack
 3. **Orleans.GpuBridge.Grains** - Orleans grain implementations
 4. **Orleans.GpuBridge.Backends.DotCompute** - DotCompute GPU backend
 5. **Orleans.GpuBridge.BridgeFX** - High-level pipeline API
+6. **Orleans.GpuBridge.Resilience** - Resilience patterns (retry, circuit breaker, rate limiting)
+7. **Orleans.GpuBridge.Diagnostics** - Metrics and telemetry
+8. **Orleans.GpuBridge.HealthChecks** - Health check integrations
 
 ### Implementation Status
 - ✅ Ring kernel infrastructure
@@ -70,6 +75,9 @@ dotnet pack
 - ✅ Hypergraph actors
 - ✅ Queue-depth aware placement
 - ✅ Adaptive load balancing
+- ✅ Resilience patterns (Polly v8)
+- ✅ Rate limiting (token bucket)
+- ✅ Circuit breaker and retry policies
 - 🚧 DotCompute backend (EventDriven mode working)
 - 📋 GPUDirect Storage (planned)
 

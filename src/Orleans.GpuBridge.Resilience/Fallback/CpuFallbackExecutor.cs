@@ -14,6 +14,8 @@ internal sealed class CpuFallbackExecutor : IFallbackExecutor<float[], float>, I
 
     public FallbackLevel Level => FallbackLevel.Degraded;
 
+    public int Priority => (int)FallbackLevel.Degraded;
+
     public CpuFallbackExecutor(ILogger<CpuFallbackExecutor> logger)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));

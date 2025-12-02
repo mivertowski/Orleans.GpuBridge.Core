@@ -226,35 +226,43 @@ public sealed class AffinityGroupMetricsState
 /// <summary>
 /// Runtime metrics for an affinity group.
 /// </summary>
+[GenerateSerializer]
+[Immutable]
 public readonly record struct AffinityGroupMetrics
 {
     /// <summary>
     /// Number of current members.
     /// </summary>
+    [Id(0)]
     public required int MemberCount { get; init; }
 
     /// <summary>
     /// Total registrations since creation.
     /// </summary>
+    [Id(1)]
     public required long TotalRegistrations { get; init; }
 
     /// <summary>
     /// Total unregistrations since creation.
     /// </summary>
+    [Id(2)]
     public required long TotalUnregistrations { get; init; }
 
     /// <summary>
     /// Total migrations performed.
     /// </summary>
+    [Id(3)]
     public required long TotalMigrations { get; init; }
 
     /// <summary>
     /// Preferred device index.
     /// </summary>
+    [Id(4)]
     public required int PreferredDeviceIndex { get; init; }
 
     /// <summary>
     /// Distribution of members across devices.
     /// </summary>
+    [Id(5)]
     public required IReadOnlyDictionary<int, int> DeviceDistribution { get; init; }
 }

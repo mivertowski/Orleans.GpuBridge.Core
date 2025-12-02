@@ -5,6 +5,7 @@ using System.Collections.Concurrent;
 using DotCompute.Abstractions.RingKernels;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions.Placement;
+using Orleans.GpuBridge.Abstractions.Providers;
 
 namespace Orleans.GpuBridge.Runtime.Placement;
 
@@ -23,6 +24,7 @@ namespace Orleans.GpuBridge.Runtime.Placement;
 /// <item><description>Historical tracking for trend analysis</description></item>
 /// <item><description>Threshold-based alerting</description></item>
 /// <item><description>Predictive utilization estimates</description></item>
+/// <item><description>Real device memory metrics from <see cref="IDeviceManager"/></description></item>
 /// </list>
 /// </para>
 /// </remarks>
@@ -30,16 +32,20 @@ public sealed class QueueDepthMonitor : IQueueDepthMonitor, IDisposable
 {
     private readonly ILogger<QueueDepthMonitor> _logger;
     private readonly IRingKernelRuntime _ringKernelRuntime;
+    private readonly IDeviceManager? _deviceManager;
     private readonly string _localSiloId;
     private readonly ConcurrentDictionary<string, QueueDepthHistory> _historyCache = new();
     private readonly ConcurrentDictionary<double, List<Action<QueueDepthAlert>>> _alertSubscriptions = new();
     private readonly Timer _historyCollectionTimer;
     private readonly ConcurrentQueue<QueueDepthSample> _recentSamples = new();
     private readonly object _historyLock = new();
+    private readonly ConcurrentDictionary<int, CachedDeviceMetrics> _deviceMetricsCache = new();
     private bool _disposed;
 
     private const int MaxHistorySamples = 360; // 1 hour at 10-second intervals
     private const int HistoryCollectionIntervalMs = 10_000; // 10 seconds
+    private const long DefaultTotalMemoryBytes = 8L * 1024 * 1024 * 1024; // 8GB fallback
+    private static readonly TimeSpan DeviceMetricsCacheDuration = TimeSpan.FromSeconds(5);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="QueueDepthMonitor"/> class.
@@ -47,14 +53,17 @@ public sealed class QueueDepthMonitor : IQueueDepthMonitor, IDisposable
     /// <param name="ringKernelRuntime">Ring kernel runtime for metrics access.</param>
     /// <param name="logger">Logger for diagnostic output.</param>
     /// <param name="localSiloId">Local silo identifier.</param>
+    /// <param name="deviceManager">Optional device manager for real device metrics.</param>
     public QueueDepthMonitor(
         IRingKernelRuntime ringKernelRuntime,
         ILogger<QueueDepthMonitor> logger,
-        string? localSiloId = null)
+        string? localSiloId = null,
+        IDeviceManager? deviceManager = null)
     {
         _ringKernelRuntime = ringKernelRuntime ?? throw new ArgumentNullException(nameof(ringKernelRuntime));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _localSiloId = localSiloId ?? Environment.MachineName;
+        _deviceManager = deviceManager;
 
         // Start periodic history collection
         _historyCollectionTimer = new Timer(
@@ -64,8 +73,9 @@ public sealed class QueueDepthMonitor : IQueueDepthMonitor, IDisposable
             TimeSpan.FromMilliseconds(HistoryCollectionIntervalMs));
 
         _logger.LogInformation(
-            "QueueDepthMonitor initialized for silo {SiloId}",
-            _localSiloId);
+            "QueueDepthMonitor initialized for silo {SiloId} (DeviceManager: {HasDeviceManager})",
+            _localSiloId,
+            _deviceManager != null ? "Available" : "Unavailable - using fallback metrics");
     }
 
     /// <inheritdoc/>
@@ -86,7 +96,7 @@ public sealed class QueueDepthMonitor : IQueueDepthMonitor, IDisposable
             if (kernels.Count == 0)
             {
                 // No active kernels - return empty snapshot
-                return CreateEmptySnapshot(effectiveSiloId, deviceIndex, timestampNanos);
+                return await CreateEmptySnapshotAsync(effectiveSiloId, deviceIndex, timestampNanos, ct);
             }
 
             int totalInputDepth = 0;
@@ -127,13 +137,25 @@ public sealed class QueueDepthMonitor : IQueueDepthMonitor, IDisposable
 
             if (validKernels == 0)
             {
-                return CreateEmptySnapshot(effectiveSiloId, deviceIndex, timestampNanos);
+                return await CreateEmptySnapshotAsync(effectiveSiloId, deviceIndex, timestampNanos, ct);
             }
 
-            // Query memory info (placeholder - would come from device broker in production)
-            const long totalMemoryBytes = 8L * 1024 * 1024 * 1024; // 8GB placeholder
-            var usedMemoryRatio = totalGpuUtil / validKernels; // Approximate
-            var availableMemoryBytes = (long)(totalMemoryBytes * (1.0 - usedMemoryRatio * 0.5));
+            // Query real device memory info if device manager is available
+            var (totalMemoryBytes, availableMemoryBytes, memorySource) = await GetDeviceMemoryAsync(deviceIndex, ct);
+
+            // If we got real memory metrics, use them; otherwise fall back to estimate
+            if (memorySource == "estimated")
+            {
+                var usedMemoryRatio = totalGpuUtil / validKernels; // Approximate
+                availableMemoryBytes = (long)(totalMemoryBytes * (1.0 - usedMemoryRatio * 0.5));
+            }
+
+            _logger.LogTrace(
+                "Device {DeviceIndex} memory: {AvailableMB:F0}MB / {TotalMB:F0}MB (source: {Source})",
+                deviceIndex,
+                availableMemoryBytes / (1024.0 * 1024.0),
+                totalMemoryBytes / (1024.0 * 1024.0),
+                memorySource);
 
             return new QueueDepthSnapshot
             {
@@ -155,7 +177,7 @@ public sealed class QueueDepthMonitor : IQueueDepthMonitor, IDisposable
         {
             _logger.LogError(ex, "Failed to get queue depth for silo {SiloId}, device {DeviceIndex}",
                 effectiveSiloId, deviceIndex);
-            return CreateEmptySnapshot(effectiveSiloId, deviceIndex, timestampNanos);
+            return await CreateEmptySnapshotAsync(effectiveSiloId, deviceIndex, timestampNanos, ct);
         }
     }
 
@@ -430,8 +452,15 @@ public sealed class QueueDepthMonitor : IQueueDepthMonitor, IDisposable
         _ => "No action required"
     };
 
-    private static QueueDepthSnapshot CreateEmptySnapshot(string siloId, int deviceIndex, long timestampNanos) =>
-        new()
+    private async Task<QueueDepthSnapshot> CreateEmptySnapshotAsync(
+        string siloId,
+        int deviceIndex,
+        long timestampNanos,
+        CancellationToken ct = default)
+    {
+        var (totalMemoryBytes, availableMemoryBytes, _) = await GetDeviceMemoryAsync(deviceIndex, ct);
+
+        return new QueueDepthSnapshot
         {
             TimestampNanos = timestampNanos,
             SiloId = siloId,
@@ -443,9 +472,83 @@ public sealed class QueueDepthMonitor : IQueueDepthMonitor, IDisposable
             TotalOutputQueueCapacity = 1,
             ThroughputMsgsPerSec = 0.0,
             GpuUtilization = 0.0,
-            AvailableMemoryBytes = 8L * 1024 * 1024 * 1024,
-            TotalMemoryBytes = 8L * 1024 * 1024 * 1024
+            AvailableMemoryBytes = availableMemoryBytes,
+            TotalMemoryBytes = totalMemoryBytes
         };
+    }
+
+    /// <summary>
+    /// Gets device memory information, using device manager when available or falling back to defaults.
+    /// </summary>
+    private async Task<(long TotalBytes, long AvailableBytes, string Source)> GetDeviceMemoryAsync(
+        int deviceIndex,
+        CancellationToken ct = default)
+    {
+        // Check cache first
+        if (_deviceMetricsCache.TryGetValue(deviceIndex, out var cached) &&
+            cached.Timestamp.Add(DeviceMetricsCacheDuration) > DateTimeOffset.UtcNow)
+        {
+            return (cached.TotalMemoryBytes, cached.AvailableMemoryBytes, "cached");
+        }
+
+        // Try to get real device metrics
+        if (_deviceManager != null)
+        {
+            try
+            {
+                var device = _deviceManager.GetDevice(deviceIndex);
+                if (device != null)
+                {
+                    var metrics = await _deviceManager.GetDeviceMetricsAsync(device, ct);
+                    var totalBytes = device.TotalMemoryBytes;
+                    var usedBytes = metrics.UsedMemoryBytes;
+                    var availableBytes = totalBytes - usedBytes;
+
+                    // Cache the result
+                    _deviceMetricsCache[deviceIndex] = new CachedDeviceMetrics
+                    {
+                        TotalMemoryBytes = totalBytes,
+                        AvailableMemoryBytes = availableBytes,
+                        GpuUtilization = metrics.GpuUtilizationPercent / 100.0,
+                        Timestamp = DateTimeOffset.UtcNow
+                    };
+
+                    _logger.LogDebug(
+                        "Retrieved real device metrics for device {DeviceIndex}: {UsedMB:F0}MB used / {TotalMB:F0}MB total",
+                        deviceIndex,
+                        usedBytes / (1024.0 * 1024.0),
+                        totalBytes / (1024.0 * 1024.0));
+
+                    return (totalBytes, availableBytes, "device_manager");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug(ex, "Failed to get device metrics for device {DeviceIndex}, using fallback", deviceIndex);
+            }
+        }
+
+        // Fallback to default values
+        return (DefaultTotalMemoryBytes, DefaultTotalMemoryBytes, "estimated");
+    }
+
+    /// <summary>
+    /// Cached device metrics to reduce query frequency.
+    /// </summary>
+    private sealed record CachedDeviceMetrics
+    {
+        /// <summary>Total device memory in bytes.</summary>
+        public required long TotalMemoryBytes { get; init; }
+
+        /// <summary>Available device memory in bytes.</summary>
+        public required long AvailableMemoryBytes { get; init; }
+
+        /// <summary>GPU utilization (0.0 - 1.0).</summary>
+        public required double GpuUtilization { get; init; }
+
+        /// <summary>Timestamp when metrics were cached.</summary>
+        public required DateTimeOffset Timestamp { get; init; }
+    }
 
     /// <inheritdoc/>
     public void Dispose()

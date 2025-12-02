@@ -3,7 +3,9 @@
 
 using DotCompute.Abstractions.RingKernels;
 using Microsoft.Extensions.Logging;
+using Orleans.GpuBridge.Abstractions.Models;
 using Orleans.GpuBridge.Abstractions.Placement;
+using Orleans.GpuBridge.Abstractions.Providers;
 using Orleans.GpuBridge.Runtime.Placement;
 
 namespace Orleans.GpuBridge.Runtime.Tests.Placement;
@@ -664,6 +666,158 @@ public sealed class QueueDepthMonitorTests : IDisposable
 
         // Assert
         await act.Should().ThrowAsync<ObjectDisposedException>();
+    }
+
+    #endregion
+
+    #region Device Manager Integration Tests
+
+    [Fact]
+    public async Task GetQueueDepthAsync_WithDeviceManager_UsesRealMemoryMetrics()
+    {
+        // Arrange
+        var mockDeviceManager = new Mock<IDeviceManager>();
+        var mockDevice = new Mock<IComputeDevice>();
+        mockDevice.Setup(d => d.TotalMemoryBytes).Returns(16L * 1024 * 1024 * 1024); // 16GB
+
+        var deviceMetrics = new DeviceMetrics
+        {
+            GpuUtilizationPercent = 50,
+            MemoryUtilizationPercent = 40,
+            UsedMemoryBytes = 6L * 1024 * 1024 * 1024, // 6GB used
+            TemperatureCelsius = 65,
+            PowerWatts = 150,
+            FanSpeedPercent = 40,
+            KernelsExecuted = 1000,
+            BytesTransferred = 1_000_000_000,
+            Uptime = TimeSpan.FromHours(2)
+        };
+
+        mockDeviceManager.Setup(dm => dm.GetDevice(It.IsAny<int>()))
+            .Returns(mockDevice.Object);
+        mockDeviceManager.Setup(dm => dm.GetDeviceMetricsAsync(It.IsAny<IComputeDevice>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(deviceMetrics);
+
+        var monitorWithDevice = new QueueDepthMonitor(
+            _mockRuntime.Object,
+            _mockLogger.Object,
+            "test-silo",
+            mockDeviceManager.Object);
+
+        _mockRuntime.Setup(r => r.ListKernelsAsync())
+            .ReturnsAsync(new List<string>());
+
+        try
+        {
+            // Act
+            var snapshot = await monitorWithDevice.GetQueueDepthAsync();
+
+            // Assert - should use real memory values
+            snapshot.TotalMemoryBytes.Should().Be(16L * 1024 * 1024 * 1024);
+            snapshot.AvailableMemoryBytes.Should().Be(10L * 1024 * 1024 * 1024); // 16GB - 6GB
+        }
+        finally
+        {
+            monitorWithDevice.Dispose();
+        }
+    }
+
+    [Fact]
+    public async Task GetQueueDepthAsync_WithoutDeviceManager_UsesFallbackMetrics()
+    {
+        // Arrange
+        _mockRuntime.Setup(r => r.ListKernelsAsync())
+            .ReturnsAsync(new List<string>());
+
+        // Act - _monitor doesn't have device manager
+        var snapshot = await _monitor.GetQueueDepthAsync();
+
+        // Assert - should use 8GB fallback
+        snapshot.TotalMemoryBytes.Should().Be(8L * 1024 * 1024 * 1024);
+    }
+
+    [Fact]
+    public async Task GetQueueDepthAsync_WithDeviceManagerError_FallsBackToDefaults()
+    {
+        // Arrange
+        var mockDeviceManager = new Mock<IDeviceManager>();
+        mockDeviceManager.Setup(dm => dm.GetDevice(It.IsAny<int>()))
+            .Throws(new InvalidOperationException("Device not available"));
+
+        var monitorWithDevice = new QueueDepthMonitor(
+            _mockRuntime.Object,
+            _mockLogger.Object,
+            "test-silo",
+            mockDeviceManager.Object);
+
+        _mockRuntime.Setup(r => r.ListKernelsAsync())
+            .ReturnsAsync(new List<string>());
+
+        try
+        {
+            // Act
+            var snapshot = await monitorWithDevice.GetQueueDepthAsync();
+
+            // Assert - should fall back to 8GB
+            snapshot.TotalMemoryBytes.Should().Be(8L * 1024 * 1024 * 1024);
+        }
+        finally
+        {
+            monitorWithDevice.Dispose();
+        }
+    }
+
+    [Fact]
+    public async Task GetQueueDepthAsync_CachesDeviceMetrics()
+    {
+        // Arrange
+        var mockDeviceManager = new Mock<IDeviceManager>();
+        var mockDevice = new Mock<IComputeDevice>();
+        mockDevice.Setup(d => d.TotalMemoryBytes).Returns(16L * 1024 * 1024 * 1024);
+
+        var callCount = 0;
+        mockDeviceManager.Setup(dm => dm.GetDevice(It.IsAny<int>()))
+            .Returns(mockDevice.Object);
+        mockDeviceManager.Setup(dm => dm.GetDeviceMetricsAsync(It.IsAny<IComputeDevice>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(() =>
+            {
+                callCount++;
+                return new DeviceMetrics
+                {
+                    GpuUtilizationPercent = 50,
+                    MemoryUtilizationPercent = 40,
+                    UsedMemoryBytes = 6L * 1024 * 1024 * 1024,
+                    TemperatureCelsius = 65,
+                    PowerWatts = 150,
+                    FanSpeedPercent = 40,
+                    KernelsExecuted = 1000,
+                    BytesTransferred = 1_000_000_000,
+                    Uptime = TimeSpan.FromHours(2)
+                };
+            });
+
+        var monitorWithDevice = new QueueDepthMonitor(
+            _mockRuntime.Object,
+            _mockLogger.Object,
+            "test-silo",
+            mockDeviceManager.Object);
+
+        _mockRuntime.Setup(r => r.ListKernelsAsync())
+            .ReturnsAsync(new List<string>());
+
+        try
+        {
+            // Act - call twice in quick succession
+            await monitorWithDevice.GetQueueDepthAsync();
+            await monitorWithDevice.GetQueueDepthAsync();
+
+            // Assert - should only call device manager once due to caching
+            callCount.Should().Be(1);
+        }
+        finally
+        {
+            monitorWithDevice.Dispose();
+        }
     }
 
     #endregion

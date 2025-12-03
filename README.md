@@ -1,6 +1,6 @@
 # Orleans.GpuBridge.Core
 
-[![Version](https://img.shields.io/badge/version-0.2.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.2.1-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 [![.NET 9.0](https://img.shields.io/badge/.NET-9.0-purple)](https://dotnet.microsoft.com/download/dotnet/9.0)
 [![Orleans](https://img.shields.io/badge/Orleans-9.2.1-green)](https://dotnet.github.io/orleans/)
@@ -79,6 +79,8 @@ These capabilities enable entirely new classes of applications:
 - **Stream Processing**: GPU-accelerated Orleans streams with batch optimization
 - **Pipeline API**: Fluent API for complex GPU computation pipelines
 - **AOT Compatibility**: Full support for .NET 9 Native AOT and trimming
+- **P2P GPU Messaging**: Direct GPU-to-GPU communication with automatic fallback
+- **GPU Memory Telemetry**: Per-grain GPU memory tracking with OpenTelemetry integration
 
 ## 📦 Package Structure
 
@@ -91,6 +93,8 @@ These capabilities enable entirely new classes of applications:
 | `Orleans.GpuBridge.Utils` | Utilities and helpers | [![NuGet](https://img.shields.io/nuget/v/Orleans.GpuBridge.Utils.svg)](https://www.nuget.org/packages/Orleans.GpuBridge.Utils/) |
 | `Orleans.GpuBridge.Backends.ILGPU` | ILGPU backend implementation | [![NuGet](https://img.shields.io/nuget/v/Orleans.GpuBridge.Backends.ILGPU.svg)](https://www.nuget.org/packages/Orleans.GpuBridge.Backends.ILGPU/) |
 | `Orleans.GpuBridge.Backends.DotCompute` | DotCompute backend implementation | [![NuGet](https://img.shields.io/nuget/v/Orleans.GpuBridge.Backends.DotCompute.svg)](https://www.nuget.org/packages/Orleans.GpuBridge.Backends.DotCompute/) |
+| `Orleans.GpuBridge.Diagnostics` | GPU telemetry and metrics | [![NuGet](https://img.shields.io/nuget/v/Orleans.GpuBridge.Diagnostics.svg)](https://www.nuget.org/packages/Orleans.GpuBridge.Diagnostics/) |
+| `Orleans.GpuBridge.HealthChecks` | Health check integrations | [![NuGet](https://img.shields.io/nuget/v/Orleans.GpuBridge.HealthChecks.svg)](https://www.nuget.org/packages/Orleans.GpuBridge.HealthChecks/) |
 
 ## 🛠️ Installation
 
@@ -130,7 +134,11 @@ var builder = Host.CreateDefaultBuilder(args)
         });
 
         // Add K2K (Kernel-to-Kernel) messaging for GPU-to-GPU communication
-        services.AddK2KSupport();
+        // Includes P2P (peer-to-peer) memory support with automatic fallback
+        services.AddK2KSupport(enableP2P: true);
+
+        // Add GPU memory telemetry for per-grain tracking
+        services.AddGpuTelemetry();
     })
     .UseOrleans(siloBuilder =>
     {
@@ -428,6 +436,92 @@ services.AddOpenTelemetry()
     });
 ```
 
+### GPU Memory Telemetry
+
+Per-grain GPU memory tracking with real-time event streaming:
+
+```csharp
+// Register telemetry
+services.AddGpuTelemetry();
+
+// Inject and use
+public class MyGrain : Grain
+{
+    private readonly IGpuMemoryTelemetryProvider _telemetry;
+
+    public MyGrain(IGpuMemoryTelemetryProvider telemetry)
+    {
+        _telemetry = telemetry;
+    }
+
+    public async Task AllocateGpuMemoryAsync()
+    {
+        // Track GPU allocations per grain
+        _telemetry.RecordGrainMemoryAllocation(
+            grainType: "MyGrain",
+            grainId: this.GetPrimaryKeyString(),
+            deviceIndex: 0,
+            bytes: 1024 * 1024);
+
+        // Query memory statistics
+        var stats = _telemetry.GetMemoryStatsByGrainType("MyGrain");
+        Console.WriteLine($"Total allocated: {stats?.TotalBytes} bytes");
+
+        // Stream real-time events
+        await foreach (var evt in _telemetry.StreamEventsAsync())
+        {
+            Console.WriteLine($"Event: {evt.EventType} - {evt.Bytes} bytes");
+        }
+    }
+}
+```
+
+**Available OpenTelemetry Metrics:**
+- `gpu.grain.allocations` - Allocation count per grain type
+- `gpu.grain.deallocations` - Deallocation count
+- `gpu.grain.allocation.size` - Allocation size histogram
+- `gpu.grain.memory.allocated` - Current memory per grain type
+- `gpu.memory.pool.utilization` - Pool utilization percentage
+- `gpu.memory.pool.fragmentation` - Fragmentation percentage
+
+### P2P GPU Messaging
+
+Direct GPU-to-GPU communication for multi-GPU systems:
+
+```csharp
+// Enable P2P support (enabled by default)
+services.AddK2KSupport(enableP2P: true);
+
+// Or register a custom P2P provider for specific hardware
+services.AddP2PMemoryProvider<CudaNvLinkP2PMemory>();
+
+// Configure P2P in RingKernelConfig
+var config = new RingKernelConfig
+{
+    EnableGpuDirectMessaging = true,
+    MessagingMode = GpuDirectMessagingMode.PreferP2P,  // Auto-select best path
+    AutoEnableP2P = true,                               // Discover P2P capabilities
+    P2PMinBandwidthGBps = 10.0,                        // Minimum bandwidth threshold
+    P2PMaxLatencyNs = 2000.0,                          // Maximum latency threshold
+    EnableP2PAtomics = false                            // P2P atomic operations
+};
+
+// Monitor P2P routing statistics
+var dispatcher = serviceProvider.GetRequiredService<IK2KDispatcher>();
+var stats = dispatcher.GetRoutingStats();
+Console.WriteLine($"P2P dispatches: {stats.P2PDispatches}");
+Console.WriteLine($"CPU-routed: {stats.CpuRoutedDispatches}");
+Console.WriteLine($"Avg latency: {stats.AverageLatencyNs}ns");
+```
+
+**P2P Access Types:**
+| Type | Bandwidth | Latency | Use Case |
+|------|-----------|---------|----------|
+| NvLink | 600+ GB/s | 100-200ns | NVIDIA multi-GPU servers |
+| PCIe P2P | 32-64 GB/s | 500ns-1μs | Cross-GPU on same PCIe root |
+| Infinity Fabric | 400+ GB/s | 100-300ns | AMD multi-GPU systems |
+| CPU-Routed | 15-25 GB/s | 2-10μs | Fallback for all configurations |
+
 ## 🌍 Platform Support
 
 | Platform | CUDA | OpenCL | DirectCompute | Metal | Vulkan | CPU |
@@ -527,6 +621,9 @@ To request improved GPU memory coherence in WSL2:
 | Performance Monitoring | ✅ Stable | Yes |
 | Resilience (Polly v8) | ✅ Stable | Yes |
 | Rate Limiting | ✅ Stable | Yes |
+| K2K Messaging | ✅ Stable | Yes |
+| P2P GPU Communication | ✅ Stable | Yes |
+| GPU Memory Telemetry | ✅ Stable | Yes |
 | Documentation | ✅ Complete | Yes |
 | Test Coverage | ✅ 98% | Yes |
 
@@ -535,13 +632,14 @@ To request improved GPU memory coherence in WSL2:
 | Test Project | Passed | Total |
 |--------------|--------|-------|
 | Abstractions.Tests | 242 | 242 |
-| Runtime.Tests | 206 | 206 |
+| Runtime.Tests | 249 | 249 |
 | Temporal.Tests | 290 | 292 |
 | Grains.Tests | 98 | 98 |
+| Diagnostics.Tests | 70 | 70 |
 | RingKernelTests | 85 | 92 |
 | Resilience.Tests | 53 | 53 |
-| + 5 more projects | 212 | 170 |
-| **Total** | **1,133** | **1,153** |
+| + 5 more projects | 125 | 135 |
+| **Total** | **1,212** | **1,231** |
 
 
 ## 🤝 Contributing

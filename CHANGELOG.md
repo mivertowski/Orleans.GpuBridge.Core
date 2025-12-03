@@ -5,6 +5,79 @@ All notable changes to Orleans.GpuBridge.Core will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2025-12-03
+
+### Added
+
+#### GPU Direct Messaging with P2P Support (FR-002)
+- **IGpuPeerToPeerMemory**: Interface for GPU peer-to-peer memory operations
+  - `CanAccessPeer()`, `EnablePeerAccessAsync()`, `DisablePeerAccessAsync()`
+  - `CopyPeerToPeerAsync()`, `MapPeerMemoryAsync()`, `UnmapPeerMemoryAsync()`
+  - `GetP2PCapability()` for querying P2P capabilities between devices
+- **P2PCapabilityInfo**: Record describing P2P capabilities between device pairs
+  - Bandwidth and latency estimates
+  - Access type (NvLink, PCIe P2P, Infinity Fabric, etc.)
+  - Atomics support detection
+- **GpuDirectMessagingMode**: Enum for routing configuration
+  - `CpuRouted`: Default CPU-staged transfers (always works)
+  - `PreferP2P`: Automatically selects best available path
+  - `NvLink`, `PciExpressP2P`, `InfinityFabric`, `GpuDirectRdma`: Explicit modes
+- **CpuFallbackPeerToPeerMemory**: CPU fallback implementation for development/testing
+- **K2KDispatcher Enhancements**:
+  - Device placement tracking via `RegisterActorDevice()`/`GetActorDevice()`
+  - P2P capability caching for efficient routing decisions
+  - Automatic P2P vs CPU-routed path selection
+  - `K2KRoutingStats` for monitoring (P2P dispatches, latency, etc.)
+- **RingKernelConfig P2P Options**:
+  - `MessagingMode`: Select GPU direct messaging mode
+  - `AutoEnableP2P`: Automatic P2P discovery and setup
+  - `P2PMinBandwidthGBps`, `P2PMaxLatencyNs`: Thresholds for P2P selection
+  - `EnableP2PAtomics`: Enable P2P atomic operations
+- **DI Extensions**:
+  - `AddK2KSupport(enableP2P: true)`: Register K2K with P2P support
+  - `AddP2PMemoryProvider<T>()`: Register custom P2P providers
+
+#### GPU Memory Telemetry (FR-005)
+- **IGpuMemoryTelemetryProvider**: Interface for per-grain GPU memory tracking
+  - `RecordGrainMemoryAllocation()`, `RecordGrainMemoryRelease()`
+  - `GetGrainMemorySnapshot()`, `GetMemoryStatsByGrainType()`
+  - `GetAllGrainTypeMemoryStats()`, `GetTotalAllocatedMemory()`
+  - `RecordMemoryPoolStats()`, `GetMemoryPoolStats()`
+  - `StreamEventsAsync()`: Real-time event streaming via IAsyncEnumerable
+- **GpuMemoryTelemetryProvider**: Full implementation with OpenTelemetry integration
+  - Thread-safe per-grain tracking using ConcurrentDictionary
+  - Peak memory tracking per grain
+  - Memory pool utilization and fragmentation monitoring
+  - Event streaming via bounded Channel
+- **OpenTelemetry Metrics**:
+  - `gpu.grain.allocations` - Allocation count per grain type
+  - `gpu.grain.deallocations` - Deallocation count
+  - `gpu.grain.allocation.size` - Allocation size histogram
+  - `gpu.grain.memory.allocated` - Current memory per grain type
+  - `gpu.grain.active.count` - Active grain count
+  - `gpu.memory.pool.utilization` - Pool utilization percentage
+  - `gpu.memory.pool.fragmentation` - Fragmentation percentage
+- **Data Types**:
+  - `GrainMemorySnapshot`: Point-in-time grain memory state
+  - `GrainTypeMemoryStats`: Aggregated statistics per grain type
+  - `MemoryPoolStats`: GPU memory pool statistics
+  - `GpuMemoryEvent`: Real-time memory events for streaming
+
+### Improved
+
+#### Test Coverage
+- Added 43 new K2K tests (K2KDispatcherTests, CpuFallbackPeerToPeerMemoryTests)
+- Added 23 new GPU memory telemetry tests (GpuMemoryTelemetryProviderTests)
+- Increased total test count from 1,153 to 1,231 tests
+
+#### Documentation
+- Updated README with P2P GPU messaging documentation
+- Updated README with GPU memory telemetry usage examples
+- Added P2P access types comparison table
+- Added OpenTelemetry metrics reference
+
+---
+
 ## [0.2.0] - 2025-12-02
 
 ### Added
@@ -136,8 +209,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 - Lock-free IntervalTree implementation for thread-safe temporal storage
-- K2K response handling improvements
-- GPU atomic queue operations
+- Multi-GPU state sharding and coordination (FR-004)
+- DotCompute native P2P implementation (CUDA cuMemcpyPeer)
 - OpenCL backend support
 - Vulkan compute backend
 - ARM64 platform support

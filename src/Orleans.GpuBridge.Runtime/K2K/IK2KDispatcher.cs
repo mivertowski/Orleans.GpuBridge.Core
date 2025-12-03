@@ -97,4 +97,62 @@ public interface IK2KDispatcher
     /// <param name="actorType">The actor type name.</param>
     /// <param name="actorId">The actor identifier.</param>
     void UnregisterQueue(string actorType, long actorId);
+
+    /// <summary>
+    /// Registers an actor's device placement for P2P routing decisions.
+    /// </summary>
+    /// <param name="actorType">The actor type name.</param>
+    /// <param name="actorId">The actor identifier.</param>
+    /// <param name="deviceId">The GPU device ID where the actor resides.</param>
+    void RegisterActorDevice(string actorType, long actorId, int deviceId);
+
+    /// <summary>
+    /// Gets the device ID where a target actor resides.
+    /// </summary>
+    /// <param name="actorType">The target actor type name.</param>
+    /// <param name="actorId">The target actor identifier.</param>
+    /// <returns>The device ID, or -1 if not found.</returns>
+    int GetActorDevice(string actorType, long actorId);
+
+    /// <summary>
+    /// Gets K2K routing statistics for monitoring and diagnostics.
+    /// </summary>
+    /// <returns>Current routing statistics.</returns>
+    K2KRoutingStats GetRoutingStats();
+}
+
+/// <summary>
+/// Statistics for K2K routing operations.
+/// </summary>
+public sealed record K2KRoutingStats
+{
+    /// <summary>Total messages dispatched.</summary>
+    public long TotalDispatches { get; init; }
+
+    /// <summary>Messages sent via P2P path.</summary>
+    public long P2PDispatches { get; init; }
+
+    /// <summary>Messages sent via CPU-routed path.</summary>
+    public long CpuRoutedDispatches { get; init; }
+
+    /// <summary>Messages that failed to dispatch.</summary>
+    public long FailedDispatches { get; init; }
+
+    /// <summary>Broadcast operations performed.</summary>
+    public long BroadcastOperations { get; init; }
+
+    /// <summary>Request-response operations performed.</summary>
+    public long RequestResponseOperations { get; init; }
+
+    /// <summary>Average dispatch latency in nanoseconds.</summary>
+    public double AverageLatencyNs { get; init; }
+
+    /// <summary>P99 dispatch latency in nanoseconds.</summary>
+    public double P99LatencyNs { get; init; }
+
+    /// <summary>Number of registered actor queues.</summary>
+    public int RegisteredQueues { get; init; }
+
+    /// <summary>Number of P2P-enabled device pairs.</summary>
+    public int P2PEnabledPairs { get; init; }
 }

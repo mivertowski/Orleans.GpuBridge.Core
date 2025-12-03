@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Abstractions;
+using Orleans.GpuBridge.Abstractions.K2K;
 using Orleans.GpuBridge.Abstractions.Memory;
 using Orleans.GpuBridge.Abstractions.Placement;
 using Orleans.GpuBridge.Abstractions.Providers;
@@ -155,6 +156,7 @@ public static class ServiceCollectionExtensions
     /// Adds K2K (Kernel-to-Kernel) messaging support for GPU-native actor communication.
     /// </summary>
     /// <param name="services">Service collection.</param>
+    /// <param name="enableP2P">Whether to enable P2P (peer-to-peer) memory support. Default: true.</param>
     /// <returns>Service collection for chaining.</returns>
     /// <remarks>
     /// <para>
@@ -169,6 +171,11 @@ public static class ServiceCollectionExtensions
     /// - HashRouted: Consistent hashing for load distribution
     /// </para>
     /// <para>
+    /// P2P Support: When enabled, the dispatcher will use P2P memory operations for
+    /// cross-device communication when available. Falls back to CPU-routed mode if
+    /// P2P is not supported between devices.
+    /// </para>
+    /// <para>
     /// Usage:
     /// <code>
     /// services.AddGpuBridge()
@@ -177,10 +184,25 @@ public static class ServiceCollectionExtensions
     /// </code>
     /// </para>
     /// </remarks>
-    public static IServiceCollection AddK2KSupport(this IServiceCollection services)
+    public static IServiceCollection AddK2KSupport(this IServiceCollection services, bool enableP2P = true)
     {
-        // K2K dispatcher - handles GPU-to-GPU message routing
-        services.TryAddSingleton<K2KDispatcher>();
+        // Register P2P memory provider (CPU fallback by default)
+        if (enableP2P)
+        {
+            services.TryAddSingleton<IGpuPeerToPeerMemory>(sp =>
+            {
+                var logger = sp.GetRequiredService<ILogger<CpuFallbackPeerToPeerMemory>>();
+                return new CpuFallbackPeerToPeerMemory(logger);
+            });
+        }
+
+        // K2K dispatcher - handles GPU-to-GPU message routing with P2P support
+        services.TryAddSingleton<K2KDispatcher>(sp =>
+        {
+            var logger = sp.GetRequiredService<ILogger<K2KDispatcher>>();
+            var p2pMemory = sp.GetService<IGpuPeerToPeerMemory>(); // Optional - may be null
+            return new K2KDispatcher(logger, p2pMemory);
+        });
         services.TryAddSingleton<IK2KDispatcher>(sp => sp.GetRequiredService<K2KDispatcher>());
 
         // K2K target registry - stores K2K target configurations
@@ -206,6 +228,62 @@ public static class ServiceCollectionExtensions
             K2KRoutingStrategy.HashRouted,
             (sp, _) => new HashRoutedRouter(sp.GetRequiredService<K2KDispatcher>()));
 
+        return services;
+    }
+
+    /// <summary>
+    /// Adds a custom P2P memory provider for K2K messaging.
+    /// </summary>
+    /// <typeparam name="TProvider">The P2P memory provider implementation type.</typeparam>
+    /// <param name="services">Service collection.</param>
+    /// <returns>Service collection for chaining.</returns>
+    /// <remarks>
+    /// <para>
+    /// Use this to register a custom <see cref="IGpuPeerToPeerMemory"/> implementation
+    /// for GPU backends that support true P2P memory access (e.g., NVLink, PCIe P2P).
+    /// </para>
+    /// <para>
+    /// This replaces any previously registered P2P memory provider, including the
+    /// CPU fallback registered by <see cref="AddK2KSupport"/>.
+    /// </para>
+    /// <para>
+    /// Usage:
+    /// <code>
+    /// services.AddGpuBridge()
+    ///         .AddK2KSupport()
+    ///         .AddP2PMemoryProvider&lt;CudaP2PMemory&gt;();
+    /// </code>
+    /// </para>
+    /// </remarks>
+    public static IServiceCollection AddP2PMemoryProvider<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TProvider>(
+        this IServiceCollection services)
+        where TProvider : class, IGpuPeerToPeerMemory
+    {
+        // Replace any existing registration
+        services.RemoveAll<IGpuPeerToPeerMemory>();
+        services.AddSingleton<IGpuPeerToPeerMemory, TProvider>();
+        return services;
+    }
+
+    /// <summary>
+    /// Adds a P2P memory provider using a factory function.
+    /// </summary>
+    /// <param name="services">Service collection.</param>
+    /// <param name="factory">Factory function to create the P2P provider.</param>
+    /// <returns>Service collection for chaining.</returns>
+    /// <remarks>
+    /// Use this for custom P2P provider initialization with DI resolution.
+    /// This replaces any previously registered P2P memory provider.
+    /// </remarks>
+    public static IServiceCollection AddP2PMemoryProvider(
+        this IServiceCollection services,
+        Func<IServiceProvider, IGpuPeerToPeerMemory> factory)
+    {
+        ArgumentNullException.ThrowIfNull(factory);
+
+        // Replace any existing registration
+        services.RemoveAll<IGpuPeerToPeerMemory>();
+        services.AddSingleton(factory);
         return services;
     }
 

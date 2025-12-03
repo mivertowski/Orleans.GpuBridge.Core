@@ -1,3 +1,5 @@
+using Orleans.GpuBridge.Abstractions.K2K;
+
 namespace Orleans.GpuBridge.Abstractions.Kernels;
 
 /// <summary>
@@ -67,6 +69,36 @@ public sealed record RingKernelConfig
     public bool EnableGpuDirectMessaging { get; init; } = false;
 
     /// <summary>
+    /// GPU direct messaging mode for K2K communication.
+    /// Controls how messages are routed between GPU-resident actors.
+    /// </summary>
+    public GpuDirectMessagingMode MessagingMode { get; init; } = GpuDirectMessagingMode.CpuRouted;
+
+    /// <summary>
+    /// Enable automatic P2P path discovery and setup.
+    /// When enabled, automatically detects and enables P2P access between GPUs.
+    /// </summary>
+    public bool AutoEnableP2P { get; init; } = true;
+
+    /// <summary>
+    /// Minimum bandwidth threshold (GB/s) to prefer P2P over CPU routing.
+    /// P2P paths with lower bandwidth will fall back to CPU routing.
+    /// </summary>
+    public double P2PMinBandwidthGBps { get; init; } = 10.0;
+
+    /// <summary>
+    /// Maximum latency threshold (nanoseconds) to prefer P2P over CPU routing.
+    /// P2P paths with higher latency will fall back to CPU routing.
+    /// </summary>
+    public double P2PMaxLatencyNs { get; init; } = 2000.0; // 2μs
+
+    /// <summary>
+    /// Enable P2P atomics for lock-free queue operations.
+    /// Requires hardware support (NVLink, certain PCIe configurations).
+    /// </summary>
+    public bool EnableP2PAtomics { get; init; } = false;
+
+    /// <summary>
     /// Enable persistent storage integration (GPUDirect Storage)
     /// </summary>
     public bool EnablePersistentStorage { get; init; } = false;
@@ -91,6 +123,9 @@ public sealed record RingKernelConfig
         GPUResident = true,
         PollingIntervalNanoseconds = 50, // 50ns polling for ultra-low latency
         EnableGpuDirectMessaging = true,
+        MessagingMode = GpuDirectMessagingMode.PreferP2P,
+        AutoEnableP2P = true,
+        EnableP2PAtomics = true,
         MessageTimeoutMicroseconds = 500 // 500μs timeout
     };
 

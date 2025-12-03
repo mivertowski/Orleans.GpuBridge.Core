@@ -3,11 +3,13 @@
 
 using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Orleans.GpuBridge.Abstractions.K2K;
 using Orleans.GpuBridge.Runtime.Routing;
 
 namespace Orleans.GpuBridge.Runtime.K2K;
@@ -33,10 +35,23 @@ namespace Orleans.GpuBridge.Runtime.K2K;
 public sealed class K2KDispatcher : IK2KDispatcher, IDisposable
 {
     private readonly ILogger<K2KDispatcher> _logger;
+    private readonly IGpuPeerToPeerMemory? _p2pMemory;
     private readonly ConcurrentDictionary<K2KQueueKey, IntPtr> _queueRegistry;
     private readonly ConcurrentDictionary<string, List<long>> _actorsByType;
+    private readonly ConcurrentDictionary<K2KQueueKey, int> _actorDevices;
+    private readonly ConcurrentDictionary<(int, int), P2PCapabilityInfo?> _p2pCapabilityCache;
     private readonly ReaderWriterLockSlim _registryLock;
     private bool _disposed;
+
+    // Statistics counters (thread-safe)
+    private long _totalDispatches;
+    private long _p2pDispatches;
+    private long _cpuRoutedDispatches;
+    private long _failedDispatches;
+    private long _broadcastOperations;
+    private long _requestResponseOperations;
+    private long _totalLatencyTicks;
+    private long _maxLatencyTicks;
 
     /// <summary>
     /// Completion flag value indicating response is ready.
@@ -70,12 +85,26 @@ public sealed class K2KDispatcher : IK2KDispatcher, IDisposable
     /// <summary>
     /// Initializes a new instance of the K2K dispatcher.
     /// </summary>
-    public K2KDispatcher(ILogger<K2KDispatcher> logger)
+    /// <param name="logger">Logger for dispatcher operations.</param>
+    /// <param name="p2pMemory">Optional P2P memory provider for direct GPU-to-GPU transfers.</param>
+    public K2KDispatcher(ILogger<K2KDispatcher> logger, IGpuPeerToPeerMemory? p2pMemory = null)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _p2pMemory = p2pMemory;
         _queueRegistry = new ConcurrentDictionary<K2KQueueKey, IntPtr>();
         _actorsByType = new ConcurrentDictionary<string, List<long>>();
+        _actorDevices = new ConcurrentDictionary<K2KQueueKey, int>();
+        _p2pCapabilityCache = new ConcurrentDictionary<(int, int), P2PCapabilityInfo?>();
         _registryLock = new ReaderWriterLockSlim();
+
+        if (_p2pMemory != null)
+        {
+            _logger.LogInformation("K2K dispatcher initialized with P2P memory provider");
+        }
+        else
+        {
+            _logger.LogInformation("K2K dispatcher initialized (CPU-routed mode only)");
+        }
     }
 
     /// <inheritdoc />
@@ -90,21 +119,59 @@ public sealed class K2KDispatcher : IK2KDispatcher, IDisposable
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
 
+        var startTicks = Stopwatch.GetTimestamp();
         var queuePtr = GetTargetQueuePointer(targetActorType, targetActorId);
+
         if (queuePtr == IntPtr.Zero)
         {
+            Interlocked.Increment(ref _failedDispatches);
             _logger.LogWarning(
                 "K2K dispatch failed: target queue not found for {ActorType}:{ActorId}",
                 targetActorType, targetActorId);
             return ValueTask.CompletedTask;
         }
 
-        // Enqueue message directly to GPU memory
+        // Determine routing path based on device placement
+        var sourceKey = new K2KQueueKey(targetActorType, sourceActorId);
+        var targetKey = new K2KQueueKey(targetActorType, targetActorId);
+        var sourceDevice = _actorDevices.GetValueOrDefault(sourceKey, -1);
+        var targetDevice = _actorDevices.GetValueOrDefault(targetKey, -1);
+
+        var usedP2P = false;
+
+        // If both actors are on known devices and we have P2P capability, consider P2P path
+        if (sourceDevice >= 0 && targetDevice >= 0 && sourceDevice != targetDevice && _p2pMemory != null)
+        {
+            var capability = GetCachedP2PCapability(sourceDevice, targetDevice);
+            if (capability?.IsEnabled == true)
+            {
+                // Use P2P path - direct memory write
+                usedP2P = true;
+                _logger.LogTrace(
+                    "K2K P2P dispatch: {SourceId}[dev{SourceDev}] -> {TargetType}:{TargetId}[dev{TargetDev}].{Method}",
+                    sourceActorId, sourceDevice, targetActorType, targetActorId, targetDevice, targetMethod);
+            }
+        }
+
+        // Enqueue message (works for both local and P2P accessible memory)
         EnqueueToGpuQueue(queuePtr, ref message);
 
+        // Update statistics
+        Interlocked.Increment(ref _totalDispatches);
+        if (usedP2P)
+        {
+            Interlocked.Increment(ref _p2pDispatches);
+        }
+        else
+        {
+            Interlocked.Increment(ref _cpuRoutedDispatches);
+        }
+
+        RecordLatency(startTicks);
+
         _logger.LogTrace(
-            "K2K dispatch: {SourceId} -> {TargetType}:{TargetId}.{Method}",
-            sourceActorId, targetActorType, targetActorId, targetMethod);
+            "K2K dispatch: {SourceId} -> {TargetType}:{TargetId}.{Method} (P2P: {UsedP2P})",
+            sourceActorId, targetActorType, targetActorId, targetMethod, usedP2P);
 
         return ValueTask.CompletedTask;
     }
@@ -122,9 +189,13 @@ public sealed class K2KDispatcher : IK2KDispatcher, IDisposable
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
 
+        Interlocked.Increment(ref _requestResponseOperations);
+        var startTicks = Stopwatch.GetTimestamp();
+
         var queuePtr = GetTargetQueuePointer(targetActorType, targetActorId);
         if (queuePtr == IntPtr.Zero)
         {
+            Interlocked.Increment(ref _failedDispatches);
             _logger.LogWarning(
                 "K2K dispatch with response failed: target queue not found for {ActorType}:{ActorId}",
                 targetActorType, targetActorId);
@@ -176,6 +247,10 @@ public sealed class K2KDispatcher : IK2KDispatcher, IDisposable
             }
 
             // Read response from slot (after completion flag)
+            Interlocked.Increment(ref _totalDispatches);
+            Interlocked.Increment(ref _cpuRoutedDispatches);
+            RecordLatency(startTicks);
+
             unsafe
             {
                 var responseDataPtr = (byte*)responsePtr + 4;
@@ -200,6 +275,8 @@ public sealed class K2KDispatcher : IK2KDispatcher, IDisposable
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
 
+        Interlocked.Increment(ref _broadcastOperations);
+        var startTicks = Stopwatch.GetTimestamp();
         var dispatchedCount = 0;
 
         foreach (var targetId in targetActorIds)
@@ -209,8 +286,16 @@ public sealed class K2KDispatcher : IK2KDispatcher, IDisposable
             {
                 EnqueueToGpuQueue(queuePtr, ref message);
                 dispatchedCount++;
+                Interlocked.Increment(ref _totalDispatches);
+                Interlocked.Increment(ref _cpuRoutedDispatches);
+            }
+            else
+            {
+                Interlocked.Increment(ref _failedDispatches);
             }
         }
+
+        RecordLatency(startTicks);
 
         _logger.LogTrace(
             "K2K broadcast from {SourceId} to {Count}/{Total} {TargetType} actors",
@@ -285,6 +370,74 @@ public sealed class K2KDispatcher : IK2KDispatcher, IDisposable
         }
 
         _logger.LogDebug("Unregistered K2K queue for {ActorType}:{ActorId}", actorType, actorId);
+    }
+
+    /// <inheritdoc />
+    public void RegisterActorDevice(string actorType, long actorId, int deviceId)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(actorType);
+
+        if (deviceId < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(deviceId), "Device ID must be non-negative");
+        }
+
+        var key = new K2KQueueKey(actorType, actorId);
+        _actorDevices[key] = deviceId;
+
+        _logger.LogDebug(
+            "Registered actor device: {ActorType}:{ActorId} on device {DeviceId}",
+            actorType, actorId, deviceId);
+
+        // Preemptively check P2P capabilities for this device
+        if (_p2pMemory != null)
+        {
+            foreach (var existingDevice in _actorDevices.Values.Distinct())
+            {
+                if (existingDevice != deviceId)
+                {
+                    // Cache P2P capability in both directions
+                    _ = GetCachedP2PCapability(deviceId, existingDevice);
+                    _ = GetCachedP2PCapability(existingDevice, deviceId);
+                }
+            }
+        }
+    }
+
+    /// <inheritdoc />
+    public int GetActorDevice(string actorType, long actorId)
+    {
+        var key = new K2KQueueKey(actorType, actorId);
+        return _actorDevices.TryGetValue(key, out var deviceId) ? deviceId : -1;
+    }
+
+    /// <inheritdoc />
+    public K2KRoutingStats GetRoutingStats()
+    {
+        var total = Interlocked.Read(ref _totalDispatches);
+        var avgLatencyNs = total > 0
+            ? (double)Interlocked.Read(ref _totalLatencyTicks) / total * 1_000_000_000.0 / Stopwatch.Frequency
+            : 0.0;
+
+        var maxLatencyNs = (double)Interlocked.Read(ref _maxLatencyTicks) * 1_000_000_000.0 / Stopwatch.Frequency;
+
+        // Count P2P-enabled device pairs
+        var p2pEnabledPairs = _p2pCapabilityCache.Values
+            .Count(c => c?.IsEnabled == true);
+
+        return new K2KRoutingStats
+        {
+            TotalDispatches = total,
+            P2PDispatches = Interlocked.Read(ref _p2pDispatches),
+            CpuRoutedDispatches = Interlocked.Read(ref _cpuRoutedDispatches),
+            FailedDispatches = Interlocked.Read(ref _failedDispatches),
+            BroadcastOperations = Interlocked.Read(ref _broadcastOperations),
+            RequestResponseOperations = Interlocked.Read(ref _requestResponseOperations),
+            AverageLatencyNs = avgLatencyNs,
+            P99LatencyNs = maxLatencyNs, // Simplified - true P99 would need histogram
+            RegisteredQueues = _queueRegistry.Count,
+            P2PEnabledPairs = p2pEnabledPairs
+        };
     }
 
     /// <summary>
@@ -633,6 +786,46 @@ public sealed class K2KDispatcher : IK2KDispatcher, IDisposable
         public TRequest Request;
     }
 
+    #region Private Helper Methods
+
+    /// <summary>
+    /// Gets P2P capability from cache, or queries the P2P memory provider and caches the result.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private P2PCapabilityInfo? GetCachedP2PCapability(int sourceDevice, int targetDevice)
+    {
+        if (_p2pMemory == null)
+        {
+            return null;
+        }
+
+        var key = (sourceDevice, targetDevice);
+        return _p2pCapabilityCache.GetOrAdd(key, k => _p2pMemory.GetP2PCapability(k.Item1, k.Item2));
+    }
+
+    /// <summary>
+    /// Records latency for statistics tracking.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private void RecordLatency(long startTicks)
+    {
+        var elapsedTicks = Stopwatch.GetTimestamp() - startTicks;
+        Interlocked.Add(ref _totalLatencyTicks, elapsedTicks);
+
+        // Update max latency using compare-and-swap pattern
+        long currentMax;
+        do
+        {
+            currentMax = Interlocked.Read(ref _maxLatencyTicks);
+            if (elapsedTicks <= currentMax)
+            {
+                break;
+            }
+        } while (Interlocked.CompareExchange(ref _maxLatencyTicks, elapsedTicks, currentMax) != currentMax);
+    }
+
+    #endregion
+
     /// <inheritdoc />
     public void Dispose()
     {
@@ -645,6 +838,8 @@ public sealed class K2KDispatcher : IK2KDispatcher, IDisposable
         _registryLock.Dispose();
         _queueRegistry.Clear();
         _actorsByType.Clear();
+        _actorDevices.Clear();
+        _p2pCapabilityCache.Clear();
 
         _logger.LogInformation("K2K dispatcher disposed");
     }

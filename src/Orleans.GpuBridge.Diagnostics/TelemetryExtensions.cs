@@ -62,6 +62,7 @@ public static class TelemetryExtensions
 
         // Register core telemetry services
         services.AddSingleton<IGpuTelemetry, GpuTelemetry>();
+        services.AddSingleton<IGpuMemoryTelemetryProvider, GpuMemoryTelemetryProvider>();
         services.AddSingleton<IGpuMetricsCollector, GpuMetricsCollector>();
         services.AddHostedService<GpuMetricsCollector>();
 
@@ -95,6 +96,7 @@ public static class TelemetryExtensions
             {
                 metrics
                     .AddMeter("Orleans.GpuBridge")
+                    .AddMeter("Orleans.GpuBridge.GrainMemory")
                     .AddRuntimeInstrumentation()
                     .AddProcessInstrumentation()
                     .AddAspNetCoreInstrumentation();

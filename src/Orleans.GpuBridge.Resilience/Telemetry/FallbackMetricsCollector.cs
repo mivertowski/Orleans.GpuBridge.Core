@@ -18,6 +18,10 @@ public sealed class FallbackMetricsCollector : IDisposable
     private DateTimeOffset _lastCleanup;
     private bool _disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FallbackMetricsCollector"/> class.
+    /// </summary>
+    /// <param name="retentionPeriod">Optional retention period for metrics. Defaults to 1 hour.</param>
     public FallbackMetricsCollector(TimeSpan? retentionPeriod = null)
     {
         _retentionPeriod = retentionPeriod ?? TimeSpan.FromHours(1);
@@ -220,10 +224,11 @@ public sealed class FallbackMetricsCollector : IDisposable
         }
     }
 
+    /// <inheritdoc/>
     public void Dispose()
     {
         if (_disposed) return;
-        
+
         _disposed = true;
         _levelMetrics.Clear();
         
@@ -281,14 +286,19 @@ internal readonly record struct MetricEntry(
     FallbackLevel? TargetLevel);
 
 /// <summary>
-/// Types of metrics
+/// Types of metrics for fallback operations.
 /// </summary>
 public enum MetricType
 {
+    /// <summary>Operation completed successfully.</summary>
     Success,
+    /// <summary>Operation failed at current level.</summary>
     Failure,
+    /// <summary>Operation failed at all fallback levels.</summary>
     TotalFailure,
+    /// <summary>System degraded to a lower fallback level.</summary>
     Degradation,
+    /// <summary>System recovered to a higher level.</summary>
     Recovery
 }
 

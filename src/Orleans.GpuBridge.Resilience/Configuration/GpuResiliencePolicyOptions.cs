@@ -5,6 +5,9 @@ namespace Orleans.GpuBridge.Resilience.Policies;
 /// </summary>
 public sealed class GpuResiliencePolicyOptions
 {
+    /// <summary>
+    /// The configuration section name for GPU resilience policy options.
+    /// </summary>
     public const string SectionName = "GpuResilience";
 
     /// <summary>

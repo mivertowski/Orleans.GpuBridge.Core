@@ -28,6 +28,15 @@ public sealed class GpuFallbackChain<TIn, TOut> : IDisposable
     private DateTimeOffset _lastDegradation;
     private bool _disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GpuFallbackChain{TIn, TOut}"/> class.
+    /// </summary>
+    /// <param name="logger">The logger instance for fallback chain logging.</param>
+    /// <param name="resiliencePolicy">The GPU resilience policy to apply.</param>
+    /// <param name="options">The fallback chain configuration options.</param>
+    /// <param name="executors">The collection of fallback executors in priority order.</param>
+    /// <exception cref="ArgumentNullException">Thrown when any required parameter is null.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when no executors are provided.</exception>
     public GpuFallbackChain(
         ILogger<GpuFallbackChain<TIn, TOut>> logger,
         GpuResiliencePolicy resiliencePolicy,
@@ -290,6 +299,7 @@ public sealed class GpuFallbackChain<TIn, TOut> : IDisposable
         }
     }
 
+    /// <inheritdoc/>
     public void Dispose()
     {
         if (_disposed) return;

@@ -21,6 +21,12 @@ public sealed class ChaosEngineer : IChaosEngineer, IDisposable
     private long _faultsInjected;
     private bool _disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ChaosEngineer"/> class.
+    /// </summary>
+    /// <param name="logger">The logger instance for chaos engineering logging.</param>
+    /// <param name="options">The GPU resilience policy options containing chaos configuration.</param>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="logger"/> or <paramref name="options"/> is null.</exception>
     public ChaosEngineer(
         ILogger<ChaosEngineer> logger,
         IOptions<GpuResiliencePolicyOptions> options)
@@ -359,6 +365,7 @@ public sealed class ChaosEngineer : IChaosEngineer, IDisposable
         await Task.WhenAll(tasks);
     }
 
+    /// <inheritdoc/>
     public void Dispose()
     {
         if (_disposed) return;

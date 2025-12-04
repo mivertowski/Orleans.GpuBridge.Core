@@ -23,6 +23,13 @@ public sealed class TokenBucketRateLimiter : IRateLimiter, IDisposable
     private long _rejectedRequests;
     private bool _disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TokenBucketRateLimiter"/> class.
+    /// </summary>
+    /// <param name="logger">The logger instance for rate limiter logging.</param>
+    /// <param name="options">The rate limiting configuration options.</param>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="logger"/> or <paramref name="options"/> is null.</exception>
+    /// <exception cref="ArgumentException">Thrown when token refill rate or max burst size is not positive.</exception>
     public TokenBucketRateLimiter(
         ILogger<TokenBucketRateLimiter> logger,
         IOptions<RateLimitingOptions> options)
@@ -198,13 +205,14 @@ public sealed class TokenBucketRateLimiter : IRateLimiter, IDisposable
         }
     }
 
+    /// <inheritdoc/>
     public void Dispose()
     {
         if (_disposed) return;
-        
+
         _disposed = true;
         _refillTimer?.Dispose();
-        
+
         _logger.LogInformation("Token bucket rate limiter disposed");
         GC.SuppressFinalize(this);
     }

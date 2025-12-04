@@ -49,10 +49,22 @@ public readonly record struct FallbackAttempt(
 [Serializable]
 public sealed class FallbackChainExhaustedException : GpuBridgeException
 {
+    /// <summary>
+    /// The default error code for fallback chain exhaustion.
+    /// </summary>
     public const string DefaultErrorCode = "FALLBACK_CHAIN_EXHAUSTED";
 
+    /// <summary>
+    /// Gets the list of fallback attempts that were made before exhaustion.
+    /// </summary>
     public IReadOnlyList<FallbackAttempt> Attempts { get; }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FallbackChainExhaustedException"/> class.
+    /// </summary>
+    /// <param name="operationName">The name of the operation that failed.</param>
+    /// <param name="attempts">The list of fallback attempts that were made.</param>
+    /// <param name="innerException">The optional inner exception that caused the failure.</param>
     public FallbackChainExhaustedException(
         string operationName,
         IReadOnlyList<FallbackAttempt> attempts,
@@ -71,6 +83,9 @@ public sealed class FallbackChainExhaustedException : GpuBridgeException
 /// </summary>
 public sealed class FallbackChainOptions
 {
+    /// <summary>
+    /// The configuration section name for fallback chain options.
+    /// </summary>
     public const string SectionName = "FallbackChain";
 
     /// <summary>

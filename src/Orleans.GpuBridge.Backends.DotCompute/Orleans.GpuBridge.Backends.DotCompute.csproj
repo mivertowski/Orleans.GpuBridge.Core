@@ -46,36 +46,28 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- DotCompute Framework v0.5.1 (Stable NuGet Release) -->
-    <!-- DotCompute Project References - Using local source for development/debugging -->
-    <!-- Switch back to PackageReferences for production builds -->
-    <ProjectReference Include="/home/michael/DEV/Repos/DotCompute/DotCompute/src/Core/DotCompute.Abstractions/DotCompute.Abstractions.csproj" />
-    <ProjectReference Include="/home/michael/DEV/Repos/DotCompute/DotCompute/src/Core/DotCompute.Core/DotCompute.Core.csproj" />
-    <ProjectReference Include="/home/michael/DEV/Repos/DotCompute/DotCompute/src/Runtime/DotCompute.Runtime/DotCompute.Runtime.csproj" />
-    <ProjectReference Include="/home/michael/DEV/Repos/DotCompute/DotCompute/src/Backends/DotCompute.Backends.CPU/DotCompute.Backends.CPU.csproj" />
-    <ProjectReference Include="/home/michael/DEV/Repos/DotCompute/DotCompute/src/Backends/DotCompute.Backends.CUDA/DotCompute.Backends.CUDA.csproj" />
+    <!-- DotCompute Framework v0.5.1 (Stable NuGet Release from nuget.org) -->
+    <PackageReference Include="DotCompute.Abstractions" Version="$(DotComputeVersion)" />
+    <PackageReference Include="DotCompute.Core" Version="$(DotComputeVersion)" />
+    <PackageReference Include="DotCompute.Runtime" Version="$(DotComputeVersion)" />
+    <PackageReference Include="DotCompute.Backends.CPU" Version="$(DotComputeVersion)" />
+    <PackageReference Include="DotCompute.Backends.CUDA" Version="$(DotComputeVersion)" />
 
     <!-- DotCompute Source Generators -->
     <!-- Note: RingKernelRuntimeFactory.g.cs is excluded because we use CustomRingKernelRuntimeFactory instead -->
-    <ProjectReference Include="/home/michael/DEV/Repos/DotCompute/DotCompute/src/Runtime/DotCompute.Generators/DotCompute.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <PackageReference Include="DotCompute.Generators" Version="$(DotComputeVersion)" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 
     <!-- Orleans Dependencies -->
-    <PackageReference Include="Microsoft.Orleans.Core" Version="9.2.1" />
-    <PackageReference Include="Microsoft.Orleans.Runtime" Version="9.2.1" />
+    <PackageReference Include="Microsoft.Orleans.Core" Version="$(MicrosoftOrleansVersion)" />
+    <PackageReference Include="Microsoft.Orleans.Runtime" Version="$(MicrosoftOrleansVersion)" />
 
-    <!-- Microsoft Extensions - Match DotCompute requirements -->
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.10" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.10" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.10" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.10" />
-    <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="9.0.10" />
-    <PackageReference Include="Microsoft.DotNet.ILCompiler" Version="9.0.10" />
-
-    <!-- Fix Microsoft.CodeAnalysis version conflict -->
-    <!-- DotCompute.Backends.CPU requires >= 4.14.0, so upgrade Workspaces.Common to match -->
-    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.14.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.14.0" />
+    <!-- Microsoft Extensions - Match Orleans.GpuBridge.Abstractions requirements -->
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="9.0.11" />
+    <PackageReference Include="Microsoft.DotNet.ILCompiler" Version="10.0.0" />
   </ItemGroup>
 
   <!-- Exclude generated RingKernelRuntimeFactory - we use CustomRingKernelRuntimeFactory instead -->

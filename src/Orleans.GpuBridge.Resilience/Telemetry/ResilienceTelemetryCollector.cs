@@ -52,6 +52,11 @@ public sealed class ResilienceTelemetryCollector : IDisposable
     
     private bool _disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ResilienceTelemetryCollector"/> class.
+    /// </summary>
+    /// <param name="logger">The logger instance for telemetry logging.</param>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="logger"/> is null.</exception>
     public ResilienceTelemetryCollector(ILogger<ResilienceTelemetryCollector> logger)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -395,6 +400,7 @@ public sealed class ResilienceTelemetryCollector : IDisposable
         }
     }
 
+    /// <inheritdoc/>
     public void Dispose()
     {
         if (_disposed) return;
@@ -409,23 +415,30 @@ public sealed class ResilienceTelemetryCollector : IDisposable
 }
 
 /// <summary>
-/// Circuit breaker states for telemetry
+/// Circuit breaker states for telemetry.
 /// </summary>
 public enum CircuitBreakerState
 {
+    /// <summary>Circuit is closed and requests are allowed through.</summary>
     Closed = 0,
+    /// <summary>Circuit is open and requests are being rejected.</summary>
     Open = 1,
+    /// <summary>Circuit is testing if the underlying system has recovered.</summary>
     HalfOpen = 2
 }
 
 /// <summary>
-/// Component health states
+/// Component health states for telemetry.
 /// </summary>
 public enum ComponentHealth
 {
+    /// <summary>Health status is not yet determined.</summary>
     Unknown = 0,
+    /// <summary>Component is functioning normally.</summary>
     Healthy = 1,
+    /// <summary>Component is functioning with reduced capacity.</summary>
     Degraded = 2,
+    /// <summary>Component is not functioning properly.</summary>
     Unhealthy = 3
 }
 

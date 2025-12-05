@@ -5,9 +5,25 @@ All notable changes to Orleans.GpuBridge.Core will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.2.1] - 2025-12-03
+## [0.2.0] - 2025-12-05
 
 ### Added
+
+#### Resilience Module (Orleans.GpuBridge.Resilience)
+- **GpuResiliencePolicy**: Unified resilience policy combining retry, circuit breaker, timeout, and bulkhead patterns
+  - Built on Polly v8 ResiliencePipeline API
+  - GPU-specific exception handling for memory, kernel, and device failures
+  - Configurable timeouts for kernel execution, device operations, and memory allocation
+- **TokenBucketRateLimiter**: GPU-aware rate limiting to prevent resource exhaustion
+  - Configurable token refill rate and burst size
+  - Metrics tracking for rejection rates
+- **GpuFallbackChain**: Automatic GPU → CPU fallback with degradation levels
+  - Four-level fallback: Optimal → Reduced → Degraded → Failed
+  - Auto-degradation based on error thresholds
+  - Auto-recovery when GPU resources become available
+- **ChaosEngineer**: Fault injection for resilience testing
+  - Configurable fault and latency injection rates
+  - Test-environment only activation
 
 #### GPU Direct Messaging with P2P Support (FR-002)
 - **IGpuPeerToPeerMemory**: Interface for GPU peer-to-peer memory operations
@@ -63,41 +79,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `MemoryPoolStats`: GPU memory pool statistics
   - `GpuMemoryEvent`: Real-time memory events for streaming
 
-### Improved
-
-#### Test Coverage
-- Added 43 new K2K tests (K2KDispatcherTests, CpuFallbackPeerToPeerMemoryTests)
-- Added 23 new GPU memory telemetry tests (GpuMemoryTelemetryProviderTests)
-- Increased total test count from 1,153 to 1,231 tests
-
-#### Documentation
-- Updated README with P2P GPU messaging documentation
-- Updated README with GPU memory telemetry usage examples
-- Added P2P access types comparison table
-- Added OpenTelemetry metrics reference
-
----
-
-## [0.2.0] - 2025-12-02
-
-### Added
-
-#### Resilience Module (Orleans.GpuBridge.Resilience)
-- **GpuResiliencePolicy**: Unified resilience policy combining retry, circuit breaker, timeout, and bulkhead patterns
-  - Built on Polly v8 ResiliencePipeline API
-  - GPU-specific exception handling for memory, kernel, and device failures
-  - Configurable timeouts for kernel execution, device operations, and memory allocation
-- **TokenBucketRateLimiter**: GPU-aware rate limiting to prevent resource exhaustion
-  - Configurable token refill rate and burst size
-  - Metrics tracking for rejection rates
-- **GpuFallbackChain**: Automatic GPU → CPU fallback with degradation levels
-  - Four-level fallback: Optimal → Reduced → Degraded → Failed
-  - Auto-degradation based on error thresholds
-  - Auto-recovery when GPU resources become available
-- **ChaosEngineer**: Fault injection for resilience testing
-  - Configurable fault and latency injection rates
-  - Test-environment only activation
-
 #### Exception Types
 - **GpuBridgeException**: Base exception class for all GPU Bridge errors
 - **GpuOperationException**: General GPU operation failures
@@ -106,18 +87,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **GpuKernelException**: Kernel execution failures
 - **RateLimitExceededException**: Rate limit exceeded errors
 
+### Changed
+
+#### Build & Packaging
+- **DotCompute NuGet Migration**: Replaced hardcoded local project references with NuGet packages v0.5.1
+  - All DotCompute dependencies now sourced from nuget.org
+  - Centralized package version management in Directory.Build.props
+  - Fixed CI/CD pipeline compatibility
+- **Package Version Centralization**: All Microsoft.Extensions, Microsoft.Orleans, and Microsoft.CodeAnalysis versions now managed centrally
+
 ### Improved
 
 #### Test Coverage
+- Added 43 new K2K tests (K2KDispatcherTests, CpuFallbackPeerToPeerMemoryTests)
+- Added 23 new GPU memory telemetry tests (GpuMemoryTelemetryProviderTests)
 - Added Orleans.GpuBridge.Resilience.Tests with 53 comprehensive tests
-- Increased total test count from 978 to 1,153 tests
-- Fixed Orleans serialization for AffinityGroupMetrics struct
-- Improved test stability for memory pressure and GPU clock tests
+- Increased total test count from 978 to 1,231 tests
 
 #### Documentation
+- Added comprehensive XML documentation across all public APIs
+- Updated README with P2P GPU messaging documentation
+- Updated README with GPU memory telemetry usage examples
+- Added P2P access types comparison table
+- Added OpenTelemetry metrics reference
 - Added package README for Orleans.GpuBridge.Resilience
-- Updated CLAUDE.md with current test suite status
-- Updated main README with resilience module information
 
 ### Fixed
 - Fixed Polly v7 → v8 API migration issues
@@ -125,6 +118,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed missing Priority property on IFallbackExecutor interface
 - Fixed FluentAssertions method usage in tests
 - Fixed Orleans `[GenerateSerializer]` attributes on AffinityGroupMetrics
+- Fixed XML documentation warnings across Resilience module
 
 ### Performance
 - All resilience operations designed for minimal allocation overhead
@@ -200,7 +194,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - .NET 9.0
 - Microsoft Orleans 9.2.1
-- DotCompute (local build)
+- DotCompute 0.5.1
 - OpenTelemetry 1.9.0+
 
 ---

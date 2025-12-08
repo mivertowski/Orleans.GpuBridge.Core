@@ -45,7 +45,7 @@ public class VectorAddActorLargeVectorTests
         // Vectors ≤25 elements should NOT use GPU memory
 
         var smallVector = new float[25]; // Exactly at the boundary
-        smallVector.Length.Should().BeLessOrEqualTo(25,
+        smallVector.Length.Should().BeLessThanOrEqualTo(25,
             "vectors ≤25 elements should use inline message path");
     }
 
@@ -83,8 +83,8 @@ public class VectorAddActorLargeVectorTests
             // Assert
             bufferA.Should().NotBeNull();
             bufferB.Should().NotBeNull();
-            bufferA.SizeBytes.Should().BeGreaterOrEqualTo(100 * sizeof(float));
-            bufferB.SizeBytes.Should().BeGreaterOrEqualTo(100 * sizeof(float));
+            bufferA.SizeBytes.Should().BeGreaterThanOrEqualTo(100 * sizeof(float));
+            bufferB.SizeBytes.Should().BeGreaterThanOrEqualTo(100 * sizeof(float));
             bufferA.DevicePointer.Should().NotBe(IntPtr.Zero);
             bufferB.DevicePointer.Should().NotBe(IntPtr.Zero);
 
@@ -341,9 +341,9 @@ public class VectorAddActorLargeVectorTests
             var bufferResult = memoryManager.AllocateBuffer<float>(vectorSize);
 
             // Assert
-            bufferA.SizeBytes.Should().BeGreaterOrEqualTo(vectorSize * sizeof(float));
-            bufferB.SizeBytes.Should().BeGreaterOrEqualTo(vectorSize * sizeof(float));
-            bufferResult.SizeBytes.Should().BeGreaterOrEqualTo(vectorSize * sizeof(float));
+            bufferA.SizeBytes.Should().BeGreaterThanOrEqualTo(vectorSize * sizeof(float));
+            bufferB.SizeBytes.Should().BeGreaterThanOrEqualTo(vectorSize * sizeof(float));
+            bufferResult.SizeBytes.Should().BeGreaterThanOrEqualTo(vectorSize * sizeof(float));
 
             // Verify round-trip with large data
             var roundTrip = new float[vectorSize];

@@ -83,7 +83,7 @@ public class CudaPerformanceTests
             var computeCap = output.Trim();
             if (double.TryParse(computeCap, out var capability))
             {
-                capability.Should().BeGreaterOrEqualTo(3.5, "GPU should have compute capability >= 3.5");
+                capability.Should().BeGreaterThanOrEqualTo(3.5, "GPU should have compute capability >= 3.5");
             }
             else
             {

@@ -350,7 +350,7 @@ public sealed class K2KDispatcherTests : IDisposable
         var stats = _dispatcher.GetRoutingStats();
 
         // Assert - should have cached P2P capabilities
-        stats.P2PEnabledPairs.Should().BeGreaterOrEqualTo(0);
+        stats.P2PEnabledPairs.Should().BeGreaterThanOrEqualTo(0);
     }
 
     #endregion

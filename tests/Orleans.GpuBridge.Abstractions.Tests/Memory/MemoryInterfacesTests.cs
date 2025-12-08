@@ -48,7 +48,7 @@ public class MemoryInterfacesTests
         var deviceIndex = mockMemory.Object.DeviceIndex;
 
         // Assert
-        deviceIndex.Should().BeGreaterOrEqualTo(0);
+        deviceIndex.Should().BeGreaterThanOrEqualTo(0);
     }
 
     [Fact]
@@ -183,7 +183,7 @@ public class MemoryInterfacesTests
 
         // Assert
         memory.Should().NotBeNull();
-        memory.Length.Should().BeGreaterOrEqualTo(1024);
+        memory.Length.Should().BeGreaterThanOrEqualTo(1024);
     }
 
     [Fact]
@@ -202,7 +202,7 @@ public class MemoryInterfacesTests
         var memory = mockPool.Object.Rent(1000);
 
         // Assert
-        memory.Length.Should().BeGreaterOrEqualTo(1000);
+        memory.Length.Should().BeGreaterThanOrEqualTo(1000);
     }
 
     [Fact]

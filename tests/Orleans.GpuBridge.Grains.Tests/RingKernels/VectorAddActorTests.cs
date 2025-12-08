@@ -224,7 +224,7 @@ public class VectorAddActorTests : IClassFixture<TestClusterFixture>
 
         // Assert
         metrics.Should().NotBeNull();
-        metrics.TotalOperations.Should().BeGreaterOrEqualTo(10,
+        metrics.TotalOperations.Should().BeGreaterThanOrEqualTo(10,
             "Should have processed at least 10 operations");
         metrics.ThroughputMsgsPerSec.Should().BeGreaterThan(0,
             "Throughput should be positive");

@@ -316,7 +316,7 @@ public class ValueObjectsTests
 
         // Assert
         healthScore.Should().BeGreaterThan(0.0);
-        healthScore.Should().BeLessOrEqualTo(1.0);
+        healthScore.Should().BeLessThanOrEqualTo(1.0);
     }
 
     [Fact]

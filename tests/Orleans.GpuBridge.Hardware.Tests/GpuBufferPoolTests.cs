@@ -87,7 +87,7 @@ public class GpuBufferPoolTests
         // Act
         var buffer = pool.RentBuffer(1024); // 1 KB
         buffer.Should().NotBeNull();
-        buffer.SizeBytes.Should().BeGreaterOrEqualTo(1024);
+        buffer.SizeBytes.Should().BeGreaterThanOrEqualTo(1024);
         buffer.DevicePointer.Should().NotBe(IntPtr.Zero);
 
         var stats1 = pool.GetStatistics();
@@ -116,12 +116,12 @@ public class GpuBufferPoolTests
 
             // Assert
             buffer.Should().NotBeNull();
-            buffer.SizeBytes.Should().BeGreaterOrEqualTo(1024 * 1024);
+            buffer.SizeBytes.Should().BeGreaterThanOrEqualTo(1024 * 1024);
             buffer.DevicePointer.Should().NotBe(IntPtr.Zero);
 
             var stats = pool.GetStatistics();
             stats.ActiveAllocations.Should().Be(1);
-            stats.InUseBytes.Should().BeGreaterOrEqualTo(1024 * 1024);
+            stats.InUseBytes.Should().BeGreaterThanOrEqualTo(1024 * 1024);
         }
         catch (Exception ex) when (ex.Message.Contains("CUDA") || ex.Message.Contains("GPU"))
         {
@@ -203,7 +203,7 @@ public class GpuBufferPoolTests
             // Act
             var buffer = await memoryManager.AllocateAndCopyAsync(sourceData, CancellationToken.None);
             buffer.Should().NotBeNull();
-            buffer.SizeBytes.Should().BeGreaterOrEqualTo(sourceData.Length * sizeof(float));
+            buffer.SizeBytes.Should().BeGreaterThanOrEqualTo(sourceData.Length * sizeof(float));
 
             // Verify round-trip
             var resultData = new float[sourceData.Length];

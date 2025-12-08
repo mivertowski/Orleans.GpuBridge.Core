@@ -188,7 +188,7 @@ public sealed class RingKernelIntegrationTests : IDisposable
         snapshot.DeviceIndex.Should().Be(0);
         snapshot.TotalMemoryBytes.Should().BeGreaterThan(0);
         snapshot.AvailableMemoryBytes.Should().BeGreaterThan(0);
-        snapshot.AvailableMemoryBytes.Should().BeLessOrEqualTo(snapshot.TotalMemoryBytes);
+        snapshot.AvailableMemoryBytes.Should().BeLessThanOrEqualTo(snapshot.TotalMemoryBytes);
 
         _output.WriteLine($"Queue Depth Snapshot:");
         _output.WriteLine($"  SiloId: {snapshot.SiloId}");
@@ -232,7 +232,7 @@ public sealed class RingKernelIntegrationTests : IDisposable
         var result = await loadBalancer.SelectDeviceAsync(request, CancellationToken.None);
 
         // Assert
-        result.DeviceIndex.Should().BeGreaterOrEqualTo(0);
+        result.DeviceIndex.Should().BeGreaterThanOrEqualTo(0);
         result.PlacementScore.Should().BeGreaterThan(0);
 
         _output.WriteLine($"Load Balancer Selection:");

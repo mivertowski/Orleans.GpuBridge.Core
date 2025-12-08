@@ -55,8 +55,8 @@ public sealed class PlacementIntegrationTests
         // Assert
         snapshot.TotalMemoryBytes.Should().BeGreaterThan(0);
         snapshot.AvailableMemoryBytes.Should().BeGreaterThan(0);
-        snapshot.AvailableMemoryBytes.Should().BeLessOrEqualTo(snapshot.TotalMemoryBytes);
-        snapshot.GpuUtilization.Should().BeGreaterOrEqualTo(0);
+        snapshot.AvailableMemoryBytes.Should().BeLessThanOrEqualTo(snapshot.TotalMemoryBytes);
+        snapshot.GpuUtilization.Should().BeGreaterThanOrEqualTo(0);
 
         _output.WriteLine($"Queue Depth Snapshot (Device {snapshot.DeviceIndex}):");
         _output.WriteLine($"  Memory: {snapshot.AvailableMemoryBytes:N0} / {snapshot.TotalMemoryBytes:N0} bytes");
@@ -77,9 +77,9 @@ public sealed class PlacementIntegrationTests
         var metrics = await monitor.GetAggregatedMetricsAsync(null, 0, CancellationToken.None);
 
         // Assert
-        metrics.KernelCount.Should().BeGreaterOrEqualTo(0);
-        metrics.AvgQueueUtilization.Should().BeGreaterOrEqualTo(0);
-        metrics.AvgQueueUtilization.Should().BeLessOrEqualTo(1.0);
+        metrics.KernelCount.Should().BeGreaterThanOrEqualTo(0);
+        metrics.AvgQueueUtilization.Should().BeGreaterThanOrEqualTo(0);
+        metrics.AvgQueueUtilization.Should().BeLessThanOrEqualTo(1.0);
 
         _output.WriteLine($"Aggregated Metrics (Device {metrics.DeviceIndex}):");
         _output.WriteLine($"  Kernel Count: {metrics.KernelCount}");
@@ -108,7 +108,7 @@ public sealed class PlacementIntegrationTests
         var result = await loadBalancer.SelectDeviceAsync(request, CancellationToken.None);
 
         // Assert
-        result.DeviceIndex.Should().BeGreaterOrEqualTo(0);
+        result.DeviceIndex.Should().BeGreaterThanOrEqualTo(0);
         result.PlacementScore.Should().BeGreaterThanOrEqualTo(0);
         result.SiloId.Should().NotBeNullOrEmpty();
 

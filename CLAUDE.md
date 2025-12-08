@@ -9,11 +9,17 @@ Orleans.GpuBridge.Core is a .NET 9 library enabling **GPU-native distributed com
 - **Temporal Alignment**: HLC and Vector Clocks for distributed ordering
 - **GPU-to-GPU Messaging**: Actors communicate at 100-500ns latency (datacenter GPUs)
 - **Hypergraph Actors**: Multi-way relationships with GPU-accelerated pattern matching
-- **DotCompute Backend**: .NET-native GPU compute abstraction (v0.5.1 from NuGet)
+- **DotCompute Backend**: .NET-native GPU compute abstraction (v0.5.2 from NuGet)
 
 ## Current Version
 
-**Version 0.2.0** - Released December 2025
+**Version 0.2.1** - Released December 2025
+
+### Key Features in v0.2.1
+- GPU Atomic Operations integration via DotCompute.Abstractions.Atomics
+- IGpuAtomics interface for backend-agnostic atomic operations
+- DotComputeAtomics implementation with native GPU atomics support
+- DotCompute 0.5.2 with AtomicOps, MemoryOrder, and MemoryScope
 
 ### Key Features in v0.2.0
 - Resilience Module (Polly v8) with retry, circuit breaker, rate limiting
@@ -47,7 +53,7 @@ dotnet pack -c Release -o artifacts/packages
 | Project | Passed | Skipped | Total |
 |---------|--------|---------|-------|
 | Abstractions.Tests | 242 | 0 | 242 |
-| Runtime.Tests | 249 | 0 | 249 |
+| Runtime.Tests | 255 | 0 | 255 |
 | Temporal.Tests | 290 | 1 | 292 |
 | Grains.Tests | 98 | 0 | 98 |
 | Generators.Tests | 22 | 0 | 22 |
@@ -74,7 +80,7 @@ dotnet pack -c Release -o artifacts/packages
 1. **Orleans.GpuBridge.Abstractions** - Interfaces and contracts
 2. **Orleans.GpuBridge.Runtime** - Runtime implementation, placement strategies
 3. **Orleans.GpuBridge.Grains** - Orleans grain implementations
-4. **Orleans.GpuBridge.Backends.DotCompute** - DotCompute GPU backend (NuGet v0.5.1)
+4. **Orleans.GpuBridge.Backends.DotCompute** - DotCompute GPU backend (NuGet v0.5.2)
 5. **Orleans.GpuBridge.BridgeFX** - High-level pipeline API
 6. **Orleans.GpuBridge.Resilience** - Resilience patterns (retry, circuit breaker, rate limiting)
 7. **Orleans.GpuBridge.Diagnostics** - Metrics and telemetry
@@ -94,7 +100,8 @@ dotnet pack -c Release -o artifacts/packages
 - ✅ Circuit breaker and retry policies
 - ✅ GPU P2P messaging with fallback
 - ✅ GPU memory telemetry
-- ✅ DotCompute backend (NuGet v0.5.1)
+- ✅ DotCompute backend (NuGet v0.5.2)
+- ✅ GPU atomic operations (DotCompute.Atomics)
 - 📋 GPUDirect Storage (planned)
 - 📋 OpenCL backend (planned)
 
@@ -125,11 +132,11 @@ All package versions are centralized in `Directory.Build.props`:
 
 ```xml
 <PropertyGroup>
-  <Version>0.2.0</Version>
-  <MicrosoftCodeAnalysisVersion>4.14.0</MicrosoftCodeAnalysisVersion>
+  <Version>0.2.1</Version>
+  <MicrosoftCodeAnalysisVersion>5.0.0</MicrosoftCodeAnalysisVersion>
   <MicrosoftExtensionsVersion>10.0.0</MicrosoftExtensionsVersion>
   <MicrosoftOrleansVersion>9.2.1</MicrosoftOrleansVersion>
-  <DotComputeVersion>0.5.1</DotComputeVersion>
+  <DotComputeVersion>0.5.2</DotComputeVersion>
 </PropertyGroup>
 ```
 
@@ -165,7 +172,7 @@ export LD_LIBRARY_PATH="/usr/lib/wsl/lib:$LD_LIBRARY_PATH"
 
 ## DotCompute Integration
 
-DotCompute packages from NuGet.org v0.5.1:
+DotCompute packages from NuGet.org v0.5.2:
 - `DotCompute.Abstractions`
 - `DotCompute.Core`
 - `DotCompute.Runtime`
@@ -210,6 +217,10 @@ For DotCompute feature requests, create a document in `docs/dotcompute-feature-r
 - `src/Orleans.GpuBridge.Resilience/Policies/GpuResiliencePolicy.cs`
 - `src/Orleans.GpuBridge.Resilience/RateLimit/TokenBucketRateLimiter.cs`
 - `src/Orleans.GpuBridge.Resilience/Fallback/GpuFallbackChain.cs`
+
+### GPU Atomic Operations
+- `src/Orleans.GpuBridge.Abstractions/Atomics/IGpuAtomics.cs` - Backend-agnostic atomics interface
+- `src/Orleans.GpuBridge.Backends.DotCompute/Atomics/DotComputeAtomics.cs` - DotCompute implementation
 
 ## Publishing Packages
 

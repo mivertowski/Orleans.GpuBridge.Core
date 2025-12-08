@@ -5,6 +5,47 @@ All notable changes to Orleans.GpuBridge.Core will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2025-12-08
+
+### Added
+
+#### GPU Atomic Operations Integration
+- **IGpuAtomics Interface**: Backend-agnostic abstraction for GPU atomic operations
+  - `AtomicAdd`, `AtomicSub` for int/long types
+  - `AtomicExchange`, `AtomicCompareExchange` for lock-free operations
+  - `AtomicMin`, `AtomicMax` for concurrent bounds tracking
+  - `AtomicAnd`, `AtomicOr`, `AtomicXor` for bitwise operations
+  - `AtomicLoad`, `AtomicStore` with configurable memory ordering
+  - `ThreadFence`, `MemoryBarrier` for memory synchronization
+- **GpuMemoryOrder Enum**: Memory ordering semantics (Relaxed, Acquire, Release, AcquireRelease, SequentiallyConsistent)
+- **GpuMemoryScope Enum**: Memory visibility scope (Workgroup, Device, System)
+- **DotComputeAtomics Implementation**: Full implementation wrapping DotCompute.Abstractions.Atomics
+  - Singleton pattern for stateless atomic operations
+  - Automatic translation to native GPU atomics (CUDA atomicAdd, OpenCL atomic_add, etc.)
+  - CPU fallback using System.Threading.Interlocked
+
+### Changed
+
+#### Dependencies
+- **DotCompute**: Upgraded from 0.5.1 to 0.5.2
+  - New DotCompute.Abstractions.Atomics namespace with GPU atomic operations
+  - AtomicOps static class for portable atomic operations
+- **Microsoft.CodeAnalysis**: Upgraded from 4.14.0 to 5.0.0 (required by DotCompute 0.5.2)
+
+#### GpuQueueKernel Improvements
+- Updated `EnqueueWithAtomics` and `DequeueWithAtomics` to use DotCompute AtomicOps
+- Updated `InitializeQueue` to use AtomicStore with Release semantics
+- Updated `WriteK2KResponse` to use AtomicExchange for completion flags
+- Updated `IsK2KResponseReady` to use AtomicLoad with Acquire semantics
+- Added System-scope memory fences for CPU-GPU coherence
+
+### Documentation
+- Updated CLAUDE.md with DotCompute 0.5.2 references
+- Added comprehensive XML documentation for IGpuAtomics interface
+- Updated project comments in Orleans.GpuBridge.Backends.DotCompute.csproj
+
+---
+
 ## [0.2.0] - 2025-12-05
 
 ### Added
@@ -204,7 +245,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Planned
 - Lock-free IntervalTree implementation for thread-safe temporal storage
 - Multi-GPU state sharding and coordination (FR-004)
-- DotCompute native P2P implementation (CUDA cuMemcpyPeer)
 - OpenCL backend support
 - Vulkan compute backend
 - ARM64 platform support

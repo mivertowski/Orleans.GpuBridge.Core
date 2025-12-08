@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using DotCompute.Abstractions.Atomics;
 using Microsoft.Extensions.Logging;
 using Orleans.GpuBridge.Backends.DotCompute.Attributes;
 
@@ -408,8 +409,14 @@ __kernel void get_queue_status(
     /// Enqueues a message to the GPU queue using CPU-side atomic operations.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// This is the CPU fallback for GPUs without full coherence support.
-    /// Uses Interlocked operations that are compatible with GPU unified memory.
+    /// Uses DotCompute.Atomics operations that are portable across CPU and GPU backends.
+    /// </para>
+    /// <para>
+    /// <b>DotCompute 0.5.2 Integration:</b> Uses <see cref="AtomicOps"/> which automatically
+    /// translates to native atomics on each backend (CUDA atomicAdd, OpenCL atomic_add, etc.).
+    /// </para>
     /// </remarks>
     /// <typeparam name="TMessage">The message type (must be unmanaged).</typeparam>
     /// <param name="queuePtr">Pointer to the queue memory.</param>
@@ -435,15 +442,16 @@ __kernel void get_queue_status(
             return -1;
         }
 
-        // Atomically claim a write slot
-        var claimed = Interlocked.Increment(ref header[QueueOffsets.WriteIndex / 4]) - 1;
-        var readIndex = Volatile.Read(ref header[QueueOffsets.ReadIndex / 4]);
+        // Atomically claim a write slot using DotCompute.Atomics
+        // AtomicAdd returns the OLD value, so no need to subtract 1
+        var claimed = AtomicOps.AtomicAdd(ref header[QueueOffsets.WriteIndex / 4], 1);
+        var readIndex = AtomicOps.AtomicLoad(ref header[QueueOffsets.ReadIndex / 4], MemoryOrder.Acquire);
 
         // Check if queue is full
         if (claimed - readIndex >= capacity)
         {
-            // Release the claimed slot
-            Interlocked.Decrement(ref header[QueueOffsets.WriteIndex / 4]);
+            // Release the claimed slot using atomic subtract
+            AtomicOps.AtomicSub(ref header[QueueOffsets.WriteIndex / 4], 1);
             _logger.LogTrace("Queue full: claimed={Claimed}, readIndex={ReadIndex}, capacity={Capacity}",
                 claimed, readIndex, capacity);
             return -1;
@@ -459,11 +467,11 @@ __kernel void get_queue_status(
         var copySize = Math.Min(msgSize, messageSize);
         Unsafe.CopyBlockUnaligned(writePtr, Unsafe.AsPointer(ref message), (uint)copySize);
 
-        // Memory barrier to ensure message is visible before commit
-        Thread.MemoryBarrier();
+        // Memory fence to ensure message is visible before commit (Device scope for GPU compatibility)
+        AtomicOps.ThreadFence(MemoryScope.Device);
 
-        // Commit the write
-        Interlocked.Increment(ref header[QueueOffsets.WriteCommitted / 4]);
+        // Commit the write using DotCompute.Atomics
+        AtomicOps.AtomicAdd(ref header[QueueOffsets.WriteCommitted / 4], 1);
 
         _logger.LogTrace("Enqueued message to slot {SlotIndex} (size={Size} bytes)",
             slotIndex, copySize);
@@ -474,6 +482,12 @@ __kernel void get_queue_status(
     /// <summary>
     /// Dequeues a message from the GPU queue using CPU-side atomic operations.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// <b>DotCompute 0.5.2 Integration:</b> Uses <see cref="AtomicOps"/> for portable
+    /// atomic operations that translate to native GPU atomics on each backend.
+    /// </para>
+    /// </remarks>
     /// <typeparam name="TMessage">The message type (must be unmanaged).</typeparam>
     /// <param name="queuePtr">Pointer to the queue memory.</param>
     /// <param name="message">The dequeued message (if successful).</param>
@@ -493,29 +507,30 @@ __kernel void get_queue_status(
         var capacity = header[QueueOffsets.Capacity / 4];
         var messageSize = header[QueueOffsets.MessageSize / 4];
 
-        // Check if messages are available
-        var writeCommitted = Volatile.Read(ref header[QueueOffsets.WriteCommitted / 4]);
-        var readIndex = Volatile.Read(ref header[QueueOffsets.ReadIndex / 4]);
+        // Check if messages are available using DotCompute.Atomics
+        var writeCommitted = AtomicOps.AtomicLoad(ref header[QueueOffsets.WriteCommitted / 4], MemoryOrder.Acquire);
+        var readIndex = AtomicOps.AtomicLoad(ref header[QueueOffsets.ReadIndex / 4], MemoryOrder.Acquire);
 
         if (writeCommitted <= readIndex)
         {
             return false; // Queue empty
         }
 
-        // Atomically claim a message
-        var claimed = Interlocked.Increment(ref header[QueueOffsets.ReadIndex / 4]) - 1;
+        // Atomically claim a message using DotCompute.Atomics
+        // AtomicAdd returns the OLD value, so no need to subtract 1
+        var claimed = AtomicOps.AtomicAdd(ref header[QueueOffsets.ReadIndex / 4], 1);
 
         // Verify we got a valid message
-        writeCommitted = Volatile.Read(ref header[QueueOffsets.WriteCommitted / 4]);
+        writeCommitted = AtomicOps.AtomicLoad(ref header[QueueOffsets.WriteCommitted / 4], MemoryOrder.Acquire);
         if (claimed >= writeCommitted)
         {
-            // No message at this slot - release
-            Interlocked.Decrement(ref header[QueueOffsets.ReadIndex / 4]);
+            // No message at this slot - release using atomic subtract
+            AtomicOps.AtomicSub(ref header[QueueOffsets.ReadIndex / 4], 1);
             return false;
         }
 
-        // Memory barrier to ensure we see latest message data
-        Thread.MemoryBarrier();
+        // Memory fence to ensure we see latest message data
+        AtomicOps.ThreadFence(MemoryScope.Device);
 
         // Calculate read position
         var slotIndex = claimed & (capacity - 1);
@@ -535,6 +550,9 @@ __kernel void get_queue_status(
     /// <summary>
     /// Gets the current queue status.
     /// </summary>
+    /// <remarks>
+    /// Uses <see cref="AtomicOps"/> atomic load operations for consistent reads of queue indices.
+    /// </remarks>
     /// <param name="queuePtr">Pointer to the queue memory.</param>
     /// <returns>Queue status information.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -547,9 +565,10 @@ __kernel void get_queue_status(
 
         var header = (int*)queuePtr;
 
-        var writeIndex = Volatile.Read(ref header[QueueOffsets.WriteIndex / 4]);
-        var readIndex = Volatile.Read(ref header[QueueOffsets.ReadIndex / 4]);
-        var writeCommitted = Volatile.Read(ref header[QueueOffsets.WriteCommitted / 4]);
+        // Use DotCompute.Atomics for consistent reads
+        var writeIndex = AtomicOps.AtomicLoad(ref header[QueueOffsets.WriteIndex / 4], MemoryOrder.Acquire);
+        var readIndex = AtomicOps.AtomicLoad(ref header[QueueOffsets.ReadIndex / 4], MemoryOrder.Acquire);
+        var writeCommitted = AtomicOps.AtomicLoad(ref header[QueueOffsets.WriteCommitted / 4], MemoryOrder.Acquire);
         var capacity = header[QueueOffsets.Capacity / 4];
         var messageSize = header[QueueOffsets.MessageSize / 4];
 
@@ -569,6 +588,10 @@ __kernel void get_queue_status(
     /// <summary>
     /// Initializes a queue header at the specified memory location.
     /// </summary>
+    /// <remarks>
+    /// Uses <see cref="AtomicOps"/> atomic store operations with Release semantics to ensure
+    /// initialization is visible to all GPU threads.
+    /// </remarks>
     /// <param name="queuePtr">Pointer to the queue memory.</param>
     /// <param name="capacity">Queue capacity (must be power of 2).</param>
     /// <param name="messageSize">Size of each message slot in bytes.</param>
@@ -591,15 +614,15 @@ __kernel void get_queue_status(
 
         var header = (int*)queuePtr;
 
-        // Initialize header atomically
-        Volatile.Write(ref header[QueueOffsets.WriteIndex / 4], 0);
-        Volatile.Write(ref header[QueueOffsets.ReadIndex / 4], 0);
-        Volatile.Write(ref header[QueueOffsets.WriteCommitted / 4], 0);
+        // Initialize header using DotCompute.Atomics with Release semantics
+        AtomicOps.AtomicStore(ref header[QueueOffsets.WriteIndex / 4], 0, MemoryOrder.Release);
+        AtomicOps.AtomicStore(ref header[QueueOffsets.ReadIndex / 4], 0, MemoryOrder.Release);
+        AtomicOps.AtomicStore(ref header[QueueOffsets.WriteCommitted / 4], 0, MemoryOrder.Release);
         header[QueueOffsets.Capacity / 4] = capacity;
         header[QueueOffsets.MessageSize / 4] = messageSize;
 
-        // Memory barrier to ensure initialization is visible
-        Thread.MemoryBarrier();
+        // Memory fence to ensure initialization is visible (System scope for CPU-GPU coherence)
+        AtomicOps.ThreadFence(MemoryScope.System);
 
         _logger.LogDebug("Initialized GPU queue: capacity={Capacity}, messageSize={MessageSize}",
             capacity, messageSize);
@@ -608,6 +631,10 @@ __kernel void get_queue_status(
     /// <summary>
     /// Writes a response to a K2K response slot using atomic operations.
     /// </summary>
+    /// <remarks>
+    /// Uses <see cref="AtomicOps"/> atomic exchange for the completion flag to ensure
+    /// atomic visibility across CPU-GPU boundaries.
+    /// </remarks>
     /// <typeparam name="TResponse">The response type (must be unmanaged).</typeparam>
     /// <param name="responsePtr">Pointer to the response slot.</param>
     /// <param name="response">The response data.</param>
@@ -627,16 +654,20 @@ __kernel void get_queue_status(
         // Write response data first
         Unsafe.WriteUnaligned(dataPtr, response);
 
-        // Memory barrier to ensure response data is visible before completion flag
-        Thread.MemoryBarrier();
+        // Memory fence to ensure response data is visible before completion flag (System scope for CPU-GPU coherence)
+        AtomicOps.ThreadFence(MemoryScope.System);
 
-        // Set completion flag atomically (1 = ready)
-        Volatile.Write(ref *completionFlag, 1);
+        // Set completion flag atomically using exchange (1 = ready)
+        AtomicOps.AtomicExchange(ref *completionFlag, 1);
     }
 
     /// <summary>
     /// Checks if a K2K response is ready.
     /// </summary>
+    /// <remarks>
+    /// Uses <see cref="AtomicOps"/> atomic load with Acquire semantics to ensure
+    /// we see the response data if the flag indicates completion.
+    /// </remarks>
     /// <param name="responsePtr">Pointer to the response slot.</param>
     /// <returns>True if response is ready, false otherwise.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -647,7 +678,7 @@ __kernel void get_queue_status(
             return false;
         }
 
-        return Volatile.Read(ref *(int*)responsePtr) == 1;
+        return AtomicOps.AtomicLoad(ref *(int*)responsePtr, MemoryOrder.Acquire) == 1;
     }
 
     /// <summary>

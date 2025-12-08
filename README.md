@@ -1,11 +1,11 @@
 # Orleans.GpuBridge.Core
 
-[![Version](https://img.shields.io/badge/version-0.2.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.2.1-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 [![.NET 9.0](https://img.shields.io/badge/.NET-9.0-purple)](https://dotnet.microsoft.com/download/dotnet/9.0)
 [![Orleans](https://img.shields.io/badge/Orleans-9.2.1-green)](https://dotnet.github.io/orleans/)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/mivertowski/Orleans.GpuBridge.Core)
-[![DotCompute](https://img.shields.io/badge/DotCompute-0.5.1-orange)](https://www.nuget.org/packages/DotCompute.Core)
+[![DotCompute](https://img.shields.io/badge/DotCompute-0.5.2-orange)](https://www.nuget.org/packages/DotCompute.Core)
 
 ## Remark
 
@@ -633,14 +633,15 @@ To request improved GPU memory coherence in WSL2:
 | Test Project | Passed | Total |
 |--------------|--------|-------|
 | Abstractions.Tests | 242 | 242 |
-| Runtime.Tests | 249 | 249 |
+| Runtime.Tests | 255 | 255 |
 | Temporal.Tests | 290 | 292 |
 | Grains.Tests | 98 | 98 |
 | Diagnostics.Tests | 70 | 70 |
 | RingKernelTests | 85 | 92 |
 | Resilience.Tests | 53 | 53 |
-| + 5 more projects | 125 | 135 |
-| **Total** | **1,212** | **1,231** |
+| DotCompute.Tests | 56 | 56 |
+| + 4 more projects | 97 | 108 |
+| **Total** | **1,246** | **1,266** |
 
 
 ## 🤝 Contributing

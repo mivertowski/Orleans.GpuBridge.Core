@@ -275,8 +275,8 @@ public sealed class CpuFallbackHandlerRegistry
             return null;
         }
 
-        // Track invocation
-        _invocationCounts.AddOrUpdate(key, 1, (_, count) => count + 1);
+        // Track invocation using lock-free Interlocked.Increment via AddOrUpdate with static lambda
+        _invocationCounts.AddOrUpdate(key, 1, static (_, count) => count + 1);
 
         // Try to cast to the expected delegate type
         if (del is Func<TRequest, TState, (TResponse, TState)> typedDelegate)
@@ -313,8 +313,8 @@ public sealed class CpuFallbackHandlerRegistry
             return null;
         }
 
-        // Track invocation
-        _invocationCounts.AddOrUpdate(key, 1, (_, count) => count + 1);
+        // Track invocation using lock-free Interlocked.Increment via AddOrUpdate with static lambda
+        _invocationCounts.AddOrUpdate(key, 1, static (_, count) => count + 1);
 
         if (del is Func<TRequest, TState, TState> typedDelegate)
         {

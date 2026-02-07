@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -56,50 +57,55 @@ public sealed class TokenBucketRateLimiter : IRateLimiter, IDisposable
     }
 
     /// <summary>
-    /// Attempts to acquire a token for rate limiting
+    /// Attempts to acquire a token for rate limiting.
+    /// This method is synchronous under the hood (lock-based token check)
+    /// but returns Task&lt;bool&gt; to satisfy the IRateLimiter interface contract.
+    /// Using ValueTask would be ideal but would require an interface change.
     /// </summary>
-    public async Task<bool> TryAcquireAsync(int tokens = 1, CancellationToken cancellationToken = default)
+    public Task<bool> TryAcquireAsync(int tokens = 1, CancellationToken cancellationToken = default)
     {
         if (!_options.Enabled || _disposed)
-            return true;
+            return Task.FromResult(true);
 
         Interlocked.Increment(ref _totalRequests);
 
         lock (_lock)
         {
             RefillTokensInternal();
-            
+
             if (_tokens >= tokens)
             {
                 _tokens -= tokens;
-                return true;
+                return Task.FromResult(true);
             }
-            
+
             Interlocked.Increment(ref _rejectedRequests);
-            return false;
+            return Task.FromResult(false);
         }
     }
 
     /// <summary>
-    /// Waits for tokens to become available or throws if rate limit exceeded
+    /// Waits for tokens to become available or throws if rate limit exceeded.
+    /// Uses Stopwatch for high-resolution timeout tracking.
     /// </summary>
     public async Task AcquireAsync(int tokens = 1, CancellationToken cancellationToken = default)
     {
         if (!_options.Enabled || _disposed)
             return;
 
-        var startTime = DateTimeOffset.UtcNow;
-        var maxWaitTime = TimeSpan.FromSeconds(30); // Maximum wait time
-        
+        var startTimestamp = Stopwatch.GetTimestamp();
+        var maxWaitTicks = Stopwatch.Frequency * 30; // 30 seconds
+
         while (!cancellationToken.IsCancellationRequested)
         {
-            if (await TryAcquireAsync(tokens, cancellationToken))
+            // TryAcquireAsync is synchronous, use .Result since it always returns completed task
+            if (TryAcquireAsync(tokens, cancellationToken).Result)
             {
                 return;
             }
-            
+
             // Check if we've been waiting too long
-            if (DateTimeOffset.UtcNow - startTime > maxWaitTime)
+            if (Stopwatch.GetTimestamp() - startTimestamp > maxWaitTicks)
             {
                 var metrics = GetMetrics();
                 throw new RateLimitExceededException(
@@ -107,12 +113,12 @@ public sealed class TokenBucketRateLimiter : IRateLimiter, IDisposable
                     _options.MaxBurstSize,
                     TimeSpan.FromSeconds(1.0 / _options.TokenRefillRate * tokens));
             }
-            
+
             // Wait before retrying
             var waitTime = TimeSpan.FromMilliseconds(Math.Max(10, 1000.0 / _options.TokenRefillRate));
             await Task.Delay(waitTime, cancellationToken);
         }
-        
+
         cancellationToken.ThrowIfCancellationRequested();
     }
 

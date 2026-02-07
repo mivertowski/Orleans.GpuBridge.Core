@@ -12,7 +12,8 @@ namespace Orleans.GpuBridge.Runtime;
 public sealed class CpuMemoryPool<T> : IGpuMemoryPool<T> where T : unmanaged
 {
     private readonly ArrayPool<T> _arrayPool;
-    private readonly ConcurrentBag<CpuMemory<T>> _pool;
+    private readonly ConcurrentQueue<CpuMemory<T>> _pool;
+    private int _pooledCount;
     private long _totalAllocated;
     private long _inUse;
     private int _rentCount;
@@ -24,21 +25,25 @@ public sealed class CpuMemoryPool<T> : IGpuMemoryPool<T> where T : unmanaged
     public CpuMemoryPool()
     {
         _arrayPool = ArrayPool<T>.Create();
-        _pool = new ConcurrentBag<CpuMemory<T>>();
+        _pool = new ConcurrentQueue<CpuMemory<T>>();
     }
 
     /// <inheritdoc/>
     public IGpuMemory<T> Rent(int minimumLength)
     {
-        if (_pool.TryTake(out var memory) && memory.Length >= minimumLength)
+        if (_pool.TryDequeue(out var memory))
         {
-            Interlocked.Increment(ref _rentCount);
-            Interlocked.Add(ref _inUse, memory.SizeInBytes);
-            return memory;
+            Interlocked.Decrement(ref _pooledCount);
+            if (memory.Length >= minimumLength)
+            {
+                Interlocked.Increment(ref _rentCount);
+                Interlocked.Add(ref _inUse, memory.SizeInBytes);
+                return memory;
+            }
         }
 
         var array = _arrayPool.Rent(minimumLength);
-        var cpuMemory = new CpuMemory<T>(array, minimumLength, this);
+        var cpuMemory = new CpuMemory<T>(array, minimumLength, this, _arrayPool);
 
         Interlocked.Increment(ref _rentCount);
         Interlocked.Add(ref _totalAllocated, cpuMemory.SizeInBytes);
@@ -58,10 +63,11 @@ public sealed class CpuMemoryPool<T> : IGpuMemoryPool<T> where T : unmanaged
         Interlocked.Increment(ref _returnCount);
         Interlocked.Add(ref _inUse, -cpuMemory.SizeInBytes);
 
-        if (_pool.Count < 10) // Keep max 10 buffers pooled
+        if (Volatile.Read(ref _pooledCount) < 10) // Keep max 10 buffers pooled
         {
             cpuMemory.Clear();
-            _pool.Add(cpuMemory);
+            _pool.Enqueue(cpuMemory);
+            Interlocked.Increment(ref _pooledCount);
         }
         else
         {
@@ -77,7 +83,7 @@ public sealed class CpuMemoryPool<T> : IGpuMemoryPool<T> where T : unmanaged
             _totalAllocated,
             _inUse,
             _totalAllocated - _inUse,
-            _pool.Count,
+            Volatile.Read(ref _pooledCount),
             _rentCount,
             _returnCount);
     }
@@ -89,6 +95,7 @@ public sealed class CpuMemoryPool<T> : IGpuMemoryPool<T> where T : unmanaged
 internal sealed class CpuMemory<T> : IGpuMemory<T> where T : unmanaged
 {
     private readonly T[] _array;
+    private readonly ArrayPool<T> _arrayPool;
     private readonly CpuMemoryPool<T> _pool;
     private bool _disposed;
 
@@ -97,12 +104,13 @@ internal sealed class CpuMemory<T> : IGpuMemory<T> where T : unmanaged
     public int DeviceIndex => -1; // CPU
     public bool IsResident => true; // Always resident for CPU
 
-    public CpuMemory(T[] array, int length, CpuMemoryPool<T> pool)
+    public CpuMemory(T[] array, int length, CpuMemoryPool<T> pool, ArrayPool<T> arrayPool)
     {
         _array = array;
         Length = length;
         SizeInBytes = length * System.Runtime.CompilerServices.Unsafe.SizeOf<T>();
         _pool = pool;
+        _arrayPool = arrayPool;
     }
 
     public Memory<T> AsMemory()
@@ -133,7 +141,7 @@ internal sealed class CpuMemory<T> : IGpuMemory<T> where T : unmanaged
         if (!_disposed)
         {
             _disposed = true;
-            ArrayPool<T>.Shared.Return(_array, clearArray: true);
+            _arrayPool.Return(_array, clearArray: true);
         }
     }
 }

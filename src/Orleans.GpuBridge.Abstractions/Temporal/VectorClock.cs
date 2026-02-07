@@ -31,6 +31,20 @@ namespace Orleans.GpuBridge.Abstractions.Temporal;
 public sealed class VectorClock : IEquatable<VectorClock>, IComparable<VectorClock>
 {
     private readonly ImmutableDictionary<ushort, long> _clocks;
+    private readonly int _cachedHashCode;
+
+    private static int ComputeHashCode(ImmutableDictionary<ushort, long> clocks)
+    {
+        // Use XOR-based commutative hash to avoid OrderBy allocation.
+        // Since XOR is order-independent, we get deterministic results
+        // without needing to sort the entries.
+        var hash = clocks.Count;
+        foreach (var kvp in clocks)
+        {
+            hash ^= HashCode.Combine(kvp.Key, kvp.Value);
+        }
+        return hash;
+    }
 
     /// <summary>
     /// Gets the clock value for a specific actor.
@@ -55,6 +69,7 @@ public sealed class VectorClock : IEquatable<VectorClock>, IComparable<VectorClo
     public VectorClock()
     {
         _clocks = ImmutableDictionary<ushort, long>.Empty;
+        _cachedHashCode = ComputeHashCode(_clocks);
     }
 
     /// <summary>
@@ -65,6 +80,7 @@ public sealed class VectorClock : IEquatable<VectorClock>, IComparable<VectorClo
     {
         ArgumentNullException.ThrowIfNull(clocks);
         _clocks = clocks;
+        _cachedHashCode = ComputeHashCode(_clocks);
     }
 
     /// <summary>
@@ -75,6 +91,7 @@ public sealed class VectorClock : IEquatable<VectorClock>, IComparable<VectorClo
     {
         ArgumentNullException.ThrowIfNull(clocks);
         _clocks = clocks.ToImmutableDictionary();
+        _cachedHashCode = ComputeHashCode(_clocks);
     }
 
     /// <summary>
@@ -105,14 +122,17 @@ public sealed class VectorClock : IEquatable<VectorClock>, IComparable<VectorClo
     {
         ArgumentNullException.ThrowIfNull(other);
 
-        // Get union of all actor IDs
-        var allActorIds = _clocks.Keys.Union(other._clocks.Keys).Distinct();
-
-        var builder = ImmutableDictionary.CreateBuilder<ushort, long>();
-        foreach (var actorId in allActorIds)
+        var builder = _clocks.ToBuilder();
+        foreach (var kvp in other._clocks)
         {
-            var maxValue = Math.Max(this[actorId], other[actorId]);
-            builder.Add(actorId, maxValue);
+            if (builder.TryGetValue(kvp.Key, out var existingValue))
+            {
+                builder[kvp.Key] = Math.Max(existingValue, kvp.Value);
+            }
+            else
+            {
+                builder[kvp.Key] = kvp.Value;
+            }
         }
 
         return new VectorClock(builder.ToImmutable());
@@ -142,17 +162,16 @@ public sealed class VectorClock : IEquatable<VectorClock>, IComparable<VectorClo
     {
         ArgumentNullException.ThrowIfNull(other);
 
-        var allActorIds = _clocks.Keys.Union(other._clocks.Keys).Distinct();
-
         bool thisLessOrEqual = true;
         bool otherLessOrEqual = true;
         bool strictlyLess = false;
         bool strictlyGreater = false;
 
-        foreach (var actorId in allActorIds)
+        // Compare all entries in this clock against other
+        foreach (var kvp in _clocks)
         {
-            var thisValue = this[actorId];
-            var otherValue = other[actorId];
+            var thisValue = kvp.Value;
+            var otherValue = other[kvp.Key];
 
             if (thisValue < otherValue)
             {
@@ -163,6 +182,25 @@ public sealed class VectorClock : IEquatable<VectorClock>, IComparable<VectorClo
             {
                 thisLessOrEqual = false;
                 strictlyGreater = true;
+            }
+        }
+
+        // Check entries in other that are not in this clock
+        foreach (var kvp in other._clocks)
+        {
+            if (!_clocks.ContainsKey(kvp.Key))
+            {
+                // this[kvp.Key] is implicitly 0
+                if (0 < kvp.Value)
+                {
+                    otherLessOrEqual = false;
+                    strictlyLess = true;
+                }
+                else if (0 > kvp.Value)
+                {
+                    thisLessOrEqual = false;
+                    strictlyGreater = true;
+                }
             }
         }
 
@@ -274,14 +312,23 @@ public sealed class VectorClock : IEquatable<VectorClock>, IComparable<VectorClo
         if (Count != other.Count)
             return Count.CompareTo(other.Count);
 
-        var thisSum = _clocks.Values.Sum();
-        var otherSum = other._clocks.Values.Sum();
+        long thisSum = 0;
+        foreach (var value in _clocks.Values)
+            thisSum += value;
+        long otherSum = 0;
+        foreach (var value in other._clocks.Values)
+            otherSum += value;
         if (thisSum != otherSum)
             return thisSum.CompareTo(otherSum);
 
-        // Compare individual entries
-        var allActorIds = _clocks.Keys.Union(other._clocks.Keys).OrderBy(id => id);
-        foreach (var actorId in allActorIds)
+        // Compare individual entries - collect all keys sorted
+        var allKeys = new SortedSet<ushort>();
+        foreach (var key in _clocks.Keys)
+            allKeys.Add(key);
+        foreach (var key in other._clocks.Keys)
+            allKeys.Add(key);
+
+        foreach (var actorId in allKeys)
         {
             var cmp = this[actorId].CompareTo(other[actorId]);
             if (cmp != 0) return cmp;
@@ -318,16 +365,7 @@ public sealed class VectorClock : IEquatable<VectorClock>, IComparable<VectorClo
     public override bool Equals(object? obj) => obj is VectorClock other && Equals(other);
 
     /// <inheritdoc/>
-    public override int GetHashCode()
-    {
-        var hash = new HashCode();
-        foreach (var kvp in _clocks.OrderBy(kvp => kvp.Key))
-        {
-            hash.Add(kvp.Key);
-            hash.Add(kvp.Value);
-        }
-        return hash.ToHashCode();
-    }
+    public override int GetHashCode() => _cachedHashCode;
 
     /// <summary>
     /// Equality operator.

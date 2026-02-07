@@ -34,6 +34,7 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
 {
     private readonly ILogger<DotComputeDeviceManager> _logger;
     private readonly ConcurrentDictionary<string, DotComputeAcceleratorAdapter> _devices;
+    private volatile IReadOnlyList<DotComputeAcceleratorAdapter>? _cachedDeviceList;
     private IUnifiedAcceleratorFactory? _factory;
     private IServiceProvider? _serviceProvider;
     private bool _initialized;
@@ -85,12 +86,22 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
             await DiscoverDevicesAsync(cancellationToken).ConfigureAwait(false);
 
             _initialized = true;
+
+            int cudaCount = 0, openClCount = 0, cpuCount = 0;
+            foreach (var d in _devices.Values)
+            {
+                switch (d.Type)
+                {
+                    case DeviceType.CUDA: cudaCount++; break;
+                    case DeviceType.OpenCL: openClCount++; break;
+                    case DeviceType.CPU: cpuCount++; break;
+                }
+            }
+
             _logger.LogInformation(
                 "DotCompute device manager initialized with {DeviceCount} real devices (CUDA: {CudaCount}, OpenCL: {OpenClCount}, CPU: {CpuCount})",
                 _devices.Count,
-                _devices.Values.Count(d => d.Type == DeviceType.CUDA),
-                _devices.Values.Count(d => d.Type == DeviceType.OpenCL),
-                _devices.Values.Count(d => d.Type == DeviceType.CPU));
+                cudaCount, openClCount, cpuCount);
         }
         catch (Exception ex)
         {
@@ -102,7 +113,11 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
     public IReadOnlyList<IComputeDevice> GetDevices()
     {
         EnsureInitialized();
-        return _devices.Values.ToList();
+        var cached = _cachedDeviceList;
+        if (cached != null) return cached;
+        cached = _devices.Values.ToList().AsReadOnly();
+        _cachedDeviceList = cached;
+        return cached;
     }
 
     public IComputeDevice GetDefaultDevice()
@@ -235,6 +250,7 @@ internal sealed class DotComputeDeviceManager : IDeviceManager
                     // Create adapter to wrap IAccelerator as IComputeDevice
                     var adapter = new DotComputeAcceleratorAdapter(accelerator, index++, _logger);
                     _devices[adapter.Id] = adapter;
+                    _cachedDeviceList = null;
 
                     _logger.LogInformation(
                         "Discovered DotCompute device: {DeviceId} - {DeviceName} ({DeviceType}, {Architecture})",

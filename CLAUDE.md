@@ -9,11 +9,31 @@ Orleans.GpuBridge.Core is a .NET 9 library enabling **GPU-native distributed com
 - **Temporal Alignment**: HLC and Vector Clocks for distributed ordering
 - **GPU-to-GPU Messaging**: Actors communicate at 100-500ns latency (datacenter GPUs)
 - **Hypergraph Actors**: Multi-way relationships with GPU-accelerated pattern matching
-- **DotCompute Backend**: .NET-native GPU compute abstraction (v0.5.2 from NuGet)
+- **DotCompute Backend**: .NET-native GPU compute abstraction (v0.5.3 from NuGet)
 
 ## Current Version
 
-**Version 0.2.1** - Released December 2025
+**Version 0.3.0** - February 2026
+
+### Key Features in v0.3.0
+- DotCompute 0.5.3 upgrade (GeneratedRegex, code quality, Polly 8.6.5)
+- Performance overhaul: ArrayPool-based GPU memory transfers (zero heap allocation on hot paths)
+- Fixed GPU memory leak: native buffer disposal in DotComputeDeviceMemoryWrapper
+- Chunked FillAsync to prevent catastrophic LOH allocations for large GPU fills
+- Lock-free placement: Interlocked round-robin, MaxBy instead of OrderByDescending+First
+- Correct Stopwatch nanosecond conversion in AdaptiveLoadBalancer
+- BitOperations.RoundUpToPowerOf2 for O(1) bucket sizing in GpuBufferPool/MemoryPool
+- ConcurrentQueue over ConcurrentBag in memory pools (fixes thread-affinity issues)
+- Fixed ArrayPool rent/return mismatch in CpuMemoryPool
+- Eliminated triple-allocation in GpuBridgeLogger scope handling
+- Removed unnecessary async state machines from TokenBucketRateLimiter
+- ConcurrentDictionary for GpuTelemetry gauge state (eliminates lock contention)
+- Allocation-free VectorClock hashing (XOR-commutative, no OrderBy)
+- Static lambda for CpuFallbackHandlerRegistry invocation tracking
+- Cached device list and Version in DotCompute backend provider
+- Centralized Polly version management (8.6.5)
+- Microsoft.Extensions bumped to 10.0.1
+- Removed obsolete CS8669/CS9057 warning suppressions (fixed in DotCompute 0.5.3)
 
 ### Key Features in v0.2.1
 - GPU Atomic Operations integration via DotCompute.Abstractions.Atomics
@@ -80,7 +100,7 @@ dotnet pack -c Release -o artifacts/packages
 1. **Orleans.GpuBridge.Abstractions** - Interfaces and contracts
 2. **Orleans.GpuBridge.Runtime** - Runtime implementation, placement strategies
 3. **Orleans.GpuBridge.Grains** - Orleans grain implementations
-4. **Orleans.GpuBridge.Backends.DotCompute** - DotCompute GPU backend (NuGet v0.5.2)
+4. **Orleans.GpuBridge.Backends.DotCompute** - DotCompute GPU backend (NuGet v0.5.3)
 5. **Orleans.GpuBridge.BridgeFX** - High-level pipeline API
 6. **Orleans.GpuBridge.Resilience** - Resilience patterns (retry, circuit breaker, rate limiting)
 7. **Orleans.GpuBridge.Diagnostics** - Metrics and telemetry
@@ -132,11 +152,12 @@ All package versions are centralized in `Directory.Build.props`:
 
 ```xml
 <PropertyGroup>
-  <Version>0.2.1</Version>
+  <Version>0.3.0</Version>
   <MicrosoftCodeAnalysisVersion>5.0.0</MicrosoftCodeAnalysisVersion>
-  <MicrosoftExtensionsVersion>10.0.0</MicrosoftExtensionsVersion>
+  <MicrosoftExtensionsVersion>10.0.1</MicrosoftExtensionsVersion>
   <MicrosoftOrleansVersion>9.2.1</MicrosoftOrleansVersion>
-  <DotComputeVersion>0.5.2</DotComputeVersion>
+  <DotComputeVersion>0.5.3</DotComputeVersion>
+  <PollyVersion>8.6.5</PollyVersion>
 </PropertyGroup>
 ```
 
@@ -172,7 +193,7 @@ export LD_LIBRARY_PATH="/usr/lib/wsl/lib:$LD_LIBRARY_PATH"
 
 ## DotCompute Integration
 
-DotCompute packages from NuGet.org v0.5.2:
+DotCompute packages from NuGet.org v0.5.3:
 - `DotCompute.Abstractions`
 - `DotCompute.Core`
 - `DotCompute.Runtime`

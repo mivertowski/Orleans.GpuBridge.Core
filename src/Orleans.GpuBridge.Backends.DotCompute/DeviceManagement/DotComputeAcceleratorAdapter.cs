@@ -28,6 +28,7 @@ internal sealed class DotComputeAcceleratorAdapter : IComputeDevice
     private readonly IAccelerator _accelerator;
     private readonly ILogger _logger;
     private readonly int _index;
+    private readonly string _id;
     private bool _disposed;
 
     /// <summary>
@@ -44,6 +45,7 @@ internal sealed class DotComputeAcceleratorAdapter : IComputeDevice
         _accelerator = accelerator ?? throw new ArgumentNullException(nameof(accelerator));
         _index = index;
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _id = $"dotcompute-{MapAcceleratorType(accelerator.Info.Type).ToString().ToLowerInvariant()}-{index}";
 
         _logger.LogDebug(
             "Created DotComputeAcceleratorAdapter for device: {DeviceName} (Index: {Index})",
@@ -54,7 +56,7 @@ internal sealed class DotComputeAcceleratorAdapter : IComputeDevice
     #region IComputeDevice Core Properties
 
     /// <inheritdoc />
-    public string Id => $"dotcompute-{Type.ToString().ToLowerInvariant()}-{_index}";
+    public string Id => _id;
 
     /// <inheritdoc />
     public string DeviceId => Id;

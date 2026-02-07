@@ -34,10 +34,10 @@ internal sealed class DotComputePinnedMemory : IPinnedMemory
 
         try
         {
-            // Allocate managed array
-            _managedArray = new byte[sizeBytes];
+            // Allocate pinned array using .NET 5+ API to avoid GCHandle heap fragmentation
+            _managedArray = GC.AllocateArray<byte>((int)sizeBytes, pinned: true);
 
-            // Pin the array in memory
+            // Pin the array for pointer access (no-op for already-pinned arrays, but needed for AddrOfPinnedObject)
             _handle = GCHandle.Alloc(_managedArray, GCHandleType.Pinned);
             HostPointer = _handle.AddrOfPinnedObject();
 
@@ -287,22 +287,19 @@ internal sealed class DotComputeUnifiedMemory : IUnifiedMemory
 
         try
         {
-            // For unified memory, we can perform the copy directly
+            // For unified memory, perform the copy directly (synchronous but fast)
             var srcPtr = sourceDeviceMemory.DevicePointer + (int)sourceOffset;
             var dstPtr = DevicePointer + (int)destinationOffset;
 
-            // Use async memory copy to avoid blocking
-            await Task.Run(() =>
+            unsafe
             {
-                unsafe
-                {
-                    Buffer.MemoryCopy(
-                        srcPtr.ToPointer(),
-                        dstPtr.ToPointer(),
-                        sizeBytes,
-                        sizeBytes);
-                }
-            }, cancellationToken);
+                Buffer.MemoryCopy(
+                    srcPtr.ToPointer(),
+                    dstPtr.ToPointer(),
+                    sizeBytes,
+                    sizeBytes);
+            }
+            await Task.CompletedTask;
         }
         catch (Exception ex)
         {
@@ -318,10 +315,7 @@ internal sealed class DotComputeUnifiedMemory : IUnifiedMemory
         unsafe
         {
             var ptr = (byte*)(DevicePointer + (int)offsetBytes);
-            for (long i = 0; i < sizeBytes; i++)
-            {
-                ptr[i] = value;
-            }
+            new Span<byte>(ptr, (int)sizeBytes).Fill(value);
         }
         await Task.CompletedTask;
     }
@@ -370,8 +364,8 @@ internal sealed class DotComputeUnifiedMemoryFallback : IUnifiedMemory
         _deviceMemory = deviceMemory ?? throw new ArgumentNullException(nameof(deviceMemory));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-        // Create host buffer for fallback
-        _hostBuffer = new byte[deviceMemory.SizeBytes];
+        // Create pinned host buffer for fallback using .NET 5+ API
+        _hostBuffer = GC.AllocateArray<byte>((int)deviceMemory.SizeBytes, pinned: true);
         _hostHandle = GCHandle.Alloc(_hostBuffer, GCHandleType.Pinned);
         HostPointer = _hostHandle.AddrOfPinnedObject();
 

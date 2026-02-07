@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -103,15 +104,23 @@ internal class DotComputeDeviceMemoryWrapper : IDeviceMemory
             if (_nativeBuffer != null)
             {
                 // Extract data from host pointer (unsafe) then copy async (safe)
-                byte[] hostArray;
-                unsafe
+                // Use ArrayPool to avoid per-call heap allocations on hot paths
+                var rentedArray = ArrayPool<byte>.Shared.Rent((int)sizeBytes);
+                try
                 {
-                    var sourceSpan = new ReadOnlySpan<byte>((void*)hostPointer, (int)sizeBytes);
-                    hostArray = sourceSpan.ToArray();
+                    unsafe
+                    {
+                        new ReadOnlySpan<byte>((void*)hostPointer, (int)sizeBytes).CopyTo(rentedArray);
+                    }
+                    await _nativeBuffer.CopyFromAsync<byte>(new ReadOnlyMemory<byte>(rentedArray, 0, (int)sizeBytes), offsetBytes, cancellationToken);
                 }
-                await _nativeBuffer.CopyFromAsync<byte>(new ReadOnlyMemory<byte>(hostArray), offsetBytes, cancellationToken);
+                finally
+                {
+                    ArrayPool<byte>.Shared.Return(rentedArray);
+                }
 
-                _logger.LogTrace("Host to device memory copy completed via DotCompute native buffer");
+                if (_logger.IsEnabled(LogLevel.Trace))
+                    _logger.LogTrace("Host to device memory copy completed via DotCompute native buffer");
             }
             else
             {
@@ -153,19 +162,27 @@ internal class DotComputeDeviceMemoryWrapper : IDeviceMemory
             // Use native DotCompute buffer if available for real GPU transfer
             if (_nativeBuffer != null)
             {
-                // Copy from device async (safe) then write to host pointer (unsafe)
-                var destArray = new byte[sizeBytes];
-                await _nativeBuffer.CopyToAsync<byte>(destArray.AsMemory(), offsetBytes, cancellationToken);
-
-                unsafe
+                // Use ArrayPool to avoid per-call heap allocations on hot paths
+                var rentedArray = ArrayPool<byte>.Shared.Rent((int)sizeBytes);
+                try
                 {
-                    fixed (byte* srcPtr = destArray)
+                    await _nativeBuffer.CopyToAsync<byte>(rentedArray.AsMemory(0, (int)sizeBytes), offsetBytes, cancellationToken);
+
+                    unsafe
                     {
-                        Buffer.MemoryCopy(srcPtr, (void*)hostPointer, sizeBytes, sizeBytes);
+                        fixed (byte* srcPtr = rentedArray)
+                        {
+                            Buffer.MemoryCopy(srcPtr, (void*)hostPointer, sizeBytes, sizeBytes);
+                        }
                     }
                 }
+                finally
+                {
+                    ArrayPool<byte>.Shared.Return(rentedArray);
+                }
 
-                _logger.LogTrace("Device to host memory copy completed via DotCompute native buffer");
+                if (_logger.IsEnabled(LogLevel.Trace))
+                    _logger.LogTrace("Device to host memory copy completed via DotCompute native buffer");
             }
             else
             {
@@ -213,11 +230,20 @@ internal class DotComputeDeviceMemoryWrapper : IDeviceMemory
             if (_nativeBuffer != null && sourceWrapper?.NativeBuffer != null)
             {
                 // Device-to-device copy through host memory staging (DotCompute requires this)
-                var stagingBuffer = new byte[sizeBytes];
-                await sourceWrapper.NativeBuffer.CopyToAsync<byte>(stagingBuffer.AsMemory(), sourceOffset, cancellationToken);
-                await _nativeBuffer.CopyFromAsync<byte>(new ReadOnlyMemory<byte>(stagingBuffer), destinationOffset, cancellationToken);
+                // Use ArrayPool to avoid per-call heap allocations
+                var stagingBuffer = ArrayPool<byte>.Shared.Rent((int)sizeBytes);
+                try
+                {
+                    await sourceWrapper.NativeBuffer.CopyToAsync<byte>(stagingBuffer.AsMemory(0, (int)sizeBytes), sourceOffset, cancellationToken);
+                    await _nativeBuffer.CopyFromAsync<byte>(new ReadOnlyMemory<byte>(stagingBuffer, 0, (int)sizeBytes), destinationOffset, cancellationToken);
+                }
+                finally
+                {
+                    ArrayPool<byte>.Shared.Return(stagingBuffer);
+                }
 
-                _logger.LogTrace("Device to device memory copy completed via DotCompute native buffer (staged)");
+                if (_logger.IsEnabled(LogLevel.Trace))
+                    _logger.LogTrace("Device to device memory copy completed via DotCompute native buffer (staged)");
             }
             else
             {
@@ -256,13 +282,34 @@ internal class DotComputeDeviceMemoryWrapper : IDeviceMemory
             // Use native DotCompute buffer if available for real GPU fill
             if (_nativeBuffer != null)
             {
-                // Create fill array on host and copy to device
-                // Note: DotCompute doesn't expose a native memset, so we stage through host memory
-                var fillArray = new byte[sizeBytes];
-                Array.Fill(fillArray, value);
-                await _nativeBuffer.CopyFromAsync<byte>(new ReadOnlyMemory<byte>(fillArray), offsetBytes, cancellationToken);
+                // DotCompute doesn't expose a native memset, so we stage through host memory.
+                // Use chunked ArrayPool to avoid catastrophic allocations for large fills.
+                const int MaxChunkSize = 1024 * 1024; // 1MB chunks
+                var chunkSize = (int)Math.Min(sizeBytes, MaxChunkSize);
+                var fillChunk = ArrayPool<byte>.Shared.Rent(chunkSize);
+                try
+                {
+                    fillChunk.AsSpan(0, chunkSize).Fill(value);
+                    var remaining = sizeBytes;
+                    var currentOffset = offsetBytes;
+                    while (remaining > 0)
+                    {
+                        var transferSize = (int)Math.Min(remaining, chunkSize);
+                        await _nativeBuffer.CopyFromAsync<byte>(
+                            new ReadOnlyMemory<byte>(fillChunk, 0, transferSize),
+                            currentOffset,
+                            cancellationToken);
+                        remaining -= transferSize;
+                        currentOffset += transferSize;
+                    }
+                }
+                finally
+                {
+                    ArrayPool<byte>.Shared.Return(fillChunk);
+                }
 
-                _logger.LogTrace("Device memory fill completed via DotCompute native buffer");
+                if (_logger.IsEnabled(LogLevel.Trace))
+                    _logger.LogTrace("Device memory fill completed via DotCompute native buffer");
             }
             else
             {
@@ -327,20 +374,26 @@ internal class DotComputeDeviceMemoryWrapper : IDeviceMemory
         if (_disposed)
             return;
 
-        _logger.LogTrace("Disposing DotCompute device memory ({SizeBytes} bytes)", SizeBytes);
+        _disposed = true;
+
+        if (_logger.IsEnabled(LogLevel.Trace))
+            _logger.LogTrace("Disposing DotCompute device memory ({SizeBytes} bytes)", SizeBytes);
 
         try
         {
-            // Production DotCompute implementation would properly free GPU device memory
-            // This ensures proper resource cleanup and prevents memory leaks
+            // Dispose native GPU buffer to release device memory
+            if (_nativeBuffer is IDisposable disposableBuffer)
+            {
+                disposableBuffer.Dispose();
+            }
+
+            // Notify allocator for accounting
             _allocator.OnAllocationDisposed(DevicePointer, SizeBytes);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error disposing DotCompute device memory");
         }
-
-        _disposed = true;
     }
 }
 
@@ -529,12 +582,18 @@ internal sealed class DotComputeDeviceMemoryWrapper<T> : DotComputeDeviceMemoryW
         if (elementCount <= 0 || startIndex + elementCount > ElementCount)
             throw new ArgumentOutOfRangeException(nameof(elementCount));
 
-        // Fill operation: create array with the value and copy to device
-        var fillArray = new T[elementCount];
-        Array.Fill(fillArray, value);
-
-        var span = new ReadOnlySpan<T>(fillArray);
-        return CopyFromHostAsync(span, startIndex, cancellationToken);
+        // Fill operation: use pooled array to avoid per-call allocation
+        var fillArray = ArrayPool<T>.Shared.Rent(elementCount);
+        try
+        {
+            fillArray.AsSpan(0, elementCount).Fill(value);
+            var span = new ReadOnlySpan<T>(fillArray, 0, elementCount);
+            return CopyFromHostAsync(span, startIndex, cancellationToken);
+        }
+        finally
+        {
+            ArrayPool<T>.Shared.Return(fillArray);
+        }
     }
 
     public IDeviceMemory<T> CreateView(int offsetElements, int elementCount)

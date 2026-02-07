@@ -29,7 +29,7 @@ internal sealed class DotComputeMemoryAllocator : IMemoryAllocator
     private readonly ConcurrentDictionary<string, DotComputeMemoryPool> _memoryPools;
     private long _totalBytesAllocated;
     private long _totalBytesInUse;
-    private int _allocationCount;
+    private long _allocationCount;
     private bool _disposed;
 
     public DotComputeMemoryAllocator(
@@ -250,10 +250,6 @@ internal sealed class DotComputeMemoryAllocator : IMemoryAllocator
         {
             var compactionTasks = _memoryPools.Values.Select(pool => pool.CompactAsync(cancellationToken));
             await Task.WhenAll(compactionTasks);
-
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            GC.Collect();
 
             _logger.LogInformation("DotCompute memory pool compaction completed");
         }
@@ -488,7 +484,7 @@ internal sealed class DotComputeMemoryPool : IDisposable
 {
     private readonly string _poolId;
     private readonly ILogger _logger;
-    private readonly ConcurrentDictionary<int, ConcurrentBag<PooledBlock>> _buckets;
+    private readonly ConcurrentDictionary<int, ConcurrentQueue<PooledBlock>> _buckets;
     private readonly ConcurrentDictionary<IntPtr, PooledBlockInfo> _activeAllocations;
     private readonly int _minBucketSize;
     private readonly int _maxBucketSize;
@@ -529,7 +525,7 @@ internal sealed class DotComputeMemoryPool : IDisposable
         _minBucketSize = minBucketSize;
         _maxBucketSize = maxBucketSize;
         _maxBlocksPerBucket = maxBlocksPerBucket;
-        _buckets = new ConcurrentDictionary<int, ConcurrentBag<PooledBlock>>();
+        _buckets = new ConcurrentDictionary<int, ConcurrentQueue<PooledBlock>>();
         _activeAllocations = new ConcurrentDictionary<IntPtr, PooledBlockInfo>();
     }
 
@@ -544,7 +540,7 @@ internal sealed class DotComputeMemoryPool : IDisposable
         var bucketIndex = GetBucketIndex(requestedSize);
         var actualSize = GetBucketSize(bucketIndex);
 
-        if (_buckets.TryGetValue(bucketIndex, out var bucket) && bucket.TryTake(out var block))
+        if (_buckets.TryGetValue(bucketIndex, out var bucket) && bucket.TryDequeue(out var block))
         {
             // Reuse existing block
             Interlocked.Add(ref _totalBytesInUse, actualSize);
@@ -621,7 +617,7 @@ internal sealed class DotComputeMemoryPool : IDisposable
         Interlocked.Decrement(ref _allocationCount);
 
         // Try to add to pool for reuse
-        var bucket = _buckets.GetOrAdd(info.BucketIndex, _ => new ConcurrentBag<PooledBlock>());
+        var bucket = _buckets.GetOrAdd(info.BucketIndex, _ => new ConcurrentQueue<PooledBlock>());
 
         if (bucket.Count < _maxBlocksPerBucket)
         {
@@ -632,7 +628,7 @@ internal sealed class DotComputeMemoryPool : IDisposable
                 Data = data,
                 ReturnedAt = DateTime.UtcNow
             };
-            bucket.Add(block);
+            bucket.Enqueue(block);
 
             Interlocked.Add(ref _totalBytesFree, info.Size);
             Interlocked.Increment(ref _freeBlockCount);
@@ -706,9 +702,9 @@ internal sealed class DotComputeMemoryPool : IDisposable
 
             var bucketIndex = kvp.Key;
             var bucket = kvp.Value;
-            var newBucket = new ConcurrentBag<PooledBlock>();
+            var newBucket = new ConcurrentQueue<PooledBlock>();
 
-            while (bucket.TryTake(out var block))
+            while (bucket.TryDequeue(out var block))
             {
                 if (block.ReturnedAt < cutoff)
                 {
@@ -721,7 +717,7 @@ internal sealed class DotComputeMemoryPool : IDisposable
                 else
                 {
                     // Block is recent, keep it
-                    newBucket.Add(block);
+                    newBucket.Enqueue(block);
                 }
             }
 
@@ -760,7 +756,7 @@ internal sealed class DotComputeMemoryPool : IDisposable
 
         foreach (var bucket in _buckets.Values)
         {
-            while (bucket.TryTake(out var block))
+            while (bucket.TryDequeue(out var block))
             {
                 freedBytes += block.Size;
                 freedBlocks++;
@@ -782,17 +778,11 @@ internal sealed class DotComputeMemoryPool : IDisposable
 
     private int GetBucketIndex(int size)
     {
-        // Find the power-of-2 bucket that fits this size
-        var bucket = 0;
-        var bucketSize = _minBucketSize;
-
-        while (bucketSize < size && bucketSize < _maxBucketSize)
-        {
-            bucketSize *= 2;
-            bucket++;
-        }
-
-        return bucket;
+        // Use BitOperations for single-instruction power-of-2 bucket calculation
+        if (size <= _minBucketSize) return 0;
+        if (size >= _maxBucketSize) return (int)System.Numerics.BitOperations.Log2((uint)_maxBucketSize / (uint)_minBucketSize);
+        var rounded = (int)System.Numerics.BitOperations.RoundUpToPowerOf2((uint)size);
+        return Math.Max(0, (int)System.Numerics.BitOperations.Log2((uint)rounded) - (int)System.Numerics.BitOperations.Log2((uint)_minBucketSize));
     }
 
     private int GetBucketSize(int bucketIndex)

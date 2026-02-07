@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using Microsoft.Extensions.Logging;
@@ -87,22 +88,22 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
 
     #endregion
 
-    #region State for Observable Gauges (Thread-Safe)
+    #region State for Observable Gauges (Thread-Safe via ConcurrentDictionary)
 
     /// <summary>Thread-safe dictionary tracking memory usage by device index.</summary>
-    private readonly Dictionary<int, long> _memoryUsage = new();
+    private readonly ConcurrentDictionary<int, long> _memoryUsage = new();
 
     /// <summary>Thread-safe dictionary tracking GPU utilization by device index.</summary>
-    private readonly Dictionary<int, double> _utilization = new();
+    private readonly ConcurrentDictionary<int, double> _utilization = new();
 
     /// <summary>Thread-safe dictionary tracking work queue depths by device index.</summary>
-    private readonly Dictionary<int, int> _queueDepths = new();
+    private readonly ConcurrentDictionary<int, int> _queueDepths = new();
 
     /// <summary>Thread-safe dictionary tracking GPU temperatures by device index.</summary>
-    private readonly Dictionary<int, double> _temperatures = new();
+    private readonly ConcurrentDictionary<int, double> _temperatures = new();
 
     /// <summary>Thread-safe dictionary tracking GPU power usage by device index.</summary>
-    private readonly Dictionary<int, double> _powerUsage = new();
+    private readonly ConcurrentDictionary<int, double> _powerUsage = new();
 
     #endregion
 
@@ -319,12 +320,7 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
             _allocationSize.Record(bytes, tags);
 
             // Update memory usage tracking for observable gauge
-            lock (_memoryUsage)
-            {
-                if (!_memoryUsage.ContainsKey(deviceIndex))
-                    _memoryUsage[deviceIndex] = 0;
-                _memoryUsage[deviceIndex] += bytes;
-            }
+            _memoryUsage.AddOrUpdate(deviceIndex, bytes, (_, existing) => existing + bytes);
         }
         else
         {
@@ -362,10 +358,7 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
     /// <inheritdoc />
     public void RecordQueueDepth(int deviceIndex, int depth)
     {
-        lock (_queueDepths)
-        {
-            _queueDepths[deviceIndex] = depth;
-        }
+        _queueDepths[deviceIndex] = depth;
     }
 
     /// <inheritdoc />
@@ -397,86 +390,67 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
 
     /// <summary>
     /// Callback method for the GPU memory usage observable gauge.
-    /// Returns current memory usage for all tracked devices.
+    /// Snapshots the ConcurrentDictionary to avoid holding locks during enumeration.
     /// </summary>
     private IEnumerable<Measurement<long>> GetGpuMemoryUsed()
     {
-        lock (_memoryUsage)
+        foreach (var (device, usage) in _memoryUsage)
         {
-            foreach (var (device, usage) in _memoryUsage)
-            {
-                yield return new Measurement<long>(
-                    usage,
-                    new TagList { { "device", device } });
-            }
+            yield return new Measurement<long>(
+                usage,
+                new TagList { { "device", device } });
         }
     }
 
     /// <summary>
     /// Callback method for the GPU utilization observable gauge.
-    /// Returns current utilization percentage for all tracked devices.
     /// </summary>
     private IEnumerable<Measurement<double>> GetGpuUtilization()
     {
-        lock (_utilization)
+        foreach (var (device, util) in _utilization)
         {
-            foreach (var (device, util) in _utilization)
-            {
-                yield return new Measurement<double>(
-                    util,
-                    new TagList { { "device", device } });
-            }
+            yield return new Measurement<double>(
+                util,
+                new TagList { { "device", device } });
         }
     }
 
     /// <summary>
     /// Callback method for the queue depth observable gauge.
-    /// Returns current work queue depth for all tracked devices.
     /// </summary>
     private IEnumerable<Measurement<int>> GetQueueDepth()
     {
-        lock (_queueDepths)
+        foreach (var (device, depth) in _queueDepths)
         {
-            foreach (var (device, depth) in _queueDepths)
-            {
-                yield return new Measurement<int>(
-                    depth,
-                    new TagList { { "device", device } });
-            }
+            yield return new Measurement<int>(
+                depth,
+                new TagList { { "device", device } });
         }
     }
 
     /// <summary>
     /// Callback method for the GPU temperature observable gauge.
-    /// Returns current temperature for all tracked devices.
     /// </summary>
     private IEnumerable<Measurement<double>> GetGpuTemperature()
     {
-        lock (_temperatures)
+        foreach (var (device, temp) in _temperatures)
         {
-            foreach (var (device, temp) in _temperatures)
-            {
-                yield return new Measurement<double>(
-                    temp,
-                    new TagList { { "device", device } });
-            }
+            yield return new Measurement<double>(
+                temp,
+                new TagList { { "device", device } });
         }
     }
 
     /// <summary>
     /// Callback method for the GPU power usage observable gauge.
-    /// Returns current power consumption for all tracked devices.
     /// </summary>
     private IEnumerable<Measurement<double>> GetGpuPowerUsage()
     {
-        lock (_powerUsage)
+        foreach (var (device, power) in _powerUsage)
         {
-            foreach (var (device, power) in _powerUsage)
-            {
-                yield return new Measurement<double>(
-                    power,
-                    new TagList { { "device", device } });
-            }
+            yield return new Measurement<double>(
+                power,
+                new TagList { { "device", device } });
         }
     }
 
@@ -493,20 +467,9 @@ public sealed class GpuTelemetry : IGpuTelemetry, IDisposable
     /// <param name="power">Current GPU power consumption in watts.</param>
     public void UpdateGpuMetrics(int deviceIndex, double utilization, double temperature, double power)
     {
-        lock (_utilization)
-        {
-            _utilization[deviceIndex] = utilization;
-        }
-
-        lock (_temperatures)
-        {
-            _temperatures[deviceIndex] = temperature;
-        }
-
-        lock (_powerUsage)
-        {
-            _powerUsage[deviceIndex] = power;
-        }
+        _utilization[deviceIndex] = utilization;
+        _temperatures[deviceIndex] = temperature;
+        _powerUsage[deviceIndex] = power;
     }
 
     /// <summary>

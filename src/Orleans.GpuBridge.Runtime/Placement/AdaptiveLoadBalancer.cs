@@ -34,7 +34,6 @@ public sealed class AdaptiveLoadBalancer : IAdaptiveLoadBalancer, IDisposable
     private readonly ConcurrentDictionary<string, int> _affinityDeviceMap = new();
     private readonly ConcurrentBag<Action<LoadBalancingEvent>> _eventSubscribers = new();
     private readonly List<DeviceInfo> _availableDevices;
-    private readonly object _roundRobinLock = new();
     private int _roundRobinIndex;
     private long _totalDecisions;
     private long _fallbackCount;
@@ -97,7 +96,7 @@ public sealed class AdaptiveLoadBalancer : IAdaptiveLoadBalancer, IDisposable
                         false,
                         "Affinity group placement",
                         1,
-                        stopwatch.ElapsedTicks * 100); // Convert to nanos
+                        (stopwatch.ElapsedTicks * 1_000_000_000L) / Stopwatch.Frequency); // Convert to nanos
                 }
             }
 
@@ -119,12 +118,12 @@ public sealed class AdaptiveLoadBalancer : IAdaptiveLoadBalancer, IDisposable
             }
 
             stopwatch.Stop();
-            Interlocked.Add(ref _totalDecisionTimeNanos, stopwatch.ElapsedTicks * 100);
+            Interlocked.Add(ref _totalDecisionTimeNanos, (stopwatch.ElapsedTicks * 1_000_000_000L) / Stopwatch.Frequency);
 
             // Fire event
             NotifyEvent(new LoadBalancingEvent
             {
-                TimestampNanos = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() * 1_000_000,
+                TimestampNanos = (Stopwatch.GetTimestamp() * 1_000_000_000L) / Stopwatch.Frequency,
                 EventType = LoadBalancingEventType.PlacementDecision,
                 DeviceIndex = result.DeviceIndex,
                 Message = $"Placed grain {request.GrainIdentity} using {request.Strategy}"
@@ -148,7 +147,7 @@ public sealed class AdaptiveLoadBalancer : IAdaptiveLoadBalancer, IDisposable
                 CurrentQueueUtilization = 0.0,
                 AvailableMemoryBytes = 0,
                 CandidatesEvaluated = 0,
-                DecisionTimeNanos = stopwatch.ElapsedTicks * 100
+                DecisionTimeNanos = (stopwatch.ElapsedTicks * 1_000_000_000L) / Stopwatch.Frequency
             };
         }
     }
@@ -221,7 +220,7 @@ public sealed class AdaptiveLoadBalancer : IAdaptiveLoadBalancer, IDisposable
         {
             return new RebalanceRecommendation
             {
-                TimestampNanos = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() * 1_000_000,
+                TimestampNanos = (Stopwatch.GetTimestamp() * 1_000_000_000L) / Stopwatch.Frequency,
                 ShouldRebalance = false,
                 Urgency = RebalanceUrgency.None,
                 Reason = "Insufficient devices for rebalancing",
@@ -302,7 +301,7 @@ public sealed class AdaptiveLoadBalancer : IAdaptiveLoadBalancer, IDisposable
 
         return new RebalanceRecommendation
         {
-            TimestampNanos = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() * 1_000_000,
+            TimestampNanos = (Stopwatch.GetTimestamp() * 1_000_000_000L) / Stopwatch.Frequency,
             ShouldRebalance = shouldRebalance,
             Urgency = urgency,
             Reason = reason,
@@ -332,7 +331,7 @@ public sealed class AdaptiveLoadBalancer : IAdaptiveLoadBalancer, IDisposable
 
         NotifyEvent(new LoadBalancingEvent
         {
-            TimestampNanos = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() * 1_000_000,
+            TimestampNanos = (Stopwatch.GetTimestamp() * 1_000_000_000L) / Stopwatch.Frequency,
             EventType = LoadBalancingEventType.BackpressureApplied,
             DeviceIndex = deviceIndex,
             Message = $"Backpressure applied for {duration.TotalSeconds}s"
@@ -371,28 +370,22 @@ public sealed class AdaptiveLoadBalancer : IAdaptiveLoadBalancer, IDisposable
         LoadBalancingRequest request,
         CancellationToken ct)
     {
-        int deviceIndex;
-        lock (_roundRobinLock)
-        {
-            deviceIndex = _roundRobinIndex;
-            _roundRobinIndex = (_roundRobinIndex + 1) % _availableDevices.Count;
-        }
+        var deviceCount = _availableDevices.Count;
+        var index = Interlocked.Increment(ref _roundRobinIndex);
+        var deviceIndex = (int)((uint)index % deviceCount);
 
         // Skip devices under backpressure
         int attempts = 0;
-        while (IsUnderBackpressure(deviceIndex) && attempts < _availableDevices.Count)
+        while (IsUnderBackpressure(deviceIndex) && attempts < deviceCount)
         {
-            lock (_roundRobinLock)
-            {
-                deviceIndex = _roundRobinIndex;
-                _roundRobinIndex = (_roundRobinIndex + 1) % _availableDevices.Count;
-            }
+            index = Interlocked.Increment(ref _roundRobinIndex);
+            deviceIndex = (int)((uint)index % deviceCount);
             attempts++;
         }
 
         var snapshot = await _queueDepthMonitor.GetQueueDepthAsync(null, deviceIndex, ct);
         return CreateResult(deviceIndex, snapshot, 0.5, false, "Round-robin selection",
-            _availableDevices.Count, 0);
+            deviceCount, 0);
     }
 
     private async Task<LoadBalancingResult> SelectLeastLoadedAsync(
@@ -421,7 +414,7 @@ public sealed class AdaptiveLoadBalancer : IAdaptiveLoadBalancer, IDisposable
                 "No devices below utilization threshold", _availableDevices.Count, 0);
         }
 
-        var best = candidates.OrderByDescending(c => c.Score).First();
+        var best = candidates.MaxBy(c => c.Score)!;
         return CreateResult(best.DeviceIndex, best.Snapshot, best.Score, false,
             "Least loaded device", candidates.Count, 0);
     }
@@ -461,7 +454,7 @@ public sealed class AdaptiveLoadBalancer : IAdaptiveLoadBalancer, IDisposable
                 "No suitable devices found", _availableDevices.Count, 0);
         }
 
-        var best = candidates.OrderByDescending(c => c.Score).First();
+        var best = candidates.MaxBy(c => c.Score)!;
         return CreateResult(best.DeviceIndex, best.Snapshot, best.Score, false,
             "Weighted score selection", candidates.Count, 0);
     }
@@ -509,7 +502,7 @@ public sealed class AdaptiveLoadBalancer : IAdaptiveLoadBalancer, IDisposable
                 "No devices with favorable trends", _availableDevices.Count, 0);
         }
 
-        var best = candidates.OrderByDescending(c => c.Score).First();
+        var best = candidates.MaxBy(c => c.Score)!;
         return CreateResult(best.DeviceIndex, best.Snapshot, best.Score, false,
             $"Adaptive selection (trend: {best.History.TrendDirection})", candidates.Count, 0);
     }
@@ -536,7 +529,7 @@ public sealed class AdaptiveLoadBalancer : IAdaptiveLoadBalancer, IDisposable
 
             NotifyEvent(new LoadBalancingEvent
             {
-                TimestampNanos = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() * 1_000_000,
+                TimestampNanos = (Stopwatch.GetTimestamp() * 1_000_000_000L) / Stopwatch.Frequency,
                 EventType = LoadBalancingEventType.BackpressureReleased,
                 DeviceIndex = deviceIndex,
                 Message = "Backpressure expired"

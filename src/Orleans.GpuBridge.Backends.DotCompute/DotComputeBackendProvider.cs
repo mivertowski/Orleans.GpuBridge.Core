@@ -42,7 +42,8 @@ public sealed class DotComputeBackendProvider : IGpuBackendProvider
     /// <summary>
     /// Provider version information.
     /// </summary>
-    public Version Version => new(0, 2, 0);
+    private static readonly Version _version = new(0, 3, 0);
+    public Version Version => _version;
 
     /// <summary>
     /// Backend capabilities supported by DotCompute.
@@ -82,7 +83,7 @@ public sealed class DotComputeBackendProvider : IGpuBackendProvider
         BackendConfiguration configuration,
         CancellationToken cancellationToken = default)
     {
-        if (_isInitialized)
+        if (Volatile.Read(ref _isInitialized))
         {
             _logger.LogWarning("DotCompute provider already initialized");
             return;
@@ -223,19 +224,18 @@ public sealed class DotComputeBackendProvider : IGpuBackendProvider
     {
         EnsureInitialized();
 
-        var deviceCount = _deviceManager!.GetDevices().Count;
-        var metrics = new Dictionary<string, object>
+        var devices = _deviceManager!.GetDevices();
+        var metrics = new Dictionary<string, object>(8)
         {
             ["provider_id"] = ProviderId,
             ["provider_version"] = Version.ToString(),
-            ["device_count"] = deviceCount,
-            ["is_initialized"] = _isInitialized
+            ["device_count"] = devices.Count,
+            ["is_initialized"] = Volatile.Read(ref _isInitialized)
         };
 
         // Aggregate device metrics if available
         try
         {
-            var devices = _deviceManager.GetDevices();
             var deviceMetrics = new List<Dictionary<string, object>>();
 
             foreach (var device in devices)

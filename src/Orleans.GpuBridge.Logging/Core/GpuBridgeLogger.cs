@@ -70,7 +70,7 @@ public sealed class GpuBridgeLogger : ILogger
 
         var message = formatter(state, exception);
         var properties = ExtractProperties(state);
-        var scopes = _scopes.ToArray().AsEnumerable().Reverse().ToList();
+        var scopes = GetScopesSnapshot();
 
         var entry = new LogEntry
         {
@@ -105,7 +105,7 @@ public sealed class GpuBridgeLogger : ILogger
 
         var message = formatter(state, exception);
         var properties = ExtractProperties(state);
-        var scopes = _scopes.ToArray().AsEnumerable().Reverse().ToList();
+        var scopes = GetScopesSnapshot();
 
         var entry = new LogEntry
         {
@@ -158,7 +158,7 @@ public sealed class GpuBridgeLogger : ILogger
             Exception = exception,
             EventId = new EventId(1001, "GpuOperation"),
             Properties = properties,
-            Scopes = _scopes.ToArray().AsEnumerable().Reverse().ToList(),
+            Scopes = GetScopesSnapshot(),
             Metrics = metrics,
             CorrelationId = LogContext.Current?.CorrelationId ?? Activity.Current?.Id,
             OperationId = LogContext.Current?.OperationId ?? Activity.Current?.SpanId.ToString(),
@@ -198,7 +198,7 @@ public sealed class GpuBridgeLogger : ILogger
             Exception = exception,
             EventId = new EventId(1002, "GrainOperation"),
             Properties = properties,
-            Scopes = _scopes.ToArray().AsEnumerable().Reverse().ToList(),
+            Scopes = GetScopesSnapshot(),
             Metrics = metrics,
             CorrelationId = LogContext.Current?.CorrelationId ?? Activity.Current?.Id,
             OperationId = LogContext.Current?.OperationId ?? Activity.Current?.SpanId.ToString(),
@@ -209,6 +209,18 @@ public sealed class GpuBridgeLogger : ILogger
         {
             FallbackLog(entry);
         }
+    }
+
+    /// <summary>
+    /// Gets a snapshot of current scopes in correct (outer-to-inner) order.
+    /// ConcurrentStack is LIFO, so we reverse once using Array.Reverse instead of
+    /// the previous ToArray().AsEnumerable().Reverse().ToList() triple-allocation pattern.
+    /// </summary>
+    private List<LogScope> GetScopesSnapshot()
+    {
+        var array = _scopes.ToArray();
+        Array.Reverse(array);
+        return new List<LogScope>(array);
     }
 
     private static Dictionary<string, object?> ExtractProperties<TState>(TState state)

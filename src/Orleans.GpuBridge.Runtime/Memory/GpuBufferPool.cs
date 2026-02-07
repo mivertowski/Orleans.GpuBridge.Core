@@ -112,8 +112,8 @@ public sealed class GpuBufferPool : IDisposable
                 $"Size {sizeBytes} exceeds maximum buffer size {MaxBufferSize}.");
 
         // Round up to next power of 2 for efficient bucketing
-        int bucketKey = GetBucketKey(sizeBytes);
-        long bucketSize = 1L << bucketKey;
+        int bucketKey = GetBucketKey((int)Math.Max(sizeBytes, MinBufferSize));
+        long bucketSize = bucketKey;
 
         // Try to get from pool first
         if (_buckets.TryGetValue(bucketKey, out var bucket) &&
@@ -167,8 +167,8 @@ public sealed class GpuBufferPool : IDisposable
 
         ThrowIfDisposed();
 
-        int bucketKey = GetBucketKey(handle.SizeBytes);
-        long bucketSize = 1L << bucketKey;
+        int bucketKey = GetBucketKey((int)handle.SizeBytes);
+        long bucketSize = bucketKey;
 
         // Remove from active allocations
         _activeAllocations.TryRemove(handle.HandleId, out _);
@@ -287,25 +287,14 @@ public sealed class GpuBufferPool : IDisposable
     }
 
     /// <summary>
-    /// Calculates bucket key (power of 2) for a given size.
+    /// Calculates bucket key (rounded up to next power of 2) for a given size.
     /// </summary>
-    /// <param name="sizeBytes">Size in bytes.</param>
-    /// <returns>Bucket key (log2 of bucket size).</returns>
-    private static int GetBucketKey(long sizeBytes)
+    /// <param name="size">Size in bytes.</param>
+    /// <returns>Bucket key (size rounded up to next power of 2).</returns>
+    private static int GetBucketKey(int size)
     {
-        // Round up to next power of 2
-        long size = Math.Max(sizeBytes, MinBufferSize);
-
-        // Find log2(size) using bit manipulation
-        int key = 0;
-        long s = size - 1;
-        while (s > 0)
-        {
-            s >>= 1;
-            key++;
-        }
-
-        return key;
+        if (size <= 0) return 0;
+        return (int)System.Numerics.BitOperations.RoundUpToPowerOf2((uint)size);
     }
 
     /// <summary>
@@ -331,6 +320,9 @@ public sealed class GpuBufferPool : IDisposable
             try
             {
                 // Allocate unified memory (accessible from both CPU and GPU)
+                // NOTE: Sync-over-async is intentional here. RentBuffer must remain synchronous
+                // to satisfy the IBufferPool contract and avoid allocating a Task on every rent.
+                // The underlying CUDA allocation is a blocking driver call regardless.
                 var buffer = _memoryManager.AllocateAsync<byte>(
                     sizeBytes,
                     MemoryOptions.Unified,

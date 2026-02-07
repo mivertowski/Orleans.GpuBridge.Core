@@ -8,13 +8,11 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <!-- Suppress DotCompute kernel analyzers during Phase 5 development - will address in refinement phase -->
-    <!-- DC* warnings are performance/optimization suggestions, not errors -->
-    <!-- CS8669: Source generator doesn't emit #nullable directive (known DotCompute generator issue) -->
+    <!-- Suppress DotCompute kernel analyzer suggestions and known generator issues -->
+    <!-- DC* warnings are performance/optimization suggestions from DotCompute analyzers -->
     <!-- CS1591: Source generator doesn't create XML comments for generated code -->
-    <!-- IL2095: DotCompute message queue AOT trim analysis - will be fixed in DotCompute source -->
-    <!-- CS9057: Analyzer version mismatch - DotCompute.Generators requires newer compiler -->
-    <NoWarn>$(NoWarn);CS8669;CS1591;CS9057;DC002;DC004;DC005;DC009;DC010;DC011;DC0004;DC0005;IL2095</NoWarn>
+    <!-- IL2095: DotCompute message queue AOT trim analysis - tracked upstream -->
+    <NoWarn>$(NoWarn);CS1591;DC002;DC004;DC005;DC009;DC010;DC011;DC0004;DC0005;IL2095</NoWarn>
     <!-- Disable DotCompute CUDA serialization generation - we use CustomRingKernelRuntimeFactory instead -->
     <DotComputeGenerateCudaSerialization>false</DotComputeGenerateCudaSerialization>
   </PropertyGroup>
@@ -46,8 +44,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- DotCompute Framework v0.5.2 (Stable NuGet Release from nuget.org) -->
-    <!-- v0.5.2 adds DotCompute.Abstractions.Atomics namespace with GPU atomic operations -->
+    <!-- DotCompute Framework v0.5.3 (Stable NuGet Release from nuget.org) -->
+    <!-- v0.5.3 adds GeneratedRegex, code quality fixes, and documentation improvements -->
     <PackageReference Include="DotCompute.Abstractions" Version="$(DotComputeVersion)" />
     <PackageReference Include="DotCompute.Core" Version="$(DotComputeVersion)" />
     <PackageReference Include="DotCompute.Runtime" Version="$(DotComputeVersion)" />

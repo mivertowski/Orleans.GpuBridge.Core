@@ -33,10 +33,14 @@ namespace Orleans.GpuBridge.Abstractions.Temporal;
 /// </remarks>
 public sealed class HybridLogicalClock
 {
-    private long _lastPhysicalTime;
-    private long _lastLogicalCounter;
+    // Packed format: upper 48 bits = physical time (ms), lower 16 bits = logical counter
+    private long _packedTimestamp;
     private readonly ushort _nodeId;
     private readonly IPhysicalClockSource? _clockSource;
+
+    private static long Pack(long physicalMs, int logical) => (physicalMs << 16) | ((long)logical & 0xFFFF);
+    private static long UnpackPhysical(long packed) => packed >> 16;
+    private static int UnpackLogical(long packed) => (int)(packed & 0xFFFF);
 
     /// <summary>
     /// Gets the node identifier for this clock.
@@ -51,10 +55,17 @@ public sealed class HybridLogicalClock
     /// <summary>
     /// Gets the last generated timestamp.
     /// </summary>
-    public HybridTimestamp LastTimestamp => new(
-        Interlocked.Read(ref _lastPhysicalTime),
-        Interlocked.Read(ref _lastLogicalCounter),
-        _nodeId);
+    public HybridTimestamp LastTimestamp
+    {
+        get
+        {
+            var packed = Interlocked.Read(ref _packedTimestamp);
+            return new HybridTimestamp(
+                UnpackPhysical(packed) * 1_000_000,
+                UnpackLogical(packed),
+                _nodeId);
+        }
+    }
 
     /// <summary>
     /// Creates a new Hybrid Logical Clock.
@@ -65,8 +76,7 @@ public sealed class HybridLogicalClock
     {
         _nodeId = nodeId;
         _clockSource = clockSource;
-        _lastPhysicalTime = GetPhysicalTime();
-        _lastLogicalCounter = 0;
+        _packedTimestamp = Pack(GetPhysicalTime() / 1_000_000, 0);
     }
 
     /// <summary>
@@ -92,31 +102,31 @@ public sealed class HybridLogicalClock
     {
         while (true)
         {
-            // Read current clock state
-            var lastPhysical = Interlocked.Read(ref _lastPhysicalTime);
-            var lastLogical = Interlocked.Read(ref _lastLogicalCounter);
+            var oldPacked = Interlocked.Read(ref _packedTimestamp);
+            var oldPhysical = UnpackPhysical(oldPacked);
+            var oldLogical = UnpackLogical(oldPacked);
 
-            // Get current physical time
-            var currentPhysical = GetPhysicalTime();
+            var physicalNow = GetPhysicalTime() / 1_000_000;
 
-            // Calculate new timestamp
-            var newPhysical = Math.Max(lastPhysical, currentPhysical);
-            var newLogical = (newPhysical == lastPhysical) ? lastLogical + 1 : 0;
-
-            // Try to update atomically
-            var originalPhysical = Interlocked.CompareExchange(
-                ref _lastPhysicalTime, newPhysical, lastPhysical);
-
-            if (originalPhysical == lastPhysical)
+            long newPhysical;
+            int newLogical;
+            if (physicalNow > oldPhysical)
             {
-                // Physical time update succeeded, now update logical counter
-                Interlocked.Exchange(ref _lastLogicalCounter, newLogical);
-                return new HybridTimestamp(newPhysical, newLogical, _nodeId);
+                newPhysical = physicalNow;
+                newLogical = 0;
+            }
+            else
+            {
+                newPhysical = oldPhysical;
+                newLogical = oldLogical + 1;
             }
 
-            // Conflict detected, retry
-            // This happens when another thread updated the clock concurrently
-            Thread.SpinWait(1);
+            var newPacked = Pack(newPhysical, newLogical);
+            if (Interlocked.CompareExchange(ref _packedTimestamp, newPacked, oldPacked) == oldPacked)
+            {
+                return new HybridTimestamp(newPhysical * 1_000_000, newLogical, _nodeId);
+            }
+            // CAS failed, another thread updated - retry
         }
     }
 
@@ -150,52 +160,48 @@ public sealed class HybridLogicalClock
     {
         while (true)
         {
-            // Read current clock state
-            var lastPhysical = Interlocked.Read(ref _lastPhysicalTime);
-            var lastLogical = Interlocked.Read(ref _lastLogicalCounter);
+            var oldPacked = Interlocked.Read(ref _packedTimestamp);
+            var oldPhysical = UnpackPhysical(oldPacked);
+            var oldLogical = UnpackLogical(oldPacked);
 
-            // Get current physical time
-            var currentPhysical = GetPhysicalTime();
+            var physicalNow = GetPhysicalTime() / 1_000_000;
+            var remotePhysical = receivedTimestamp.PhysicalTime / 1_000_000;
+            var remoteLogical = (int)receivedTimestamp.LogicalCounter;
+            var maxPhysical = Math.Max(Math.Max(oldPhysical, remotePhysical), physicalNow);
 
-            // Calculate new physical time (max of all three)
-            var newPhysical = Math.Max(Math.Max(lastPhysical, currentPhysical), receivedTimestamp.PhysicalTime);
-
-            // Calculate new logical counter based on HLC update rules
-            long newLogical;
-            if (newPhysical == lastPhysical && newPhysical == receivedTimestamp.PhysicalTime)
+            long newPhysical;
+            int newLogical;
+            if (maxPhysical == physicalNow && physicalNow > oldPhysical && physicalNow > remotePhysical)
             {
-                // All three equal: increment max of both logical counters
-                newLogical = Math.Max(lastLogical, receivedTimestamp.LogicalCounter) + 1;
+                newPhysical = physicalNow;
+                newLogical = 0;
             }
-            else if (newPhysical == lastPhysical)
+            else if (maxPhysical == oldPhysical && oldPhysical == remotePhysical)
             {
-                // Physical time matches last: increment logical counter
-                newLogical = lastLogical + 1;
+                newPhysical = maxPhysical;
+                newLogical = Math.Max(oldLogical, remoteLogical) + 1;
             }
-            else if (newPhysical == receivedTimestamp.PhysicalTime)
+            else if (maxPhysical == oldPhysical)
             {
-                // Physical time matches received: increment received logical counter
-                newLogical = receivedTimestamp.LogicalCounter + 1;
+                newPhysical = maxPhysical;
+                newLogical = oldLogical + 1;
+            }
+            else if (maxPhysical == remotePhysical)
+            {
+                newPhysical = maxPhysical;
+                newLogical = remoteLogical + 1;
             }
             else
             {
-                // Physical time advanced: reset logical counter
+                newPhysical = maxPhysical;
                 newLogical = 0;
             }
 
-            // Try to update atomically
-            var originalPhysical = Interlocked.CompareExchange(
-                ref _lastPhysicalTime, newPhysical, lastPhysical);
-
-            if (originalPhysical == lastPhysical)
+            var newPacked = Pack(newPhysical, newLogical);
+            if (Interlocked.CompareExchange(ref _packedTimestamp, newPacked, oldPacked) == oldPacked)
             {
-                // Physical time update succeeded, now update logical counter
-                Interlocked.Exchange(ref _lastLogicalCounter, newLogical);
-                return new HybridTimestamp(newPhysical, newLogical, _nodeId);
+                return new HybridTimestamp(newPhysical * 1_000_000, newLogical, _nodeId);
             }
-
-            // Conflict detected, retry
-            Thread.SpinWait(1);
         }
     }
 
@@ -221,8 +227,8 @@ public sealed class HybridLogicalClock
     /// </remarks>
     public void Reset(HybridTimestamp timestamp)
     {
-        Interlocked.Exchange(ref _lastPhysicalTime, timestamp.PhysicalTime);
-        Interlocked.Exchange(ref _lastLogicalCounter, timestamp.LogicalCounter);
+        var packed = Pack(timestamp.PhysicalTime / 1_000_000, (int)timestamp.LogicalCounter);
+        Interlocked.Exchange(ref _packedTimestamp, packed);
     }
 
     /// <summary>

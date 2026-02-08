@@ -15,7 +15,8 @@
     <!-- Disable DotCompute CUDA serialization generation - Grains uses Runtime's infrastructure -->
     <DotComputeGenerateCudaSerialization>false</DotComputeGenerateCudaSerialization>
     <!-- CS1591: Suppress XML doc warning for generated code from DotCompute.Generators -->
-    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <!-- CS8669: DotCompute.Generators emits nullable annotations without #nullable context -->
+    <NoWarn>$(NoWarn);CS1591;CS8669</NoWarn>
   </PropertyGroup>
 
   <!-- Exclude generated RingKernelRuntimeFactory - transitively activated, we use Runtime's infrastructure -->

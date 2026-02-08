@@ -155,7 +155,7 @@ public sealed class PlacementIntegrationTests
         _output.WriteLine($"  Devices used: {string.Join(", ", devices)}");
 
         // With affinity-first strategy, should prefer colocation
-        devices.Should().HaveCountLessOrEqualTo(2);
+        devices.Should().HaveCountLessThanOrEqualTo(2);
     }
 
     /// <summary>

@@ -26,6 +26,10 @@
     <MicrosoftOrleansVersion>9.2.1</MicrosoftOrleansVersion>
     <DotComputeVersion>0.5.3</DotComputeVersion>
     <PollyVersion>8.6.5</PollyVersion>
+    <FluentAssertionsVersion>8.8.0</FluentAssertionsVersion>
+    <OpenTelemetryVersion>1.14.0</OpenTelemetryVersion>
+    <BenchmarkDotNetVersion>0.15.8</BenchmarkDotNetVersion>
+    <XunitSkippableFactVersion>1.5.61</XunitSkippableFactVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -72,5 +76,25 @@
     <PackageReference Update="Microsoft.Orleans.Runtime" Version="$(MicrosoftOrleansVersion)" />
     <PackageReference Update="Microsoft.Orleans.Core.Abstractions" Version="$(MicrosoftOrleansVersion)" />
     <PackageReference Update="Microsoft.Orleans.Sdk" Version="$(MicrosoftOrleansVersion)" />
+
+    <!-- Force consistent FluentAssertions version -->
+    <PackageReference Update="FluentAssertions" Version="$(FluentAssertionsVersion)" />
+
+    <!-- Force consistent OpenTelemetry versions (stable packages only) -->
+    <PackageReference Update="OpenTelemetry" Version="$(OpenTelemetryVersion)" />
+    <PackageReference Update="OpenTelemetry.Api" Version="$(OpenTelemetryVersion)" />
+    <PackageReference Update="OpenTelemetry.Extensions.Hosting" Version="$(OpenTelemetryVersion)" />
+    <PackageReference Update="OpenTelemetry.Exporter.Console" Version="$(OpenTelemetryVersion)" />
+    <PackageReference Update="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="$(OpenTelemetryVersion)" />
+    <PackageReference Update="OpenTelemetry.Instrumentation.AspNetCore" Version="$(OpenTelemetryVersion)" />
+    <PackageReference Update="OpenTelemetry.Instrumentation.Http" Version="$(OpenTelemetryVersion)" />
+    <PackageReference Update="OpenTelemetry.Instrumentation.Runtime" Version="$(OpenTelemetryVersion)" />
+
+    <!-- Force consistent BenchmarkDotNet version -->
+    <PackageReference Update="BenchmarkDotNet" Version="$(BenchmarkDotNetVersion)" />
+    <PackageReference Update="BenchmarkDotNet.Diagnostics.Windows" Version="$(BenchmarkDotNetVersion)" />
+
+    <!-- Force consistent Xunit.SkippableFact version -->
+    <PackageReference Update="Xunit.SkippableFact" Version="$(XunitSkippableFactVersion)" />
   </ItemGroup>
 </Project>

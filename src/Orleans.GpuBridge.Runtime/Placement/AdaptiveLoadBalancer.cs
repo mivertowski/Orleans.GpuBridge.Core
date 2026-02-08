@@ -34,7 +34,7 @@ public sealed class AdaptiveLoadBalancer : IAdaptiveLoadBalancer, IDisposable
     private readonly ConcurrentDictionary<string, int> _affinityDeviceMap = new();
     private readonly ConcurrentBag<Action<LoadBalancingEvent>> _eventSubscribers = new();
     private readonly List<DeviceInfo> _availableDevices;
-    private int _roundRobinIndex;
+    private int _roundRobinIndex = -1;
     private long _totalDecisions;
     private long _fallbackCount;
     private long _rebalanceCount = 0;

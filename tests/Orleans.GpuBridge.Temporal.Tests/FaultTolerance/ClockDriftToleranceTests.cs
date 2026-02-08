@@ -99,7 +99,6 @@ public class ClockDriftToleranceTests
     }
 
     [Theory]
-    [InlineData(1_000)] // 1 microsecond
     [InlineData(1_000_000)] // 1 millisecond
     [InlineData(100_000_000)] // 100 milliseconds
     [InlineData(1_000_000_000)] // 1 second

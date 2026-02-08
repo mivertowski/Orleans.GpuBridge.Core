@@ -230,7 +230,7 @@ internal sealed class DotComputeMemoryAllocator : IMemoryAllocator
             TotalBytesAllocated: totalAllocated,
             TotalBytesInUse: totalInUse,
             TotalBytesFree: totalAllocated - totalInUse,
-            AllocationCount: allocationCount,
+            AllocationCount: (int)allocationCount,
             FreeBlockCount: _memoryPools.Count,
             LargestFreeBlock: largestFreeBlock,
             FragmentationPercent: fragmentationPercent,

@@ -48,7 +48,8 @@ public class EdgeCaseTests
     public void HLC_MaximumTimestamp()
     {
         // Arrange & Act: Create timestamp near maximum values
-        var maxTime = long.MaxValue / 2; // Avoid overflow in calculations
+        // Use millisecond-aligned value since HLC stores physical time in millisecond granularity
+        var maxTime = (long.MaxValue / 2 / 1_000_000) * 1_000_000; // Aligned to ms boundary
         var maxTimestamp = new HybridTimestamp(
             physicalTime: maxTime,
             logicalCounter: long.MaxValue / 2,
@@ -57,7 +58,7 @@ public class EdgeCaseTests
         var hlc = new HybridLogicalClock(nodeId: 1);
         var updated = hlc.Update(maxTimestamp);
 
-        // Assert: Handles large values gracefully
+        // Assert: Handles large values gracefully (ms-aligned, so exact match is valid)
         Assert.True(updated.PhysicalTime >= maxTimestamp.PhysicalTime);
 
         _output.WriteLine($"Maximum timestamp handling:");

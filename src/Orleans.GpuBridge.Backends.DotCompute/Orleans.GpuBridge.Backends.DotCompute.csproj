@@ -12,7 +12,8 @@
     <!-- DC* warnings are performance/optimization suggestions from DotCompute analyzers -->
     <!-- CS1591: Source generator doesn't create XML comments for generated code -->
     <!-- IL2095: DotCompute message queue AOT trim analysis - tracked upstream -->
-    <NoWarn>$(NoWarn);CS1591;CS8669;DC002;DC004;DC005;DC009;DC010;DC011;DC0004;DC0005;IL2095</NoWarn>
+    <!-- CS9057: DotCompute.Generators.dll targets Roslyn 5.0 but SDK ships 4.14 - analyzer won't load but build is unaffected -->
+    <NoWarn>$(NoWarn);CS1591;CS8669;CS9057;DC002;DC004;DC005;DC009;DC010;DC011;DC0004;DC0005;IL2095</NoWarn>
     <!-- Disable DotCompute CUDA serialization generation - we use CustomRingKernelRuntimeFactory instead -->
     <DotComputeGenerateCudaSerialization>false</DotComputeGenerateCudaSerialization>
   </PropertyGroup>

@@ -11,26 +11,34 @@ using Microsoft.Extensions.Logging;
 namespace Orleans.GpuBridge.Backends.DotCompute.Generated;
 
 /// <summary>
-/// Custom factory for creating Ring Kernel runtimes compatible with DotCompute v1.0.0-preview2.
+/// Custom factory for creating Ring Kernel runtimes against DotCompute v1.0.0-preview2.
 /// </summary>
 /// <remarks>
-/// <para>Historically this factory worked around the auto-generated <c>RingKernelRuntimeFactory.g.cs</c>
-/// emitting references to unpublished types (OpenCLDeviceManager, early Metal.RingKernels). In v1.0
-/// OpenCL is removed from DotCompute and Metal ring kernels are feature-complete, so the generator's
-/// output is expected to be clean — but until we verify that against the v1.0 source generator, we
-/// keep this custom factory + the <c>ExcludeGeneratedRuntimeFactory</c> MSBuild target in the csproj.</para>
-/// <para>Follow-up: once a v1.0 build succeeds without this workaround, delete the file and drop the
-/// csproj target.</para>
+/// <para>
+/// DotCompute v1.0's <c>DotCompute.Generators.V2</c> source generator does NOT emit a
+/// <c>RingKernelRuntimeFactory.g.cs</c> — it only emits per-kernel wrappers, stubs, and
+/// registry code. Orleans.GpuBridge therefore needs its own factory to bridge kernel-id
+/// strings to concrete <see cref="IRingKernelRuntime"/> implementations.
+/// </para>
+/// <para>
+/// Supported backends: <c>CPU</c>, <c>CUDA</c>. Metal is not exposed because
+/// <c>DotCompute.Backends.Metal.V2</c> is not yet published on NuGet — once it ships a
+/// Metal branch can be added alongside the existing two.
+/// </para>
+/// <para>
+/// This is deliberately a thin wiring layer: if a future DotCompute release adds a
+/// first-class runtime factory, replace callers with that and delete this file.
+/// </para>
 /// </remarks>
 public static class CustomRingKernelRuntimeFactory
 {
     /// <summary>
     /// Creates an appropriate Ring Kernel runtime for the specified backend.
     /// </summary>
-    /// <param name="backend">Backend name: "CPU" or "CUDA"</param>
-    /// <param name="loggerFactory">Optional logger factory for runtime logging</param>
-    /// <returns>Ring kernel runtime instance</returns>
-    /// <exception cref="NotSupportedException">If backend is not CPU or CUDA</exception>
+    /// <param name="backend">Backend name: <c>"CPU"</c> or <c>"CUDA"</c> (case-insensitive).</param>
+    /// <param name="loggerFactory">Optional logger factory for runtime logging.</param>
+    /// <returns>Ring kernel runtime instance.</returns>
+    /// <exception cref="NotSupportedException">If backend is not CPU or CUDA.</exception>
     public static IRingKernelRuntime CreateRuntime(string backend, ILoggerFactory? loggerFactory = null)
     {
         return backend.ToUpperInvariant() switch
@@ -38,15 +46,16 @@ public static class CustomRingKernelRuntimeFactory
             "CPU" => CreateCpuRuntime(loggerFactory),
             "CUDA" => CreateCudaRuntime(loggerFactory),
             _ => throw new NotSupportedException(
-                $"Backend '{backend}' is not supported. CPU and CUDA ring kernels are wired in this custom factory; " +
-                $"Metal is available in DotCompute v1.0 and can be added once this workaround is replaced by the " +
-                $"v1.0 auto-generated factory. OpenCL was dropped from v1.0.")
+                $"Backend '{backend}' is not supported. Supported backends: CPU, CUDA. " +
+                $"Metal requires DotCompute.Backends.Metal.V2 which is not yet published on NuGet; " +
+                $"OpenCL was dropped from DotCompute v1.0.")
         };
     }
 
     private static IRingKernelRuntime CreateCpuRuntime(ILoggerFactory? loggerFactory)
     {
-        // CpuRingKernelRuntime expects ILogger<CpuRingKernelRuntime>, not ILogger
+        // CpuRingKernelRuntime in v1.0.0-preview2 has optional ctor params, so a null
+        // logger is acceptable. We pass a typed logger when a factory is supplied.
         var logger = loggerFactory?.CreateLogger<CpuRingKernelRuntime>();
         return new CpuRingKernelRuntime(logger!);
     }

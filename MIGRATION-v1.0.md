@@ -19,7 +19,7 @@ DotCompute has the following v1.0.0 changes staged on branch
   from 13 to 14, `global.json` bumped to `10.0.0`. Microsoft.Extensions.* and System.* moved
   to 10.0.6. Microsoft.CodeAnalysis.CSharp moved to 5.3.0. ILLink 10.0.6, SourceLink 10.0.202.
 - **OpenCL backend dropped.** `DotCompute.Backends.OpenCL` is removed. v1.0.0 ships
-  CPU / CUDA / Metal only. OpenCL code paths in `DotCompute.Linq` and related generators
+  CPU / CUDA / Metal only. OpenCL code paths in `DotCompute.Linq.V2` and related generators
   were also scrubbed. DotCompute v1.0.0 does **not** expose an OpenCL backend package.
 - **WSL2 workarounds removed from CUDA backend.** ~837 lines of fallback code
   (`IsRunningInWsl2`, `AsyncControlBlock`, `GetEffectiveKernelMode` overrides, non-cooperative
@@ -42,9 +42,9 @@ DotCompute has the following v1.0.0 changes staged on branch
 - **P2P idempotency bitmap.** `CudaMessageQueue` counters are now cache-line padded.
 
 None of these changes are NuGet-published yet — the new package set
-(`DotCompute.Abstractions`, `DotCompute.Core`, `DotCompute.Runtime`,
-`DotCompute.Backends.CPU`, `DotCompute.Backends.CUDA`, `DotCompute.Generators`,
-`DotCompute.Backends.Metal` once it ships) will land under version
+(`DotCompute.Abstractions.V2`, `DotCompute.Core.V2`, `DotCompute.Runtime.V2`,
+`DotCompute.Backends.CPU.V2`, `DotCompute.Backends.CUDA.V2`, `DotCompute.Generators.V2`,
+`DotCompute.Backends.Metal.V2` once it ships) will land under version
 `1.0.0-preview1` (or whichever final tag) once the upstream release is cut.
 
 ---

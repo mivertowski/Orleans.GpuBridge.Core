@@ -11,12 +11,16 @@ using Microsoft.Extensions.Logging;
 namespace Orleans.GpuBridge.Backends.DotCompute.Generated;
 
 /// <summary>
-/// Custom factory for creating Ring Kernel runtimes compatible with DotCompute 0.4.2-rc2.
+/// Custom factory for creating Ring Kernel runtimes compatible with DotCompute v1.0.0-preview2.
 /// </summary>
 /// <remarks>
-/// This factory works around API mismatches in the auto-generated RingKernelRuntimeFactory.g.cs
-/// which references unpublished DotCompute types (OpenCLDeviceManager, Metal.RingKernels, etc.).
-/// Only CPU and CUDA backends are supported in this version.
+/// <para>Historically this factory worked around the auto-generated <c>RingKernelRuntimeFactory.g.cs</c>
+/// emitting references to unpublished types (OpenCLDeviceManager, early Metal.RingKernels). In v1.0
+/// OpenCL is removed from DotCompute and Metal ring kernels are feature-complete, so the generator's
+/// output is expected to be clean — but until we verify that against the v1.0 source generator, we
+/// keep this custom factory + the <c>ExcludeGeneratedRuntimeFactory</c> MSBuild target in the csproj.</para>
+/// <para>Follow-up: once a v1.0 build succeeds without this workaround, delete the file and drop the
+/// csproj target.</para>
 /// </remarks>
 public static class CustomRingKernelRuntimeFactory
 {
@@ -34,8 +38,9 @@ public static class CustomRingKernelRuntimeFactory
             "CPU" => CreateCpuRuntime(loggerFactory),
             "CUDA" => CreateCudaRuntime(loggerFactory),
             _ => throw new NotSupportedException(
-                $"Backend '{backend}' is not supported. Only CPU and CUDA are available in DotCompute 0.4.2-rc2. " +
-                $"OpenCL and Metal ring kernel support requires unreleased DotCompute APIs.")
+                $"Backend '{backend}' is not supported. CPU and CUDA ring kernels are wired in this custom factory; " +
+                $"Metal is available in DotCompute v1.0 and can be added once this workaround is replaced by the " +
+                $"v1.0 auto-generated factory. OpenCL was dropped from v1.0.")
         };
     }
 

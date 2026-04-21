@@ -12,10 +12,8 @@
     <!-- DC* warnings are performance/optimization suggestions from DotCompute analyzers -->
     <!-- CS1591: Source generator doesn't create XML comments for generated code -->
     <!-- IL2095: DotCompute message queue AOT trim analysis - tracked upstream -->
-    <!-- CS9057: DotCompute.Generators.dll targets Roslyn 5.0 but SDK ships 4.14 - analyzer won't load but build is unaffected -->
+    <!-- CS9057: DotCompute.Generators.dll targets Roslyn 5.3 but SDK ships 5.0 - analyzer won't load but build is unaffected -->
     <NoWarn>$(NoWarn);CS1591;CS8669;CS9057;DC002;DC004;DC005;DC009;DC010;DC011;DC0004;DC0005;IL2095</NoWarn>
-    <!-- Disable DotCompute CUDA serialization generation - we use CustomRingKernelRuntimeFactory instead -->
-    <DotComputeGenerateCudaSerialization>false</DotComputeGenerateCudaSerialization>
   </PropertyGroup>
 
   <!-- Expose internal types to test assembly -->
@@ -54,7 +52,8 @@
     <PackageReference Include="DotCompute.Backends.CUDA.V2" Version="$(DotComputeVersion)" />
 
     <!-- DotCompute Source Generators -->
-    <!-- Note: RingKernelRuntimeFactory.g.cs is excluded because we use CustomRingKernelRuntimeFactory instead -->
+    <!-- The v1.0 generator emits per-kernel wrappers/stubs but NOT a runtime factory;
+         CustomRingKernelRuntimeFactory provides that factory for us. -->
     <PackageReference Include="DotCompute.Generators.V2" Version="$(DotComputeVersion)" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 
     <!-- Orleans Dependencies -->
@@ -69,14 +68,6 @@
     <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="10.0.6" />
     <PackageReference Include="Microsoft.DotNet.ILCompiler" Version="10.0.0" />
   </ItemGroup>
-
-  <!-- Exclude generated RingKernelRuntimeFactory - we use CustomRingKernelRuntimeFactory instead -->
-  <!-- The DotCompute generator hasn't been updated to use CudaMemoryPackSerializerGenerator yet -->
-  <Target Name="ExcludeGeneratedRuntimeFactory" BeforeTargets="CoreCompile">
-    <ItemGroup>
-      <Compile Remove="@(Compile)" Condition="$([System.String]::Copy('%(Identity)').Contains('RingKernelRuntimeFactory.g.cs'))" />
-    </ItemGroup>
-  </Target>
 
   <!-- Include manual CUDA handler files as embedded resources -->
   <ItemGroup>

@@ -9,7 +9,6 @@ using DotCompute.Core.Messaging;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Orleans.GpuBridge.Backends.DotCompute.Temporal;
-using Orleans.GpuBridge.Backends.DotCompute.Generated;
 
 namespace RingKernelValidation;
 

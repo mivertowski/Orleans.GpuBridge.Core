@@ -21,7 +21,7 @@ public sealed class ComputeRequirements
     /// </value>
     /// <remarks>
     /// When <c>true</c>, the device scoring algorithm will give higher scores to GPU devices
-    /// (CUDA, OpenCL, DirectCompute, Metal) compared to CPU devices. When <c>false</c>,
+    /// (CUDA, Metal) compared to CPU devices. When <c>false</c>,
     /// CPU devices will receive higher scores, making them more likely to be selected.
     /// </remarks>
     public bool PreferGpu { get; set; } = true;
@@ -48,8 +48,8 @@ public sealed class ComputeRequirements
     /// </value>
     /// <remarks>
     /// Compute units represent parallel processing capabilities of the device.
-    /// For GPUs, this typically corresponds to streaming multiprocessors (CUDA),
-    /// compute units (OpenCL), or similar parallel processing blocks.
+    /// For GPUs, this typically corresponds to streaming multiprocessors (CUDA)
+    /// or similar parallel processing blocks (Metal).
     /// For CPUs, this represents the number of logical processors.
     /// </remarks>
     public int MinComputeUnits { get; set; } = 1;

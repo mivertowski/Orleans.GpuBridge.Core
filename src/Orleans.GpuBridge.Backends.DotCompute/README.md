@@ -8,7 +8,7 @@ High-performance DotCompute backend provider for Orleans GPU Bridge, enabling cr
 
 ## Overview
 
-The Orleans.GpuBridge.Backends.DotCompute backend provides seamless GPU acceleration for Orleans applications by leveraging the DotCompute framework. This backend abstracts multiple GPU compute APIs (CUDA, OpenCL, DirectCompute, Metal, Vulkan) through a single, unified interface while providing advanced features like automatic kernel compilation, memory optimization, and cross-platform deployment.
+The Orleans.GpuBridge.Backends.DotCompute backend provides seamless GPU acceleration for Orleans applications by leveraging the DotCompute framework. This backend abstracts multiple GPU compute APIs (CUDA, Metal, CPU) through a single, unified interface while providing advanced features like automatic kernel compilation, memory optimization, and cross-platform deployment.
 
 ### Architecture
 
@@ -25,20 +25,19 @@ The Orleans.GpuBridge.Backends.DotCompute backend provides seamless GPU accelera
 ├─────────────────┼─────────────────┼─────────────────────┤
 │              DotCompute Runtime                         │
 ├─────────────────┬─────────────────┬─────────────────────┤
-│      CUDA       │     OpenCL      │   DirectCompute     │
-│     Metal       │     Vulkan      │   CPU Fallback      │
+│      CUDA       │      Metal      │   CPU Fallback      │
 └─────────────────┴─────────────────┴─────────────────────┘
 ```
 
 ## Key Features
 
 ### 🚀 Cross-Platform GPU Acceleration
-- **Unified API**: Single interface for CUDA, OpenCL, DirectCompute, Metal, and Vulkan
+- **Unified API**: Single interface for CUDA, Metal, and CPU
 - **Automatic Backend Selection**: Intelligent platform detection and optimal backend selection
 - **CPU Fallback**: Seamless fallback to CPU implementations when GPU is unavailable
 
 ### 🧠 Advanced Kernel Management
-- **Multi-Language Support**: C#, CUDA, OpenCL, HLSL, and Metal Shading Language kernels
+- **Multi-Language Support**: C#, CUDA, and Metal Shading Language kernels
 - **Just-In-Time Compilation**: Dynamic kernel compilation with optimization
 - **Kernel Fusion**: Automatic optimization by combining multiple operations
 - **Template System**: Pre-built kernels for common operations (BLAS, convolution, reduction)

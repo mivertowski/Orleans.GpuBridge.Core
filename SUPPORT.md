@@ -42,8 +42,6 @@ For **questions**, **ideas**, and **community discussion**:
 - **CPU Fallback** - Always available
 
 Planned backends:
-- OpenCL
-- Vulkan Compute
 - Metal (macOS)
 
 ### Q: Does it work on WSL2?

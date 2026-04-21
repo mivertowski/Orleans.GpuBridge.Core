@@ -13,7 +13,7 @@ namespace Orleans.GpuBridge.Backends.DotCompute.Configuration;
 /// 
 /// <para>
 /// The DotCompute backend serves as a unified abstraction over multiple GPU compute APIs
-/// including CUDA, OpenCL, DirectCompute, Metal, and Vulkan. Configuration settings allow
+/// including CUDA, Metal, and CPU. Configuration settings allow
 /// you to optimize for specific hardware configurations and use cases.
 /// </para>
 /// 

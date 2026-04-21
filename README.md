@@ -54,7 +54,7 @@ Orleans.GpuBridge supports two deployment models:
 | `Orleans.GpuBridge.Abstractions` | Core interfaces and contracts |
 | `Orleans.GpuBridge.Runtime` | Runtime implementation, placement strategies, temporal infrastructure |
 | `Orleans.GpuBridge.Grains` | GPU-accelerated grain base classes |
-| `Orleans.GpuBridge.Backends.DotCompute` | DotCompute GPU backend (CUDA, CPU) |
+| `Orleans.GpuBridge.Backends.DotCompute` | DotCompute GPU backend (CUDA, Metal, CPU) |
 | `Orleans.GpuBridge.BridgeFX` | High-level pipeline API |
 | `Orleans.GpuBridge.Resilience` | Resilience patterns (Polly v8) |
 | `Orleans.GpuBridge.Diagnostics` | Metrics and OpenTelemetry integration |
@@ -239,7 +239,6 @@ dotnet pack -c Release -o artifacts/packages
 | GPU Memory Telemetry | Stable |
 | Health Checks | Stable |
 | GPUDirect Storage | Planned |
-| OpenCL Backend | Planned |
 
 ### Test Suite (v0.3.0)
 

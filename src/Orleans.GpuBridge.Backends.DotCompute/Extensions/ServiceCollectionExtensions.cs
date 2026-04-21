@@ -16,12 +16,12 @@ namespace Orleans.GpuBridge.Backends.DotCompute.Extensions;
 /// </summary>
 /// <remarks>
 /// The DotCompute backend provides a unified abstraction over multiple GPU compute APIs
-/// including CUDA, OpenCL, DirectCompute, Metal, and Vulkan. This allows applications
+/// including CUDA, Metal, and CPU. This allows applications
 /// to leverage GPU acceleration across different hardware platforms and operating systems.
-/// 
+///
 /// <para>
 /// The backend supports:
-/// - Multiple kernel programming languages (C#, CUDA, OpenCL, HLSL, MSL)
+/// - Multiple kernel programming languages (C#, CUDA, MSL)
 /// - Automatic language translation and cross-compilation
 /// - Advanced memory management with pooling and optimization
 /// - Platform-specific optimizations and feature detection
@@ -47,7 +47,7 @@ public static class ServiceCollectionExtensions
     /// - Memory pooling with 512MB initial size and 4GB maximum
     /// - Disk caching enabled for compiled kernels
     /// - Automatic language translation enabled
-    /// - Platform preference: CUDA > OpenCL > DirectCompute > Metal > Vulkan
+    /// - Platform preference: CUDA > Metal > CPU
     /// 
     /// <para>
     /// For custom configuration, use <see cref="AddDotGpuBackend(IGpuBridgeBuilder, Action{DotGpuBackendConfiguration})"/>

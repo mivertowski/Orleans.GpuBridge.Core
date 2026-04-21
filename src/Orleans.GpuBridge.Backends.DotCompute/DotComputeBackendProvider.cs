@@ -14,7 +14,7 @@ namespace Orleans.GpuBridge.Backends.DotCompute;
 
 /// <summary>
 /// DotCompute backend provider implementation for Orleans.GpuBridge.
-/// Provides GPU acceleration via CUDA, OpenCL, Metal, and CPU with attribute-based kernel definition.
+/// Provides GPU acceleration via CUDA, Metal, and CPU with attribute-based kernel definition.
 /// </summary>
 public sealed class DotComputeBackendProvider : IGpuBackendProvider
 {

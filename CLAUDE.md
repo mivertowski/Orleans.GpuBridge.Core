@@ -123,7 +123,6 @@ dotnet pack -c Release -o artifacts/packages
 - ✅ DotCompute backend (NuGet v0.5.2)
 - ✅ GPU atomic operations (DotCompute.Atomics)
 - 📋 GPUDirect Storage (planned)
-- 📋 OpenCL backend (planned)
 
 ## Development Guidelines
 
